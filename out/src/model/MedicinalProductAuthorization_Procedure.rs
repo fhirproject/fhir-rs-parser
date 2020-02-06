@@ -2,33 +2,41 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Period::Period;
-use crate::model::Element::Element;
 use crate::model::Identifier::Identifier;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 
 
 /// The regulatory authorization of a medicinal product.
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MedicinalProductAuthorization_Procedure {
-  /// Date of procedure.
-  #[serde(rename = "datePeriod")]
-  date_period: Option<Period>,
+  /// Applcations submitted to obtain a marketing authorization.
+  application: Option<Vec<MedicinalProductAuthorization_Procedure>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// Type of procedure.
   #[serde(rename = "type")]
   fhir_type: CodeableConcept,
 
-  /// Applcations submitted to obtain a marketing authorization.
-  application: Option<Vec<MedicinalProductAuthorization_Procedure>>,
+  /// Date of procedure.
+  #[serde(rename = "dateDateTime")]
+  date_date_time: Option<String>,
 
   /// Extensions for dateDateTime
   #[serde(rename = "_dateDateTime")]
   _date_date_time: Option<Element>,
 
-  /// Identifier for this procedure.
-  identifier: Option<Identifier>,
+  /// Date of procedure.
+  #[serde(rename = "datePeriod")]
+  date_period: Option<Period>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -42,21 +50,13 @@ pub struct MedicinalProductAuthorization_Procedure {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Date of procedure.
-  #[serde(rename = "dateDateTime")]
-  date_date_time: Option<String>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Identifier for this procedure.
+  identifier: Option<Identifier>,
 
 }

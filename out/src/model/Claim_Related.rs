@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Reference::Reference;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Identifier::Identifier;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Identifier::Identifier;
 
 
 /// A provider issued list of professional services and products which have been
@@ -25,14 +25,7 @@ pub struct Claim_Related {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Reference to a related claim.
-  claim: Option<Box<Reference>>,
-
-  /// An alternate organizational reference to the case or file to which this
-  /// particular claim pertains.
-  reference: Option<Identifier>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
@@ -43,9 +36,16 @@ pub struct Claim_Related {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// A code to convey how the claims are related.
   relationship: Option<CodeableConcept>,
+
+  /// An alternate organizational reference to the case or file to which this
+  /// particular claim pertains.
+  reference: Option<Identifier>,
+
+  /// Reference to a related claim.
+  claim: Option<Box<Reference>>,
 
 }

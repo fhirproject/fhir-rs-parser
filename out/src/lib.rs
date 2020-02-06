@@ -9,6 +9,16 @@ mod tests {
   fn it_works() {
     let paths = fs::read_dir("examples-json/").unwrap();
 
+    println!(
+      "sizeof result:{:?}",
+      std::mem::size_of::<crate::parser::FHIRResource>()
+    );
+
+    println!(
+      "sizeof element definition:{:?}",
+      std::mem::size_of::<crate::model::ElementDefinition::ElementDefinition>()
+    );
+
     for path in paths {
       let unwrapped_path = path.unwrap().path();
       println!("Beginning {}", &unwrapped_path.to_str().unwrap());

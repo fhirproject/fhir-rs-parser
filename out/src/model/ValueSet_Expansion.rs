@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::ValueSet_Contains::ValueSet_Contains;
 use crate::model::Extension::Extension;
 use crate::model::ValueSet_Parameter::ValueSet_Parameter;
+use crate::model::ValueSet_Contains::ValueSet_Contains;
+use crate::model::Element::Element;
 
 
 /// A ValueSet resource instance specifies a set of codes drawn from one or more
@@ -14,9 +14,19 @@ use crate::model::ValueSet_Parameter::ValueSet_Parameter;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ValueSet_Expansion {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// An identifier that uniquely identifies this expansion of the valueset, based on
+  /// a unique combination of the provided parameters, the system default parameters,
+  /// and the underlying system code system versions etc. Systems may re-use the same
+  /// identifier as long as those factors remain the same, and the expansion is the
+  /// same, but are not required to do so. This is a business identifier.
+  identifier: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -30,57 +40,47 @@ pub struct ValueSet_Expansion {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Extensions for identifier
-  #[serde(rename = "_identifier")]
-  _identifier: Option<Element>,
-
-  /// The time at which the expansion was produced by the expanding system.
-  timestamp: Option<String>,
-
-  /// Extensions for timestamp
-  #[serde(rename = "_timestamp")]
-  _timestamp: Option<Element>,
-
-  /// Extensions for total
-  #[serde(rename = "_total")]
-  _total: Option<Element>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Extensions for offset
   #[serde(rename = "_offset")]
   _offset: Option<Element>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Extensions for identifier
+  #[serde(rename = "_identifier")]
+  _identifier: Option<Element>,
+
+  /// Extensions for timestamp
+  #[serde(rename = "_timestamp")]
+  _timestamp: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// If paging is being used, the offset at which this resource starts.  I.e. this
   /// resource is a partial view into the expansion. If paging is not being used, this
   /// element SHALL NOT be present.
   offset: Option<i32>,
 
+  /// The time at which the expansion was produced by the expanding system.
+  timestamp: Option<String>,
+
   /// A parameter that controlled the expansion process. These parameters may be used
   /// by users of expanded value sets to check whether the expansion is suitable for a
   /// particular purpose, or to pick the correct expansion.
   parameter: Option<Vec<ValueSet_Parameter>>,
 
-  /// The codes that are contained in the value set expansion.
-  contains: Option<Vec<ValueSet_Contains>>,
-
-  /// An identifier that uniquely identifies this expansion of the valueset, based on
-  /// a unique combination of the provided parameters, the system default parameters,
-  /// and the underlying system code system versions etc. Systems may re-use the same
-  /// identifier as long as those factors remain the same, and the expansion is the
-  /// same, but are not required to do so. This is a business identifier.
-  identifier: Option<String>,
-
   /// The total number of concepts in the expansion. If the number of concept nodes in
   /// this resource is less than the stated number, then the server can return more
   /// using the offset parameter.
   total: Option<i32>,
+
+  /// The codes that are contained in the value set expansion.
+  contains: Option<Vec<ValueSet_Contains>>,
+
+  /// Extensions for total
+  #[serde(rename = "_total")]
+  _total: Option<Element>,
 
 }

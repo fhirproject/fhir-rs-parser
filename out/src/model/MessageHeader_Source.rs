@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::Extension::Extension;
 use crate::model::ContactPoint::ContactPoint;
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 
 
 /// The header for a message exchange that is either requesting or responding to an
@@ -13,23 +13,9 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MessageHeader_Source {
-  /// Human-readable name for the source system.
-  name: Option<String>,
-
-  /// Extensions for software
-  #[serde(rename = "_software")]
-  _software: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Extensions for endpoint
-  #[serde(rename = "_endpoint")]
-  _endpoint: Option<Element>,
+  /// Can convey versions of multiple systems in situations where a message passes
+  /// through multiple hands.
+  version: Option<String>,
 
   /// An e-mail, phone, website or other contact point to use to resolve issues with
   /// message communications.
@@ -38,9 +24,9 @@ pub struct MessageHeader_Source {
   /// Identifies the routing target to send acknowledgements to.
   endpoint: Option<String>,
 
-  /// Extensions for version
-  #[serde(rename = "_version")]
-  _version: Option<Element>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May include configuration or other information useful in debugging.
   software: Option<String>,
@@ -48,6 +34,13 @@ pub struct MessageHeader_Source {
   /// Extensions for name
   #[serde(rename = "_name")]
   _name: Option<Element>,
+
+  /// Extensions for endpoint
+  #[serde(rename = "_endpoint")]
+  _endpoint: Option<Element>,
+
+  /// Human-readable name for the source system.
+  name: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -61,14 +54,21 @@ pub struct MessageHeader_Source {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Can convey versions of multiple systems in situations where a message passes
-  /// through multiple hands.
-  version: Option<String>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Extensions for version
+  #[serde(rename = "_version")]
+  _version: Option<Element>,
+
+  /// Extensions for software
+  #[serde(rename = "_software")]
+  _software: Option<Element>,
 
 }

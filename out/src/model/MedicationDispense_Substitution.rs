@@ -19,24 +19,7 @@ pub struct MedicationDispense_Substitution {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Extensions for wasSubstituted
-  #[serde(rename = "_wasSubstituted")]
-  _was_substituted: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// The person or organization that has primary responsibility for the substitution.
-  #[serde(rename = "responsibleParty")]
-  responsible_party: Option<Vec<Box<Reference>>>,
-
-  /// True if the dispenser dispensed a different drug or product from what was
-  /// prescribed.
-  #[serde(rename = "wasSubstituted")]
-  was_substituted: Option<bool>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -50,15 +33,32 @@ pub struct MedicationDispense_Substitution {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// Extensions for wasSubstituted
+  #[serde(rename = "_wasSubstituted")]
+  _was_substituted: Option<Element>,
 
   /// Indicates the reason for the substitution (or lack of substitution) from what
   /// was prescribed.
   reason: Option<Vec<CodeableConcept>>,
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// True if the dispenser dispensed a different drug or product from what was
+  /// prescribed.
+  #[serde(rename = "wasSubstituted")]
+  was_substituted: Option<bool>,
+
   /// A code signifying whether a different drug was dispensed from what was
   /// prescribed.
   #[serde(rename = "type")]
   fhir_type: Option<CodeableConcept>,
+
+  /// The person or organization that has primary responsibility for the substitution.
+  #[serde(rename = "responsibleParty")]
+  responsible_party: Option<Vec<Box<Reference>>>,
 
 }

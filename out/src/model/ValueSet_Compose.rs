@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::ValueSet_Include::ValueSet_Include;
 
 
@@ -13,21 +13,6 @@ use crate::model::ValueSet_Include::ValueSet_Include;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ValueSet_Compose {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Include one or more codes from a code system or other value set(s).
-  include: Vec<ValueSet_Include>,
-
-  /// Extensions for lockedDate
-  #[serde(rename = "_lockedDate")]
-  _locked_date: Option<Element>,
-
-  /// Extensions for inactive
-  #[serde(rename = "_inactive")]
-  _inactive: Option<Element>,
-
   /// Whether inactive codes - codes that are not approved for current use - are in
   /// the value set. If inactive = true, inactive codes are to be included in the
   /// expansion, if inactive = false, the inactive codes will not be included in the
@@ -36,9 +21,33 @@ pub struct ValueSet_Compose {
   /// expected to be included).
   inactive: Option<bool>,
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The Locked Date is  the effective date that is used to determine the version of
+  /// all referenced Code Systems and Value Set Definitions included in the compose
+  /// that are not already tied to a specific version.
+  #[serde(rename = "lockedDate")]
+  locked_date: Option<i32>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Extensions for lockedDate
+  #[serde(rename = "_lockedDate")]
+  _locked_date: Option<Element>,
+
   /// Exclude one or more codes from the value set based on code system filters and/or
   /// other value sets.
   exclude: Option<Vec<ValueSet_Include>>,
+
+  /// Include one or more codes from a code system or other value set(s).
+  include: Vec<ValueSet_Include>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -52,19 +61,10 @@ pub struct ValueSet_Compose {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// The Locked Date is  the effective date that is used to determine the version of
-  /// all referenced Code Systems and Value Set Definitions included in the compose
-  /// that are not already tied to a specific version.
-  #[serde(rename = "lockedDate")]
-  locked_date: Option<i32>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Extensions for inactive
+  #[serde(rename = "_inactive")]
+  _inactive: Option<Element>,
 
 }

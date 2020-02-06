@@ -13,9 +13,21 @@ use crate::model::Money::Money;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExplanationOfBenefit_Financial {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
   /// The quantity of the benefit which is permitted under the coverage.
   #[serde(rename = "allowedUnsignedInt")]
   allowed_unsigned_int: Option<i32>,
+
+  /// The quantity of the benefit which is permitted under the coverage.
+  #[serde(rename = "allowedMoney")]
+  allowed_money: Option<Money>,
+
+  /// Classification of benefit being provided.
+  #[serde(rename = "type")]
+  fhir_type: CodeableConcept,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -29,49 +41,37 @@ pub struct ExplanationOfBenefit_Financial {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Extensions for allowedUnsignedInt
-  #[serde(rename = "_allowedUnsignedInt")]
-  _allowed_unsigned_int: Option<Element>,
-
-  /// Classification of benefit being provided.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
-
-  /// The quantity of the benefit which is permitted under the coverage.
-  #[serde(rename = "allowedString")]
-  allowed_string: Option<String>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Extensions for allowedString
   #[serde(rename = "_allowedString")]
   _allowed_string: Option<Element>,
 
   /// The quantity of the benefit which have been consumed to date.
+  #[serde(rename = "usedMoney")]
+  used_money: Option<Money>,
+
+  /// Extensions for allowedUnsignedInt
+  #[serde(rename = "_allowedUnsignedInt")]
+  _allowed_unsigned_int: Option<Element>,
+
+  /// The quantity of the benefit which have been consumed to date.
   #[serde(rename = "usedUnsignedInt")]
   used_unsigned_int: Option<i32>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
 
   /// Extensions for usedUnsignedInt
   #[serde(rename = "_usedUnsignedInt")]
   _used_unsigned_int: Option<Element>,
 
-  /// The quantity of the benefit which is permitted under the coverage.
-  #[serde(rename = "allowedMoney")]
-  allowed_money: Option<Money>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// The quantity of the benefit which have been consumed to date.
-  #[serde(rename = "usedMoney")]
-  used_money: Option<Money>,
+  /// The quantity of the benefit which is permitted under the coverage.
+  #[serde(rename = "allowedString")]
+  allowed_string: Option<String>,
 
 }

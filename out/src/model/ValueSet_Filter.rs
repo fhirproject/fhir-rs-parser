@@ -12,10 +12,6 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ValueSet_Filter {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
   /// The match value may be either a code defined by the system, or a string value,
   /// which is a regex match on the literal string of the property value  (if the
   /// filter represents a property defined in CodeSystem) or of the system filter
@@ -24,8 +20,9 @@ pub struct ValueSet_Filter {
   /// is 'exists'.
   value: Option<String>,
 
-  /// The kind of operation to perform as a part of the filter criteria.
-  op: Option<ValueSet_FilterOp>,
+  /// Extensions for value
+  #[serde(rename = "_value")]
+  _value: Option<Element>,
 
   /// Extensions for property
   #[serde(rename = "_property")]
@@ -43,25 +40,28 @@ pub struct ValueSet_Filter {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// A code that identifies a property or a filter defined in the code system.
-  property: Option<String>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// Extensions for op
   #[serde(rename = "_op")]
   _op: Option<Element>,
+
+  /// A code that identifies a property or a filter defined in the code system.
+  property: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for value
-  #[serde(rename = "_value")]
-  _value: Option<Element>,
+  /// The kind of operation to perform as a part of the filter criteria.
+  op: Option<ValueSet_FilterOp>,
 
 }
 

@@ -149,7 +149,20 @@ fn main() {
     "date" => ("i32", None), // todo
     "base64Binary" => ("String", None),
     "dateTime" => ("String", None), // todo
-    "Reference" => ("Box<Reference>", Some("crate::model::Reference::Reference")), // todo
+    // These structs are way too heavyweight to remain on the stack,
+    // so we break them into heap references.
+    "Reference" => ("Box<Reference>", Some("crate::model::Reference::Reference")),
+    "ElementDefinition" => ("Box<ElementDefinition>", Some("crate::model::ElementDefinition::ElementDefinition")),
+    "StructureDefinition" => ("Box<StructureDefinition>", Some("crate::model::StructureDefinition::StructureDefinition")),
+    "Extension" => ("Box<Extension>", Some("crate::model::Extension::Extension")),
+    "ImplementationGuide" => ("Box<ImplementationGuide>", Some("crate::model::ImplementationGuide::ImplementationGuide")),
+    "ActivityDefinition" => ("Box<ActivityDefinition>", Some("crate::model::ActivityDefinition::ActivityDefinition")),
+    "StructureMap_Source" => ("Box<StructureMap_Source>", Some("crate::model::StructureMap_Source::StructureMap_Source")),
+    "Measure" => ("Box<Measure>", Some("crate::model::Measure::Measure")),
+    "ResearchElementDefinition" => ("Box<ResearchElementDefinition>", Some("crate::model::ResearchElementDefinition::ResearchElementDefinition")),
+    "ElementDefinition_Example" => ("Box<ElementDefinition_Example>", Some("crate::model::ElementDefinition_Example::ElementDefinition_Example")),
+    "Observation" => ("Box<Observation>", Some("crate::model::Observation::Observation")),
+
   };
 
   let property_replacement_map = hashmap! {
@@ -278,6 +291,7 @@ fn generate_class(
     inner_string.push_str(" {\n");
     for hash_map in one_of {
       let fhir_ref = &hash_map["$ref"];
+      let original_name = extract_type_from_ref(&fhir_ref);
       let (fhir_name, import) = class_name_from_fhir_ref(
         &fhir_ref,
         &reference_to_class_name_map,
@@ -287,10 +301,10 @@ fn generate_class(
         pending_imports.insert(import);
       }
       inner_string.push_str("  #[serde(rename = \"");
-      inner_string.push_str(&fhir_name);
+      inner_string.push_str(&original_name);
       inner_string.push_str("\")]\n");
       inner_string.push_str("  Resource");
-      inner_string.push_str(&fhir_name);
+      inner_string.push_str(&original_name);
       inner_string.push_str("(");
       inner_string.push_str(&fhir_name);
       inner_string.push_str("),\n\n");

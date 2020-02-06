@@ -22,18 +22,17 @@ pub struct TestScript_RequestHeader {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for field
-  #[serde(rename = "_field")]
-  _field: Option<Element>,
+  /// The value of the header e.g. "application/fhir+xml".
+  value: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
@@ -42,8 +41,9 @@ pub struct TestScript_RequestHeader {
   /// The HTTP header field e.g. "Accept".
   field: Option<String>,
 
-  /// The value of the header e.g. "application/fhir+xml".
-  value: Option<String>,
+  /// Extensions for field
+  #[serde(rename = "_field")]
+  _field: Option<Element>,
 
   /// Extensions for value
   #[serde(rename = "_value")]

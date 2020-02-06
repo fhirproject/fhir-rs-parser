@@ -20,15 +20,7 @@ pub struct MeasureReport_Stratifier {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The meaning of this stratifier, as defined in the measure definition.
-  code: Option<Vec<CodeableConcept>>,
-
-  /// This element contains the results for a single stratum within the stratifier.
-  /// For example, when stratifying on administrative gender, there will be four
-  /// strata, one for each possible gender value.
-  stratum: Option<Vec<MeasureReport_Stratum>>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -42,6 +34,14 @@ pub struct MeasureReport_Stratifier {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// The meaning of this stratifier, as defined in the measure definition.
+  code: Option<Vec<CodeableConcept>>,
+
+  /// This element contains the results for a single stratum within the stratifier.
+  /// For example, when stratifying on administrative gender, there will be four
+  /// strata, one for each possible gender value.
+  stratum: Option<Vec<MeasureReport_Stratum>>,
 
 }

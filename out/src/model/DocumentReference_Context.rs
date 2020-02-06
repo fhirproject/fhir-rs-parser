@@ -2,9 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Reference::Reference;
+use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
-use crate::model::Period::Period;
 
 
 /// A reference to a document of any kind for any purpose. Provides metadata about
@@ -15,6 +15,15 @@ use crate::model::Period::Period;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentReference_Context {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The Patient Information as known when the document was published. May be a
+  /// reference to a version specific, or contained.
+  #[serde(rename = "sourcePatientInfo")]
+  source_patient_info: Option<Box<Reference>>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -27,15 +36,19 @@ pub struct DocumentReference_Context {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// The time period over which the service that is described by the document was
-  /// provided.
-  period: Option<Period>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// This property may convey specifics about the practice setting where the content
+  /// was created, often reflecting the clinical specialty.
+  #[serde(rename = "practiceSetting")]
+  practice_setting: Option<CodeableConcept>,
 
   /// This list of codes represents the main clinical acts, such as a colonoscopy or
   /// an appendectomy, being documented. In some cases, the event is inherent in the
@@ -43,32 +56,19 @@ pub struct DocumentReference_Context {
   /// documented is necessarily a "History and Physical" act.
   event: Option<Vec<CodeableConcept>>,
 
-  /// The kind of facility where the patient was seen.
-  #[serde(rename = "facilityType")]
-  facility_type: Option<CodeableConcept>,
+  /// The time period over which the service that is described by the document was
+  /// provided.
+  period: Option<Period>,
 
   /// Describes the clinical encounter or type of care that the document content is
   /// associated with.
   encounter: Option<Vec<Box<Reference>>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The Patient Information as known when the document was published. May be a
-  /// reference to a version specific, or contained.
-  #[serde(rename = "sourcePatientInfo")]
-  source_patient_info: Option<Box<Reference>>,
+  /// The kind of facility where the patient was seen.
+  #[serde(rename = "facilityType")]
+  facility_type: Option<CodeableConcept>,
 
   /// Related identifiers or resources associated with the DocumentReference.
   related: Option<Vec<Box<Reference>>>,
-
-  /// This property may convey specifics about the practice setting where the content
-  /// was created, often reflecting the clinical specialty.
-  #[serde(rename = "practiceSetting")]
-  practice_setting: Option<CodeableConcept>,
 
 }

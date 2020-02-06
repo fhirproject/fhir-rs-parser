@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use crate::model::Period::Period;
 use crate::model::Identifier::Identifier;
+use crate::model::CodeableConcept::CodeableConcept;
 
 
 /// A person who is directly or indirectly involved in the provisioning of
@@ -13,25 +13,8 @@ use crate::model::Identifier::Identifier;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Practitioner_Qualification {
-  /// Coded representation of the qualification.
-  code: CodeableConcept,
-
   /// Period during which the qualification is valid.
   period: Option<Period>,
-
-  /// Organization that regulates and issues the qualification.
-  issuer: Option<Box<Reference>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -45,9 +28,26 @@ pub struct Practitioner_Qualification {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Coded representation of the qualification.
+  code: CodeableConcept,
 
   /// An identifier that applies to this person's qualification in this role.
   identifier: Option<Vec<Identifier>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Organization that regulates and issues the qualification.
+  issuer: Option<Box<Reference>>,
 
 }

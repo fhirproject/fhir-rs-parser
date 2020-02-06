@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 
 
 /// A record of an event made for purposes of maintaining a security log. Typical
@@ -11,29 +11,21 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AuditEvent_Network {
-  /// Extensions for address
-  #[serde(rename = "_address")]
-  _address: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// An identifier for the type of network access point that originated the audit
+  /// event.
+  #[serde(rename = "type")]
+  fhir_type: Option<AuditEvent_NetworkType>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// An identifier for the network access point of the user device for the audit
   /// event.
   address: Option<String>,
-
-  /// An identifier for the type of network access point that originated the audit
-  /// event.
-  #[serde(rename = "type")]
-  fhir_type: Option<AuditEvent_NetworkType>,
 
   /// Extensions for type
   #[serde(rename = "_type")]
@@ -51,7 +43,15 @@ pub struct AuditEvent_Network {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for address
+  #[serde(rename = "_address")]
+  _address: Option<Element>,
 
 }
 

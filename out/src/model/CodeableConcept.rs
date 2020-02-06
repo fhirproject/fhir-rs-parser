@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use crate::model::Coding::Coding;
+use crate::model::Element::Element;
 
 
 /// A concept that may be defined by a formal reference to a terminology or ontology
@@ -11,9 +11,13 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeableConcept {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// A reference to a code defined by a terminology system.
+  coding: Option<Vec<Coding>>,
+
+  /// A human language representation of the concept as seen/selected/uttered by the
+  /// user who entered the data and/or which represents the intended meaning of the
+  /// user.
+  text: Option<String>,
 
   /// Extensions for text
   #[serde(rename = "_text")]
@@ -24,14 +28,10 @@ pub struct CodeableConcept {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// A reference to a code defined by a terminology system.
-  coding: Option<Vec<Coding>>,
-
-  /// A human language representation of the concept as seen/selected/uttered by the
-  /// user who entered the data and/or which represents the intended meaning of the
-  /// user.
-  text: Option<String>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
 }

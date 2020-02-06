@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::GraphDefinition_Compartment::GraphDefinition_Compartment;
-use crate::model::Extension::Extension;
 use crate::model::GraphDefinition_Link::GraphDefinition_Link;
+use crate::model::GraphDefinition_Compartment::GraphDefinition_Compartment;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 
 
 /// A formal computable definition of a graph of resources - that is, a coherent set
@@ -18,28 +18,10 @@ pub struct GraphDefinition_Target {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// A set of parameters to look up.
-  params: Option<String>,
-
-  /// Profile for the target resource.
-  profile: Option<String>,
-
-  /// Compartment Consistency Rules.
-  compartment: Option<Vec<GraphDefinition_Compartment>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for params
-  #[serde(rename = "_params")]
-  _params: Option<Element>,
+  /// Additional links from target resource.
+  link: Option<Vec<GraphDefinition_Link>>,
 
   /// Type of resource this link refers to.
   #[serde(rename = "type")]
@@ -57,9 +39,27 @@ pub struct GraphDefinition_Target {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Additional links from target resource.
-  link: Option<Vec<GraphDefinition_Link>>,
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
+
+  /// Extensions for params
+  #[serde(rename = "_params")]
+  _params: Option<Element>,
+
+  /// Compartment Consistency Rules.
+  compartment: Option<Vec<GraphDefinition_Compartment>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// A set of parameters to look up.
+  params: Option<String>,
+
+  /// Profile for the target resource.
+  profile: Option<String>,
 
 }

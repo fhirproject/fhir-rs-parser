@@ -11,6 +11,14 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConceptMap_Unmapped {
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
+
+  /// The fixed code to use when the mode = 'fixed'  - all unmapped codes are mapped
+  /// to a single fixed code.
+  code: Option<String>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -23,34 +31,24 @@ pub struct ConceptMap_Unmapped {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// The display for the code. The display is only provided to help editors when
-  /// editing the concept map.
-  display: Option<String>,
-
-  /// The fixed code to use when the mode = 'fixed'  - all unmapped codes are mapped
-  /// to a single fixed code.
-  code: Option<String>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Extensions for mode
   #[serde(rename = "_mode")]
   _mode: Option<Element>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
-  /// Extensions for code
-  #[serde(rename = "_code")]
-  _code: Option<Element>,
+  /// The canonical reference to an additional ConceptMap resource instance to use for
+  /// mapping if this ConceptMap resource contains no matching mapping for the source
+  /// concept.
+  url: Option<String>,
+
+  /// The display for the code. The display is only provided to help editors when
+  /// editing the concept map.
+  display: Option<String>,
 
   /// Defines which action to take if there is no match for the source concept in the
   /// target system designated for the group. One of 3 actions are possible: use the
@@ -63,10 +61,12 @@ pub struct ConceptMap_Unmapped {
   #[serde(rename = "_display")]
   _display: Option<Element>,
 
-  /// The canonical reference to an additional ConceptMap resource instance to use for
-  /// mapping if this ConceptMap resource contains no matching mapping for the source
-  /// concept.
-  url: Option<String>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
 }
 

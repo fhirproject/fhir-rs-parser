@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Period::Period;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Period::Period;
 
 
 /// A set of healthcare-related information that is assembled together into a single
@@ -19,6 +19,13 @@ use crate::model::Reference::Reference;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Composition_Event {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
   /// This list of codes represents the main clinical acts, such as a colonoscopy or
   /// an appendectomy, being documented. In some cases, the event is inherent in the
   /// typeCode, such as a "History and Physical Report" in which the procedure being
@@ -37,7 +44,11 @@ pub struct Composition_Event {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// The description and/or reference of the event(s) being documented. For example,
+  /// this could be used to document such a colonoscopy or an appendectomy.
+  detail: Option<Vec<Box<Reference>>>,
 
   /// The period of time covered by the documentation. There is no assertion that the
   /// documentation is a complete representation for this period, only that it
@@ -47,16 +58,5 @@ pub struct Composition_Event {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The description and/or reference of the event(s) being documented. For example,
-  /// this could be used to document such a colonoscopy or an appendectomy.
-  detail: Option<Vec<Box<Reference>>>,
 
 }

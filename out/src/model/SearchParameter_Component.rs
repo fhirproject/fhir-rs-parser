@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 
 
 /// A search parameter that defines a named search item that can be used to
@@ -10,13 +10,6 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SearchParameter_Component {
-  /// Extensions for expression
-  #[serde(rename = "_expression")]
-  _expression: Option<Element>,
-
-  /// The definition of the search parameter that describes this part.
-  definition: String,
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
@@ -33,7 +26,10 @@ pub struct SearchParameter_Component {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// The definition of the search parameter that describes this part.
+  definition: String,
 
   /// A sub-expression that defines how to extract values for this component from the
   /// output of the main SearchParameter.expression.
@@ -44,6 +40,10 @@ pub struct SearchParameter_Component {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Extensions for expression
+  #[serde(rename = "_expression")]
+  _expression: Option<Element>,
 
 }

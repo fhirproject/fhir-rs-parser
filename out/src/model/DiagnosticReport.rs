@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Identifier::Identifier;
+use crate::model::Attachment::Attachment;
 use crate::model::Period::Period;
-use crate::model::ResourceList::ResourceList;
+use crate::model::Extension::Extension;
+use crate::model::DiagnosticReport_Media::DiagnosticReport_Media;
+use crate::model::Identifier::Identifier;
 use crate::model::Reference::Reference;
 use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
-use crate::model::Narrative::Narrative;
-use crate::model::Attachment::Attachment;
 use crate::model::Element::Element;
-use crate::model::DiagnosticReport_Media::DiagnosticReport_Media;
+use crate::model::Narrative::Narrative;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ResourceList::ResourceList;
 
 
 /// The findings and interpretation of diagnostic  tests performed on patients,
@@ -22,6 +22,35 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DiagnosticReport {
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// A list of key images associated with this report. The images are generally
+  /// created during the diagnostic process, and may be directly of the patient, or of
+  /// treated specimens (i.e. slides of interest).
+  media: Option<Vec<DiagnosticReport_Media>>,
+
+  /// The time or time-period the observed values are related to. When the subject of
+  /// the report is a patient, this is usually either the time of the procedure or of
+  /// specimen collection(s), but very often the source of the date/time is not known,
+  /// only the date/time itself.
+  #[serde(rename = "effectivePeriod")]
+  effective_period: Option<Period>,
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
+
+  /// Extensions for issued
+  #[serde(rename = "_issued")]
+  _issued: Option<Element>,
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
+
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
   /// encode all the structured data, but is required to contain sufficient detail to
@@ -30,70 +59,30 @@ pub struct DiagnosticReport {
   /// ensure clinical safety.
   text: Option<Narrative>,
 
-  /// Rich text representation of the entire result as issued by the diagnostic
-  /// service. Multiple formats are allowed but they SHALL be semantically equivalent.
-  #[serde(rename = "presentedForm")]
-  presented_form: Option<Vec<Attachment>>,
-
-  /// The time or time-period the observed values are related to. When the subject of
-  /// the report is a patient, this is usually either the time of the procedure or of
-  /// specimen collection(s), but very often the source of the date/time is not known,
-  /// only the date/time itself.
-  #[serde(rename = "effectiveDateTime")]
-  effective_date_time: Option<String>,
-
-  /// The status of the diagnostic report.
-  status: Option<DiagnosticReportStatus>,
-
-  /// The practitioner or organization that is responsible for the report's
-  /// conclusions and interpretations.
-  #[serde(rename = "resultsInterpreter")]
-  results_interpreter: Option<Vec<Box<Reference>>>,
-
-  /// A code or name that describes this diagnostic report.
-  code: CodeableConcept,
-
   /// The subject of the report. Usually, but not always, this is a patient. However,
   /// diagnostic services also perform analyses on specimens collected from a variety
   /// of other sources.
   subject: Option<Box<Reference>>,
+
+  /// The diagnostic service that is responsible for issuing the report.
+  performer: Option<Vec<Box<Reference>>>,
+
+  /// Details about the specimens on which this diagnostic report is based.
+  specimen: Option<Vec<Box<Reference>>>,
+
+  /// Extensions for conclusion
+  #[serde(rename = "_conclusion")]
+  _conclusion: Option<Element>,
 
   /// One or more codes that represent the summary conclusion
   /// (interpretation/impression) of the diagnostic report.
   #[serde(rename = "conclusionCode")]
   conclusion_code: Option<Vec<CodeableConcept>>,
 
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// A list of key images associated with this report. The images are generally
-  /// created during the diagnostic process, and may be directly of the patient, or of
-  /// treated specimens (i.e. slides of interest).
-  media: Option<Vec<DiagnosticReport_Media>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Details concerning a service requested.
-  #[serde(rename = "basedOn")]
-  based_on: Option<Vec<Box<Reference>>>,
-
-  /// A code that classifies the clinical discipline, department or diagnostic service
-  /// that created the report (e.g. cardiology, biochemistry, hematology, MRI). This
-  /// is used for searching, sorting and display purposes.
-  category: Option<Vec<CodeableConcept>>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// Extensions for effectiveDateTime
-  #[serde(rename = "_effectiveDateTime")]
-  _effective_date_time: Option<Element>,
-
-  /// Details about the specimens on which this diagnostic report is based.
-  specimen: Option<Vec<Box<Reference>>>,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -108,51 +97,42 @@ pub struct DiagnosticReport {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// The date and time that this version of the report was made available to
-  /// providers, typically after the report was reviewed and verified.
-  issued: Option<String>,
-
-  /// [Observations](observation.html)  that are part of this diagnostic report.
-  result: Option<Vec<Box<Reference>>>,
-
-  /// Concise and clinically contextualized summary conclusion
-  /// (interpretation/impression) of the diagnostic report.
-  conclusion: Option<String>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// Identifiers assigned to this report by the performer or other systems.
-  identifier: Option<Vec<Identifier>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The healthcare event  (e.g. a patient and healthcare provider interaction) which
-  /// this DiagnosticReport is about.
-  encounter: Option<Box<Reference>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// The time or time-period the observed values are related to. When the subject of
   /// the report is a patient, this is usually either the time of the procedure or of
   /// specimen collection(s), but very often the source of the date/time is not known,
   /// only the date/time itself.
-  #[serde(rename = "effectivePeriod")]
-  effective_period: Option<Period>,
+  #[serde(rename = "effectiveDateTime")]
+  effective_date_time: Option<String>,
 
-  /// The diagnostic service that is responsible for issuing the report.
-  performer: Option<Vec<Box<Reference>>>,
+  /// Identifiers assigned to this report by the performer or other systems.
+  identifier: Option<Vec<Identifier>>,
+
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
+
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// The practitioner or organization that is responsible for the report's
+  /// conclusions and interpretations.
+  #[serde(rename = "resultsInterpreter")]
+  results_interpreter: Option<Vec<Box<Reference>>>,
+
+  /// A code that classifies the clinical discipline, department or diagnostic service
+  /// that created the report (e.g. cardiology, biochemistry, hematology, MRI). This
+  /// is used for searching, sorting and display purposes.
+  category: Option<Vec<CodeableConcept>>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// Concise and clinically contextualized summary conclusion
+  /// (interpretation/impression) of the diagnostic report.
+  conclusion: Option<String>,
 
   /// One or more links to full details of any imaging performed during the diagnostic
   /// investigation. Typically, this is imaging performed by DICOM enabled modalities,
@@ -161,18 +141,24 @@ pub struct DiagnosticReport {
   #[serde(rename = "imagingStudy")]
   imaging_study: Option<Vec<Box<Reference>>>,
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
+  /// Extensions for effectiveDateTime
+  #[serde(rename = "_effectiveDateTime")]
+  _effective_date_time: Option<Element>,
 
-  /// Extensions for conclusion
-  #[serde(rename = "_conclusion")]
-  _conclusion: Option<Element>,
+  /// Details concerning a service requested.
+  #[serde(rename = "basedOn")]
+  based_on: Option<Vec<Box<Reference>>>,
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// The status of the diagnostic report.
+  status: Option<DiagnosticReportStatus>,
+
+  /// A code or name that describes this diagnostic report.
+  code: CodeableConcept,
+
+  /// Rich text representation of the entire result as issued by the diagnostic
+  /// service. Multiple formats are allowed but they SHALL be semantically equivalent.
+  #[serde(rename = "presentedForm")]
+  presented_form: Option<Vec<Attachment>>,
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
@@ -181,9 +167,23 @@ pub struct DiagnosticReport {
   #[serde(rename = "implicitRules")]
   implicit_rules: Option<String>,
 
-  /// Extensions for issued
-  #[serde(rename = "_issued")]
-  _issued: Option<Element>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// The date and time that this version of the report was made available to
+  /// providers, typically after the report was reviewed and verified.
+  issued: Option<String>,
+
+  /// The healthcare event  (e.g. a patient and healthcare provider interaction) which
+  /// this DiagnosticReport is about.
+  encounter: Option<Box<Reference>>,
+
+  /// [Observations](observation.html)  that are part of this diagnostic report.
+  result: Option<Vec<Box<Reference>>>,
 
 }
 

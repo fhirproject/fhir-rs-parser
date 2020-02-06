@@ -13,6 +13,10 @@ use crate::model::Reference::Reference;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CapabilityStatement_Implementation {
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
+
   /// An absolute base URL for the implementation.  This forms the base for REST
   /// interfaces as well as the mailbox and document interfaces.
   url: Option<String>,
@@ -21,16 +25,20 @@ pub struct CapabilityStatement_Implementation {
   #[serde(rename = "_description")]
   _description: Option<Element>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Information about the specific installation that this capability statement
+  /// relates to.
+  description: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -44,18 +52,10 @@ pub struct CapabilityStatement_Implementation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Information about the specific installation that this capability statement
-  /// relates to.
-  description: Option<String>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// The organization responsible for the management of the instance and oversight of
   /// the data on the server at the specified URL.
   custodian: Option<Box<Reference>>,
-
-  /// Extensions for url
-  #[serde(rename = "_url")]
-  _url: Option<Element>,
 
 }

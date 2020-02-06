@@ -12,13 +12,12 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CareTeam_Participant {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// The specific person or organization who is participating/expected to participate
-  /// in the care team.
-  member: Option<Box<Reference>>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -32,11 +31,7 @@ pub struct CareTeam_Participant {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Indicates when the specific member or organization did (or is intended to) come
-  /// into effect and end.
-  period: Option<Period>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Indicates specific responsibility of an individual within the care team, such as
   /// "Primary care physician", "Trained social worker counselor", "Caregiver", etc.
@@ -46,11 +41,16 @@ pub struct CareTeam_Participant {
   #[serde(rename = "onBehalfOf")]
   on_behalf_of: Option<Box<Reference>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Indicates when the specific member or organization did (or is intended to) come
+  /// into effect and end.
+  period: Option<Period>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The specific person or organization who is participating/expected to participate
+  /// in the care team.
+  member: Option<Box<Reference>>,
 
 }

@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
+use crate::model::Duration::Duration;
+use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use crate::model::Period::Period;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::Quantity::Quantity;
-use crate::model::Duration::Duration;
-use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
-use crate::model::Period::Period;
 
 
 /// An order or request for both supply of the medication and the instructions for
@@ -18,43 +18,9 @@ use crate::model::Period::Period;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MedicationRequest_DispenseRequest {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element and that modifies the understanding of the element in
-  /// which it is contained and/or the understanding of the containing element's
-  /// descendants. Usually modifier elements provide negation or qualification. To
-  /// make the use of extensions safe and manageable, there is a strict set of
-  /// governance applied to the definition and use of extensions. Though any
-  /// implementer can define an extension, there is a set of requirements that SHALL
-  /// be met as part of the definition of the extension. Applications processing a
-  /// resource are required to check for modifier extensions.    Modifier extensions
-  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-  /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// The amount that is to be dispensed for one fill.
-  quantity: Option<Quantity>,
-
-  /// Indicates the intended dispensing Organization specified by the prescriber.
-  performer: Option<Box<Reference>>,
-
-  /// Extensions for numberOfRepeatsAllowed
-  #[serde(rename = "_numberOfRepeatsAllowed")]
-  _number_of_repeats_allowed: Option<Element>,
-
-  /// Identifies the period time over which the supplied product is expected to be
-  /// used, or the length of time the dispense is expected to last.
-  #[serde(rename = "expectedSupplyDuration")]
-  expected_supply_duration: Option<Duration>,
-
-  /// Indicates the quantity or duration for the first dispense of the medication.
-  #[serde(rename = "initialFill")]
-  initial_fill: Option<MedicationRequest_InitialFill>,
-
-  /// This indicates the validity period of a prescription (stale dating the
-  /// Prescription).
-  #[serde(rename = "validityPeriod")]
-  validity_period: Option<Period>,
+  /// The minimum period of time that must occur between dispenses of the medication.
+  #[serde(rename = "dispenseInterval")]
+  dispense_interval: Option<Duration>,
 
   /// An integer indicating the number of times, in addition to the original dispense,
   /// (aka refills or repeats) that the patient can receive the prescribed medication.
@@ -67,18 +33,52 @@ pub struct MedicationRequest_DispenseRequest {
   number_of_repeats_allowed: Option<u32>,
 
   /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// definition of the element and that modifies the understanding of the element in
+  /// which it is contained and/or the understanding of the containing element's
+  /// descendants. Usually modifier elements provide negation or qualification. To
+  /// make the use of extensions safe and manageable, there is a strict set of
+  /// governance applied to the definition and use of extensions. Though any
+  /// implementer can define an extension, there is a set of requirements that SHALL
+  /// be met as part of the definition of the extension. Applications processing a
+  /// resource are required to check for modifier extensions.    Modifier extensions
+  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+  /// (including cannot change the meaning of modifierExtension itself).
+  #[serde(rename = "modifierExtension")]
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// The minimum period of time that must occur between dispenses of the medication.
-  #[serde(rename = "dispenseInterval")]
-  dispense_interval: Option<Duration>,
+  /// Indicates the quantity or duration for the first dispense of the medication.
+  #[serde(rename = "initialFill")]
+  initial_fill: Option<MedicationRequest_InitialFill>,
+
+  /// The amount that is to be dispensed for one fill.
+  quantity: Option<Quantity>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// This indicates the validity period of a prescription (stale dating the
+  /// Prescription).
+  #[serde(rename = "validityPeriod")]
+  validity_period: Option<Period>,
+
+  /// Indicates the intended dispensing Organization specified by the prescriber.
+  performer: Option<Box<Reference>>,
+
+  /// Identifies the period time over which the supplied product is expected to be
+  /// used, or the length of time the dispense is expected to last.
+  #[serde(rename = "expectedSupplyDuration")]
+  expected_supply_duration: Option<Duration>,
+
+  /// Extensions for numberOfRepeatsAllowed
+  #[serde(rename = "_numberOfRepeatsAllowed")]
+  _number_of_repeats_allowed: Option<Element>,
 
 }

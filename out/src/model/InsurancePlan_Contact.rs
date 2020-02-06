@@ -2,10 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::ContactPoint::ContactPoint;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Address::Address;
 use crate::model::HumanName::HumanName;
-use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ContactPoint::ContactPoint;
 
 
 /// Details of a Health Insurance product/plan provided by an organization.
@@ -21,10 +21,7 @@ pub struct InsurancePlan_Contact {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Indicates a purpose for which the contact can be reached.
-  purpose: Option<CodeableConcept>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// A name associated with the contact.
   name: Option<HumanName>,
@@ -48,6 +45,9 @@ pub struct InsurancePlan_Contact {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
+
+  /// Indicates a purpose for which the contact can be reached.
+  purpose: Option<CodeableConcept>,
 
 }

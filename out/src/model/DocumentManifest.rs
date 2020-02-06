@@ -1,15 +1,15 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::DocumentManifest_Related::DocumentManifest_Related;
-use crate::model::Reference::Reference;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Identifier::Identifier;
-use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
 use crate::model::Narrative::Narrative;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Meta::Meta;
+use crate::model::Identifier::Identifier;
+use crate::model::DocumentManifest_Related::DocumentManifest_Related;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 
 
 /// A collection of documents compiled for a purpose together with metadata that
@@ -17,73 +17,13 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentManifest {
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// When the document manifest was created for submission to the server (not
-  /// necessarily the same thing as the actual resource last modified time, since it
-  /// may be modified, replicated, etc.).
-  created: Option<String>,
-
-  /// Identifies who is the author of the manifest. Manifest author is not necessarly
-  /// the author of the references included.
-  author: Option<Vec<Box<Reference>>>,
-
-  /// A patient, practitioner, or organization for which this set of documents is
-  /// intended.
-  recipient: Option<Vec<Box<Reference>>>,
-
-  /// Identifies the source system, application, or software that produced the
-  /// document manifest.
-  source: Option<String>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Who or what the set of documents is about. The documents can be about a person,
-  /// (patient or healthcare practitioner), a device (i.e. machine) or even a group of
-  /// subjects (such as a document about a herd of farm animals, or a set of patients
-  /// that share a common exposure). If the documents cross more than one subject,
-  /// then more than one subject is allowed here (unusual use case).
-  subject: Option<Box<Reference>>,
-
-  /// The list of Resources that consist of the parts of this manifest.
-  content: Vec<Box<Reference>>,
-
-  /// Extensions for created
-  #[serde(rename = "_created")]
-  _created: Option<Element>,
-
-  /// Related identifiers or resources associated with the DocumentManifest.
-  related: Option<Vec<DocumentManifest_Related>>,
-
   /// Human-readable description of the source document. This is sometimes known as
   /// the "title".
   description: Option<String>,
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// Other identifiers associated with the document manifest, including version
-  /// independent  identifiers.
-  identifier: Option<Vec<Identifier>>,
-
   /// Extensions for description
   #[serde(rename = "_description")]
   _description: Option<Element>,
-
-  /// Extensions for source
-  #[serde(rename = "_source")]
-  _source: Option<Element>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
@@ -91,6 +31,11 @@ pub struct DocumentManifest {
   /// along with other profiles etc.
   #[serde(rename = "implicitRules")]
   implicit_rules: Option<String>,
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -100,19 +45,83 @@ pub struct DocumentManifest {
   /// ensure clinical safety.
   text: Option<Narrative>,
 
+  /// A single identifier that uniquely identifies this manifest. Principally used to
+  /// refer to the manifest in non-FHIR contexts.
+  #[serde(rename = "masterIdentifier")]
+  master_identifier: Option<Identifier>,
+
+  /// Other identifiers associated with the document manifest, including version
+  /// independent  identifiers.
+  identifier: Option<Vec<Identifier>>,
+
+  /// Who or what the set of documents is about. The documents can be about a person,
+  /// (patient or healthcare practitioner), a device (i.e. machine) or even a group of
+  /// subjects (such as a document about a herd of farm animals, or a set of patients
+  /// that share a common exposure). If the documents cross more than one subject,
+  /// then more than one subject is allowed here (unusual use case).
+  subject: Option<Box<Reference>>,
+
+  /// Identifies who is the author of the manifest. Manifest author is not necessarly
+  /// the author of the references included.
+  author: Option<Vec<Box<Reference>>>,
+
+  /// Extensions for source
+  #[serde(rename = "_source")]
+  _source: Option<Element>,
+
+  /// When the document manifest was created for submission to the server (not
+  /// necessarily the same thing as the actual resource last modified time, since it
+  /// may be modified, replicated, etc.).
+  created: Option<String>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// The status of this document manifest.
-  status: Option<DocumentManifestStatus>,
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
 
   /// Extensions for implicitRules
   #[serde(rename = "_implicitRules")]
   _implicit_rules: Option<Element>,
+
+  /// The code specifying the type of clinical activity that resulted in placing the
+  /// associated content into the DocumentManifest.
+  #[serde(rename = "type")]
+  fhir_type: Option<CodeableConcept>,
+
+  /// Extensions for created
+  #[serde(rename = "_created")]
+  _created: Option<Element>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// The status of this document manifest.
+  status: Option<DocumentManifestStatus>,
+
+  /// Identifies the source system, application, or software that produced the
+  /// document manifest.
+  source: Option<String>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// The list of Resources that consist of the parts of this manifest.
+  content: Vec<Box<Reference>>,
+
+  /// Related identifiers or resources associated with the DocumentManifest.
+  related: Option<Vec<DocumentManifest_Related>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -127,24 +136,15 @@ pub struct DocumentManifest {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// A single identifier that uniquely identifies this manifest. Principally used to
-  /// refer to the manifest in non-FHIR contexts.
-  #[serde(rename = "masterIdentifier")]
-  master_identifier: Option<Identifier>,
+  /// A patient, practitioner, or organization for which this set of documents is
+  /// intended.
+  recipient: Option<Vec<Box<Reference>>>,
 
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// The code specifying the type of clinical activity that resulted in placing the
-  /// associated content into the DocumentManifest.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
 
 }
 

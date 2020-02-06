@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::ProdCharacteristic::ProdCharacteristic;
 use crate::model::Reference::Reference;
-use crate::model::Quantity::Quantity;
-use crate::model::ProductShelfLife::ProductShelfLife;
-use crate::model::Identifier::Identifier;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::ProdCharacteristic::ProdCharacteristic;
+use crate::model::Quantity::Quantity;
+use crate::model::Identifier::Identifier;
+use crate::model::ProductShelfLife::ProductShelfLife;
 
 
 /// A medicinal product in a container or package.
@@ -17,13 +17,27 @@ pub struct MedicinalProductPackaged_PackageItem {
   /// Material type of the package item.
   material: Option<Vec<CodeableConcept>>,
 
-  /// The quantity of this package in the medicinal product, at the current level of
-  /// packaging. The outermost is always 1.
-  quantity: Quantity,
+  /// Allows containers within containers.
+  #[serde(rename = "packageItem")]
+  package_item: Option<Vec<MedicinalProductPackaged_PackageItem>>,
 
   /// The manufactured item as contained in the packaged medicinal product.
   #[serde(rename = "manufacturedItem")]
   manufactured_item: Option<Vec<Box<Reference>>>,
+
+  /// Including possibly Data Carrier Identifier.
+  identifier: Option<Vec<Identifier>>,
+
+  /// Manufacturer of this Package Item.
+  manufacturer: Option<Vec<Box<Reference>>>,
+
+  /// Other codeable characteristics.
+  #[serde(rename = "otherCharacteristics")]
+  other_characteristics: Option<Vec<CodeableConcept>>,
+
+  /// Dimensions, color etc.
+  #[serde(rename = "physicalCharacteristics")]
+  physical_characteristics: Option<ProdCharacteristic>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -37,50 +51,36 @@ pub struct MedicinalProductPackaged_PackageItem {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Other codeable characteristics.
-  #[serde(rename = "otherCharacteristics")]
-  other_characteristics: Option<Vec<CodeableConcept>>,
-
-  /// Including possibly Data Carrier Identifier.
-  identifier: Option<Vec<Identifier>>,
-
-  /// A possible alternate material for the packaging.
-  #[serde(rename = "alternateMaterial")]
-  alternate_material: Option<Vec<CodeableConcept>>,
-
-  /// Manufacturer of this Package Item.
-  manufacturer: Option<Vec<Box<Reference>>>,
-
-  /// Shelf Life and storage information.
-  #[serde(rename = "shelfLifeStorage")]
-  shelf_life_storage: Option<Vec<ProductShelfLife>>,
+  /// The quantity of this package in the medicinal product, at the current level of
+  /// packaging. The outermost is always 1.
+  quantity: Quantity,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
 
-  /// The physical type of the container of the medicine.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
-
-  /// Dimensions, color etc.
-  #[serde(rename = "physicalCharacteristics")]
-  physical_characteristics: Option<ProdCharacteristic>,
+  /// A device accompanying a medicinal product.
+  device: Option<Vec<Box<Reference>>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
-  /// Allows containers within containers.
-  #[serde(rename = "packageItem")]
-  package_item: Option<Vec<MedicinalProductPackaged_PackageItem>>,
+  /// A possible alternate material for the packaging.
+  #[serde(rename = "alternateMaterial")]
+  alternate_material: Option<Vec<CodeableConcept>>,
 
-  /// A device accompanying a medicinal product.
-  device: Option<Vec<Box<Reference>>>,
+  /// The physical type of the container of the medicine.
+  #[serde(rename = "type")]
+  fhir_type: CodeableConcept,
+
+  /// Shelf Life and storage information.
+  #[serde(rename = "shelfLifeStorage")]
+  shelf_life_storage: Option<Vec<ProductShelfLife>>,
 
 }

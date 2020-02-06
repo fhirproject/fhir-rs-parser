@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Annotation::Annotation;
 use crate::model::Extension::Extension;
+use crate::model::Annotation::Annotation;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 
@@ -12,21 +12,42 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AllergyIntolerance_Reaction {
-  /// Extensions for severity
-  #[serde(rename = "_severity")]
-  _severity: Option<Element>,
+  /// Record of the date and/or time of the onset of the Reaction.
+  onset: Option<String>,
 
-  /// Clinical symptoms and/or signs that are observed or associated with the adverse
-  /// reaction event.
-  manifestation: Vec<CodeableConcept>,
+  /// Clinical assessment of the severity of the reaction event as a whole,
+  /// potentially considering multiple different manifestations.
+  severity: Option<AllergyIntolerance_ReactionSeverity>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Extensions for description
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
+
+  /// Extensions for onset
+  #[serde(rename = "_onset")]
+  _onset: Option<Element>,
 
   /// Identification of the route by which the subject was exposed to the substance.
   #[serde(rename = "exposureRoute")]
   exposure_route: Option<CodeableConcept>,
 
-  /// Text description about the reaction as a whole, including details of the
-  /// manifestation if required.
-  description: Option<String>,
+  /// Additional text about the adverse reaction event not captured in other fields.
+  note: Option<Vec<Annotation>>,
+
+  /// Extensions for severity
+  #[serde(rename = "_severity")]
+  _severity: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -40,15 +61,7 @@ pub struct AllergyIntolerance_Reaction {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Clinical assessment of the severity of the reaction event as a whole,
-  /// potentially considering multiple different manifestations.
-  severity: Option<AllergyIntolerance_ReactionSeverity>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Identification of the specific substance (or pharmaceutical product) considered
   /// to be responsible for the Adverse Reaction event. Note: the substance for a
@@ -62,26 +75,13 @@ pub struct AllergyIntolerance_Reaction {
   /// AllergyIntolerance.reaction.substance.
   substance: Option<CodeableConcept>,
 
-  /// Extensions for onset
-  #[serde(rename = "_onset")]
-  _onset: Option<Element>,
+  /// Clinical symptoms and/or signs that are observed or associated with the adverse
+  /// reaction event.
+  manifestation: Vec<CodeableConcept>,
 
-  /// Additional text about the adverse reaction event not captured in other fields.
-  note: Option<Vec<Annotation>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Record of the date and/or time of the onset of the Reaction.
-  onset: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Text description about the reaction as a whole, including details of the
+  /// manifestation if required.
+  description: Option<String>,
 
 }
 

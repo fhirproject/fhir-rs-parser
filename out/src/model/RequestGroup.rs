@@ -1,16 +1,16 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::RequestGroup_Action::RequestGroup_Action;
-use crate::model::Reference::Reference;
-use crate::model::Element::Element;
-use crate::model::Narrative::Narrative;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Identifier::Identifier;
 use crate::model::Annotation::Annotation;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Meta::Meta;
+use crate::model::Element::Element;
+use crate::model::Narrative::Narrative;
+use crate::model::RequestGroup_Action::RequestGroup_Action;
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Meta::Meta;
+use crate::model::Reference::Reference;
 
 
 /// A group of related requests that can be used to capture intended activities that
@@ -18,87 +18,37 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RequestGroup {
-  /// A URL referencing an externally defined protocol, guideline, orderset or other
-  /// definition that is adhered to in whole or in part by this request.
-  #[serde(rename = "instantiatesUri")]
-  instantiates_uri: Option<Vec<String>>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
 
-  /// A code that identifies what the overall request group is.
-  code: Option<CodeableConcept>,
-
-  /// The subject for which the request group was created.
-  subject: Option<Box<Reference>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Indicates another resource whose existence justifies this request group.
-  #[serde(rename = "reasonReference")]
-  reason_reference: Option<Vec<Box<Reference>>>,
-
-  /// Indicates the level of authority/intentionality associated with the request and
-  /// where the request fits into the workflow chain.
-  intent: Option<String>,
-
-  /// Describes the context of the request group, if any.
-  encounter: Option<Box<Reference>>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// Extensions for priority
-  #[serde(rename = "_priority")]
-  _priority: Option<Element>,
-
-  /// Extensions for intent
-  #[serde(rename = "_intent")]
-  _intent: Option<Element>,
-
-  /// Allows a service to provide a unique, business identifier for the request.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Describes the reason for the request group in coded or textual form.
-  #[serde(rename = "reasonCode")]
-  reason_code: Option<Vec<CodeableConcept>>,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
+  /// A shared identifier common to all requests that were authorized more or less
+  /// simultaneously by a single author, representing the identifier of the
+  /// requisition, prescription or similar form.
+  #[serde(rename = "groupIdentifier")]
+  group_identifier: Option<Identifier>,
 
   /// The current state of the request. For request groups, the status reflects the
   /// status of all the requests in the group.
   status: Option<String>,
 
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
+  /// The subject for which the request group was created.
+  subject: Option<Box<Reference>>,
 
-  /// Provides a mechanism to communicate additional information about the response.
-  note: Option<Vec<Annotation>>,
-
-  /// Extensions for instantiatesCanonical
-  #[serde(rename = "_instantiatesCanonical")]
-  _instantiates_canonical: Option<Vec<Element>>,
+  /// The actions, if any, produced by the evaluation of the artifact.
+  action: Option<Vec<RequestGroup_Action>>,
 
   /// Extensions for instantiatesUri
   #[serde(rename = "_instantiatesUri")]
   _instantiates_uri: Option<Vec<Element>>,
 
-  /// Provides a reference to the author of the request group.
-  author: Option<Box<Reference>>,
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// A canonical URL referencing a FHIR-defined protocol, guideline, orderset or
+  /// other definition that is adhered to in whole or in part by this request.
+  #[serde(rename = "instantiatesCanonical")]
+  instantiates_canonical: Option<Vec<String>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -113,46 +63,79 @@ pub struct RequestGroup {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Indicates when the request group was created.
-  #[serde(rename = "authoredOn")]
-  authored_on: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// A canonical URL referencing a FHIR-defined protocol, guideline, orderset or
-  /// other definition that is adhered to in whole or in part by this request.
-  #[serde(rename = "instantiatesCanonical")]
-  instantiates_canonical: Option<Vec<String>>,
-
-  /// Extensions for authoredOn
-  #[serde(rename = "_authoredOn")]
-  _authored_on: Option<Element>,
-
-  /// The actions, if any, produced by the evaluation of the artifact.
-  action: Option<Vec<RequestGroup_Action>>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  /// A URL referencing an externally defined protocol, guideline, orderset or other
+  /// definition that is adhered to in whole or in part by this request.
+  #[serde(rename = "instantiatesUri")]
+  instantiates_uri: Option<Vec<String>>,
 
   /// A plan, proposal or order that is fulfilled in whole or in part by this request.
   #[serde(rename = "basedOn")]
   based_on: Option<Vec<Box<Reference>>>,
 
+  /// Extensions for intent
+  #[serde(rename = "_intent")]
+  _intent: Option<Element>,
+
+  /// A code that identifies what the overall request group is.
+  code: Option<CodeableConcept>,
+
+  /// Indicates the level of authority/intentionality associated with the request and
+  /// where the request fits into the workflow chain.
+  intent: Option<String>,
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
+
+  /// Allows a service to provide a unique, business identifier for the request.
+  identifier: Option<Vec<Identifier>>,
+
+  /// Provides a mechanism to communicate additional information about the response.
+  note: Option<Vec<Annotation>>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
   /// Completed or terminated request(s) whose function is taken by this new request.
   replaces: Option<Vec<Box<Reference>>>,
 
-  /// Indicates how quickly the request should be addressed with respect to other
-  /// requests.
-  priority: Option<String>,
+  /// Describes the context of the request group, if any.
+  encounter: Option<Box<Reference>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Provides a reference to the author of the request group.
+  author: Option<Box<Reference>>,
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
@@ -161,15 +144,32 @@ pub struct RequestGroup {
   #[serde(rename = "implicitRules")]
   implicit_rules: Option<String>,
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// Extensions for instantiatesCanonical
+  #[serde(rename = "_instantiatesCanonical")]
+  _instantiates_canonical: Option<Vec<Element>>,
 
-  /// A shared identifier common to all requests that were authorized more or less
-  /// simultaneously by a single author, representing the identifier of the
-  /// requisition, prescription or similar form.
-  #[serde(rename = "groupIdentifier")]
-  group_identifier: Option<Identifier>,
+  /// Indicates how quickly the request should be addressed with respect to other
+  /// requests.
+  priority: Option<String>,
+
+  /// Indicates another resource whose existence justifies this request group.
+  #[serde(rename = "reasonReference")]
+  reason_reference: Option<Vec<Box<Reference>>>,
+
+  /// Describes the reason for the request group in coded or textual form.
+  #[serde(rename = "reasonCode")]
+  reason_code: Option<Vec<CodeableConcept>>,
+
+  /// Extensions for priority
+  #[serde(rename = "_priority")]
+  _priority: Option<Element>,
+
+  /// Indicates when the request group was created.
+  #[serde(rename = "authoredOn")]
+  authored_on: Option<String>,
+
+  /// Extensions for authoredOn
+  #[serde(rename = "_authoredOn")]
+  _authored_on: Option<Element>,
 
 }

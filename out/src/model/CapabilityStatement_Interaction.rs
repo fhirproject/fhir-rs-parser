@@ -16,24 +16,24 @@ pub struct CapabilityStatement_Interaction {
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
+  /// Coded identifier of the operation, supported by the system resource.
+  code: Option<CapabilityStatement_InteractionCode>,
+
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
+
   /// Guidance specific to the implementation of this operation, such as 'delete is a
   /// logical delete' or 'updates are only allowed with version id' or 'creates
   /// permitted from pre-authorized certificates only'.
   documentation: Option<String>,
-
-  /// Extensions for documentation
-  #[serde(rename = "_documentation")]
-  _documentation: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Coded identifier of the operation, supported by the system resource.
-  code: Option<CapabilityStatement_InteractionCode>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -47,11 +47,11 @@ pub struct CapabilityStatement_Interaction {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for code
-  #[serde(rename = "_code")]
-  _code: Option<Element>,
+  /// Extensions for documentation
+  #[serde(rename = "_documentation")]
+  _documentation: Option<Element>,
 
 }
 

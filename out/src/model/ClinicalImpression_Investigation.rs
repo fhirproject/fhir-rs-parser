@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
 
 
 /// A record of a clinical assessment performed to determine what problem(s) may
@@ -21,7 +21,20 @@ pub struct ClinicalImpression_Investigation {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// A name/code for the group ("set") of investigations. Typically, this will be
+  /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
+  /// not constrained, and others such groups such as
+  /// (exposure|family|travel|nutritional) history may be used.
+  code: CodeableConcept,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// A record of a specific investigation that was undertaken.
+  item: Option<Vec<Box<Reference>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -35,19 +48,6 @@ pub struct ClinicalImpression_Investigation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// A name/code for the group ("set") of investigations. Typically, this will be
-  /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
-  /// not constrained, and others such groups such as
-  /// (exposure|family|travel|nutritional) history may be used.
-  code: CodeableConcept,
-
-  /// A record of a specific investigation that was undertaken.
-  item: Option<Vec<Box<Reference>>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
 }

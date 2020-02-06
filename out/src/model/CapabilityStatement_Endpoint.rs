@@ -17,9 +17,24 @@ pub struct CapabilityStatement_Endpoint {
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
+  /// The network address of the endpoint. For solutions that do not use network
+  /// addresses for routing, it can be just an identifier.
+  address: Option<String>,
+
   /// A list of the messaging transport protocol(s) identifiers, supported by this
   /// endpoint.
   protocol: Coding,
+
+  /// Extensions for address
+  #[serde(rename = "_address")]
+  _address: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -33,21 +48,6 @@ pub struct CapabilityStatement_Endpoint {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The network address of the endpoint. For solutions that do not use network
-  /// addresses for routing, it can be just an identifier.
-  address: Option<String>,
-
-  /// Extensions for address
-  #[serde(rename = "_address")]
-  _address: Option<Element>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
 }

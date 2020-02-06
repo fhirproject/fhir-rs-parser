@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Attachment::Attachment;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Attachment::Attachment;
 
 
 /// The detailed description of a substance, typically at a level beyond what is
@@ -12,24 +12,20 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceSpecification_Representation {
-  /// The structural representation as text string in a format e.g. InChI, SMILES,
-  /// MOLFILE, CDX.
-  representation: Option<String>,
-
-  /// Extensions for representation
-  #[serde(rename = "_representation")]
-  _representation: Option<Element>,
-
-  /// An attached file with the structural representation.
-  attachment: Option<Attachment>,
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
 
-  /// The type of structure (e.g. Full, Partial, Representative).
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
+  /// The structural representation as text string in a format e.g. InChI, SMILES,
+  /// MOLFILE, CDX.
+  representation: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -43,13 +39,17 @@ pub struct SubstanceSpecification_Representation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// The type of structure (e.g. Full, Partial, Representative).
+  #[serde(rename = "type")]
+  fhir_type: Option<CodeableConcept>,
+
+  /// Extensions for representation
+  #[serde(rename = "_representation")]
+  _representation: Option<Element>,
+
+  /// An attached file with the structural representation.
+  attachment: Option<Attachment>,
 
 }

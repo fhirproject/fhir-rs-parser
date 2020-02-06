@@ -14,19 +14,6 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CoverageEligibilityRequest_Insurance {
-  /// Extensions for focal
-  #[serde(rename = "_focal")]
-  _focal: Option<Element>,
-
-  /// Reference to the insurance card level information contained in the Coverage
-  /// resource. The coverage issuing insurer will use these details to locate the
-  /// patient's actual coverage within the insurer's information system.
-  coverage: Box<Reference>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -39,26 +26,39 @@ pub struct CoverageEligibilityRequest_Insurance {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for businessArrangement
-  #[serde(rename = "_businessArrangement")]
-  _business_arrangement: Option<Element>,
+  /// Reference to the insurance card level information contained in the Coverage
+  /// resource. The coverage issuing insurer will use these details to locate the
+  /// patient's actual coverage within the insurer's information system.
+  coverage: Box<Reference>,
+
+  /// A flag to indicate that this Coverage is to be used for evaluation of this
+  /// request when set to true.
+  focal: Option<bool>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for focal
+  #[serde(rename = "_focal")]
+  _focal: Option<Element>,
 
   /// A business agreement number established between the provider and the insurer for
   /// special business processing purposes.
   #[serde(rename = "businessArrangement")]
   business_arrangement: Option<String>,
 
+  /// Extensions for businessArrangement
+  #[serde(rename = "_businessArrangement")]
+  _business_arrangement: Option<Element>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// A flag to indicate that this Coverage is to be used for evaluation of this
-  /// request when set to true.
-  focal: Option<bool>,
+  extension: Option<Vec<Box<Extension>>>,
 
 }

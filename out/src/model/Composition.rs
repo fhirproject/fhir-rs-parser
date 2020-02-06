@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Identifier::Identifier;
-use crate::model::Reference::Reference;
-use crate::model::Composition_RelatesTo::Composition_RelatesTo;
-use crate::model::Meta::Meta;
 use crate::model::ResourceList::ResourceList;
-use crate::model::Composition_Section::Composition_Section;
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
-use crate::model::Narrative::Narrative;
 use crate::model::Composition_Attester::Composition_Attester;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Meta::Meta;
+use crate::model::Identifier::Identifier;
+use crate::model::Composition_RelatesTo::Composition_RelatesTo;
+use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
+use crate::model::Composition_Section::Composition_Section;
+use crate::model::Narrative::Narrative;
 use crate::model::Composition_Event::Composition_Event;
 
 
@@ -27,24 +27,26 @@ use crate::model::Composition_Event::Composition_Event;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Composition {
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
 
   /// A categorization for the type of the composition - helps for indexing and
   /// searching. This may be implied by or derived from the code specified in the
   /// Composition Type.
   category: Option<Vec<CodeableConcept>>,
 
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// Extensions for title
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
+
+  /// Official human-readable label for the composition.
+  title: Option<String>,
 
   /// Who or what the composition is about. The composition can be about a person,
   /// (patient or healthcare practitioner), a device (e.g. a machine) or even a group
@@ -52,62 +54,53 @@ pub struct Composition {
   /// that share a common exposure).
   subject: Option<Box<Reference>>,
 
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// Identifies who is responsible for the information in the composition, not
-  /// necessarily who typed it in.
-  author: Vec<Box<Reference>>,
-
-  /// The code specifying the level of confidentiality of the Composition.
-  confidentiality: Option<String>,
-
-  /// Extensions for confidentiality
-  #[serde(rename = "_confidentiality")]
-  _confidentiality: Option<Element>,
+  /// Identifies the organization or group who is responsible for ongoing maintenance
+  /// of and access to the composition/document information.
+  custodian: Option<Box<Reference>>,
 
   /// Extensions for language
   #[serde(rename = "_language")]
   _language: Option<Element>,
 
-  /// Specifies the particular kind of composition (e.g. History and Physical,
-  /// Discharge Summary, Progress Note). This usually equates to the purpose of making
-  /// the composition.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
+  /// The root of the sections that make up the composition.
+  section: Option<Vec<Composition_Section>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// The code specifying the level of confidentiality of the Composition.
+  confidentiality: Option<String>,
 
-  /// Identifies the organization or group who is responsible for ongoing maintenance
-  /// of and access to the composition/document information.
-  custodian: Option<Box<Reference>>,
+  /// The base language in which the resource is written.
+  language: Option<String>,
 
-  /// A version-independent identifier for the Composition. This identifier stays
-  /// constant as the composition is changed over time.
-  identifier: Option<Identifier>,
+  /// The composition editing time, when the composition was last logically changed by
+  /// the author.
+  date: Option<String>,
 
-  /// The workflow/clinical status of this composition. The status is a marker for the
-  /// clinical standing of the document.
-  status: Option<CompositionStatus>,
+  /// A participant who has attested to the accuracy of the composition/document.
+  attester: Option<Vec<Composition_Attester>>,
+
+  /// The clinical service, such as a colonoscopy or an appendectomy, being
+  /// documented.
+  event: Option<Vec<Composition_Event>>,
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
   meta: Option<Meta>,
 
-  /// Describes the clinical encounter or type of care this documentation is
-  /// associated with.
-  encounter: Option<Box<Reference>>,
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
+
+  /// Identifies who is responsible for the information in the composition, not
+  /// necessarily who typed it in.
+  author: Vec<Box<Reference>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -117,20 +110,21 @@ pub struct Composition {
   /// ensure clinical safety.
   text: Option<Narrative>,
 
-  /// The root of the sections that make up the composition.
-  section: Option<Vec<Composition_Section>>,
+  /// A version-independent identifier for the Composition. This identifier stays
+  /// constant as the composition is changed over time.
+  identifier: Option<Identifier>,
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// The workflow/clinical status of this composition. The status is a marker for the
+  /// clinical standing of the document.
+  status: Option<CompositionStatus>,
 
-  /// A participant who has attested to the accuracy of the composition/document.
-  attester: Option<Vec<Composition_Attester>>,
+  /// Extensions for confidentiality
+  #[serde(rename = "_confidentiality")]
+  _confidentiality: Option<Element>,
 
-  /// The composition editing time, when the composition was last logically changed by
-  /// the author.
-  date: Option<String>,
+  /// Describes the clinical encounter or type of care this documentation is
+  /// associated with.
+  encounter: Option<Box<Reference>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -145,27 +139,33 @@ pub struct Composition {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// Official human-readable label for the composition.
-  title: Option<String>,
-
-  /// The clinical service, such as a colonoscopy or an appendectomy, being
-  /// documented.
-  event: Option<Vec<Composition_Event>>,
-
-  /// Extensions for title
-  #[serde(rename = "_title")]
-  _title: Option<Element>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// Relationships that this composition has with other compositions or documents
   /// that already exist.
   #[serde(rename = "relatesTo")]
   relates_to: Option<Vec<Composition_RelatesTo>>,
+
+  /// Extensions for date
+  #[serde(rename = "_date")]
+  _date: Option<Element>,
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
+
+  /// Specifies the particular kind of composition (e.g. History and Physical,
+  /// Discharge Summary, Progress Note). This usually equates to the purpose of making
+  /// the composition.
+  #[serde(rename = "type")]
+  fhir_type: CodeableConcept,
 
 }
 

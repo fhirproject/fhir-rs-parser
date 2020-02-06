@@ -1,19 +1,19 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::ResourceList::ResourceList;
-use crate::model::Narrative::Narrative;
-use crate::model::CapabilityStatement_Document::CapabilityStatement_Document;
-use crate::model::Extension::Extension;
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::CapabilityStatement_Implementation::CapabilityStatement_Implementation;
-use crate::model::CapabilityStatement_Software::CapabilityStatement_Software;
-use crate::model::CapabilityStatement_Rest::CapabilityStatement_Rest;
-use crate::model::UsageContext::UsageContext;
-use crate::model::CapabilityStatement_Messaging::CapabilityStatement_Messaging;
-use crate::model::Meta::Meta;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Meta::Meta;
+use crate::model::CapabilityStatement_Software::CapabilityStatement_Software;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::CapabilityStatement_Messaging::CapabilityStatement_Messaging;
+use crate::model::Narrative::Narrative;
+use crate::model::CapabilityStatement_Implementation::CapabilityStatement_Implementation;
+use crate::model::CapabilityStatement_Rest::CapabilityStatement_Rest;
+use crate::model::ResourceList::ResourceList;
+use crate::model::CapabilityStatement_Document::CapabilityStatement_Document;
 
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
@@ -23,39 +23,37 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CapabilityStatement {
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
-  /// The status of this capability statement. Enables tracking the life-cycle of the
-  /// content.
-  status: Option<CapabilityStatementStatus>,
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
 
-  /// Software that is covered by this capability statement.  It is used when the
-  /// capability statement describes the capabilities of a particular software
-  /// version, independent of an installation.
-  software: Option<CapabilityStatement_Software>,
+  /// Extensions for version
+  #[serde(rename = "_version")]
+  _version: Option<Element>,
 
-  /// An absolute URI that is used to identify this capability statement when it is
-  /// referenced in a specification, model, design or an instance; also called its
-  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-  /// address at which at which an authoritative instance of this capability statement
-  /// is (or will be) published. This URL can be the target of a canonical reference.
-  /// It SHALL remain the same when the capability statement is stored on different
-  /// servers.
-  url: Option<String>,
+  /// Reference to a canonical URL of another CapabilityStatement that this software
+  /// adds to. The capability statement automatically includes everything in the other
+  /// statement, and it is not duplicated, though the server may repeat the same
+  /// resources, interactions and operations to add additional details to them.
+  imports: Option<Vec<String>>,
 
-  /// Extensions for patchFormat
-  #[serde(rename = "_patchFormat")]
-  _patch_format: Option<Vec<Element>>,
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// The base language in which the resource is written.
+  language: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -70,151 +68,16 @@ pub struct CapabilityStatement {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
-
-  /// A document definition.
-  document: Option<Vec<CapabilityStatement_Document>>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// A natural language name identifying the capability statement. This name should
-  /// be usable as an identifier for the module by machine processing applications
-  /// such as code generation.
-  name: Option<String>,
-
-  /// Extensions for purpose
-  #[serde(rename = "_purpose")]
-  _purpose: Option<Element>,
-
-  /// Extensions for title
-  #[serde(rename = "_title")]
-  _title: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// A legal or geographic region in which the capability statement is intended to be
-  /// used.
-  jurisdiction: Option<Vec<CodeableConcept>>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// The name of the organization or individual that published the capability
-  /// statement.
-  publisher: Option<String>,
-
-  /// Extensions for publisher
-  #[serde(rename = "_publisher")]
-  _publisher: Option<Element>,
-
-  /// A free text natural language description of the capability statement from a
-  /// consumer's perspective. Typically, this is used when the capability statement
-  /// describes a desired rather than an actual solution, for example as a formal
-  /// expression of requirements as part of an RFP.
-  description: Option<String>,
-
-  /// A list of the patch formats supported by this implementation using their content
-  /// types.
-  #[serde(rename = "patchFormat")]
-  patch_format: Option<Vec<String>>,
-
-  /// The identifier that is used to identify this version of the capability statement
-  /// when it is referenced in a specification, model, design or instance. This is an
-  /// arbitrary value managed by the capability statement author and is not expected
-  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-  /// managed version is not available. There is also no expectation that versions can
-  /// be placed in a lexicographical sequence.
-  version: Option<String>,
-
-  /// Extensions for kind
-  #[serde(rename = "_kind")]
-  _kind: Option<Element>,
-
-  /// A list of the formats supported by this implementation using their content
-  /// types.
-  format: Option<Vec<String>>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
   meta: Option<Meta>,
 
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// A copyright statement relating to the capability statement and/or its contents.
-  /// Copyright statements are generally legal restrictions on the use and publishing
-  /// of the capability statement.
-  copyright: Option<String>,
-
-  /// Extensions for experimental
-  #[serde(rename = "_experimental")]
-  _experimental: Option<Element>,
-
-  /// Explanation of why this capability statement is needed and why it has been
-  /// designed as it has.
-  purpose: Option<String>,
-
-  /// Extensions for fhirVersion
-  #[serde(rename = "_fhirVersion")]
-  _fhir_version: Option<Element>,
-
-  /// The date  (and optionally time) when the capability statement was published. The
-  /// date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the capability statement changes.
-  date: Option<String>,
-
-  /// Extensions for format
-  #[serde(rename = "_format")]
-  _format: Option<Vec<Element>>,
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  contact: Option<Vec<ContactDetail>>,
-
-  /// Extensions for url
-  #[serde(rename = "_url")]
-  _url: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// Extensions for version
-  #[serde(rename = "_version")]
-  _version: Option<Element>,
-
-  /// Reference to a canonical URL of another CapabilityStatement that this software
-  /// adds to. The capability statement automatically includes everything in the other
-  /// statement, and it is not duplicated, though the server may repeat the same
-  /// resources, interactions and operations to add additional details to them.
-  imports: Option<Vec<String>>,
-
-  /// Identifies a specific implementation instance that is described by the
-  /// capability statement - i.e. a particular installation, rather than the
-  /// capabilities of a software program.
-  implementation: Option<CapabilityStatement_Implementation>,
-
-  /// The version of the FHIR specification that this CapabilityStatement describes
-  /// (which SHALL be the same as the FHIR version of the CapabilityStatement itself).
-  /// There is no default value.
-  #[serde(rename = "fhirVersion")]
-  fhir_version: Option<CapabilityStatementFhirVersion>,
+  /// Extensions for publisher
+  #[serde(rename = "_publisher")]
+  _publisher: Option<Element>,
 
   /// The content was developed with a focus and intent of supporting the contexts
   /// that are listed. These contexts may be general categories (gender, age, ...) or
@@ -224,27 +87,34 @@ pub struct CapabilityStatement {
   #[serde(rename = "useContext")]
   use_context: Option<Vec<UsageContext>>,
 
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
-
   /// A Boolean value to indicate that this capability statement is authored for
   /// testing purposes (or education/evaluation/marketing) and is not intended to be
   /// used for genuine usage.
   experimental: Option<bool>,
 
-  /// A definition of the restful capabilities of the solution, if any.
-  rest: Option<Vec<CapabilityStatement_Rest>>,
+  /// A free text natural language description of the capability statement from a
+  /// consumer's perspective. Typically, this is used when the capability statement
+  /// describes a desired rather than an actual solution, for example as a formal
+  /// expression of requirements as part of an RFP.
+  description: Option<String>,
+
+  /// Extensions for experimental
+  #[serde(rename = "_experimental")]
+  _experimental: Option<Element>,
 
   /// Extensions for copyright
   #[serde(rename = "_copyright")]
   _copyright: Option<Element>,
 
-  /// A description of the messaging capabilities of the solution.
-  messaging: Option<Vec<CapabilityStatement_Messaging>>,
+  /// A copyright statement relating to the capability statement and/or its contents.
+  /// Copyright statements are generally legal restrictions on the use and publishing
+  /// of the capability statement.
+  copyright: Option<String>,
 
-  /// A short, descriptive, user-friendly title for the capability statement.
-  title: Option<String>,
+  /// The way that this statement is intended to be used, to describe an actual
+  /// running instance of software, a particular product (kind, not instance of
+  /// software) or a class of implementation (e.g. a desired purchase).
+  kind: Option<CapabilityStatementKind>,
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
@@ -260,38 +130,165 @@ pub struct CapabilityStatement {
   /// must specify the full capability details.
   instantiates: Option<Vec<String>>,
 
-  /// The way that this statement is intended to be used, to describe an actual
-  /// running instance of software, a particular product (kind, not instance of
-  /// software) or a class of implementation (e.g. a desired purchase).
-  kind: Option<CapabilityStatementKind>,
+  /// Software that is covered by this capability statement.  It is used when the
+  /// capability statement describes the capabilities of a particular software
+  /// version, independent of an installation.
+  software: Option<CapabilityStatement_Software>,
+
+  /// A list of the patch formats supported by this implementation using their content
+  /// types.
+  #[serde(rename = "patchFormat")]
+  patch_format: Option<Vec<String>>,
+
+  /// A natural language name identifying the capability statement. This name should
+  /// be usable as an identifier for the module by machine processing applications
+  /// such as code generation.
+  name: Option<String>,
+
+  /// Extensions for format
+  #[serde(rename = "_format")]
+  _format: Option<Vec<Element>>,
+
+  /// Extensions for fhirVersion
+  #[serde(rename = "_fhirVersion")]
+  _fhir_version: Option<Element>,
+
+  /// A legal or geographic region in which the capability statement is intended to be
+  /// used.
+  jurisdiction: Option<Vec<CodeableConcept>>,
 
   /// A list of implementation guides that the server does (or should) support in
   /// their entirety.
   #[serde(rename = "implementationGuide")]
   implementation_guide: Option<Vec<String>>,
 
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
 
   /// Extensions for description
   #[serde(rename = "_description")]
   _description: Option<Element>,
 
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  contact: Option<Vec<ContactDetail>>,
+
+  /// A description of the messaging capabilities of the solution.
+  messaging: Option<Vec<CapabilityStatement_Messaging>>,
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
+
+  /// Extensions for patchFormat
+  #[serde(rename = "_patchFormat")]
+  _patch_format: Option<Vec<Element>>,
+
+  /// Extensions for kind
+  #[serde(rename = "_kind")]
+  _kind: Option<Element>,
+
+  /// A short, descriptive, user-friendly title for the capability statement.
+  title: Option<String>,
+
+  /// The name of the organization or individual that published the capability
+  /// statement.
+  publisher: Option<String>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// Extensions for date
+  #[serde(rename = "_date")]
+  _date: Option<Element>,
+
+  /// The date  (and optionally time) when the capability statement was published. The
+  /// date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the capability statement changes.
+  date: Option<String>,
+
+  /// Explanation of why this capability statement is needed and why it has been
+  /// designed as it has.
+  purpose: Option<String>,
+
+  /// Extensions for purpose
+  #[serde(rename = "_purpose")]
+  _purpose: Option<Element>,
+
+  /// Identifies a specific implementation instance that is described by the
+  /// capability statement - i.e. a particular installation, rather than the
+  /// capabilities of a software program.
+  implementation: Option<CapabilityStatement_Implementation>,
+
+  /// The identifier that is used to identify this version of the capability statement
+  /// when it is referenced in a specification, model, design or instance. This is an
+  /// arbitrary value managed by the capability statement author and is not expected
+  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+  /// managed version is not available. There is also no expectation that versions can
+  /// be placed in a lexicographical sequence.
+  version: Option<String>,
+
+  /// A list of the formats supported by this implementation using their content
+  /// types.
+  format: Option<Vec<String>>,
+
+  /// A definition of the restful capabilities of the solution, if any.
+  rest: Option<Vec<CapabilityStatement_Rest>>,
+
+  /// The version of the FHIR specification that this CapabilityStatement describes
+  /// (which SHALL be the same as the FHIR version of the CapabilityStatement itself).
+  /// There is no default value.
+  #[serde(rename = "fhirVersion")]
+  fhir_version: Option<CapabilityStatementFhirVersion>,
+
+  /// Extensions for title
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
+
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// An absolute URI that is used to identify this capability statement when it is
+  /// referenced in a specification, model, design or an instance; also called its
+  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+  /// address at which at which an authoritative instance of this capability statement
+  /// is (or will be) published. This URL can be the target of a canonical reference.
+  /// It SHALL remain the same when the capability statement is stored on different
+  /// servers.
+  url: Option<String>,
+
+  /// A document definition.
+  document: Option<Vec<CapabilityStatement_Document>>,
+
+  /// The status of this capability statement. Enables tracking the life-cycle of the
+  /// content.
+  status: Option<CapabilityStatementStatus>,
+
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub enum CapabilityStatementStatus {
-  #[serde(rename = "draft")]
-  Draft,
+pub enum CapabilityStatementKind {
+  #[serde(rename = "instance")]
+  Instance,
 
-  #[serde(rename = "active")]
-  Active,
+  #[serde(rename = "capability")]
+  Capability,
 
-  #[serde(rename = "retired")]
-  Retired,
-
-  #[serde(rename = "unknown")]
-  Unknown,
+  #[serde(rename = "requirements")]
+  Requirements,
 
 }
 
@@ -366,14 +363,17 @@ pub enum CapabilityStatementFhirVersion {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub enum CapabilityStatementKind {
-  #[serde(rename = "instance")]
-  Instance,
+pub enum CapabilityStatementStatus {
+  #[serde(rename = "draft")]
+  Draft,
 
-  #[serde(rename = "capability")]
-  Capability,
+  #[serde(rename = "active")]
+  Active,
 
-  #[serde(rename = "requirements")]
-  Requirements,
+  #[serde(rename = "retired")]
+  Retired,
+
+  #[serde(rename = "unknown")]
+  Unknown,
 
 }

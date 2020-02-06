@@ -1,152 +1,152 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::ImmunizationEvaluation::ImmunizationEvaluation;
-use crate::model::EnrollmentRequest::EnrollmentRequest;
-use crate::model::ValueSet::ValueSet;
-use crate::model::Practitioner::Practitioner;
-use crate::model::ChargeItem::ChargeItem;
-use crate::model::ClinicalImpression::ClinicalImpression;
-use crate::model::TestReport::TestReport;
-use crate::model::BodyStructure::BodyStructure;
-use crate::model::Contract::Contract;
-use crate::model::Specimen::Specimen;
-use crate::model::Immunization::Immunization;
-use crate::model::AdverseEvent::AdverseEvent;
-use crate::model::DocumentReference::DocumentReference;
-use crate::model::GuidanceResponse::GuidanceResponse;
-use crate::model::StructureMap::StructureMap;
-use crate::model::ImagingStudy::ImagingStudy;
-use crate::model::SubstanceReferenceInformation::SubstanceReferenceInformation;
-use crate::model::MedicationAdministration::MedicationAdministration;
-use crate::model::RelatedPerson::RelatedPerson;
-use crate::model::MedicationRequest::MedicationRequest;
-use crate::model::MedicinalProductInteraction::MedicinalProductInteraction;
-use crate::model::ActivityDefinition::ActivityDefinition;
-use crate::model::Coverage::Coverage;
-use crate::model::Measure::Measure;
-use crate::model::MedicinalProductAuthorization::MedicinalProductAuthorization;
-use crate::model::Appointment::Appointment;
-use crate::model::MolecularSequence::MolecularSequence;
-use crate::model::Location::Location;
-use crate::model::Subscription::Subscription;
-use crate::model::ChargeItemDefinition::ChargeItemDefinition;
-use crate::model::BiologicallyDerivedProduct::BiologicallyDerivedProduct;
-use crate::model::FamilyMemberHistory::FamilyMemberHistory;
-use crate::model::SubstanceNucleicAcid::SubstanceNucleicAcid;
-use crate::model::VisionPrescription::VisionPrescription;
-use crate::model::SupplyRequest::SupplyRequest;
-use crate::model::Binary::Binary;
-use crate::model::EventDefinition::EventDefinition;
-use crate::model::MessageHeader::MessageHeader;
-use crate::model::CompartmentDefinition::CompartmentDefinition;
-use crate::model::DeviceUseStatement::DeviceUseStatement;
-use crate::model::MedicinalProductPackaged::MedicinalProductPackaged;
-use crate::model::ConceptMap::ConceptMap;
-use crate::model::MedicinalProductUndesirableEffect::MedicinalProductUndesirableEffect;
-use crate::model::SubstanceSpecification::SubstanceSpecification;
-use crate::model::NutritionOrder::NutritionOrder;
-use crate::model::Encounter::Encounter;
-use crate::model::ExampleScenario::ExampleScenario;
-use crate::model::QuestionnaireResponse::QuestionnaireResponse;
-use crate::model::TestScript::TestScript;
-use crate::model::RequestGroup::RequestGroup;
-use crate::model::CareTeam::CareTeam;
-use crate::model::InsurancePlan::InsurancePlan;
-use crate::model::Basic::Basic;
-use crate::model::Endpoint::Endpoint;
-use crate::model::MedicinalProductManufactured::MedicinalProductManufactured;
-use crate::model::Organization::Organization;
-use crate::model::EpisodeOfCare::EpisodeOfCare;
-use crate::model::Library::Library;
-use crate::model::Evidence::Evidence;
-use crate::model::OperationDefinition::OperationDefinition;
-use crate::model::CapabilityStatement::CapabilityStatement;
+use crate::model::ClaimResponse::ClaimResponse;
 use crate::model::DeviceDefinition::DeviceDefinition;
-use crate::model::RiskAssessment::RiskAssessment;
-use crate::model::PaymentReconciliation::PaymentReconciliation;
-use crate::model::Account::Account;
-use crate::model::Parameters::Parameters;
-use crate::model::Slot::Slot;
-use crate::model::Substance::Substance;
-use crate::model::DeviceRequest::DeviceRequest;
-use crate::model::AuditEvent::AuditEvent;
-use crate::model::CodeSystem::CodeSystem;
-use crate::model::EnrollmentResponse::EnrollmentResponse;
-use crate::model::Questionnaire::Questionnaire;
-use crate::model::MedicationKnowledge::MedicationKnowledge;
-use crate::model::Condition::Condition;
-use crate::model::SubstancePolymer::SubstancePolymer;
-use crate::model::Composition::Composition;
-use crate::model::SubstanceProtein::SubstanceProtein;
-use crate::model::Linkage::Linkage;
-use crate::model::ResearchElementDefinition::ResearchElementDefinition;
-use crate::model::MeasureReport::MeasureReport;
-use crate::model::SupplyDelivery::SupplyDelivery;
-use crate::model::Task::Task;
-use crate::model::MedicinalProductIndication::MedicinalProductIndication;
+use crate::model::EpisodeOfCare::EpisodeOfCare;
 use crate::model::AppointmentResponse::AppointmentResponse;
-use crate::model::Claim::Claim;
-use crate::model::Media::Media;
+use crate::model::CareTeam::CareTeam;
+use crate::model::TestReport::TestReport;
+use crate::model::Appointment::Appointment;
+use crate::model::SubstanceProtein::SubstanceProtein;
+use crate::model::Encounter::Encounter;
+use crate::model::Schedule::Schedule;
+use crate::model::Goal::Goal;
+use crate::model::NutritionOrder::NutritionOrder;
+use crate::model::Subscription::Subscription;
+use crate::model::VerificationResult::VerificationResult;
+use crate::model::Evidence::Evidence;
+use crate::model::Procedure::Procedure;
+use crate::model::Substance::Substance;
+use crate::model::CodeSystem::CodeSystem;
+use crate::model::RiskAssessment::RiskAssessment;
+use crate::model::GuidanceResponse::GuidanceResponse;
+use crate::model::EventDefinition::EventDefinition;
+use crate::model::HealthcareService::HealthcareService;
+use crate::model::Measure::Measure;
+use crate::model::Linkage::Linkage;
+use crate::model::MedicationAdministration::MedicationAdministration;
+use crate::model::SubstanceNucleicAcid::SubstanceNucleicAcid;
+use crate::model::Endpoint::Endpoint;
+use crate::model::MedicationDispense::MedicationDispense;
+use crate::model::ImplementationGuide::ImplementationGuide;
+use crate::model::List::List;
+use crate::model::OrganizationAffiliation::OrganizationAffiliation;
+use crate::model::DocumentManifest::DocumentManifest;
+use crate::model::CapabilityStatement::CapabilityStatement;
+use crate::model::GraphDefinition::GraphDefinition;
+use crate::model::MeasureReport::MeasureReport;
+use crate::model::Location::Location;
+use crate::model::MedicationKnowledge::MedicationKnowledge;
 use crate::model::Consent::Consent;
-use crate::model::PractitionerRole::PractitionerRole;
-use crate::model::ObservationDefinition::ObservationDefinition;
+use crate::model::CarePlan::CarePlan;
+use crate::model::CommunicationRequest::CommunicationRequest;
+use crate::model::MedicinalProductAuthorization::MedicinalProductAuthorization;
+use crate::model::Contract::Contract;
+use crate::model::Person::Person;
+use crate::model::DeviceRequest::DeviceRequest;
+use crate::model::CatalogEntry::CatalogEntry;
+use crate::model::Communication::Communication;
+use crate::model::Provenance::Provenance;
 use crate::model::MedicationStatement::MedicationStatement;
+use crate::model::MedicinalProductIndication::MedicinalProductIndication;
+use crate::model::ResearchSubject::ResearchSubject;
+use crate::model::Specimen::Specimen;
+use crate::model::Task::Task;
+use crate::model::DeviceMetric::DeviceMetric;
+use crate::model::DetectedIssue::DetectedIssue;
+use crate::model::Flag::Flag;
+use crate::model::SubstancePolymer::SubstancePolymer;
+use crate::model::ValueSet::ValueSet;
+use crate::model::EvidenceVariable::EvidenceVariable;
+use crate::model::RiskEvidenceSynthesis::RiskEvidenceSynthesis;
+use crate::model::Device::Device;
+use crate::model::Binary::Binary;
+use crate::model::SupplyRequest::SupplyRequest;
+use crate::model::DeviceUseStatement::DeviceUseStatement;
+use crate::model::ExampleScenario::ExampleScenario;
+use crate::model::RelatedPerson::RelatedPerson;
+use crate::model::Practitioner::Practitioner;
+use crate::model::InsurancePlan::InsurancePlan;
+use crate::model::ActivityDefinition::ActivityDefinition;
+use crate::model::Questionnaire::Questionnaire;
+use crate::model::ExplanationOfBenefit::ExplanationOfBenefit;
+use crate::model::AuditEvent::AuditEvent;
+use crate::model::Basic::Basic;
+use crate::model::MedicinalProductPackaged::MedicinalProductPackaged;
+use crate::model::Observation::Observation;
+use crate::model::PlanDefinition::PlanDefinition;
+use crate::model::SearchParameter::SearchParameter;
+use crate::model::MedicinalProductManufactured::MedicinalProductManufactured;
+use crate::model::StructureDefinition::StructureDefinition;
+use crate::model::Invoice::Invoice;
+use crate::model::CompartmentDefinition::CompartmentDefinition;
+use crate::model::Media::Media;
+use crate::model::DiagnosticReport::DiagnosticReport;
+use crate::model::Group::Group;
+use crate::model::ResearchDefinition::ResearchDefinition;
+use crate::model::AdverseEvent::AdverseEvent;
+use crate::model::TestScript::TestScript;
 use crate::model::PaymentNotice::PaymentNotice;
 use crate::model::MedicinalProduct::MedicinalProduct;
-use crate::model::Communication::Communication;
-use crate::model::ResearchDefinition::ResearchDefinition;
-use crate::model::ResearchSubject::ResearchSubject;
+use crate::model::Coverage::Coverage;
+use crate::model::Parameters::Parameters;
+use crate::model::Slot::Slot;
+use crate::model::SubstanceReferenceInformation::SubstanceReferenceInformation;
+use crate::model::ClinicalImpression::ClinicalImpression;
 use crate::model::Bundle::Bundle;
-use crate::model::Flag::Flag;
-use crate::model::Schedule::Schedule;
-use crate::model::StructureDefinition::StructureDefinition;
-use crate::model::EffectEvidenceSynthesis::EffectEvidenceSynthesis;
-use crate::model::Goal::Goal;
-use crate::model::MedicationDispense::MedicationDispense;
-use crate::model::Group::Group;
-use crate::model::SearchParameter::SearchParameter;
-use crate::model::SubstanceSourceMaterial::SubstanceSourceMaterial;
-use crate::model::ImplementationGuide::ImplementationGuide;
-use crate::model::ExplanationOfBenefit::ExplanationOfBenefit;
-use crate::model::Invoice::Invoice;
-use crate::model::SpecimenDefinition::SpecimenDefinition;
-use crate::model::Observation::Observation;
-use crate::model::MedicinalProductContraindication::MedicinalProductContraindication;
-use crate::model::EvidenceVariable::EvidenceVariable;
-use crate::model::CoverageEligibilityRequest::CoverageEligibilityRequest;
-use crate::model::ResearchStudy::ResearchStudy;
-use crate::model::MessageDefinition::MessageDefinition;
-use crate::model::VerificationResult::VerificationResult;
-use crate::model::Patient::Patient;
-use crate::model::Procedure::Procedure;
-use crate::model::CommunicationRequest::CommunicationRequest;
-use crate::model::CatalogEntry::CatalogEntry;
-use crate::model::CoverageEligibilityResponse::CoverageEligibilityResponse;
-use crate::model::Provenance::Provenance;
-use crate::model::DocumentManifest::DocumentManifest;
-use crate::model::DeviceMetric::DeviceMetric;
-use crate::model::DiagnosticReport::DiagnosticReport;
-use crate::model::Person::Person;
-use crate::model::ImmunizationRecommendation::ImmunizationRecommendation;
-use crate::model::ClaimResponse::ClaimResponse;
-use crate::model::GraphDefinition::GraphDefinition;
-use crate::model::CarePlan::CarePlan;
-use crate::model::DetectedIssue::DetectedIssue;
-use crate::model::HealthcareService::HealthcareService;
-use crate::model::MedicinalProductIngredient::MedicinalProductIngredient;
+use crate::model::Condition::Condition;
 use crate::model::MedicinalProductPharmaceutical::MedicinalProductPharmaceutical;
-use crate::model::NamingSystem::NamingSystem;
-use crate::model::OrganizationAffiliation::OrganizationAffiliation;
-use crate::model::TerminologyCapabilities::TerminologyCapabilities;
-use crate::model::AllergyIntolerance::AllergyIntolerance;
-use crate::model::List::List;
-use crate::model::OperationOutcome::OperationOutcome;
-use crate::model::Medication::Medication;
+use crate::model::BodyStructure::BodyStructure;
+use crate::model::Account::Account;
+use crate::model::QuestionnaireResponse::QuestionnaireResponse;
+use crate::model::SupplyDelivery::SupplyDelivery;
+use crate::model::Patient::Patient;
+use crate::model::DocumentReference::DocumentReference;
+use crate::model::MedicationRequest::MedicationRequest;
+use crate::model::SubstanceSourceMaterial::SubstanceSourceMaterial;
+use crate::model::Composition::Composition;
+use crate::model::VisionPrescription::VisionPrescription;
 use crate::model::ServiceRequest::ServiceRequest;
-use crate::model::Device::Device;
-use crate::model::RiskEvidenceSynthesis::RiskEvidenceSynthesis;
-use crate::model::PlanDefinition::PlanDefinition;
+use crate::model::EnrollmentRequest::EnrollmentRequest;
+use crate::model::CoverageEligibilityRequest::CoverageEligibilityRequest;
+use crate::model::ResearchElementDefinition::ResearchElementDefinition;
+use crate::model::ChargeItemDefinition::ChargeItemDefinition;
+use crate::model::ImagingStudy::ImagingStudy;
+use crate::model::EnrollmentResponse::EnrollmentResponse;
+use crate::model::Organization::Organization;
+use crate::model::FamilyMemberHistory::FamilyMemberHistory;
+use crate::model::Library::Library;
+use crate::model::RequestGroup::RequestGroup;
+use crate::model::MessageDefinition::MessageDefinition;
+use crate::model::ConceptMap::ConceptMap;
+use crate::model::ImmunizationEvaluation::ImmunizationEvaluation;
+use crate::model::OperationOutcome::OperationOutcome;
+use crate::model::MedicinalProductInteraction::MedicinalProductInteraction;
+use crate::model::MolecularSequence::MolecularSequence;
+use crate::model::Immunization::Immunization;
+use crate::model::ObservationDefinition::ObservationDefinition;
+use crate::model::OperationDefinition::OperationDefinition;
+use crate::model::SubstanceSpecification::SubstanceSpecification;
+use crate::model::MessageHeader::MessageHeader;
+use crate::model::SpecimenDefinition::SpecimenDefinition;
+use crate::model::BiologicallyDerivedProduct::BiologicallyDerivedProduct;
+use crate::model::TerminologyCapabilities::TerminologyCapabilities;
+use crate::model::MedicinalProductContraindication::MedicinalProductContraindication;
+use crate::model::PaymentReconciliation::PaymentReconciliation;
+use crate::model::ResearchStudy::ResearchStudy;
+use crate::model::PractitionerRole::PractitionerRole;
+use crate::model::NamingSystem::NamingSystem;
+use crate::model::Medication::Medication;
+use crate::model::StructureMap::StructureMap;
+use crate::model::AllergyIntolerance::AllergyIntolerance;
+use crate::model::ImmunizationRecommendation::ImmunizationRecommendation;
+use crate::model::CoverageEligibilityResponse::CoverageEligibilityResponse;
+use crate::model::MedicinalProductIngredient::MedicinalProductIngredient;
+use crate::model::EffectEvidenceSynthesis::EffectEvidenceSynthesis;
+use crate::model::MedicinalProductUndesirableEffect::MedicinalProductUndesirableEffect;
+use crate::model::Claim::Claim;
+use crate::model::ChargeItem::ChargeItem;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "resourceType")]
@@ -155,7 +155,7 @@ pub enum ResourceList {
   ResourceAccount(Account),
 
   #[serde(rename = "ActivityDefinition")]
-  ResourceActivityDefinition(ActivityDefinition),
+  ResourceActivityDefinition(Box<ActivityDefinition>),
 
   #[serde(rename = "AdverseEvent")]
   ResourceAdverseEvent(AdverseEvent),
@@ -344,7 +344,7 @@ pub enum ResourceList {
   ResourceImmunizationRecommendation(ImmunizationRecommendation),
 
   #[serde(rename = "ImplementationGuide")]
-  ResourceImplementationGuide(ImplementationGuide),
+  ResourceImplementationGuide(Box<ImplementationGuide>),
 
   #[serde(rename = "InsurancePlan")]
   ResourceInsurancePlan(InsurancePlan),
@@ -365,7 +365,7 @@ pub enum ResourceList {
   ResourceLocation(Location),
 
   #[serde(rename = "Measure")]
-  ResourceMeasure(Measure),
+  ResourceMeasure(Box<Measure>),
 
   #[serde(rename = "MeasureReport")]
   ResourceMeasureReport(MeasureReport),
@@ -437,7 +437,7 @@ pub enum ResourceList {
   ResourceNutritionOrder(NutritionOrder),
 
   #[serde(rename = "Observation")]
-  ResourceObservation(Observation),
+  ResourceObservation(Box<Observation>),
 
   #[serde(rename = "ObservationDefinition")]
   ResourceObservationDefinition(ObservationDefinition),
@@ -500,7 +500,7 @@ pub enum ResourceList {
   ResourceResearchDefinition(ResearchDefinition),
 
   #[serde(rename = "ResearchElementDefinition")]
-  ResourceResearchElementDefinition(ResearchElementDefinition),
+  ResourceResearchElementDefinition(Box<ResearchElementDefinition>),
 
   #[serde(rename = "ResearchStudy")]
   ResourceResearchStudy(ResearchStudy),
@@ -533,7 +533,7 @@ pub enum ResourceList {
   ResourceSpecimenDefinition(SpecimenDefinition),
 
   #[serde(rename = "StructureDefinition")]
-  ResourceStructureDefinition(StructureDefinition),
+  ResourceStructureDefinition(Box<StructureDefinition>),
 
   #[serde(rename = "StructureMap")]
   ResourceStructureMap(StructureMap),

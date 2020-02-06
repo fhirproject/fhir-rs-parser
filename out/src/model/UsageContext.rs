@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
-use crate::model::Quantity::Quantity;
+use crate::model::Range::Range;
 use crate::model::Coding::Coding;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Range::Range;
+use crate::model::Quantity::Quantity;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 
 
 /// Specifies clinical/business/etc. metadata that can be used to retrieve, index
@@ -16,6 +16,11 @@ use crate::model::Range::Range;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UsageContext {
+  /// A value that defines the context specified in this context of use. The
+  /// interpretation of the value is defined by the code.
+  #[serde(rename = "valueCodeableConcept")]
+  value_codeable_concept: Option<CodeableConcept>,
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   id: Option<String>,
@@ -25,21 +30,12 @@ pub struct UsageContext {
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// A value that defines the context specified in this context of use. The
-  /// interpretation of the value is defined by the code.
-  #[serde(rename = "valueCodeableConcept")]
-  value_codeable_concept: Option<CodeableConcept>,
+  extension: Option<Vec<Box<Extension>>>,
 
   /// A value that defines the context specified in this context of use. The
   /// interpretation of the value is defined by the code.
   #[serde(rename = "valueQuantity")]
   value_quantity: Option<Quantity>,
-
-  /// A code that identifies the type of context being specified by this usage
-  /// context.
-  code: Coding,
 
   /// A value that defines the context specified in this context of use. The
   /// interpretation of the value is defined by the code.
@@ -50,5 +46,9 @@ pub struct UsageContext {
   /// interpretation of the value is defined by the code.
   #[serde(rename = "valueReference")]
   value_reference: Option<Box<Reference>>,
+
+  /// A code that identifies the type of context being specified by this usage
+  /// context.
+  code: Coding,
 
 }

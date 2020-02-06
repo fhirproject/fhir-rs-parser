@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 
 
@@ -14,30 +14,23 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MedicationRequest_Substitution {
-  /// Indicates the reason for the substitution, or why substitution must or must not
-  /// be performed.
-  reason: Option<CodeableConcept>,
+  /// True if the prescriber allows a different drug to be dispensed from what was
+  /// prescribed.
+  #[serde(rename = "allowedCodeableConcept")]
+  allowed_codeable_concept: Option<CodeableConcept>,
 
   /// True if the prescriber allows a different drug to be dispensed from what was
   /// prescribed.
   #[serde(rename = "allowedBoolean")]
   allowed_boolean: Option<bool>,
 
-  /// True if the prescriber allows a different drug to be dispensed from what was
-  /// prescribed.
-  #[serde(rename = "allowedCodeableConcept")]
-  allowed_codeable_concept: Option<CodeableConcept>,
+  /// Extensions for allowedBoolean
+  #[serde(rename = "_allowedBoolean")]
+  _allowed_boolean: Option<Element>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
+  /// Indicates the reason for the substitution, or why substitution must or must not
+  /// be performed.
+  reason: Option<CodeableConcept>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -51,10 +44,17 @@ pub struct MedicationRequest_Substitution {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Extensions for allowedBoolean
-  #[serde(rename = "_allowedBoolean")]
-  _allowed_boolean: Option<Element>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
 }

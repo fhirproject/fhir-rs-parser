@@ -2,17 +2,17 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Consent_Provision::Consent_Provision;
-use crate::model::Consent_Verification::Consent_Verification;
-use crate::model::Reference::Reference;
-use crate::model::Meta::Meta;
-use crate::model::Element::Element;
-use crate::model::Attachment::Attachment;
 use crate::model::ResourceList::ResourceList;
-use crate::model::Consent_Policy::Consent_Policy;
-use crate::model::Narrative::Narrative;
-use crate::model::Extension::Extension;
+use crate::model::Attachment::Attachment;
+use crate::model::Consent_Verification::Consent_Verification;
 use crate::model::Identifier::Identifier;
+use crate::model::Narrative::Narrative;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
+use crate::model::Meta::Meta;
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Consent_Policy::Consent_Policy;
 
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
@@ -21,43 +21,44 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Consent {
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
   /// A classification of the type of consents found in the statement. This element
   /// supports indexing and retrieval of consent statements.
   category: Vec<CodeableConcept>,
 
-  /// Either the Grantor, which is the entity responsible for granting the rights
-  /// listed in a Consent Directive or the Grantee, which is the entity responsible
-  /// for complying with the Consent Directive, including any obligations or
-  /// limitations on authorizations and enforcement of prohibitions.
-  performer: Option<Vec<Box<Reference>>>,
-
-  /// Whether a treatment instruction (e.g. artificial respiration yes or no) was
-  /// verified with the patient, his/her family or another authorized person.
-  verification: Option<Vec<Consent_Verification>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Extension>>,
-
-  /// The source on which this consent statement is based. The source might be a
-  /// scanned original paper form, or a reference to a consent that links back to such
-  /// a source, a reference to a document repository (e.g. XDS) that stores the
-  /// original consent document.
-  #[serde(rename = "sourceAttachment")]
-  source_attachment: Option<Attachment>,
+  /// The patient/healthcare consumer to whom this consent applies.
+  patient: Option<Box<Reference>>,
 
   /// The references to the policies that are included in this consent scope. Policies
   /// may be organizational, but are often defined jurisdictionally, or in law.
   policy: Option<Vec<Consent_Policy>>,
 
-  /// The patient/healthcare consumer to whom this consent applies.
-  patient: Option<Box<Reference>>,
+  /// A selector of the type of consent being presented: ADR, Privacy, Treatment,
+  /// Research.  This list is now extensible.
+  scope: CodeableConcept,
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
+
+  /// Whether a treatment instruction (e.g. artificial respiration yes or no) was
+  /// verified with the patient, his/her family or another authorized person.
+  verification: Option<Vec<Consent_Verification>>,
+
+  /// When this  Consent was issued / created / indexed.
+  #[serde(rename = "dateTime")]
+  date_time: Option<String>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// Unique identifier for this copy of the Consent Statement.
+  identifier: Option<Vec<Identifier>>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -67,48 +68,28 @@ pub struct Consent {
   /// ensure clinical safety.
   text: Option<Narrative>,
 
-  /// Indicates the current state of this consent.
-  status: Option<ConsentStatus>,
+  /// The source on which this consent statement is based. The source might be a
+  /// scanned original paper form, or a reference to a consent that links back to such
+  /// a source, a reference to a document repository (e.g. XDS) that stores the
+  /// original consent document.
+  #[serde(rename = "sourceReference")]
+  source_reference: Option<Box<Reference>>,
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  /// The source on which this consent statement is based. The source might be a
+  /// scanned original paper form, or a reference to a consent that links back to such
+  /// a source, a reference to a document repository (e.g. XDS) that stores the
+  /// original consent document.
+  #[serde(rename = "sourceAttachment")]
+  source_attachment: Option<Attachment>,
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
 
-  /// A selector of the type of consent being presented: ADR, Privacy, Treatment,
-  /// Research.  This list is now extensible.
-  scope: CodeableConcept,
-
-  /// Extensions for dateTime
-  #[serde(rename = "_dateTime")]
-  _date_time: Option<Element>,
-
-  /// An exception to the base policy of this consent. An exception can be an addition
-  /// or removal of access permissions.
-  provision: Option<Consent_Provision>,
-
-  /// A reference to the specific base computable regulation or policy.
-  #[serde(rename = "policyRule")]
-  policy_rule: Option<CodeableConcept>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// When this  Consent was issued / created / indexed.
-  #[serde(rename = "dateTime")]
-  date_time: Option<String>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -123,34 +104,53 @@ pub struct Consent {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Extension>>,
+  modifier_extension: Option<Vec<Box<Extension>>>,
 
-  /// Unique identifier for this copy of the Consent Statement.
-  identifier: Option<Vec<Identifier>>,
+  /// Indicates the current state of this consent.
+  status: Option<ConsentStatus>,
 
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
+  /// Extensions for dateTime
+  #[serde(rename = "_dateTime")]
+  _date_time: Option<Element>,
 
-  /// The source on which this consent statement is based. The source might be a
-  /// scanned original paper form, or a reference to a consent that links back to such
-  /// a source, a reference to a document repository (e.g. XDS) that stores the
-  /// original consent document.
-  #[serde(rename = "sourceReference")]
-  source_reference: Option<Box<Reference>>,
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
+
+  /// Either the Grantor, which is the entity responsible for granting the rights
+  /// listed in a Consent Directive or the Grantee, which is the entity responsible
+  /// for complying with the Consent Directive, including any obligations or
+  /// limitations on authorizations and enforcement of prohibitions.
+  performer: Option<Vec<Box<Reference>>>,
+
+  /// A reference to the specific base computable regulation or policy.
+  #[serde(rename = "policyRule")]
+  policy_rule: Option<CodeableConcept>,
+
+  /// An exception to the base policy of this consent. An exception can be an addition
+  /// or removal of access permissions.
+  provision: Option<Consent_Provision>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Box<Extension>>>,
 
   /// The organization that manages the consent, and the framework within which it is
   /// executed.
   organization: Option<Vec<Box<Reference>>>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
 
 }
 
