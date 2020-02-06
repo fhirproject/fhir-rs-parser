@@ -14,6 +14,14 @@ use crate::model::Money::Money;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ChargeItemDefinition_PriceComponent {
+  /// This code identifies the type of the component.
+  #[serde(rename = "type")]
+  fhir_type: Option<String>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -26,38 +34,32 @@ pub struct ChargeItemDefinition_PriceComponent {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// This code identifies the type of the component.
-  #[serde(rename = "type")]
-  fhir_type: String,
-
-  /// A code that identifies the component. Codes may be used to differentiate between
-  /// kinds of taxes, surcharges, discounts etc.
-  code: CodeableConcept,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
 
   /// The factor that has been applied on the base price for calculating this
   /// component.
-  factor: f32,
-
-  /// Extensions for type
-  _type: Element,
+  factor: Option<f32>,
 
   /// Extensions for factor
-  _factor: Element,
+  #[serde(rename = "_factor")]
+  _factor: Option<Element>,
 
   /// The amount calculated for this component.
-  amount: Money,
+  amount: Option<Money>,
+
+  /// A code that identifies the component. Codes may be used to differentiate between
+  /// kinds of taxes, surcharges, discounts etc.
+  code: Option<CodeableConcept>,
 
 }

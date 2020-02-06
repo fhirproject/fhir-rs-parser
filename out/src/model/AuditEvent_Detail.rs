@@ -11,28 +11,33 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AuditEvent_Detail {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// The  value of the extra detail.
+  #[serde(rename = "valueBase64Binary")]
+  value_base_6_4_binary: Option<String>,
 
   /// Extensions for valueBase64Binary
   #[serde(rename = "_valueBase64Binary")]
-  _value_base_6_4_binary: Element,
+  _value_base_6_4_binary: Option<Element>,
 
-  /// Extensions for valueString
-  #[serde(rename = "_valueString")]
-  _value_string: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
 
   /// The  value of the extra detail.
   #[serde(rename = "valueString")]
-  value_string: String,
+  value_string: Option<String>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The type of extra detail provided in the value.
+  #[serde(rename = "type")]
+  fhir_type: Option<String>,
+
+  /// Extensions for valueString
+  #[serde(rename = "_valueString")]
+  _value_string: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -46,17 +51,13 @@ pub struct AuditEvent_Detail {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Extensions for type
-  _type: Element,
-
-  /// The type of extra detail provided in the value.
-  #[serde(rename = "type")]
-  fhir_type: String,
-
-  /// The  value of the extra detail.
-  #[serde(rename = "valueBase64Binary")]
-  value_base_6_4_binary: String,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
 }

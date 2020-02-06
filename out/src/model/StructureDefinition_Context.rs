@@ -14,10 +14,14 @@ pub struct StructureDefinition_Context {
   /// Defines how to interpret the expression that defines what the context of the
   /// extension is.
   #[serde(rename = "type")]
-  fhir_type: StructureDefinition_ContextType,
+  fhir_type: Option<StructureDefinition_ContextType>,
+
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
 
   /// An expression that defines where an extension can be used in resources.
-  expression: String,
+  expression: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -31,24 +35,22 @@ pub struct StructureDefinition_Context {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Extensions for expression
+  #[serde(rename = "_expression")]
+  _expression: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for type
-  _type: Element,
-
-  /// Extensions for expression
-  _expression: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  extension: Option<Vec<Extension>>,
 
 }
 

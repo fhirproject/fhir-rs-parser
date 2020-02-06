@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
-use crate::model::ImplementationGuide_Page1::ImplementationGuide_Page1;
-use crate::model::ImplementationGuide_Resource1::ImplementationGuide_Resource1;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::ImplementationGuide_Resource1::ImplementationGuide_Resource1;
+use crate::model::ImplementationGuide_Page1::ImplementationGuide_Page1;
 
 
 /// A set of rules of how a particular interoperability or standards problem is
@@ -14,38 +14,6 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImplementationGuide_Manifest {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Extensions for other
-  _other: Vec<Element>,
-
-  /// Extensions for rendering
-  _rendering: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Indicates the relative path of an additional non-page, non-image file that is
-  /// part of the IG - e.g. zip, jar and similar files that could be the target of a
-  /// hyperlink in a derived IG.
-  other: Vec<String>,
-
-  /// Extensions for image
-  _image: Vec<Element>,
-
-  /// Indicates a relative path to an image that exists within the IG.
-  image: Vec<String>,
-
-  /// A pointer to official web page, PDF or other rendering of the implementation
-  /// guide.
-  rendering: String,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -58,7 +26,37 @@ pub struct ImplementationGuide_Manifest {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Indicates a relative path to an image that exists within the IG.
+  image: Option<Vec<String>>,
+
+  /// Information about a page within the IG.
+  page: Option<Vec<ImplementationGuide_Page1>>,
+
+  /// Extensions for rendering
+  #[serde(rename = "_rendering")]
+  _rendering: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for image
+  #[serde(rename = "_image")]
+  _image: Option<Vec<Element>>,
+
+  /// Indicates the relative path of an additional non-page, non-image file that is
+  /// part of the IG - e.g. zip, jar and similar files that could be the target of a
+  /// hyperlink in a derived IG.
+  other: Option<Vec<String>>,
 
   /// A resource that is part of the implementation guide. Conformance resources
   /// (value set, structure definition, capability statements etc.) are obvious
@@ -66,7 +64,12 @@ pub struct ImplementationGuide_Manifest {
   /// resource.
   resource: Vec<ImplementationGuide_Resource1>,
 
-  /// Information about a page within the IG.
-  page: Vec<ImplementationGuide_Page1>,
+  /// Extensions for other
+  #[serde(rename = "_other")]
+  _other: Option<Vec<Element>>,
+
+  /// A pointer to official web page, PDF or other rendering of the implementation
+  /// guide.
+  rendering: Option<String>,
 
 }

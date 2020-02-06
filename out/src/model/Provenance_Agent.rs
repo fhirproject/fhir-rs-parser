@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 
 
 /// Provenance of a resource is a record that describes entities and processes
@@ -20,11 +20,14 @@ use crate::model::Reference::Reference;
 pub struct Provenance_Agent {
   /// The function of the agent with respect to the activity. The security role
   /// enabling the agent with respect to the activity.
-  role: Vec<CodeableConcept>,
+  role: Option<Vec<CodeableConcept>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -38,24 +41,21 @@ pub struct Provenance_Agent {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// The individual, device, or organization for whom the change was made.
-  #[serde(rename = "onBehalfOf")]
-  on_behalf_of: Box<Reference>,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// The individual, device or organization that participated in the event.
   who: Box<Reference>,
 
+  /// The individual, device, or organization for whom the change was made.
+  #[serde(rename = "onBehalfOf")]
+  on_behalf_of: Option<Box<Reference>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
   /// The participation the agent had with respect to the activity.
   #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
+  fhir_type: Option<CodeableConcept>,
 
 }

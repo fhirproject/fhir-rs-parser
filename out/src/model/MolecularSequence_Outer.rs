@@ -9,27 +9,6 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MolecularSequence_Outer {
-  /// Extensions for end
-  _end: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Structural variant outer start. If the coordinate system is either 0-based or 1-
-  /// based, then start position is inclusive.
-  start: i32,
-
-  /// Extensions for start
-  _start: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -42,11 +21,34 @@ pub struct MolecularSequence_Outer {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Extensions for start
+  #[serde(rename = "_start")]
+  _start: Option<Element>,
 
   /// Structural variant outer end. If the coordinate system is 0-based then end is
   /// exclusive and does not include the last position. If the coordinate system is 1-
   /// base, then end is inclusive and includes the last position.
-  end: i32,
+  end: Option<i32>,
+
+  /// Extensions for end
+  #[serde(rename = "_end")]
+  _end: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Structural variant outer start. If the coordinate system is either 0-based or 1-
+  /// based, then start position is inclusive.
+  start: Option<i32>,
 
 }

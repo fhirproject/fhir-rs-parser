@@ -9,11 +9,15 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ElementDefinition_Mapping {
-  /// Extensions for identity
-  _identity: Element,
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
 
-  /// Identifies the computable language in which mapping.map is expressed.
-  language: String,
+  /// Expresses what part of the target specification corresponds to this element.
+  map: Option<String>,
+
+  /// Comments that provide information about the mapping or its use.
+  comment: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -27,35 +31,35 @@ pub struct ElementDefinition_Mapping {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Extensions for comment
+  #[serde(rename = "_comment")]
+  _comment: Option<Element>,
+
+  /// Identifies the computable language in which mapping.map is expressed.
+  language: Option<String>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
-  /// Extensions for language
-  _language: Element,
+  /// Extensions for identity
+  #[serde(rename = "_identity")]
+  _identity: Option<Element>,
 
-  /// Expresses what part of the target specification corresponds to this element.
-  map: String,
+  /// An internal reference to the definition of a mapping.
+  identity: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// An internal reference to the definition of a mapping.
-  identity: String,
-
-  /// Comments that provide information about the mapping or its use.
-  comment: String,
-
-  /// Extensions for comment
-  _comment: Element,
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for map
-  _map: Element,
+  #[serde(rename = "_map")]
+  _map: Option<Element>,
 
 }

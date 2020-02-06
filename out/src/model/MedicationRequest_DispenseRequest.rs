@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Duration::Duration;
+use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
 use crate::model::Period::Period;
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 
 
 /// An order or request for both supply of the medication and the instructions for
@@ -18,15 +18,6 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MedicationRequest_DispenseRequest {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// This indicates the validity period of a prescription (stale dating the
-  /// Prescription).
-  #[serde(rename = "validityPeriod")]
-  validity_period: Period,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -39,7 +30,31 @@ pub struct MedicationRequest_DispenseRequest {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// The amount that is to be dispensed for one fill.
+  quantity: Option<Quantity>,
+
+  /// Indicates the intended dispensing Organization specified by the prescriber.
+  performer: Option<Box<Reference>>,
+
+  /// Extensions for numberOfRepeatsAllowed
+  #[serde(rename = "_numberOfRepeatsAllowed")]
+  _number_of_repeats_allowed: Option<Element>,
+
+  /// Identifies the period time over which the supplied product is expected to be
+  /// used, or the length of time the dispense is expected to last.
+  #[serde(rename = "expectedSupplyDuration")]
+  expected_supply_duration: Option<Duration>,
+
+  /// Indicates the quantity or duration for the first dispense of the medication.
+  #[serde(rename = "initialFill")]
+  initial_fill: Option<MedicationRequest_InitialFill>,
+
+  /// This indicates the validity period of a prescription (stale dating the
+  /// Prescription).
+  #[serde(rename = "validityPeriod")]
+  validity_period: Option<Period>,
 
   /// An integer indicating the number of times, in addition to the original dispense,
   /// (aka refills or repeats) that the patient can receive the prescribed medication.
@@ -49,36 +64,21 @@ pub struct MedicationRequest_DispenseRequest {
   /// 120 tablets.  A prescriber may explicitly say that zero refills are permitted
   /// after the initial dispense.
   #[serde(rename = "numberOfRepeatsAllowed")]
-  number_of_repeats_allowed: u32,
-
-  /// Indicates the quantity or duration for the first dispense of the medication.
-  #[serde(rename = "initialFill")]
-  initial_fill: MedicationRequest_InitialFill,
-
-  /// Extensions for numberOfRepeatsAllowed
-  #[serde(rename = "_numberOfRepeatsAllowed")]
-  _number_of_repeats_allowed: Element,
-
-  /// The amount that is to be dispensed for one fill.
-  quantity: Quantity,
+  number_of_repeats_allowed: Option<u32>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Indicates the intended dispensing Organization specified by the prescriber.
-  performer: Box<Reference>,
+  extension: Option<Vec<Extension>>,
 
   /// The minimum period of time that must occur between dispenses of the medication.
   #[serde(rename = "dispenseInterval")]
-  dispense_interval: Duration,
+  dispense_interval: Option<Duration>,
 
-  /// Identifies the period time over which the supplied product is expected to be
-  /// used, or the length of time the dispense is expected to last.
-  #[serde(rename = "expectedSupplyDuration")]
-  expected_supply_duration: Duration,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
 }

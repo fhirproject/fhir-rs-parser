@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
-use crate::model::Coding::Coding;
-use crate::model::Consent_Data::Consent_Data;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Consent_Actor::Consent_Actor;
+use crate::model::Consent_Data::Consent_Data;
 use crate::model::Period::Period;
+use crate::model::Coding::Coding;
+use crate::model::Element::Element;
 
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
@@ -16,41 +16,46 @@ use crate::model::Period::Period;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Consent_Provision {
-  /// The timeframe in this rule is valid.
-  period: Period,
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
 
-  /// A security label, comprised of 0..* security label fields (Privacy tags), which
-  /// define which resources are controlled by this exception.
-  #[serde(rename = "securityLabel")]
-  security_label: Vec<Coding>,
+  /// The timeframe in this rule is valid.
+  period: Option<Period>,
+
+  /// Who or what is controlled by this rule. Use group to identify a set of actors by
+  /// some property they share (e.g. 'admitting officers').
+  actor: Option<Vec<Consent_Actor>>,
 
   /// The class of information covered by this rule. The type can be a FHIR resource
   /// type, a profile on a type, or a CDA document, or some other type that indicates
   /// what sort of information the consent relates to.
-  class: Vec<Coding>,
+  class: Option<Vec<Coding>>,
 
-  /// Action  to take - permit or deny - when the rule conditions are met.  Not
-  /// permitted in root rule, required in all nested rules.
-  #[serde(rename = "type")]
-  fhir_type: Consent_ProvisionType,
+  /// Rules which provide exceptions to the base rule or subrules.
+  provision: Option<Vec<Consent_Provision>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// The context of the activities a user is taking - why the user is accessing the
   /// data - that are controlled by this rule.
-  purpose: Vec<Coding>,
+  purpose: Option<Vec<Coding>>,
+
+  /// A security label, comprised of 0..* security label fields (Privacy tags), which
+  /// define which resources are controlled by this exception.
+  #[serde(rename = "securityLabel")]
+  security_label: Option<Vec<Coding>>,
+
+  /// The resources controlled by this rule if specific resources are referenced.
+  data: Option<Vec<Consent_Data>>,
 
   /// If this code is found in an instance, then the rule applies.
-  code: Vec<CodeableConcept>,
-
-  /// Rules which provide exceptions to the base rule or subrules.
-  provision: Vec<Consent_Provision>,
-
-  /// Clinical or Operational Relevant period of time that bounds the data controlled
-  /// by this rule.
-  #[serde(rename = "dataPeriod")]
-  data_period: Period,
-
-  /// Actions controlled by this Rule.
-  action: Vec<CodeableConcept>,
+  code: Option<Vec<CodeableConcept>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -64,28 +69,24 @@ pub struct Consent_Provision {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Clinical or Operational Relevant period of time that bounds the data controlled
+  /// by this rule.
+  #[serde(rename = "dataPeriod")]
+  data_period: Option<Period>,
+
+  /// Actions controlled by this Rule.
+  action: Option<Vec<CodeableConcept>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
-  /// Who or what is controlled by this rule. Use group to identify a set of actors by
-  /// some property they share (e.g. 'admitting officers').
-  actor: Vec<Consent_Actor>,
-
-  /// Extensions for type
-  _type: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// The resources controlled by this rule if specific resources are referenced.
-  data: Vec<Consent_Data>,
+  /// Action  to take - permit or deny - when the rule conditions are met.  Not
+  /// permitted in root rule, required in all nested rules.
+  #[serde(rename = "type")]
+  fhir_type: Option<Consent_ProvisionType>,
 
 }
 

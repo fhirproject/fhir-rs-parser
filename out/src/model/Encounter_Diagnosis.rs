@@ -3,8 +3,8 @@
 use serde::{Deserialize, Serialize};
 use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
@@ -12,11 +12,34 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Encounter_Diagnosis {
-  /// Ranking of the diagnosis (for each role type).
-  rank: i32,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// Extensions for rank
-  _rank: Element,
+  #[serde(rename = "_rank")]
+  _rank: Option<Element>,
+
+  /// Reason the encounter takes place, as specified using information from another
+  /// resource. For admissions, this is the admission diagnosis. The indication will
+  /// typically be a Condition (with other resources referenced in the
+  /// evidence.detail), or a Procedure.
+  condition: Box<Reference>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Role that this diagnosis has within the encounter (e.g. admission, billing,
+  /// discharge …).
+  #[serde(rename = "use")]
+  fhir_use: Option<CodeableConcept>,
+
+  /// Ranking of the diagnosis (for each role type).
+  rank: Option<i32>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -30,28 +53,6 @@ pub struct Encounter_Diagnosis {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Reason the encounter takes place, as specified using information from another
-  /// resource. For admissions, this is the admission diagnosis. The indication will
-  /// typically be a Condition (with other resources referenced in the
-  /// evidence.detail), or a Procedure.
-  condition: Box<Reference>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Role that this diagnosis has within the encounter (e.g. admission, billing,
-  /// discharge …).
-  #[serde(rename = "use")]
-  fhir_use: CodeableConcept,
+  modifier_extension: Option<Vec<Extension>>,
 
 }

@@ -11,6 +11,18 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MessageDefinition_Focus {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Identifies the minimum number of resources of this type that must be pointed to
+  /// by a message in order for it to be valid against this MessageDefinition.
+  min: Option<u32>,
+
+  /// Identifies the maximum number of resources of this type that must be pointed to
+  /// by a message in order for it to be valid against this MessageDefinition.
+  max: Option<String>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -23,41 +35,32 @@ pub struct MessageDefinition_Focus {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Identifies the minimum number of resources of this type that must be pointed to
-  /// by a message in order for it to be valid against this MessageDefinition.
-  min: u32,
+  /// A profile that reflects constraints for the focal resource (and potentially for
+  /// related resources).
+  profile: Option<String>,
 
-  /// Extensions for min
-  _min: Element,
+  /// Extensions for max
+  #[serde(rename = "_max")]
+  _max: Option<Element>,
 
   /// The kind of resource that must be the focus for this message.
-  code: String,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  code: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// A profile that reflects constraints for the focal resource (and potentially for
-  /// related resources).
-  profile: String,
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for code
-  _code: Element,
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
 
-  /// Identifies the maximum number of resources of this type that must be pointed to
-  /// by a message in order for it to be valid against this MessageDefinition.
-  max: String,
-
-  /// Extensions for max
-  _max: Element,
+  /// Extensions for min
+  #[serde(rename = "_min")]
+  _min: Option<Element>,
 
 }

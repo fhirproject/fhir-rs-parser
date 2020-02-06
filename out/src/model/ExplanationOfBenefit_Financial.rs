@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Money::Money;
-use crate::model::Extension::Extension;
 
 
 /// This resource provides: the claim details; adjudication details from the
@@ -15,27 +15,7 @@ use crate::model::Extension::Extension;
 pub struct ExplanationOfBenefit_Financial {
   /// The quantity of the benefit which is permitted under the coverage.
   #[serde(rename = "allowedUnsignedInt")]
-  allowed_unsigned_int: i32,
-
-  /// The quantity of the benefit which have been consumed to date.
-  #[serde(rename = "usedMoney")]
-  used_money: Money,
-
-  /// The quantity of the benefit which is permitted under the coverage.
-  #[serde(rename = "allowedMoney")]
-  allowed_money: Money,
-
-  /// The quantity of the benefit which is permitted under the coverage.
-  #[serde(rename = "allowedString")]
-  allowed_string: String,
-
-  /// The quantity of the benefit which have been consumed to date.
-  #[serde(rename = "usedUnsignedInt")]
-  used_unsigned_int: i32,
-
-  /// Extensions for allowedString
-  #[serde(rename = "_allowedString")]
-  _allowed_string: Element,
+  allowed_unsigned_int: Option<i32>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -49,29 +29,49 @@ pub struct ExplanationOfBenefit_Financial {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Extensions for usedUnsignedInt
-  #[serde(rename = "_usedUnsignedInt")]
-  _used_unsigned_int: Element,
-
-  /// Classification of benefit being provided.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for allowedUnsignedInt
   #[serde(rename = "_allowedUnsignedInt")]
-  _allowed_unsigned_int: Element,
+  _allowed_unsigned_int: Option<Element>,
+
+  /// Classification of benefit being provided.
+  #[serde(rename = "type")]
+  fhir_type: CodeableConcept,
+
+  /// The quantity of the benefit which is permitted under the coverage.
+  #[serde(rename = "allowedString")]
+  allowed_string: Option<String>,
+
+  /// Extensions for allowedString
+  #[serde(rename = "_allowedString")]
+  _allowed_string: Option<Element>,
+
+  /// The quantity of the benefit which have been consumed to date.
+  #[serde(rename = "usedUnsignedInt")]
+  used_unsigned_int: Option<i32>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for usedUnsignedInt
+  #[serde(rename = "_usedUnsignedInt")]
+  _used_unsigned_int: Option<Element>,
+
+  /// The quantity of the benefit which is permitted under the coverage.
+  #[serde(rename = "allowedMoney")]
+  allowed_money: Option<Money>,
+
+  /// The quantity of the benefit which have been consumed to date.
+  #[serde(rename = "usedMoney")]
+  used_money: Option<Money>,
 
 }

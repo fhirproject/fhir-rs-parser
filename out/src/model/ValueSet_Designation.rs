@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::Coding::Coding;
 use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 
 
 /// A ValueSet resource instance specifies a set of codes drawn from one or more
@@ -13,6 +13,14 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ValueSet_Designation {
+  /// Extensions for value
+  #[serde(rename = "_value")]
+  _value: Option<Element>,
+
+  /// A code that represents types of uses of designations.
+  #[serde(rename = "use")]
+  fhir_use: Option<Coding>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -25,33 +33,27 @@ pub struct ValueSet_Designation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Extensions for language
-  _language: Element,
-
-  /// A code that represents types of uses of designations.
-  #[serde(rename = "use")]
-  fhir_use: Coding,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
-
-  /// The language this designation is defined for.
-  language: String,
-
-  /// Extensions for value
-  _value: Element,
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// The language this designation is defined for.
+  language: Option<String>,
 
   /// The text value for this designation.
-  value: String,
+  value: Option<String>,
 
 }

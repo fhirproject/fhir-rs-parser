@@ -9,18 +9,26 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Bundle_Link {
-  /// The reference details for the link.
-  url: String,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// Extensions for url
-  _url: Element,
+  /// Extensions for relation
+  #[serde(rename = "_relation")]
+  _relation: Option<Element>,
+
+  /// A name which details the functional use for this link - see
+  /// [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relati
+  /// ons-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-
+  /// relations-1).
+  relation: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -34,19 +42,13 @@ pub struct Bundle_Link {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// A name which details the functional use for this link - see
-  /// [http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-relati
-  /// ons-1](http://www.iana.org/assignments/link-relations/link-relations.xhtml#link-
-  /// relations-1).
-  relation: String,
+  /// The reference details for the link.
+  url: Option<String>,
 
-  /// Extensions for relation
-  _relation: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
 
 }

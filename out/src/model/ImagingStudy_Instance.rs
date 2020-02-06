@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Coding::Coding;
+use crate::model::Element::Element;
 
 
 /// Representation of the content produced in a DICOM imaging study. A study
@@ -14,19 +14,19 @@ use crate::model::Coding::Coding;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImagingStudy_Instance {
-  /// DICOM instance  type.
-  #[serde(rename = "sopClass")]
-  sop_class: Coding,
+  /// The number of instance in the series.
+  number: Option<u32>,
+
+  /// The description of the instance.
+  title: Option<String>,
 
   /// Extensions for number
-  _number: Element,
+  #[serde(rename = "_number")]
+  _number: Option<Element>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// Extensions for title
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -40,25 +40,28 @@ pub struct ImagingStudy_Instance {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// DICOM instance  type.
+  #[serde(rename = "sopClass")]
+  sop_class: Coding,
 
   /// The DICOM SOP Instance UID for this image or other DICOM content.
-  uid: String,
-
-  /// The number of instance in the series.
-  number: u32,
+  uid: Option<String>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
   /// Extensions for uid
-  _uid: Element,
-
-  /// The description of the instance.
-  title: String,
-
-  /// Extensions for title
-  _title: Element,
+  #[serde(rename = "_uid")]
+  _uid: Option<Element>,
 
 }

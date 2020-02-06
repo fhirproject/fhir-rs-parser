@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::SubstancePolymer_Repeat::SubstancePolymer_Repeat;
-use crate::model::Meta::Meta;
 use crate::model::ResourceList::ResourceList;
-use crate::model::SubstancePolymer_MonomerSet::SubstancePolymer_MonomerSet;
-use crate::model::Narrative::Narrative;
+use crate::model::Meta::Meta;
 use crate::model::Extension::Extension;
+use crate::model::Narrative::Narrative;
+use crate::model::SubstancePolymer_Repeat::SubstancePolymer_Repeat;
+use crate::model::SubstancePolymer_MonomerSet::SubstancePolymer_MonomerSet;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 
@@ -15,31 +15,31 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SubstancePolymer {
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Vec<ResourceList>,
-
   /// Todo.
-  class: CodeableConcept,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Narrative,
-
-  /// Todo.
-  modification: Vec<String>,
-
-  /// The base language in which the resource is written.
-  language: String,
+  modification: Option<Vec<String>>,
 
   /// Extensions for implicitRules
   #[serde(rename = "_implicitRules")]
-  _implicit_rules: Element,
+  _implicit_rules: Option<Element>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// Todo.
+  #[serde(rename = "copolymerConnectivity")]
+  copolymer_connectivity: Option<Vec<CodeableConcept>>,
+
+  /// Todo.
+  geometry: Option<CodeableConcept>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// Todo.
+  class: Option<CodeableConcept>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -54,49 +54,51 @@ pub struct SubstancePolymer {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Meta,
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
 
   /// Todo.
-  geometry: CodeableConcept,
+  #[serde(rename = "monomerSet")]
+  monomer_set: Option<Vec<SubstancePolymer_MonomerSet>>,
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: String,
+  /// The base language in which the resource is written.
+  language: Option<String>,
 
-  /// Extensions for language
-  _language: Element,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
+
+  /// Todo.
+  repeat: Option<Vec<SubstancePolymer_Repeat>>,
+
+  /// Extensions for modification
+  #[serde(rename = "_modification")]
+  _modification: Option<Vec<Element>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// Extensions for modification
-  _modification: Vec<Element>,
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: String,
-
-  /// Todo.
-  #[serde(rename = "copolymerConnectivity")]
-  copolymer_connectivity: Vec<CodeableConcept>,
-
-  /// Todo.
-  #[serde(rename = "monomerSet")]
-  monomer_set: Vec<SubstancePolymer_MonomerSet>,
-
-  /// Todo.
-  repeat: Vec<SubstancePolymer_Repeat>,
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
 
 }

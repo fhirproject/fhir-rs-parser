@@ -2,9 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Reference::Reference;
+use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::Coding::Coding;
 
 
 /// A signature along with supporting context. The signature may be a digital
@@ -15,25 +15,13 @@ use crate::model::Coding::Coding;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Signature {
-  /// When the digital signature was signed.
-  when: i32,
-
-  /// Extensions for targetFormat
-  #[serde(rename = "_targetFormat")]
-  _target_format: Element,
-
-  /// A mime type that indicates the technical format of the target resources signed
-  /// by the signature.
-  #[serde(rename = "targetFormat")]
-  target_format: String,
-
   /// A reference to an application-usable description of the identity that signed
   /// (e.g. the signature used their private key).
   who: Box<Reference>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Extensions for data
+  #[serde(rename = "_data")]
+  _data: Option<Element>,
 
   /// An indication of the reason that the entity signed this document. This may be
   /// explicitly included as part of the signature information and can be used when
@@ -41,36 +29,50 @@ pub struct Signature {
   #[serde(rename = "type")]
   fhir_type: Vec<Coding>,
 
-  /// A mime type that indicates the technical format of the signature. Important mime
-  /// types are application/signature+xml for X ML DigSig, application/jose for JWS,
-  /// and image/* for a graphical image of a signature, etc.
-  #[serde(rename = "sigFormat")]
-  sig_format: String,
-
-  /// Extensions for when
-  _when: Element,
-
-  /// The base64 encoding of the Signature content. When signature is not recorded
-  /// electronically this element would be empty.
-  data: String,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// When the digital signature was signed.
+  when: Option<String>,
+
+  /// A mime type that indicates the technical format of the target resources signed
+  /// by the signature.
+  #[serde(rename = "targetFormat")]
+  target_format: Option<String>,
+
+  /// Extensions for when
+  #[serde(rename = "_when")]
+  _when: Option<Element>,
+
+  /// Extensions for sigFormat
+  #[serde(rename = "_sigFormat")]
+  _sig_format: Option<Element>,
+
+  /// A mime type that indicates the technical format of the signature. Important mime
+  /// types are application/signature+xml for X ML DigSig, application/jose for JWS,
+  /// and image/* for a graphical image of a signature, etc.
+  #[serde(rename = "sigFormat")]
+  sig_format: Option<String>,
+
+  /// The base64 encoding of the Signature content. When signature is not recorded
+  /// electronically this element would be empty.
+  data: Option<String>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// A reference to an application-usable description of the identity that is
   /// represented by the signature.
   #[serde(rename = "onBehalfOf")]
-  on_behalf_of: Box<Reference>,
+  on_behalf_of: Option<Box<Reference>>,
 
-  /// Extensions for data
-  _data: Element,
-
-  /// Extensions for sigFormat
-  #[serde(rename = "_sigFormat")]
-  _sig_format: Element,
+  /// Extensions for targetFormat
+  #[serde(rename = "_targetFormat")]
+  _target_format: Option<Element>,
 
 }

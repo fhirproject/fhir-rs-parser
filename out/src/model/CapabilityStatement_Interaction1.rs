@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
@@ -14,10 +14,25 @@ use crate::model::Element::Element;
 pub struct CapabilityStatement_Interaction1 {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
+
+  /// A coded identifier of the operation, supported by the system.
+  code: Option<CapabilityStatement_Interaction1Code>,
+
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
 
   /// Extensions for documentation
-  _documentation: Element,
+  #[serde(rename = "_documentation")]
+  _documentation: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -31,25 +46,12 @@ pub struct CapabilityStatement_Interaction1 {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// A coded identifier of the operation, supported by the system.
-  code: CapabilityStatement_Interaction1Code,
-
-  /// Extensions for code
-  _code: Element,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Guidance specific to the implementation of this operation, such as limitations
   /// on the kind of transactions allowed, or information about system wide search is
   /// implemented.
-  documentation: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  documentation: Option<String>,
 
 }
 

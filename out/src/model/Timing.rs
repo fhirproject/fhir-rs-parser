@@ -2,9 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Timing_Repeat::Timing_Repeat;
+use crate::model::Extension::Extension;
 
 
 /// Specifies an event that may occur multiple times. Timing schedules are used to
@@ -15,33 +15,15 @@ use crate::model::Timing_Repeat::Timing_Repeat;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Timing {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// A set of rules that describe when the event is scheduled.
-  repeat: Timing_Repeat,
-
-  /// A code for the timing schedule (or just text in code.text). Some codes such as
-  /// BID are ubiquitous, but many institutions define their own additional codes. If
-  /// a code is provided, the code is understood to be a complete statement of
-  /// whatever is specified in the structured timing data, and either the code or the
-  /// data may be used to interpret the Timing, with the exception that .repeat.bounds
-  /// still applies over the code (and is not contained in the code).
-  code: CodeableConcept,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
   /// Identifies specific times when the event occurs.
-  event: Vec<String>,
+  event: Option<Vec<String>>,
 
   /// Extensions for event
-  _event: Vec<Element>,
+  #[serde(rename = "_event")]
+  _event: Option<Vec<Element>>,
+
+  /// A set of rules that describe when the event is scheduled.
+  repeat: Option<Timing_Repeat>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -55,6 +37,25 @@ pub struct Timing {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// A code for the timing schedule (or just text in code.text). Some codes such as
+  /// BID are ubiquitous, but many institutions define their own additional codes. If
+  /// a code is provided, the code is understood to be a complete statement of
+  /// whatever is specified in the structured timing data, and either the code or the
+  /// data may be used to interpret the Timing, with the exception that .repeat.bounds
+  /// still applies over the code (and is not contained in the code).
+  code: Option<CodeableConcept>,
 
 }

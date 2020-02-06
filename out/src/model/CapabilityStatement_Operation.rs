@@ -12,17 +12,17 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CapabilityStatement_Operation {
-  /// The name of the operation or query. For an operation, this is the name  prefixed
-  /// with $ and used in the URL. For a query, this is the name used in the _query
-  /// parameter when the query is called.
-  name: String,
+  /// Documentation that describes anything special about the operation behavior,
+  /// possibly detailing different behavior for system, type and instance-level
+  /// invocation of the operation.
+  documentation: Option<String>,
 
-  /// Extensions for name
-  _name: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// Where the formal definition can be found. If a server references the base
   /// definition of an Operation (i.e. from the specification itself such as
@@ -33,18 +33,6 @@ pub struct CapabilityStatement_Operation {
   /// The custom definition would describe the specific subset of functionality
   /// supported.
   definition: String,
-
-  /// Documentation that describes anything special about the operation behavior,
-  /// possibly detailing different behavior for system, type and instance-level
-  /// invocation of the operation.
-  documentation: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -58,9 +46,23 @@ pub struct CapabilityStatement_Operation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The name of the operation or query. For an operation, this is the name  prefixed
+  /// with $ and used in the URL. For a query, this is the name used in the _query
+  /// parameter when the query is called.
+  name: Option<String>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
   /// Extensions for documentation
-  _documentation: Element,
+  #[serde(rename = "_documentation")]
+  _documentation: Option<Element>,
 
 }

@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Quantity::Quantity;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Attachment::Attachment;
 use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 
 
 /// The marketing status describes the date when a medicinal product is actually put
@@ -13,36 +13,26 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProdCharacteristic {
-  /// Where applicable, the nominal volume can be specified using a numerical value
-  /// and its unit of measurement The unit of measurement shall be specified in
-  /// accordance with ISO 11240 and the resulting terminology The symbol and the
-  /// symbol identifier shall be used.
-  #[serde(rename = "nominalVolume")]
-  nominal_volume: Quantity,
+  /// Where applicable, the imprint can be specified as text.
+  imprint: Option<Vec<String>>,
 
-  /// Where applicable, the color can be specified An appropriate controlled
+  /// Where applicable, the shape can be specified An appropriate controlled
   /// vocabulary shall be used The term and the term identifier shall be used.
-  color: Vec<String>,
+  shape: Option<String>,
 
-  /// Where applicable, the external diameter can be specified using a numerical value
-  /// and its unit of measurement The unit of measurement shall be specified in
-  /// accordance with ISO 11240 and the resulting terminology The symbol and the
-  /// symbol identifier shall be used.
-  #[serde(rename = "externalDiameter")]
-  external_diameter: Quantity,
+  /// Extensions for imprint
+  #[serde(rename = "_imprint")]
+  _imprint: Option<Vec<Element>>,
 
-  /// Where applicable, the weight can be specified using a numerical value and its
+  /// Where applicable, the depth can be specified using a numerical value and its
   /// unit of measurement The unit of measurement shall be specified in accordance
   /// with ISO 11240 and the resulting terminology The symbol and the symbol
   /// identifier shall be used.
-  weight: Quantity,
+  depth: Option<Quantity>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// Where applicable, the scoring can be specified An appropriate controlled
+  /// vocabulary shall be used The term and the term identifier shall be used.
+  scoring: Option<CodeableConcept>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -56,52 +46,65 @@ pub struct ProdCharacteristic {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Where applicable, the shape can be specified An appropriate controlled
-  /// vocabulary shall be used The term and the term identifier shall be used.
-  shape: String,
-
-  /// Where applicable, the height can be specified using a numerical value and its
-  /// unit of measurement The unit of measurement shall be specified in accordance
-  /// with ISO 11240 and the resulting terminology The symbol and the symbol
-  /// identifier shall be used.
-  height: Quantity,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Where applicable, the width can be specified using a numerical value and its
   /// unit of measurement The unit of measurement shall be specified in accordance
   /// with ISO 11240 and the resulting terminology The symbol and the symbol
   /// identifier shall be used.
-  width: Quantity,
+  width: Option<Quantity>,
 
-  /// Extensions for imprint
-  _imprint: Vec<Element>,
+  /// Where applicable, the nominal volume can be specified using a numerical value
+  /// and its unit of measurement The unit of measurement shall be specified in
+  /// accordance with ISO 11240 and the resulting terminology The symbol and the
+  /// symbol identifier shall be used.
+  #[serde(rename = "nominalVolume")]
+  nominal_volume: Option<Quantity>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Where applicable, the scoring can be specified An appropriate controlled
+  /// Where applicable, the color can be specified An appropriate controlled
   /// vocabulary shall be used The term and the term identifier shall be used.
-  scoring: CodeableConcept,
-
-  /// Where applicable, the depth can be specified using a numerical value and its
-  /// unit of measurement The unit of measurement shall be specified in accordance
-  /// with ISO 11240 and the resulting terminology The symbol and the symbol
-  /// identifier shall be used.
-  depth: Quantity,
+  color: Option<Vec<String>>,
 
   /// Extensions for color
-  _color: Vec<Element>,
-
-  /// Extensions for shape
-  _shape: Element,
+  #[serde(rename = "_color")]
+  _color: Option<Vec<Element>>,
 
   /// Where applicable, the image can be provided The format of the image attachment
   /// shall be specified by regional implementations.
-  image: Vec<Attachment>,
+  image: Option<Vec<Attachment>>,
 
-  /// Where applicable, the imprint can be specified as text.
-  imprint: Vec<String>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Where applicable, the height can be specified using a numerical value and its
+  /// unit of measurement The unit of measurement shall be specified in accordance
+  /// with ISO 11240 and the resulting terminology The symbol and the symbol
+  /// identifier shall be used.
+  height: Option<Quantity>,
+
+  /// Where applicable, the external diameter can be specified using a numerical value
+  /// and its unit of measurement The unit of measurement shall be specified in
+  /// accordance with ISO 11240 and the resulting terminology The symbol and the
+  /// symbol identifier shall be used.
+  #[serde(rename = "externalDiameter")]
+  external_diameter: Option<Quantity>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for shape
+  #[serde(rename = "_shape")]
+  _shape: Option<Element>,
+
+  /// Where applicable, the weight can be specified using a numerical value and its
+  /// unit of measurement The unit of measurement shall be specified in accordance
+  /// with ISO 11240 and the resulting terminology The symbol and the symbol
+  /// identifier shall be used.
+  weight: Option<Quantity>,
 
 }

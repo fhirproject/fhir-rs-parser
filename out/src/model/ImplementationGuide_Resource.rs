@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 
 
 /// A set of rules of how a particular interoperability or standards problem is
@@ -13,61 +13,29 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImplementationGuide_Resource {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// If true or a reference, indicates the resource is an example instance.  If a
-  /// reference is present, indicates that the example is an example of the specified
-  /// profile.
-  #[serde(rename = "exampleBoolean")]
-  example_boolean: bool,
-
-  /// Extensions for name
-  _name: Element,
-
-  /// Reference to the id of the grouping this resource appears in.
-  #[serde(rename = "groupingId")]
-  grouping_id: String,
-
-  /// Where this resource is found.
-  reference: Box<Reference>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// If true or a reference, indicates the resource is an example instance.  If a
-  /// reference is present, indicates that the example is an example of the specified
-  /// profile.
-  #[serde(rename = "exampleCanonical")]
-  example_canonical: String,
-
   /// Extensions for groupingId
   #[serde(rename = "_groupingId")]
-  _grouping_id: Element,
-
-  /// Extensions for description
-  _description: Element,
-
-  /// Extensions for exampleCanonical
-  #[serde(rename = "_exampleCanonical")]
-  _example_canonical: Element,
+  _grouping_id: Option<Element>,
 
   /// A description of the reason that a resource has been included in the
   /// implementation guide.
-  description: String,
+  description: Option<String>,
 
   /// A human assigned name for the resource. All resources SHOULD have a name, but
   /// the name may be extracted from the resource (e.g. ValueSet.name).
-  name: String,
+  name: Option<String>,
+
+  /// Extensions for exampleCanonical
+  #[serde(rename = "_exampleCanonical")]
+  _example_canonical: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// Extensions for fhirVersion
   #[serde(rename = "_fhirVersion")]
-  _fhir_version: Vec<Element>,
+  _fhir_version: Option<Vec<Element>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -81,10 +49,44 @@ pub struct ImplementationGuide_Resource {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// If true or a reference, indicates the resource is an example instance.  If a
+  /// reference is present, indicates that the example is an example of the specified
+  /// profile.
+  #[serde(rename = "exampleBoolean")]
+  example_boolean: Option<bool>,
+
+  /// Extensions for description
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
+
+  /// If true or a reference, indicates the resource is an example instance.  If a
+  /// reference is present, indicates that the example is an example of the specified
+  /// profile.
+  #[serde(rename = "exampleCanonical")]
+  example_canonical: Option<String>,
+
+  /// Where this resource is found.
+  reference: Box<Reference>,
+
+  /// Reference to the id of the grouping this resource appears in.
+  #[serde(rename = "groupingId")]
+  grouping_id: Option<String>,
 
   /// Extensions for exampleBoolean
   #[serde(rename = "_exampleBoolean")]
-  _example_boolean: Element,
+  _example_boolean: Option<Element>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
 }

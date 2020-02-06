@@ -13,36 +13,12 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MessageHeader_Destination {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Allows data conveyed by a message to be addressed to a particular person or
-  /// department when routing to a specific application isn't sufficient.
-  receiver: Box<Reference>,
+  /// Extensions for endpoint
+  #[serde(rename = "_endpoint")]
+  _endpoint: Option<Element>,
 
   /// Human-readable name for the target system.
-  name: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Identifies the target end system in situations where the initial message
-  /// transmission is to an intermediary system.
-  target: Box<Reference>,
-
-  /// Extensions for name
-  _name: Element,
-
-  /// Indicates where the message should be routed to.
-  endpoint: String,
-
-  /// Extensions for endpoint
-  _endpoint: Element,
+  name: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -56,6 +32,32 @@ pub struct MessageHeader_Destination {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Identifies the target end system in situations where the initial message
+  /// transmission is to an intermediary system.
+  target: Option<Box<Reference>>,
+
+  /// Allows data conveyed by a message to be addressed to a particular person or
+  /// department when routing to a specific application isn't sufficient.
+  receiver: Option<Box<Reference>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
+
+  /// Indicates where the message should be routed to.
+  endpoint: Option<String>,
 
 }

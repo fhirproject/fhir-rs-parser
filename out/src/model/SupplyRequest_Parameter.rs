@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Range::Range;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Quantity::Quantity;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Quantity::Quantity;
 
 
 /// A record of a request for a medication, substance or device used in the
@@ -14,24 +14,12 @@ use crate::model::Extension::Extension;
 #[serde(rename_all = "camelCase")]
 pub struct SupplyRequest_Parameter {
   /// The value of the device detail.
-  #[serde(rename = "valueCodeableConcept")]
-  value_codeable_concept: CodeableConcept,
-
-  /// Extensions for valueBoolean
-  #[serde(rename = "_valueBoolean")]
-  _value_boolean: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  #[serde(rename = "valueQuantity")]
+  value_quantity: Option<Quantity>,
 
   /// The value of the device detail.
   #[serde(rename = "valueRange")]
-  value_range: Range,
-
-  /// The value of the device detail.
-  #[serde(rename = "valueQuantity")]
-  value_quantity: Quantity,
+  value_range: Option<Range>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -45,20 +33,32 @@ pub struct SupplyRequest_Parameter {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The value of the device detail.
+  #[serde(rename = "valueCodeableConcept")]
+  value_codeable_concept: Option<CodeableConcept>,
 
   /// A code or string that identifies the device detail being asserted.
-  code: CodeableConcept,
+  code: Option<CodeableConcept>,
+
+  /// The value of the device detail.
+  #[serde(rename = "valueBoolean")]
+  value_boolean: Option<bool>,
+
+  /// Extensions for valueBoolean
+  #[serde(rename = "_valueBoolean")]
+  _value_boolean: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// The value of the device detail.
-  #[serde(rename = "valueBoolean")]
-  value_boolean: bool,
+  extension: Option<Vec<Extension>>,
 
 }

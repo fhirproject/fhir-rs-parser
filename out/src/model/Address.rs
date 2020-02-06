@@ -14,82 +14,90 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Address {
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
+
+  /// Specifies the entire address as it should be displayed e.g. on a postal label.
+  /// This may be provided instead of or as well as the specific parts.
+  text: Option<String>,
+
+  /// Extensions for line
+  #[serde(rename = "_line")]
+  _line: Option<Vec<Element>>,
+
   /// This component contains the house number, apartment number, street name, street
   /// direction,  P.O. Box number, delivery hints, and similar address information.
-  line: Vec<String>,
+  line: Option<Vec<String>>,
 
-  /// Sub-unit of a country with limited sovereignty in a federally organized country.
-  /// A code may be used if codes are in common use (e.g. US 2 letter state codes).
-  state: String,
-
-  /// Extensions for state
-  _state: Element,
-
-  /// Country - a nation as commonly understood or generally accepted.
-  country: String,
-
-  /// Extensions for city
-  _city: Element,
-
-  /// Extensions for district
-  _district: Element,
+  /// Extensions for postalCode
+  #[serde(rename = "_postalCode")]
+  _postal_code: Option<Element>,
 
   /// Extensions for country
-  _country: Element,
+  #[serde(rename = "_country")]
+  _country: Option<Element>,
+
+  /// Time period when address was/is in use.
+  period: Option<Period>,
 
   /// Distinguishes between physical addresses (those you can visit) and mailing
   /// addresses (e.g. PO Boxes and care-of addresses). Most addresses are both.
   #[serde(rename = "type")]
-  fhir_type: AddressType,
+  fhir_type: Option<AddressType>,
+
+  /// Extensions for district
+  #[serde(rename = "_district")]
+  _district: Option<Element>,
+
+  /// Extensions for use
+  #[serde(rename = "_use")]
+  _use: Option<Element>,
+
+  /// The name of the city, town, suburb, village or other community or delivery
+  /// center.
+  city: Option<String>,
+
+  /// Extensions for state
+  #[serde(rename = "_state")]
+  _state: Option<Element>,
+
+  /// The name of the administrative area (county).
+  district: Option<String>,
+
+  /// Extensions for city
+  #[serde(rename = "_city")]
+  _city: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The purpose of this address.
+  #[serde(rename = "use")]
+  fhir_use: Option<AddressUse>,
+
+  /// Extensions for text
+  #[serde(rename = "_text")]
+  _text: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// The name of the city, town, suburb, village or other community or delivery
-  /// center.
-  city: String,
-
-  /// The purpose of this address.
-  #[serde(rename = "use")]
-  fhir_use: AddressUse,
-
-  /// Extensions for text
-  _text: Element,
-
-  /// The name of the administrative area (county).
-  district: String,
-
-  /// Extensions for postalCode
-  #[serde(rename = "_postalCode")]
-  _postal_code: Element,
-
-  /// Time period when address was/is in use.
-  period: Period,
-
-  /// Extensions for type
-  _type: Element,
-
-  /// Extensions for line
-  _line: Vec<Element>,
+  /// Country - a nation as commonly understood or generally accepted.
+  country: Option<String>,
 
   /// A postal code designating a region defined by the postal service.
   #[serde(rename = "postalCode")]
-  postal_code: String,
+  postal_code: Option<String>,
 
-  /// Extensions for use
-  _use: Element,
-
-  /// Specifies the entire address as it should be displayed e.g. on a postal label.
-  /// This may be provided instead of or as well as the specific parts.
-  text: String,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Sub-unit of a country with limited sovereignty in a federally organized country.
+  /// A code may be used if codes are in common use (e.g. US 2 letter state codes).
+  state: Option<String>,
 
 }
 

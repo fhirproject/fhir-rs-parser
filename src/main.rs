@@ -6,6 +6,7 @@ use std::error::Error;
 use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
+use std::iter::FromIterator;
 use std::path::Path;
 use textwrap::{fill, indent};
 
@@ -144,7 +145,7 @@ fn main() {
     "id" => ("String", None),
     "time" => ("String", None), // todo
     "time" => ("String", None), // todo
-    "instant" => ("i32", None), // todo
+    "instant" => ("String", None), // todo
     "date" => ("i32", None), // todo
     "base64Binary" => ("String", None),
     "dateTime" => ("String", None), // todo
@@ -312,9 +313,15 @@ fn generate_class(
       None => return String::new(),
     };
 
+    let required_property_names: HashSet<String> = match &definition.required {
+      Some(strings) => HashSet::from_iter(strings.iter().cloned()),
+      None => HashSet::new(),
+    };
+
     for (property_name, property) in properties {
       let sanitized_name = sanitize_property_name(property_name, &property_replacement_map);
-      let needs_rename = &sanitized_name != property_name;
+      let needs_rename = &sanitized_name != property_name || sanitized_name.starts_with("_");
+      let required = required_property_names.contains(&property_name[..]);
       match property {
         Property::Reference {
           description,
@@ -342,7 +349,13 @@ fn generate_class(
           inner_string.push_str("  ");
           inner_string.push_str(&sanitized_name);
           inner_string.push_str(": ");
+          if !required {
+            inner_string.push_str("Option<");
+          }
           inner_string.push_str(&class_name);
+          if !required {
+            inner_string.push_str(">");
+          }
           inner_string.push_str(",\n\n");
         }
         Property::PatternedTyped {
@@ -372,7 +385,13 @@ fn generate_class(
           inner_string.push_str("  ");
           inner_string.push_str(&sanitized_name);
           inner_string.push_str(": ");
+          if !required {
+            inner_string.push_str("Option<");
+          }
           inner_string.push_str(&class_name);
+          if !required {
+            inner_string.push_str(">");
+          }
           inner_string.push_str(",\n\n");
         }
         Property::Array {
@@ -401,8 +420,15 @@ fn generate_class(
             }
             inner_string.push_str("  ");
             inner_string.push_str(&sanitized_name);
-            inner_string.push_str(": Vec<");
+            inner_string.push_str(": ");
+            if !required {
+              inner_string.push_str("Option<");
+            }
+            inner_string.push_str("Vec<");
             inner_string.push_str(&class_name);
+            if !required {
+              inner_string.push_str(">");
+            }
             inner_string.push_str(">,\n\n");
           } else if let Some(Item::Enum(item_enum)) = items.get("$ref") {
             let enum_name = format!("{}{}", name, property_name.to_class_case());
@@ -419,8 +445,15 @@ fn generate_class(
             }
             inner_string.push_str("  ");
             inner_string.push_str(&sanitized_name);
-            inner_string.push_str(": Vec<");
+            inner_string.push_str(": ");
+            if !required {
+              inner_string.push_str("Option<");
+            }
+            inner_string.push_str("Vec<");
             inner_string.push_str(&enum_name);
+            if !required {
+              inner_string.push_str(">");
+            }
             inner_string.push_str(">,\n\n");
           }
         }
@@ -445,7 +478,13 @@ fn generate_class(
           inner_string.push_str("  ");
           inner_string.push_str(&sanitized_name);
           inner_string.push_str(": ");
+          if !required {
+            inner_string.push_str("Option<");
+          }
           inner_string.push_str(&class_name);
+          if !required {
+            inner_string.push_str(">");
+          }
           inner_string.push_str(",\n\n");
         }
         Property::Enum {
@@ -464,7 +503,13 @@ fn generate_class(
           inner_string.push_str("  ");
           inner_string.push_str(&sanitized_name);
           inner_string.push_str(": ");
+          if !required {
+            inner_string.push_str("Option<");
+          }
           inner_string.push_str(&enum_name);
+          if !required {
+            inner_string.push_str(">");
+          }
           inner_string.push_str(",\n\n");
         }
         Property::Const {

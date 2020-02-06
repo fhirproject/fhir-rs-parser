@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 
 
 /// A set of rules of how a particular interoperability or standards problem is
@@ -12,25 +12,19 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImplementationGuide_Page1 {
-  /// Extensions for name
-  _name: Element,
+  /// Relative path to the page.
+  name: Option<String>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// The name of an anchor available on the page.
+  anchor: Option<Vec<String>>,
 
   /// Extensions for anchor
-  _anchor: Vec<Element>,
+  #[serde(rename = "_anchor")]
+  _anchor: Option<Vec<Element>>,
 
-  /// Label for the page intended for human display.
-  title: String,
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -44,15 +38,24 @@ pub struct ImplementationGuide_Page1 {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// The name of an anchor available on the page.
-  anchor: Vec<String>,
-
-  /// Relative path to the page.
-  name: String,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Extensions for title
-  _title: Element,
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Label for the page intended for human display.
+  title: Option<String>,
 
 }

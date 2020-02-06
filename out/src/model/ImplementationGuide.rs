@@ -1,18 +1,18 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::ImplementationGuide_Global::ImplementationGuide_Global;
-use crate::model::Element::Element;
-use crate::model::ImplementationGuide_Manifest::ImplementationGuide_Manifest;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::ImplementationGuide_Definition::ImplementationGuide_Definition;
-use crate::model::Meta::Meta;
-use crate::model::ResourceList::ResourceList;
 use crate::model::ImplementationGuide_DependsOn::ImplementationGuide_DependsOn;
-use crate::model::Narrative::Narrative;
-use crate::model::ContactDetail::ContactDetail;
+use crate::model::Meta::Meta;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::ImplementationGuide_Manifest::ImplementationGuide_Manifest;
+use crate::model::ImplementationGuide_Global::ImplementationGuide_Global;
 use crate::model::UsageContext::UsageContext;
+use crate::model::Narrative::Narrative;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ResourceList::ResourceList;
+use crate::model::ImplementationGuide_Definition::ImplementationGuide_Definition;
+use crate::model::ContactDetail::ContactDetail;
 
 
 /// A set of rules of how a particular interoperability or standards problem is
@@ -22,36 +22,13 @@ use crate::model::UsageContext::UsageContext;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImplementationGuide {
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: String,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
 
-  /// The NPM package name for this Implementation Guide, used in the NPM package
-  /// distribution, which is the primary mechanism by which FHIR based tooling manages
-  /// IG dependencies. This value must be globally unique, and should be assigned with
-  /// care.
-  #[serde(rename = "packageId")]
-  package_id: String,
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  contact: Vec<ContactDetail>,
-
-  /// A set of profiles that all resources covered by this implementation guide must
-  /// conform to.
-  global: Vec<ImplementationGuide_Global>,
-
-  /// Another implementation guide that this implementation depends on. Typically, an
-  /// implementation guide uses value sets, profiles etc.defined in other
-  /// implementation guides.
-  #[serde(rename = "dependsOn")]
-  depends_on: Vec<ImplementationGuide_DependsOn>,
-
-  /// Extensions for publisher
-  _publisher: Element,
+  /// Extensions for experimental
+  #[serde(rename = "_experimental")]
+  _experimental: Option<Element>,
 
   /// An absolute URI that is used to identify this implementation guide when it is
   /// referenced in a specification, model, design or an instance; also called its
@@ -60,32 +37,183 @@ pub struct ImplementationGuide {
   /// is (or will be) published. This URL can be the target of a canonical reference.
   /// It SHALL remain the same when the implementation guide is stored on different
   /// servers.
-  url: String,
+  url: Option<String>,
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// A natural language name identifying the implementation guide. This name should
+  /// be usable as an identifier for the module by machine processing applications
+  /// such as code generation.
+  name: Option<String>,
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
+
+  /// Extensions for publisher
+  #[serde(rename = "_publisher")]
+  _publisher: Option<Element>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
+
+  /// Another implementation guide that this implementation depends on. Typically, an
+  /// implementation guide uses value sets, profiles etc.defined in other
+  /// implementation guides.
+  #[serde(rename = "dependsOn")]
+  depends_on: Option<Vec<ImplementationGuide_DependsOn>>,
 
   /// The license that applies to this Implementation Guide, using an SPDX license
   /// code, or 'not-open-source'.
-  license: ImplementationGuideLicense,
+  license: Option<ImplementationGuideLicense>,
 
-  /// Extensions for date
-  _date: Element,
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
 
   /// Extensions for implicitRules
   #[serde(rename = "_implicitRules")]
-  _implicit_rules: Element,
+  _implicit_rules: Option<Element>,
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: String,
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
 
-  /// Extensions for experimental
-  _experimental: Element,
+  /// Extensions for copyright
+  #[serde(rename = "_copyright")]
+  _copyright: Option<Element>,
+
+  /// Extensions for version
+  #[serde(rename = "_version")]
+  _version: Option<Element>,
+
+  /// A legal or geographic region in which the implementation guide is intended to be
+  /// used.
+  jurisdiction: Option<Vec<CodeableConcept>>,
+
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  contact: Option<Vec<ContactDetail>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// The identifier that is used to identify this version of the implementation guide
+  /// when it is referenced in a specification, model, design or instance. This is an
+  /// arbitrary value managed by the implementation guide author and is not expected
+  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+  /// managed version is not available. There is also no expectation that versions can
+  /// be placed in a lexicographical sequence.
+  version: Option<String>,
+
+  /// Extensions for date
+  #[serde(rename = "_date")]
+  _date: Option<Element>,
+
+  /// A copyright statement relating to the implementation guide and/or its contents.
+  /// Copyright statements are generally legal restrictions on the use and publishing
+  /// of the implementation guide.
+  copyright: Option<String>,
+
+  /// A set of profiles that all resources covered by this implementation guide must
+  /// conform to.
+  global: Option<Vec<ImplementationGuide_Global>>,
+
+  /// The NPM package name for this Implementation Guide, used in the NPM package
+  /// distribution, which is the primary mechanism by which FHIR based tooling manages
+  /// IG dependencies. This value must be globally unique, and should be assigned with
+  /// care.
+  #[serde(rename = "packageId")]
+  package_id: Option<String>,
+
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// Extensions for license
+  #[serde(rename = "_license")]
+  _license: Option<Element>,
+
+  /// Extensions for packageId
+  #[serde(rename = "_packageId")]
+  _package_id: Option<Element>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// A Boolean value to indicate that this implementation guide is authored for
+  /// testing purposes (or education/evaluation/marketing) and is not intended to be
+  /// used for genuine usage.
+  experimental: Option<bool>,
+
+  /// The date  (and optionally time) when the implementation guide was published. The
+  /// date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the implementation guide changes.
+  date: Option<String>,
+
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate implementation
+  /// guide instances.
+  #[serde(rename = "useContext")]
+  use_context: Option<Vec<UsageContext>>,
+
+  /// A short, descriptive, user-friendly title for the implementation guide.
+  title: Option<String>,
+
+  /// Extensions for fhirVersion
+  #[serde(rename = "_fhirVersion")]
+  _fhir_version: Option<Vec<Element>>,
+
+  /// The information needed by an IG publisher tool to publish the whole
+  /// implementation guide.
+  definition: Option<ImplementationGuide_Definition>,
+
+  /// The name of the organization or individual that published the implementation
+  /// guide.
+  publisher: Option<String>,
+
+  /// The status of this implementation guide. Enables tracking the life-cycle of the
+  /// content.
+  status: Option<ImplementationGuideStatus>,
 
   /// Extensions for description
-  _description: Element,
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
+
+  /// A free text natural language description of the implementation guide from a
+  /// consumer's perspective.
+  description: Option<String>,
 
   /// Information about an assembled implementation guide, created by the publication
   /// tooling.
-  manifest: ImplementationGuide_Manifest,
+  manifest: Option<ImplementationGuide_Manifest>,
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -100,127 +228,11 @@ pub struct ImplementationGuide {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Vec<ResourceList>,
-
-  /// Extensions for version
-  _version: Element,
-
-  /// Extensions for packageId
-  #[serde(rename = "_packageId")]
-  _package_id: Element,
-
-  /// Extensions for url
-  _url: Element,
-
-  /// Extensions for language
-  _language: Element,
-
-  /// A short, descriptive, user-friendly title for the implementation guide.
-  title: String,
-
-  /// The date  (and optionally time) when the implementation guide was published. The
-  /// date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the implementation guide changes.
-  date: String,
-
-  /// The status of this implementation guide. Enables tracking the life-cycle of the
-  /// content.
-  status: ImplementationGuideStatus,
-
-  /// The base language in which the resource is written.
-  language: String,
-
-  /// The name of the organization or individual that published the implementation
-  /// guide.
-  publisher: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for copyright
-  _copyright: Element,
-
-  /// A Boolean value to indicate that this implementation guide is authored for
-  /// testing purposes (or education/evaluation/marketing) and is not intended to be
-  /// used for genuine usage.
-  experimental: bool,
-
-  /// Extensions for name
-  _name: Element,
-
-  /// The identifier that is used to identify this version of the implementation guide
-  /// when it is referenced in a specification, model, design or instance. This is an
-  /// arbitrary value managed by the implementation guide author and is not expected
-  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-  /// managed version is not available. There is also no expectation that versions can
-  /// be placed in a lexicographical sequence.
-  version: String,
-
-  /// A legal or geographic region in which the implementation guide is intended to be
-  /// used.
-  jurisdiction: Vec<CodeableConcept>,
-
-  /// Extensions for license
-  _license: Element,
-
-  /// Extensions for fhirVersion
-  #[serde(rename = "_fhirVersion")]
-  _fhir_version: Vec<Element>,
-
-  /// The information needed by an IG publisher tool to publish the whole
-  /// implementation guide.
-  definition: ImplementationGuide_Definition,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Meta,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Extensions for title
-  _title: Element,
-
-  /// A free text natural language description of the implementation guide from a
-  /// consumer's perspective.
-  description: String,
-
-  /// A copyright statement relating to the implementation guide and/or its contents.
-  /// Copyright statements are generally legal restrictions on the use and publishing
-  /// of the implementation guide.
-  copyright: String,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Narrative,
-
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate implementation
-  /// guide instances.
-  #[serde(rename = "useContext")]
-  use_context: Vec<UsageContext>,
-
-  /// Extensions for status
-  _status: Element,
-
-  /// A natural language name identifying the implementation guide. This name should
-  /// be usable as an identifier for the module by machine processing applications
-  /// such as code generation.
-  name: String,
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
 
 }
 

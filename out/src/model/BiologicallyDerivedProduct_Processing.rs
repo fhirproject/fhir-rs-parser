@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 
 
 /// A material substance originating from a biological entity intended to be
@@ -14,16 +14,6 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BiologicallyDerivedProduct_Processing {
-  /// Time of processing.
-  #[serde(rename = "timeDateTime")]
-  time_date_time: String,
-
-  /// Description of of processing.
-  description: String,
-
-  /// Extensions for description
-  _description: Element,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -36,31 +26,42 @@ pub struct BiologicallyDerivedProduct_Processing {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Procesing code.
-  procedure: CodeableConcept,
-
-  /// Extensions for timeDateTime
-  #[serde(rename = "_timeDateTime")]
-  _time_date_time: Element,
-
-  /// Time of processing.
-  #[serde(rename = "timePeriod")]
-  time_period: Period,
-
-  /// Substance added during processing.
-  additive: Box<Reference>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for description
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
+
+  /// Procesing code.
+  procedure: Option<CodeableConcept>,
+
+  /// Time of processing.
+  #[serde(rename = "timePeriod")]
+  time_period: Option<Period>,
+
+  /// Substance added during processing.
+  additive: Option<Box<Reference>>,
+
+  /// Description of of processing.
+  description: Option<String>,
+
+  /// Extensions for timeDateTime
+  #[serde(rename = "_timeDateTime")]
+  _time_date_time: Option<Element>,
+
+  /// Time of processing.
+  #[serde(rename = "timeDateTime")]
+  time_date_time: Option<String>,
 
 }

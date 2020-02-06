@@ -14,26 +14,22 @@ use crate::model::Element::Element;
 pub struct ValueSet_Filter {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// A code that identifies a property or a filter defined in the code system.
-  property: String,
-
-  /// Extensions for property
-  _property: Element,
-
-  /// Extensions for op
-  _op: Element,
+  /// The match value may be either a code defined by the system, or a string value,
+  /// which is a regex match on the literal string of the property value  (if the
+  /// filter represents a property defined in CodeSystem) or of the system filter
+  /// value (if the filter represents a filter defined in CodeSystem) when the
+  /// operation is 'regex', or one of the values (true and false), when the operation
+  /// is 'exists'.
+  value: Option<String>,
 
   /// The kind of operation to perform as a part of the filter criteria.
-  op: ValueSet_FilterOp,
+  op: Option<ValueSet_FilterOp>,
+
+  /// Extensions for property
+  #[serde(rename = "_property")]
+  _property: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -47,18 +43,25 @@ pub struct ValueSet_Filter {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// A code that identifies a property or a filter defined in the code system.
+  property: Option<String>,
+
+  /// Extensions for op
+  #[serde(rename = "_op")]
+  _op: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for value
-  _value: Element,
-
-  /// The match value may be either a code defined by the system, or a string value,
-  /// which is a regex match on the literal string of the property value  (if the
-  /// filter represents a property defined in CodeSystem) or of the system filter
-  /// value (if the filter represents a filter defined in CodeSystem) when the
-  /// operation is 'regex', or one of the values (true and false), when the operation
-  /// is 'exists'.
-  value: String,
+  #[serde(rename = "_value")]
+  _value: Option<Element>,
 
 }
 

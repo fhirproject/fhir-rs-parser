@@ -12,7 +12,30 @@ use crate::model::Extension::Extension;
 #[serde(rename_all = "camelCase")]
 pub struct TerminologyCapabilities_Implementation {
   /// Extensions for description
-  _description: Element,
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Information about the specific installation that this terminology capability
+  /// statement relates to.
+  description: Option<String>,
+
+  /// An absolute base URL for the implementation.
+  url: Option<String>,
+
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -26,27 +49,6 @@ pub struct TerminologyCapabilities_Implementation {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Information about the specific installation that this terminology capability
-  /// statement relates to.
-  description: String,
-
-  /// Extensions for url
-  _url: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// An absolute base URL for the implementation.
-  url: String,
+  modifier_extension: Option<Vec<Extension>>,
 
 }

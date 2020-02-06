@@ -12,6 +12,35 @@ use crate::model::TerminologyCapabilities_Parameter::TerminologyCapabilities_Par
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminologyCapabilities_Expansion {
+  /// Whether the server supports paging on expansion.
+  paging: Option<bool>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for paging
+  #[serde(rename = "_paging")]
+  _paging: Option<Element>,
+
+  /// Documentation about text searching works.
+  #[serde(rename = "textFilter")]
+  text_filter: Option<String>,
+
+  /// Extensions for textFilter
+  #[serde(rename = "_textFilter")]
+  _text_filter: Option<Element>,
+
+  /// Extensions for hierarchical
+  #[serde(rename = "_hierarchical")]
+  _hierarchical: Option<Element>,
+
+  /// Whether the server can return nested value sets.
+  hierarchical: Option<bool>,
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -24,46 +53,20 @@ pub struct TerminologyCapabilities_Expansion {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Whether the server supports paging on expansion.
-  paging: bool,
-
-  /// Extensions for textFilter
-  #[serde(rename = "_textFilter")]
-  _text_filter: Element,
-
-  /// Extensions for paging
-  _paging: Element,
+  /// Allow request for incomplete expansions?
+  incomplete: Option<bool>,
 
   /// Extensions for incomplete
-  _incomplete: Element,
-
-  /// Supported expansion parameter.
-  parameter: Vec<TerminologyCapabilities_Parameter>,
-
-  /// Whether the server can return nested value sets.
-  hierarchical: bool,
-
-  /// Extensions for hierarchical
-  _hierarchical: Element,
-
-  /// Documentation about text searching works.
-  #[serde(rename = "textFilter")]
-  text_filter: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  #[serde(rename = "_incomplete")]
+  _incomplete: Option<Element>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
-  /// Allow request for incomplete expansions?
-  incomplete: bool,
+  /// Supported expansion parameter.
+  parameter: Option<Vec<TerminologyCapabilities_Parameter>>,
 
 }

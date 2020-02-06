@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 
 
 /// The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a
@@ -12,38 +12,9 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RiskEvidenceSynthesis_PrecisionEstimate {
-  /// Upper bound of confidence interval.
-  to: f32,
-
-  /// Extensions for from
-  _from: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Lower bound of confidence interval.
-  from: f32,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for level
-  _level: Element,
-
-  /// Extensions for to
-  _to: Element,
-
-  /// Use 95 for a 95% confidence interval.
-  level: f32,
-
   /// Examples include confidence interval and interquartile range.
   #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
+  fhir_type: Option<CodeableConcept>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -57,6 +28,38 @@ pub struct RiskEvidenceSynthesis_PrecisionEstimate {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Upper bound of confidence interval.
+  to: Option<f32>,
+
+  /// Extensions for to
+  #[serde(rename = "_to")]
+  _to: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for level
+  #[serde(rename = "_level")]
+  _level: Option<Element>,
+
+  /// Lower bound of confidence interval.
+  from: Option<f32>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Use 95 for a 95% confidence interval.
+  level: Option<f32>,
+
+  /// Extensions for from
+  #[serde(rename = "_from")]
+  _from: Option<Element>,
 
 }

@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 
 
 /// This resource provides: the claim details; adjudication details from the
@@ -13,9 +13,9 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExplanationOfBenefit_CareTeam {
-  /// The lead, assisting or supervising practitioner and their discipline if a
-  /// multidisciplinary team.
-  role: CodeableConcept,
+  /// The party who is billing and/or responsible for the claimed products or
+  /// services.
+  responsible: Option<bool>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -29,36 +29,38 @@ pub struct ExplanationOfBenefit_CareTeam {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Extensions for sequence
-  _sequence: Element,
-
-  /// Extensions for responsible
-  _responsible: Element,
-
-  /// Member of the team who provided the product or service.
-  provider: Box<Reference>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// The qualification of the practitioner which is applicable for this service.
-  qualification: CodeableConcept,
+  /// Extensions for responsible
+  #[serde(rename = "_responsible")]
+  _responsible: Option<Element>,
+
+  /// The lead, assisting or supervising practitioner and their discipline if a
+  /// multidisciplinary team.
+  role: Option<CodeableConcept>,
+
+  /// Member of the team who provided the product or service.
+  provider: Box<Reference>,
 
   /// A number to uniquely identify care team entries.
-  sequence: i32,
+  sequence: Option<i32>,
 
-  /// The party who is billing and/or responsible for the claimed products or
-  /// services.
-  responsible: bool,
+  /// Extensions for sequence
+  #[serde(rename = "_sequence")]
+  _sequence: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The qualification of the practitioner which is applicable for this service.
+  qualification: Option<CodeableConcept>,
 
 }

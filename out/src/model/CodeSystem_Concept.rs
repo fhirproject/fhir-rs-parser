@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::CodeSystem_Property1::CodeSystem_Property1;
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeSystem_Designation::CodeSystem_Designation;
 
@@ -13,37 +13,19 @@ use crate::model::CodeSystem_Designation::CodeSystem_Designation;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CodeSystem_Concept {
-  /// A human readable string that is the recommended default way to present this
-  /// concept to a user.
-  display: String,
-
-  /// Defines children of a concept to produce a hierarchy of concepts. The nature of
-  /// the relationships is variable (is-a/contains/categorizes) - see
-  /// hierarchyMeaning.
-  concept: Vec<CodeSystem_Concept>,
-
-  /// Extensions for code
-  _code: Element,
-
-  /// Extensions for display
-  _display: Element,
-
   /// The formal definition of the concept. The code system resource does not make
   /// formal definitions required, because of the prevalence of legacy systems.
   /// However, they are highly recommended, as without them there is no formal meaning
   /// associated with the concept.
-  definition: String,
+  definition: Option<String>,
 
-  /// Additional representations for the concept - other languages, aliases,
-  /// specialized purposes, used for particular purposes, etc.
-  designation: Vec<CodeSystem_Designation>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Extensions for display
+  #[serde(rename = "_display")]
+  _display: Option<Element>,
 
   /// Extensions for definition
-  _definition: Element,
+  #[serde(rename = "_definition")]
+  _definition: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -57,20 +39,41 @@ pub struct CodeSystem_Concept {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
+
+  /// A code - a text symbol - that uniquely identifies the concept within the code
+  /// system.
+  code: Option<String>,
 
   /// A property value for this concept.
-  property: Vec<CodeSystem_Property1>,
+  property: Option<Vec<CodeSystem_Property1>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// A code - a text symbol - that uniquely identifies the concept within the code
-  /// system.
-  code: String,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// A human readable string that is the recommended default way to present this
+  /// concept to a user.
+  display: Option<String>,
+
+  /// Additional representations for the concept - other languages, aliases,
+  /// specialized purposes, used for particular purposes, etc.
+  designation: Option<Vec<CodeSystem_Designation>>,
+
+  /// Defines children of a concept to produce a hierarchy of concepts. The nature of
+  /// the relationships is variable (is-a/contains/categorizes) - see
+  /// hierarchyMeaning.
+  concept: Option<Vec<CodeSystem_Concept>>,
 
 }

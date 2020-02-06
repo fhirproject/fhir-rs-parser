@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::Reference::Reference;
 use crate::model::Coding::Coding;
 use crate::model::Signature::Signature;
 use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
 
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
@@ -12,20 +12,6 @@ use crate::model::Reference::Reference;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Contract_Signer {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Role of this Contract signer, e.g. notary, grantee.
-  #[serde(rename = "type")]
-  fhir_type: Coding,
-
-  /// Party which is a signator to this Contract.
-  party: Box<Reference>,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -38,11 +24,25 @@ pub struct Contract_Signer {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Role of this Contract signer, e.g. notary, grantee.
+  #[serde(rename = "type")]
+  fhir_type: Coding,
+
+  /// Party which is a signator to this Contract.
+  party: Box<Reference>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// Legally binding Contract DSIG signature contents in Base64.
   signature: Vec<Signature>,

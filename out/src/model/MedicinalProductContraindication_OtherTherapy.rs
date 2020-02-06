@@ -11,23 +11,6 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MedicinalProductContraindication_OtherTherapy {
-  /// The type of relationship between the medicinal product indication or
-  /// contraindication and another therapy.
-  #[serde(rename = "therapyRelationshipType")]
-  therapy_relationship_type: CodeableConcept,
-
-  /// Reference to a specific medication (active substance, medicinal product or class
-  /// of products) as part of an indication or contraindication.
-  #[serde(rename = "medicationReference")]
-  medication_reference: Box<Reference>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -40,15 +23,32 @@ pub struct MedicinalProductContraindication_OtherTherapy {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// The type of relationship between the medicinal product indication or
+  /// contraindication and another therapy.
+  #[serde(rename = "therapyRelationshipType")]
+  therapy_relationship_type: CodeableConcept,
 
   /// Reference to a specific medication (active substance, medicinal product or class
   /// of products) as part of an indication or contraindication.
   #[serde(rename = "medicationCodeableConcept")]
-  medication_codeable_concept: CodeableConcept,
+  medication_codeable_concept: Option<CodeableConcept>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Reference to a specific medication (active substance, medicinal product or class
+  /// of products) as part of an indication or contraindication.
+  #[serde(rename = "medicationReference")]
+  medication_reference: Option<Box<Reference>>,
 
 }

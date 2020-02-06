@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
-use crate::model::SubstanceNucleicAcid_Sugar::SubstanceNucleicAcid_Sugar;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Attachment::Attachment;
+use crate::model::SubstanceNucleicAcid_Sugar::SubstanceNucleicAcid_Sugar;
 use crate::model::SubstanceNucleicAcid_Linkage::SubstanceNucleicAcid_Linkage;
+use crate::model::Attachment::Attachment;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 
 
 /// Nucleic acids are defined by three distinct elements: the base, sugar and
@@ -15,38 +15,26 @@ use crate::model::SubstanceNucleicAcid_Linkage::SubstanceNucleicAcid_Linkage;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceNucleicAcid_Subunit {
-  /// The nucleotide present at the 3’ terminal shall be specified based on a
-  /// controlled vocabulary. Since the sequence is represented from the 5' to the 3'
-  /// end, the 5’ prime nucleotide is the letter at the last position in the sequence.
-  /// A separate representation would be redundant.
-  #[serde(rename = "threePrime")]
-  three_prime: CodeableConcept,
+  /// Extensions for length
+  #[serde(rename = "_length")]
+  _length: Option<Element>,
 
-  /// The linkages between sugar residues will also be captured.
-  linkage: Vec<SubstanceNucleicAcid_Linkage>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
-  /// The nucleotide present at the 5’ terminal shall be specified based on a
-  /// controlled vocabulary. Since the sequence is represented from the 5' to the 3'
-  /// end, the 5’ prime nucleotide is the letter at the first position in the
-  /// sequence. A separate representation would be redundant.
-  #[serde(rename = "fivePrime")]
-  five_prime: CodeableConcept,
+  /// The length of the sequence shall be captured.
+  length: Option<i32>,
 
   /// 5.3.6.8.1 Sugar ID (Mandatory).
-  sugar: Vec<SubstanceNucleicAcid_Sugar>,
+  sugar: Option<Vec<SubstanceNucleicAcid_Sugar>>,
 
-  /// Index of linear sequences of nucleic acids in order of decreasing length.
-  /// Sequences of the same length will be ordered by molecular weight. Subunits that
-  /// have identical sequences will be repeated and have sequential subscripts.
-  subunit: i32,
-
-  /// Actual nucleotide sequence notation from 5' to 3' end using standard single
-  /// letter codes. In addition to the base sequence, sugar and type of phosphate or
-  /// non-phosphate linkage should also be captured.
-  sequence: String,
-
-  /// Extensions for sequence
-  _sequence: Element,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -60,30 +48,45 @@ pub struct SubstanceNucleicAcid_Subunit {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Actual nucleotide sequence notation from 5' to 3' end using standard single
+  /// letter codes. In addition to the base sequence, sugar and type of phosphate or
+  /// non-phosphate linkage should also be captured.
+  sequence: Option<String>,
+
+  /// Extensions for sequence
+  #[serde(rename = "_sequence")]
+  _sequence: Option<Element>,
+
+  /// Index of linear sequences of nucleic acids in order of decreasing length.
+  /// Sequences of the same length will be ordered by molecular weight. Subunits that
+  /// have identical sequences will be repeated and have sequential subscripts.
+  subunit: Option<i32>,
+
+  /// The nucleotide present at the 3’ terminal shall be specified based on a
+  /// controlled vocabulary. Since the sequence is represented from the 5' to the 3'
+  /// end, the 5’ prime nucleotide is the letter at the last position in the sequence.
+  /// A separate representation would be redundant.
+  #[serde(rename = "threePrime")]
+  three_prime: Option<CodeableConcept>,
+
+  /// The nucleotide present at the 5’ terminal shall be specified based on a
+  /// controlled vocabulary. Since the sequence is represented from the 5' to the 3'
+  /// end, the 5’ prime nucleotide is the letter at the first position in the
+  /// sequence. A separate representation would be redundant.
+  #[serde(rename = "fivePrime")]
+  five_prime: Option<CodeableConcept>,
+
+  /// The linkages between sugar residues will also be captured.
+  linkage: Option<Vec<SubstanceNucleicAcid_Linkage>>,
+
+  /// Extensions for subunit
+  #[serde(rename = "_subunit")]
+  _subunit: Option<Element>,
 
   /// (TBC).
   #[serde(rename = "sequenceAttachment")]
-  sequence_attachment: Attachment,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for length
-  _length: Element,
-
-  /// Extensions for subunit
-  _subunit: Element,
-
-  /// The length of the sequence shall be captured.
-  length: i32,
+  sequence_attachment: Option<Attachment>,
 
 }

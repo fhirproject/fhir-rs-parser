@@ -9,34 +9,12 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StructureMap_Structure {
-  /// Extensions for mode
-  _mode: Element,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Documentation that describes how the structure is used in the mapping.
-  documentation: String,
-
-  /// The name used for this type in the map.
-  alias: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for documentation
-  _documentation: Element,
+  /// How the referenced structure is used in this mapping.
+  mode: Option<StructureMap_StructureMode>,
 
   /// Extensions for alias
-  _alias: Element,
-
-  /// The canonical reference to the structure.
-  url: String,
+  #[serde(rename = "_alias")]
+  _alias: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -50,10 +28,35 @@ pub struct StructureMap_Structure {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// How the referenced structure is used in this mapping.
-  mode: StructureMap_StructureMode,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The name used for this type in the map.
+  alias: Option<String>,
+
+  /// The canonical reference to the structure.
+  url: String,
+
+  /// Documentation that describes how the structure is used in the mapping.
+  documentation: Option<String>,
+
+  /// Extensions for documentation
+  #[serde(rename = "_documentation")]
+  _documentation: Option<Element>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for mode
+  #[serde(rename = "_mode")]
+  _mode: Option<Element>,
 
 }
 

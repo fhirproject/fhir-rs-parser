@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Expression::Expression;
 use crate::model::Element::Element;
+use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
 
 
@@ -13,8 +13,12 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlanDefinition_DynamicValue {
-  /// An expression specifying the value of the customized element.
-  expression: Expression,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// The path to the element to be customized. This is the path on the resource that
   /// will hold the result of the calculation defined by the expression. The specified
@@ -24,7 +28,7 @@ pub struct PlanDefinition_DynamicValue {
   /// (.) to traverse sub-elements, as well as indexers ([x]) to traverse multiple-
   /// cardinality sub-elements (see the [Simple FHIRPath
   /// Profile](fhirpath.html#simple) for full details).
-  path: String,
+  path: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -38,20 +42,17 @@ pub struct PlanDefinition_DynamicValue {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Extensions for path
+  #[serde(rename = "_path")]
+  _path: Option<Element>,
+
+  /// An expression specifying the value of the customized element.
+  expression: Option<Expression>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Extensions for path
-  _path: Element,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  id: Option<String>,
 
 }

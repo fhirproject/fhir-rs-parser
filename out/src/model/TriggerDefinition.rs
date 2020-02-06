@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Timing::Timing;
+use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use crate::model::DataRequirement::DataRequirement;
-use crate::model::Expression::Expression;
+use crate::model::Timing::Timing;
+use crate::model::Element::Element;
 
 
 /// A description of a triggering event. Triggering events can be named events, data
@@ -14,63 +14,65 @@ use crate::model::Expression::Expression;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TriggerDefinition {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// A formal name for the event. This may be an absolute URI that identifies the
+  /// event formally (e.g. from a trigger registry), or a simple relative URI that
+  /// identifies the event in a local context.
+  name: Option<String>,
 
-  /// The type of triggering event.
-  #[serde(rename = "type")]
-  fhir_type: TriggerDefinitionType,
+  /// The triggering data of the event (if this is a data trigger). If more than one
+  /// data is requirement is specified, then all the data requirements must be true.
+  data: Option<Vec<DataRequirement>>,
+
+  /// A boolean-valued expression that is evaluated in the context of the container of
+  /// the trigger definition and returns whether or not the trigger fires.
+  condition: Option<Expression>,
+
+  /// The timing of the event (if this is a periodic trigger).
+  #[serde(rename = "timingTiming")]
+  timing_timing: Option<Timing>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for type
-  _type: Element,
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for timingDate
   #[serde(rename = "_timingDate")]
-  _timing_date: Element,
+  _timing_date: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Extensions for type
+  #[serde(rename = "_type")]
+  _type: Option<Element>,
 
   /// The timing of the event (if this is a periodic trigger).
   #[serde(rename = "timingDateTime")]
-  timing_date_time: String,
+  timing_date_time: Option<String>,
 
-  /// Extensions for timingDateTime
-  #[serde(rename = "_timingDateTime")]
-  _timing_date_time: Element,
-
-  /// A formal name for the event. This may be an absolute URI that identifies the
-  /// event formally (e.g. from a trigger registry), or a simple relative URI that
-  /// identifies the event in a local context.
-  name: String,
-
-  /// Extensions for name
-  _name: Element,
-
-  /// The triggering data of the event (if this is a data trigger). If more than one
-  /// data is requirement is specified, then all the data requirements must be true.
-  data: Vec<DataRequirement>,
+  /// The type of triggering event.
+  #[serde(rename = "type")]
+  fhir_type: Option<TriggerDefinitionType>,
 
   /// The timing of the event (if this is a periodic trigger).
   #[serde(rename = "timingReference")]
-  timing_reference: Box<Reference>,
+  timing_reference: Option<Box<Reference>>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
   /// The timing of the event (if this is a periodic trigger).
   #[serde(rename = "timingDate")]
-  timing_date: String,
+  timing_date: Option<String>,
 
-  /// A boolean-valued expression that is evaluated in the context of the container of
-  /// the trigger definition and returns whether or not the trigger fires.
-  condition: Expression,
-
-  /// The timing of the event (if this is a periodic trigger).
-  #[serde(rename = "timingTiming")]
-  timing_timing: Timing,
+  /// Extensions for timingDateTime
+  #[serde(rename = "_timingDateTime")]
+  _timing_date_time: Option<Element>,
 
 }
 

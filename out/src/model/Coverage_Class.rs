@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 
 
 /// Financial instrument which may be used to reimburse or pay for health care
@@ -11,21 +11,16 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Coverage_Class {
-  /// A short description for the class.
-  name: String,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
 
-  /// The alphanumeric string value associated with the insurer issued label.
-  value: String,
-
-  /// Extensions for name
-  _name: Element,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// The type of classification for which an insurer-specific class label or number
   /// and optional name is provided, for example may be used to identify a class of
@@ -45,13 +40,20 @@ pub struct Coverage_Class {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
   /// Extensions for value
-  _value: Element,
+  #[serde(rename = "_value")]
+  _value: Option<Element>,
+
+  /// A short description for the class.
+  name: Option<String>,
+
+  /// The alphanumeric string value associated with the insurer issued label.
+  value: Option<String>,
 
 }

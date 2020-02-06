@@ -3,8 +3,8 @@
 use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
 use crate::model::ValueSet_Filter::ValueSet_Filter;
-use crate::model::Extension::Extension;
 use crate::model::ValueSet_Concept::ValueSet_Concept;
+use crate::model::Extension::Extension;
 
 
 /// A ValueSet resource instance specifies a set of codes drawn from one or more
@@ -14,45 +14,19 @@ use crate::model::ValueSet_Concept::ValueSet_Concept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ValueSet_Include {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Specifies a concept to be included or excluded.
-  concept: Vec<ValueSet_Concept>,
-
   /// Selects the concepts found in this value set (based on its value set
   /// definition). This is an absolute URI that is a reference to ValueSet.url.  If
   /// multiple value sets are specified this includes the union of the contents of all
   /// of the referenced value sets.
   #[serde(rename = "valueSet")]
-  value_set: Vec<String>,
-
-  /// An absolute URI which is the code system from which the selected codes come
-  /// from.
-  system: String,
-
-  /// Extensions for system
-  _system: Element,
+  value_set: Option<Vec<String>>,
 
   /// The version of the code system that the codes are selected from, or the special
   /// version '*' for all versions.
-  version: String,
+  version: Option<String>,
 
-  /// Select concepts by specify a matching criterion based on the properties
-  /// (including relationships) defined by the system, or on filters defined by the
-  /// system. If multiple filters are specified, they SHALL all be true.
-  filter: Vec<ValueSet_Filter>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for version
-  _version: Element,
+  /// Specifies a concept to be included or excluded.
+  concept: Option<Vec<ValueSet_Concept>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -66,6 +40,34 @@ pub struct ValueSet_Include {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// An absolute URI which is the code system from which the selected codes come
+  /// from.
+  system: Option<String>,
+
+  /// Extensions for system
+  #[serde(rename = "_system")]
+  _system: Option<Element>,
+
+  /// Extensions for version
+  #[serde(rename = "_version")]
+  _version: Option<Element>,
+
+  /// Select concepts by specify a matching criterion based on the properties
+  /// (including relationships) defined by the system, or on filters defined by the
+  /// system. If multiple filters are specified, they SHALL all be true.
+  filter: Option<Vec<ValueSet_Filter>>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
 }

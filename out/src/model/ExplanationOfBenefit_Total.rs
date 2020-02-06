@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Money::Money;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Money::Money;
 
 
 /// This resource provides: the claim details; adjudication details from the
@@ -12,27 +12,6 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ExplanationOfBenefit_Total {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Monetary total amount associated with the category.
-  amount: Money,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// A code to indicate the information type of this adjudication record. Information
-  /// types may include: the value submitted, maximum values or percentages allowed or
-  /// payable under the plan, amounts that the patient is responsible for in aggregate
-  /// or pertaining to this item, amounts paid by other coverages, and the benefit
-  /// payable for this item.
-  category: CodeableConcept,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -45,6 +24,27 @@ pub struct ExplanationOfBenefit_Total {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// A code to indicate the information type of this adjudication record. Information
+  /// types may include: the value submitted, maximum values or percentages allowed or
+  /// payable under the plan, amounts that the patient is responsible for in aggregate
+  /// or pertaining to this item, amounts paid by other coverages, and the benefit
+  /// payable for this item.
+  category: CodeableConcept,
+
+  /// Monetary total amount associated with the category.
+  amount: Money,
 
 }

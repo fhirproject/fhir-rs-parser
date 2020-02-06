@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
+use crate::model::SubstanceSpecification_Official::SubstanceSpecification_Official;
+use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
-use crate::model::SubstanceSpecification_Official::SubstanceSpecification_Official;
+use crate::model::Extension::Extension;
 
 
 /// The detailed description of a substance, typically at a level beyond what is
@@ -14,10 +14,35 @@ use crate::model::SubstanceSpecification_Official::SubstanceSpecification_Offici
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceSpecification_Name {
   /// Details of the official nature of this name.
-  official: Vec<SubstanceSpecification_Official>,
+  official: Option<Vec<SubstanceSpecification_Official>>,
 
-  /// Extensions for preferred
-  _preferred: Element,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// The use context of this name for example if there is a different name a drug
+  /// active ingredient as opposed to a food colour additive.
+  domain: Option<Vec<CodeableConcept>>,
+
+  /// A translation for this name.
+  translation: Option<Vec<SubstanceSpecification_Name>>,
+
+  /// Name type.
+  #[serde(rename = "type")]
+  fhir_type: Option<CodeableConcept>,
+
+  /// The status of the name.
+  status: Option<CodeableConcept>,
+
+  /// The jurisdiction where this name applies.
+  jurisdiction: Option<Vec<CodeableConcept>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -31,52 +56,29 @@ pub struct SubstanceSpecification_Name {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// The jurisdiction where this name applies.
-  jurisdiction: Vec<CodeableConcept>,
-
-  /// A translation for this name.
-  translation: Vec<SubstanceSpecification_Name>,
-
-  /// If this is the preferred name for this substance.
-  preferred: bool,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Language of the name.
-  language: Vec<CodeableConcept>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// The use context of this name for example if there is a different name a drug
-  /// active ingredient as opposed to a food colour additive.
-  domain: Vec<CodeableConcept>,
-
-  /// Name type.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
-
-  /// A synonym of this name.
-  synonym: Vec<SubstanceSpecification_Name>,
-
-  /// The status of the name.
-  status: CodeableConcept,
+  language: Option<Vec<CodeableConcept>>,
 
   /// Extensions for name
-  _name: Element,
-
-  /// The actual name.
-  name: String,
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
 
   /// Supporting literature.
-  source: Vec<Box<Reference>>,
+  source: Option<Vec<Box<Reference>>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// The actual name.
+  name: Option<String>,
+
+  /// If this is the preferred name for this substance.
+  preferred: Option<bool>,
+
+  /// Extensions for preferred
+  #[serde(rename = "_preferred")]
+  _preferred: Option<Element>,
+
+  /// A synonym of this name.
+  synonym: Option<Vec<SubstanceSpecification_Name>>,
 
 }

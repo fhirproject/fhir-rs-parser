@@ -2,8 +2,8 @@
 
 use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
@@ -12,13 +12,17 @@ use crate::model::Reference::Reference;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Consent_Verification {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Who verified the instruction (Patient, Relative or other Authorized Person).
+  #[serde(rename = "verifiedWith")]
+  verified_with: Option<Box<Reference>>,
+
   /// Extensions for verificationDate
   #[serde(rename = "_verificationDate")]
-  _verification_date: Element,
-
-  /// Date verification was collected.
-  #[serde(rename = "verificationDate")]
-  verification_date: String,
+  _verification_date: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -32,27 +36,24 @@ pub struct Consent_Verification {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Has the instruction been verified.
-  verified: bool,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Date verification was collected.
+  #[serde(rename = "verificationDate")]
+  verification_date: Option<String>,
 
   /// Extensions for verified
-  _verified: Element,
+  #[serde(rename = "_verified")]
+  _verified: Option<Element>,
 
-  /// Who verified the instruction (Patient, Relative or other Authorized Person).
-  #[serde(rename = "verifiedWith")]
-  verified_with: Box<Reference>,
+  /// Has the instruction been verified.
+  verified: Option<bool>,
 
 }

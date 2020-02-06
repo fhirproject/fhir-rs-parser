@@ -1,21 +1,21 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::Extension::Extension;
+use crate::model::Narrative::Narrative;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::TerminologyCapabilities_Expansion::TerminologyCapabilities_Expansion;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Meta::Meta;
+use crate::model::TerminologyCapabilities_CodeSystem::TerminologyCapabilities_CodeSystem;
 use crate::model::TerminologyCapabilities_Closure::TerminologyCapabilities_Closure;
+use crate::model::TerminologyCapabilities_Translation::TerminologyCapabilities_Translation;
 use crate::model::TerminologyCapabilities_Software::TerminologyCapabilities_Software;
 use crate::model::TerminologyCapabilities_Implementation::TerminologyCapabilities_Implementation;
-use crate::model::Narrative::Narrative;
-use crate::model::UsageContext::UsageContext;
-use crate::model::TerminologyCapabilities_ValidateCode::TerminologyCapabilities_ValidateCode;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::TerminologyCapabilities_Translation::TerminologyCapabilities_Translation;
 use crate::model::ResourceList::ResourceList;
-use crate::model::Meta::Meta;
-use crate::model::Element::Element;
 use crate::model::ContactDetail::ContactDetail;
-use crate::model::TerminologyCapabilities_Expansion::TerminologyCapabilities_Expansion;
-use crate::model::Extension::Extension;
-use crate::model::TerminologyCapabilities_CodeSystem::TerminologyCapabilities_CodeSystem;
+use crate::model::TerminologyCapabilities_ValidateCode::TerminologyCapabilities_ValidateCode;
 
 
 /// A TerminologyCapabilities resource documents a set of capabilities (behaviors)
@@ -24,212 +24,36 @@ use crate::model::TerminologyCapabilities_CodeSystem::TerminologyCapabilities_Co
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminologyCapabilities {
-  /// A free text natural language description of the terminology capabilities from a
-  /// consumer's perspective. Typically, this is used when the capability statement
-  /// describes a desired rather than an actual solution, for example as a formal
-  /// expression of requirements as part of an RFP.
-  description: String,
+  /// Identifies a code system that is supported by the server. If there is a no code
+  /// system URL, then this declares the general assumptions a client can make about
+  /// support for any CodeSystem resource.
+  #[serde(rename = "codeSystem")]
+  code_system: Option<Vec<TerminologyCapabilities_CodeSystem>>,
 
-  /// Extensions for experimental
-  _experimental: Element,
-
-  /// A Boolean value to indicate that this terminology capabilities is authored for
-  /// testing purposes (or education/evaluation/marketing) and is not intended to be
-  /// used for genuine usage.
-  experimental: bool,
-
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate terminology
-  /// capabilities instances.
-  #[serde(rename = "useContext")]
-  use_context: Vec<UsageContext>,
-
-  /// Extensions for url
-  _url: Element,
-
-  /// Extensions for status
-  _status: Element,
-
-  /// Extensions for version
-  _version: Element,
-
-  /// Explanation of why this terminology capabilities is needed and why it has been
-  /// designed as it has.
-  purpose: String,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Element,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: String,
-
-  /// The base language in which the resource is written.
-  language: String,
-
-  /// The date  (and optionally time) when the terminology capabilities was published.
-  /// The date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the terminology capabilities changes.
-  date: String,
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  contact: Vec<ContactDetail>,
+  /// Extensions for codeSearch
+  #[serde(rename = "_codeSearch")]
+  _code_search: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for date
-  _date: Element,
-
-  /// Extensions for kind
-  _kind: Element,
-
-  /// The name of the organization or individual that published the terminology
-  /// capabilities.
-  publisher: String,
-
-  /// Extensions for purpose
-  _purpose: Element,
-
-  /// A natural language name identifying the terminology capabilities. This name
-  /// should be usable as an identifier for the module by machine processing
-  /// applications such as code generation.
-  name: String,
-
-  /// Information about the [ValueSet/$expand](valueset-operation-expand.html)
-  /// operation.
-  expansion: TerminologyCapabilities_Expansion,
-
-  /// A legal or geographic region in which the terminology capabilities is intended
-  /// to be used.
-  jurisdiction: Vec<CodeableConcept>,
-
-  /// The degree to which the server supports the code search parameter on ValueSet,
-  /// if it is supported.
-  #[serde(rename = "codeSearch")]
-  code_search: TerminologyCapabilitiesCodeSearch,
-
-  /// Whether the server supports lockedDate.
-  #[serde(rename = "lockedDate")]
-  locked_date: bool,
-
-  /// Information about the [ConceptMap/$translate](conceptmap-operation-
-  /// translate.html) operation.
-  translation: TerminologyCapabilities_Translation,
-
-  /// Whether the $closure operation is supported.
-  closure: TerminologyCapabilities_Closure,
-
-  /// A copyright statement relating to the terminology capabilities and/or its
-  /// contents. Copyright statements are generally legal restrictions on the use and
-  /// publishing of the terminology capabilities.
-  copyright: String,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Narrative,
-
-  /// Extensions for description
-  _description: Element,
-
-  /// Identifies a specific implementation instance that is described by the
-  /// terminology capability statement - i.e. a particular installation, rather than
-  /// the capabilities of a software program.
-  implementation: TerminologyCapabilities_Implementation,
-
-  /// Extensions for lockedDate
-  #[serde(rename = "_lockedDate")]
-  _locked_date: Element,
-
-  /// Extensions for title
-  _title: Element,
+  extension: Option<Vec<Extension>>,
 
   /// These resources do not have an independent existence apart from the resource
   /// that contains them - they cannot be identified independently, and nor can they
   /// have their own independent transaction scope.
-  contained: Vec<ResourceList>,
+  contained: Option<Vec<ResourceList>>,
 
-  /// A short, descriptive, user-friendly title for the terminology capabilities.
-  title: String,
+  /// The degree to which the server supports the code search parameter on ValueSet,
+  /// if it is supported.
+  #[serde(rename = "codeSearch")]
+  code_search: Option<TerminologyCapabilitiesCodeSearch>,
 
-  /// Extensions for publisher
-  _publisher: Element,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Meta,
-
-  /// Extensions for codeSearch
-  #[serde(rename = "_codeSearch")]
-  _code_search: Element,
-
-  /// Information about the [ValueSet/$validate-code](valueset-operation-validate-
-  /// code.html) operation.
-  #[serde(rename = "validateCode")]
-  validate_code: TerminologyCapabilities_ValidateCode,
-
-  /// An absolute URI that is used to identify this terminology capabilities when it
-  /// is referenced in a specification, model, design or an instance; also called its
-  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-  /// address at which at which an authoritative instance of this terminology
-  /// capabilities is (or will be) published. This URL can be the target of a
-  /// canonical reference. It SHALL remain the same when the terminology capabilities
-  /// is stored on different servers.
-  url: String,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: String,
-
-  /// Extensions for language
-  _language: Element,
-
-  /// Identifies a code system that is supported by the server. If there is a no code
-  /// system URL, then this declares the general assumptions a client can make about
-  /// support for any CodeSystem resource.
-  #[serde(rename = "codeSystem")]
-  code_system: Vec<TerminologyCapabilities_CodeSystem>,
-
-  /// Software that is covered by this terminology capability statement.  It is used
-  /// when the statement describes the capabilities of a particular software version,
-  /// independent of an installation.
-  software: TerminologyCapabilities_Software,
-
-  /// Extensions for copyright
-  _copyright: Element,
-
-  /// Extensions for name
-  _name: Element,
-
-  /// The way that this statement is intended to be used, to describe an actual
-  /// running instance of software, a particular product (kind, not instance of
-  /// software) or a class of implementation (e.g. a desired purchase).
-  kind: String,
-
-  /// The identifier that is used to identify this version of the terminology
-  /// capabilities when it is referenced in a specification, model, design or
-  /// instance. This is an arbitrary value managed by the terminology capabilities
-  /// author and is not expected to be globally unique. For example, it might be a
-  /// timestamp (e.g. yyyymmdd) if a managed version is not available. There is also
-  /// no expectation that versions can be placed in a lexicographical sequence.
-  version: String,
+  /// Information about the [ConceptMap/$translate](conceptmap-operation-
+  /// translate.html) operation.
+  translation: Option<TerminologyCapabilities_Translation>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -244,11 +68,200 @@ pub struct TerminologyCapabilities {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
+
+  /// A free text natural language description of the terminology capabilities from a
+  /// consumer's perspective. Typically, this is used when the capability statement
+  /// describes a desired rather than an actual solution, for example as a formal
+  /// expression of requirements as part of an RFP.
+  description: Option<String>,
+
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
+
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  contact: Option<Vec<ContactDetail>>,
+
+  /// Extensions for version
+  #[serde(rename = "_version")]
+  _version: Option<Element>,
+
+  /// A Boolean value to indicate that this terminology capabilities is authored for
+  /// testing purposes (or education/evaluation/marketing) and is not intended to be
+  /// used for genuine usage.
+  experimental: Option<bool>,
+
+  /// Extensions for description
+  #[serde(rename = "_description")]
+  _description: Option<Element>,
 
   /// The status of this terminology capabilities. Enables tracking the life-cycle of
   /// the content.
-  status: TerminologyCapabilitiesStatus,
+  status: Option<TerminologyCapabilitiesStatus>,
+
+  /// Extensions for date
+  #[serde(rename = "_date")]
+  _date: Option<Element>,
+
+  /// Whether the server supports lockedDate.
+  #[serde(rename = "lockedDate")]
+  locked_date: Option<bool>,
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  meta: Option<Meta>,
+
+  /// The identifier that is used to identify this version of the terminology
+  /// capabilities when it is referenced in a specification, model, design or
+  /// instance. This is an arbitrary value managed by the terminology capabilities
+  /// author and is not expected to be globally unique. For example, it might be a
+  /// timestamp (e.g. yyyymmdd) if a managed version is not available. There is also
+  /// no expectation that versions can be placed in a lexicographical sequence.
+  version: Option<String>,
+
+  /// Extensions for name
+  #[serde(rename = "_name")]
+  _name: Option<Element>,
+
+  /// Information about the [ValueSet/$validate-code](valueset-operation-validate-
+  /// code.html) operation.
+  #[serde(rename = "validateCode")]
+  validate_code: Option<TerminologyCapabilities_ValidateCode>,
+
+  /// The name of the organization or individual that published the terminology
+  /// capabilities.
+  publisher: Option<String>,
+
+  /// A natural language name identifying the terminology capabilities. This name
+  /// should be usable as an identifier for the module by machine processing
+  /// applications such as code generation.
+  name: Option<String>,
+
+  /// Extensions for kind
+  #[serde(rename = "_kind")]
+  _kind: Option<Element>,
+
+  /// Software that is covered by this terminology capability statement.  It is used
+  /// when the statement describes the capabilities of a particular software version,
+  /// independent of an installation.
+  software: Option<TerminologyCapabilities_Software>,
+
+  /// Information about the [ValueSet/$expand](valueset-operation-expand.html)
+  /// operation.
+  expansion: Option<TerminologyCapabilities_Expansion>,
+
+  /// Extensions for publisher
+  #[serde(rename = "_publisher")]
+  _publisher: Option<Element>,
+
+  /// The date  (and optionally time) when the terminology capabilities was published.
+  /// The date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the terminology capabilities changes.
+  date: Option<String>,
+
+  /// The way that this statement is intended to be used, to describe an actual
+  /// running instance of software, a particular product (kind, not instance of
+  /// software) or a class of implementation (e.g. a desired purchase).
+  kind: Option<String>,
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
+
+  /// An absolute URI that is used to identify this terminology capabilities when it
+  /// is referenced in a specification, model, design or an instance; also called its
+  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+  /// address at which at which an authoritative instance of this terminology
+  /// capabilities is (or will be) published. This URL can be the target of a
+  /// canonical reference. It SHALL remain the same when the terminology capabilities
+  /// is stored on different servers.
+  url: Option<String>,
+
+  /// Whether the $closure operation is supported.
+  closure: Option<TerminologyCapabilities_Closure>,
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
+
+  /// Extensions for status
+  #[serde(rename = "_status")]
+  _status: Option<Element>,
+
+  /// The base language in which the resource is written.
+  language: Option<String>,
+
+  /// A legal or geographic region in which the terminology capabilities is intended
+  /// to be used.
+  jurisdiction: Option<Vec<CodeableConcept>>,
+
+  /// Extensions for implicitRules
+  #[serde(rename = "_implicitRules")]
+  _implicit_rules: Option<Element>,
+
+  /// Extensions for title
+  #[serde(rename = "_title")]
+  _title: Option<Element>,
+
+  /// Extensions for experimental
+  #[serde(rename = "_experimental")]
+  _experimental: Option<Element>,
+
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate terminology
+  /// capabilities instances.
+  #[serde(rename = "useContext")]
+  use_context: Option<Vec<UsageContext>>,
+
+  /// Explanation of why this terminology capabilities is needed and why it has been
+  /// designed as it has.
+  purpose: Option<String>,
+
+  /// Extensions for purpose
+  #[serde(rename = "_purpose")]
+  _purpose: Option<Element>,
+
+  /// A copyright statement relating to the terminology capabilities and/or its
+  /// contents. Copyright statements are generally legal restrictions on the use and
+  /// publishing of the terminology capabilities.
+  copyright: Option<String>,
+
+  /// Identifies a specific implementation instance that is described by the
+  /// terminology capability statement - i.e. a particular installation, rather than
+  /// the capabilities of a software program.
+  implementation: Option<TerminologyCapabilities_Implementation>,
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
+
+  /// Extensions for lockedDate
+  #[serde(rename = "_lockedDate")]
+  _locked_date: Option<Element>,
+
+  /// A short, descriptive, user-friendly title for the terminology capabilities.
+  title: Option<String>,
+
+  /// Extensions for url
+  #[serde(rename = "_url")]
+  _url: Option<Element>,
+
+  /// Extensions for copyright
+  #[serde(rename = "_copyright")]
+  _copyright: Option<Element>,
 
 }
 

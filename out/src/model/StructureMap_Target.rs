@@ -1,44 +1,49 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
+use crate::model::StructureMap_Parameter::StructureMap_Parameter;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::StructureMap_Parameter::StructureMap_Parameter;
 
 
 /// A Map of relationships between 2 structures that can be used to transform data.
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct StructureMap_Target {
-  /// How to interpret the context.
-  #[serde(rename = "contextType")]
-  context_type: StructureMap_TargetContextType,
-
-  /// Field to create in the context.
-  element: String,
-
-  /// Extensions for listMode
-  #[serde(rename = "_listMode")]
-  _list_mode: Vec<Element>,
-
-  /// Extensions for element
-  _element: Element,
-
-  /// Extensions for variable
-  _variable: Element,
-
-  /// Extensions for listRuleId
-  #[serde(rename = "_listRuleId")]
-  _list_rule_id: Element,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// Extensions for transform
-  _transform: Element,
+  #[serde(rename = "_transform")]
+  _transform: Option<Element>,
+
+  /// Extensions for contextType
+  #[serde(rename = "_contextType")]
+  _context_type: Option<Element>,
+
+  /// Extensions for variable
+  #[serde(rename = "_variable")]
+  _variable: Option<Element>,
+
+  /// Type or variable this rule applies to.
+  context: Option<String>,
 
   /// Extensions for context
-  _context: Element,
+  #[serde(rename = "_context")]
+  _context: Option<Element>,
+
+  /// How the data is copied / created.
+  transform: Option<StructureMap_TargetTransform>,
 
   /// Parameters to the transform.
-  parameter: Vec<StructureMap_Parameter>,
+  parameter: Option<Vec<StructureMap_Parameter>>,
+
+  /// Named context for field, if desired, and a field is specified.
+  variable: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -52,45 +57,34 @@ pub struct StructureMap_Target {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Extensions for contextType
-  #[serde(rename = "_contextType")]
-  _context_type: Element,
-
-  /// How the data is copied / created.
-  transform: StructureMap_TargetTransform,
-
-  /// Type or variable this rule applies to.
-  context: String,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Extensions for listMode
+  #[serde(rename = "_listMode")]
+  _list_mode: Option<Vec<Element>>,
 
   /// Internal rule reference for shared list items.
   #[serde(rename = "listRuleId")]
-  list_rule_id: String,
+  list_rule_id: Option<String>,
 
-  /// Named context for field, if desired, and a field is specified.
-  variable: String,
+  /// Extensions for listRuleId
+  #[serde(rename = "_listRuleId")]
+  _list_rule_id: Option<Element>,
 
-}
+  /// Extensions for element
+  #[serde(rename = "_element")]
+  _element: Option<Element>,
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum StructureMap_TargetContextType {
-  #[serde(rename = "type")]
-  FhirType,
+  /// How to interpret the context.
+  #[serde(rename = "contextType")]
+  context_type: Option<StructureMap_TargetContextType>,
 
-  #[serde(rename = "variable")]
-  Variable,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
+
+  /// Field to create in the context.
+  element: Option<String>,
 
 }
 
@@ -146,5 +140,15 @@ pub enum StructureMap_TargetTransform {
 
   #[serde(rename = "cp")]
   Cp,
+
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum StructureMap_TargetContextType {
+  #[serde(rename = "type")]
+  FhirType,
+
+  #[serde(rename = "variable")]
+  Variable,
 
 }

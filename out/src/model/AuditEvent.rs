@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::ResourceList::ResourceList;
-use crate::model::Meta::Meta;
-use crate::model::Element::Element;
 use crate::model::AuditEvent_Agent::AuditEvent_Agent;
+use crate::model::Narrative::Narrative;
+use crate::model::Meta::Meta;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use crate::model::Coding::Coding;
 use crate::model::AuditEvent_Source::AuditEvent_Source;
-use crate::model::AuditEvent_Entity::AuditEvent_Entity;
 use crate::model::Extension::Extension;
+use crate::model::AuditEvent_Entity::AuditEvent_Entity;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Period::Period;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Narrative::Narrative;
 
 
 /// A record of an event made for purposes of maintaining a security log. Typical
@@ -20,58 +20,59 @@ use crate::model::Narrative::Narrative;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AuditEvent {
+  /// Indicates whether the event succeeded or failed.
+  outcome: Option<AuditEventOutcome>,
+
+  /// A free text description of the outcome of the event.
+  #[serde(rename = "outcomeDesc")]
+  outcome_desc: Option<String>,
+
+  /// Extensions for outcomeDesc
+  #[serde(rename = "_outcomeDesc")]
+  _outcome_desc: Option<Element>,
+
+  /// The system that is reporting the event.
+  source: AuditEvent_Source,
+
+  /// Specific instances of data or objects that have been accessed.
+  entity: Option<Vec<AuditEvent_Entity>>,
+
   /// Identifier for a family of the event.  For example, a menu item, program, rule,
   /// policy, function code, application name or URL. It identifies the performed
   /// function.
   #[serde(rename = "type")]
   fhir_type: Coding,
 
-  /// An actor taking an active role in the event or activity that is logged.
-  agent: Vec<AuditEvent_Agent>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  id: Option<String>,
 
-  /// Extensions for recorded
-  _recorded: Element,
+  /// The purposeOfUse (reason) that was used during the event being recorded.
+  #[serde(rename = "purposeOfEvent")]
+  purpose_of_event: Option<Vec<CodeableConcept>>,
 
-  /// Indicates whether the event succeeded or failed.
-  outcome: AuditEventOutcome,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  contained: Option<Vec<ResourceList>>,
+
+  /// Extensions for outcome
+  #[serde(rename = "_outcome")]
+  _outcome: Option<Element>,
 
   /// Extensions for implicitRules
   #[serde(rename = "_implicitRules")]
-  _implicit_rules: Element,
+  _implicit_rules: Option<Element>,
 
-  /// The system that is reporting the event.
-  source: AuditEvent_Source,
+  /// The period during which the activity occurred.
+  period: Option<Period>,
 
-  /// Specific instances of data or objects that have been accessed.
-  entity: Vec<AuditEvent_Entity>,
+  /// Indicator for type of action performed during the event that generated the
+  /// audit.
+  action: Option<AuditEventAction>,
 
-  /// Identifier for the category of event.
-  subtype: Vec<Coding>,
-
-  /// Extensions for action
-  _action: Element,
-
-  /// Extensions for language
-  _language: Element,
-
-  /// A free text description of the outcome of the event.
-  #[serde(rename = "outcomeDesc")]
-  outcome_desc: String,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Narrative,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: String,
+  /// An actor taking an active role in the event or activity that is logged.
+  agent: Vec<AuditEvent_Agent>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -86,52 +87,55 @@ pub struct AuditEvent {
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Extensions for outcome
-  _outcome: Element,
+  /// The base language in which the resource is written.
+  language: Option<String>,
 
-  /// Extensions for outcomeDesc
-  #[serde(rename = "_outcomeDesc")]
-  _outcome_desc: Element,
+  /// Identifier for the category of event.
+  subtype: Option<Vec<Coding>>,
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: String,
+  /// Extensions for action
+  #[serde(rename = "_action")]
+  _action: Option<Element>,
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  text: Option<Narrative>,
+
+  /// The time when the event was recorded.
+  recorded: Option<String>,
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
-  meta: Meta,
+  meta: Option<Meta>,
 
-  /// The period during which the activity occurred.
-  period: Period,
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  #[serde(rename = "implicitRules")]
+  implicit_rules: Option<String>,
 
-  /// The base language in which the resource is written.
-  language: String,
-
-  /// The time when the event was recorded.
-  recorded: i32,
-
-  /// Indicator for type of action performed during the event that generated the
-  /// audit.
-  action: AuditEventAction,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Vec<ResourceList>,
-
-  /// The purposeOfUse (reason) that was used during the event being recorded.
-  #[serde(rename = "purposeOfEvent")]
-  purpose_of_event: Vec<CodeableConcept>,
+  /// Extensions for language
+  #[serde(rename = "_language")]
+  _language: Option<Element>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for recorded
+  #[serde(rename = "_recorded")]
+  _recorded: Option<Element>,
 
 }
 

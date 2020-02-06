@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 
 
 /// The detailed description of a substance, typically at a level beyond what is
@@ -11,17 +11,26 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceSpecification_Official {
-  /// Which authority uses this official name.
-  authority: CodeableConcept,
+  /// Extensions for date
+  #[serde(rename = "_date")]
+  _date: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// The status of the official name.
-  status: CodeableConcept,
+  status: Option<CodeableConcept>,
 
-  /// Date of official name change.
-  date: String,
+  /// Which authority uses this official name.
+  authority: Option<CodeableConcept>,
 
-  /// Extensions for date
-  _date: Element,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -35,17 +44,9 @@ pub struct SubstanceSpecification_Official {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// Date of official name change.
+  date: Option<String>,
 
 }

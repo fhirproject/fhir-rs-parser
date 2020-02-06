@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::Range::Range;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::Range::Range;
 
 
 /// Set of definitional characteristics for a kind of observation or measurement
@@ -12,24 +12,35 @@ use crate::model::CodeableConcept::CodeableConcept;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ObservationDefinition_QualifiedInterval {
-  /// The age at which this reference range is applicable. This is a neonatal age
-  /// (e.g. number of weeks at term) if the meaning says so.
-  age: Range,
+  /// Extensions for gender
+  #[serde(rename = "_gender")]
+  _gender: Option<Element>,
 
   /// The gestational age to which this reference range is applicable, in the context
   /// of pregnancy.
   #[serde(rename = "gestationalAge")]
-  gestational_age: Range,
+  gestational_age: Option<Range>,
 
-  /// Extensions for gender
-  _gender: Element,
+  /// The category of interval of values for continuous or ordinal observations
+  /// conforming to this ObservationDefinition.
+  category: Option<ObservationDefinition_QualifiedIntervalCategory>,
+
+  /// Text based condition for which the reference range is valid.
+  condition: Option<String>,
 
   /// Extensions for condition
-  _condition: Element,
+  #[serde(rename = "_condition")]
+  _condition: Option<Element>,
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  /// Sex of the population the range applies to.
+  gender: Option<ObservationDefinition_QualifiedIntervalGender>,
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -43,39 +54,44 @@ pub struct ObservationDefinition_QualifiedInterval {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// Codes to indicate the target population this reference range applies to.
   #[serde(rename = "appliesTo")]
-  applies_to: Vec<CodeableConcept>,
+  applies_to: Option<Vec<CodeableConcept>>,
+
+  /// The age at which this reference range is applicable. This is a neonatal age
+  /// (e.g. number of weeks at term) if the meaning says so.
+  age: Option<Range>,
 
   /// Extensions for category
-  _category: Element,
+  #[serde(rename = "_category")]
+  _category: Option<Element>,
 
-  /// Sex of the population the range applies to.
-  gender: ObservationDefinition_QualifiedIntervalGender,
-
-  /// The category of interval of values for continuous or ordinal observations
-  /// conforming to this ObservationDefinition.
-  category: ObservationDefinition_QualifiedIntervalCategory,
-
-  /// Codes to indicate the health context the range applies to. For example, the
-  /// normal or therapeutic range.
-  context: CodeableConcept,
-
-  /// Text based condition for which the reference range is valid.
-  condition: String,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// The low and high values determining the interval. There may be only one of the
   /// two.
-  range: Range,
+  range: Option<Range>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  /// Codes to indicate the health context the range applies to. For example, the
+  /// normal or therapeutic range.
+  context: Option<CodeableConcept>,
+
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum ObservationDefinition_QualifiedIntervalCategory {
+  #[serde(rename = "reference")]
+  Reference,
+
+  #[serde(rename = "critical")]
+  Critical,
+
+  #[serde(rename = "absolute")]
+  Absolute,
 
 }
 
@@ -92,18 +108,5 @@ pub enum ObservationDefinition_QualifiedIntervalGender {
 
   #[serde(rename = "unknown")]
   Unknown,
-
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub enum ObservationDefinition_QualifiedIntervalCategory {
-  #[serde(rename = "reference")]
-  Reference,
-
-  #[serde(rename = "critical")]
-  Critical,
-
-  #[serde(rename = "absolute")]
-  Absolute,
 
 }

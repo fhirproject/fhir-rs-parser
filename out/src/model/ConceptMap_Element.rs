@@ -14,30 +14,32 @@ use crate::model::ConceptMap_Target::ConceptMap_Target;
 pub struct ConceptMap_Element {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
+  id: Option<String>,
 
   /// Extensions for code
-  _code: Element,
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
+
+  /// Extensions for display
+  #[serde(rename = "_display")]
+  _display: Option<Element>,
 
   /// The display for the code. The display is only provided to help editors when
   /// editing the concept map.
-  display: String,
-
-  /// Extensions for display
-  _display: Element,
+  display: Option<String>,
 
   /// Identity (code or path) or the element/item being mapped.
-  code: String,
+  code: Option<String>,
+
+  /// A concept from the target value set that this concept maps to.
+  target: Option<Vec<ConceptMap_Target>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// A concept from the target value set that this concept maps to.
-  target: Vec<ConceptMap_Target>,
+  extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -51,6 +53,6 @@ pub struct ConceptMap_Element {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
 }

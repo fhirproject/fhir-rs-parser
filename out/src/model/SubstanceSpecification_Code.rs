@@ -12,28 +12,30 @@ use crate::model::Extension::Extension;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceSpecification_Code {
-  /// Any comment can be provided in this field, if necessary.
-  comment: String,
-
-  /// Supporting literature.
-  source: Vec<Box<Reference>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Status of the code assignment.
-  status: CodeableConcept,
-
-  /// Extensions for comment
-  _comment: Element,
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// The specific code.
+  code: Option<CodeableConcept>,
+
+  /// Supporting literature.
+  source: Option<Vec<Box<Reference>>>,
+
+  /// Extensions for statusDate
+  #[serde(rename = "_statusDate")]
+  _status_date: Option<Element>,
+
+  /// Any comment can be provided in this field, if necessary.
+  comment: Option<String>,
+
+  /// The date at which the code status is changed as part of the terminology
+  /// maintenance.
+  #[serde(rename = "statusDate")]
+  status_date: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -47,18 +49,17 @@ pub struct SubstanceSpecification_Code {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
-  /// The specific code.
-  code: CodeableConcept,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
-  /// The date at which the code status is changed as part of the terminology
-  /// maintenance.
-  #[serde(rename = "statusDate")]
-  status_date: String,
+  /// Extensions for comment
+  #[serde(rename = "_comment")]
+  _comment: Option<Element>,
 
-  /// Extensions for statusDate
-  #[serde(rename = "_statusDate")]
-  _status_date: Element,
+  /// Status of the code assignment.
+  status: Option<CodeableConcept>,
 
 }

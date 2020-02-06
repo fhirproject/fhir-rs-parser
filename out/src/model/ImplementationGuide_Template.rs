@@ -24,35 +24,38 @@ pub struct ImplementationGuide_Template {
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
   #[serde(rename = "modifierExtension")]
-  modifier_extension: Vec<Extension>,
+  modifier_extension: Option<Vec<Extension>>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
+  extension: Option<Vec<Extension>>,
+
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
 
   /// Type of template specified.
-  code: String,
+  code: Option<String>,
 
-  /// The source location for the template.
-  source: String,
+  /// Extensions for source
+  #[serde(rename = "_source")]
+  _source: Option<Element>,
+
+  /// The scope in which the template applies.
+  scope: Option<String>,
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: String,
-
-  /// Extensions for code
-  _code: Element,
-
-  /// Extensions for source
-  _source: Element,
+  id: Option<String>,
 
   /// Extensions for scope
-  _scope: Element,
+  #[serde(rename = "_scope")]
+  _scope: Option<Element>,
 
-  /// The scope in which the template applies.
-  scope: String,
+  /// The source location for the template.
+  source: Option<String>,
 
 }

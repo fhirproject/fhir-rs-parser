@@ -9,49 +9,54 @@ use crate::model::Element::Element;
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Age {
-  /// How the value should be understood and represented - whether the actual value is
-  /// greater or less than the stated value due to measurement issues; e.g. if the
-  /// comparator is "<" , then the real value is < stated value.
-  comparator: AgeComparator,
-
-  /// A computer processable form of the unit in some unit representation system.
-  code: String,
-
   /// Extensions for system
-  _system: Element,
+  #[serde(rename = "_system")]
+  _system: Option<Element>,
 
   /// The identification of the system that provides the coded form of the unit.
-  system: String,
+  system: Option<String>,
+
+  /// Extensions for comparator
+  #[serde(rename = "_comparator")]
+  _comparator: Option<Element>,
+
+  /// Extensions for code
+  #[serde(rename = "_code")]
+  _code: Option<Element>,
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  id: Option<String>,
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Vec<Extension>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: String,
+  extension: Option<Vec<Extension>>,
 
   /// The value of the measured amount. The value includes an implicit precision in
   /// the presentation of the value.
-  value: f32,
-
-  /// Extensions for code
-  _code: Element,
+  value: Option<f32>,
 
   /// Extensions for value
-  _value: Element,
+  #[serde(rename = "_value")]
+  _value: Option<Element>,
 
-  /// A human-readable form of the unit.
-  unit: String,
+  /// A computer processable form of the unit in some unit representation system.
+  code: Option<String>,
+
+  /// How the value should be understood and represented - whether the actual value is
+  /// greater or less than the stated value due to measurement issues; e.g. if the
+  /// comparator is "<" , then the real value is < stated value.
+  comparator: Option<AgeComparator>,
 
   /// Extensions for unit
-  _unit: Element,
+  #[serde(rename = "_unit")]
+  _unit: Option<Element>,
 
-  /// Extensions for comparator
-  _comparator: Element,
+  /// A human-readable form of the unit.
+  unit: Option<String>,
 
 }
 
