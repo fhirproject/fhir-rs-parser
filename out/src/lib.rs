@@ -11,6 +11,7 @@ mod tests {
 
     for path in paths {
       let unwrapped_path = path.unwrap().path();
+      println!("Beginning {}", &unwrapped_path.to_str().unwrap());
       let schema_contents =
         fs::read_to_string(&unwrapped_path).expect("Something went wrong reading the file");
       let parsed: Result<crate::parser::FHIRResource> = serde_json::from_str(&schema_contents);
