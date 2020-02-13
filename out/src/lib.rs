@@ -10,11 +10,6 @@ mod tests {
     let paths = fs::read_dir("examples-json/").unwrap();
 
     println!(
-      "sizeof result:{:?}",
-      std::mem::size_of::<crate::parser::FHIRResource>()
-    );
-
-    println!(
       "sizeof element definition:{:?}",
       std::mem::size_of::<crate::model::ElementDefinition::ElementDefinition>()
     );
@@ -24,9 +19,13 @@ mod tests {
       println!("Beginning {}", &unwrapped_path.to_str().unwrap());
       let schema_contents =
         fs::read_to_string(&unwrapped_path).expect("Something went wrong reading the file");
-      let parsed: Result<crate::parser::FHIRResource> = serde_json::from_str(&schema_contents);
+      let parsed: Result<serde_json::value::Value> = serde_json::from_str(&schema_contents);
       match parsed {
-        Ok(_) => println!("Successfully parsed {}", &unwrapped_path.to_str().unwrap()),
+        Ok(value) => {
+          println!("Successfully parsed {}", &unwrapped_path.to_str().unwrap());
+          let resource = crate::model::ResourceList::ResourceList { value: &value };
+          println!("Resource: {:?}", resource.resource());
+        }
         Err(m) => assert!(
           false,
           "Error parsing {}: {}",
