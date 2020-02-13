@@ -17,11 +17,18 @@ pub struct Parameters<'a> {
 }
 
 impl Parameters<'_> {
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// A parameter passed to or received from the operation.
+  pub fn parameter(&self) -> Option<Vec<Parameters_Parameter>> {
+    if let Some(Value::Array(val)) = self.value.get("parameter") {
+      return Some(val.into_iter().map(|e| Parameters_Parameter { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -45,36 +52,29 @@ impl Parameters<'_> {
     return None;
   }
 
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
   pub fn meta(&self) -> Option<Meta> {
     if let Some(val) = self.value.get("meta") {
       return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A parameter passed to or received from the operation.
-  pub fn parameter(&self) -> Option<Vec<Parameters_Parameter>> {
-    if let Some(Value::Array(val)) = self.value.get("parameter") {
-      return Some(val.into_iter().map(|e| Parameters_Parameter { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
     }
     return None;
   }

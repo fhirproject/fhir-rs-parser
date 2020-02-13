@@ -15,6 +15,22 @@ pub struct TestScript_Action2<'a> {
 }
 
 impl TestScript_Action2<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An operation would involve a REST request to a server.
+  pub fn operation(&self) -> TestScript_Operation {
+    TestScript_Operation {
+      value: &self.value["operation"],
+    }
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -23,15 +39,6 @@ impl TestScript_Action2<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -52,13 +59,6 @@ impl TestScript_Action2<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
-  }
-
-  /// An operation would involve a REST request to a server.
-  pub fn operation(&self) -> TestScript_Operation {
-    TestScript_Operation {
-      value: &self.value["operation"],
-    }
   }
 
 }

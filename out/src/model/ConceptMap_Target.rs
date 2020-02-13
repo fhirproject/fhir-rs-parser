@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::ConceptMap_DependsOn::ConceptMap_DependsOn;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,74 +17,11 @@ pub struct ConceptMap_Target<'a> {
 }
 
 impl ConceptMap_Target<'_> {
-  /// A set of additional outcomes from this mapping to other elements. To properly
-  /// execute this mapping, the specified element must be mapped to some data element
-  /// or source that is in context. The mapping may still be useful without a place
-  /// for the additional data elements, but the equivalence cannot be relied on.
-  pub fn product(&self) -> Option<Vec<ConceptMap_DependsOn>> {
-    if let Some(Value::Array(val)) = self.value.get("product") {
-      return Some(val.into_iter().map(|e| ConceptMap_DependsOn { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The display for the code. The display is only provided to help editors when
-  /// editing the concept map.
-  pub fn display(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("display") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Identity (code or path) or the element/item that the map refers to.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for equivalence
-  pub fn _equivalence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_equivalence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A set of additional dependencies for this mapping to hold. This mapping is only
-  /// applicable if the specified element can be resolved, and it has the specified
-  /// value.
-  pub fn depends_on(&self) -> Option<Vec<ConceptMap_DependsOn>> {
-    if let Some(Value::Array(val)) = self.value.get("dependsOn") {
-      return Some(val.into_iter().map(|e| ConceptMap_DependsOn { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The equivalence between the source and target concepts (counting for the
-  /// dependencies and products). The equivalence is read from target to source (e.g.
-  /// the target is 'wider' than the source).
-  pub fn equivalence(&self) -> Option<ConceptMap_TargetEquivalence> {
-    if let Some(Value::String(val)) = self.value.get("equivalence") {
-      return Some(ConceptMap_TargetEquivalence::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for display
-  pub fn _display(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_display") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -101,10 +38,74 @@ impl ConceptMap_Target<'_> {
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
+  /// Extensions for display
+  pub fn _display(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_display") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The equivalence between the source and target concepts (counting for the
+  /// dependencies and products). The equivalence is read from target to source (e.g.
+  /// the target is 'wider' than the source).
+  pub fn equivalence(&self) -> Option<ConceptMap_TargetEquivalence> {
+    if let Some(Value::String(val)) = self.value.get("equivalence") {
+      return Some(ConceptMap_TargetEquivalence::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// A set of additional dependencies for this mapping to hold. This mapping is only
+  /// applicable if the specified element can be resolved, and it has the specified
+  /// value.
+  pub fn depends_on(&self) -> Option<Vec<ConceptMap_DependsOn>> {
+    if let Some(Value::Array(val)) = self.value.get("dependsOn") {
+      return Some(val.into_iter().map(|e| ConceptMap_DependsOn { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The display for the code. The display is only provided to help editors when
+  /// editing the concept map.
+  pub fn display(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("display") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A set of additional outcomes from this mapping to other elements. To properly
+  /// execute this mapping, the specified element must be mapped to some data element
+  /// or source that is in context. The mapping may still be useful without a place
+  /// for the additional data elements, but the equivalence cannot be relied on.
+  pub fn product(&self) -> Option<Vec<ConceptMap_DependsOn>> {
+    if let Some(Value::Array(val)) = self.value.get("product") {
+      return Some(val.into_iter().map(|e| ConceptMap_DependsOn { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for equivalence
+  pub fn _equivalence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_equivalence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identity (code or path) or the element/item that the map refers to.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -136,11 +137,10 @@ impl ConceptMap_Target<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
     }
     return None;
   }

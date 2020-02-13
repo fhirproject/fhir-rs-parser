@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
 use crate::model::Identifier::Identifier;
 use crate::model::Element::Element;
+use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
@@ -25,22 +25,19 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element and that modifies the understanding of the element in
-  /// which it is contained and/or the understanding of the containing element's
-  /// descendants. Usually modifier elements provide negation or qualification. To
-  /// make the use of extensions safe and manageable, there is a strict set of
-  /// governance applied to the definition and use of extensions. Though any
-  /// implementer can define an extension, there is a set of requirements that SHALL
-  /// be met as part of the definition of the extension. Applications processing a
-  /// resource are required to check for modifier extensions.    Modifier extensions
-  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-  /// (including cannot change the meaning of modifierExtension itself).
-  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Applcations submitted to obtain a marketing authorization.
+  pub fn application(&self) -> Option<Vec<MedicinalProductAuthorization_Procedure>> {
+    if let Some(Value::Array(val)) = self.value.get("application") {
+      return Some(val.into_iter().map(|e| MedicinalProductAuthorization_Procedure { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Type of procedure.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
   }
 
   /// Identifier for this procedure.
@@ -63,25 +60,28 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     return None;
   }
 
-  /// Type of procedure.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element and that modifies the understanding of the element in
+  /// which it is contained and/or the understanding of the containing element's
+  /// descendants. Usually modifier elements provide negation or qualification. To
+  /// make the use of extensions safe and manageable, there is a strict set of
+  /// governance applied to the definition and use of extensions. Though any
+  /// implementer can define an extension, there is a set of requirements that SHALL
+  /// be met as part of the definition of the extension. Applications processing a
+  /// resource are required to check for modifier extensions.    Modifier extensions
+  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+  /// (including cannot change the meaning of modifierExtension itself).
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
+    return None;
   }
 
   /// Date of procedure.
   pub fn date_date_time(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("dateDateTime") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Applcations submitted to obtain a marketing authorization.
-  pub fn application(&self) -> Option<Vec<MedicinalProductAuthorization_Procedure>> {
-    if let Some(Value::Array(val)) = self.value.get("application") {
-      return Some(val.into_iter().map(|e| MedicinalProductAuthorization_Procedure { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

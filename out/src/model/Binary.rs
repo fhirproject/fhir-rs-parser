@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Element::Element;
 use crate::model::Meta::Meta;
 use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -25,37 +25,18 @@ impl Binary<'_> {
     return None;
   }
 
-  /// Extensions for contentType
-  pub fn _content_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contentType") {
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -76,26 +57,11 @@ impl Binary<'_> {
     return None;
   }
 
-  /// Extensions for data
-  pub fn _data(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_data") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -111,10 +77,44 @@ impl Binary<'_> {
     return None;
   }
 
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for contentType
+  pub fn _content_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// MimeType of the binary content represented as a standard MimeType (BCP 13).
   pub fn content_type(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("contentType") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for data
+  pub fn _data(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_data") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }

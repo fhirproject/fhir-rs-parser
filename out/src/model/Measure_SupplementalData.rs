@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Expression::Expression;
+use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use serde_json::value::Value;
 
@@ -16,6 +16,16 @@ pub struct Measure_SupplementalData<'a> {
 }
 
 impl Measure_SupplementalData<'_> {
+  /// Indicates a meaning for the supplemental data. This can be as simple as a unique
+  /// identifier, or it can establish meaning in a broader context by drawing from a
+  /// terminology, allowing supplemental data to be correlated across measures.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
@@ -24,22 +34,33 @@ impl Measure_SupplementalData<'_> {
     return None;
   }
 
-  /// The human readable description of this supplemental data.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// The criteria for the supplemental data. This is typically the name of a valid
+  /// expression defined within a referenced library, but it may also be a path to a
+  /// specific data element. The criteria defines the data to be returned for this
+  /// element.
+  pub fn criteria(&self) -> Expression {
+    Expression {
+      value: &self.value["criteria"],
+    }
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// An indicator of the intended usage for the supplemental data element.
-  /// Supplemental data indicates the data is additional information requested to
-  /// augment the measure information. Risk adjustment factor indicates the data is
-  /// additional information used to calculate risk adjustment factors when applying a
-  /// risk model to the measure calculation.
-  pub fn usage(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("usage") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -62,45 +83,24 @@ impl Measure_SupplementalData<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Indicates a meaning for the supplemental data. This can be as simple as a unique
-  /// identifier, or it can establish meaning in a broader context by drawing from a
-  /// terminology, allowing supplemental data to be correlated across measures.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The human readable description of this supplemental data.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// The criteria for the supplemental data. This is typically the name of a valid
-  /// expression defined within a referenced library, but it may also be a path to a
-  /// specific data element. The criteria defines the data to be returned for this
-  /// element.
-  pub fn criteria(&self) -> Expression {
-    Expression {
-      value: &self.value["criteria"],
+  /// An indicator of the intended usage for the supplemental data element.
+  /// Supplemental data indicates the data is additional information requested to
+  /// augment the measure information. Risk adjustment factor indicates the data is
+  /// additional information used to calculate risk adjustment factors when applying a
+  /// risk model to the measure calculation.
+  pub fn usage(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("usage") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
+    return None;
   }
 
 }

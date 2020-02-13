@@ -14,6 +14,30 @@ pub struct TestReport_Participant<'a> {
 }
 
 impl TestReport_Participant<'_> {
+  /// The type of participant.
+  pub fn fhir_type(&self) -> Option<TestReport_ParticipantType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(TestReport_ParticipantType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The display name of the participant.
+  pub fn display(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("display") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -48,27 +72,10 @@ impl TestReport_Participant<'_> {
     return None;
   }
 
-  /// The display name of the participant.
-  pub fn display(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("display") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
+  /// Extensions for display
+  pub fn _display(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_display") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -85,18 +92,11 @@ impl TestReport_Participant<'_> {
     return None;
   }
 
-  /// The type of participant.
-  pub fn fhir_type(&self) -> Option<TestReport_ParticipantType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(TestReport_ParticipantType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for display
-  pub fn _display(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_display") {
-      return Some(Element { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

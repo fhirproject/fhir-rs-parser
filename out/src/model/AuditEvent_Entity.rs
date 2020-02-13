@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Coding::Coding;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use crate::model::AuditEvent_Detail::AuditEvent_Detail;
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
-use crate::model::Reference::Reference;
+use crate::model::Coding::Coding;
 use serde_json::value::Value;
 
 
@@ -19,6 +19,15 @@ pub struct AuditEvent_Entity<'a> {
 }
 
 impl AuditEvent_Entity<'_> {
+  /// Identifies a specific instance of the entity. The reference should be version
+  /// specific.
+  pub fn what(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("what") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
   /// Security labels for the identified entity.
   pub fn security_label(&self) -> Option<Vec<Coding>> {
     if let Some(Value::Array(val)) = self.value.get("securityLabel") {
@@ -27,26 +36,25 @@ impl AuditEvent_Entity<'_> {
     return None;
   }
 
-  /// Extensions for query
-  pub fn _query(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_query") {
-      return Some(Element { value: val });
+  /// The query parameters for a query-type entities.
+  pub fn query(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("query") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Code representing the role the entity played in the event being audited.
-  pub fn role(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("role") {
-      return Some(Coding { value: val });
+  /// A name of the entity in the audit event.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// Text that describes the entity in more detail.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
@@ -60,18 +68,43 @@ impl AuditEvent_Entity<'_> {
     return None;
   }
 
-  /// Text that describes the entity in more detail.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
+  /// Extensions for query
+  pub fn _query(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_query") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A name of the entity in the audit event.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+  /// Tagged value pairs for conveying additional information about the entity.
+  pub fn detail(&self) -> Option<Vec<AuditEvent_Detail>> {
+    if let Some(Value::Array(val)) = self.value.get("detail") {
+      return Some(val.into_iter().map(|e| AuditEvent_Detail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The type of the object that was involved in this audit event.
+  pub fn fhir_type(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("type") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -96,31 +129,6 @@ impl AuditEvent_Entity<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Identifies a specific instance of the entity. The reference should be version
-  /// specific.
-  pub fn what(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("what") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The type of the object that was involved in this audit event.
-  pub fn fhir_type(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("type") {
-      return Some(Coding { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -139,18 +147,10 @@ impl AuditEvent_Entity<'_> {
     return None;
   }
 
-  /// The query parameters for a query-type entities.
-  pub fn query(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("query") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Tagged value pairs for conveying additional information about the entity.
-  pub fn detail(&self) -> Option<Vec<AuditEvent_Detail>> {
-    if let Some(Value::Array(val)) = self.value.get("detail") {
-      return Some(val.into_iter().map(|e| AuditEvent_Detail { value: e }).collect::<Vec<_>>());
+  /// Code representing the role the entity played in the event being audited.
+  pub fn role(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("role") {
+      return Some(Coding { value: val });
     }
     return None;
   }

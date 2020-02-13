@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,23 @@ pub struct TerminologyCapabilities_Parameter<'a> {
 }
 
 impl TerminologyCapabilities_Parameter<'_> {
+  /// Description of support for parameter.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -42,23 +59,6 @@ impl TerminologyCapabilities_Parameter<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Description of support for parameter.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
     }
     return None;
   }

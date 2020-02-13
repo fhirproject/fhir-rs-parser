@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::HumanName::HumanName;
 use crate::model::Address::Address;
+use crate::model::Extension::Extension;
+use crate::model::HumanName::HumanName;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::ContactPoint::ContactPoint;
 use serde_json::value::Value;
 
@@ -25,18 +25,19 @@ impl InsurancePlan_Contact<'_> {
     return None;
   }
 
-  /// A name associated with the contact.
-  pub fn name(&self) -> Option<HumanName> {
-    if let Some(val) = self.value.get("name") {
-      return Some(HumanName { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Visiting or postal addresses for the contact.
-  pub fn address(&self) -> Option<Address> {
-    if let Some(val) = self.value.get("address") {
-      return Some(Address { value: val });
+  /// A name associated with the contact.
+  pub fn name(&self) -> Option<HumanName> {
+    if let Some(val) = self.value.get("name") {
+      return Some(HumanName { value: val });
     }
     return None;
   }
@@ -49,6 +50,23 @@ impl InsurancePlan_Contact<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A contact detail (e.g. a telephone number or an email address) by which the
+  /// party may be contacted.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Visiting or postal addresses for the contact.
+  pub fn address(&self) -> Option<Address> {
+    if let Some(val) = self.value.get("address") {
+      return Some(Address { value: val });
     }
     return None;
   }
@@ -67,24 +85,6 @@ impl InsurancePlan_Contact<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A contact detail (e.g. a telephone number or an email address) by which the
-  /// party may be contacted.
-  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("telecom") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }

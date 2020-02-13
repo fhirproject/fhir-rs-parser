@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Range::Range;
 use crate::model::Period::Period;
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
-use crate::model::Range::Range;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,6 +18,14 @@ pub struct RiskAssessment_Prediction<'a> {
 }
 
 impl RiskAssessment_Prediction<'_> {
+  /// Extensions for rationale
+  pub fn _rationale(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_rationale") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -36,14 +44,6 @@ impl RiskAssessment_Prediction<'_> {
     return None;
   }
 
-  /// Extensions for relativeRisk
-  pub fn _relative_risk(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_relativeRisk") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -54,20 +54,18 @@ impl RiskAssessment_Prediction<'_> {
   }
 
   /// Indicates how likely the outcome is (in the specified timeframe).
-  pub fn probability_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("probabilityRange") {
-      return Some(Range { value: val });
+  pub fn probability_decimal(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("probabilityDecimal") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
 
-  /// Indicates the risk for this particular subject (with their specific
-  /// characteristics) divided by the risk of the population in general.  (Numbers
-  /// greater than 1 = higher risk than the population, numbers less than 1 = lower
-  /// risk.).
-  pub fn relative_risk(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("relativeRisk") {
-      return Some(val.as_f64().unwrap());
+  /// Indicates how likely the outcome is (in the specified timeframe), expressed as a
+  /// qualitative value (e.g. low, medium, or high).
+  pub fn qualitative_risk(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("qualitativeRisk") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -93,44 +91,19 @@ impl RiskAssessment_Prediction<'_> {
     return None;
   }
 
-  /// Indicates the period of time or age range of the subject to which the specified
-  /// probability applies.
-  pub fn when_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("whenPeriod") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates how likely the outcome is (in the specified timeframe), expressed as a
-  /// qualitative value (e.g. low, medium, or high).
-  pub fn qualitative_risk(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("qualitativeRisk") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Additional information explaining the basis for the prediction.
-  pub fn rationale(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("rationale") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for rationale
-  pub fn _rationale(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_rationale") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Indicates how likely the outcome is (in the specified timeframe).
-  pub fn probability_decimal(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("probabilityDecimal") {
-      return Some(val.as_i64().unwrap());
+  pub fn probability_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("probabilityRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// One of the potential outcomes for the patient (e.g. remission, death,  a
+  /// particular condition).
+  pub fn outcome(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("outcome") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -143,11 +116,38 @@ impl RiskAssessment_Prediction<'_> {
     return None;
   }
 
-  /// One of the potential outcomes for the patient (e.g. remission, death,  a
-  /// particular condition).
-  pub fn outcome(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("outcome") {
-      return Some(CodeableConcept { value: val });
+  /// Indicates the risk for this particular subject (with their specific
+  /// characteristics) divided by the risk of the population in general.  (Numbers
+  /// greater than 1 = higher risk than the population, numbers less than 1 = lower
+  /// risk.).
+  pub fn relative_risk(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("relativeRisk") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for relativeRisk
+  pub fn _relative_risk(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_relativeRisk") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the period of time or age range of the subject to which the specified
+  /// probability applies.
+  pub fn when_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("whenPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Additional information explaining the basis for the prediction.
+  pub fn rationale(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("rationale") {
+      return Some(string.to_string());
     }
     return None;
   }

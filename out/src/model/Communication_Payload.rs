@@ -18,11 +18,10 @@ pub struct Communication_Payload<'a> {
 }
 
 impl Communication_Payload<'_> {
-  /// A communicated content (or for multi-part communications, one portion of the
-  /// communication).
-  pub fn content_attachment(&self) -> Option<Attachment> {
-    if let Some(val) = self.value.get("contentAttachment") {
-      return Some(Attachment { value: val });
+  /// Extensions for contentString
+  pub fn _content_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentString") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -41,23 +40,6 @@ impl Communication_Payload<'_> {
   pub fn content_string(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("contentString") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for contentString
-  pub fn _content_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contentString") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A communicated content (or for multi-part communications, one portion of the
-  /// communication).
-  pub fn content_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("contentReference") {
-      return Some(Reference { value: val });
     }
     return None;
   }
@@ -88,6 +70,24 @@ impl Communication_Payload<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A communicated content (or for multi-part communications, one portion of the
+  /// communication).
+  pub fn content_attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("contentAttachment") {
+      return Some(Attachment { value: val });
+    }
+    return None;
+  }
+
+  /// A communicated content (or for multi-part communications, one portion of the
+  /// communication).
+  pub fn content_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("contentReference") {
+      return Some(Reference { value: val });
     }
     return None;
   }

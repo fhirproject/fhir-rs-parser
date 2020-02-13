@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,42 +17,19 @@ pub struct SubstanceNucleicAcid_Sugar<'a> {
 }
 
 impl SubstanceNucleicAcid_Sugar<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The Substance ID of the sugar or sugar-like component that make up the
-  /// nucleotide.
-  pub fn identifier(&self) -> Option<Identifier> {
-    if let Some(val) = self.value.get("identifier") {
-      return Some(Identifier { value: val });
-    }
-    return None;
-  }
-
-  /// The residues that contain a given sugar will be captured. The order of given
-  /// residues will be captured in the 5‘-3‘direction consistent with the base
-  /// sequences listed above.
-  pub fn residue_site(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("residueSite") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -83,6 +60,25 @@ impl SubstanceNucleicAcid_Sugar<'_> {
     return None;
   }
 
+  /// The Substance ID of the sugar or sugar-like component that make up the
+  /// nucleotide.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// The residues that contain a given sugar will be captured. The order of given
+  /// residues will be captured in the 5‘-3‘direction consistent with the base
+  /// sequences listed above.
+  pub fn residue_site(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("residueSite") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for residueSite
   pub fn _residue_site(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_residueSite") {
@@ -91,10 +87,14 @@ impl SubstanceNucleicAcid_Sugar<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

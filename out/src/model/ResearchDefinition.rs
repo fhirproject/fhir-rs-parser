@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::Extension::Extension;
-use crate::model::UsageContext::UsageContext;
-use crate::model::Identifier::Identifier;
-use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::Reference::Reference;
-use crate::model::ResourceList::ResourceList;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Meta::Meta;
-use crate::model::Period::Period;
-use crate::model::Element::Element;
 use crate::model::Narrative::Narrative;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::RelatedArtifact::RelatedArtifact;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Meta::Meta;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::Period::Period;
+use crate::model::Identifier::Identifier;
+use crate::model::ResourceList::ResourceList;
 use serde_json::value::Value;
 
 
@@ -26,93 +26,46 @@ pub struct ResearchDefinition<'a> {
 }
 
 impl ResearchDefinition<'_> {
-  /// Extensions for subtitle
-  pub fn _subtitle(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subtitle") {
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate research
-  /// definition instances.
-  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
-    if let Some(Value::Array(val)) = self.value.get("useContext") {
-      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for url
-  pub fn _url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_url") {
+  /// Extensions for shortTitle
+  pub fn _short_title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_shortTitle") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The date on which the resource content was approved by the publisher. Approval
-  /// happens once when the content is officially approved for usage.
-  pub fn approval_date(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("approvalDate") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// An explanatory or alternate title for the ResearchDefinition giving additional
-  /// information about its content.
-  pub fn subtitle(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("subtitle") {
+  /// The date  (and optionally time) when the research definition was published. The
+  /// date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the research definition changes.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A copyright statement relating to the research definition and/or its contents.
-  /// Copyright statements are generally legal restrictions on the use and publishing
-  /// of the research definition.
-  pub fn copyright(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("copyright") {
-      return Some(string.to_string());
+  /// A reference to a Library resource containing the formal logic used by the
+  /// ResearchDefinition.
+  pub fn library(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("library") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -134,64 +87,46 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// An individual or organization responsible for officially endorsing the content
-  /// for use in some setting.
-  pub fn endorser(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("endorser") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A natural language name identifying the research definition. This name should be
-  /// usable as an identifier for the module by machine processing applications such
-  /// as code generation.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An individual or organization primarily responsible for review of some aspect of
-  /// the content.
-  pub fn reviewer(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("reviewer") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A free text natural language description of the research definition from a
-  /// consumer's perspective.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for shortTitle
-  pub fn _short_title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_shortTitle") {
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A reference to a ResearchElementDefinition resomece that defines the outcome for
-  /// the research.
-  pub fn outcome(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("outcome") {
+  /// The intended subjects for the ResearchDefinition. If this element is not
+  /// provided, a Patient subject is assumed, but the subject of the
+  /// ResearchDefinition can be anything.
+  pub fn subject_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("subjectReference") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for lastReviewDate
+  pub fn _last_review_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastReviewDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -205,12 +140,79 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// A Boolean value to indicate that this research definition is authored for
-  /// testing purposes (or education/evaluation/marketing) and is not intended to be
-  /// used for genuine usage.
-  pub fn experimental(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("experimental") {
-      return Some(val.as_bool().unwrap());
+  /// Extensions for subtitle
+  pub fn _subtitle(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subtitle") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Descriptive topics related to the content of the ResearchDefinition. Topics
+  /// provide a high-level categorization grouping types of ResearchDefinitions that
+  /// can be useful for filtering and searching.
+  pub fn topic(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("topic") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An individiual or organization primarily involved in the creation and
+  /// maintenance of the content.
+  pub fn author(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("author") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for experimental
+  pub fn _experimental(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_experimental") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for approvalDate
+  pub fn _approval_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_approvalDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An individual or organization responsible for officially endorsing the content
+  /// for use in some setting.
+  pub fn endorser(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("endorser") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for copyright
+  pub fn _copyright(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_copyright") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A free text natural language description of the research definition from a
+  /// consumer's perspective.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -234,42 +236,6 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_comment") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Descriptive topics related to the content of the ResearchDefinition. Topics
-  /// provide a high-level categorization grouping types of ResearchDefinitions that
-  /// can be useful for filtering and searching.
-  pub fn topic(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("topic") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for publisher
-  pub fn _publisher(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publisher") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The logical id of the resource, as used in the URL for the resource. Once
   /// assigned, this value never changes.
   pub fn id(&self) -> Option<String> {
@@ -279,9 +245,9 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
       return Some(Element { value: val });
     }
     return None;
@@ -299,27 +265,30 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// A legal or geographic region in which the research definition is intended to be
-  /// used.
-  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }
 
-  /// Extensions for copyright
-  pub fn _copyright(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_copyright") {
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
+  /// A copyright statement relating to the research definition and/or its contents.
+  /// Copyright statements are generally legal restrictions on the use and publishing
+  /// of the research definition.
+  pub fn copyright(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("copyright") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -333,28 +302,20 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// Extensions for usage
-  pub fn _usage(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_usage") {
-      return Some(Element { value: val });
+  /// The status of this research definition. Enables tracking the life-cycle of the
+  /// content.
+  pub fn status(&self) -> Option<ResearchDefinitionStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(ResearchDefinitionStatus::from_string(&val).unwrap());
     }
     return None;
   }
 
-  /// A reference to a Library resource containing the formal logic used by the
-  /// ResearchDefinition.
-  pub fn library(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("library") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The date on which the resource content was last reviewed. Review happens
-  /// periodically after approval but does not change the original approval date.
-  pub fn last_review_date(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("lastReviewDate") {
-      return Some(val.as_i64().unwrap());
+  /// The period during which the research definition content was or is planned to be
+  /// in active use.
+  pub fn effective_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("effectivePeriod") {
+      return Some(Period { value: val });
     }
     return None;
   }
@@ -368,19 +329,70 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// A short, descriptive, user-friendly title for the research definition.
-  pub fn title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("title") {
+  /// An absolute URI that is used to identify this research definition when it is
+  /// referenced in a specification, model, design or an instance; also called its
+  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+  /// address at which at which an authoritative instance of this research definition
+  /// is (or will be) published. This URL can be the target of a canonical reference.
+  /// It SHALL remain the same when the research definition is stored on different
+  /// servers.
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// The status of this research definition. Enables tracking the life-cycle of the
-  /// content.
-  pub fn status(&self) -> Option<ResearchDefinitionStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(ResearchDefinitionStatus::from_string(&val).unwrap());
+  /// Extensions for usage
+  pub fn _usage(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_usage") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The name of the organization or individual that published the research
+  /// definition.
+  pub fn publisher(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The intended subjects for the ResearchDefinition. If this element is not
+  /// provided, a Patient subject is assumed, but the subject of the
+  /// ResearchDefinition can be anything.
+  pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("subjectCodeableConcept") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -404,37 +416,28 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
+  /// An explanatory or alternate title for the ResearchDefinition giving additional
+  /// information about its content.
+  pub fn subtitle(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("subtitle") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A reference to a ResearchElementDefinition resource that defines the exposure
-  /// for the research.
-  pub fn exposure(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("exposure") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for lastReviewDate
-  pub fn _last_review_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lastReviewDate") {
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The intended subjects for the ResearchDefinition. If this element is not
-  /// provided, a Patient subject is assumed, but the subject of the
-  /// ResearchDefinition can be anything.
-  pub fn subject_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("subjectReference") {
-      return Some(Reference { value: val });
+  /// An individual or organization primarily responsible for review of some aspect of
+  /// the content.
+  pub fn reviewer(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("reviewer") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -448,15 +451,64 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// An absolute URI that is used to identify this research definition when it is
-  /// referenced in a specification, model, design or an instance; also called its
-  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-  /// address at which at which an authoritative instance of this research definition
-  /// is (or will be) published. This URL can be the target of a canonical reference.
-  /// It SHALL remain the same when the research definition is stored on different
-  /// servers.
-  pub fn url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("url") {
+  /// A reference to a ResearchElementDefinition resource that defines the population
+  /// for the research.
+  pub fn population(&self) -> Reference {
+    Reference {
+      value: &self.value["population"],
+    }
+  }
+
+  /// A Boolean value to indicate that this research definition is authored for
+  /// testing purposes (or education/evaluation/marketing) and is not intended to be
+  /// used for genuine usage.
+  pub fn experimental(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("experimental") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the research definition is intended to be
+  /// used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The date on which the resource content was approved by the publisher. Approval
+  /// happens once when the content is officially approved for usage.
+  pub fn approval_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("approvalDate") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// A reference to a ResearchElementDefinition resource that defines the
+  /// exposureAlternative for the research.
+  pub fn exposure_alternative(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("exposureAlternative") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// A short, descriptive, user-friendly title for the research definition.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A natural language name identifying the research definition. This name should be
+  /// usable as an identifier for the module by machine processing applications such
+  /// as code generation.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
       return Some(string.to_string());
     }
     return None;
@@ -470,117 +522,28 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
-  /// An individiual or organization primarily involved in the creation and
-  /// maintenance of the content.
-  pub fn author(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("author") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_comment") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// The date  (and optionally time) when the research definition was published. The
-  /// date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the research definition changes.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for approvalDate
-  pub fn _approval_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_approvalDate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to a ResearchElementDefinition resource that defines the population
-  /// for the research.
-  pub fn population(&self) -> Reference {
-    Reference {
-      value: &self.value["population"],
-    }
-  }
-
-  /// A human-readable string to clarify or explain concepts about the resource.
-  pub fn comment(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("comment") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The name of the organization or individual that published the research
-  /// definition.
-  pub fn publisher(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("publisher") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The intended subjects for the ResearchDefinition. If this element is not
-  /// provided, a Patient subject is assumed, but the subject of the
-  /// ResearchDefinition can be anything.
-  pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("subjectCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The period during which the research definition content was or is planned to be
-  /// in active use.
-  pub fn effective_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("effectivePeriod") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for experimental
-  pub fn _experimental(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_experimental") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to a ResearchElementDefinition resource that defines the
-  /// exposureAlternative for the research.
-  pub fn exposure_alternative(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("exposureAlternative") {
+  /// A reference to a ResearchElementDefinition resomece that defines the outcome for
+  /// the research.
+  pub fn outcome(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("outcome") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The date on which the resource content was last reviewed. Review happens
+  /// periodically after approval but does not change the original approval date.
+  pub fn last_review_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("lastReviewDate") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -598,11 +561,48 @@ impl ResearchDefinition<'_> {
     return None;
   }
 
+  /// A reference to a ResearchElementDefinition resource that defines the exposure
+  /// for the research.
+  pub fn exposure(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("exposure") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// A human-readable string to clarify or explain concepts about the resource.
+  pub fn comment(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("comment") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate research
+  /// definition instances.
+  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+    if let Some(Value::Array(val)) = self.value.get("useContext") {
+      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// A detailed description, from a clinical perspective, of how the
   /// ResearchDefinition is used.
   pub fn usage(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("usage") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }

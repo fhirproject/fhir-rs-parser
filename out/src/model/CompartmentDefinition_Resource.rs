@@ -14,26 +14,10 @@ pub struct CompartmentDefinition_Resource<'a> {
 }
 
 impl CompartmentDefinition_Resource<'_> {
-  /// The name of a resource supported by the server.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
+  /// Additional documentation about the resource and compartment.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -55,12 +39,18 @@ impl CompartmentDefinition_Resource<'_> {
     return None;
   }
 
-  /// The name of a search parameter that represents the link to the compartment. More
-  /// than one may be listed because a resource may be linked to a compartment in more
-  /// than one way,.
-  pub fn param(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("param") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -95,9 +85,19 @@ impl CompartmentDefinition_Resource<'_> {
     return None;
   }
 
-  /// Additional documentation about the resource and compartment.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
+  /// The name of a search parameter that represents the link to the compartment. More
+  /// than one may be listed because a resource may be linked to a compartment in more
+  /// than one way,.
+  pub fn param(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("param") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The name of a resource supported by the server.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
       return Some(string.to_string());
     }
     return None;

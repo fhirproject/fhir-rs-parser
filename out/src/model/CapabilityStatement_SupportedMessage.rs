@@ -35,21 +35,6 @@ impl CapabilityStatement_SupportedMessage<'_> {
     return None;
   }
 
-  /// Points to a message definition that identifies the messaging event, message
-  /// structure, allowed responses, etc.
-  pub fn definition(&self) -> String {
-    self.value.get("definition").unwrap().as_str().unwrap().to_string()
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// The mode of this event declaration - whether application is sender or receiver.
   pub fn mode(&self) -> Option<CapabilityStatement_SupportedMessageMode> {
     if let Some(Value::String(val)) = self.value.get("mode") {
@@ -66,6 +51,15 @@ impl CapabilityStatement_SupportedMessage<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -76,6 +70,12 @@ impl CapabilityStatement_SupportedMessage<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Points to a message definition that identifies the messaging event, message
+  /// structure, allowed responses, etc.
+  pub fn definition(&self) -> String {
+    self.value.get("definition").unwrap().as_str().unwrap().to_string()
   }
 
 }

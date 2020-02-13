@@ -17,6 +17,50 @@ pub struct TerminologyCapabilities_Expansion<'a> {
 }
 
 impl TerminologyCapabilities_Expansion<'_> {
+  /// Allow request for incomplete expansions?
+  pub fn incomplete(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("incomplete") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for incomplete
+  pub fn _incomplete(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_incomplete") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Whether the server can return nested value sets.
+  pub fn hierarchical(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("hierarchical") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for paging
+  pub fn _paging(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_paging") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -44,46 +88,10 @@ impl TerminologyCapabilities_Expansion<'_> {
     return None;
   }
 
-  /// Allow request for incomplete expansions?
-  pub fn incomplete(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("incomplete") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for textFilter
-  pub fn _text_filter(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_textFilter") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for incomplete
-  pub fn _incomplete(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_incomplete") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Supported expansion parameter.
   pub fn parameter(&self) -> Option<Vec<TerminologyCapabilities_Parameter>> {
     if let Some(Value::Array(val)) = self.value.get("parameter") {
       return Some(val.into_iter().map(|e| TerminologyCapabilities_Parameter { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -96,6 +104,14 @@ impl TerminologyCapabilities_Expansion<'_> {
     return None;
   }
 
+  /// Whether the server supports paging on expansion.
+  pub fn paging(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("paging") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
   /// Documentation about text searching works.
   pub fn text_filter(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("textFilter") {
@@ -104,26 +120,10 @@ impl TerminologyCapabilities_Expansion<'_> {
     return None;
   }
 
-  /// Whether the server can return nested value sets.
-  pub fn hierarchical(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("hierarchical") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for paging
-  pub fn _paging(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_paging") {
+  /// Extensions for textFilter
+  pub fn _text_filter(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_textFilter") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Whether the server supports paging on expansion.
-  pub fn paging(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("paging") {
-      return Some(val.as_bool().unwrap());
     }
     return None;
   }

@@ -15,36 +15,10 @@ pub struct Bundle_Response<'a> {
 }
 
 impl Bundle_Response<'_> {
-  /// The status code returned by processing this entry. The status SHALL start with a
-  /// 3 digit HTTP code (e.g. 404) and may contain the standard HTTP description
-  /// associated with the status code.
-  pub fn status(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("status") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for location
-  pub fn _location(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_location") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The location header created by processing this operation, populated if the
   /// operation returns a location.
   pub fn location(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("location") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The date/time that the resource was modified on the server.
-  pub fn last_modified(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("lastModified") {
       return Some(string.to_string());
     }
     return None;
@@ -68,31 +42,6 @@ impl Bundle_Response<'_> {
     return None;
   }
 
-  /// Extensions for etag
-  pub fn _etag(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_etag") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// The Etag for the resource, if the operation for the entry produced a versioned
   /// resource (see [Resource Metadata and Versioning](http.html#versioning) and
   /// [Managing Resource Contention](http.html#concurrency)).
@@ -103,9 +52,26 @@ impl Bundle_Response<'_> {
     return None;
   }
 
-  /// Extensions for lastModified
-  pub fn _last_modified(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lastModified") {
+  /// The date/time that the resource was modified on the server.
+  pub fn last_modified(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("lastModified") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An OperationOutcome containing hints and warnings produced as part of processing
+  /// this entry in a batch or transaction.
+  pub fn outcome(&self) -> Option<ResourceList> {
+    if let Some(val) = self.value.get("outcome") {
+      return Some(ResourceList { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
       return Some(Element { value: val });
     }
     return None;
@@ -123,11 +89,45 @@ impl Bundle_Response<'_> {
     return None;
   }
 
-  /// An OperationOutcome containing hints and warnings produced as part of processing
-  /// this entry in a batch or transaction.
-  pub fn outcome(&self) -> Option<ResourceList> {
-    if let Some(val) = self.value.get("outcome") {
-      return Some(ResourceList { value: val });
+  /// Extensions for location
+  pub fn _location(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_location") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for etag
+  pub fn _etag(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_etag") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The status code returned by processing this entry. The status SHALL start with a
+  /// 3 digit HTTP code (e.g. 404) and may contain the standard HTTP description
+  /// associated with the status code.
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for lastModified
+  pub fn _last_modified(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastModified") {
+      return Some(Element { value: val });
     }
     return None;
   }

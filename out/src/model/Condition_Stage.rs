@@ -16,35 +16,6 @@ pub struct Condition_Stage<'a> {
 }
 
 impl Condition_Stage<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A simple summary of the stage such as "Stage 3". The determination of the stage
-  /// is disease-specific.
-  pub fn summary(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("summary") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The kind of staging, such as pathological or clinical staging.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -59,6 +30,35 @@ impl Condition_Stage<'_> {
   pub fn assessment(&self) -> Option<Vec<Reference>> {
     if let Some(Value::Array(val)) = self.value.get("assessment") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The kind of staging, such as pathological or clinical staging.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A simple summary of the stage such as "Stage 3". The determination of the stage
+  /// is disease-specific.
+  pub fn summary(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("summary") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -29,24 +29,15 @@ impl ImplementationGuide_Global<'_> {
     return None;
   }
 
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A reference to the profile that all instances must conform to.
   pub fn profile(&self) -> String {
     self.value.get("profile").unwrap().as_str().unwrap().to_string()
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -65,6 +56,15 @@ impl ImplementationGuide_Global<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

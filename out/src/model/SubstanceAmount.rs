@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Quantity::Quantity;
-use crate::model::Range::Range;
-use crate::model::Element::Element;
 use crate::model::SubstanceAmount_ReferenceRange::SubstanceAmount_ReferenceRange;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Range::Range;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -23,58 +23,6 @@ pub struct SubstanceAmount<'a> {
 }
 
 impl SubstanceAmount<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Most elements that require a quantitative value will also have a field called
-  /// amount type. Amount type should always be specified because the actual value of
-  /// the amount is often dependent on it. EXAMPLE: In capturing the actual relative
-  /// amounts of substances or molecular fragments it is essential to indicate whether
-  /// the amount refers to a mole ratio or weight ratio. For any given element an
-  /// effort should be made to use same the amount type for all related definitional
-  /// elements.
-  pub fn amount_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("amountType") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for amountText
-  pub fn _amount_text(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_amountText") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Used to capture quantitative values for a variety of elements. If only limits
-  /// are given, the arithmetic mean would be the average. If only a single definite
-  /// value for a given element is given, it would be captured in this field.
-  pub fn amount_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("amountString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Reference range of possible or expected values.
-  pub fn reference_range(&self) -> Option<SubstanceAmount_ReferenceRange> {
-    if let Some(val) = self.value.get("referenceRange") {
-      return Some(SubstanceAmount_ReferenceRange { value: val });
-    }
-    return None;
-  }
-
   /// Used to capture quantitative values for a variety of elements. If only limits
   /// are given, the arithmetic mean would be the average. If only a single definite
   /// value for a given element is given, it would be captured in this field.
@@ -85,10 +33,28 @@ impl SubstanceAmount<'_> {
     return None;
   }
 
-  /// A textual comment on a numeric value.
-  pub fn amount_text(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("amountText") {
-      return Some(string.to_string());
+  /// Used to capture quantitative values for a variety of elements. If only limits
+  /// are given, the arithmetic mean would be the average. If only a single definite
+  /// value for a given element is given, it would be captured in this field.
+  pub fn amount_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("amountRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for amountString
+  pub fn _amount_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for amountText
+  pub fn _amount_text(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountText") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -111,12 +77,44 @@ impl SubstanceAmount<'_> {
     return None;
   }
 
-  /// Used to capture quantitative values for a variety of elements. If only limits
-  /// are given, the arithmetic mean would be the average. If only a single definite
-  /// value for a given element is given, it would be captured in this field.
-  pub fn amount_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("amountRange") {
-      return Some(Range { value: val });
+  /// Reference range of possible or expected values.
+  pub fn reference_range(&self) -> Option<SubstanceAmount_ReferenceRange> {
+    if let Some(val) = self.value.get("referenceRange") {
+      return Some(SubstanceAmount_ReferenceRange { value: val });
+    }
+    return None;
+  }
+
+  /// Most elements that require a quantitative value will also have a field called
+  /// amount type. Amount type should always be specified because the actual value of
+  /// the amount is often dependent on it. EXAMPLE: In capturing the actual relative
+  /// amounts of substances or molecular fragments it is essential to indicate whether
+  /// the amount refers to a mole ratio or weight ratio. For any given element an
+  /// effort should be made to use same the amount type for all related definitional
+  /// elements.
+  pub fn amount_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("amountType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A textual comment on a numeric value.
+  pub fn amount_text(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountText") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -130,10 +128,12 @@ impl SubstanceAmount<'_> {
     return None;
   }
 
-  /// Extensions for amountString
-  pub fn _amount_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_amountString") {
-      return Some(Element { value: val });
+  /// Used to capture quantitative values for a variety of elements. If only limits
+  /// are given, the arithmetic mean would be the average. If only a single definite
+  /// value for a given element is given, it would be captured in this field.
+  pub fn amount_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountString") {
+      return Some(string.to_string());
     }
     return None;
   }

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Ratio::Ratio;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -20,6 +20,22 @@ impl Substance_Ingredient<'_> {
   pub fn quantity(&self) -> Option<Ratio> {
     if let Some(val) = self.value.get("quantity") {
       return Some(Ratio { value: val });
+    }
+    return None;
+  }
+
+  /// Another substance that is a component of this substance.
+  pub fn substance_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("substanceCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Another substance that is a component of this substance.
+  pub fn substance_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("substanceReference") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -41,22 +57,6 @@ impl Substance_Ingredient<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Another substance that is a component of this substance.
-  pub fn substance_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("substanceCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Another substance that is a component of this substance.
-  pub fn substance_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("substanceReference") {
-      return Some(Reference { value: val });
     }
     return None;
   }

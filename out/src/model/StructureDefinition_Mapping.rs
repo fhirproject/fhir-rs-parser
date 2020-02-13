@@ -28,24 +28,6 @@ impl StructureDefinition_Mapping<'_> {
     return None;
   }
 
-  /// Comments about this mapping, including version notes, issues, scope limitations,
-  /// and other important notes for usage.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An Internal id that is used to identify this mapping set when specific mappings
-  /// are made.
-  pub fn identity(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("identity") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for uri
   pub fn _uri(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_uri") {
@@ -57,31 +39,6 @@ impl StructureDefinition_Mapping<'_> {
   /// Extensions for identity
   pub fn _identity(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_identity") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// An absolute URI that identifies the specification that this mapping is expressed
-  /// to.
-  pub fn uri(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("uri") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A name for the specification that is being mapped to.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
@@ -105,6 +62,41 @@ impl StructureDefinition_Mapping<'_> {
     return None;
   }
 
+  /// An Internal id that is used to identify this mapping set when specific mappings
+  /// are made.
+  pub fn identity(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("identity") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Comments about this mapping, including version notes, issues, scope limitations,
+  /// and other important notes for usage.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An absolute URI that identifies the specification that this mapping is expressed
+  /// to.
+  pub fn uri(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("uri") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -114,9 +106,17 @@ impl StructureDefinition_Mapping<'_> {
     return None;
   }
 
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
+  /// A name for the specification that is being mapped to.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
-use crate::model::Reference::Reference;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,43 +18,10 @@ pub struct EffectEvidenceSynthesis_ResultsByExposure<'a> {
 }
 
 impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
-  /// Whether these results are for the exposure state or alternative exposure state.
-  pub fn exposure_state(&self) -> Option<EffectEvidenceSynthesis_ResultsByExposureExposureState> {
-    if let Some(Value::String(val)) = self.value.get("exposureState") {
-      return Some(EffectEvidenceSynthesis_ResultsByExposureExposureState::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Human-readable summary of results by exposure state.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Used to define variant exposure states such as low-risk state.
-  pub fn variant_state(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("variantState") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for exposureState
-  pub fn _exposure_state(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_exposureState") {
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -77,11 +44,13 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
     return None;
   }
 
-  /// Reference to a RiskEvidenceSynthesis resource.
-  pub fn risk_evidence_synthesis(&self) -> Reference {
-    Reference {
-      value: &self.value["riskEvidenceSynthesis"],
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -96,12 +65,43 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
+  /// Human-readable summary of results by exposure state.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Whether these results are for the exposure state or alternative exposure state.
+  pub fn exposure_state(&self) -> Option<EffectEvidenceSynthesis_ResultsByExposureExposureState> {
+    if let Some(Value::String(val)) = self.value.get("exposureState") {
+      return Some(EffectEvidenceSynthesis_ResultsByExposureExposureState::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for exposureState
+  pub fn _exposure_state(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_exposureState") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Used to define variant exposure states such as low-risk state.
+  pub fn variant_state(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("variantState") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Reference to a RiskEvidenceSynthesis resource.
+  pub fn risk_evidence_synthesis(&self) -> Reference {
+    Reference {
+      value: &self.value["riskEvidenceSynthesis"],
+    }
   }
 
 }

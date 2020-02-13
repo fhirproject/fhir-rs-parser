@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::CoverageEligibilityResponse_Benefit::CoverageEligibilityResponse_Benefit;
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,19 +18,43 @@ pub struct CoverageEligibilityResponse_Item<'a> {
 }
 
 impl CoverageEligibilityResponse_Item<'_> {
-  /// A short name or tag for the benefit.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
+  /// A web location for obtaining requirements or descriptive information regarding
+  /// the preauthorization.
+  pub fn authorization_url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("authorizationUrl") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Codes or comments regarding information or actions associated with the
-  /// preauthorization.
-  pub fn authorization_supporting(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("authorizationSupporting") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for authorizationRequired
+  pub fn _authorization_required(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_authorizationRequired") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for authorizationUrl
+  pub fn _authorization_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_authorizationUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A short name or tag for the benefit.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -47,19 +71,44 @@ impl CoverageEligibilityResponse_Item<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for excluded
+  pub fn _excluded(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_excluded") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Benefits used to date.
+  pub fn benefit(&self) -> Option<Vec<CoverageEligibilityResponse_Benefit>> {
+    if let Some(Value::Array(val)) = self.value.get("benefit") {
+      return Some(val.into_iter().map(|e| CoverageEligibilityResponse_Benefit { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A richer description of the benefit or services covered.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// A boolean flag indicating whether a preauthorization is required prior to actual
   /// service delivery.
   pub fn authorization_required(&self) -> Option<bool> {
     if let Some(val) = self.value.get("authorizationRequired") {
       return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for authorizationUrl
-  pub fn _authorization_url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_authorizationUrl") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -73,51 +122,10 @@ impl CoverageEligibilityResponse_Item<'_> {
     return None;
   }
 
-  /// Item typification or modifiers codes to convey additional context for the
-  /// product or service.
-  pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("modifier") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// This contains the product, service, drug or other billing code for the item.
-  pub fn product_or_service(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("productOrService") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// Indicates if the benefits apply to an individual or to the family.
   pub fn unit(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("unit") {
       return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for excluded
-  pub fn _excluded(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_excluded") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The practitioner who is eligible for the provision of the product or service.
-  pub fn provider(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("provider") {
-      return Some(Reference { value: val });
     }
     return None;
   }
@@ -127,14 +135,6 @@ impl CoverageEligibilityResponse_Item<'_> {
   pub fn term(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("term") {
       return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Benefits used to date.
-  pub fn benefit(&self) -> Option<Vec<CoverageEligibilityResponse_Benefit>> {
-    if let Some(Value::Array(val)) = self.value.get("benefit") {
-      return Some(val.into_iter().map(|e| CoverageEligibilityResponse_Benefit { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -157,27 +157,27 @@ impl CoverageEligibilityResponse_Item<'_> {
     return None;
   }
 
-  /// Extensions for authorizationRequired
-  pub fn _authorization_required(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_authorizationRequired") {
+  /// The practitioner who is eligible for the provision of the product or service.
+  pub fn provider(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("provider") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Item typification or modifiers codes to convey additional context for the
+  /// product or service.
+  pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("modifier") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A web location for obtaining requirements or descriptive information regarding
-  /// the preauthorization.
-  pub fn authorization_url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("authorizationUrl") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A richer description of the benefit or services covered.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -191,19 +191,19 @@ impl CoverageEligibilityResponse_Item<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  /// This contains the product, service, drug or other billing code for the item.
+  pub fn product_or_service(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("productOrService") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Codes or comments regarding information or actions associated with the
+  /// preauthorization.
+  pub fn authorization_supporting(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("authorizationSupporting") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,76 +16,12 @@ pub struct ClaimResponse_Error<'a> {
 }
 
 impl ClaimResponse_Error<'_> {
-  /// Extensions for itemSequence
-  pub fn _item_sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_itemSequence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// The sequence number of the detail within the line item submitted which contains
   /// the error. This value is omitted when the error occurs outside of the item
   /// structure.
   pub fn detail_sequence(&self) -> Option<i64> {
     if let Some(val) = self.value.get("detailSequence") {
       return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// The sequence number of the line item submitted which contains the error. This
-  /// value is omitted when the error occurs outside of the item structure.
-  pub fn item_sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("itemSequence") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for detailSequence
-  pub fn _detail_sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_detailSequence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The sequence number of the sub-detail within the detail within the line item
-  /// submitted which contains the error. This value is omitted when the error occurs
-  /// outside of the item structure.
-  pub fn sub_detail_sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("subDetailSequence") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for subDetailSequence
-  pub fn _sub_detail_sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subDetailSequence") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -108,12 +44,76 @@ impl ClaimResponse_Error<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for itemSequence
+  pub fn _item_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_itemSequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// An error code, from a specified code system, which details why the claim could
   /// not be adjudicated.
   pub fn code(&self) -> CodeableConcept {
     CodeableConcept {
       value: &self.value["code"],
     }
+  }
+
+  /// The sequence number of the sub-detail within the detail within the line item
+  /// submitted which contains the error. This value is omitted when the error occurs
+  /// outside of the item structure.
+  pub fn sub_detail_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("subDetailSequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// The sequence number of the line item submitted which contains the error. This
+  /// value is omitted when the error occurs outside of the item structure.
+  pub fn item_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("itemSequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for detailSequence
+  pub fn _detail_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detailSequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for subDetailSequence
+  pub fn _sub_detail_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subDetailSequence") {
+      return Some(Element { value: val });
+    }
+    return None;
   }
 
 }

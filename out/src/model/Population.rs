@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Range::Range;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,10 +15,11 @@ pub struct Population<'a> {
 }
 
 impl Population<'_> {
-  /// The age of the specific population.
-  pub fn age_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("ageRange") {
-      return Some(Range { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -41,9 +42,18 @@ impl Population<'_> {
     return None;
   }
 
-  /// The age of the specific population.
-  pub fn age_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("ageCodeableConcept") {
+  /// The existing physiological conditions of the specific population to which this
+  /// applies.
+  pub fn physiological_condition(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("physiologicalCondition") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Race of the specific population.
+  pub fn race(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("race") {
       return Some(CodeableConcept { value: val });
     }
     return None;
@@ -61,27 +71,9 @@ impl Population<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Race of the specific population.
-  pub fn race(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("race") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The existing physiological conditions of the specific population to which this
-  /// applies.
-  pub fn physiological_condition(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("physiologicalCondition") {
+  /// The age of the specific population.
+  pub fn age_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("ageCodeableConcept") {
       return Some(CodeableConcept { value: val });
     }
     return None;
@@ -91,6 +83,14 @@ impl Population<'_> {
   pub fn gender(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("gender") {
       return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The age of the specific population.
+  pub fn age_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("ageRange") {
+      return Some(Range { value: val });
     }
     return None;
   }

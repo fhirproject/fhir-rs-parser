@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -16,11 +16,10 @@ pub struct MolecularSequence_ReferenceSeq<'a> {
 }
 
 impl MolecularSequence_ReferenceSeq<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for windowStart
+  pub fn _window_start(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_windowStart") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -28,6 +27,40 @@ impl MolecularSequence_ReferenceSeq<'_> {
   /// Extensions for orientation
   pub fn _orientation(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_orientation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element and that modifies the understanding of the element in
+  /// which it is contained and/or the understanding of the containing element's
+  /// descendants. Usually modifier elements provide negation or qualification. To
+  /// make the use of extensions safe and manageable, there is a strict set of
+  /// governance applied to the definition and use of extensions. Though any
+  /// implementer can define an extension, there is a set of requirements that SHALL
+  /// be met as part of the definition of the extension. Applications processing a
+  /// resource are required to check for modifier extensions.    Modifier extensions
+  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+  /// (including cannot change the meaning of modifierExtension itself).
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A string like "ACGT".
+  pub fn reference_seq_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("referenceSeqString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for strand
+  pub fn _strand(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_strand") {
       return Some(Element { value: val });
     }
     return None;
@@ -42,41 +75,13 @@ impl MolecularSequence_ReferenceSeq<'_> {
     return None;
   }
 
-  /// Extensions for windowStart
-  pub fn _window_start(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_windowStart") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Reference identifier of reference sequence submitted to NCBI. It must match the
-  /// type in the MolecularSequence.type field. For example, the prefix, “NG_”
-  /// identifies reference sequence for genes, “NM_” for messenger RNA transcripts,
-  /// and “NP_” for amino acid sequences.
-  pub fn reference_seq_id(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("referenceSeqId") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Structural unit composed of a nucleic acid molecule which controls its own
-  /// replication through the interaction of specific proteins at one or more origins
-  /// of replication
-  /// ([SO:0000340](http://www.sequenceontology.org/browser/current_svn/term/SO:000034
-  /// 0)).
-  pub fn chromosome(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("chromosome") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for strand
-  pub fn _strand(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_strand") {
-      return Some(Element { value: val });
+  /// End position of the window on the reference sequence. If the coordinate system
+  /// is 0-based then end is exclusive and does not include the last position. If the
+  /// coordinate system is 1-base, then end is inclusive and includes the last
+  /// position.
+  pub fn window_end(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("windowEnd") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -87,6 +92,14 @@ impl MolecularSequence_ReferenceSeq<'_> {
   pub fn orientation(&self) -> Option<MolecularSequence_ReferenceSeqOrientation> {
     if let Some(Value::String(val)) = self.value.get("orientation") {
       return Some(MolecularSequence_ReferenceSeqOrientation::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for referenceSeqString
+  pub fn _reference_seq_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_referenceSeqString") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -113,6 +126,26 @@ impl MolecularSequence_ReferenceSeq<'_> {
     return None;
   }
 
+  /// Reference identifier of reference sequence submitted to NCBI. It must match the
+  /// type in the MolecularSequence.type field. For example, the prefix, “NG_”
+  /// identifies reference sequence for genes, “NM_” for messenger RNA transcripts,
+  /// and “NP_” for amino acid sequences.
+  pub fn reference_seq_id(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("referenceSeqId") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// The Genome Build used for reference, following GRCh build versions e.g. 'GRCh
   /// 37'.  Version number must be included if a versioned release of a primary build
   /// was used.
@@ -123,10 +156,14 @@ impl MolecularSequence_ReferenceSeq<'_> {
     return None;
   }
 
-  /// Extensions for referenceSeqString
-  pub fn _reference_seq_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_referenceSeqString") {
-      return Some(Element { value: val });
+  /// Structural unit composed of a nucleic acid molecule which controls its own
+  /// replication through the interaction of specific proteins at one or more origins
+  /// of replication
+  /// ([SO:0000340](http://www.sequenceontology.org/browser/current_svn/term/SO:000034
+  /// 0)).
+  pub fn chromosome(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("chromosome") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -139,10 +176,10 @@ impl MolecularSequence_ReferenceSeq<'_> {
     return None;
   }
 
-  /// A string like "ACGT".
-  pub fn reference_seq_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("referenceSeqString") {
-      return Some(string.to_string());
+  /// Extensions for genomeBuild
+  pub fn _genome_build(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_genomeBuild") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -150,43 +187,6 @@ impl MolecularSequence_ReferenceSeq<'_> {
   /// Extensions for windowEnd
   pub fn _window_end(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_windowEnd") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element and that modifies the understanding of the element in
-  /// which it is contained and/or the understanding of the containing element's
-  /// descendants. Usually modifier elements provide negation or qualification. To
-  /// make the use of extensions safe and manageable, there is a strict set of
-  /// governance applied to the definition and use of extensions. Though any
-  /// implementer can define an extension, there is a set of requirements that SHALL
-  /// be met as part of the definition of the extension. Applications processing a
-  /// resource are required to check for modifier extensions.    Modifier extensions
-  /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-  /// (including cannot change the meaning of modifierExtension itself).
-  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// End position of the window on the reference sequence. If the coordinate system
-  /// is 0-based then end is exclusive and does not include the last position. If the
-  /// coordinate system is 1-base, then end is inclusive and includes the last
-  /// position.
-  pub fn window_end(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("windowEnd") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for genomeBuild
-  pub fn _genome_build(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_genomeBuild") {
       return Some(Element { value: val });
     }
     return None;

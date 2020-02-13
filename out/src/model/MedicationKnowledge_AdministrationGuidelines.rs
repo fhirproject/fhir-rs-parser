@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::MedicationKnowledge_PatientCharacteristics::MedicationKnowledge_PatientCharacteristics;
-use crate::model::MedicationKnowledge_Dosage::MedicationKnowledge_Dosage;
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::MedicationKnowledge_PatientCharacteristics::MedicationKnowledge_PatientCharacteristics;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::MedicationKnowledge_Dosage::MedicationKnowledge_Dosage;
 use serde_json::value::Value;
 
 
@@ -25,10 +25,11 @@ impl MedicationKnowledge_AdministrationGuidelines<'_> {
     return None;
   }
 
-  /// Dosage for the medication for the specific guidelines.
-  pub fn dosage(&self) -> Option<Vec<MedicationKnowledge_Dosage>> {
-    if let Some(Value::Array(val)) = self.value.get("dosage") {
-      return Some(val.into_iter().map(|e| MedicationKnowledge_Dosage { value: e }).collect::<Vec<_>>());
+  /// Characteristics of the patient that are relevant to the administration
+  /// guidelines (for example, height, weight, gender, etc.).
+  pub fn patient_characteristics(&self) -> Option<Vec<MedicationKnowledge_PatientCharacteristics>> {
+    if let Some(Value::Array(val)) = self.value.get("patientCharacteristics") {
+      return Some(val.into_iter().map(|e| MedicationKnowledge_PatientCharacteristics { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -41,6 +42,23 @@ impl MedicationKnowledge_AdministrationGuidelines<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Dosage for the medication for the specific guidelines.
+  pub fn dosage(&self) -> Option<Vec<MedicationKnowledge_Dosage>> {
+    if let Some(Value::Array(val)) = self.value.get("dosage") {
+      return Some(val.into_iter().map(|e| MedicationKnowledge_Dosage { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -67,24 +85,6 @@ impl MedicationKnowledge_AdministrationGuidelines<'_> {
   pub fn indication_codeable_concept(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("indicationCodeableConcept") {
       return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Characteristics of the patient that are relevant to the administration
-  /// guidelines (for example, height, weight, gender, etc.).
-  pub fn patient_characteristics(&self) -> Option<Vec<MedicationKnowledge_PatientCharacteristics>> {
-    if let Some(Value::Array(val)) = self.value.get("patientCharacteristics") {
-      return Some(val.into_iter().map(|e| MedicationKnowledge_PatientCharacteristics { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }

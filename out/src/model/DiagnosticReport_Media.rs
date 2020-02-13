@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -19,11 +19,10 @@ pub struct DiagnosticReport_Media<'a> {
 }
 
 impl DiagnosticReport_Media<'_> {
-  /// A comment about the image. Typically, this is used to provide an explanation for
-  /// why the image is included, or to draw the viewer's attention to important
-  /// features.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -39,13 +38,6 @@ impl DiagnosticReport_Media<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
-  }
-
-  /// Reference to the image source.
-  pub fn link(&self) -> Reference {
-    Reference {
-      value: &self.value["link"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -66,19 +58,27 @@ impl DiagnosticReport_Media<'_> {
     return None;
   }
 
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
+  /// Reference to the image source.
+  pub fn link(&self) -> Reference {
+    Reference {
+      value: &self.value["link"],
+    }
+  }
+
+  /// A comment about the image. Typically, this is used to provide an explanation for
+  /// why the image is included, or to draw the viewer's attention to important
+  /// features.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
     }
     return None;
   }

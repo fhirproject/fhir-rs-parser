@@ -24,7 +24,14 @@ mod tests {
         Ok(value) => {
           println!("Successfully parsed {}", &unwrapped_path.to_str().unwrap());
           let resource = crate::model::ResourceList::ResourceList { value: &value };
-          println!("Resource: {:?}", resource.resource());
+          let value = resource.resource();
+          match value {
+            Some(crate::model::ResourceList::ResourceListEnum::ResourceAccount(acct)) => {
+              println!("found resource account!: {:?}", acct)
+            }
+            _ => {}
+          }
+          // println!("Resource: {:?}", resource.resource());
         }
         Err(m) => assert!(
           false,

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Period::Period;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -17,32 +17,6 @@ pub struct CareTeam_Participant<'a> {
 }
 
 impl CareTeam_Participant<'_> {
-  /// The organization of the practitioner.
-  pub fn on_behalf_of(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("onBehalfOf") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates when the specific member or organization did (or is intended to) come
-  /// into effect and end.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -61,20 +35,11 @@ impl CareTeam_Participant<'_> {
     return None;
   }
 
-  /// Indicates specific responsibility of an individual within the care team, such as
-  /// "Primary care physician", "Trained social worker counselor", "Caregiver", etc.
-  pub fn role(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("role") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The specific person or organization who is participating/expected to participate
-  /// in the care team.
-  pub fn member(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("member") {
-      return Some(Reference { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -87,6 +52,41 @@ impl CareTeam_Participant<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates specific responsibility of an individual within the care team, such as
+  /// "Primary care physician", "Trained social worker counselor", "Caregiver", etc.
+  pub fn role(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("role") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates when the specific member or organization did (or is intended to) come
+  /// into effect and end.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// The organization of the practitioner.
+  pub fn on_behalf_of(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("onBehalfOf") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The specific person or organization who is participating/expected to participate
+  /// in the care team.
+  pub fn member(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("member") {
+      return Some(Reference { value: val });
     }
     return None;
   }

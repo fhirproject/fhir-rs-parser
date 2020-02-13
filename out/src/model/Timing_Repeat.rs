@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
-use crate::model::Duration::Duration;
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
+use crate::model::Duration::Duration;
 use crate::model::Range::Range;
+use crate::model::Period::Period;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -21,6 +21,110 @@ pub struct Timing_Repeat<'a> {
 }
 
 impl Timing_Repeat<'_> {
+  /// If present, indicates that the duration is a range - so to perform the action
+  /// between [duration] and [durationMax] time length.
+  pub fn duration_max(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("durationMax") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for timeOfDay
+  pub fn _time_of_day(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_timeOfDay") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// If present, indicates that the count is a range - so to perform the action
+  /// between [count] and [countMax] times.
+  pub fn count_max(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("countMax") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// The units of time for the duration, in UCUM units.
+  pub fn duration_unit(&self) -> Option<Timing_RepeatDurationUnit> {
+    if let Some(Value::String(val)) = self.value.get("durationUnit") {
+      return Some(Timing_RepeatDurationUnit::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for period
+  pub fn _period(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_period") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for count
+  pub fn _count(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_count") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Either a duration for the length of the timing schedule, a range of possible
+  /// length, or outer bounds for start and/or end limits of the timing schedule.
+  pub fn bounds_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("boundsPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for duration
+  pub fn _duration(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_duration") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A total count of the desired number of repetitions across the duration of the
+  /// entire timing specification. If countMax is present, this element indicates the
+  /// lower bound of the allowed range of count values.
+  pub fn count(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("count") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// How long this thing happens for when it happens. If durationMax is present, this
+  /// element indicates the lower bound of the allowed range of the duration.
+  pub fn duration(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("duration") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// If present, indicates that the period is a range from [period] to [periodMax],
+  /// allowing expressing concepts such as "do this once every 3-5 days.
+  pub fn period_max(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("periodMax") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   /// Extensions for countMax
   pub fn _count_max(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_countMax") {
@@ -29,27 +133,20 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// Extensions for periodMax
-  pub fn _period_max(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_periodMax") {
-      return Some(Element { value: val });
+  /// The units of time for the period in UCUM units.
+  pub fn period_unit(&self) -> Option<Timing_RepeatPeriodUnit> {
+    if let Some(Value::String(val)) = self.value.get("periodUnit") {
+      return Some(Timing_RepeatPeriodUnit::from_string(&val).unwrap());
     }
     return None;
   }
 
-  /// Either a duration for the length of the timing schedule, a range of possible
-  /// length, or outer bounds for start and/or end limits of the timing schedule.
-  pub fn bounds_duration(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("boundsDuration") {
-      return Some(Duration { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for frequency
-  pub fn _frequency(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_frequency") {
-      return Some(Element { value: val });
+  /// The number of minutes from the event. If the event code does not indicate
+  /// whether the minutes is before or after the event, then the offset is assumed to
+  /// be after the event.
+  pub fn offset(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("offset") {
+      return Some(val.as_u64().unwrap());
     }
     return None;
   }
@@ -64,33 +161,26 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// Extensions for period
-  pub fn _period(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_period") {
+  /// Extensions for durationUnit
+  pub fn _duration_unit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_durationUnit") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for timeOfDay
-  pub fn _time_of_day(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_timeOfDay") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// If present, indicates that the frequency is a range - so to repeat between
+  /// [frequency] and [frequencyMax] times within the period or period range.
+  pub fn frequency_max(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("frequencyMax") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
 
-  /// Extensions for count
-  pub fn _count(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_count") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for offset
-  pub fn _offset(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_offset") {
+  /// Extensions for frequencyMax
+  pub fn _frequency_max(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_frequencyMax") {
       return Some(Element { value: val });
     }
     return None;
@@ -114,14 +204,6 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// Extensions for when
-  pub fn _when(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_when") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Indicates the duration of time over which repetitions are to occur; e.g. to
   /// express "3 times per day", 3 would be the frequency and "1 day" would be the
   /// period. If periodMax is present, this element indicates the lower bound of the
@@ -141,29 +223,19 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// A total count of the desired number of repetitions across the duration of the
-  /// entire timing specification. If countMax is present, this element indicates the
-  /// lower bound of the allowed range of count values.
-  pub fn count(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("count") {
-      return Some(val.as_i64().unwrap());
+  /// If one or more days of week is provided, then the action happens only on the
+  /// specified day(s).
+  pub fn day_of_week(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("dayOfWeek") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for duration
-  pub fn _duration(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_duration") {
+  /// Extensions for frequency
+  pub fn _frequency(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_frequency") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// If present, indicates that the duration is a range - so to perform the action
-  /// between [duration] and [durationMax] time length.
-  pub fn duration_max(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("durationMax") {
-      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -180,27 +252,17 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// If one or more days of week is provided, then the action happens only on the
-  /// specified day(s).
-  pub fn day_of_week(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("dayOfWeek") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// Extensions for periodMax
+  pub fn _period_max(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_periodMax") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// If present, indicates that the period is a range from [period] to [periodMax],
-  /// allowing expressing concepts such as "do this once every 3-5 days.
-  pub fn period_max(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("periodMax") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for durationUnit
-  pub fn _duration_unit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_durationUnit") {
+  /// Extensions for periodUnit
+  pub fn _period_unit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_periodUnit") {
       return Some(Element { value: val });
     }
     return None;
@@ -208,9 +270,25 @@ impl Timing_Repeat<'_> {
 
   /// Either a duration for the length of the timing schedule, a range of possible
   /// length, or outer bounds for start and/or end limits of the timing schedule.
-  pub fn bounds_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("boundsPeriod") {
-      return Some(Period { value: val });
+  pub fn bounds_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("boundsDuration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for when
+  pub fn _when(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_when") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for offset
+  pub fn _offset(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_offset") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -223,37 +301,10 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// The units of time for the period in UCUM units.
-  pub fn period_unit(&self) -> Option<Timing_RepeatPeriodUnit> {
-    if let Some(Value::String(val)) = self.value.get("periodUnit") {
-      return Some(Timing_RepeatPeriodUnit::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// Extensions for durationMax
   pub fn _duration_max(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_durationMax") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The number of minutes from the event. If the event code does not indicate
-  /// whether the minutes is before or after the event, then the offset is assumed to
-  /// be after the event.
-  pub fn offset(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("offset") {
-      return Some(val.as_u64().unwrap());
-    }
-    return None;
-  }
-
-  /// If present, indicates that the count is a range - so to perform the action
-  /// between [count] and [countMax] times.
-  pub fn count_max(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("countMax") {
-      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -267,85 +318,7 @@ impl Timing_Repeat<'_> {
     return None;
   }
 
-  /// The units of time for the duration, in UCUM units.
-  pub fn duration_unit(&self) -> Option<Timing_RepeatDurationUnit> {
-    if let Some(Value::String(val)) = self.value.get("durationUnit") {
-      return Some(Timing_RepeatDurationUnit::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// If present, indicates that the frequency is a range - so to repeat between
-  /// [frequency] and [frequencyMax] times within the period or period range.
-  pub fn frequency_max(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("frequencyMax") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// How long this thing happens for when it happens. If durationMax is present, this
-  /// element indicates the lower bound of the allowed range of the duration.
-  pub fn duration(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("duration") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for frequencyMax
-  pub fn _frequency_max(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_frequencyMax") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for periodUnit
-  pub fn _period_unit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_periodUnit") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
 }
-
-#[derive(Debug)]
-pub enum Timing_RepeatPeriodUnit {
-  S,
-  Min,
-  H,
-  D,
-  Wk,
-  Mo,
-  A,
-}
-
-impl Timing_RepeatPeriodUnit {
-    pub fn from_string(string: &str) -> Option<Timing_RepeatPeriodUnit> {
-      match string {
-        "s" => Some(Timing_RepeatPeriodUnit::S),
-        "min" => Some(Timing_RepeatPeriodUnit::Min),
-        "h" => Some(Timing_RepeatPeriodUnit::H),
-        "d" => Some(Timing_RepeatPeriodUnit::D),
-        "wk" => Some(Timing_RepeatPeriodUnit::Wk),
-        "mo" => Some(Timing_RepeatPeriodUnit::Mo),
-        "a" => Some(Timing_RepeatPeriodUnit::A),
-        _ => None,
-    }
-  }
-}
-
 
 #[derive(Debug)]
 pub enum Timing_RepeatDurationUnit {
@@ -368,6 +341,33 @@ impl Timing_RepeatDurationUnit {
         "wk" => Some(Timing_RepeatDurationUnit::Wk),
         "mo" => Some(Timing_RepeatDurationUnit::Mo),
         "a" => Some(Timing_RepeatDurationUnit::A),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum Timing_RepeatPeriodUnit {
+  S,
+  Min,
+  H,
+  D,
+  Wk,
+  Mo,
+  A,
+}
+
+impl Timing_RepeatPeriodUnit {
+    pub fn from_string(string: &str) -> Option<Timing_RepeatPeriodUnit> {
+      match string {
+        "s" => Some(Timing_RepeatPeriodUnit::S),
+        "min" => Some(Timing_RepeatPeriodUnit::Min),
+        "h" => Some(Timing_RepeatPeriodUnit::H),
+        "d" => Some(Timing_RepeatPeriodUnit::D),
+        "wk" => Some(Timing_RepeatPeriodUnit::Wk),
+        "mo" => Some(Timing_RepeatPeriodUnit::Mo),
+        "a" => Some(Timing_RepeatPeriodUnit::A),
         _ => None,
     }
   }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::ChargeItemDefinition_PriceComponent::ChargeItemDefinition_PriceComponent;
 use crate::model::ChargeItemDefinition_Applicability::ChargeItemDefinition_Applicability;
+use crate::model::ChargeItemDefinition_PriceComponent::ChargeItemDefinition_PriceComponent;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,15 +18,6 @@ pub struct ChargeItemDefinition_PropertyGroup<'a> {
 }
 
 impl ChargeItemDefinition_PropertyGroup<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Expressions that describe applicability criteria for the priceComponent.
   pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
     if let Some(Value::Array(val)) = self.value.get("applicability") {
@@ -74,6 +65,15 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
   pub fn price_component(&self) -> Option<Vec<ChargeItemDefinition_PriceComponent>> {
     if let Some(Value::Array(val)) = self.value.get("priceComponent") {
       return Some(val.into_iter().map(|e| ChargeItemDefinition_PriceComponent { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

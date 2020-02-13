@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::GraphDefinition_Target::GraphDefinition_Target;
 use serde_json::value::Value;
 
@@ -17,10 +17,19 @@ pub struct GraphDefinition_Link<'a> {
 }
 
 impl GraphDefinition_Link<'_> {
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
-      return Some(Element { value: val });
+  /// Which slice (if profiled).
+  pub fn slice_name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sliceName") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -29,6 +38,30 @@ impl GraphDefinition_Link<'_> {
   pub fn min(&self) -> Option<i64> {
     if let Some(val) = self.value.get("min") {
       return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for min
+  pub fn _min(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_min") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Information about why this link is of interest in this graph definition.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -71,6 +104,14 @@ impl GraphDefinition_Link<'_> {
     return None;
   }
 
+  /// Extensions for sliceName
+  pub fn _slice_name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sliceName") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
@@ -87,17 +128,9 @@ impl GraphDefinition_Link<'_> {
     return None;
   }
 
-  /// Extensions for sliceName
-  pub fn _slice_name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sliceName") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Which slice (if profiled).
-  pub fn slice_name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sliceName") {
+  /// A FHIR expression that identifies one of FHIR References to other resources.
+  pub fn path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("path") {
       return Some(string.to_string());
     }
     return None;
@@ -106,39 +139,6 @@ impl GraphDefinition_Link<'_> {
   /// Maximum occurrences for this link.
   pub fn max(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("max") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for min
-  pub fn _min(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_min") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Information about why this link is of interest in this graph definition.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A FHIR expression that identifies one of FHIR References to other resources.
-  pub fn path(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("path") {
       return Some(string.to_string());
     }
     return None;

@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
 use crate::model::SubstanceSourceMaterial_OrganismGeneral::SubstanceSourceMaterial_OrganismGeneral;
-use crate::model::SubstanceSourceMaterial_Author::SubstanceSourceMaterial_Author;
-use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::SubstanceSourceMaterial_Hybrid::SubstanceSourceMaterial_Hybrid;
+use crate::model::SubstanceSourceMaterial_Author::SubstanceSourceMaterial_Author;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -31,6 +31,36 @@ pub struct SubstanceSourceMaterial_Organism<'a> {
 
 impl SubstanceSourceMaterial_Organism<'_> {
   /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The species of an organism shall be specified; refers to the Latin epithet of
+  /// the species of the plant/animal; it is present in names for species and
+  /// infraspecies.
+  pub fn species(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("species") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for intraspecificDescription
+  pub fn _intraspecific_description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_intraspecificDescription") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
   /// descendants. Usually modifier elements provide negation or qualification. To
@@ -48,26 +78,6 @@ impl SubstanceSourceMaterial_Organism<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// 4.9.13.7.1 Kingdom (Conditional).
-  pub fn organism_general(&self) -> Option<SubstanceSourceMaterial_OrganismGeneral> {
-    if let Some(val) = self.value.get("organismGeneral") {
-      return Some(SubstanceSourceMaterial_OrganismGeneral { value: val });
-    }
-    return None;
-  }
-
   /// The family of an organism shall be specified.
   pub fn family(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("family") {
@@ -76,37 +86,18 @@ impl SubstanceSourceMaterial_Organism<'_> {
     return None;
   }
 
-  /// The intraspecific description of an organism shall be specified based on a
-  /// controlled vocabulary. For Influenza Vaccine, the intraspecific description
-  /// shall contain the syntax of the antigen in line with the WHO convention.
-  pub fn intraspecific_description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("intraspecificDescription") {
-      return Some(string.to_string());
+  /// 4.9.13.8.1 Hybrid species maternal organism ID (Optional).
+  pub fn hybrid(&self) -> Option<SubstanceSourceMaterial_Hybrid> {
+    if let Some(val) = self.value.get("hybrid") {
+      return Some(SubstanceSourceMaterial_Hybrid { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for intraspecificDescription
-  pub fn _intraspecific_description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_intraspecificDescription") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The Intraspecific type of an organism shall be specified.
-  pub fn intraspecific_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("intraspecificType") {
-      return Some(CodeableConcept { value: val });
+  /// 4.9.13.7.1 Kingdom (Conditional).
+  pub fn organism_general(&self) -> Option<SubstanceSourceMaterial_OrganismGeneral> {
+    if let Some(val) = self.value.get("organismGeneral") {
+      return Some(SubstanceSourceMaterial_OrganismGeneral { value: val });
     }
     return None;
   }
@@ -121,16 +112,6 @@ impl SubstanceSourceMaterial_Organism<'_> {
     return None;
   }
 
-  /// The species of an organism shall be specified; refers to the Latin epithet of
-  /// the species of the plant/animal; it is present in names for species and
-  /// infraspecies.
-  pub fn species(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("species") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// 4.9.13.6.1 Author type (Conditional).
   pub fn author(&self) -> Option<Vec<SubstanceSourceMaterial_Author>> {
     if let Some(Value::Array(val)) = self.value.get("author") {
@@ -139,10 +120,29 @@ impl SubstanceSourceMaterial_Organism<'_> {
     return None;
   }
 
-  /// 4.9.13.8.1 Hybrid species maternal organism ID (Optional).
-  pub fn hybrid(&self) -> Option<SubstanceSourceMaterial_Hybrid> {
-    if let Some(val) = self.value.get("hybrid") {
-      return Some(SubstanceSourceMaterial_Hybrid { value: val });
+  /// The intraspecific description of an organism shall be specified based on a
+  /// controlled vocabulary. For Influenza Vaccine, the intraspecific description
+  /// shall contain the syntax of the antigen in line with the WHO convention.
+  pub fn intraspecific_description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("intraspecificDescription") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The Intraspecific type of an organism shall be specified.
+  pub fn intraspecific_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("intraspecificType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
@@ -27,11 +27,10 @@ impl InsurancePlan_Limit<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The specific limit on the benefit.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -41,14 +40,6 @@ impl InsurancePlan_Limit<'_> {
   pub fn value(&self) -> Option<Quantity> {
     if let Some(val) = self.value.get("value") {
       return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// The specific limit on the benefit.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
-      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -67,6 +58,15 @@ impl InsurancePlan_Limit<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

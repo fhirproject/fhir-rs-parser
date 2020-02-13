@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Signature::Signature;
-use crate::model::Meta::Meta;
 use crate::model::Bundle_Link::Bundle_Link;
 use crate::model::Element::Element;
 use crate::model::Bundle_Entry::Bundle_Entry;
+use crate::model::Meta::Meta;
 use crate::model::Identifier::Identifier;
+use crate::model::Signature::Signature;
 use serde_json::value::Value;
 
 
@@ -18,19 +18,10 @@ pub struct Bundle<'a> {
 }
 
 impl Bundle<'_> {
-  /// A series of links that provide context to this bundle.
-  pub fn link(&self) -> Option<Vec<Bundle_Link>> {
-    if let Some(Value::Array(val)) = self.value.get("link") {
-      return Some(val.into_iter().map(|e| Bundle_Link { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The date/time that the bundle was assembled - i.e. when the resources were
-  /// placed in the bundle.
-  pub fn timestamp(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timestamp") {
-      return Some(string.to_string());
+  /// Extensions for timestamp
+  pub fn _timestamp(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_timestamp") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -46,60 +37,12 @@ impl Bundle<'_> {
     return None;
   }
 
-  /// Indicates the purpose of this bundle - how it is intended to be used.
-  pub fn fhir_type(&self) -> Option<BundleType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(BundleType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// A persistent identifier for the bundle that won't change as a bundle is copied
-  /// from server to server.
-  pub fn identifier(&self) -> Option<Identifier> {
-    if let Some(val) = self.value.get("identifier") {
-      return Some(Identifier { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for total
-  pub fn _total(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_total") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Digital Signature - base64 encoded. XML-DSig or a JWT.
-  pub fn signature(&self) -> Option<Signature> {
-    if let Some(val) = self.value.get("signature") {
-      return Some(Signature { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }
@@ -113,17 +56,59 @@ impl Bundle<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A persistent identifier for the bundle that won't change as a bundle is copied
+  /// from server to server.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the purpose of this bundle - how it is intended to be used.
+  pub fn fhir_type(&self) -> Option<BundleType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(BundleType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
+  /// Extensions for total
+  pub fn _total(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_total") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -140,20 +125,35 @@ impl Bundle<'_> {
     return None;
   }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for timestamp
-  pub fn _timestamp(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_timestamp") {
-      return Some(Element { value: val });
+  /// Digital Signature - base64 encoded. XML-DSig or a JWT.
+  pub fn signature(&self) -> Option<Signature> {
+    if let Some(val) = self.value.get("signature") {
+      return Some(Signature { value: val });
+    }
+    return None;
+  }
+
+  /// A series of links that provide context to this bundle.
+  pub fn link(&self) -> Option<Vec<Bundle_Link>> {
+    if let Some(Value::Array(val)) = self.value.get("link") {
+      return Some(val.into_iter().map(|e| Bundle_Link { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The date/time that the bundle was assembled - i.e. when the resources were
+  /// placed in the bundle.
+  pub fn timestamp(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("timestamp") {
+      return Some(string.to_string());
     }
     return None;
   }

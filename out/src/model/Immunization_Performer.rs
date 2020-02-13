@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -34,15 +34,6 @@ impl Immunization_Performer<'_> {
     return None;
   }
 
-  /// Describes the type of performance (e.g. ordering provider, administering
-  /// provider, etc.).
-  pub fn function(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("function") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// The practitioner or organization who performed the action.
   pub fn actor(&self) -> Reference {
     Reference {
@@ -55,6 +46,15 @@ impl Immunization_Performer<'_> {
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Describes the type of performance (e.g. ordering provider, administering
+  /// provider, etc.).
+  pub fn function(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("function") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }

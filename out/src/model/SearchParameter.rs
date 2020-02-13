@@ -1,14 +1,14 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
-use crate::model::SearchParameter_Component::SearchParameter_Component;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
+use crate::model::Meta::Meta;
+use crate::model::SearchParameter_Component::SearchParameter_Component;
+use crate::model::Element::Element;
+use crate::model::ResourceList::ResourceList;
 use crate::model::UsageContext::UsageContext;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -22,38 +22,35 @@ pub struct SearchParameter<'a> {
 }
 
 impl SearchParameter<'_> {
-  /// Extensions for multipleAnd
-  pub fn _multiple_and(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_multipleAnd") {
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// An absolute URI that is used to identify this search parameter when it is
-  /// referenced in a specification, model, design or an instance; also called its
-  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-  /// address at which at which an authoritative instance of this search parameter is
-  /// (or will be) published. This URL can be the target of a canonical reference. It
-  /// SHALL remain the same when the search parameter is stored on different servers.
-  pub fn url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("url") {
-      return Some(string.to_string());
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for expression
-  pub fn _expression(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expression") {
+  /// Extensions for xpath
+  pub fn _xpath(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_xpath") {
       return Some(Element { value: val });
     }
     return None;
@@ -69,30 +66,21 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Extensions for modifier
-  pub fn _modifier(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_modifier") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Where this search parameter is originally defined. If a derivedFrom is provided,
-  /// then the details in the search parameter must be consistent with the definition
-  /// from which it is defined. i.e. the parameter should have the same meaning, and
-  /// (usually) the functionality should be a proper subset of the underlying search
-  /// parameter.
-  pub fn derived_from(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("derivedFrom") {
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
+  /// Extensions for modifier
+  pub fn _modifier(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_modifier") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -105,10 +93,31 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Extensions for url
-  pub fn _url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_url") {
-      return Some(Element { value: val });
+  /// The date  (and optionally time) when the search parameter was published. The
+  /// date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the search parameter changes.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Explanation of why this search parameter is needed and why it has been designed
+  /// as it has.
+  pub fn purpose(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("purpose") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -117,6 +126,45 @@ impl SearchParameter<'_> {
   pub fn _base(&self) -> Option<Vec<Element>> {
     if let Some(Value::Array(val)) = self.value.get("_base") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Contains the names of any search parameters which may be chained to the
+  /// containing search parameter. Chained parameters may be added to search
+  /// parameters of type reference and specify that resources will only be returned if
+  /// they contain a reference to a resource which matches the chained parameter
+  /// value. Values for this field should be drawn from SearchParameter.code for a
+  /// parameter on the target resource type.
+  pub fn chain(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("chain") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The status of this search parameter. Enables tracking the life-cycle of the
+  /// content.
+  pub fn status(&self) -> Option<SearchParameterStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(SearchParameterStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Whether multiple parameters are allowed - e.g. more than one parameter with the
+  /// same name. The search matches if all the parameters match.
+  pub fn multiple_and(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("multipleAnd") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -138,18 +186,18 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
+  /// Extensions for experimental
+  pub fn _experimental(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_experimental") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -162,40 +210,54 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("contact") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The name of the organization or individual that published the search parameter.
-  pub fn publisher(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("publisher") {
+  /// Where this search parameter is originally defined. If a derivedFrom is provided,
+  /// then the details in the search parameter must be consistent with the definition
+  /// from which it is defined. i.e. the parameter should have the same meaning, and
+  /// (usually) the functionality should be a proper subset of the underlying search
+  /// parameter.
+  pub fn derived_from(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("derivedFrom") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for xpath
-  pub fn _xpath(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_xpath") {
+  /// And how it used.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for multipleOr
+  pub fn _multiple_or(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_multipleOr") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Contains the names of any search parameters which may be chained to the
-  /// containing search parameter. Chained parameters may be added to search
-  /// parameters of type reference and specify that resources will only be returned if
-  /// they contain a reference to a resource which matches the chained parameter
-  /// value. Values for this field should be drawn from SearchParameter.code for a
-  /// parameter on the target resource type.
-  pub fn chain(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("chain") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for xpathUsage
+  pub fn _xpath_usage(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_xpathUsage") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -208,44 +270,53 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Whether multiple parameters are allowed - e.g. more than one parameter with the
-  /// same name. The search matches if all the parameters match.
-  pub fn multiple_and(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("multipleAnd") {
-      return Some(val.as_bool().unwrap());
+  /// An XPath expression that returns a set of elements for the search parameter.
+  pub fn xpath(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("xpath") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Whether multiple values are allowed for each time the parameter exists. Values
-  /// are separated by commas, and the parameter matches if any of the values match.
-  pub fn multiple_or(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("multipleOr") {
+  /// A Boolean value to indicate that this search parameter is authored for testing
+  /// purposes (or education/evaluation/marketing) and is not intended to be used for
+  /// genuine usage.
+  pub fn experimental(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("experimental") {
       return Some(val.as_bool().unwrap());
     }
     return None;
   }
 
-  /// Used to define the parts of a composite search parameter.
-  pub fn component(&self) -> Option<Vec<SearchParameter_Component>> {
-    if let Some(Value::Array(val)) = self.value.get("component") {
-      return Some(val.into_iter().map(|e| SearchParameter_Component { value: e }).collect::<Vec<_>>());
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// And how it used.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the search parameter is intended to be
+  /// used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -262,73 +333,61 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Extensions for xpathUsage
-  pub fn _xpath_usage(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_xpathUsage") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for target
-  pub fn _target(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_target") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The identifier that is used to identify this version of the search parameter
-  /// when it is referenced in a specification, model, design or instance. This is an
-  /// arbitrary value managed by the search parameter author and is not expected to be
-  /// globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-  /// managed version is not available. There is also no expectation that versions can
-  /// be placed in a lexicographical sequence.
-  pub fn version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("version") {
+  /// A FHIRPath expression that returns a set of elements for the search parameter.
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for experimental
-  pub fn _experimental(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_experimental") {
+  /// An absolute URI that is used to identify this search parameter when it is
+  /// referenced in a specification, model, design or an instance; also called its
+  /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+  /// address at which at which an authoritative instance of this search parameter is
+  /// (or will be) published. This URL can be the target of a canonical reference. It
+  /// SHALL remain the same when the search parameter is stored on different servers.
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for chain
-  pub fn _chain(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_chain") {
+  /// Extensions for comparator
+  pub fn _comparator(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_comparator") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// How the search parameter relates to the set of elements returned by evaluating
-  /// the xpath query.
-  pub fn xpath_usage(&self) -> Option<SearchParameterXpathUsage> {
-    if let Some(Value::String(val)) = self.value.get("xpathUsage") {
-      return Some(SearchParameterXpathUsage::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// The status of this search parameter. Enables tracking the life-cycle of the
-  /// content.
-  pub fn status(&self) -> Option<SearchParameterStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(SearchParameterStatus::from_string(&val).unwrap());
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -352,79 +411,57 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Extensions for publisher
-  pub fn _publisher(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publisher") {
+  /// Extensions for multipleAnd
+  pub fn _multiple_and(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_multipleAnd") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The code used in the URL or the parameter name in a parameters resource for this
-  /// search parameter.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
+  /// Extensions for chain
+  pub fn _chain(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_chain") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Used to define the parts of a composite search parameter.
+  pub fn component(&self) -> Option<Vec<SearchParameter_Component>> {
+    if let Some(Value::Array(val)) = self.value.get("component") {
+      return Some(val.into_iter().map(|e| SearchParameter_Component { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A natural language name identifying the search parameter. This name should be
+  /// usable as an identifier for the module by machine processing applications such
+  /// as code generation.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  pub fn text(&self) -> Option<Narrative> {
-    if let Some(val) = self.value.get("text") {
-      return Some(Narrative { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The identifier that is used to identify this version of the search parameter
+  /// when it is referenced in a specification, model, design or instance. This is an
+  /// arbitrary value managed by the search parameter author and is not expected to be
+  /// globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+  /// managed version is not available. There is also no expectation that versions can
+  /// be placed in a lexicographical sequence.
+  pub fn version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("version") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A Boolean value to indicate that this search parameter is authored for testing
-  /// purposes (or education/evaluation/marketing) and is not intended to be used for
-  /// genuine usage.
-  pub fn experimental(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("experimental") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A legal or geographic region in which the search parameter is intended to be
-  /// used.
-  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -433,6 +470,14 @@ impl SearchParameter<'_> {
   pub fn base(&self) -> Option<Vec<String>> {
     if let Some(Value::Array(val)) = self.value.get("base") {
       return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The name of the organization or individual that published the search parameter.
+  pub fn publisher(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -449,87 +494,63 @@ impl SearchParameter<'_> {
     return None;
   }
 
-  /// Explanation of why this search parameter is needed and why it has been designed
-  /// as it has.
-  pub fn purpose(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("purpose") {
+  /// How the search parameter relates to the set of elements returned by evaluating
+  /// the xpath query.
+  pub fn xpath_usage(&self) -> Option<SearchParameterXpathUsage> {
+    if let Some(Value::String(val)) = self.value.get("xpathUsage") {
+      return Some(SearchParameterXpathUsage::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Whether multiple values are allowed for each time the parameter exists. Values
+  /// are separated by commas, and the parameter matches if any of the values match.
+  pub fn multiple_or(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("multipleOr") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// The code used in the URL or the parameter name in a parameters resource for this
+  /// search parameter.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// An XPath expression that returns a set of elements for the search parameter.
-  pub fn xpath(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("xpath") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A natural language name identifying the search parameter. This name should be
-  /// usable as an identifier for the module by machine processing applications such
-  /// as code generation.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for multipleOr
-  pub fn _multiple_or(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_multipleOr") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for comparator
-  pub fn _comparator(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_comparator") {
+  /// Extensions for target
+  pub fn _target(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_target") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// The date  (and optionally time) when the search parameter was published. The
-  /// date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the search parameter changes.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A FHIRPath expression that returns a set of elements for the search parameter.
-  pub fn expression(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("expression") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
 }
+
+#[derive(Debug)]
+pub enum SearchParameterStatus {
+  Draft,
+  Active,
+  Retired,
+  Unknown,
+}
+
+impl SearchParameterStatus {
+    pub fn from_string(string: &str) -> Option<SearchParameterStatus> {
+      match string {
+        "draft" => Some(SearchParameterStatus::Draft),
+        "active" => Some(SearchParameterStatus::Active),
+        "retired" => Some(SearchParameterStatus::Retired),
+        "unknown" => Some(SearchParameterStatus::Unknown),
+        _ => None,
+    }
+  }
+}
+
 
 #[derive(Debug)]
 pub enum SearchParameterType {
@@ -579,27 +600,6 @@ impl SearchParameterXpathUsage {
         "nearby" => Some(SearchParameterXpathUsage::Nearby),
         "distance" => Some(SearchParameterXpathUsage::Distance),
         "other" => Some(SearchParameterXpathUsage::Other),
-        _ => None,
-    }
-  }
-}
-
-
-#[derive(Debug)]
-pub enum SearchParameterStatus {
-  Draft,
-  Active,
-  Retired,
-  Unknown,
-}
-
-impl SearchParameterStatus {
-    pub fn from_string(string: &str) -> Option<SearchParameterStatus> {
-      match string {
-        "draft" => Some(SearchParameterStatus::Draft),
-        "active" => Some(SearchParameterStatus::Active),
-        "retired" => Some(SearchParameterStatus::Retired),
-        "unknown" => Some(SearchParameterStatus::Unknown),
         _ => None,
     }
   }

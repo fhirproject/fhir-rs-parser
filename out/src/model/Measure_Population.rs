@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Expression::Expression;
+use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,15 @@ pub struct Measure_Population<'a> {
 }
 
 impl Measure_Population<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// The type of population criteria.
   pub fn code(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("code") {
@@ -24,12 +33,20 @@ impl Measure_Population<'_> {
     return None;
   }
 
-  /// The human readable description of this population criteria.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// An expression that specifies the criteria for the population, typically the name
+  /// of an expression in a library.
+  pub fn criteria(&self) -> Expression {
+    Expression {
+      value: &self.value["criteria"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -62,26 +79,9 @@ impl Measure_Population<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// An expression that specifies the criteria for the population, typically the name
-  /// of an expression in a library.
-  pub fn criteria(&self) -> Expression {
-    Expression {
-      value: &self.value["criteria"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The human readable description of this population criteria.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;

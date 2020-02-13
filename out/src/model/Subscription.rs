@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Subscription_Channel::Subscription_Channel;
 use crate::model::ContactPoint::ContactPoint;
-use crate::model::ResourceList::ResourceList;
 use crate::model::Narrative::Narrative;
 use crate::model::Meta::Meta;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::Subscription_Channel::Subscription_Channel;
+use crate::model::Element::Element;
+use crate::model::ResourceList::ResourceList;
 use serde_json::value::Value;
 
 
@@ -23,49 +23,6 @@ pub struct Subscription<'a> {
 }
 
 impl Subscription<'_> {
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The status of the subscription, which marks the server state for managing the
-  /// subscription.
-  pub fn status(&self) -> Option<SubscriptionStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(SubscriptionStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
   /// that contains it and/or the understanding of the containing element's
@@ -85,14 +42,6 @@ impl Subscription<'_> {
     return None;
   }
 
-  /// A description of why this subscription is defined.
-  pub fn reason(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("reason") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for end
   pub fn _end(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_end") {
@@ -101,12 +50,10 @@ impl Subscription<'_> {
     return None;
   }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -133,50 +80,21 @@ impl Subscription<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A record of the last error that occurred when the server processed a
-  /// notification.
-  pub fn error(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("error") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Contact details for a human to contact about the subscription. The primary use
-  /// of this for system administrator troubleshooting.
-  pub fn contact(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("contact") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+  /// The status of the subscription, which marks the server state for managing the
+  /// subscription.
+  pub fn status(&self) -> Option<SubscriptionStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(SubscriptionStatus::from_string(&val).unwrap());
     }
     return None;
-  }
-
-  /// Extensions for error
-  pub fn _error(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_error") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Details where to send notifications when resources are received that meet the
-  /// criteria.
-  pub fn channel(&self) -> Subscription_Channel {
-    Subscription_Channel {
-      value: &self.value["channel"],
-    }
   }
 
   /// A reference to a set of rules that were followed when the resource was
@@ -185,6 +103,22 @@ impl Subscription<'_> {
   /// along with other profiles etc.
   pub fn implicit_rules(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The time for the server to turn the subscription off.
+  pub fn end(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("end") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A description of why this subscription is defined.
+  pub fn reason(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("reason") {
       return Some(string.to_string());
     }
     return None;
@@ -199,10 +133,19 @@ impl Subscription<'_> {
     return None;
   }
 
-  /// The time for the server to turn the subscription off.
-  pub fn end(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("end") {
-      return Some(string.to_string());
+  /// Details where to send notifications when resources are received that meet the
+  /// criteria.
+  pub fn channel(&self) -> Subscription_Channel {
+    Subscription_Channel {
+      value: &self.value["channel"],
+    }
+  }
+
+  /// Contact details for a human to contact about the subscription. The primary use
+  /// of this for system administrator troubleshooting.
+  pub fn contact(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -210,6 +153,62 @@ impl Subscription<'_> {
   /// Extensions for reason
   pub fn _reason(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_reason") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for error
+  pub fn _error(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_error") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
       return Some(Element { value: val });
     }
     return None;
@@ -223,10 +222,11 @@ impl Subscription<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
+  /// A record of the last error that occurred when the server processed a
+  /// notification.
+  pub fn error(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("error") {
+      return Some(string.to_string());
     }
     return None;
   }

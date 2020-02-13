@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,68 +15,9 @@ pub struct TestScript_Variable<'a> {
 }
 
 impl TestScript_Variable<'_> {
-  /// A default, hard-coded, or user-defined value for this variable.
-  pub fn default_value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("defaultValue") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// XPath or JSONPath to evaluate against the fixture body.  When variables are
-  /// defined, only one of either expression, headerField or path must be specified.
-  pub fn path(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("path") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Descriptive name for this variable.
   pub fn name(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against
-  /// within this variable.
-  pub fn source_id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sourceId") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for expression
-  pub fn _expression(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expression") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for sourceId
-  pub fn _source_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sourceId") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A free text natural language description of the variable and its purpose.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
@@ -108,34 +49,19 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for hint
-  pub fn _hint(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_hint") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for defaultValue
-  pub fn _default_value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_defaultValue") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against
+  /// within this variable.
+  pub fn source_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sourceId") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -149,14 +75,85 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for hint
+  pub fn _hint(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_hint") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A default, hard-coded, or user-defined value for this variable.
+  pub fn default_value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValue") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// XPath or JSONPath to evaluate against the fixture body.  When variables are
+  /// defined, only one of either expression, headerField or path must be specified.
+  pub fn path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("path") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for sourceId
+  pub fn _source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A free text natural language description of the variable and its purpose.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Displayable text string with hint help information to the user when entering a
+  /// default value.
+  pub fn hint(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("hint") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValue
+  pub fn _default_value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValue") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -178,11 +175,14 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Displayable text string with hint help information to the user when entering a
-  /// default value.
-  pub fn hint(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("hint") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

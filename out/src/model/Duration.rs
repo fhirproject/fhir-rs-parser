@@ -22,53 +22,10 @@ impl Duration<'_> {
     return None;
   }
 
-  /// Extensions for comparator
-  pub fn _comparator(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comparator") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A computer processable form of the unit in some unit representation system.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for system
   pub fn _system(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_system") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// How the value should be understood and represented - whether the actual value is
-  /// greater or less than the stated value due to measurement issues; e.g. if the
-  /// comparator is "<" , then the real value is < stated value.
-  pub fn comparator(&self) -> Option<DurationComparator> {
-    if let Some(Value::String(val)) = self.value.get("comparator") {
-      return Some(DurationComparator::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// The value of the measured amount. The value includes an implicit precision in
-  /// the presentation of the value.
-  pub fn value(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("value") {
-      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -94,6 +51,41 @@ impl Duration<'_> {
     return None;
   }
 
+  /// A computer processable form of the unit in some unit representation system.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The value of the measured amount. The value includes an implicit precision in
+  /// the presentation of the value.
+  pub fn value(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("value") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// How the value should be understood and represented - whether the actual value is
+  /// greater or less than the stated value due to measurement issues; e.g. if the
+  /// comparator is "<" , then the real value is < stated value.
+  pub fn comparator(&self) -> Option<DurationComparator> {
+    if let Some(Value::String(val)) = self.value.get("comparator") {
+      return Some(DurationComparator::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for comparator
+  pub fn _comparator(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comparator") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for unit
   pub fn _unit(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_unit") {
@@ -113,6 +105,14 @@ impl Duration<'_> {
   /// Extensions for code
   pub fn _code(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
       return Some(Element { value: val });
     }
     return None;

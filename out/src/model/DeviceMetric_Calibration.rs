@@ -14,43 +14,6 @@ pub struct DeviceMetric_Calibration<'a> {
 }
 
 impl DeviceMetric_Calibration<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Describes the type of the calibration method.
-  pub fn fhir_type(&self) -> Option<DeviceMetric_CalibrationType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(DeviceMetric_CalibrationType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Describes the time last calibration has been performed.
-  pub fn time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("time") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for time
   pub fn _time(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_time") {
@@ -85,10 +48,22 @@ impl DeviceMetric_Calibration<'_> {
     return None;
   }
 
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Describes the time last calibration has been performed.
+  pub fn time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("time") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -101,28 +76,32 @@ impl DeviceMetric_Calibration<'_> {
     return None;
   }
 
-}
-
-#[derive(Debug)]
-pub enum DeviceMetric_CalibrationType {
-  Unspecified,
-  Offset,
-  Gain,
-  TwoPoint,
-}
-
-impl DeviceMetric_CalibrationType {
-    pub fn from_string(string: &str) -> Option<DeviceMetric_CalibrationType> {
-      match string {
-        "unspecified" => Some(DeviceMetric_CalibrationType::Unspecified),
-        "offset" => Some(DeviceMetric_CalibrationType::Offset),
-        "gain" => Some(DeviceMetric_CalibrationType::Gain),
-        "two-point" => Some(DeviceMetric_CalibrationType::TwoPoint),
-        _ => None,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
   }
-}
 
+  /// Describes the type of the calibration method.
+  pub fn fhir_type(&self) -> Option<DeviceMetric_CalibrationType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(DeviceMetric_CalibrationType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+}
 
 #[derive(Debug)]
 pub enum DeviceMetric_CalibrationState {
@@ -139,6 +118,27 @@ impl DeviceMetric_CalibrationState {
         "calibration-required" => Some(DeviceMetric_CalibrationState::CalibrationRequired),
         "calibrated" => Some(DeviceMetric_CalibrationState::Calibrated),
         "unspecified" => Some(DeviceMetric_CalibrationState::Unspecified),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum DeviceMetric_CalibrationType {
+  Unspecified,
+  Offset,
+  Gain,
+  TwoPoint,
+}
+
+impl DeviceMetric_CalibrationType {
+    pub fn from_string(string: &str) -> Option<DeviceMetric_CalibrationType> {
+      match string {
+        "unspecified" => Some(DeviceMetric_CalibrationType::Unspecified),
+        "offset" => Some(DeviceMetric_CalibrationType::Offset),
+        "gain" => Some(DeviceMetric_CalibrationType::Gain),
+        "two-point" => Some(DeviceMetric_CalibrationType::TwoPoint),
         _ => None,
     }
   }

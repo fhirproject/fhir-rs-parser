@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Reference::Reference;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,44 +16,17 @@ pub struct List_Entry<'a> {
 }
 
 impl List_Entry<'_> {
+  /// A reference to the actual resource from which data was derived.
+  pub fn item(&self) -> Reference {
+    Reference {
+      value: &self.value["item"],
+    }
+  }
+
   /// When this item was added to the list.
   pub fn date(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("date") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for deleted
-  pub fn _deleted(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_deleted") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The flag allows the system constructing the list to indicate the role and
-  /// significance of the item in the list.
-  pub fn flag(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("flag") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// True if this item is marked as deleted in the list.
-  pub fn deleted(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("deleted") {
-      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -70,21 +43,6 @@ impl List_Entry<'_> {
     return None;
   }
 
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to the actual resource from which data was derived.
-  pub fn item(&self) -> Reference {
-    Reference {
-      value: &self.value["item"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -99,6 +57,48 @@ impl List_Entry<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for deleted
+  pub fn _deleted(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_deleted") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// True if this item is marked as deleted in the list.
+  pub fn deleted(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("deleted") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// The flag allows the system constructing the list to indicate the role and
+  /// significance of the item in the list.
+  pub fn flag(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("flag") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }

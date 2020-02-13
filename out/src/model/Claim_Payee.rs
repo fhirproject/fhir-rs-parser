@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -17,14 +17,6 @@ pub struct Claim_Payee<'a> {
 }
 
 impl Claim_Payee<'_> {
-  /// Reference to the individual or organization to whom any payment will be made.
-  pub fn party(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("party") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -44,11 +36,10 @@ impl Claim_Payee<'_> {
     }
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Reference to the individual or organization to whom any payment will be made.
+  pub fn party(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("party") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -67,6 +58,15 @@ impl Claim_Payee<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }

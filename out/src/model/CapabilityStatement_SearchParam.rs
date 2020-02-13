@@ -17,23 +17,6 @@ pub struct CapabilityStatement_SearchParam<'a> {
 }
 
 impl CapabilityStatement_SearchParam<'_> {
-  /// This allows documentation of any distinct behaviors about how the search
-  /// parameter is used.  For example, text matching algorithms.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// An absolute URI that is a formal reference to where this parameter was first
   /// defined, so that a client can be confident of the meaning of the search
   /// parameter (a reference to [[[SearchParameter.url]]]). This element SHALL be
@@ -46,10 +29,11 @@ impl CapabilityStatement_SearchParam<'_> {
     return None;
   }
 
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
+  /// The type of value a search parameter refers to, and how the content is
+  /// interpreted.
+  pub fn fhir_type(&self) -> Option<CapabilityStatement_SearchParamType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(CapabilityStatement_SearchParamType::from_string(&val).unwrap());
     }
     return None;
   }
@@ -72,6 +56,14 @@ impl CapabilityStatement_SearchParam<'_> {
     return None;
   }
 
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -89,11 +81,11 @@ impl CapabilityStatement_SearchParam<'_> {
     return None;
   }
 
-  /// The type of value a search parameter refers to, and how the content is
-  /// interpreted.
-  pub fn fhir_type(&self) -> Option<CapabilityStatement_SearchParamType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(CapabilityStatement_SearchParamType::from_string(&val).unwrap());
+  /// This allows documentation of any distinct behaviors about how the search
+  /// parameter is used.  For example, text matching algorithms.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -113,6 +105,14 @@ impl CapabilityStatement_SearchParam<'_> {
   /// Extensions for type
   pub fn _type(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
       return Some(Element { value: val });
     }
     return None;

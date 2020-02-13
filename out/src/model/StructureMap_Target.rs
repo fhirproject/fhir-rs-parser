@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::StructureMap_Parameter::StructureMap_Parameter;
 use crate::model::Element::Element;
+use crate::model::StructureMap_Parameter::StructureMap_Parameter;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -15,30 +15,10 @@ pub struct StructureMap_Target<'a> {
 }
 
 impl StructureMap_Target<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for contextType
-  pub fn _context_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contextType") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Named context for field, if desired, and a field is specified.
-  pub fn variable(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("variable") {
-      return Some(string.to_string());
+  /// How the data is copied / created.
+  pub fn transform(&self) -> Option<StructureMap_TargetTransform> {
+    if let Some(Value::String(val)) = self.value.get("transform") {
+      return Some(StructureMap_TargetTransform::from_string(&val).unwrap());
     }
     return None;
   }
@@ -69,30 +49,6 @@ impl StructureMap_Target<'_> {
     return None;
   }
 
-  /// Type or variable this rule applies to.
-  pub fn context(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("context") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// How the data is copied / created.
-  pub fn transform(&self) -> Option<StructureMap_TargetTransform> {
-    if let Some(Value::String(val)) = self.value.get("transform") {
-      return Some(StructureMap_TargetTransform::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for variable
-  pub fn _variable(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_variable") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for listRuleId
   pub fn _list_rule_id(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_listRuleId") {
@@ -101,18 +57,10 @@ impl StructureMap_Target<'_> {
     return None;
   }
 
-  /// How to interpret the context.
-  pub fn context_type(&self) -> Option<StructureMap_TargetContextType> {
-    if let Some(Value::String(val)) = self.value.get("contextType") {
-      return Some(StructureMap_TargetContextType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for listMode
-  pub fn _list_mode(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_listMode") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// Extensions for context
+  pub fn _context(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_context") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -125,18 +73,34 @@ impl StructureMap_Target<'_> {
     return None;
   }
 
-  /// Parameters to the transform.
-  pub fn parameter(&self) -> Option<Vec<StructureMap_Parameter>> {
-    if let Some(Value::Array(val)) = self.value.get("parameter") {
-      return Some(val.into_iter().map(|e| StructureMap_Parameter { value: e }).collect::<Vec<_>>());
+  /// Named context for field, if desired, and a field is specified.
+  pub fn variable(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("variable") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for context
-  pub fn _context(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_context") {
-      return Some(Element { value: val });
+  /// Type or variable this rule applies to.
+  pub fn context(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("context") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for listMode
+  pub fn _list_mode(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_listMode") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Field to create in the context.
+  pub fn element(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("element") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -150,10 +114,46 @@ impl StructureMap_Target<'_> {
     return None;
   }
 
-  /// Field to create in the context.
-  pub fn element(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("element") {
-      return Some(string.to_string());
+  /// Extensions for variable
+  pub fn _variable(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_variable") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Parameters to the transform.
+  pub fn parameter(&self) -> Option<Vec<StructureMap_Parameter>> {
+    if let Some(Value::Array(val)) = self.value.get("parameter") {
+      return Some(val.into_iter().map(|e| StructureMap_Parameter { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// How to interpret the context.
+  pub fn context_type(&self) -> Option<StructureMap_TargetContextType> {
+    if let Some(Value::String(val)) = self.value.get("contextType") {
+      return Some(StructureMap_TargetContextType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for contextType
+  pub fn _context_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contextType") {
+      return Some(Element { value: val });
     }
     return None;
   }

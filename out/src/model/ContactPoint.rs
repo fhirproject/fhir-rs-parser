@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,32 +16,28 @@ pub struct ContactPoint<'a> {
 }
 
 impl ContactPoint<'_> {
-  /// Specifies a preferred order in which to use a set of contacts. ContactPoints
-  /// with lower rank values are more preferred than those with higher rank values.
-  pub fn rank(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("rank") {
-      return Some(val.as_i64().unwrap());
+  /// Extensions for system
+  pub fn _system(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_system") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The actual contact point details, in a form that is meaningful to the designated
-  /// communication system (i.e. phone number or email address).
-  pub fn value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("value") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Telecommunications form for contact point - what communications system is
+  /// required to make use of the contact.
+  pub fn system(&self) -> Option<ContactPointSystem> {
+    if let Some(Value::String(val)) = self.value.get("system") {
+      return Some(ContactPointSystem::from_string(&val).unwrap());
     }
     return None;
   }
@@ -62,27 +58,20 @@ impl ContactPoint<'_> {
     return None;
   }
 
-  /// Telecommunications form for contact point - what communications system is
-  /// required to make use of the contact.
-  pub fn system(&self) -> Option<ContactPointSystem> {
-    if let Some(Value::String(val)) = self.value.get("system") {
-      return Some(ContactPointSystem::from_string(&val).unwrap());
+  /// The actual contact point details, in a form that is meaningful to the designated
+  /// communication system (i.e. phone number or email address).
+  pub fn value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for system
-  pub fn _system(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_system") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for use
-  pub fn _use(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_use") {
-      return Some(Element { value: val });
+  /// Specifies a preferred order in which to use a set of contacts. ContactPoints
+  /// with lower rank values are more preferred than those with higher rank values.
+  pub fn rank(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("rank") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -95,19 +84,30 @@ impl ContactPoint<'_> {
     return None;
   }
 
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for use
+  pub fn _use(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_use") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
     }
     return None;
   }

@@ -15,10 +15,10 @@ pub struct PaymentReconciliation_ProcessNote<'a> {
 }
 
 impl PaymentReconciliation_ProcessNote<'_> {
-  /// The business purpose of the note text.
-  pub fn fhir_type(&self) -> Option<PaymentReconciliation_ProcessNoteType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(PaymentReconciliation_ProcessNoteType::from_string(&val).unwrap());
+  /// Extensions for text
+  pub fn _text(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_text") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -41,14 +41,10 @@ impl PaymentReconciliation_ProcessNote<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// The explanation or description associated with the processing.
+  pub fn text(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("text") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -61,10 +57,22 @@ impl PaymentReconciliation_ProcessNote<'_> {
     return None;
   }
 
-  /// The explanation or description associated with the processing.
-  pub fn text(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("text") {
-      return Some(string.to_string());
+  /// The business purpose of the note text.
+  pub fn fhir_type(&self) -> Option<PaymentReconciliation_ProcessNoteType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(PaymentReconciliation_ProcessNoteType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -74,14 +82,6 @@ impl PaymentReconciliation_ProcessNote<'_> {
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for text
-  pub fn _text(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_text") {
-      return Some(Element { value: val });
     }
     return None;
   }

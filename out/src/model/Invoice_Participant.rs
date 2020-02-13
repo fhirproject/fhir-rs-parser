@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,11 +16,14 @@ pub struct Invoice_Participant<'a> {
 }
 
 impl Invoice_Participant<'_> {
-  /// The device, practitioner, etc. who performed or participated in the service.
-  pub fn actor(&self) -> Reference {
-    Reference {
-      value: &self.value["actor"],
+  /// Describes the type of involvement (e.g. transcriptionist, creator etc.). If the
+  /// invoice has been created automatically, the Participant may be a billing engine
+  /// or another kind of device.
+  pub fn role(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("role") {
+      return Some(CodeableConcept { value: val });
     }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -35,16 +38,6 @@ impl Invoice_Participant<'_> {
     return None;
   }
 
-  /// Describes the type of involvement (e.g. transcriptionist, creator etc.). If the
-  /// invoice has been created automatically, the Participant may be a billing engine
-  /// or another kind of device.
-  pub fn role(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("role") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -52,6 +45,13 @@ impl Invoice_Participant<'_> {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// The device, practitioner, etc. who performed or participated in the service.
+  pub fn actor(&self) -> Reference {
+    Reference {
+      value: &self.value["actor"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -20,31 +20,6 @@ pub struct ResearchStudy_Objective<'a> {
 }
 
 impl ResearchStudy_Objective<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique, human-readable label for this objective of the study.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -53,14 +28,6 @@ impl ResearchStudy_Objective<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The kind of study objective.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -79,6 +46,39 @@ impl ResearchStudy_Objective<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique, human-readable label for this objective of the study.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The kind of study objective.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
     }
     return None;
   }

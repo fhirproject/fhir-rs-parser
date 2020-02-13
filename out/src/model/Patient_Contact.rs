@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ContactPoint::ContactPoint;
-use crate::model::Reference::Reference;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Address::Address;
-use crate::model::Period::Period;
-use crate::model::Element::Element;
 use crate::model::HumanName::HumanName;
+use crate::model::Element::Element;
+use crate::model::Reference::Reference;
+use crate::model::Address::Address;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ContactPoint::ContactPoint;
 use crate::model::Extension::Extension;
+use crate::model::Period::Period;
 use serde_json::value::Value;
 
 
@@ -21,31 +21,6 @@ pub struct Patient_Contact<'a> {
 }
 
 impl Patient_Contact<'_> {
-  /// The nature of the relationship between the patient and the contact person.
-  pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("relationship") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for gender
-  pub fn _gender(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_gender") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Organization on behalf of which the contact is acting or for which the contact
-  /// is working.
-  pub fn organization(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("organization") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// A name associated with the contact person.
   pub fn name(&self) -> Option<HumanName> {
     if let Some(val) = self.value.get("name") {
@@ -54,31 +29,10 @@ impl Patient_Contact<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A contact detail for the person, e.g. a telephone number or an email address.
-  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("telecom") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Administrative Gender - the gender that the contact person is considered to have
-  /// for administration and record keeping purposes.
-  pub fn gender(&self) -> Option<Patient_ContactGender> {
-    if let Some(Value::String(val)) = self.value.get("gender") {
-      return Some(Patient_ContactGender::from_string(&val).unwrap());
+  /// The nature of the relationship between the patient and the contact person.
+  pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("relationship") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -88,6 +42,23 @@ impl Patient_Contact<'_> {
   pub fn period(&self) -> Option<Period> {
     if let Some(val) = self.value.get("period") {
       return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A contact detail for the person, e.g. a telephone number or an email address.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -110,11 +81,32 @@ impl Patient_Contact<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Administrative Gender - the gender that the contact person is considered to have
+  /// for administration and record keeping purposes.
+  pub fn gender(&self) -> Option<Patient_ContactGender> {
+    if let Some(Value::String(val)) = self.value.get("gender") {
+      return Some(Patient_ContactGender::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Organization on behalf of which the contact is acting or for which the contact
+  /// is working.
+  pub fn organization(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("organization") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -123,6 +115,14 @@ impl Patient_Contact<'_> {
   pub fn address(&self) -> Option<Address> {
     if let Some(val) = self.value.get("address") {
       return Some(Address { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for gender
+  pub fn _gender(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_gender") {
+      return Some(Element { value: val });
     }
     return None;
   }

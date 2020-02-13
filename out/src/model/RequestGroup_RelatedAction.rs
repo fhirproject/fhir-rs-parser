@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Duration::Duration;
 use crate::model::Element::Element;
-use crate::model::Range::Range;
 use crate::model::Extension::Extension;
+use crate::model::Duration::Duration;
+use crate::model::Range::Range;
 use serde_json::value::Value;
 
 
@@ -17,19 +17,27 @@ pub struct RequestGroup_RelatedAction<'a> {
 }
 
 impl RequestGroup_RelatedAction<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The relationship of this action to the related action.
+  pub fn relationship(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("relationship") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for actionId
-  pub fn _action_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_actionId") {
+  /// Extensions for relationship
+  pub fn _relationship(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_relationship") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A duration or range of durations to apply to the relationship. For example, 30-
+  /// 60 minutes before.
+  pub fn offset_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("offsetDuration") {
+      return Some(Duration { value: val });
     }
     return None;
   }
@@ -52,31 +60,10 @@ impl RequestGroup_RelatedAction<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for relationship
-  pub fn _relationship(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_relationship") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A duration or range of durations to apply to the relationship. For example, 30-
-  /// 60 minutes before.
-  pub fn offset_duration(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("offsetDuration") {
-      return Some(Duration { value: val });
+  /// The element id of the action this is related to.
+  pub fn action_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("actionId") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -90,18 +77,31 @@ impl RequestGroup_RelatedAction<'_> {
     return None;
   }
 
-  /// The relationship of this action to the related action.
-  pub fn relationship(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("relationship") {
+  /// Extensions for actionId
+  pub fn _action_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_actionId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// The element id of the action this is related to.
-  pub fn action_id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("actionId") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

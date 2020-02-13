@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,21 +16,19 @@ pub struct MedicinalProduct_NamePart<'a> {
 }
 
 impl MedicinalProduct_NamePart<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for part
   pub fn _part(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_part") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Idenifying type for this part of the name (e.g. strength part).
+  pub fn fhir_type(&self) -> Coding {
+    Coding {
+      value: &self.value["type"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -51,19 +49,13 @@ impl MedicinalProduct_NamePart<'_> {
     return None;
   }
 
-  /// A fragment of a product name.
-  pub fn part(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("part") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
-  }
-
-  /// Idenifying type for this part of the name (e.g. strength part).
-  pub fn fhir_type(&self) -> Coding {
-    Coding {
-      value: &self.value["type"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -74,6 +66,14 @@ impl MedicinalProduct_NamePart<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A fragment of a product name.
+  pub fn part(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("part") {
+      return Some(string.to_string());
     }
     return None;
   }

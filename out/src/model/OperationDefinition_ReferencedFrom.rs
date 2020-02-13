@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -20,6 +20,14 @@ impl OperationDefinition_ReferencedFrom<'_> {
   pub fn source_id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("sourceId") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for sourceId
+  pub fn _source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceId") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -75,14 +83,6 @@ impl OperationDefinition_ReferencedFrom<'_> {
   /// Extensions for source
   pub fn _source(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_source") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for sourceId
-  pub fn _source_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sourceId") {
       return Some(Element { value: val });
     }
     return None;

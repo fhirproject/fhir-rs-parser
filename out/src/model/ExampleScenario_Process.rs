@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ExampleScenario_Step::ExampleScenario_Step;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,35 +15,26 @@ pub struct ExampleScenario_Process<'a> {
 }
 
 impl ExampleScenario_Process<'_> {
-  /// Extensions for postConditions
-  pub fn _post_conditions(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_postConditions") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Each step of the process.
-  pub fn step(&self) -> Option<Vec<ExampleScenario_Step>> {
-    if let Some(Value::Array(val)) = self.value.get("step") {
-      return Some(val.into_iter().map(|e| ExampleScenario_Step { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// A longer description of the group of operations.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for preConditions
-  pub fn _pre_conditions(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_preConditions") {
-      return Some(Element { value: val });
+  /// The diagram title of the group of operations.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Description of initial status before the process starts.
+  pub fn pre_conditions(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("preConditions") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -51,26 +42,6 @@ impl ExampleScenario_Process<'_> {
   /// Extensions for title
   pub fn _title(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
     }
     return None;
@@ -94,10 +65,10 @@ impl ExampleScenario_Process<'_> {
     return None;
   }
 
-  /// The diagram title of the group of operations.
-  pub fn title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("title") {
-      return Some(string.to_string());
+  /// Extensions for preConditions
+  pub fn _pre_conditions(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_preConditions") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -110,18 +81,47 @@ impl ExampleScenario_Process<'_> {
     return None;
   }
 
-  /// Description of initial status before the process starts.
-  pub fn pre_conditions(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("preConditions") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// A longer description of the group of operations.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Extensions for postConditions
+  pub fn _post_conditions(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_postConditions") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Each step of the process.
+  pub fn step(&self) -> Option<Vec<ExampleScenario_Step>> {
+    if let Some(Value::Array(val)) = self.value.get("step") {
+      return Some(val.into_iter().map(|e| ExampleScenario_Step { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

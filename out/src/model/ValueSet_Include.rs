@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::ValueSet_Filter::ValueSet_Filter;
 use crate::model::ValueSet_Concept::ValueSet_Concept;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -28,23 +28,22 @@ impl ValueSet_Include<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// An absolute URI which is the code system from which the selected codes come
   /// from.
   pub fn system(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("system") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Selects the concepts found in this value set (based on its value set
+  /// definition). This is an absolute URI that is a reference to ValueSet.url.  If
+  /// multiple value sets are specified this includes the union of the contents of all
+  /// of the referenced value sets.
+  pub fn value_set(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("valueSet") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -86,13 +85,14 @@ impl ValueSet_Include<'_> {
     return None;
   }
 
-  /// Selects the concepts found in this value set (based on its value set
-  /// definition). This is an absolute URI that is a reference to ValueSet.url.  If
-  /// multiple value sets are specified this includes the union of the contents of all
-  /// of the referenced value sets.
-  pub fn value_set(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("valueSet") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }

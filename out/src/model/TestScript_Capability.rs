@@ -15,110 +15,6 @@ pub struct TestScript_Capability<'a> {
 }
 
 impl TestScript_Capability<'_> {
-  /// Extensions for validated
-  pub fn _validated(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_validated") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Description of the capabilities that this test script is requiring the server to
-  /// support.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Whether or not the test execution will require the given capabilities of the
-  /// server in order for this test script to execute.
-  pub fn required(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("required") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Whether or not the test execution will validate the given capabilities of the
-  /// server in order for this test script to execute.
-  pub fn validated(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("validated") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Links to the FHIR specification that describes this interaction and the
-  /// resources involved in more detail.
-  pub fn link(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("link") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Minimum capabilities required of server for test script to execute successfully.
-  /// If server does not meet at a minimum the referenced capability statement, then
-  /// all tests in this script are skipped.
-  pub fn capabilities(&self) -> String {
-    self.value.get("capabilities").unwrap().as_str().unwrap().to_string()
-  }
-
-  /// Extensions for origin
-  pub fn _origin(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_origin") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for destination
-  pub fn _destination(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_destination") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Which server these requirements apply to.
-  pub fn destination(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("destination") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for required
-  pub fn _required(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_required") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -137,10 +33,20 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
-  /// Which origin server these requirements apply to.
-  pub fn origin(&self) -> Option<Vec<i64>> {
-    if let Some(Value::Array(val)) = self.value.get("origin") {
-      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+  /// Whether or not the test execution will require the given capabilities of the
+  /// server in order for this test script to execute.
+  pub fn required(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("required") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Links to the FHIR specification that describes this interaction and the
+  /// resources involved in more detail.
+  pub fn link(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("link") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -153,10 +59,104 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
+  /// Minimum capabilities required of server for test script to execute successfully.
+  /// If server does not meet at a minimum the referenced capability statement, then
+  /// all tests in this script are skipped.
+  pub fn capabilities(&self) -> String {
+    self.value.get("capabilities").unwrap().as_str().unwrap().to_string()
+  }
+
+  /// Extensions for required
+  pub fn _required(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_required") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for validated
+  pub fn _validated(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_validated") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Description of the capabilities that this test script is requiring the server to
+  /// support.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Which origin server these requirements apply to.
+  pub fn origin(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("origin") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Extensions for link
   pub fn _link(&self) -> Option<Vec<Element>> {
     if let Some(Value::Array(val)) = self.value.get("_link") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for destination
+  pub fn _destination(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_destination") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for origin
+  pub fn _origin(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_origin") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Which server these requirements apply to.
+  pub fn destination(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("destination") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Whether or not the test execution will validate the given capabilities of the
+  /// server in order for this test script to execute.
+  pub fn validated(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("validated") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }

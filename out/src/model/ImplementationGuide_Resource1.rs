@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -18,6 +18,47 @@ pub struct ImplementationGuide_Resource1<'a> {
 }
 
 impl ImplementationGuide_Resource1<'_> {
+  /// Where this resource is found.
+  pub fn reference(&self) -> Reference {
+    Reference {
+      value: &self.value["reference"],
+    }
+  }
+
+  /// Extensions for exampleBoolean
+  pub fn _example_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_exampleBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The relative path for primary page for this resource within the IG.
+  pub fn relative_path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("relativePath") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If true or a reference, indicates the resource is an example instance.  If a
+  /// reference is present, indicates that the example is an example of the specified
+  /// profile.
+  pub fn example_canonical(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("exampleCanonical") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for exampleCanonical
+  pub fn _example_canonical(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_exampleCanonical") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -36,41 +77,6 @@ impl ImplementationGuide_Resource1<'_> {
     return None;
   }
 
-  /// If true or a reference, indicates the resource is an example instance.  If a
-  /// reference is present, indicates that the example is an example of the specified
-  /// profile.
-  pub fn example_boolean(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("exampleBoolean") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for exampleBoolean
-  pub fn _example_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_exampleBoolean") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Where this resource is found.
-  pub fn reference(&self) -> Reference {
-    Reference {
-      value: &self.value["reference"],
-    }
-  }
-
-  /// If true or a reference, indicates the resource is an example instance.  If a
-  /// reference is present, indicates that the example is an example of the specified
-  /// profile.
-  pub fn example_canonical(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("exampleCanonical") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -83,10 +89,12 @@ impl ImplementationGuide_Resource1<'_> {
     return None;
   }
 
-  /// Extensions for exampleCanonical
-  pub fn _example_canonical(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_exampleCanonical") {
-      return Some(Element { value: val });
+  /// If true or a reference, indicates the resource is an example instance.  If a
+  /// reference is present, indicates that the example is an example of the specified
+  /// profile.
+  pub fn example_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("exampleBoolean") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -103,14 +111,6 @@ impl ImplementationGuide_Resource1<'_> {
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The relative path for primary page for this resource within the IG.
-  pub fn relative_path(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("relativePath") {
       return Some(string.to_string());
     }
     return None;

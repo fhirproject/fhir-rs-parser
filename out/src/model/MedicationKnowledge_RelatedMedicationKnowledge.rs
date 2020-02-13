@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -15,27 +15,6 @@ pub struct MedicationKnowledge_RelatedMedicationKnowledge<'a> {
 }
 
 impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
-  /// Associated documentation about the associated medication knowledge.
-  pub fn reference(&self) -> Vec<Reference> {
-    self.value.get("reference").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The category of the associated medication knowledge reference.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -64,6 +43,27 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The category of the associated medication knowledge reference.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Associated documentation about the associated medication knowledge.
+  pub fn reference(&self) -> Vec<Reference> {
+    self.value.get("reference").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
   }
 
 }

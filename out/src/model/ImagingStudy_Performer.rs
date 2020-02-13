@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -31,6 +31,13 @@ impl ImagingStudy_Performer<'_> {
     return None;
   }
 
+  /// Indicates who or what performed the series.
+  pub fn actor(&self) -> Reference {
+    Reference {
+      value: &self.value["actor"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -38,21 +45,6 @@ impl ImagingStudy_Performer<'_> {
       return Some(string.to_string());
     }
     return None;
-  }
-
-  /// Distinguishes the type of involvement of the performer in the series.
-  pub fn function(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("function") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates who or what performed the series.
-  pub fn actor(&self) -> Reference {
-    Reference {
-      value: &self.value["actor"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -69,6 +61,14 @@ impl ImagingStudy_Performer<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Distinguishes the type of involvement of the performer in the series.
+  pub fn function(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("function") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
