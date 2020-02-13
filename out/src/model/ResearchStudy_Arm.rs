@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
@@ -20,6 +20,14 @@ pub struct ResearchStudy_Arm<'a> {
 }
 
 impl ResearchStudy_Arm<'_> {
+  /// Unique, human-readable label for this arm of the study.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -47,10 +55,28 @@ impl ResearchStudy_Arm<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Categorization of study arm, e.g. experimental, active comparator, placebo
+  /// comparater.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -75,30 +101,29 @@ impl ResearchStudy_Arm<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.name() {
     }
-    return None;
-  }
-
-  /// Categorization of study arm, e.g. experimental, active comparator, placebo
-  /// comparater.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Unique, human-readable label for this arm of the study.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+    if let Some(_val) = self.description() {
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

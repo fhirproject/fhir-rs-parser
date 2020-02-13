@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Period::Period;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -36,27 +36,6 @@ impl BiologicallyDerivedProduct_Collection<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The patient or entity, such as a hospital or vendor in the case of a
-  /// processed/manipulated/manufactured product, providing the product.
-  pub fn source(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("source") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// Healthcare professional who is performing the collection.
   pub fn collector(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("collector") {
@@ -65,10 +44,14 @@ impl BiologicallyDerivedProduct_Collection<'_> {
     return None;
   }
 
-  /// Extensions for collectedDateTime
-  pub fn _collected_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_collectedDateTime") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -90,12 +73,55 @@ impl BiologicallyDerivedProduct_Collection<'_> {
     return None;
   }
 
+  /// Extensions for collectedDateTime
+  pub fn _collected_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_collectedDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Time of product collection.
   pub fn collected_date_time(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("collectedDateTime") {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// The patient or entity, such as a hospital or vendor in the case of a
+  /// processed/manipulated/manufactured product, providing the product.
+  pub fn source(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("source") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.collector() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.collected_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._collected_date_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self.collected_date_time() {
+    }
+    if let Some(_val) = self.source() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

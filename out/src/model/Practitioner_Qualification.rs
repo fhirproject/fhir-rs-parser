@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
-use crate::model::Extension::Extension;
-use crate::model::Identifier::Identifier;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Period::Period;
+use crate::model::Identifier::Identifier;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -18,42 +18,14 @@ pub struct Practitioner_Qualification<'a> {
 }
 
 impl Practitioner_Qualification<'_> {
-  /// An identifier that applies to this person's qualification in this role.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Coded representation of the qualification.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
-  /// Period during which the qualification is valid.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Organization that regulates and issues the qualification.
-  pub fn issuer(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("issuer") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -76,16 +48,66 @@ impl Practitioner_Qualification<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Period during which the qualification is valid.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
     }
     return None;
+  }
+
+  /// Coded representation of the qualification.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An identifier that applies to this person's qualification in this role.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Organization that regulates and issues the qualification.
+  pub fn issuer(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("issuer") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.period() {
+      _val.validate();
+    }
+    let _ = self.code().validate();
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.issuer() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

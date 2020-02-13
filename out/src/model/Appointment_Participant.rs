@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Period::Period;
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,14 +19,10 @@ pub struct Appointment_Participant<'a> {
 }
 
 impl Appointment_Participant<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Participation status of the actor.
+  pub fn status(&self) -> Option<Appointment_ParticipantStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(Appointment_ParticipantStatus::from_string(&val).unwrap());
     }
     return None;
   }
@@ -36,22 +32,6 @@ impl Appointment_Participant<'_> {
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for required
-  pub fn _required(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_required") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Participation period of the actor.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
     }
     return None;
   }
@@ -74,28 +54,38 @@ impl Appointment_Participant<'_> {
     return None;
   }
 
-  /// Whether this participant is required to be present at the meeting. This covers a
-  /// use-case where two doctors need to meet to discuss the results for a specific
-  /// patient, and the patient is not required to be present.
-  pub fn required(&self) -> Option<Appointment_ParticipantRequired> {
-    if let Some(Value::String(val)) = self.value.get("required") {
-      return Some(Appointment_ParticipantRequired::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Participation status of the actor.
-  pub fn status(&self) -> Option<Appointment_ParticipantStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(Appointment_ParticipantStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// Extensions for status
   pub fn _status(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_status") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for required
+  pub fn _required(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_required") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Role of participant in the appointment.
+  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("type") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -109,34 +99,56 @@ impl Appointment_Participant<'_> {
     return None;
   }
 
-  /// Role of participant in the appointment.
-  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("type") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Whether this participant is required to be present at the meeting. This covers a
+  /// use-case where two doctors need to meet to discuss the results for a specific
+  /// patient, and the patient is not required to be present.
+  pub fn required(&self) -> Option<Appointment_ParticipantRequired> {
+    if let Some(Value::String(val)) = self.value.get("required") {
+      return Some(Appointment_ParticipantRequired::from_string(&val).unwrap());
     }
     return None;
   }
 
-}
-
-#[derive(Debug)]
-pub enum Appointment_ParticipantRequired {
-  Required,
-  Optional,
-  InformationOnly,
-}
-
-impl Appointment_ParticipantRequired {
-    pub fn from_string(string: &str) -> Option<Appointment_ParticipantRequired> {
-      match string {
-        "required" => Some(Appointment_ParticipantRequired::Required),
-        "optional" => Some(Appointment_ParticipantRequired::Optional),
-        "information-only" => Some(Appointment_ParticipantRequired::InformationOnly),
-        _ => None,
+  /// Participation period of the actor.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
     }
+    return None;
   }
-}
 
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self._required() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.actor() {
+      _val.validate();
+    }
+    if let Some(_val) = self.required() {
+    }
+    if let Some(_val) = self.period() {
+      _val.validate();
+    }
+    return true;
+  }
+
+}
 
 #[derive(Debug)]
 pub enum Appointment_ParticipantStatus {
@@ -153,6 +165,25 @@ impl Appointment_ParticipantStatus {
         "declined" => Some(Appointment_ParticipantStatus::Declined),
         "tentative" => Some(Appointment_ParticipantStatus::Tentative),
         "needs-action" => Some(Appointment_ParticipantStatus::NeedsAction),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum Appointment_ParticipantRequired {
+  Required,
+  Optional,
+  InformationOnly,
+}
+
+impl Appointment_ParticipantRequired {
+    pub fn from_string(string: &str) -> Option<Appointment_ParticipantRequired> {
+      match string {
+        "required" => Some(Appointment_ParticipantRequired::Required),
+        "optional" => Some(Appointment_ParticipantRequired::Optional),
+        "information-only" => Some(Appointment_ParticipantRequired::InformationOnly),
         _ => None,
     }
   }

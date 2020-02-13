@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Range::Range;
 use crate::model::Element::Element;
-use crate::model::Quantity::Quantity;
 use crate::model::Extension::Extension;
+use crate::model::Range::Range;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -45,6 +45,14 @@ impl DeviceRequest_Parameter<'_> {
     return None;
   }
 
+  /// The value of the device detail.
+  pub fn value_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("valueRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -53,6 +61,22 @@ impl DeviceRequest_Parameter<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The value of the device detail.
+  pub fn value_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("valueBoolean") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for valueBoolean
+  pub fn _value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBoolean") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -81,28 +105,33 @@ impl DeviceRequest_Parameter<'_> {
     return None;
   }
 
-  /// Extensions for valueBoolean
-  pub fn _value_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueBoolean") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The value of the device detail.
-  pub fn value_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("valueRange") {
-      return Some(Range { value: val });
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// The value of the device detail.
-  pub fn value_boolean(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("valueBoolean") {
-      return Some(val.as_bool().unwrap());
+    if let Some(_val) = self.value_range() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.value_boolean() {
+    }
+    if let Some(_val) = self._value_boolean() {
+      _val.validate();
+    }
+    if let Some(_val) = self.code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_quantity() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

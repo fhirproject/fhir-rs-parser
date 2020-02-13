@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,10 +15,10 @@ pub struct SearchParameter_Component<'a> {
 }
 
 impl SearchParameter_Component<'_> {
-  /// A sub-expression that defines how to extract values for this component from the
-  /// output of the main SearchParameter.expression.
-  pub fn expression(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("expression") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -27,14 +27,6 @@ impl SearchParameter_Component<'_> {
   /// The definition of the search parameter that describes this part.
   pub fn definition(&self) -> String {
     self.value.get("definition").unwrap().as_str().unwrap().to_string()
-  }
-
-  /// Extensions for expression
-  pub fn _expression(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expression") {
-      return Some(Element { value: val });
-    }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -55,11 +47,19 @@ impl SearchParameter_Component<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// A sub-expression that defines how to extract values for this component from the
+  /// output of the main SearchParameter.expression.
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -74,6 +74,24 @@ impl SearchParameter_Component<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.definition();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.expression() {
+    }
+    if let Some(_val) = self._expression() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

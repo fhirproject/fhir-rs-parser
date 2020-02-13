@@ -16,6 +16,23 @@ pub struct StructureDefinition_Context<'a> {
 }
 
 impl StructureDefinition_Context<'_> {
+  /// An expression that defines where an extension can be used in resources.
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -34,10 +51,27 @@ impl StructureDefinition_Context<'_> {
     return None;
   }
 
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for expression
   pub fn _expression(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_expression") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Defines how to interpret the expression that defines what the context of the
+  /// extension is.
+  pub fn fhir_type(&self) -> Option<StructureDefinition_ContextType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(StructureDefinition_ContextType::from_string(&val).unwrap());
     }
     return None;
   }
@@ -54,38 +88,26 @@ impl StructureDefinition_Context<'_> {
     return None;
   }
 
-  /// Defines how to interpret the expression that defines what the context of the
-  /// extension is.
-  pub fn fhir_type(&self) -> Option<StructureDefinition_ContextType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(StructureDefinition_ContextType::from_string(&val).unwrap());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.expression() {
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// An expression that defines where an extension can be used in resources.
-  pub fn expression(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("expression") {
-      return Some(string.to_string());
+    if let Some(_val) = self._type() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self._expression() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

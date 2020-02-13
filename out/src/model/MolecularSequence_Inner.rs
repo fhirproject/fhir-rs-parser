@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,11 +14,12 @@ pub struct MolecularSequence_Inner<'a> {
 }
 
 impl MolecularSequence_Inner<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Structural variant inner end. If the coordinate system is 0-based then end is
+  /// exclusive and does not include the last position. If the coordinate system is 1-
+  /// base, then end is inclusive and includes the last position.
+  pub fn end(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("end") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -28,6 +29,26 @@ impl MolecularSequence_Inner<'_> {
   pub fn start(&self) -> Option<i64> {
     if let Some(val) = self.value.get("start") {
       return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for end
+  pub fn _end(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_end") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -50,32 +71,11 @@ impl MolecularSequence_Inner<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Structural variant inner end. If the coordinate system is 0-based then end is
-  /// exclusive and does not include the last position. If the coordinate system is 1-
-  /// base, then end is inclusive and includes the last position.
-  pub fn end(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("end") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for end
-  pub fn _end(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_end") {
-      return Some(Element { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -86,6 +86,28 @@ impl MolecularSequence_Inner<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.end() {
+    }
+    if let Some(_val) = self.start() {
+    }
+    if let Some(_val) = self._end() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._start() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

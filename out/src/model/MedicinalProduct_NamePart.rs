@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Coding::Coding;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,15 @@ pub struct MedicinalProduct_NamePart<'a> {
 }
 
 impl MedicinalProduct_NamePart<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for part
   pub fn _part(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_part") {
@@ -29,6 +38,14 @@ impl MedicinalProduct_NamePart<'_> {
     Coding {
       value: &self.value["type"],
     }
+  }
+
+  /// A fragment of a product name.
+  pub fn part(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("part") {
+      return Some(string.to_string());
+    }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -49,15 +66,6 @@ impl MedicinalProduct_NamePart<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -70,12 +78,22 @@ impl MedicinalProduct_NamePart<'_> {
     return None;
   }
 
-  /// A fragment of a product name.
-  pub fn part(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("part") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
+    if let Some(_val) = self._part() {
+      _val.validate();
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.part() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

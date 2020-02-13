@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -28,9 +28,12 @@ impl Contract_Subject<'_> {
     return None;
   }
 
-  /// The entity the action is performed or not performed on or for.
-  pub fn reference(&self) -> Vec<Reference> {
-    self.value.get("reference").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
+  /// Role type of agent assigned roles in this Contract.
+  pub fn role(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("role") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
@@ -60,12 +63,25 @@ impl Contract_Subject<'_> {
     return None;
   }
 
-  /// Role type of agent assigned roles in this Contract.
-  pub fn role(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("role") {
-      return Some(CodeableConcept { value: val });
+  /// The entity the action is performed or not performed on or for.
+  pub fn reference(&self) -> Vec<Reference> {
+    self.value.get("reference").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.role() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.reference().into_iter().for_each(|e| { e.validate(); });
+    return true;
   }
 
 }

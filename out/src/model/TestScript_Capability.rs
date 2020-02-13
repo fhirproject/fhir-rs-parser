@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,6 +15,22 @@ pub struct TestScript_Capability<'a> {
 }
 
 impl TestScript_Capability<'_> {
+  /// Whether or not the test execution will require the given capabilities of the
+  /// server in order for this test script to execute.
+  pub fn required(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("required") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Minimum capabilities required of server for test script to execute successfully.
+  /// If server does not meet at a minimum the referenced capability statement, then
+  /// all tests in this script are skipped.
+  pub fn capabilities(&self) -> String {
+    self.value.get("capabilities").unwrap().as_str().unwrap().to_string()
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -33,10 +49,18 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
-  /// Whether or not the test execution will require the given capabilities of the
+  /// Which server these requirements apply to.
+  pub fn destination(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("destination") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Whether or not the test execution will validate the given capabilities of the
   /// server in order for this test script to execute.
-  pub fn required(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("required") {
+  pub fn validated(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("validated") {
       return Some(val.as_bool().unwrap());
     }
     return None;
@@ -51,24 +75,9 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Minimum capabilities required of server for test script to execute successfully.
-  /// If server does not meet at a minimum the referenced capability statement, then
-  /// all tests in this script are skipped.
-  pub fn capabilities(&self) -> String {
-    self.value.get("capabilities").unwrap().as_str().unwrap().to_string()
-  }
-
-  /// Extensions for required
-  pub fn _required(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_required") {
+  /// Extensions for destination
+  pub fn _destination(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_destination") {
       return Some(Element { value: val });
     }
     return None;
@@ -82,19 +91,18 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
-  /// Description of the capabilities that this test script is requiring the server to
-  /// support.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Extensions for required
+  pub fn _required(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_required") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Which origin server these requirements apply to.
-  pub fn origin(&self) -> Option<Vec<i64>> {
-    if let Some(Value::Array(val)) = self.value.get("origin") {
-      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -103,39 +111,6 @@ impl TestScript_Capability<'_> {
   pub fn _link(&self) -> Option<Vec<Element>> {
     if let Some(Value::Array(val)) = self.value.get("_link") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for destination
-  pub fn _destination(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_destination") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for origin
-  pub fn _origin(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_origin") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Which server these requirements apply to.
-  pub fn destination(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("destination") {
-      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -152,13 +127,83 @@ impl TestScript_Capability<'_> {
     return None;
   }
 
-  /// Whether or not the test execution will validate the given capabilities of the
-  /// server in order for this test script to execute.
-  pub fn validated(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("validated") {
-      return Some(val.as_bool().unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Which origin server these requirements apply to.
+  pub fn origin(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("origin") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Description of the capabilities that this test script is requiring the server to
+  /// support.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for origin
+  pub fn _origin(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_origin") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.required() {
+    }
+    let _ = self.capabilities();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.destination() {
+    }
+    if let Some(_val) = self.validated() {
+    }
+    if let Some(_val) = self.link() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self._destination() {
+      _val.validate();
+    }
+    if let Some(_val) = self._validated() {
+      _val.validate();
+    }
+    if let Some(_val) = self._required() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self._link() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.origin() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self._origin() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

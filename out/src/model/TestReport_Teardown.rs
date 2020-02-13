@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::TestReport_Action2::TestReport_Action2;
 use crate::model::Extension::Extension;
+use crate::model::TestReport_Action2::TestReport_Action2;
 use serde_json::value::Value;
 
 
@@ -56,6 +56,19 @@ impl TestReport_Teardown<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    let _ = self.action().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

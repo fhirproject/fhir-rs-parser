@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Quantity::Quantity;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,9 +16,9 @@ pub struct SampledData<'a> {
 }
 
 impl SampledData<'_> {
-  /// Extensions for upperLimit
-  pub fn _upper_limit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_upperLimit") {
+  /// Extensions for lowerLimit
+  pub fn _lower_limit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lowerLimit") {
       return Some(Element { value: val });
     }
     return None;
@@ -32,26 +32,26 @@ impl SampledData<'_> {
     return None;
   }
 
-  /// Extensions for period
-  pub fn _period(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_period") {
-      return Some(Element { value: val });
+  /// The base quantity that a measured value of zero represents. In addition, this
+  /// provides the units of the entire measurement series.
+  pub fn origin(&self) -> Quantity {
+    Quantity {
+      value: &self.value["origin"],
     }
-    return None;
   }
 
-  /// The lower limit of detection of the measured points. This is needed if any of
-  /// the data points have the value "L" (lower than detection limit).
-  pub fn lower_limit(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("lowerLimit") {
+  /// A correction factor that is applied to the sampled data points before they are
+  /// added to the origin.
+  pub fn factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("factor") {
       return Some(val.as_f64().unwrap());
     }
     return None;
   }
 
-  /// Extensions for lowerLimit
-  pub fn _lower_limit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lowerLimit") {
+  /// Extensions for upperLimit
+  pub fn _upper_limit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_upperLimit") {
       return Some(Element { value: val });
     }
     return None;
@@ -62,30 +62,6 @@ impl SampledData<'_> {
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for data
-  pub fn _data(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_data") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base quantity that a measured value of zero represents. In addition, this
-  /// provides the units of the entire measurement series.
-  pub fn origin(&self) -> Quantity {
-    Quantity {
-      value: &self.value["origin"],
-    }
-  }
-
-  /// The length of time between sampling times, measured in milliseconds.
-  pub fn period(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("period") {
-      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -107,10 +83,30 @@ impl SampledData<'_> {
     return None;
   }
 
-  /// A correction factor that is applied to the sampled data points before they are
-  /// added to the origin.
-  pub fn factor(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("factor") {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The length of time between sampling times, measured in milliseconds.
+  pub fn period(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("period") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// The lower limit of detection of the measured points. This is needed if any of
+  /// the data points have the value "L" (lower than detection limit).
+  pub fn lower_limit(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("lowerLimit") {
       return Some(val.as_f64().unwrap());
     }
     return None;
@@ -136,16 +132,60 @@ impl SampledData<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for data
+  pub fn _data(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_data") {
+      return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Extensions for period
+  pub fn _period(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_period") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._lower_limit() {
+      _val.validate();
+    }
+    if let Some(_val) = self._dimensions() {
+      _val.validate();
+    }
+    let _ = self.origin().validate();
+    if let Some(_val) = self.factor() {
+    }
+    if let Some(_val) = self._upper_limit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._factor() {
+      _val.validate();
+    }
+    if let Some(_val) = self.upper_limit() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.period() {
+    }
+    if let Some(_val) = self.lower_limit() {
+    }
+    if let Some(_val) = self.dimensions() {
+    }
+    if let Some(_val) = self.data() {
+    }
+    if let Some(_val) = self._data() {
+      _val.validate();
+    }
+    if let Some(_val) = self._period() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

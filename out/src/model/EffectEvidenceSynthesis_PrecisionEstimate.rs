@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,14 +17,6 @@ pub struct EffectEvidenceSynthesis_PrecisionEstimate<'a> {
 }
 
 impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
-  /// Lower bound of confidence interval.
-  pub fn from(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("from") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -39,26 +31,6 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for level
-  pub fn _level(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_level") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -80,6 +52,22 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     return None;
   }
 
+  /// Examples include confidence interval and interquartile range.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for to
+  pub fn _to(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_to") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for from
   pub fn _from(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_from") {
@@ -96,20 +84,62 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     return None;
   }
 
-  /// Extensions for to
-  pub fn _to(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_to") {
+  /// Extensions for level
+  pub fn _level(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_level") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Examples include confidence interval and interquartile range.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Lower bound of confidence interval.
+  pub fn from(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("from") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.level() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._to() {
+      _val.validate();
+    }
+    if let Some(_val) = self._from() {
+      _val.validate();
+    }
+    if let Some(_val) = self.to() {
+    }
+    if let Some(_val) = self._level() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.from() {
+    }
+    return true;
   }
 
 }

@@ -15,38 +15,10 @@ pub struct Immunization_Education<'a> {
 }
 
 impl Immunization_Education<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Date the educational material was published.
   pub fn publication_date(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("publicationDate") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for reference
-  pub fn _reference(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_reference") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for publicationDate
-  pub fn _publication_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publicationDate") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -59,6 +31,14 @@ impl Immunization_Education<'_> {
     return None;
   }
 
+  /// Extensions for documentType
+  pub fn _document_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for presentationDate
   pub fn _presentation_date(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_presentationDate") {
@@ -67,9 +47,18 @@ impl Immunization_Education<'_> {
     return None;
   }
 
-  /// Extensions for documentType
-  pub fn _document_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentType") {
+  /// Reference pointer to the educational material given to the patient if the
+  /// information was on line.
+  pub fn reference(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("reference") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for publicationDate
+  pub fn _publication_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publicationDate") {
       return Some(Element { value: val });
     }
     return None;
@@ -83,11 +72,22 @@ impl Immunization_Education<'_> {
     return None;
   }
 
-  /// Reference pointer to the educational material given to the patient if the
-  /// information was on line.
-  pub fn reference(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("reference") {
-      return Some(string.to_string());
+  /// Extensions for reference
+  pub fn _reference(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_reference") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -117,6 +117,38 @@ impl Immunization_Education<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.publication_date() {
+    }
+    if let Some(_val) = self.presentation_date() {
+    }
+    if let Some(_val) = self._document_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._presentation_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.reference() {
+    }
+    if let Some(_val) = self._publication_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.document_type() {
+    }
+    if let Some(_val) = self._reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

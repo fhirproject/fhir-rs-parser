@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,14 +17,20 @@ pub struct CapabilityStatement_Operation<'a> {
 }
 
 impl CapabilityStatement_Operation<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The name of the operation or query. For an operation, this is the name  prefixed
+  /// with $ and used in the URL. For a query, this is the name used in the _query
+  /// parameter when the query is called.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -38,22 +44,14 @@ impl CapabilityStatement_Operation<'_> {
     return None;
   }
 
-  /// Where the formal definition can be found. If a server references the base
-  /// definition of an Operation (i.e. from the specification itself such as
-  /// ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it
-  /// supports the full capabilities of the operation - e.g. both GET and POST
-  /// invocation.  If it only supports a subset, it must define its own custom
-  /// [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.
-  /// The custom definition would describe the specific subset of functionality
-  /// supported.
-  pub fn definition(&self) -> String {
-    self.value.get("definition").unwrap().as_str().unwrap().to_string()
-  }
-
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -76,6 +74,18 @@ impl CapabilityStatement_Operation<'_> {
     return None;
   }
 
+  /// Where the formal definition can be found. If a server references the base
+  /// definition of an Operation (i.e. from the specification itself such as
+  /// ```http://hl7.org/fhir/OperationDefinition/ValueSet-expand```), that means it
+  /// supports the full capabilities of the operation - e.g. both GET and POST
+  /// invocation.  If it only supports a subset, it must define its own custom
+  /// [[[OperationDefinition]]] with a 'base' of the original OperationDefinition.
+  /// The custom definition would describe the specific subset of functionality
+  /// supported.
+  pub fn definition(&self) -> String {
+    self.value.get("definition").unwrap().as_str().unwrap().to_string()
+  }
+
   /// Documentation that describes anything special about the operation behavior,
   /// possibly detailing different behavior for system, type and instance-level
   /// invocation of the operation.
@@ -86,22 +96,35 @@ impl CapabilityStatement_Operation<'_> {
     return None;
   }
 
-  /// The name of the operation or query. For an operation, this is the name  prefixed
-  /// with $ and used in the URL. For a query, this is the name used in the _query
-  /// parameter when the query is called.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._name() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.definition();
+    if let Some(_val) = self.documentation() {
+    }
+    if let Some(_val) = self._documentation() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

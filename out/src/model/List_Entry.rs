@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,17 +16,44 @@ pub struct List_Entry<'a> {
 }
 
 impl List_Entry<'_> {
-  /// A reference to the actual resource from which data was derived.
-  pub fn item(&self) -> Reference {
-    Reference {
-      value: &self.value["item"],
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
   }
 
-  /// When this item was added to the list.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for deleted
+  pub fn _deleted(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_deleted") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The flag allows the system constructing the list to indicate the role and
+  /// significance of the item in the list.
+  pub fn flag(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("flag") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// True if this item is marked as deleted in the list.
+  pub fn deleted(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("deleted") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -41,6 +68,21 @@ impl List_Entry<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// When this item was added to the list.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A reference to the actual resource from which data was derived.
+  pub fn item(&self) -> Reference {
+    Reference {
+      value: &self.value["item"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -61,46 +103,30 @@ impl List_Entry<'_> {
     return None;
   }
 
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._date() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Extensions for deleted
-  pub fn _deleted(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_deleted") {
-      return Some(Element { value: val });
+    if let Some(_val) = self._deleted() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// True if this item is marked as deleted in the list.
-  pub fn deleted(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("deleted") {
-      return Some(val.as_bool().unwrap());
+    if let Some(_val) = self.flag() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The flag allows the system constructing the list to indicate the role and
-  /// significance of the item in the list.
-  pub fn flag(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("flag") {
-      return Some(CodeableConcept { value: val });
+    if let Some(_val) = self.deleted() {
     }
-    return None;
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.date() {
+    }
+    let _ = self.item().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

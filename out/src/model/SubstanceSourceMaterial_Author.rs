@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -27,13 +27,21 @@ pub struct SubstanceSourceMaterial_Author<'a> {
 }
 
 impl SubstanceSourceMaterial_Author<'_> {
-  /// The type of author of an organism species shall be specified. The parenthetical
-  /// author of an organism species refers to the first author who published the
-  /// plant/animal name (of any rank). The primary author of an organism species
-  /// refers to the first author(s), who validly published the plant/animal name.
-  pub fn author_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("authorType") {
-      return Some(CodeableConcept { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The author of an organism species shall be specified. The author year of an
+  /// organism shall also be specified when applicable; refers to the year in which
+  /// the first author(s) published the infraspecific plant/animal name (of any rank).
+  pub fn author_description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("authorDescription") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -50,11 +58,10 @@ impl SubstanceSourceMaterial_Author<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for authorDescription
+  pub fn _author_description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_authorDescription") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -77,22 +84,35 @@ impl SubstanceSourceMaterial_Author<'_> {
     return None;
   }
 
-  /// The author of an organism species shall be specified. The author year of an
-  /// organism shall also be specified when applicable; refers to the year in which
-  /// the first author(s) published the infraspecific plant/animal name (of any rank).
-  pub fn author_description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("authorDescription") {
-      return Some(string.to_string());
+  /// The type of author of an organism species shall be specified. The parenthetical
+  /// author of an organism species refers to the first author who published the
+  /// plant/animal name (of any rank). The primary author of an organism species
+  /// refers to the first author(s), who validly published the plant/animal name.
+  pub fn author_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("authorType") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// Extensions for authorDescription
-  pub fn _author_description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_authorDescription") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
+    if let Some(_val) = self.author_description() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._author_description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.author_type() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

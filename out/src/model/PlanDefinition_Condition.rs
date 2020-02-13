@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Expression::Expression;
 use crate::model::Element::Element;
+use crate::model::Expression::Expression;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,36 +18,11 @@ pub struct PlanDefinition_Condition<'a> {
 }
 
 impl PlanDefinition_Condition<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// An expression that returns true or false, indicating whether the condition is
   /// satisfied.
   pub fn expression(&self) -> Option<Expression> {
     if let Some(val) = self.value.get("expression") {
       return Some(Expression { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for kind
-  pub fn _kind(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_kind") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The kind of condition.
-  pub fn kind(&self) -> Option<PlanDefinition_ConditionKind> {
-    if let Some(Value::String(val)) = self.value.get("kind") {
-      return Some(PlanDefinition_ConditionKind::from_string(&val).unwrap());
     }
     return None;
   }
@@ -60,6 +35,23 @@ impl PlanDefinition_Condition<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for kind
+  pub fn _kind(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_kind") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -80,6 +72,34 @@ impl PlanDefinition_Condition<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The kind of condition.
+  pub fn kind(&self) -> Option<PlanDefinition_ConditionKind> {
+    if let Some(Value::String(val)) = self.value.get("kind") {
+      return Some(PlanDefinition_ConditionKind::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.expression() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._kind() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.kind() {
+    }
+    return true;
   }
 
 }

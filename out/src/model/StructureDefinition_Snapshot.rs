@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ElementDefinition::ElementDefinition;
 use crate::model::Extension::Extension;
+use crate::model::ElementDefinition::ElementDefinition;
 use serde_json::value::Value;
 
 
@@ -37,6 +37,11 @@ impl StructureDefinition_Snapshot<'_> {
     return None;
   }
 
+  /// Captures constraints on each element within the resource.
+  pub fn element(&self) -> Vec<ElementDefinition> {
+    self.value.get("element").unwrap().as_array().unwrap().into_iter().map(|e| ElementDefinition { value: e }).collect::<Vec<_>>()
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -55,9 +60,17 @@ impl StructureDefinition_Snapshot<'_> {
     return None;
   }
 
-  /// Captures constraints on each element within the resource.
-  pub fn element(&self) -> Vec<ElementDefinition> {
-    self.value.get("element").unwrap().as_array().unwrap().into_iter().map(|e| ElementDefinition { value: e }).collect::<Vec<_>>()
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.element().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

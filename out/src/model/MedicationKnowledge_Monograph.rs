@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,23 +15,6 @@ pub struct MedicationKnowledge_Monograph<'a> {
 }
 
 impl MedicationKnowledge_Monograph<'_> {
-  /// The category of documentation about the medication. (e.g. professional
-  /// monograph, patient education monograph).
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Associated documentation about the medication.
-  pub fn source(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("source") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -59,6 +42,14 @@ impl MedicationKnowledge_Monograph<'_> {
     return None;
   }
 
+  /// Associated documentation about the medication.
+  pub fn source(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("source") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -69,6 +60,33 @@ impl MedicationKnowledge_Monograph<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The category of documentation about the medication. (e.g. professional
+  /// monograph, patient education monograph).
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.source() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

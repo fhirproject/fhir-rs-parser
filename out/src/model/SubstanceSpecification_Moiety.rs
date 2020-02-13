@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Quantity::Quantity;
 use crate::model::Identifier::Identifier;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,51 +18,6 @@ pub struct SubstanceSpecification_Moiety<'a> {
 }
 
 impl SubstanceSpecification_Moiety<'_> {
-  /// Quantitative value for this moiety.
-  pub fn amount_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("amountString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for molecularFormula
-  pub fn _molecular_formula(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_molecularFormula") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -81,10 +36,10 @@ impl SubstanceSpecification_Moiety<'_> {
     return None;
   }
 
-  /// Role that the moiety is playing.
-  pub fn role(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("role") {
-      return Some(CodeableConcept { value: val });
+  /// Molecular formula.
+  pub fn molecular_formula(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("molecularFormula") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -97,18 +52,18 @@ impl SubstanceSpecification_Moiety<'_> {
     return None;
   }
 
-  /// Molecular formula.
-  pub fn molecular_formula(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("molecularFormula") {
-      return Some(string.to_string());
+  /// Quantitative value for this moiety.
+  pub fn amount_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("amountQuantity") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
 
-  /// Extensions for amountString
-  pub fn _amount_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_amountString") {
-      return Some(Element { value: val });
+  /// Optical activity type.
+  pub fn optical_activity(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("opticalActivity") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -129,20 +84,107 @@ impl SubstanceSpecification_Moiety<'_> {
     return None;
   }
 
-  /// Optical activity type.
-  pub fn optical_activity(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("opticalActivity") {
-      return Some(CodeableConcept { value: val });
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for amountString
+  pub fn _amount_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for molecularFormula
+  pub fn _molecular_formula(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_molecularFormula") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
   /// Quantitative value for this moiety.
-  pub fn amount_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("amountQuantity") {
-      return Some(Quantity { value: val });
+  pub fn amount_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountString") {
+      return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Role that the moiety is playing.
+  pub fn role(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("role") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.molecular_formula() {
+    }
+    if let Some(_val) = self.stereochemistry() {
+      _val.validate();
+    }
+    if let Some(_val) = self.amount_quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.optical_activity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.validate();
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self._amount_string() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._molecular_formula() {
+      _val.validate();
+    }
+    if let Some(_val) = self.amount_string() {
+    }
+    if let Some(_val) = self.role() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

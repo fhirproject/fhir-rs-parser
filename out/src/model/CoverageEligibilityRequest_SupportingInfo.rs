@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -19,40 +19,6 @@ pub struct CoverageEligibilityRequest_SupportingInfo<'a> {
 }
 
 impl CoverageEligibilityRequest_SupportingInfo<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for sequence
-  pub fn _sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sequence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The supporting materials are applicable for all detail items, product/servce
-  /// categories and specific billing codes.
-  pub fn applies_to_all(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("appliesToAll") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// A number to uniquely identify supporting information entries.
-  pub fn sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("sequence") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -71,6 +37,30 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
     return None;
   }
 
+  /// Extensions for appliesToAll
+  pub fn _applies_to_all(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_appliesToAll") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A number to uniquely identify supporting information entries.
+  pub fn sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("sequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Additional data or information such as resources, documents, images etc.
+  /// including references to the data or the actual inclusion of the data.
+  pub fn information(&self) -> Reference {
+    Reference {
+      value: &self.value["information"],
+    }
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -83,20 +73,53 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
     return None;
   }
 
-  /// Extensions for appliesToAll
-  pub fn _applies_to_all(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_appliesToAll") {
+  /// The supporting materials are applicable for all detail items, product/servce
+  /// categories and specific billing codes.
+  pub fn applies_to_all(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("appliesToAll") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for sequence
+  pub fn _sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sequence") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Additional data or information such as resources, documents, images etc.
-  /// including references to the data or the actual inclusion of the data.
-  pub fn information(&self) -> Reference {
-    Reference {
-      value: &self.value["information"],
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._applies_to_all() {
+      _val.validate();
+    }
+    if let Some(_val) = self.sequence() {
+    }
+    let _ = self.information().validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.applies_to_all() {
+    }
+    if let Some(_val) = self._sequence() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

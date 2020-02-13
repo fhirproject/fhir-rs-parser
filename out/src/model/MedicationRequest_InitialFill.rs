@@ -19,14 +19,6 @@ pub struct MedicationRequest_InitialFill<'a> {
 }
 
 impl MedicationRequest_InitialFill<'_> {
-  /// The amount or quantity to provide as part of the first dispense.
-  pub fn quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("quantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -39,11 +31,27 @@ impl MedicationRequest_InitialFill<'_> {
     return None;
   }
 
+  /// The length of time that the first dispense is expected to last.
+  pub fn duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("duration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The amount or quantity to provide as part of the first dispense.
+  pub fn quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
@@ -66,12 +74,22 @@ impl MedicationRequest_InitialFill<'_> {
     return None;
   }
 
-  /// The length of time that the first dispense is expected to last.
-  pub fn duration(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("duration") {
-      return Some(Duration { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.duration() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

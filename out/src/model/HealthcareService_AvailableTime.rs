@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -14,6 +14,48 @@ pub struct HealthcareService_AvailableTime<'a> {
 }
 
 impl HealthcareService_AvailableTime<'_> {
+  /// Extensions for daysOfWeek
+  pub fn _days_of_week(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The opening time of day. Note: If the AllDay flag is set, then this time is
+  /// ignored.
+  pub fn available_start_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("availableStartTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for availableStartTime
+  pub fn _available_start_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_availableStartTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for allDay
+  pub fn _all_day(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_allDay") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The closing time of day. Note: If the AllDay flag is set, then this time is
+  /// ignored.
+  pub fn available_end_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("availableEndTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -41,48 +83,6 @@ impl HealthcareService_AvailableTime<'_> {
     return None;
   }
 
-  /// The opening time of day. Note: If the AllDay flag is set, then this time is
-  /// ignored.
-  pub fn available_start_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("availableStartTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for availableStartTime
-  pub fn _available_start_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_availableStartTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Is this always available? (hence times are irrelevant) e.g. 24 hour service.
-  pub fn all_day(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("allDay") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// The closing time of day. Note: If the AllDay flag is set, then this time is
-  /// ignored.
-  pub fn available_end_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("availableEndTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for daysOfWeek
-  pub fn _days_of_week(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -95,10 +95,10 @@ impl HealthcareService_AvailableTime<'_> {
     return None;
   }
 
-  /// Extensions for allDay
-  pub fn _all_day(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_allDay") {
-      return Some(Element { value: val });
+  /// Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+  pub fn all_day(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("allDay") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -109,6 +109,36 @@ impl HealthcareService_AvailableTime<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._days_of_week() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.available_start_time() {
+    }
+    if let Some(_val) = self._available_start_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self._all_day() {
+      _val.validate();
+    }
+    if let Some(_val) = self.available_end_time() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.all_day() {
+    }
+    if let Some(_val) = self._available_end_time() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Duration::Duration;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Range::Range;
 use serde_json::value::Value;
 
@@ -17,18 +17,11 @@ pub struct RequestGroup_RelatedAction<'a> {
 }
 
 impl RequestGroup_RelatedAction<'_> {
-  /// The relationship of this action to the related action.
-  pub fn relationship(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("relationship") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for relationship
-  pub fn _relationship(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_relationship") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -60,9 +53,33 @@ impl RequestGroup_RelatedAction<'_> {
     return None;
   }
 
+  /// Extensions for actionId
+  pub fn _action_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_actionId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for relationship
+  pub fn _relationship(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_relationship") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// The element id of the action this is related to.
   pub fn action_id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("actionId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The relationship of this action to the related action.
+  pub fn relationship(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("relationship") {
       return Some(string.to_string());
     }
     return None;
@@ -77,23 +94,6 @@ impl RequestGroup_RelatedAction<'_> {
     return None;
   }
 
-  /// Extensions for actionId
-  pub fn _action_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_actionId") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -104,6 +104,34 @@ impl RequestGroup_RelatedAction<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.offset_duration() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._action_id() {
+      _val.validate();
+    }
+    if let Some(_val) = self._relationship() {
+      _val.validate();
+    }
+    if let Some(_val) = self.action_id() {
+    }
+    if let Some(_val) = self.relationship() {
+    }
+    if let Some(_val) = self.offset_range() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

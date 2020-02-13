@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use crate::model::Coding::Coding;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,53 +19,6 @@ pub struct ImagingStudy_Instance<'a> {
 }
 
 impl ImagingStudy_Instance<'_> {
-  /// DICOM instance  type.
-  pub fn sop_class(&self) -> Coding {
-    Coding {
-      value: &self.value["sopClass"],
-    }
-  }
-
-  /// Extensions for uid
-  pub fn _uid(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_uid") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The description of the instance.
-  pub fn title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("title") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for number
-  pub fn _number(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_number") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The number of instance in the series.
-  pub fn number(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("number") {
-      return Some(val.as_u64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The DICOM SOP Instance UID for this image or other DICOM content.
   pub fn uid(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("uid") {
@@ -83,14 +36,10 @@ impl ImagingStudy_Instance<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// The description of the instance.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -111,6 +60,85 @@ impl ImagingStudy_Instance<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The number of instance in the series.
+  pub fn number(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("number") {
+      return Some(val.as_u64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for uid
+  pub fn _uid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_uid") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for number
+  pub fn _number(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_number") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// DICOM instance  type.
+  pub fn sop_class(&self) -> Coding {
+    Coding {
+      value: &self.value["sopClass"],
+    }
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.uid() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.title() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._title() {
+      _val.validate();
+    }
+    if let Some(_val) = self.number() {
+    }
+    if let Some(_val) = self._uid() {
+      _val.validate();
+    }
+    if let Some(_val) = self._number() {
+      _val.validate();
+    }
+    let _ = self.sop_class().validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

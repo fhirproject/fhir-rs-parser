@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Duration::Duration;
-use crate::model::Quantity::Quantity;
 use crate::model::MedicinalProductPharmaceutical_TargetSpecies::MedicinalProductPharmaceutical_TargetSpecies;
+use crate::model::Quantity::Quantity;
 use crate::model::Extension::Extension;
-use crate::model::Ratio::Ratio;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Ratio::Ratio;
+use crate::model::Duration::Duration;
 use serde_json::value::Value;
 
 
@@ -18,6 +18,16 @@ pub struct MedicinalProductPharmaceutical_RouteOfAdministration<'a> {
 }
 
 impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
+  /// The maximum dose per day (maximum dose quantity to be administered in any one
+  /// 24-h period) that can be administered as per the protocol referenced in the
+  /// clinical trial authorisation.
+  pub fn max_dose_per_day(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("maxDosePerDay") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
   /// A species for which this route applies.
   pub fn target_species(&self) -> Option<Vec<MedicinalProductPharmaceutical_TargetSpecies>> {
     if let Some(Value::Array(val)) = self.value.get("targetSpecies") {
@@ -26,14 +36,11 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     return None;
   }
 
-  /// The maximum treatment period during which an Investigational Medicinal Product
-  /// can be administered as per the protocol referenced in the clinical trial
-  /// authorisation.
-  pub fn max_treatment_period(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("maxTreatmentPeriod") {
-      return Some(Duration { value: val });
+  /// Coded expression for the route.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -66,11 +73,12 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     return None;
   }
 
-  /// The maximum dose per treatment period that can be administered as per the
-  /// protocol referenced in the clinical trial authorisation.
-  pub fn max_dose_per_treatment_period(&self) -> Option<Ratio> {
-    if let Some(val) = self.value.get("maxDosePerTreatmentPeriod") {
-      return Some(Ratio { value: val });
+  /// The first dose (dose quantity) administered in humans can be specified, for a
+  /// product under investigation, using a numerical value and its unit of
+  /// measurement.
+  pub fn first_dose(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("firstDose") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
@@ -85,16 +93,6 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     return None;
   }
 
-  /// The maximum dose per day (maximum dose quantity to be administered in any one
-  /// 24-h period) that can be administered as per the protocol referenced in the
-  /// clinical trial authorisation.
-  pub fn max_dose_per_day(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("maxDosePerDay") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -104,21 +102,54 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     return None;
   }
 
-  /// The first dose (dose quantity) administered in humans can be specified, for a
-  /// product under investigation, using a numerical value and its unit of
-  /// measurement.
-  pub fn first_dose(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("firstDose") {
-      return Some(Quantity { value: val });
+  /// The maximum dose per treatment period that can be administered as per the
+  /// protocol referenced in the clinical trial authorisation.
+  pub fn max_dose_per_treatment_period(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("maxDosePerTreatmentPeriod") {
+      return Some(Ratio { value: val });
     }
     return None;
   }
 
-  /// Coded expression for the route.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
+  /// The maximum treatment period during which an Investigational Medicinal Product
+  /// can be administered as per the protocol referenced in the clinical trial
+  /// authorisation.
+  pub fn max_treatment_period(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("maxTreatmentPeriod") {
+      return Some(Duration { value: val });
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.max_dose_per_day() {
+      _val.validate();
+    }
+    if let Some(_val) = self.target_species() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.code().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.first_dose() {
+      _val.validate();
+    }
+    if let Some(_val) = self.max_single_dose() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.max_dose_per_treatment_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.max_treatment_period() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

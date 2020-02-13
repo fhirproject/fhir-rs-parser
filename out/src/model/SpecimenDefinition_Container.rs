@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::SpecimenDefinition_Additive::SpecimenDefinition_Additive;
-use crate::model::Element::Element;
 use crate::model::Quantity::Quantity;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::SpecimenDefinition_Additive::SpecimenDefinition_Additive;
 use serde_json::value::Value;
 
 
@@ -17,35 +17,11 @@ pub struct SpecimenDefinition_Container<'a> {
 }
 
 impl SpecimenDefinition_Container<'_> {
-  /// Extensions for minimumVolumeString
-  pub fn _minimum_volume_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_minimumVolumeString") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Substance introduced in the kind of container to preserve, maintain or enhance
-  /// the specimen. Examples: Formalin, Citrate, EDTA.
-  pub fn additive(&self) -> Option<Vec<SpecimenDefinition_Additive>> {
-    if let Some(Value::Array(val)) = self.value.get("additive") {
-      return Some(val.into_iter().map(|e| SpecimenDefinition_Additive { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The minimum volume to be conditioned in the container.
-  pub fn minimum_volume_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("minimumVolumeQuantity") {
-      return Some(Quantity { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -54,47 +30,6 @@ impl SpecimenDefinition_Container<'_> {
   pub fn description(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Special processing that should be applied to the container for this kind of
-  /// specimen.
-  pub fn preparation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("preparation") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The type of material of the container.
-  pub fn material(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("material") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The type of container used to contain this kind of specimen.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The capacity (volume or other measure) of this kind of container.
-  pub fn capacity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("capacity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// Color of container cap.
-  pub fn cap(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("cap") {
-      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -111,10 +46,18 @@ impl SpecimenDefinition_Container<'_> {
     return None;
   }
 
-  /// Extensions for preparation
-  pub fn _preparation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_preparation") {
-      return Some(Element { value: val });
+  /// The minimum volume to be conditioned in the container.
+  pub fn minimum_volume_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("minimumVolumeQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// The minimum volume to be conditioned in the container.
+  pub fn minimum_volume_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("minimumVolumeString") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -137,21 +80,123 @@ impl SpecimenDefinition_Container<'_> {
     return None;
   }
 
-  /// The minimum volume to be conditioned in the container.
-  pub fn minimum_volume_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("minimumVolumeString") {
+  /// Color of container cap.
+  pub fn cap(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("cap") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for minimumVolumeString
+  pub fn _minimum_volume_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_minimumVolumeString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The type of material of the container.
+  pub fn material(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("material") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Special processing that should be applied to the container for this kind of
+  /// specimen.
+  pub fn preparation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("preparation") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// The type of container used to contain this kind of specimen.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for preparation
+  pub fn _preparation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_preparation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Substance introduced in the kind of container to preserve, maintain or enhance
+  /// the specimen. Examples: Formalin, Citrate, EDTA.
+  pub fn additive(&self) -> Option<Vec<SpecimenDefinition_Additive>> {
+    if let Some(Value::Array(val)) = self.value.get("additive") {
+      return Some(val.into_iter().map(|e| SpecimenDefinition_Additive { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The capacity (volume or other measure) of this kind of container.
+  pub fn capacity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("capacity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.minimum_volume_quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.minimum_volume_string() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.cap() {
+      _val.validate();
+    }
+    if let Some(_val) = self._minimum_volume_string() {
+      _val.validate();
+    }
+    if let Some(_val) = self.material() {
+      _val.validate();
+    }
+    if let Some(_val) = self.preparation() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._preparation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.additive() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.capacity() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

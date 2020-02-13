@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,6 +18,14 @@ pub struct EpisodeOfCare_Diagnosis<'a> {
 }
 
 impl EpisodeOfCare_Diagnosis<'_> {
+  /// A list of conditions/problems/diagnoses that this episode of care is intended to
+  /// be providing care for.
+  pub fn condition(&self) -> Reference {
+    Reference {
+      value: &self.value["condition"],
+    }
+  }
+
   /// Role that this diagnosis has within the episode of care (e.g. admission,
   /// billing, discharge …).
   pub fn role(&self) -> Option<CodeableConcept> {
@@ -31,23 +39,6 @@ impl EpisodeOfCare_Diagnosis<'_> {
   pub fn rank(&self) -> Option<i64> {
     if let Some(val) = self.value.get("rank") {
       return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for rank
-  pub fn _rank(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_rank") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -82,12 +73,42 @@ impl EpisodeOfCare_Diagnosis<'_> {
     return None;
   }
 
-  /// A list of conditions/problems/diagnoses that this episode of care is intended to
-  /// be providing care for.
-  pub fn condition(&self) -> Reference {
-    Reference {
-      value: &self.value["condition"],
+  /// Extensions for rank
+  pub fn _rank(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_rank") {
+      return Some(Element { value: val });
     }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    let _ = self.condition().validate();
+    if let Some(_val) = self.role() {
+      _val.validate();
+    }
+    if let Some(_val) = self.rank() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._rank() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

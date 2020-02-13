@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Element::Element;
+use crate::model::SubstancePolymer_StructuralRepresentation::SubstancePolymer_StructuralRepresentation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::SubstancePolymer_DegreeOfPolymerisation::SubstancePolymer_DegreeOfPolymerisation;
-use crate::model::Extension::Extension;
 use crate::model::SubstanceAmount::SubstanceAmount;
-use crate::model::SubstancePolymer_StructuralRepresentation::SubstancePolymer_StructuralRepresentation;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,10 +18,10 @@ pub struct SubstancePolymer_RepeatUnit<'a> {
 }
 
 impl SubstancePolymer_RepeatUnit<'_> {
-  /// Extensions for repeatUnit
-  pub fn _repeat_unit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_repeatUnit") {
-      return Some(Element { value: val });
+  /// Todo.
+  pub fn structural_representation(&self) -> Option<Vec<SubstancePolymer_StructuralRepresentation>> {
+    if let Some(Value::Array(val)) = self.value.get("structuralRepresentation") {
+      return Some(val.into_iter().map(|e| SubstancePolymer_StructuralRepresentation { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -35,33 +35,9 @@ impl SubstancePolymer_RepeatUnit<'_> {
   }
 
   /// Todo.
-  pub fn structural_representation(&self) -> Option<Vec<SubstancePolymer_StructuralRepresentation>> {
-    if let Some(Value::Array(val)) = self.value.get("structuralRepresentation") {
-      return Some(val.into_iter().map(|e| SubstancePolymer_StructuralRepresentation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Todo.
   pub fn degree_of_polymerisation(&self) -> Option<Vec<SubstancePolymer_DegreeOfPolymerisation>> {
     if let Some(Value::Array(val)) = self.value.get("degreeOfPolymerisation") {
       return Some(val.into_iter().map(|e| SubstancePolymer_DegreeOfPolymerisation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn orientation_of_polymerisation(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("orientationOfPolymerisation") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn amount(&self) -> Option<SubstanceAmount> {
-    if let Some(val) = self.value.get("amount") {
-      return Some(SubstanceAmount { value: val });
     }
     return None;
   }
@@ -74,15 +50,6 @@ impl SubstancePolymer_RepeatUnit<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -103,6 +70,68 @@ impl SubstancePolymer_RepeatUnit<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn orientation_of_polymerisation(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("orientationOfPolymerisation") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn amount(&self) -> Option<SubstanceAmount> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(SubstanceAmount { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for repeatUnit
+  pub fn _repeat_unit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_repeatUnit") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.structural_representation() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.repeat_unit() {
+    }
+    if let Some(_val) = self.degree_of_polymerisation() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.orientation_of_polymerisation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.amount() {
+      _val.validate();
+    }
+    if let Some(_val) = self._repeat_unit() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

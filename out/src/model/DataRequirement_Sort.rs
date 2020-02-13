@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,23 +15,6 @@ pub struct DataRequirement_Sort<'a> {
 }
 
 impl DataRequirement_Sort<'_> {
-  /// Extensions for direction
-  pub fn _direction(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_direction") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -46,6 +29,34 @@ impl DataRequirement_Sort<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The attribute of the sort. The specified path must be resolvable from the type
+  /// of the required data. The path is allowed to contain qualifiers (.) to traverse
+  /// sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-
+  /// elements. Note that the index must be an integer constant.
+  pub fn path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("path") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -70,23 +81,34 @@ impl DataRequirement_Sort<'_> {
     return None;
   }
 
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
+  /// Extensions for direction
+  pub fn _direction(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_direction") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The attribute of the sort. The specified path must be resolvable from the type
-  /// of the required data. The path is allowed to contain qualifiers (.) to traverse
-  /// sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-
-  /// elements. Note that the index must be an integer constant.
-  pub fn path(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("path") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._path() {
+      _val.validate();
+    }
+    if let Some(_val) = self.path() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.direction() {
+    }
+    if let Some(_val) = self._direction() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
+use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Period::Period;
 use serde_json::value::Value;
 
 
@@ -17,14 +17,6 @@ pub struct Specimen_Processing<'a> {
 }
 
 impl Specimen_Processing<'_> {
-  /// Textual description of procedure.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// A coded value specifying the procedure used to process the specimen.
   pub fn procedure(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("procedure") {
@@ -33,20 +25,10 @@ impl Specimen_Processing<'_> {
     return None;
   }
 
-  /// A record of the time or period when the specimen processing occurred.  For
-  /// example the time of sample fixation or the period of time the sample was in
-  /// formalin.
-  pub fn time_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("timePeriod") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Material used in the processing step.
-  pub fn additive(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("additive") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -78,16 +60,6 @@ impl Specimen_Processing<'_> {
     return None;
   }
 
-  /// A record of the time or period when the specimen processing occurred.  For
-  /// example the time of sample fixation or the period of time the sample was in
-  /// formalin.
-  pub fn time_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timeDateTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -100,10 +72,30 @@ impl Specimen_Processing<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
+  /// A record of the time or period when the specimen processing occurred.  For
+  /// example the time of sample fixation or the period of time the sample was in
+  /// formalin.
+  pub fn time_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("timeDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A record of the time or period when the specimen processing occurred.  For
+  /// example the time of sample fixation or the period of time the sample was in
+  /// formalin.
+  pub fn time_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("timePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Material used in the processing step.
+  pub fn additive(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("additive") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -114,6 +106,45 @@ impl Specimen_Processing<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Textual description of procedure.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.procedure() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.time_date_time() {
+    }
+    if let Some(_val) = self.time_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.additive() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._time_date_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    return true;
   }
 
 }

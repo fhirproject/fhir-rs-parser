@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,14 @@ pub struct ExplanationOfBenefit_Insurance<'a> {
 }
 
 impl ExplanationOfBenefit_Insurance<'_> {
+  /// Extensions for preAuthRef
+  pub fn _pre_auth_ref(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_preAuthRef") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Reference to the insurance card level information contained in the Coverage
   /// resource. The coverage issuing insurer will use these details to locate the
   /// patient's actual coverage within the insurer's information system.
@@ -24,34 +32,6 @@ impl ExplanationOfBenefit_Insurance<'_> {
     Reference {
       value: &self.value["coverage"],
     }
-  }
-
-  /// A flag to indicate that this Coverage is to be used for adjudication of this
-  /// claim when set to true.
-  pub fn focal(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("focal") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Reference numbers previously provided by the insurer to the provider to be
-  /// quoted on subsequent claims containing services or products related to the prior
-  /// authorization.
-  pub fn pre_auth_ref(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("preAuthRef") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -62,14 +42,6 @@ impl ExplanationOfBenefit_Insurance<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for preAuthRef
-  pub fn _pre_auth_ref(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_preAuthRef") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -98,6 +70,58 @@ impl ExplanationOfBenefit_Insurance<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Reference numbers previously provided by the insurer to the provider to be
+  /// quoted on subsequent claims containing services or products related to the prior
+  /// authorization.
+  pub fn pre_auth_ref(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("preAuthRef") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A flag to indicate that this Coverage is to be used for adjudication of this
+  /// claim when set to true.
+  pub fn focal(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("focal") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._pre_auth_ref() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.coverage().validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._focal() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.pre_auth_ref() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.focal() {
+    }
+    return true;
   }
 
 }

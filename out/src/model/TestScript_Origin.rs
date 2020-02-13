@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Coding::Coding;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use serde_json::value::Value;
 
 
@@ -16,15 +16,6 @@ pub struct TestScript_Origin<'a> {
 }
 
 impl TestScript_Origin<'_> {
-  /// Abstract name given to an origin server in this test script.  The name is
-  /// provided as a number starting at 1.
-  pub fn index(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("index") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -43,26 +34,11 @@ impl TestScript_Origin<'_> {
     return None;
   }
 
-  /// The type of origin profile the test system supports.
-  pub fn profile(&self) -> Coding {
-    Coding {
-      value: &self.value["profile"],
-    }
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for index
-  pub fn _index(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_index") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -77,6 +53,48 @@ impl TestScript_Origin<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The type of origin profile the test system supports.
+  pub fn profile(&self) -> Coding {
+    Coding {
+      value: &self.value["profile"],
+    }
+  }
+
+  /// Abstract name given to an origin server in this test script.  The name is
+  /// provided as a number starting at 1.
+  pub fn index(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("index") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for index
+  pub fn _index(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_index") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.profile().validate();
+    if let Some(_val) = self.index() {
+    }
+    if let Some(_val) = self._index() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

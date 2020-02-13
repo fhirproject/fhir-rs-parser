@@ -15,33 +15,9 @@ pub struct DeviceDefinition_Specialization<'a> {
 }
 
 impl DeviceDefinition_Specialization<'_> {
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for systemType
-  pub fn _system_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_systemType") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The version of the standard that is used to operate and communicate.
   pub fn version(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("version") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The standard that is used to operate and communicate.
-  pub fn system_type(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("systemType") {
       return Some(string.to_string());
     }
     return None;
@@ -68,6 +44,14 @@ impl DeviceDefinition_Specialization<'_> {
     return None;
   }
 
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -84,6 +68,44 @@ impl DeviceDefinition_Specialization<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Extensions for systemType
+  pub fn _system_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_systemType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The standard that is used to operate and communicate.
+  pub fn system_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("systemType") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.version() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._system_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.system_type() {
+    }
+    return true;
   }
 
 }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Expression::Expression;
 use crate::model::Element::Element;
+use crate::model::Expression::Expression;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,15 @@ pub struct ActivityDefinition_DynamicValue<'a> {
 }
 
 impl ActivityDefinition_DynamicValue<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// The path to the element to be customized. This is the path on the resource that
   /// will hold the result of the calculation defined by the expression. The specified
   /// path SHALL be a FHIRPath resolveable on the specified target type of the
@@ -29,6 +38,21 @@ impl ActivityDefinition_DynamicValue<'_> {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An expression specifying the value of the customized element.
+  pub fn expression(&self) -> Expression {
+    Expression {
+      value: &self.value["expression"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -49,14 +73,6 @@ impl ActivityDefinition_DynamicValue<'_> {
     return None;
   }
 
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -69,20 +85,22 @@ impl ActivityDefinition_DynamicValue<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// An expression specifying the value of the customized element.
-  pub fn expression(&self) -> Expression {
-    Expression {
-      value: &self.value["expression"],
+    if let Some(_val) = self.path() {
     }
+    if let Some(_val) = self._path() {
+      _val.validate();
+    }
+    let _ = self.expression().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

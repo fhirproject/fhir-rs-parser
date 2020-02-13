@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::ValueSet_Filter::ValueSet_Filter;
+use crate::model::Extension::Extension;
 use crate::model::ValueSet_Concept::ValueSet_Concept;
 use serde_json::value::Value;
 
@@ -19,24 +19,6 @@ pub struct ValueSet_Include<'a> {
 }
 
 impl ValueSet_Include<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An absolute URI which is the code system from which the selected codes come
-  /// from.
-  pub fn system(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("system") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Selects the concepts found in this value set (based on its value set
   /// definition). This is an absolute URI that is a reference to ValueSet.url.  If
   /// multiple value sets are specified this includes the union of the contents of all
@@ -67,6 +49,52 @@ impl ValueSet_Include<'_> {
     return None;
   }
 
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An absolute URI which is the code system from which the selected codes come
+  /// from.
+  pub fn system(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("system") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for system
+  pub fn _system(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_system") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -85,40 +113,43 @@ impl ValueSet_Include<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for system
-  pub fn _system(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_system") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Specifies a concept to be included or excluded.
   pub fn concept(&self) -> Option<Vec<ValueSet_Concept>> {
     if let Some(Value::Array(val)) = self.value.get("concept") {
       return Some(val.into_iter().map(|e| ValueSet_Concept { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.value_set() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.filter() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.version() {
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self.system() {
+    }
+    if let Some(_val) = self._system() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.concept() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

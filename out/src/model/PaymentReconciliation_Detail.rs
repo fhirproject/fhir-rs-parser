@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Identifier::Identifier;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Money::Money;
-use crate::model::Reference::Reference;
-use crate::model::Element::Element;
+use crate::model::Identifier::Identifier;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use crate::model::Money::Money;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,22 +19,6 @@ pub struct PaymentReconciliation_Detail<'a> {
 }
 
 impl PaymentReconciliation_Detail<'_> {
-  /// Unique identifier for the current payment item for the referenced payable.
-  pub fn identifier(&self) -> Option<Identifier> {
-    if let Some(val) = self.value.get("identifier") {
-      return Some(Identifier { value: val });
-    }
-    return None;
-  }
-
-  /// The date from the response resource containing a commitment to pay.
-  pub fn date(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("date") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
   /// A resource, such as a Claim, the evaluation of which could lead to payment.
   pub fn request(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("request") {
@@ -43,27 +27,9 @@ impl PaymentReconciliation_Detail<'_> {
     return None;
   }
 
-  /// A reference to the individual who is responsible for inquiries regarding the
-  /// response and its payment.
-  pub fn responsible(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("responsible") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The party which is receiving the payment.
-  pub fn payee(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("payee") {
+  /// The party which submitted the claim or financial transaction.
+  pub fn submitter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("submitter") {
       return Some(Reference { value: val });
     }
     return None;
@@ -76,18 +42,19 @@ impl PaymentReconciliation_Detail<'_> {
     }
   }
 
-  /// The monetary amount allocated from the total payment to the payable.
-  pub fn amount(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("amount") {
-      return Some(Money { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
+  /// A resource, such as a ClaimResponse, which contains a commitment to payment.
+  pub fn response(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("response") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -122,10 +89,51 @@ impl PaymentReconciliation_Detail<'_> {
     return None;
   }
 
-  /// The party which submitted the claim or financial transaction.
-  pub fn submitter(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("submitter") {
+  /// The monetary amount allocated from the total payment to the payable.
+  pub fn amount(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// The date from the response resource containing a commitment to pay.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A reference to the individual who is responsible for inquiries regarding the
+  /// response and its payment.
+  pub fn responsible(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("responsible") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The party which is receiving the payment.
+  pub fn payee(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("payee") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique identifier for the current payment item for the referenced payable.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -138,12 +146,46 @@ impl PaymentReconciliation_Detail<'_> {
     return None;
   }
 
-  /// A resource, such as a ClaimResponse, which contains a commitment to payment.
-  pub fn response(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("response") {
-      return Some(Reference { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.request() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.submitter() {
+      _val.validate();
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.response() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.amount() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date() {
+    }
+    if let Some(_val) = self.responsible() {
+      _val.validate();
+    }
+    if let Some(_val) = self.payee() {
+      _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.validate();
+    }
+    if let Some(_val) = self._date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.predecessor() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Period::Period;
-use crate::model::Quantity::Quantity;
+use crate::model::Duration::Duration;
 use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
 use crate::model::Reference::Reference;
-use crate::model::Duration::Duration;
+use crate::model::Period::Period;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -23,6 +23,43 @@ pub struct MedicationRequest_DispenseRequest<'a> {
 }
 
 impl MedicationRequest_DispenseRequest<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates the intended dispensing Organization specified by the prescriber.
+  pub fn performer(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("performer") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies the period time over which the supplied product is expected to be
+  /// used, or the length of time the dispense is expected to last.
+  pub fn expected_supply_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("expectedSupplyDuration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the quantity or duration for the first dispense of the medication.
+  pub fn initial_fill(&self) -> Option<MedicationRequest_InitialFill> {
+    if let Some(val) = self.value.get("initialFill") {
+      return Some(MedicationRequest_InitialFill { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for numberOfRepeatsAllowed
   pub fn _number_of_repeats_allowed(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_numberOfRepeatsAllowed") {
@@ -31,18 +68,19 @@ impl MedicationRequest_DispenseRequest<'_> {
     return None;
   }
 
-  /// The amount that is to be dispensed for one fill.
-  pub fn quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("quantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
   /// The minimum period of time that must occur between dispenses of the medication.
   pub fn dispense_interval(&self) -> Option<Duration> {
     if let Some(val) = self.value.get("dispenseInterval") {
       return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -65,26 +103,6 @@ impl MedicationRequest_DispenseRequest<'_> {
     return None;
   }
 
-  /// Indicates the quantity or duration for the first dispense of the medication.
-  pub fn initial_fill(&self) -> Option<MedicationRequest_InitialFill> {
-    if let Some(val) = self.value.get("initialFill") {
-      return Some(MedicationRequest_InitialFill { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// This indicates the validity period of a prescription (stale dating the
   /// Prescription).
   pub fn validity_period(&self) -> Option<Period> {
@@ -94,19 +112,10 @@ impl MedicationRequest_DispenseRequest<'_> {
     return None;
   }
 
-  /// Identifies the period time over which the supplied product is expected to be
-  /// used, or the length of time the dispense is expected to last.
-  pub fn expected_supply_duration(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("expectedSupplyDuration") {
-      return Some(Duration { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates the intended dispensing Organization specified by the prescriber.
-  pub fn performer(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("performer") {
-      return Some(Reference { value: val });
+  /// The amount that is to be dispensed for one fill.
+  pub fn quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
@@ -125,13 +134,39 @@ impl MedicationRequest_DispenseRequest<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.performer() {
+      _val.validate();
+    }
+    if let Some(_val) = self.expected_supply_duration() {
+      _val.validate();
+    }
+    if let Some(_val) = self.initial_fill() {
+      _val.validate();
+    }
+    if let Some(_val) = self._number_of_repeats_allowed() {
+      _val.validate();
+    }
+    if let Some(_val) = self.dispense_interval() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.validity_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.number_of_repeats_allowed() {
+    }
+    return true;
   }
 
 }

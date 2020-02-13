@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Ratio::Ratio;
-use crate::model::Range::Range;
 use crate::model::Extension::Extension;
-use crate::model::Duration::Duration;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
 use crate::model::Quantity::Quantity;
+use crate::model::Element::Element;
+use crate::model::Duration::Duration;
+use crate::model::Range::Range;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Ratio::Ratio;
 use serde_json::value::Value;
 
 
@@ -21,11 +21,40 @@ pub struct Goal_Target<'a> {
 }
 
 impl Goal_Target<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// Extensions for dueDate
+  pub fn _due_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_dueDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for detailInteger
+  pub fn _detail_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detailInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates either the date or the duration after start by which the goal should
+  /// be met.
+  pub fn due_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("dueDate") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_ratio(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("detailRatio") {
+      return Some(Ratio { value: val });
     }
     return None;
   }
@@ -50,17 +79,83 @@ impl Goal_Target<'_> {
     return None;
   }
 
-  /// Extensions for detailInteger
-  pub fn _detail_integer(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_detailInteger") {
-      return Some(Element { value: val });
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("detailQuantity") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
 
-  /// Extensions for dueDate
-  pub fn _due_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_dueDate") {
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("detailRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_integer(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("detailInteger") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("detailCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates either the date or the duration after start by which the goal should
+  /// be met.
+  pub fn due_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("dueDuration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// The target value of the focus to be achieved to signify the fulfillment of the
+  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
+  /// can be specified. When a low value is missing, it indicates that the goal is
+  /// achieved at any focus value at or below the high value. Similarly, if the high
+  /// value is missing, it indicates that the goal is achieved at any focus value at
+  /// or above the low value.
+  pub fn detail_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("detailString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for detailBoolean
+  pub fn _detail_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detailBoolean") {
       return Some(Element { value: val });
     }
     return None;
@@ -81,57 +176,9 @@ impl Goal_Target<'_> {
   /// achieved at any focus value at or below the high value. Similarly, if the high
   /// value is missing, it indicates that the goal is achieved at any focus value at
   /// or above the low value.
-  pub fn detail_ratio(&self) -> Option<Ratio> {
-    if let Some(val) = self.value.get("detailRatio") {
-      return Some(Ratio { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates either the date or the duration after start by which the goal should
-  /// be met.
-  pub fn due_duration(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("dueDuration") {
-      return Some(Duration { value: val });
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("detailQuantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("detailCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("detailString") {
-      return Some(string.to_string());
+  pub fn detail_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("detailBoolean") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -154,60 +201,63 @@ impl Goal_Target<'_> {
     return None;
   }
 
-  /// Extensions for detailBoolean
-  pub fn _detail_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_detailBoolean") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_integer(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("detailInteger") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_boolean(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("detailBoolean") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// The target value of the focus to be achieved to signify the fulfillment of the
-  /// goal, e.g. 150 pounds, 7.0%. Either the high or low or both values of the range
-  /// can be specified. When a low value is missing, it indicates that the goal is
-  /// achieved at any focus value at or below the high value. Similarly, if the high
-  /// value is missing, it indicates that the goal is achieved at any focus value at
-  /// or above the low value.
-  pub fn detail_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("detailRange") {
-      return Some(Range { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates either the date or the duration after start by which the goal should
-  /// be met.
-  pub fn due_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("dueDate") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._due_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self._detail_integer() {
+      _val.validate();
+    }
+    if let Some(_val) = self.due_date() {
+    }
+    if let Some(_val) = self.detail_ratio() {
+      _val.validate();
+    }
+    if let Some(_val) = self._detail_string() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.detail_quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.detail_range() {
+      _val.validate();
+    }
+    if let Some(_val) = self.detail_integer() {
+    }
+    if let Some(_val) = self.detail_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.due_duration() {
+      _val.validate();
+    }
+    if let Some(_val) = self.detail_string() {
+    }
+    if let Some(_val) = self._detail_boolean() {
+      _val.validate();
+    }
+    if let Some(_val) = self.measure() {
+      _val.validate();
+    }
+    if let Some(_val) = self.detail_boolean() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

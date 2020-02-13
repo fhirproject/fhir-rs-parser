@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::ExampleScenario_Process::ExampleScenario_Process;
-use crate::model::ExampleScenario_Alternative::ExampleScenario_Alternative;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::ExampleScenario_Operation::ExampleScenario_Operation;
+use crate::model::ExampleScenario_Alternative::ExampleScenario_Alternative;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,35 @@ pub struct ExampleScenario_Step<'a> {
 }
 
 impl ExampleScenario_Step<'_> {
+  /// Indicates an alternative step that can be taken instead of the operations on the
+  /// base step in exceptional/atypical circumstances.
+  pub fn alternative(&self) -> Option<Vec<ExampleScenario_Alternative>> {
+    if let Some(Value::Array(val)) = self.value.get("alternative") {
+      return Some(val.into_iter().map(|e| ExampleScenario_Alternative { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// If there is a pause in the flow.
+  pub fn pause(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("pause") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Each interaction or action.
   pub fn operation(&self) -> Option<ExampleScenario_Operation> {
     if let Some(val) = self.value.get("operation") {
@@ -43,48 +72,10 @@ impl ExampleScenario_Step<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Nested process.
   pub fn process(&self) -> Option<Vec<ExampleScenario_Process>> {
     if let Some(Value::Array(val)) = self.value.get("process") {
       return Some(val.into_iter().map(|e| ExampleScenario_Process { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Indicates an alternative step that can be taken instead of the operations on the
-  /// base step in exceptional/atypical circumstances.
-  pub fn alternative(&self) -> Option<Vec<ExampleScenario_Alternative>> {
-    if let Some(Value::Array(val)) = self.value.get("alternative") {
-      return Some(val.into_iter().map(|e| ExampleScenario_Alternative { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// If there is a pause in the flow.
-  pub fn pause(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("pause") {
-      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -95,6 +86,41 @@ impl ExampleScenario_Step<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.alternative() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.pause() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.operation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.process() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._pause() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

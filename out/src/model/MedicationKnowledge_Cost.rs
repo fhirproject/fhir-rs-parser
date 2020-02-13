@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Money::Money;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,15 @@ pub struct MedicationKnowledge_Cost<'a> {
 }
 
 impl MedicationKnowledge_Cost<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -28,35 +37,11 @@ impl MedicationKnowledge_Cost<'_> {
     return None;
   }
 
-  /// The category of the cost information.  For example, manufacturers' cost, patient
-  /// cost, claim reimbursement cost, actual acquisition cost.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
   /// The price of the medication.
   pub fn cost(&self) -> Money {
     Money {
       value: &self.value["cost"],
     }
-  }
-
-  /// Extensions for source
-  pub fn _source(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_source") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The source or owner that assigns the price to the medication.
-  pub fn source(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("source") {
-      return Some(string.to_string());
-    }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -77,13 +62,47 @@ impl MedicationKnowledge_Cost<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The category of the cost information.  For example, manufacturers' cost, patient
+  /// cost, claim reimbursement cost, actual acquisition cost.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// The source or owner that assigns the price to the medication.
+  pub fn source(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("source") {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Extensions for source
+  pub fn _source(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_source") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.cost().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.source() {
+    }
+    if let Some(_val) = self._source() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

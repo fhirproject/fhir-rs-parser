@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,14 @@ pub struct VerificationResult_PrimarySource<'a> {
 }
 
 impl VerificationResult_PrimarySource<'_> {
+  /// When the target was validated against the primary source.
+  pub fn validation_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("validationDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -35,19 +43,26 @@ impl VerificationResult_PrimarySource<'_> {
     return None;
   }
 
-  /// Extensions for validationDate
-  pub fn _validation_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_validationDate") {
-      return Some(Element { value: val });
+  /// Reference to the primary source.
+  pub fn who(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("who") {
+      return Some(Reference { value: val });
     }
     return None;
   }
 
-  /// Status of the validation of the target against the primary source (successful;
-  /// failed; unknown).
-  pub fn validation_status(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("validationStatus") {
+  /// Ability of the primary source to push updates/alerts (yes; no; undetermined).
+  pub fn can_push_updates(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("canPushUpdates") {
       return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for validationDate
+  pub fn _validation_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_validationDate") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -62,23 +77,6 @@ impl VerificationResult_PrimarySource<'_> {
     return None;
   }
 
-  /// When the target was validated against the primary source.
-  pub fn validation_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("validationDate") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Type of alerts/updates the primary source can send (specific requested changes;
   /// any changes; as defined by source).
   pub fn push_type_available(&self) -> Option<Vec<CodeableConcept>> {
@@ -88,18 +86,19 @@ impl VerificationResult_PrimarySource<'_> {
     return None;
   }
 
-  /// Reference to the primary source.
-  pub fn who(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("who") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// Method for communicating with the primary source (manual; API; Push).
   pub fn communication_method(&self) -> Option<Vec<CodeableConcept>> {
     if let Some(Value::Array(val)) = self.value.get("communicationMethod") {
       return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -116,12 +115,48 @@ impl VerificationResult_PrimarySource<'_> {
     return None;
   }
 
-  /// Ability of the primary source to push updates/alerts (yes; no; undetermined).
-  pub fn can_push_updates(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("canPushUpdates") {
+  /// Status of the validation of the target against the primary source (successful;
+  /// failed; unknown).
+  pub fn validation_status(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("validationStatus") {
       return Some(CodeableConcept { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.validation_date() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.who() {
+      _val.validate();
+    }
+    if let Some(_val) = self.can_push_updates() {
+      _val.validate();
+    }
+    if let Some(_val) = self._validation_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.push_type_available() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.communication_method() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.validation_status() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

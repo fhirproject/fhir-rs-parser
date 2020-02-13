@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::GraphDefinition_Compartment::GraphDefinition_Compartment;
 use crate::model::GraphDefinition_Link::GraphDefinition_Link;
+use crate::model::GraphDefinition_Compartment::GraphDefinition_Compartment;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,6 +18,31 @@ pub struct GraphDefinition_Target<'a> {
 }
 
 impl GraphDefinition_Target<'_> {
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A set of parameters to look up.
+  pub fn params(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("params") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -30,10 +55,26 @@ impl GraphDefinition_Target<'_> {
     return None;
   }
 
-  /// A set of parameters to look up.
-  pub fn params(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("params") {
+  /// Profile for the target resource.
+  pub fn profile(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("profile") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Type of resource this link refers to.
+  pub fn fhir_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("type") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Compartment Consistency Rules.
+  pub fn compartment(&self) -> Option<Vec<GraphDefinition_Compartment>> {
+    if let Some(Value::Array(val)) = self.value.get("compartment") {
+      return Some(val.into_iter().map(|e| GraphDefinition_Compartment { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -64,39 +105,6 @@ impl GraphDefinition_Target<'_> {
     return None;
   }
 
-  /// Type of resource this link refers to.
-  pub fn fhir_type(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("type") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Profile for the target resource.
-  pub fn profile(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("profile") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Additional links from target resource.
   pub fn link(&self) -> Option<Vec<GraphDefinition_Link>> {
     if let Some(Value::Array(val)) = self.value.get("link") {
@@ -105,12 +113,34 @@ impl GraphDefinition_Target<'_> {
     return None;
   }
 
-  /// Compartment Consistency Rules.
-  pub fn compartment(&self) -> Option<Vec<GraphDefinition_Compartment>> {
-    if let Some(Value::Array(val)) = self.value.get("compartment") {
-      return Some(val.into_iter().map(|e| GraphDefinition_Compartment { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._type() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.params() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.profile() {
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.compartment() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._params() {
+      _val.validate();
+    }
+    if let Some(_val) = self.link() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

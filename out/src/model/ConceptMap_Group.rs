@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ConceptMap_Unmapped::ConceptMap_Unmapped;
-use crate::model::Element::Element;
 use crate::model::ConceptMap_Element::ConceptMap_Element;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::ConceptMap_Unmapped::ConceptMap_Unmapped;
 use serde_json::value::Value;
 
 
@@ -18,10 +18,11 @@ pub struct ConceptMap_Group<'a> {
 }
 
 impl ConceptMap_Group<'_> {
-  /// Extensions for sourceVersion
-  pub fn _source_version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sourceVersion") {
-      return Some(Element { value: val });
+  /// The specific version of the code system, as determined by the code system
+  /// authority.
+  pub fn target_version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("targetVersion") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -32,10 +33,11 @@ impl ConceptMap_Group<'_> {
     self.value.get("element").unwrap().as_array().unwrap().into_iter().map(|e| ConceptMap_Element { value: e }).collect::<Vec<_>>()
   }
 
-  /// Extensions for targetVersion
-  pub fn _target_version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_targetVersion") {
-      return Some(Element { value: val });
+  /// The specific version of the code system, as determined by the code system
+  /// authority.
+  pub fn source_version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sourceVersion") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -50,28 +52,10 @@ impl ConceptMap_Group<'_> {
     return None;
   }
 
-  /// An absolute URI that identifies the source system where the concepts to be
-  /// mapped are defined.
-  pub fn source(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("source") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for source
-  pub fn _source(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_source") {
+  /// Extensions for target
+  pub fn _target(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_target") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The specific version of the code system, as determined by the code system
-  /// authority.
-  pub fn target_version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("targetVersion") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -84,6 +68,24 @@ impl ConceptMap_Group<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An absolute URI that identifies the source system where the concepts to be
+  /// mapped are defined.
+  pub fn source(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("source") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -106,11 +108,10 @@ impl ConceptMap_Group<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for source
+  pub fn _source(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_source") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -124,21 +125,56 @@ impl ConceptMap_Group<'_> {
     return None;
   }
 
-  /// The specific version of the code system, as determined by the code system
-  /// authority.
-  pub fn source_version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sourceVersion") {
-      return Some(string.to_string());
+  /// Extensions for targetVersion
+  pub fn _target_version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_targetVersion") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for target
-  pub fn _target(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_target") {
+  /// Extensions for sourceVersion
+  pub fn _source_version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceVersion") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.target_version() {
+    }
+    let _ = self.element().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.source_version() {
+    }
+    if let Some(_val) = self.unmapped() {
+      _val.validate();
+    }
+    if let Some(_val) = self._target() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.source() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._source() {
+      _val.validate();
+    }
+    if let Some(_val) = self.target() {
+    }
+    if let Some(_val) = self._target_version() {
+      _val.validate();
+    }
+    if let Some(_val) = self._source_version() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
-use crate::model::Element::Element;
 use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -17,29 +17,6 @@ pub struct MedicinalProductAuthorization_Procedure<'a> {
 }
 
 impl MedicinalProductAuthorization_Procedure<'_> {
-  /// Extensions for dateDateTime
-  pub fn _date_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_dateDateTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Applcations submitted to obtain a marketing authorization.
-  pub fn application(&self) -> Option<Vec<MedicinalProductAuthorization_Procedure>> {
-    if let Some(Value::Array(val)) = self.value.get("application") {
-      return Some(val.into_iter().map(|e| MedicinalProductAuthorization_Procedure { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Type of procedure.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
   /// Identifier for this procedure.
   pub fn identifier(&self) -> Option<Identifier> {
     if let Some(val) = self.value.get("identifier") {
@@ -56,6 +33,38 @@ impl MedicinalProductAuthorization_Procedure<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Date of procedure.
+  pub fn date_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("dateDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Type of procedure.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// Date of procedure.
+  pub fn date_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("datePeriod") {
+      return Some(Period { value: val });
     }
     return None;
   }
@@ -78,29 +87,47 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     return None;
   }
 
-  /// Date of procedure.
-  pub fn date_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("dateDateTime") {
-      return Some(string.to_string());
+  /// Extensions for dateDateTime
+  pub fn _date_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_dateDateTime") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Applcations submitted to obtain a marketing authorization.
+  pub fn application(&self) -> Option<Vec<MedicinalProductAuthorization_Procedure>> {
+    if let Some(Value::Array(val)) = self.value.get("application") {
+      return Some(val.into_iter().map(|e| MedicinalProductAuthorization_Procedure { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Date of procedure.
-  pub fn date_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("datePeriod") {
-      return Some(Period { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.identifier() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.date_date_time() {
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.date_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._date_date_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self.application() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

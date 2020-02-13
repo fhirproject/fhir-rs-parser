@@ -58,6 +58,14 @@ impl SubstanceAmount_ReferenceRange<'_> {
     return None;
   }
 
+  /// Lower limit possible or expected.
+  pub fn low_limit(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("lowLimit") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
   /// Upper limit possible or expected.
   pub fn high_limit(&self) -> Option<Quantity> {
     if let Some(val) = self.value.get("highLimit") {
@@ -66,12 +74,22 @@ impl SubstanceAmount_ReferenceRange<'_> {
     return None;
   }
 
-  /// Lower limit possible or expected.
-  pub fn low_limit(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("lowLimit") {
-      return Some(Quantity { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.low_limit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.high_limit() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

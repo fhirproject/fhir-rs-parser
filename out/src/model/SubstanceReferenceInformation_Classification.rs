@@ -15,6 +15,18 @@ pub struct SubstanceReferenceInformation_Classification<'a> {
 }
 
 impl SubstanceReferenceInformation_Classification<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Todo.
   pub fn domain(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("domain") {
@@ -24,9 +36,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
   }
 
   /// Todo.
-  pub fn subtype(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("subtype") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  pub fn classification(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("classification") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -41,9 +53,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
   }
 
   /// Todo.
-  pub fn classification(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("classification") {
-      return Some(CodeableConcept { value: val });
+  pub fn subtype(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("subtype") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -74,16 +86,28 @@ impl SubstanceReferenceInformation_Classification<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.domain() {
+      _val.validate();
+    }
+    if let Some(_val) = self.classification() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.subtype() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.source() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

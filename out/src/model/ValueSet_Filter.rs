@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,64 @@ pub struct ValueSet_Filter<'a> {
 }
 
 impl ValueSet_Filter<'_> {
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The match value may be either a code defined by the system, or a string value,
+  /// which is a regex match on the literal string of the property value  (if the
+  /// filter represents a property defined in CodeSystem) or of the system filter
+  /// value (if the filter represents a filter defined in CodeSystem) when the
+  /// operation is 'regex', or one of the values (true and false), when the operation
+  /// is 'exists'.
+  pub fn value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for op
+  pub fn _op(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_op") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The kind of operation to perform as a part of the filter criteria.
+  pub fn op(&self) -> Option<ValueSet_FilterOp> {
+    if let Some(Value::String(val)) = self.value.get("op") {
+      return Some(ValueSet_FilterOp::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -51,62 +109,31 @@ impl ValueSet_Filter<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._value() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The kind of operation to perform as a part of the filter criteria.
-  pub fn op(&self) -> Option<ValueSet_FilterOp> {
-    if let Some(Value::String(val)) = self.value.get("op") {
-      return Some(ValueSet_FilterOp::from_string(&val).unwrap());
+    if let Some(_val) = self.value() {
     }
-    return None;
-  }
-
-  /// Extensions for op
-  pub fn _op(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_op") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// The match value may be either a code defined by the system, or a string value,
-  /// which is a regex match on the literal string of the property value  (if the
-  /// filter represents a property defined in CodeSystem) or of the system filter
-  /// value (if the filter represents a filter defined in CodeSystem) when the
-  /// operation is 'regex', or one of the values (true and false), when the operation
-  /// is 'exists'.
-  pub fn value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("value") {
-      return Some(string.to_string());
+    if let Some(_val) = self._op() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self.op() {
     }
-    return None;
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.property() {
+    }
+    if let Some(_val) = self._property() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

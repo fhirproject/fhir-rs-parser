@@ -1,151 +1,151 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Practitioner::Practitioner;
-use crate::model::ResearchSubject::ResearchSubject;
-use crate::model::ChargeItemDefinition::ChargeItemDefinition;
-use crate::model::SubstanceProtein::SubstanceProtein;
-use crate::model::Media::Media;
-use crate::model::RelatedPerson::RelatedPerson;
-use crate::model::DetectedIssue::DetectedIssue;
-use crate::model::BiologicallyDerivedProduct::BiologicallyDerivedProduct;
-use crate::model::EvidenceVariable::EvidenceVariable;
-use crate::model::MedicinalProduct::MedicinalProduct;
-use crate::model::NutritionOrder::NutritionOrder;
-use crate::model::SearchParameter::SearchParameter;
-use crate::model::SubstanceSpecification::SubstanceSpecification;
-use crate::model::Task::Task;
-use crate::model::DiagnosticReport::DiagnosticReport;
-use crate::model::BodyStructure::BodyStructure;
-use crate::model::CoverageEligibilityResponse::CoverageEligibilityResponse;
-use crate::model::RiskAssessment::RiskAssessment;
-use crate::model::MedicinalProductIngredient::MedicinalProductIngredient;
-use crate::model::PaymentReconciliation::PaymentReconciliation;
-use crate::model::CodeSystem::CodeSystem;
-use crate::model::Patient::Patient;
-use crate::model::ResearchStudy::ResearchStudy;
-use crate::model::Contract::Contract;
-use crate::model::Device::Device;
-use crate::model::DocumentManifest::DocumentManifest;
-use crate::model::DeviceMetric::DeviceMetric;
-use crate::model::CatalogEntry::CatalogEntry;
-use crate::model::ExplanationOfBenefit::ExplanationOfBenefit;
-use crate::model::Coverage::Coverage;
-use crate::model::SubstanceSourceMaterial::SubstanceSourceMaterial;
-use crate::model::MedicinalProductUndesirableEffect::MedicinalProductUndesirableEffect;
-use crate::model::OperationOutcome::OperationOutcome;
-use crate::model::Group::Group;
-use crate::model::TestScript::TestScript;
-use crate::model::Appointment::Appointment;
-use crate::model::SpecimenDefinition::SpecimenDefinition;
-use crate::model::VisionPrescription::VisionPrescription;
-use crate::model::CapabilityStatement::CapabilityStatement;
-use crate::model::Encounter::Encounter;
-use crate::model::StructureMap::StructureMap;
-use crate::model::ImagingStudy::ImagingStudy;
-use crate::model::EffectEvidenceSynthesis::EffectEvidenceSynthesis;
-use crate::model::GraphDefinition::GraphDefinition;
-use crate::model::ImmunizationRecommendation::ImmunizationRecommendation;
-use crate::model::MedicationAdministration::MedicationAdministration;
-use crate::model::PlanDefinition::PlanDefinition;
-use crate::model::PractitionerRole::PractitionerRole;
-use crate::model::ServiceRequest::ServiceRequest;
-use crate::model::Location::Location;
-use crate::model::Consent::Consent;
-use crate::model::Evidence::Evidence;
-use crate::model::MedicinalProductAuthorization::MedicinalProductAuthorization;
-use crate::model::CarePlan::CarePlan;
-use crate::model::SupplyDelivery::SupplyDelivery;
-use crate::model::MedicationKnowledge::MedicationKnowledge;
-use crate::model::Organization::Organization;
-use crate::model::Person::Person;
-use crate::model::Specimen::Specimen;
-use crate::model::EventDefinition::EventDefinition;
-use crate::model::ConceptMap::ConceptMap;
-use crate::model::MedicationStatement::MedicationStatement;
-use crate::model::ValueSet::ValueSet;
-use crate::model::OrganizationAffiliation::OrganizationAffiliation;
-use crate::model::SubstancePolymer::SubstancePolymer;
-use crate::model::Condition::Condition;
-use crate::model::Schedule::Schedule;
-use crate::model::SubstanceNucleicAcid::SubstanceNucleicAcid;
-use crate::model::Basic::Basic;
-use crate::model::Medication::Medication;
-use crate::model::MedicinalProductContraindication::MedicinalProductContraindication;
-use crate::model::MedicinalProductInteraction::MedicinalProductInteraction;
-use crate::model::Parameters::Parameters;
-use crate::model::NamingSystem::NamingSystem;
-use crate::model::QuestionnaireResponse::QuestionnaireResponse;
-use crate::model::CoverageEligibilityRequest::CoverageEligibilityRequest;
-use crate::model::ObservationDefinition::ObservationDefinition;
-use crate::model::Account::Account;
-use crate::model::PaymentNotice::PaymentNotice;
-use crate::model::DeviceDefinition::DeviceDefinition;
-use crate::model::Questionnaire::Questionnaire;
-use crate::model::ActivityDefinition::ActivityDefinition;
-use crate::model::MedicationDispense::MedicationDispense;
-use crate::model::MedicinalProductPackaged::MedicinalProductPackaged;
-use crate::model::AdverseEvent::AdverseEvent;
-use crate::model::ResearchElementDefinition::ResearchElementDefinition;
-use crate::model::EnrollmentResponse::EnrollmentResponse;
-use crate::model::AuditEvent::AuditEvent;
-use crate::model::OperationDefinition::OperationDefinition;
-use crate::model::StructureDefinition::StructureDefinition;
-use crate::model::TerminologyCapabilities::TerminologyCapabilities;
-use crate::model::MedicinalProductIndication::MedicinalProductIndication;
-use crate::model::Bundle::Bundle;
-use crate::model::ImmunizationEvaluation::ImmunizationEvaluation;
-use crate::model::Flag::Flag;
-use crate::model::Endpoint::Endpoint;
-use crate::model::ChargeItem::ChargeItem;
-use crate::model::ImplementationGuide::ImplementationGuide;
-use crate::model::MolecularSequence::MolecularSequence;
-use crate::model::MessageHeader::MessageHeader;
-use crate::model::ResearchDefinition::ResearchDefinition;
-use crate::model::HealthcareService::HealthcareService;
-use crate::model::Goal::Goal;
-use crate::model::CareTeam::CareTeam;
-use crate::model::CommunicationRequest::CommunicationRequest;
 use crate::model::RequestGroup::RequestGroup;
-use crate::model::VerificationResult::VerificationResult;
-use crate::model::Observation::Observation;
-use crate::model::MedicinalProductManufactured::MedicinalProductManufactured;
-use crate::model::ClaimResponse::ClaimResponse;
-use crate::model::Slot::Slot;
-use crate::model::DeviceUseStatement::DeviceUseStatement;
-use crate::model::DocumentReference::DocumentReference;
-use crate::model::FamilyMemberHistory::FamilyMemberHistory;
-use crate::model::Linkage::Linkage;
-use crate::model::InsurancePlan::InsurancePlan;
-use crate::model::ExampleScenario::ExampleScenario;
-use crate::model::CompartmentDefinition::CompartmentDefinition;
-use crate::model::GuidanceResponse::GuidanceResponse;
-use crate::model::Communication::Communication;
-use crate::model::Immunization::Immunization;
-use crate::model::AllergyIntolerance::AllergyIntolerance;
-use crate::model::RiskEvidenceSynthesis::RiskEvidenceSynthesis;
-use crate::model::ClinicalImpression::ClinicalImpression;
-use crate::model::Procedure::Procedure;
-use crate::model::Claim::Claim;
-use crate::model::MedicinalProductPharmaceutical::MedicinalProductPharmaceutical;
-use crate::model::SupplyRequest::SupplyRequest;
 use crate::model::TestReport::TestReport;
+use crate::model::BodyStructure::BodyStructure;
+use crate::model::CommunicationRequest::CommunicationRequest;
+use crate::model::MedicationStatement::MedicationStatement;
+use crate::model::MedicinalProductPharmaceutical::MedicinalProductPharmaceutical;
+use crate::model::DeviceMetric::DeviceMetric;
+use crate::model::MedicinalProductPackaged::MedicinalProductPackaged;
+use crate::model::Provenance::Provenance;
+use crate::model::GuidanceResponse::GuidanceResponse;
+use crate::model::Measure::Measure;
+use crate::model::ValueSet::ValueSet;
+use crate::model::Contract::Contract;
+use crate::model::RiskAssessment::RiskAssessment;
+use crate::model::ImmunizationEvaluation::ImmunizationEvaluation;
+use crate::model::ServiceRequest::ServiceRequest;
+use crate::model::Procedure::Procedure;
+use crate::model::BiologicallyDerivedProduct::BiologicallyDerivedProduct;
+use crate::model::ClaimResponse::ClaimResponse;
+use crate::model::Consent::Consent;
+use crate::model::DocumentManifest::DocumentManifest;
+use crate::model::DeviceUseStatement::DeviceUseStatement;
+use crate::model::PaymentNotice::PaymentNotice;
+use crate::model::Condition::Condition;
+use crate::model::ResearchElementDefinition::ResearchElementDefinition;
+use crate::model::Flag::Flag;
+use crate::model::ResearchSubject::ResearchSubject;
+use crate::model::AuditEvent::AuditEvent;
+use crate::model::SubstanceProtein::SubstanceProtein;
+use crate::model::Claim::Claim;
+use crate::model::Observation::Observation;
+use crate::model::RelatedPerson::RelatedPerson;
+use crate::model::Specimen::Specimen;
+use crate::model::CoverageEligibilityRequest::CoverageEligibilityRequest;
+use crate::model::Substance::Substance;
+use crate::model::StructureMap::StructureMap;
+use crate::model::EnrollmentResponse::EnrollmentResponse;
+use crate::model::Library::Library;
+use crate::model::MedicinalProductIngredient::MedicinalProductIngredient;
+use crate::model::Person::Person;
+use crate::model::Schedule::Schedule;
+use crate::model::QuestionnaireResponse::QuestionnaireResponse;
+use crate::model::SubstanceNucleicAcid::SubstanceNucleicAcid;
 use crate::model::EpisodeOfCare::EpisodeOfCare;
+use crate::model::Organization::Organization;
+use crate::model::CoverageEligibilityResponse::CoverageEligibilityResponse;
+use crate::model::GraphDefinition::GraphDefinition;
+use crate::model::Communication::Communication;
+use crate::model::MedicinalProduct::MedicinalProduct;
+use crate::model::OperationOutcome::OperationOutcome;
+use crate::model::MedicationKnowledge::MedicationKnowledge;
+use crate::model::MedicationAdministration::MedicationAdministration;
+use crate::model::ImmunizationRecommendation::ImmunizationRecommendation;
+use crate::model::Encounter::Encounter;
+use crate::model::ObservationDefinition::ObservationDefinition;
+use crate::model::MedicinalProductInteraction::MedicinalProductInteraction;
+use crate::model::MedicationRequest::MedicationRequest;
+use crate::model::ConceptMap::ConceptMap;
+use crate::model::ExampleScenario::ExampleScenario;
+use crate::model::FamilyMemberHistory::FamilyMemberHistory;
+use crate::model::Endpoint::Endpoint;
+use crate::model::Invoice::Invoice;
+use crate::model::VisionPrescription::VisionPrescription;
+use crate::model::Account::Account;
+use crate::model::PractitionerRole::PractitionerRole;
+use crate::model::MedicinalProductContraindication::MedicinalProductContraindication;
+use crate::model::MolecularSequence::MolecularSequence;
+use crate::model::Linkage::Linkage;
+use crate::model::ActivityDefinition::ActivityDefinition;
+use crate::model::EventDefinition::EventDefinition;
+use crate::model::MessageDefinition::MessageDefinition;
+use crate::model::EffectEvidenceSynthesis::EffectEvidenceSynthesis;
+use crate::model::MedicinalProductAuthorization::MedicinalProductAuthorization;
+use crate::model::CareTeam::CareTeam;
 use crate::model::Binary::Binary;
 use crate::model::EnrollmentRequest::EnrollmentRequest;
-use crate::model::Invoice::Invoice;
-use crate::model::Composition::Composition;
-use crate::model::List::List;
+use crate::model::ResearchStudy::ResearchStudy;
+use crate::model::Practitioner::Practitioner;
+use crate::model::OrganizationAffiliation::OrganizationAffiliation;
+use crate::model::VerificationResult::VerificationResult;
+use crate::model::Parameters::Parameters;
+use crate::model::SubstanceSourceMaterial::SubstanceSourceMaterial;
 use crate::model::MeasureReport::MeasureReport;
-use crate::model::Measure::Measure;
-use crate::model::Provenance::Provenance;
-use crate::model::SubstanceReferenceInformation::SubstanceReferenceInformation;
-use crate::model::MedicationRequest::MedicationRequest;
-use crate::model::Subscription::Subscription;
-use crate::model::Substance::Substance;
-use crate::model::Library::Library;
-use crate::model::MessageDefinition::MessageDefinition;
+use crate::model::ResearchDefinition::ResearchDefinition;
+use crate::model::Evidence::Evidence;
+use crate::model::SupplyRequest::SupplyRequest;
+use crate::model::DeviceDefinition::DeviceDefinition;
+use crate::model::SubstancePolymer::SubstancePolymer;
+use crate::model::CatalogEntry::CatalogEntry;
+use crate::model::Questionnaire::Questionnaire;
+use crate::model::RiskEvidenceSynthesis::RiskEvidenceSynthesis;
+use crate::model::AdverseEvent::AdverseEvent;
+use crate::model::CompartmentDefinition::CompartmentDefinition;
+use crate::model::AllergyIntolerance::AllergyIntolerance;
+use crate::model::EvidenceVariable::EvidenceVariable;
+use crate::model::OperationDefinition::OperationDefinition;
+use crate::model::Location::Location;
+use crate::model::MedicinalProductIndication::MedicinalProductIndication;
+use crate::model::DetectedIssue::DetectedIssue;
+use crate::model::ChargeItem::ChargeItem;
+use crate::model::SearchParameter::SearchParameter;
+use crate::model::Slot::Slot;
+use crate::model::SupplyDelivery::SupplyDelivery;
+use crate::model::DocumentReference::DocumentReference;
+use crate::model::PaymentReconciliation::PaymentReconciliation;
+use crate::model::Task::Task;
+use crate::model::Basic::Basic;
 use crate::model::AppointmentResponse::AppointmentResponse;
+use crate::model::TerminologyCapabilities::TerminologyCapabilities;
+use crate::model::MedicationDispense::MedicationDispense;
+use crate::model::TestScript::TestScript;
+use crate::model::SpecimenDefinition::SpecimenDefinition;
+use crate::model::HealthcareService::HealthcareService;
+use crate::model::ChargeItemDefinition::ChargeItemDefinition;
+use crate::model::MessageHeader::MessageHeader;
+use crate::model::NamingSystem::NamingSystem;
+use crate::model::Immunization::Immunization;
+use crate::model::Appointment::Appointment;
+use crate::model::Composition::Composition;
+use crate::model::CarePlan::CarePlan;
+use crate::model::DiagnosticReport::DiagnosticReport;
+use crate::model::ExplanationOfBenefit::ExplanationOfBenefit;
+use crate::model::ClinicalImpression::ClinicalImpression;
+use crate::model::MedicinalProductUndesirableEffect::MedicinalProductUndesirableEffect;
+use crate::model::SubstanceReferenceInformation::SubstanceReferenceInformation;
+use crate::model::Device::Device;
+use crate::model::InsurancePlan::InsurancePlan;
+use crate::model::Group::Group;
+use crate::model::Medication::Medication;
+use crate::model::Media::Media;
+use crate::model::Patient::Patient;
+use crate::model::Bundle::Bundle;
+use crate::model::Goal::Goal;
+use crate::model::Coverage::Coverage;
+use crate::model::ImplementationGuide::ImplementationGuide;
+use crate::model::MedicinalProductManufactured::MedicinalProductManufactured;
+use crate::model::NutritionOrder::NutritionOrder;
 use crate::model::DeviceRequest::DeviceRequest;
+use crate::model::Subscription::Subscription;
+use crate::model::ImagingStudy::ImagingStudy;
+use crate::model::SubstanceSpecification::SubstanceSpecification;
+use crate::model::PlanDefinition::PlanDefinition;
+use crate::model::CapabilityStatement::CapabilityStatement;
+use crate::model::StructureDefinition::StructureDefinition;
+use crate::model::CodeSystem::CodeSystem;
+use crate::model::List::List;
 use serde_json::value::Value;
 
 
@@ -456,6 +456,160 @@ impl ResourceList<'_> {
       "VisionPrescription" => Some(ResourceListEnum::ResourceVisionPrescription(VisionPrescription { value: self.value })),
       _ => None,
     }
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(resource) = self.resource() {
+      match resource {
+        ResourceListEnum::ResourceAccount(val) => { return val.validate(); },
+        ResourceListEnum::ResourceActivityDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceAdverseEvent(val) => { return val.validate(); },
+        ResourceListEnum::ResourceAllergyIntolerance(val) => { return val.validate(); },
+        ResourceListEnum::ResourceAppointment(val) => { return val.validate(); },
+        ResourceListEnum::ResourceAppointmentResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceAuditEvent(val) => { return val.validate(); },
+        ResourceListEnum::ResourceBasic(val) => { return val.validate(); },
+        ResourceListEnum::ResourceBinary(val) => { return val.validate(); },
+        ResourceListEnum::ResourceBiologicallyDerivedProduct(val) => { return val.validate(); },
+        ResourceListEnum::ResourceBodyStructure(val) => { return val.validate(); },
+        ResourceListEnum::ResourceBundle(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCapabilityStatement(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCarePlan(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCareTeam(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCatalogEntry(val) => { return val.validate(); },
+        ResourceListEnum::ResourceChargeItem(val) => { return val.validate(); },
+        ResourceListEnum::ResourceChargeItemDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceClaim(val) => { return val.validate(); },
+        ResourceListEnum::ResourceClaimResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceClinicalImpression(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCodeSystem(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCommunication(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCommunicationRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCompartmentDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceComposition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceConceptMap(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCondition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceConsent(val) => { return val.validate(); },
+        ResourceListEnum::ResourceContract(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCoverage(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCoverageEligibilityRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceCoverageEligibilityResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDetectedIssue(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDevice(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDeviceDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDeviceMetric(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDeviceRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDeviceUseStatement(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDiagnosticReport(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDocumentManifest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceDocumentReference(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEffectEvidenceSynthesis(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEncounter(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEndpoint(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEnrollmentRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEnrollmentResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEpisodeOfCare(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEventDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEvidence(val) => { return val.validate(); },
+        ResourceListEnum::ResourceEvidenceVariable(val) => { return val.validate(); },
+        ResourceListEnum::ResourceExampleScenario(val) => { return val.validate(); },
+        ResourceListEnum::ResourceExplanationOfBenefit(val) => { return val.validate(); },
+        ResourceListEnum::ResourceFamilyMemberHistory(val) => { return val.validate(); },
+        ResourceListEnum::ResourceFlag(val) => { return val.validate(); },
+        ResourceListEnum::ResourceGoal(val) => { return val.validate(); },
+        ResourceListEnum::ResourceGraphDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceGroup(val) => { return val.validate(); },
+        ResourceListEnum::ResourceGuidanceResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceHealthcareService(val) => { return val.validate(); },
+        ResourceListEnum::ResourceImagingStudy(val) => { return val.validate(); },
+        ResourceListEnum::ResourceImmunization(val) => { return val.validate(); },
+        ResourceListEnum::ResourceImmunizationEvaluation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceImmunizationRecommendation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceImplementationGuide(val) => { return val.validate(); },
+        ResourceListEnum::ResourceInsurancePlan(val) => { return val.validate(); },
+        ResourceListEnum::ResourceInvoice(val) => { return val.validate(); },
+        ResourceListEnum::ResourceLibrary(val) => { return val.validate(); },
+        ResourceListEnum::ResourceLinkage(val) => { return val.validate(); },
+        ResourceListEnum::ResourceList(val) => { return val.validate(); },
+        ResourceListEnum::ResourceLocation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMeasure(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMeasureReport(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedia(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedication(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicationAdministration(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicationDispense(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicationKnowledge(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicationRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicationStatement(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProduct(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductAuthorization(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductContraindication(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductIndication(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductIngredient(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductInteraction(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductManufactured(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductPackaged(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductPharmaceutical(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMedicinalProductUndesirableEffect(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMessageDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMessageHeader(val) => { return val.validate(); },
+        ResourceListEnum::ResourceMolecularSequence(val) => { return val.validate(); },
+        ResourceListEnum::ResourceNamingSystem(val) => { return val.validate(); },
+        ResourceListEnum::ResourceNutritionOrder(val) => { return val.validate(); },
+        ResourceListEnum::ResourceObservation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceObservationDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceOperationDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceOperationOutcome(val) => { return val.validate(); },
+        ResourceListEnum::ResourceOrganization(val) => { return val.validate(); },
+        ResourceListEnum::ResourceOrganizationAffiliation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceParameters(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePatient(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePaymentNotice(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePaymentReconciliation(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePerson(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePlanDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePractitioner(val) => { return val.validate(); },
+        ResourceListEnum::ResourcePractitionerRole(val) => { return val.validate(); },
+        ResourceListEnum::ResourceProcedure(val) => { return val.validate(); },
+        ResourceListEnum::ResourceProvenance(val) => { return val.validate(); },
+        ResourceListEnum::ResourceQuestionnaire(val) => { return val.validate(); },
+        ResourceListEnum::ResourceQuestionnaireResponse(val) => { return val.validate(); },
+        ResourceListEnum::ResourceRelatedPerson(val) => { return val.validate(); },
+        ResourceListEnum::ResourceRequestGroup(val) => { return val.validate(); },
+        ResourceListEnum::ResourceResearchDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceResearchElementDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceResearchStudy(val) => { return val.validate(); },
+        ResourceListEnum::ResourceResearchSubject(val) => { return val.validate(); },
+        ResourceListEnum::ResourceRiskAssessment(val) => { return val.validate(); },
+        ResourceListEnum::ResourceRiskEvidenceSynthesis(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSchedule(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSearchParameter(val) => { return val.validate(); },
+        ResourceListEnum::ResourceServiceRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSlot(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSpecimen(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSpecimenDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceStructureDefinition(val) => { return val.validate(); },
+        ResourceListEnum::ResourceStructureMap(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubscription(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstance(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstanceNucleicAcid(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstancePolymer(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstanceProtein(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstanceReferenceInformation(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstanceSourceMaterial(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSubstanceSpecification(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSupplyDelivery(val) => { return val.validate(); },
+        ResourceListEnum::ResourceSupplyRequest(val) => { return val.validate(); },
+        ResourceListEnum::ResourceTask(val) => { return val.validate(); },
+        ResourceListEnum::ResourceTerminologyCapabilities(val) => { return val.validate(); },
+        ResourceListEnum::ResourceTestReport(val) => { return val.validate(); },
+        ResourceListEnum::ResourceTestScript(val) => { return val.validate(); },
+        ResourceListEnum::ResourceValueSet(val) => { return val.validate(); },
+        ResourceListEnum::ResourceVerificationResult(val) => { return val.validate(); },
+        ResourceListEnum::ResourceVisionPrescription(val) => { return val.validate(); },
+      }
+    }
+    return false;
   }
 }
 

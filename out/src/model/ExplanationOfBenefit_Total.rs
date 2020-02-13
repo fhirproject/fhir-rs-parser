@@ -17,13 +17,11 @@ pub struct ExplanationOfBenefit_Total<'a> {
 }
 
 impl ExplanationOfBenefit_Total<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Monetary total amount associated with the category.
+  pub fn amount(&self) -> Money {
+    Money {
+      value: &self.value["amount"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -34,6 +32,15 @@ impl ExplanationOfBenefit_Total<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -56,13 +63,6 @@ impl ExplanationOfBenefit_Total<'_> {
     return None;
   }
 
-  /// Monetary total amount associated with the category.
-  pub fn amount(&self) -> Money {
-    Money {
-      value: &self.value["amount"],
-    }
-  }
-
   /// A code to indicate the information type of this adjudication record. Information
   /// types may include: the value submitted, maximum values or percentages allowed or
   /// payable under the plan, amounts that the patient is responsible for in aggregate
@@ -72,6 +72,20 @@ impl ExplanationOfBenefit_Total<'_> {
     CodeableConcept {
       value: &self.value["category"],
     }
+  }
+
+  pub fn validate(&self) -> bool {
+    let _ = self.amount().validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.category().validate();
+    return true;
   }
 
 }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::TestReport_Assert::TestReport_Assert;
 use crate::model::TestReport_Operation::TestReport_Operation;
+use crate::model::TestReport_Assert::TestReport_Assert;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -23,23 +23,6 @@ impl TestReport_Action1<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The results of the assertion performed on the previous operations.
-  pub fn assert(&self) -> Option<TestReport_Assert> {
-    if let Some(val) = self.value.get("assert") {
-      return Some(TestReport_Assert { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -68,6 +51,41 @@ impl TestReport_Action1<'_> {
       return Some(TestReport_Operation { value: val });
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The results of the assertion performed on the previous operations.
+  pub fn assert(&self) -> Option<TestReport_Assert> {
+    if let Some(val) = self.value.get("assert") {
+      return Some(TestReport_Assert { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.operation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.assert() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Reference::Reference;
 use crate::model::Period::Period;
+use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -36,20 +36,11 @@ impl Encounter_Location<'_> {
     return None;
   }
 
-  /// The status of the participants' presence at the specified location during the
-  /// period specified. If the participant is no longer at the location, then the
-  /// period will have an end date/time.
-  pub fn status(&self) -> Option<Encounter_LocationStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(Encounter_LocationStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Time period during which the patient was present at the location.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
+  /// This will be used to specify the required levels (bed/ward/room/etc.) desired to
+  /// be recorded to simplify either messaging or query.
+  pub fn physical_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("physicalType") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -71,22 +62,6 @@ impl Encounter_Location<'_> {
     return None;
   }
 
-  /// The location where the encounter takes place.
-  pub fn location(&self) -> Reference {
-    Reference {
-      value: &self.value["location"],
-    }
-  }
-
-  /// This will be used to specify the required levels (bed/ward/room/etc.) desired to
-  /// be recorded to simplify either messaging or query.
-  pub fn physical_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("physicalType") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -97,6 +72,55 @@ impl Encounter_Location<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The status of the participants' presence at the specified location during the
+  /// period specified. If the participant is no longer at the location, then the
+  /// period will have an end date/time.
+  pub fn status(&self) -> Option<Encounter_LocationStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(Encounter_LocationStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// The location where the encounter takes place.
+  pub fn location(&self) -> Reference {
+    Reference {
+      value: &self.value["location"],
+    }
+  }
+
+  /// Time period during which the patient was present at the location.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.physical_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.status() {
+    }
+    let _ = self.location().validate();
+    if let Some(_val) = self.period() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

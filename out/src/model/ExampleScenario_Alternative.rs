@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::ExampleScenario_Step::ExampleScenario_Step;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,14 +15,6 @@ pub struct ExampleScenario_Alternative<'a> {
 }
 
 impl ExampleScenario_Alternative<'_> {
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A human-readable description of the alternative explaining when the alternative
   /// should occur rather than the base step.
   pub fn description(&self) -> Option<String> {
@@ -32,9 +24,17 @@ impl ExampleScenario_Alternative<'_> {
     return None;
   }
 
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
+  /// What happens in each alternative option.
+  pub fn step(&self) -> Option<Vec<ExampleScenario_Step>> {
+    if let Some(Value::Array(val)) = self.value.get("step") {
+      return Some(val.into_iter().map(|e| ExampleScenario_Step { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
     }
     return None;
@@ -67,19 +67,19 @@ impl ExampleScenario_Alternative<'_> {
     return None;
   }
 
-  /// What happens in each alternative option.
-  pub fn step(&self) -> Option<Vec<ExampleScenario_Step>> {
-    if let Some(Value::Array(val)) = self.value.get("step") {
-      return Some(val.into_iter().map(|e| ExampleScenario_Step { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -94,6 +94,31 @@ impl ExampleScenario_Alternative<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.step() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.title() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._title() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

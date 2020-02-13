@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Element::Element;
+use crate::model::Identifier::Identifier;
 use crate::model::Extension::Extension;
 use crate::model::Attachment::Attachment;
-use crate::model::Identifier::Identifier;
 use serde_json::value::Value;
 
 
@@ -23,31 +23,6 @@ pub struct SubstanceProtein_Subunit<'a> {
 }
 
 impl SubstanceProtein_Subunit<'_> {
-  /// Extensions for sequence
-  pub fn _sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sequence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for cTerminalModification
-  pub fn _c_terminal_modification(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_cTerminalModification") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The name of the fragment modified at the N-terminal of the SubstanceProtein
-  /// shall be specified.
-  pub fn n_terminal_modification(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("nTerminalModification") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for nTerminalModification
   pub fn _n_terminal_modification(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_nTerminalModification") {
@@ -64,6 +39,51 @@ impl SubstanceProtein_Subunit<'_> {
     return None;
   }
 
+  /// The sequence information shall be provided enumerating the amino acids from N-
+  /// to C-terminal end using standard single-letter amino acid codes. Uppercase shall
+  /// be used for L-amino acids and lowercase for D-amino acids. Transcribed
+  /// SubstanceProteins will always be described using the translated sequence; for
+  /// synthetic peptide containing amino acids that are not represented with a single
+  /// letter code an X should be used within the sequence. The modified amino acids
+  /// will be distinguished by their position in the sequence.
+  pub fn sequence(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sequence") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for sequence
+  pub fn _sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The name of the fragment modified at the N-terminal of the SubstanceProtein
+  /// shall be specified.
+  pub fn n_terminal_modification(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("nTerminalModification") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The sequence information shall be provided enumerating the amino acids from N-
+  /// to C-terminal end using standard single-letter amino acid codes. Uppercase shall
+  /// be used for L-amino acids and lowercase for D-amino acids. Transcribed
+  /// SubstanceProteins will always be described using the translated sequence; for
+  /// synthetic peptide containing amino acids that are not represented with a single
+  /// letter code an X should be used within the sequence. The modified amino acids
+  /// will be distinguished by their position in the sequence.
+  pub fn sequence_attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("sequenceAttachment") {
+      return Some(Attachment { value: val });
+    }
+    return None;
+  }
+
   /// Unique identifier for molecular fragment modification based on the ISO 11238
   /// Substance ID.
   pub fn n_terminal_modification_id(&self) -> Option<Identifier> {
@@ -73,9 +93,20 @@ impl SubstanceProtein_Subunit<'_> {
     return None;
   }
 
-  /// Extensions for length
-  pub fn _length(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_length") {
+  /// Index of primary sequences of amino acids linked through peptide bonds in order
+  /// of decreasing length. Sequences of the same length will be ordered by molecular
+  /// weight. Subunits that have identical sequences will be repeated and have
+  /// sequential subscripts.
+  pub fn subunit(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("subunit") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for subunit
+  pub fn _subunit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subunit") {
       return Some(Element { value: val });
     }
     return None;
@@ -99,11 +130,44 @@ impl SubstanceProtein_Subunit<'_> {
     return None;
   }
 
+  /// Length of linear sequences of amino acids contained in the subunit.
+  pub fn length(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("length") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for length
+  pub fn _length(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_length") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique identifier for molecular fragment modification based on the ISO 11238
   /// Substance ID.
   pub fn c_terminal_modification_id(&self) -> Option<Identifier> {
     if let Some(val) = self.value.get("cTerminalModificationId") {
       return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for cTerminalModification
+  pub fn _c_terminal_modification(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_cTerminalModification") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -120,68 +184,50 @@ impl SubstanceProtein_Subunit<'_> {
     return None;
   }
 
-  /// Index of primary sequences of amino acids linked through peptide bonds in order
-  /// of decreasing length. Sequences of the same length will be ordered by molecular
-  /// weight. Subunits that have identical sequences will be repeated and have
-  /// sequential subscripts.
-  pub fn subunit(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("subunit") {
-      return Some(val.as_i64().unwrap());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._n_terminal_modification() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self.c_terminal_modification() {
     }
-    return None;
-  }
-
-  /// Extensions for subunit
-  pub fn _subunit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subunit") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.sequence() {
     }
-    return None;
-  }
-
-  /// Length of linear sequences of amino acids contained in the subunit.
-  pub fn length(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("length") {
-      return Some(val.as_i64().unwrap());
+    if let Some(_val) = self._sequence() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The sequence information shall be provided enumerating the amino acids from N-
-  /// to C-terminal end using standard single-letter amino acid codes. Uppercase shall
-  /// be used for L-amino acids and lowercase for D-amino acids. Transcribed
-  /// SubstanceProteins will always be described using the translated sequence; for
-  /// synthetic peptide containing amino acids that are not represented with a single
-  /// letter code an X should be used within the sequence. The modified amino acids
-  /// will be distinguished by their position in the sequence.
-  pub fn sequence_attachment(&self) -> Option<Attachment> {
-    if let Some(val) = self.value.get("sequenceAttachment") {
-      return Some(Attachment { value: val });
+    if let Some(_val) = self.n_terminal_modification() {
     }
-    return None;
-  }
-
-  /// The sequence information shall be provided enumerating the amino acids from N-
-  /// to C-terminal end using standard single-letter amino acid codes. Uppercase shall
-  /// be used for L-amino acids and lowercase for D-amino acids. Transcribed
-  /// SubstanceProteins will always be described using the translated sequence; for
-  /// synthetic peptide containing amino acids that are not represented with a single
-  /// letter code an X should be used within the sequence. The modified amino acids
-  /// will be distinguished by their position in the sequence.
-  pub fn sequence(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sequence") {
-      return Some(string.to_string());
+    if let Some(_val) = self.sequence_attachment() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.n_terminal_modification_id() {
+      _val.validate();
+    }
+    if let Some(_val) = self.subunit() {
+    }
+    if let Some(_val) = self._subunit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.length() {
+    }
+    if let Some(_val) = self._length() {
+      _val.validate();
+    }
+    if let Some(_val) = self.c_terminal_modification_id() {
+      _val.validate();
+    }
+    if let Some(_val) = self._c_terminal_modification() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

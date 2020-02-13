@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,14 +16,30 @@ pub struct ClaimResponse_Error<'a> {
 }
 
 impl ClaimResponse_Error<'_> {
-  /// The sequence number of the detail within the line item submitted which contains
-  /// the error. This value is omitted when the error occurs outside of the item
-  /// structure.
-  pub fn detail_sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("detailSequence") {
+  /// Extensions for detailSequence
+  pub fn _detail_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detailSequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The sequence number of the sub-detail within the detail within the line item
+  /// submitted which contains the error. This value is omitted when the error occurs
+  /// outside of the item structure.
+  pub fn sub_detail_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("subDetailSequence") {
       return Some(val.as_i64().unwrap());
     }
     return None;
+  }
+
+  /// An error code, from a specified code system, which details why the claim could
+  /// not be adjudicated.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -44,11 +60,19 @@ impl ClaimResponse_Error<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The sequence number of the line item submitted which contains the error. This
+  /// value is omitted when the error occurs outside of the item structure.
+  pub fn item_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("itemSequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for subDetailSequence
+  pub fn _sub_detail_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subDetailSequence") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -57,6 +81,25 @@ impl ClaimResponse_Error<'_> {
   pub fn _item_sequence(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_itemSequence") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The sequence number of the detail within the line item submitted which contains
+  /// the error. This value is omitted when the error occurs outside of the item
+  /// structure.
+  pub fn detail_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("detailSequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -73,47 +116,32 @@ impl ClaimResponse_Error<'_> {
     return None;
   }
 
-  /// An error code, from a specified code system, which details why the claim could
-  /// not be adjudicated.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._detail_sequence() {
+      _val.validate();
     }
-  }
-
-  /// The sequence number of the sub-detail within the detail within the line item
-  /// submitted which contains the error. This value is omitted when the error occurs
-  /// outside of the item structure.
-  pub fn sub_detail_sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("subDetailSequence") {
-      return Some(val.as_i64().unwrap());
+    if let Some(_val) = self.sub_detail_sequence() {
     }
-    return None;
-  }
-
-  /// The sequence number of the line item submitted which contains the error. This
-  /// value is omitted when the error occurs outside of the item structure.
-  pub fn item_sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("itemSequence") {
-      return Some(val.as_i64().unwrap());
+    let _ = self.code().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Extensions for detailSequence
-  pub fn _detail_sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_detailSequence") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.item_sequence() {
     }
-    return None;
-  }
-
-  /// Extensions for subDetailSequence
-  pub fn _sub_detail_sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subDetailSequence") {
-      return Some(Element { value: val });
+    if let Some(_val) = self._sub_detail_sequence() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self._item_sequence() {
+      _val.validate();
+    }
+    if let Some(_val) = self.detail_sequence() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

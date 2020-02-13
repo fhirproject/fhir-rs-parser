@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,14 +16,6 @@ pub struct DeviceDefinition_Material<'a> {
 }
 
 impl DeviceDefinition_Material<'_> {
-  /// Extensions for alternate
-  pub fn _alternate(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_alternate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for allergenicIndicator
   pub fn _allergenic_indicator(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_allergenicIndicator") {
@@ -40,6 +32,39 @@ impl DeviceDefinition_Material<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates an alternative material of the device.
+  pub fn alternate(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("alternate") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Whether the substance is a known or suspected allergen.
+  pub fn allergenic_indicator(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("allergenicIndicator") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for alternate
+  pub fn _alternate(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_alternate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -69,29 +94,27 @@ impl DeviceDefinition_Material<'_> {
     }
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._allergenic_indicator() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Indicates an alternative material of the device.
-  pub fn alternate(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("alternate") {
-      return Some(val.as_bool().unwrap());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Whether the substance is a known or suspected allergen.
-  pub fn allergenic_indicator(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("allergenicIndicator") {
-      return Some(val.as_bool().unwrap());
+    if let Some(_val) = self.alternate() {
     }
-    return None;
+    if let Some(_val) = self.allergenic_indicator() {
+    }
+    if let Some(_val) = self._alternate() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.substance().validate();
+    return true;
   }
 
 }

@@ -17,22 +17,6 @@ pub struct ImplementationGuide_Template<'a> {
 }
 
 impl ImplementationGuide_Template<'_> {
-  /// The source location for the template.
-  pub fn source(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("source") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Type of template specified.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -51,17 +35,42 @@ impl ImplementationGuide_Template<'_> {
     return None;
   }
 
-  /// Extensions for source
-  pub fn _source(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_source") {
+  /// The scope in which the template applies.
+  pub fn scope(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("scope") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Type of template specified.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The scope in which the template applies.
-  pub fn scope(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("scope") {
+  /// The source location for the template.
+  pub fn source(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("source") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -87,21 +96,39 @@ impl ImplementationGuide_Template<'_> {
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
+  /// Extensions for source
+  pub fn _source(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_source") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.scope() {
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.source() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._scope() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._source() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

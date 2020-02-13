@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Identifier::Identifier;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use crate::model::Narrative::Narrative;
+use crate::model::Extension::Extension;
 use crate::model::Meta::Meta;
+use crate::model::Identifier::Identifier;
+use crate::model::ResourceList::ResourceList;
 use serde_json::value::Value;
 
 
@@ -20,56 +20,19 @@ pub struct Slot<'a> {
 }
 
 impl Slot<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// The specialty of a practitioner that would be required to perform the service
+  /// requested in this appointment.
+  pub fn specialty(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("specialty") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Date/Time that the slot is to begin.
-  pub fn start(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("start") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Date/Time that the slot is to conclude.
-  pub fn end(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("end") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for end
-  pub fn _end(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_end") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -93,10 +56,10 @@ impl Slot<'_> {
     return None;
   }
 
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
+  /// busy | free | busy-unavailable | busy-tentative | entered-in-error.
+  pub fn status(&self) -> Option<SlotStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(SlotStatus::from_string(&val).unwrap());
     }
     return None;
   }
@@ -112,31 +75,63 @@ impl Slot<'_> {
     return None;
   }
 
-  /// A broad categorization of the service that is to be performed during this
-  /// appointment.
-  pub fn service_category(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("serviceCategory") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// This slot has already been overbooked, appointments are unlikely to be accepted
+  /// for this time.
+  pub fn overbooked(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("overbooked") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
 
-  /// The type of appointments that can be booked into this slot (ideally this would
-  /// be an identifiable service - which is at a location, rather than the location
-  /// itself). If provided then this overrides the value provided on the availability
-  /// resource.
-  pub fn service_type(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("serviceType") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The schedule resource that this slot defines an interval of status information.
-  pub fn schedule(&self) -> Reference {
-    Reference {
-      value: &self.value["schedule"],
+  /// Date/Time that the slot is to begin.
+  pub fn start(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("start") {
+      return Some(string.to_string());
     }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// Date/Time that the slot is to conclude.
+  pub fn end(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("end") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for end
+  pub fn _end(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_end") {
+      return Some(Element { value: val });
+    }
+    return None;
   }
 
   /// The logical id of the resource, as used in the URL for the resource. Once
@@ -148,27 +143,14 @@ impl Slot<'_> {
     return None;
   }
 
-  /// busy | free | busy-unavailable | busy-tentative | entered-in-error.
-  pub fn status(&self) -> Option<SlotStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(SlotStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// This slot has already been overbooked, appointments are unlikely to be accepted
-  /// for this time.
-  pub fn overbooked(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("overbooked") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for overbooked
-  pub fn _overbooked(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_overbooked") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -186,53 +168,17 @@ impl Slot<'_> {
     return None;
   }
 
-  /// Comments on the slot to describe any extended information. Such as custom
-  /// constraints on the slot.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
+  /// The schedule resource that this slot defines an interval of status information.
+  pub fn schedule(&self) -> Reference {
+    Reference {
+      value: &self.value["schedule"],
     }
-    return None;
   }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The specialty of a practitioner that would be required to perform the service
-  /// requested in this appointment.
-  pub fn specialty(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("specialty") {
+  /// A broad categorization of the service that is to be performed during this
+  /// appointment.
+  pub fn service_category(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("serviceCategory") {
       return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
@@ -247,6 +193,49 @@ impl Slot<'_> {
     return None;
   }
 
+  /// Extensions for start
+  pub fn _start(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_start") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for overbooked
+  pub fn _overbooked(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_overbooked") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Comments on the slot to describe any extended information. Such as custom
+  /// constraints on the slot.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// External Ids for this item.
   pub fn identifier(&self) -> Option<Vec<Identifier>> {
     if let Some(Value::Array(val)) = self.value.get("identifier") {
@@ -255,12 +244,95 @@ impl Slot<'_> {
     return None;
   }
 
-  /// Extensions for start
-  pub fn _start(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_start") {
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// The type of appointments that can be booked into this slot (ideally this would
+  /// be an identifiable service - which is at a location, rather than the location
+  /// itself). If provided then this overrides the value provided on the availability
+  /// resource.
+  pub fn service_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("serviceType") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.specialty() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.overbooked() {
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self.start() {
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.meta() {
+      _val.validate();
+    }
+    if let Some(_val) = self.end() {
+    }
+    if let Some(_val) = self._end() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.text() {
+      _val.validate();
+    }
+    let _ = self.schedule().validate();
+    if let Some(_val) = self.service_category() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.appointment_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._start() {
+      _val.validate();
+    }
+    if let Some(_val) = self._overbooked() {
+      _val.validate();
+    }
+    if let Some(_val) = self.comment() {
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._comment() {
+      _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.service_type() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

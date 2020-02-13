@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -18,22 +18,27 @@ pub struct Claim_CareTeam<'a> {
 }
 
 impl Claim_CareTeam<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// A number to uniquely identify care team entries.
   pub fn sequence(&self) -> Option<i64> {
     if let Some(val) = self.value.get("sequence") {
       return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for sequence
+  pub fn _sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -55,11 +60,17 @@ impl Claim_CareTeam<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Member of the team who provided the product or service.
+  pub fn provider(&self) -> Reference {
+    Reference {
+      value: &self.value["provider"],
+    }
+  }
+
+  /// Extensions for responsible
+  pub fn _responsible(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_responsible") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -82,18 +93,14 @@ impl Claim_CareTeam<'_> {
     return None;
   }
 
-  /// Extensions for responsible
-  pub fn _responsible(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_responsible") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for sequence
-  pub fn _sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sequence") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -107,11 +114,33 @@ impl Claim_CareTeam<'_> {
     return None;
   }
 
-  /// Member of the team who provided the product or service.
-  pub fn provider(&self) -> Reference {
-    Reference {
-      value: &self.value["provider"],
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.sequence() {
     }
+    if let Some(_val) = self._sequence() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.qualification() {
+      _val.validate();
+    }
+    if let Some(_val) = self.responsible() {
+    }
+    let _ = self.provider().validate();
+    if let Some(_val) = self._responsible() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.role() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

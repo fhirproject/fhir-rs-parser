@@ -24,15 +24,6 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
     return None;
   }
 
-  /// Reference to a specific medication (active substance, medicinal product or class
-  /// of products) as part of an indication or contraindication.
-  pub fn medication_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("medicationReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -62,6 +53,15 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
     return None;
   }
 
+  /// Reference to a specific medication (active substance, medicinal product or class
+  /// of products) as part of an indication or contraindication.
+  pub fn medication_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("medicationReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -78,6 +78,25 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.therapy_relationship_type().validate();
+    if let Some(_val) = self.medication_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.medication_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

@@ -16,34 +16,9 @@ pub struct SubstanceReferenceInformation_Gene<'a> {
 
 impl SubstanceReferenceInformation_Gene<'_> {
   /// Todo.
-  pub fn gene(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("gene") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Todo.
   pub fn gene_sequence_origin(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("geneSequenceOrigin") {
       return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn source(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("source") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -66,6 +41,22 @@ impl SubstanceReferenceInformation_Gene<'_> {
     return None;
   }
 
+  /// Todo.
+  pub fn gene(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("gene") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn source(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("source") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -76,6 +67,36 @@ impl SubstanceReferenceInformation_Gene<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.gene_sequence_origin() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.gene() {
+      _val.validate();
+    }
+    if let Some(_val) = self.source() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

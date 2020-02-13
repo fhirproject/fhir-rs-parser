@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Reference::Reference;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -18,22 +18,6 @@ pub struct ExplanationOfBenefit_Procedure<'a> {
 }
 
 impl ExplanationOfBenefit_Procedure<'_> {
-  /// When the condition was observed or the relative ranking.
-  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("type") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -60,6 +44,23 @@ impl ExplanationOfBenefit_Procedure<'_> {
     return None;
   }
 
+  /// Unique Device Identifiers associated with this line item.
+  pub fn udi(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("udi") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The code or reference to a Procedure resource which identifies the clinical
+  /// intervention performed.
+  pub fn procedure_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("procedureCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// The code or reference to a Procedure resource which identifies the clinical
   /// intervention performed.
   pub fn procedure_reference(&self) -> Option<Reference> {
@@ -69,27 +70,27 @@ impl ExplanationOfBenefit_Procedure<'_> {
     return None;
   }
 
-  /// Unique Device Identifiers associated with this line item.
-  pub fn udi(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("udi") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A number to uniquely identify procedure entries.
-  pub fn sequence(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("sequence") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Date and optionally time the procedure was performed.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// When the condition was observed or the relative ranking.
+  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("type") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -106,21 +107,54 @@ impl ExplanationOfBenefit_Procedure<'_> {
     return None;
   }
 
-  /// Date and optionally time the procedure was performed.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
+  /// A number to uniquely identify procedure entries.
+  pub fn sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("sequence") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
 
-  /// The code or reference to a Procedure resource which identifies the clinical
-  /// intervention performed.
-  pub fn procedure_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("procedureCodeableConcept") {
-      return Some(CodeableConcept { value: val });
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._sequence() {
+      _val.validate();
+    }
+    if let Some(_val) = self.udi() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.procedure_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.procedure_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.date() {
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.sequence() {
+    }
+    if let Some(_val) = self._date() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

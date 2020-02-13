@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,54 @@ pub struct RelatedPerson_Communication<'a> {
 }
 
 impl RelatedPerson_Communication<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The ISO-639-1 alpha 2 code in lower case for the language, optionally followed
+  /// by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g.
+  /// "en" for English, or "en-US" for American English versus "en-EN" for England
+  /// English.
+  pub fn language(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["language"],
+    }
+  }
+
+  /// Indicates whether or not the patient prefers this language (over other languages
+  /// he masters up a certain level).
+  pub fn preferred(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("preferred") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for preferred
+  pub fn _preferred(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_preferred") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -35,52 +83,22 @@ impl RelatedPerson_Communication<'_> {
     return None;
   }
 
-  /// The ISO-639-1 alpha 2 code in lower case for the language, optionally followed
-  /// by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g.
-  /// "en" for English, or "en-US" for American English versus "en-EN" for England
-  /// English.
-  pub fn language(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["language"],
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Indicates whether or not the patient prefers this language (over other languages
-  /// he masters up a certain level).
-  pub fn preferred(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("preferred") {
-      return Some(val.as_bool().unwrap());
+    let _ = self.language().validate();
+    if let Some(_val) = self.preferred() {
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._preferred() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Extensions for preferred
-  pub fn _preferred(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_preferred") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    return true;
   }
 
 }

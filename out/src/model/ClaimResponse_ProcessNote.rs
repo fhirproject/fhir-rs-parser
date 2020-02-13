@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -28,14 +28,6 @@ impl ClaimResponse_ProcessNote<'_> {
     return None;
   }
 
-  /// Extensions for number
-  pub fn _number(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_number") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -54,10 +46,18 @@ impl ClaimResponse_ProcessNote<'_> {
     return None;
   }
 
-  /// A number to uniquely identify a note entry.
-  pub fn number(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("number") {
-      return Some(val.as_i64().unwrap());
+  /// Extensions for number
+  pub fn _number(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_number") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The business purpose of the note text.
+  pub fn fhir_type(&self) -> Option<ClaimResponse_ProcessNoteType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(ClaimResponse_ProcessNoteType::from_string(&val).unwrap());
     }
     return None;
   }
@@ -86,6 +86,22 @@ impl ClaimResponse_ProcessNote<'_> {
     return None;
   }
 
+  /// The explanation or description associated with the processing.
+  pub fn text(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("text") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A number to uniquely identify a note entry.
+  pub fn number(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("number") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -95,20 +111,34 @@ impl ClaimResponse_ProcessNote<'_> {
     return None;
   }
 
-  /// The business purpose of the note text.
-  pub fn fhir_type(&self) -> Option<ClaimResponse_ProcessNoteType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(ClaimResponse_ProcessNoteType::from_string(&val).unwrap());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The explanation or description associated with the processing.
-  pub fn text(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("text") {
-      return Some(string.to_string());
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self._number() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self._type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._text() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.text() {
+    }
+    if let Some(_val) = self.number() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

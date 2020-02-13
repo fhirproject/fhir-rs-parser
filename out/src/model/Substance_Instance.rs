@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,14 +16,6 @@ pub struct Substance_Instance<'a> {
 }
 
 impl Substance_Instance<'_> {
-  /// Extensions for expiry
-  pub fn _expiry(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expiry") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -42,6 +34,15 @@ impl Substance_Instance<'_> {
     return None;
   }
 
+  /// Identifier associated with the package/container (usually a label affixed
+  /// directly).
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
   /// The amount of the substance.
   pub fn quantity(&self) -> Option<Quantity> {
     if let Some(val) = self.value.get("quantity") {
@@ -55,15 +56,6 @@ impl Substance_Instance<'_> {
   pub fn expiry(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("expiry") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Identifier associated with the package/container (usually a label affixed
-  /// directly).
-  pub fn identifier(&self) -> Option<Identifier> {
-    if let Some(val) = self.value.get("identifier") {
-      return Some(Identifier { value: val });
     }
     return None;
   }
@@ -87,6 +79,37 @@ impl Substance_Instance<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Extensions for expiry
+  pub fn _expiry(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expiry") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.identifier() {
+      _val.validate();
+    }
+    if let Some(_val) = self.quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.expiry() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._expiry() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
 use crate::model::Extension::Extension;
 use crate::model::Coding::Coding;
+use crate::model::Period::Period;
 use serde_json::value::Value;
 
 
@@ -25,13 +25,6 @@ impl Encounter_ClassHistory<'_> {
     return None;
   }
 
-  /// The time that the episode was in the specified class.
-  pub fn period(&self) -> Period {
-    Period {
-      value: &self.value["period"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -50,13 +43,6 @@ impl Encounter_ClassHistory<'_> {
     return None;
   }
 
-  /// inpatient | outpatient | ambulatory | emergency +.
-  pub fn class(&self) -> Coding {
-    Coding {
-      value: &self.value["class"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -67,6 +53,34 @@ impl Encounter_ClassHistory<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// inpatient | outpatient | ambulatory | emergency +.
+  pub fn class(&self) -> Coding {
+    Coding {
+      value: &self.value["class"],
+    }
+  }
+
+  /// The time that the episode was in the specified class.
+  pub fn period(&self) -> Period {
+    Period {
+      value: &self.value["period"],
+    }
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.class().validate();
+    let _ = self.period().validate();
+    return true;
   }
 
 }

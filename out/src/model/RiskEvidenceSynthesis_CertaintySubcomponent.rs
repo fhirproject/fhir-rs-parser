@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Annotation::Annotation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
-use crate::model::Annotation::Annotation;
 use serde_json::value::Value;
 
 
@@ -17,26 +17,11 @@ pub struct RiskEvidenceSynthesis_CertaintySubcomponent<'a> {
 }
 
 impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
-  /// Type of subcomponent of certainty rating.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// A human-readable string to clarify or explain concepts about the resource.
-  pub fn note(&self) -> Option<Vec<Annotation>> {
-    if let Some(Value::Array(val)) = self.value.get("note") {
-      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A rating of a subcomponent of rating certainty.
-  pub fn rating(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("rating") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -49,6 +34,30 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Type of subcomponent of certainty rating.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A rating of a subcomponent of rating certainty.
+  pub fn rating(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("rating") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A human-readable string to clarify or explain concepts about the resource.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -71,13 +80,25 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.rating() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.note() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

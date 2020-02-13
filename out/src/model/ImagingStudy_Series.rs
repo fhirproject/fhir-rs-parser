@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use crate::model::ImagingStudy_Performer::ImagingStudy_Performer;
 use crate::model::ImagingStudy_Instance::ImagingStudy_Instance;
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use crate::model::Coding::Coding;
 use serde_json::value::Value;
@@ -22,29 +22,35 @@ pub struct ImagingStudy_Series<'a> {
 }
 
 impl ImagingStudy_Series<'_> {
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
+  /// Extensions for uid
+  pub fn _uid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_uid") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for numberOfInstances
-  pub fn _number_of_instances(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_numberOfInstances") {
+  /// Extensions for number
+  pub fn _number(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_number") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The network service providing access (e.g., query, view, or retrieval) for this
-  /// series. See implementation notes for information about using DICOM endpoints. A
-  /// series-level endpoint, if present, has precedence over a study-level endpoint
-  /// with the same Endpoint.connectionType.
-  pub fn endpoint(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("endpoint") {
+  /// The specimen imaged, e.g., for whole slide imaging of a biopsy.
+  pub fn specimen(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("specimen") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -57,6 +63,33 @@ impl ImagingStudy_Series<'_> {
   pub fn body_site(&self) -> Option<Coding> {
     if let Some(val) = self.value.get("bodySite") {
       return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// A description of the series.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The DICOM Series Instance UID for the series.
+  pub fn uid(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("uid") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The network service providing access (e.g., query, view, or retrieval) for this
+  /// series. See implementation notes for information about using DICOM endpoints. A
+  /// series-level endpoint, if present, has precedence over a study-level endpoint
+  /// with the same Endpoint.connectionType.
+  pub fn endpoint(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("endpoint") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -75,32 +108,6 @@ impl ImagingStudy_Series<'_> {
   pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The specimen imaged, e.g., for whole slide imaging of a biopsy.
-  pub fn specimen(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("specimen") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The numeric identifier of this series in the study.
-  pub fn number(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("number") {
-      return Some(val.as_u64().unwrap());
-    }
-    return None;
-  }
-
-  /// The laterality of the (possibly paired) anatomic structures examined. E.g., the
-  /// left knee, both lungs, or unpaired abdomen. If present, shall be consistent with
-  /// any laterality information indicated in ImagingStudy.series.bodySite.
-  pub fn laterality(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("laterality") {
-      return Some(Coding { value: val });
     }
     return None;
   }
@@ -124,17 +131,9 @@ impl ImagingStudy_Series<'_> {
     return None;
   }
 
-  /// A description of the series.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for uid
-  pub fn _uid(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_uid") {
+  /// Extensions for started
+  pub fn _started(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_started") {
       return Some(Element { value: val });
     }
     return None;
@@ -148,9 +147,24 @@ impl ImagingStudy_Series<'_> {
     return None;
   }
 
-  /// Extensions for number
-  pub fn _number(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_number") {
+  /// The modality of this series sequence.
+  pub fn modality(&self) -> Coding {
+    Coding {
+      value: &self.value["modality"],
+    }
+  }
+
+  /// The numeric identifier of this series in the study.
+  pub fn number(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("number") {
+      return Some(val.as_u64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for numberOfInstances
+  pub fn _number_of_instances(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_numberOfInstances") {
       return Some(Element { value: val });
     }
     return None;
@@ -168,6 +182,24 @@ impl ImagingStudy_Series<'_> {
     return None;
   }
 
+  /// The laterality of the (possibly paired) anatomic structures examined. E.g., the
+  /// left knee, both lungs, or unpaired abdomen. If present, shall be consistent with
+  /// any laterality information indicated in ImagingStudy.series.bodySite.
+  pub fn laterality(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("laterality") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// A single SOP instance within the series, e.g. an image, or presentation state.
   pub fn instance(&self) -> Option<Vec<ImagingStudy_Instance>> {
     if let Some(Value::Array(val)) = self.value.get("instance") {
@@ -176,36 +208,60 @@ impl ImagingStudy_Series<'_> {
     return None;
   }
 
-  /// Extensions for started
-  pub fn _started(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_started") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._uid() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._number() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The DICOM Series Instance UID for the series.
-  pub fn uid(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("uid") {
-      return Some(string.to_string());
+    if let Some(_val) = self.specimen() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The modality of this series sequence.
-  pub fn modality(&self) -> Coding {
-    Coding {
-      value: &self.value["modality"],
+    if let Some(_val) = self.id() {
     }
+    if let Some(_val) = self.body_site() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.uid() {
+    }
+    if let Some(_val) = self.endpoint() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.number_of_instances() {
+    }
+    if let Some(_val) = self.started() {
+    }
+    if let Some(_val) = self._started() {
+      _val.validate();
+    }
+    if let Some(_val) = self.performer() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.modality().validate();
+    if let Some(_val) = self.number() {
+    }
+    if let Some(_val) = self._number_of_instances() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.laterality() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.instance() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

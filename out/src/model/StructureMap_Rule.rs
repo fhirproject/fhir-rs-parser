@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::StructureMap_Source::StructureMap_Source;
 use crate::model::Extension::Extension;
-use crate::model::StructureMap_Dependent::StructureMap_Dependent;
+use crate::model::Element::Element;
 use crate::model::StructureMap_Target::StructureMap_Target;
+use crate::model::StructureMap_Source::StructureMap_Source;
+use crate::model::StructureMap_Dependent::StructureMap_Dependent;
 use serde_json::value::Value;
 
 
@@ -17,15 +17,31 @@ pub struct StructureMap_Rule<'a> {
 }
 
 impl StructureMap_Rule<'_> {
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Source inputs to the mapping.
   pub fn source(&self) -> Vec<StructureMap_Source> {
     self.value.get("source").unwrap().as_array().unwrap().into_iter().map(|e| StructureMap_Source { value: e }).collect::<Vec<_>>()
   }
 
-  /// Documentation for this instance of data.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
+  /// Rules contained in this rule.
+  pub fn rule(&self) -> Option<Vec<StructureMap_Rule>> {
+    if let Some(Value::Array(val)) = self.value.get("rule") {
+      return Some(val.into_iter().map(|e| StructureMap_Rule { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Content to create because of this mapping rule.
+  pub fn target(&self) -> Option<Vec<StructureMap_Target>> {
+    if let Some(Value::Array(val)) = self.value.get("target") {
+      return Some(val.into_iter().map(|e| StructureMap_Target { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -38,6 +54,39 @@ impl StructureMap_Rule<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Which other rules to apply in the context of this rule.
+  pub fn dependent(&self) -> Option<Vec<StructureMap_Dependent>> {
+    if let Some(Value::Array(val)) = self.value.get("dependent") {
+      return Some(val.into_iter().map(|e| StructureMap_Dependent { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Documentation for this instance of data.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -68,53 +117,36 @@ impl StructureMap_Rule<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._documentation() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Content to create because of this mapping rule.
-  pub fn target(&self) -> Option<Vec<StructureMap_Target>> {
-    if let Some(Value::Array(val)) = self.value.get("target") {
-      return Some(val.into_iter().map(|e| StructureMap_Target { value: e }).collect::<Vec<_>>());
+    let _ = self.source().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.rule() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Which other rules to apply in the context of this rule.
-  pub fn dependent(&self) -> Option<Vec<StructureMap_Dependent>> {
-    if let Some(Value::Array(val)) = self.value.get("dependent") {
-      return Some(val.into_iter().map(|e| StructureMap_Dependent { value: e }).collect::<Vec<_>>());
+    if let Some(_val) = self.target() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Rules contained in this rule.
-  pub fn rule(&self) -> Option<Vec<StructureMap_Rule>> {
-    if let Some(Value::Array(val)) = self.value.get("rule") {
-      return Some(val.into_iter().map(|e| StructureMap_Rule { value: e }).collect::<Vec<_>>());
+    if let Some(_val) = self._name() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.dependent() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.documentation() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.name() {
+    }
+    return true;
   }
 
 }

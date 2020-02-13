@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -25,21 +25,6 @@ impl Claim_Payee<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Type of Party to be reimbursed: subscriber, provider, other.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
-  /// Reference to the individual or organization to whom any payment will be made.
-  pub fn party(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("party") {
-      return Some(Reference { value: val });
     }
     return None;
   }
@@ -69,6 +54,37 @@ impl Claim_Payee<'_> {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Type of Party to be reimbursed: subscriber, provider, other.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// Reference to the individual or organization to whom any payment will be made.
+  pub fn party(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("party") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.party() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

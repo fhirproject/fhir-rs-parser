@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -17,11 +17,10 @@ pub struct ExplanationOfBenefit_Payee<'a> {
 }
 
 impl ExplanationOfBenefit_Payee<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Reference to the individual or organization to whom any payment will be made.
+  pub fn party(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("party") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -38,10 +37,11 @@ impl ExplanationOfBenefit_Payee<'_> {
     return None;
   }
 
-  /// Type of Party to be reimbursed: Subscriber, provider, other.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -64,12 +64,30 @@ impl ExplanationOfBenefit_Payee<'_> {
     return None;
   }
 
-  /// Reference to the individual or organization to whom any payment will be made.
-  pub fn party(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("party") {
-      return Some(Reference { value: val });
+  /// Type of Party to be reimbursed: Subscriber, provider, other.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.party() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

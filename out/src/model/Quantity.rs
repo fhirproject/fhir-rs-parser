@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,11 +16,10 @@ pub struct Quantity<'a> {
 }
 
 impl Quantity<'_> {
-  /// The value of the measured amount. The value includes an implicit precision in
-  /// the presentation of the value.
-  pub fn value(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("value") {
-      return Some(val.as_f64().unwrap());
+  /// Extensions for unit
+  pub fn _unit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_unit") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -28,30 +27,6 @@ impl Quantity<'_> {
   /// Extensions for system
   pub fn _system(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_system") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A human-readable form of the unit.
-  pub fn unit(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("unit") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The identification of the system that provides the coded form of the unit.
-  pub fn system(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("system") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for unit
-  pub fn _unit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_unit") {
       return Some(Element { value: val });
     }
     return None;
@@ -81,6 +56,33 @@ impl Quantity<'_> {
     return None;
   }
 
+  /// The value of the measured amount. The value includes an implicit precision in
+  /// the presentation of the value.
+  pub fn value(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("value") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// The identification of the system that provides the coded form of the unit.
+  pub fn system(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("system") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// How the value should be understood and represented - whether the actual value is
+  /// greater or less than the stated value due to measurement issues; e.g. if the
+  /// comparator is "<" , then the real value is < stated value.
+  pub fn comparator(&self) -> Option<QuantityComparator> {
+    if let Some(Value::String(val)) = self.value.get("comparator") {
+      return Some(QuantityComparator::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -93,12 +95,10 @@ impl Quantity<'_> {
     return None;
   }
 
-  /// How the value should be understood and represented - whether the actual value is
-  /// greater or less than the stated value due to measurement issues; e.g. if the
-  /// comparator is "<" , then the real value is < stated value.
-  pub fn comparator(&self) -> Option<QuantityComparator> {
-    if let Some(Value::String(val)) = self.value.get("comparator") {
-      return Some(QuantityComparator::from_string(&val).unwrap());
+  /// A human-readable form of the unit.
+  pub fn unit(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("unit") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -118,6 +118,40 @@ impl Quantity<'_> {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._unit() {
+      _val.validate();
+    }
+    if let Some(_val) = self._system() {
+      _val.validate();
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
+    if let Some(_val) = self._value() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value() {
+    }
+    if let Some(_val) = self.system() {
+    }
+    if let Some(_val) = self.comparator() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.unit() {
+    }
+    if let Some(_val) = self._comparator() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

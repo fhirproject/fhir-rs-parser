@@ -36,14 +36,6 @@ impl CoverageEligibilityResponse_Error<'_> {
     return None;
   }
 
-  /// An error code,from a specified code system, which details why the eligibility
-  /// check could not be performed.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -60,6 +52,27 @@ impl CoverageEligibilityResponse_Error<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// An error code,from a specified code system, which details why the eligibility
+  /// check could not be performed.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.code().validate();
+    return true;
   }
 
 }

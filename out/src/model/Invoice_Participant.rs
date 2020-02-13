@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -26,6 +26,13 @@ impl Invoice_Participant<'_> {
     return None;
   }
 
+  /// The device, practitioner, etc. who performed or participated in the service.
+  pub fn actor(&self) -> Reference {
+    Reference {
+      value: &self.value["actor"],
+    }
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -47,13 +54,6 @@ impl Invoice_Participant<'_> {
     return None;
   }
 
-  /// The device, practitioner, etc. who performed or participated in the service.
-  pub fn actor(&self) -> Reference {
-    Reference {
-      value: &self.value["actor"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -70,6 +70,22 @@ impl Invoice_Participant<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.role() {
+      _val.validate();
+    }
+    let _ = self.actor().validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

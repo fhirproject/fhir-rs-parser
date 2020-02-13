@@ -44,6 +44,15 @@ impl ChargeItem_Performer<'_> {
     }
   }
 
+  /// Describes the type of performance or participation(e.g. primary surgeon,
+  /// anesthesiologiest, etc.).
+  pub fn function(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("function") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -65,13 +74,20 @@ impl ChargeItem_Performer<'_> {
     return None;
   }
 
-  /// Describes the type of performance or participation(e.g. primary surgeon,
-  /// anesthesiologiest, etc.).
-  pub fn function(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("function") {
-      return Some(CodeableConcept { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    let _ = self.actor().validate();
+    if let Some(_val) = self.function() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

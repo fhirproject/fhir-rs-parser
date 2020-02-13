@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::ContactDetail::ContactDetail;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,15 +16,6 @@ pub struct Contributor<'a> {
 }
 
 impl Contributor<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Contact details to assist a user in finding and communicating with the
   /// contributor.
   pub fn contact(&self) -> Option<Vec<ContactDetail>> {
@@ -46,10 +37,35 @@ impl Contributor<'_> {
     return None;
   }
 
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for type
   pub fn _type(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_type") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The type of contributor.
+  pub fn fhir_type(&self) -> Option<ContributorType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(ContributorType::from_string(&val).unwrap());
     }
     return None;
   }
@@ -62,20 +78,26 @@ impl Contributor<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.contact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The type of contributor.
-  pub fn fhir_type(&self) -> Option<ContributorType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(ContributorType::from_string(&val).unwrap());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.name() {
+    }
+    return true;
   }
 
 }

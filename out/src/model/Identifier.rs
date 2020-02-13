@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Period::Period;
 use serde_json::value::Value;
 
 
@@ -18,6 +18,22 @@ pub struct Identifier<'a> {
 }
 
 impl Identifier<'_> {
+  /// Extensions for system
+  pub fn _system(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_system") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for use
+  pub fn _use(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_use") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -39,23 +55,6 @@ impl Identifier<'_> {
     return None;
   }
 
-  /// Extensions for use
-  pub fn _use(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_use") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A coded type for the identifier that can be used to determine which identifier
-  /// to use for a specific purpose.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// Establishes the namespace for the value - that is, a URL that describes a set
   /// values that are unique.
   pub fn system(&self) -> Option<String> {
@@ -65,10 +64,11 @@ impl Identifier<'_> {
     return None;
   }
 
-  /// Extensions for system
-  pub fn _system(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_system") {
-      return Some(Element { value: val });
+  /// The portion of the identifier typically relevant to the user and which is unique
+  /// within the context of the system.
+  pub fn value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -77,15 +77,6 @@ impl Identifier<'_> {
   pub fn fhir_use(&self) -> Option<IdentifierUse> {
     if let Some(Value::String(val)) = self.value.get("use") {
       return Some(IdentifierUse::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// The portion of the identifier typically relevant to the user and which is unique
-  /// within the context of the system.
-  pub fn value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("value") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -112,6 +103,48 @@ impl Identifier<'_> {
       return Some(Reference { value: val });
     }
     return None;
+  }
+
+  /// A coded type for the identifier that can be used to determine which identifier
+  /// to use for a specific purpose.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._system() {
+      _val.validate();
+    }
+    if let Some(_val) = self._use() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.system() {
+    }
+    if let Some(_val) = self.value() {
+    }
+    if let Some(_val) = self.fhir_use() {
+    }
+    if let Some(_val) = self._value() {
+      _val.validate();
+    }
+    if let Some(_val) = self.period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.assigner() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

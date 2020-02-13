@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -33,10 +33,71 @@ impl MolecularSequence_Variant<'_> {
     return None;
   }
 
+  /// Extensions for observedAllele
+  pub fn _observed_allele(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_observedAllele") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for end
+  pub fn _end(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_end") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for referenceAllele
+  pub fn _reference_allele(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_referenceAllele") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extended CIGAR string for aligning the sequence with reference bases. See
+  /// detailed documentation
+  /// [here](http://support.illumina.com/help/SequencingAnalysisWorkflow/Content/Vault
+  /// /Informatics/Sequencing_Analysis/CASAVA/swSEQ_mCA_ExtendedCIGARFormat.htm).
+  pub fn cigar(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("cigar") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// A pointer to an Observation containing variant information.
   pub fn variant_pointer(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("variantPointer") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Start position of the variant on the  reference sequence. If the coordinate
+  /// system is either 0-based or 1-based, then start position is inclusive.
+  pub fn start(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("start") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for cigar
+  pub fn _cigar(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_cigar") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -48,14 +109,6 @@ impl MolecularSequence_Variant<'_> {
   pub fn end(&self) -> Option<i64> {
     if let Some(val) = self.value.get("end") {
       return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for start
-  pub fn _start(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_start") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -85,33 +138,6 @@ impl MolecularSequence_Variant<'_> {
     return None;
   }
 
-  /// Extended CIGAR string for aligning the sequence with reference bases. See
-  /// detailed documentation
-  /// [here](http://support.illumina.com/help/SequencingAnalysisWorkflow/Content/Vault
-  /// /Informatics/Sequencing_Analysis/CASAVA/swSEQ_mCA_ExtendedCIGARFormat.htm).
-  pub fn cigar(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("cigar") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for end
-  pub fn _end(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_end") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for observedAllele
-  pub fn _observed_allele(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_observedAllele") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// An allele is one of a set of coexisting sequence variants of a gene
   /// ([SO:0001023](http://www.sequenceontology.org/browser/current_svn/term/SO:000102
   /// 3)). Nucleotide(s)/amino acids from start position of sequence to stop position
@@ -125,38 +151,52 @@ impl MolecularSequence_Variant<'_> {
     return None;
   }
 
-  /// Extensions for referenceAllele
-  pub fn _reference_allele(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_referenceAllele") {
+  /// Extensions for start
+  pub fn _start(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_start") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for cigar
-  pub fn _cigar(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_cigar") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._observed_allele() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Start position of the variant on the  reference sequence. If the coordinate
-  /// system is either 0-based or 1-based, then start position is inclusive.
-  pub fn start(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("start") {
-      return Some(val.as_i64().unwrap());
+    if let Some(_val) = self._end() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self._reference_allele() {
+      _val.validate();
+    }
+    if let Some(_val) = self.cigar() {
+    }
+    if let Some(_val) = self.variant_pointer() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.start() {
+    }
+    if let Some(_val) = self._cigar() {
+      _val.validate();
+    }
+    if let Some(_val) = self.end() {
+    }
+    if let Some(_val) = self.observed_allele() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.reference_allele() {
+    }
+    if let Some(_val) = self._start() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

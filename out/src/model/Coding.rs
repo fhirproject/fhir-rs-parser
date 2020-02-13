@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,28 +14,23 @@ pub struct Coding<'a> {
 }
 
 impl Coding<'_> {
-  /// Extensions for userSelected
-  pub fn _user_selected(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_userSelected") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// A symbol in syntax defined by the system. The symbol may be a predefined code or
-  /// an expression in a syntax defined by the coding system (e.g. post-coordination).
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
+  /// The identification of the code system that defines the meaning of the symbol in
+  /// the code.
+  pub fn system(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("system") {
       return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
-  /// of available items (codes or displays).
-  pub fn user_selected(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("userSelected") {
-      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -57,9 +52,18 @@ impl Coding<'_> {
     return None;
   }
 
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
+  /// A symbol in syntax defined by the system. The symbol may be a predefined code or
+  /// an expression in a syntax defined by the coding system (e.g. post-coordination).
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
       return Some(Element { value: val });
     }
     return None;
@@ -82,19 +86,27 @@ impl Coding<'_> {
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
+  /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
+  /// of available items (codes or displays).
+  pub fn user_selected(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("userSelected") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for userSelected
+  pub fn _user_selected(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_userSelected") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The identification of the code system that defines the meaning of the symbol in
-  /// the code.
-  pub fn system(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("system") {
-      return Some(string.to_string());
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -111,16 +123,38 @@ impl Coding<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.system() {
+    }
+    if let Some(_val) = self.display() {
+    }
+    if let Some(_val) = self._system() {
+      _val.validate();
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
+    if let Some(_val) = self._display() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.user_selected() {
+    }
+    if let Some(_val) = self._user_selected() {
+      _val.validate();
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self.version() {
+    }
+    return true;
   }
 
 }

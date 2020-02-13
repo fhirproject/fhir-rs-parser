@@ -129,7 +129,7 @@ fn main() {
   let builtin_type_to_class_map: HashMap<&str, (&str, Option<&str>)> = hashmap! {
     "int" => ("i64", None),
     "integer" => ("i64", None),
-    "number" => ("i64", None), // todo
+    "number" => ("f64", None), // todo
     "uri" => ("String", None),
     "url" => ("String", None),
     "markdown" => ("String", None),
@@ -146,7 +146,7 @@ fn main() {
     "time" => ("String", None), // todo
     "time" => ("String", None), // todo
     "instant" => ("String", None), // todo
-    "date" => ("i64", None), // todo
+    "date" => ("String", None), // todo
     "base64Binary" => ("String", None),
     "dateTime" => ("String", None), // todo
 
@@ -206,27 +206,6 @@ fn main() {
   }
 
   write_string_to_file(&model_mod_contents, "out/src/model/mod.rs");
-
-  let mut parser_string = String::new();
-
-  parser_string.push_str("#![allow(unused_imports, non_camel_case_types)]\n\n");
-
-  parser_string.push_str("use crate::model;\n\n");
-
-  parser_string.push_str("#[derive(Debug)]\n");
-  parser_string.push_str("pub enum FHIRResourceEnum<'a> {\n");
-  for (resource_name, _) in &fhir_schema.discriminator.mapping {
-    parser_string.push_str("  Parsed");
-    parser_string.push_str(&resource_name);
-    parser_string.push_str("(model::");
-    parser_string.push_str(&resource_name);
-    parser_string.push_str("::");
-    parser_string.push_str(&resource_name);
-    parser_string.push_str("<'a>),\n");
-  }
-  parser_string.push_str("}");
-
-  write_string_to_file(&parser_string, "out/src/parser.rs");
 }
 
 fn write_string_to_file(contents: &str, path_string: &str) -> bool {
@@ -263,8 +242,9 @@ fn generate_trait(
   string.push_str("#![allow(unused_imports, non_camel_case_types)]\n\n");
 
   let mut inner_string = String::new();
-
   inner_string.push_str("use serde_json::value::Value;\n\n");
+
+  let mut validation_string = String::new();
 
   if let Some(one_of) = &definition.one_of {
     inner_string.push_str("\n#[derive(Debug)]\n");
@@ -283,6 +263,11 @@ fn generate_trait(
     impl_string.push_str("Enum> {\n");
     impl_string.push_str("    let fhir_type = self.value[\"resourceType\"].as_str().unwrap();\n");
     impl_string.push_str("    match fhir_type {\n");
+
+    let mut validation_string = String::new();
+    validation_string.push_str("  pub fn validate(&self) -> bool {\n");
+    validation_string.push_str("    if let Some(resource) = self.resource() {\n");
+    validation_string.push_str("      match resource {\n");
 
     inner_string.push_str("#[derive(Debug)]\n");
     inner_string.push_str("pub enum ");
@@ -313,10 +298,21 @@ fn generate_trait(
       impl_string.push_str("(");
       impl_string.push_str(&type_definition.name);
       impl_string.push_str(" { value: self.value })),\n");
+
+      validation_string.push_str("        ");
+      validation_string.push_str(name);
+      validation_string.push_str("Enum::Resource");
+      validation_string.push_str(&type_definition.name);
+      validation_string.push_str("(val) => { return val.validate(); },\n");
     }
+    validation_string.push_str("      }\n");
+    validation_string.push_str("    }\n");
+    validation_string.push_str("    return false;\n");
+    validation_string.push_str("  }\n");
     impl_string.push_str("      _ => None,\n");
     impl_string.push_str("    }\n");
-    impl_string.push_str("  }\n");
+    impl_string.push_str("  }\n\n");
+    impl_string.push_str(&validation_string);
     impl_string.push_str("}\n\n");
     inner_string.push_str("}\n\n");
     inner_string.push_str(&impl_string);
@@ -335,6 +331,8 @@ fn generate_trait(
     inner_string.push_str("impl ");
     inner_string.push_str(name);
     inner_string.push_str("<'_> {\n");
+
+    validation_string.push_str("  pub fn validate(&self) -> bool {\n");
 
     let properties = match &definition.properties {
       Some(properties) => properties,
@@ -365,9 +363,11 @@ fn generate_trait(
 
           write_property(
             &mut inner_string,
+            &mut validation_string,
             &property_name,
             &type_definition,
             &description,
+            None,
             required,
             false,
             "  ",
@@ -376,7 +376,7 @@ fn generate_trait(
         }
         Property::PatternedTyped {
           description,
-          pattern: _,
+          pattern,
           fhir_type,
         } => {
           let type_definition = type_definition_from_fhir_type(
@@ -391,9 +391,11 @@ fn generate_trait(
 
           write_property(
             &mut inner_string,
+            &mut validation_string,
             &property_name,
             &type_definition,
             &description,
+            Some(pattern.to_string()),
             required,
             false,
             "  ",
@@ -417,9 +419,11 @@ fn generate_trait(
             }
             write_property(
               &mut inner_string,
+              &mut validation_string,
               &property_name,
               &type_definition,
               &description,
+              None,
               required,
               true,
               "  ",
@@ -435,9 +439,11 @@ fn generate_trait(
             pending_enums.push((type_definition.name.clone(), item_enum));
             write_property(
               &mut inner_string,
+              &mut validation_string,
               &property_name,
               &type_definition,
               &description,
+              None,
               required,
               false,
               "  ",
@@ -459,9 +465,11 @@ fn generate_trait(
           }
           write_property(
             &mut inner_string,
+            &mut validation_string,
             &property_name,
             &type_definition,
             &description,
+            None,
             required,
             false,
             "  ",
@@ -481,9 +489,11 @@ fn generate_trait(
           pending_enums.push((type_definition.name.clone(), fhir_enum));
           write_property(
             &mut inner_string,
+            &mut validation_string,
             &property_name,
             &type_definition,
             &description,
+            None,
             required,
             false,
             "  ",
@@ -496,6 +506,10 @@ fn generate_trait(
         } => {}
       }
     }
+
+    validation_string.push_str("    return true;\n  }\n\n");
+
+    inner_string.push_str(&validation_string);
 
     inner_string.push_str("}\n");
   }
@@ -545,16 +559,17 @@ fn generate_trait(
 
 fn write_property(
   inner_string: &mut String,
+  validation_string: &mut String,
   property_name: &str,
   type_definition: &TypeDefinition,
   description: &str,
+  _pattern: Option<String>,
   required: bool,
   array: bool,
   indentation_level: &str,
   property_replacement_map: &HashMap<&str, &str>,
 ) {
   let sanitized_name = sanitize_property_name(property_name, &property_replacement_map);
-  let _needs_rename = &sanitized_name != property_name || sanitized_name.starts_with("_");
 
   let mut type_name = String::new();
   {
@@ -571,6 +586,36 @@ fn write_property(
     if !required {
       type_name.push_str(">");
     }
+  }
+
+  if required {
+    validation_string.push_str("    let _ = self.");
+    validation_string.push_str(&sanitized_name);
+    validation_string.push_str("()");
+    if array {
+      if !type_definition.builtin {
+        validation_string.push_str(".into_iter().for_each(|e| { e.validate(); })")
+      } else {
+        validation_string.push_str(".into_iter().for_each(|_e| {})")
+      }
+    } else if !type_definition.builtin && !type_definition.string_enum {
+      validation_string.push_str(".validate()");
+    }
+    validation_string.push_str(";\n");
+  } else {
+    validation_string.push_str("    if let Some(_val) = self.");
+    validation_string.push_str(&sanitized_name);
+    validation_string.push_str("() {\n");
+    if array {
+      if !type_definition.builtin {
+        validation_string.push_str("      _val.into_iter().for_each(|e| { e.validate(); });\n");
+      } else {
+        validation_string.push_str("      _val.into_iter().for_each(|_e| {});\n");
+      }
+    } else if !type_definition.builtin && !type_definition.string_enum {
+      validation_string.push_str("      _val.validate();\n");
+    }
+    validation_string.push_str("    }\n");
   }
 
   let mut getter = String::new();

@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Ratio::Ratio;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
-use crate::model::Ratio::Ratio;
 use serde_json::value::Value;
 
 
@@ -19,6 +19,33 @@ pub struct Medication_Ingredient<'a> {
 }
 
 impl Medication_Ingredient<'_> {
+  /// Extensions for isActive
+  pub fn _is_active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_isActive") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Specifies how many (or how much) of the items there are in this Medication.  For
+  /// example, 250 mg per tablet.  This is expressed as a ratio where the numerator is
+  /// 250mg and the denominator is 1 tablet.
+  pub fn strength(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("strength") {
+      return Some(Ratio { value: val });
+    }
+    return None;
+  }
+
+  /// The actual ingredient - either a substance (simple ingredient) or another
+  /// medication of a medication.
+  pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("itemCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -37,28 +64,11 @@ impl Medication_Ingredient<'_> {
     return None;
   }
 
-  /// The actual ingredient - either a substance (simple ingredient) or another
-  /// medication of a medication.
-  pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("itemCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for isActive
-  pub fn _is_active(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_isActive") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Indication of whether this ingredient affects the therapeutic action of the
-  /// drug.
-  pub fn is_active(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("isActive") {
-      return Some(val.as_bool().unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -68,16 +78,6 @@ impl Medication_Ingredient<'_> {
   pub fn item_reference(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("itemReference") {
       return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Specifies how many (or how much) of the items there are in this Medication.  For
-  /// example, 250 mg per tablet.  This is expressed as a ratio where the numerator is
-  /// 250mg and the denominator is 1 tablet.
-  pub fn strength(&self) -> Option<Ratio> {
-    if let Some(val) = self.value.get("strength") {
-      return Some(Ratio { value: val });
     }
     return None;
   }
@@ -94,13 +94,39 @@ impl Medication_Ingredient<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Indication of whether this ingredient affects the therapeutic action of the
+  /// drug.
+  pub fn is_active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("isActive") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._is_active() {
+      _val.validate();
+    }
+    if let Some(_val) = self.strength() {
+      _val.validate();
+    }
+    if let Some(_val) = self.item_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.item_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.is_active() {
+    }
+    return true;
   }
 
 }

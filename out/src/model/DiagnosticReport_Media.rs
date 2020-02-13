@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -28,14 +28,27 @@ impl DiagnosticReport_Media<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Reference to the image source.
+  pub fn link(&self) -> Reference {
+    Reference {
+      value: &self.value["link"],
+    }
+  }
+
+  /// A comment about the image. Typically, this is used to provide an explanation for
+  /// why the image is included, or to draw the viewer's attention to important
+  /// features.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -58,29 +71,34 @@ impl DiagnosticReport_Media<'_> {
     return None;
   }
 
-  /// Reference to the image source.
-  pub fn link(&self) -> Reference {
-    Reference {
-      value: &self.value["link"],
-    }
-  }
-
-  /// A comment about the image. Typically, this is used to provide an explanation for
-  /// why the image is included, or to draw the viewer's attention to important
-  /// features.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
     }
-    return None;
+    if let Some(_val) = self._comment() {
+      _val.validate();
+    }
+    let _ = self.link().validate();
+    if let Some(_val) = self.comment() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

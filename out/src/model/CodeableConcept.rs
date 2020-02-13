@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -38,10 +38,10 @@ impl CodeableConcept<'_> {
     return None;
   }
 
-  /// A reference to a code defined by a terminology system.
-  pub fn coding(&self) -> Option<Vec<Coding>> {
-    if let Some(Value::Array(val)) = self.value.get("coding") {
-      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
+  /// Extensions for text
+  pub fn _text(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_text") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -55,12 +55,29 @@ impl CodeableConcept<'_> {
     return None;
   }
 
-  /// Extensions for text
-  pub fn _text(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_text") {
-      return Some(Element { value: val });
+  /// A reference to a code defined by a terminology system.
+  pub fn coding(&self) -> Option<Vec<Coding>> {
+    if let Some(Value::Array(val)) = self.value.get("coding") {
+      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.text() {
+    }
+    if let Some(_val) = self._text() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.coding() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

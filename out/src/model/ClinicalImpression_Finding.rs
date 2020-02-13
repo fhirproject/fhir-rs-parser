@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -22,18 +22,6 @@ pub struct ClinicalImpression_Finding<'a> {
 }
 
 impl ClinicalImpression_Finding<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Specific text or code for finding or diagnosis, which may include ruled-out or
   /// resolved conditions.
   pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
@@ -43,19 +31,14 @@ impl ClinicalImpression_Finding<'_> {
     return None;
   }
 
-  /// Specific reference for finding or diagnosis, which may include ruled-out or
-  /// resolved conditions.
-  pub fn item_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("itemReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Which investigations support finding or diagnosis.
-  pub fn basis(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("basis") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -93,6 +76,46 @@ impl ClinicalImpression_Finding<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Specific reference for finding or diagnosis, which may include ruled-out or
+  /// resolved conditions.
+  pub fn item_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("itemReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Which investigations support finding or diagnosis.
+  pub fn basis(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("basis") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.item_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._basis() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.item_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.basis() {
+    }
+    return true;
   }
 
 }

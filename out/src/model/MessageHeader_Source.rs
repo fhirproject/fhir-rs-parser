@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::ContactPoint::ContactPoint;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -38,10 +38,52 @@ impl MessageHeader_Source<'_> {
     return None;
   }
 
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Can convey versions of multiple systems in situations where a message passes
+  /// through multiple hands.
+  pub fn version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("version") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An e-mail, phone, website or other contact point to use to resolve issues with
+  /// message communications.
+  pub fn contact(&self) -> Option<ContactPoint> {
+    if let Some(val) = self.value.get("contact") {
+      return Some(ContactPoint { value: val });
+    }
+    return None;
+  }
+
   /// Human-readable name for the source system.
   pub fn name(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("name") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for endpoint
+  pub fn _endpoint(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_endpoint") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -54,10 +96,9 @@ impl MessageHeader_Source<'_> {
     return None;
   }
 
-  /// Can convey versions of multiple systems in situations where a message passes
-  /// through multiple hands.
-  pub fn version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("version") {
+  /// Identifies the routing target to send acknowledgements to.
+  pub fn endpoint(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("endpoint") {
       return Some(string.to_string());
     }
     return None;
@@ -90,45 +131,39 @@ impl MessageHeader_Source<'_> {
     return None;
   }
 
-  /// An e-mail, phone, website or other contact point to use to resolve issues with
-  /// message communications.
-  pub fn contact(&self) -> Option<ContactPoint> {
-    if let Some(val) = self.value.get("contact") {
-      return Some(ContactPoint { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.software() {
     }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+    if let Some(_val) = self._name() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Identifies the routing target to send acknowledgements to.
-  pub fn endpoint(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("endpoint") {
-      return Some(string.to_string());
+    if let Some(_val) = self.version() {
     }
-    return None;
-  }
-
-  /// Extensions for endpoint
-  pub fn _endpoint(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_endpoint") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.contact() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self._endpoint() {
+      _val.validate();
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self._software() {
+      _val.validate();
+    }
+    if let Some(_val) = self.endpoint() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

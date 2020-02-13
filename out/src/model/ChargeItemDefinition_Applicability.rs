@@ -25,10 +25,35 @@ impl ChargeItemDefinition_Applicability<'_> {
     return None;
   }
 
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// The media type of the language for the expression, e.g. "text/cql" for Clinical
   /// Query Language expressions or "text/fhirpath" for FHIRPath expressions.
   pub fn language(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -52,37 +77,21 @@ impl ChargeItemDefinition_Applicability<'_> {
     return None;
   }
 
+  /// A brief, natural language description of the condition that effectively
+  /// communicates the intended semantics.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// An expression that returns true or false, indicating whether the condition is
   /// satisfied. When using FHIRPath expressions, the %context environment variable
   /// must be replaced at runtime with the ChargeItem resource to which this
   /// definition is applied.
   pub fn expression(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("expression") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for expression
-  pub fn _expression(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expression") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A brief, natural language description of the condition that effectively
-  /// communicates the intended semantics.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
@@ -100,13 +109,31 @@ impl ChargeItemDefinition_Applicability<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._description() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self._expression() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.expression() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ImplementationGuide_Parameter::ImplementationGuide_Parameter;
-use crate::model::ImplementationGuide_Page::ImplementationGuide_Page;
-use crate::model::Extension::Extension;
-use crate::model::ImplementationGuide_Resource::ImplementationGuide_Resource;
-use crate::model::ImplementationGuide_Grouping::ImplementationGuide_Grouping;
 use crate::model::ImplementationGuide_Template::ImplementationGuide_Template;
+use crate::model::ImplementationGuide_Parameter::ImplementationGuide_Parameter;
+use crate::model::Extension::Extension;
+use crate::model::ImplementationGuide_Page::ImplementationGuide_Page;
+use crate::model::ImplementationGuide_Grouping::ImplementationGuide_Grouping;
+use crate::model::ImplementationGuide_Resource::ImplementationGuide_Resource;
 use serde_json::value::Value;
 
 
@@ -21,35 +21,22 @@ pub struct ImplementationGuide_Definition<'a> {
 }
 
 impl ImplementationGuide_Definition<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// A logical group of resources. Logical groups can be used when building pages.
   pub fn grouping(&self) -> Option<Vec<ImplementationGuide_Grouping>> {
     if let Some(Value::Array(val)) = self.value.get("grouping") {
       return Some(val.into_iter().map(|e| ImplementationGuide_Grouping { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Defines how IG is built by tools.
-  pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
-    if let Some(Value::Array(val)) = self.value.get("parameter") {
-      return Some(val.into_iter().map(|e| ImplementationGuide_Parameter { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A template for building resources.
-  pub fn template(&self) -> Option<Vec<ImplementationGuide_Template>> {
-    if let Some(Value::Array(val)) = self.value.get("template") {
-      return Some(val.into_iter().map(|e| ImplementationGuide_Template { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -72,6 +59,14 @@ impl ImplementationGuide_Definition<'_> {
     return None;
   }
 
+  /// A template for building resources.
+  pub fn template(&self) -> Option<Vec<ImplementationGuide_Template>> {
+    if let Some(Value::Array(val)) = self.value.get("template") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_Template { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// A page / section in the implementation guide. The root page is the
   /// implementation guide home page.
   pub fn page(&self) -> Option<ImplementationGuide_Page> {
@@ -81,14 +76,19 @@ impl ImplementationGuide_Definition<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Defines how IG is built by tools.
+  pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
+    if let Some(Value::Array(val)) = self.value.get("parameter") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_Parameter { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -99,6 +99,31 @@ impl ImplementationGuide_Definition<'_> {
   /// resource.
   pub fn resource(&self) -> Vec<ImplementationGuide_Resource> {
     self.value.get("resource").unwrap().as_array().unwrap().into_iter().map(|e| ImplementationGuide_Resource { value: e }).collect::<Vec<_>>()
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.grouping() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.template() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.page() {
+      _val.validate();
+    }
+    if let Some(_val) = self.parameter() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.resource().into_iter().for_each(|e| { e.validate(); });
+    return true;
   }
 
 }

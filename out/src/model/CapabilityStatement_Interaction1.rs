@@ -17,6 +17,23 @@ pub struct CapabilityStatement_Interaction1<'a> {
 }
 
 impl CapabilityStatement_Interaction1<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -35,31 +52,6 @@ impl CapabilityStatement_Interaction1<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A coded identifier of the operation, supported by the system.
-  pub fn code(&self) -> Option<CapabilityStatement_Interaction1Code> {
-    if let Some(Value::String(val)) = self.value.get("code") {
-      return Some(CapabilityStatement_Interaction1Code::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Guidance specific to the implementation of this operation, such as limitations
   /// on the kind of transactions allowed, or information about system wide search is
   /// implemented.
@@ -70,10 +62,10 @@ impl CapabilityStatement_Interaction1<'_> {
     return None;
   }
 
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
+  /// A coded identifier of the operation, supported by the system.
+  pub fn code(&self) -> Option<CapabilityStatement_Interaction1Code> {
+    if let Some(Value::String(val)) = self.value.get("code") {
+      return Some(CapabilityStatement_Interaction1Code::from_string(&val).unwrap());
     }
     return None;
   }
@@ -88,6 +80,36 @@ impl CapabilityStatement_Interaction1<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.documentation() {
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._documentation() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

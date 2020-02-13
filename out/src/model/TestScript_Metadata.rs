@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::TestScript_Capability::TestScript_Capability;
 use crate::model::TestScript_Link::TestScript_Link;
+use crate::model::TestScript_Capability::TestScript_Capability;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -34,6 +34,20 @@ impl TestScript_Metadata<'_> {
     return None;
   }
 
+  /// A link to the FHIR specification that this test is covering.
+  pub fn link(&self) -> Option<Vec<TestScript_Link>> {
+    if let Some(Value::Array(val)) = self.value.get("link") {
+      return Some(val.into_iter().map(|e| TestScript_Link { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Capabilities that must exist and are assumed to function correctly on the FHIR
+  /// server being tested.
+  pub fn capability(&self) -> Vec<TestScript_Capability> {
+    self.value.get("capability").unwrap().as_array().unwrap().into_iter().map(|e| TestScript_Capability { value: e }).collect::<Vec<_>>()
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -55,18 +69,20 @@ impl TestScript_Metadata<'_> {
     return None;
   }
 
-  /// Capabilities that must exist and are assumed to function correctly on the FHIR
-  /// server being tested.
-  pub fn capability(&self) -> Vec<TestScript_Capability> {
-    self.value.get("capability").unwrap().as_array().unwrap().into_iter().map(|e| TestScript_Capability { value: e }).collect::<Vec<_>>()
-  }
-
-  /// A link to the FHIR specification that this test is covering.
-  pub fn link(&self) -> Option<Vec<TestScript_Link>> {
-    if let Some(Value::Array(val)) = self.value.get("link") {
-      return Some(val.into_iter().map(|e| TestScript_Link { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.link() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.capability().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

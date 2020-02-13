@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -18,19 +18,20 @@ pub struct CapabilityStatement_Implementation<'a> {
 }
 
 impl CapabilityStatement_Implementation<'_> {
-  /// Information about the specific installation that this capability statement
-  /// relates to.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
+  /// An absolute base URL for the implementation.  This forms the base for REST
+  /// interfaces as well as the mailbox and document interfaces.
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -53,15 +54,6 @@ impl CapabilityStatement_Implementation<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -74,19 +66,19 @@ impl CapabilityStatement_Implementation<'_> {
     return None;
   }
 
-  /// An absolute base URL for the implementation.  This forms the base for REST
-  /// interfaces as well as the mailbox and document interfaces.
-  pub fn url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("url") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for url
   pub fn _url(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_url") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Information about the specific installation that this capability statement
+  /// relates to.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -98,6 +90,39 @@ impl CapabilityStatement_Implementation<'_> {
       return Some(Reference { value: val });
     }
     return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.url() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._url() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.custodian() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

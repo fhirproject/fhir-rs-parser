@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::Quantity::Quantity;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -19,23 +19,6 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
   /// Extra information about the withdrawal period.
   pub fn supporting_information(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("supportingInformation") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Coded expression for the type of tissue for which the withdrawal period applues,
-  /// e.g. meat, milk.
-  pub fn tissue(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["tissue"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
     }
     return None;
@@ -59,11 +42,13 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
     return None;
   }
 
-  /// A value for the time.
-  pub fn value(&self) -> Quantity {
-    Quantity {
-      value: &self.value["value"],
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
   }
 
   /// Extensions for supportingInformation
@@ -84,6 +69,40 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Coded expression for the type of tissue for which the withdrawal period applues,
+  /// e.g. meat, milk.
+  pub fn tissue(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["tissue"],
+    }
+  }
+
+  /// A value for the time.
+  pub fn value(&self) -> Quantity {
+    Quantity {
+      value: &self.value["value"],
+    }
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.supporting_information() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._supporting_information() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.tissue().validate();
+    let _ = self.value().validate();
+    return true;
   }
 
 }

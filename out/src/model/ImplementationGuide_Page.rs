@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -18,6 +18,31 @@ pub struct ImplementationGuide_Page<'a> {
 }
 
 impl ImplementationGuide_Page<'_> {
+  /// The source address for the page.
+  pub fn name_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("nameReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The source address for the page.
+  pub fn name_url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("nameUrl") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -26,6 +51,38 @@ impl ImplementationGuide_Page<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for nameUrl
+  pub fn _name_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_nameUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for generation
+  pub fn _generation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_generation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Nested Pages/Sections under this page.
+  pub fn page(&self) -> Option<Vec<ImplementationGuide_Page>> {
+    if let Some(Value::Array(val)) = self.value.get("page") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_Page { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -65,61 +122,37 @@ impl ImplementationGuide_Page<'_> {
     return None;
   }
 
-  /// Extensions for generation
-  pub fn _generation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_generation") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.name_reference() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The source address for the page.
-  pub fn name_url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("nameUrl") {
-      return Some(string.to_string());
+    if let Some(_val) = self.id() {
     }
-    return None;
-  }
-
-  /// Extensions for nameUrl
-  pub fn _name_url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_nameUrl") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.name_url() {
     }
-    return None;
-  }
-
-  /// Nested Pages/Sections under this page.
-  pub fn page(&self) -> Option<Vec<ImplementationGuide_Page>> {
-    if let Some(Value::Array(val)) = self.value.get("page") {
-      return Some(val.into_iter().map(|e| ImplementationGuide_Page { value: e }).collect::<Vec<_>>());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
+    if let Some(_val) = self._name_url() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The source address for the page.
-  pub fn name_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("nameReference") {
-      return Some(Reference { value: val });
+    if let Some(_val) = self._title() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._generation() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.page() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.title() {
+    }
+    if let Some(_val) = self.generation() {
+    }
+    return true;
   }
 
 }

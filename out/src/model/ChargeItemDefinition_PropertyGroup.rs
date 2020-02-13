@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ChargeItemDefinition_Applicability::ChargeItemDefinition_Applicability;
 use crate::model::ChargeItemDefinition_PriceComponent::ChargeItemDefinition_PriceComponent;
+use crate::model::ChargeItemDefinition_Applicability::ChargeItemDefinition_Applicability;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -18,22 +18,24 @@ pub struct ChargeItemDefinition_PropertyGroup<'a> {
 }
 
 impl ChargeItemDefinition_PropertyGroup<'_> {
-  /// Expressions that describe applicability criteria for the priceComponent.
-  pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
-    if let Some(Value::Array(val)) = self.value.get("applicability") {
-      return Some(val.into_iter().map(|e| ChargeItemDefinition_Applicability { value: e }).collect::<Vec<_>>());
+  /// The price for a ChargeItem may be calculated as a base price with
+  /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
+  /// resource that defines the prices, factors and conditions that apply to a billing
+  /// code is currently under development. The priceComponent element can be used to
+  /// offer transparency to the recipient of the Invoice of how the prices have been
+  /// calculated.
+  pub fn price_component(&self) -> Option<Vec<ChargeItemDefinition_PriceComponent>> {
+    if let Some(Value::Array(val)) = self.value.get("priceComponent") {
+      return Some(val.into_iter().map(|e| ChargeItemDefinition_PriceComponent { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -56,26 +58,42 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
     return None;
   }
 
-  /// The price for a ChargeItem may be calculated as a base price with
-  /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
-  /// resource that defines the prices, factors and conditions that apply to a billing
-  /// code is currently under development. The priceComponent element can be used to
-  /// offer transparency to the recipient of the Invoice of how the prices have been
-  /// calculated.
-  pub fn price_component(&self) -> Option<Vec<ChargeItemDefinition_PriceComponent>> {
-    if let Some(Value::Array(val)) = self.value.get("priceComponent") {
-      return Some(val.into_iter().map(|e| ChargeItemDefinition_PriceComponent { value: e }).collect::<Vec<_>>());
+  /// Expressions that describe applicability criteria for the priceComponent.
+  pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
+    if let Some(Value::Array(val)) = self.value.get("applicability") {
+      return Some(val.into_iter().map(|e| ChargeItemDefinition_Applicability { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.price_component() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.applicability() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

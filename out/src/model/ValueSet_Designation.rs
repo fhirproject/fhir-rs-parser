@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Coding::Coding;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,14 +18,6 @@ pub struct ValueSet_Designation<'a> {
 }
 
 impl ValueSet_Designation<'_> {
-  /// A code that represents types of uses of designations.
-  pub fn fhir_use(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("use") {
-      return Some(Coding { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -34,6 +26,38 @@ impl ValueSet_Designation<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The language this designation is defined for.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A code that represents types of uses of designations.
+  pub fn fhir_use(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("use") {
+      return Some(Coding { value: val });
     }
     return None;
   }
@@ -56,22 +80,6 @@ impl ValueSet_Designation<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The language this designation is defined for.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -89,12 +97,29 @@ impl ValueSet_Designation<'_> {
     return None;
   }
 
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self._value() {
+      _val.validate();
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.fhir_use() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.value() {
+    }
+    return true;
   }
 
 }

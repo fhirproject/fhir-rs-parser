@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
@@ -29,6 +29,13 @@ impl Device_Property<'_> {
     return None;
   }
 
+  /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -42,14 +49,6 @@ impl Device_Property<'_> {
   pub fn value_quantity(&self) -> Option<Vec<Quantity>> {
     if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
       return Some(val.into_iter().map(|e| Quantity { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Property value as a code, e.g., NTP4 (synced to NTP).
-  pub fn value_code(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("valueCode") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -72,11 +71,31 @@ impl Device_Property<'_> {
     return None;
   }
 
-  /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
+  /// Property value as a code, e.g., NTP4 (synced to NTP).
+  pub fn value_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("valueCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.value_quantity() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.value_code() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

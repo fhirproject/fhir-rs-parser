@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Period::Period;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Period::Period;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -17,47 +17,6 @@ pub struct MarketingStatus<'a> {
 }
 
 impl MarketingStatus<'_> {
-  /// The date when the Medicinal Product is placed on the market by the Marketing
-  /// Authorisation Holder (or where applicable, the manufacturer/distributor) in a
-  /// country and/or jurisdiction shall be provided A complete date consisting of day,
-  /// month and year shall be specified using the ISO 8601 date format NOTE “Placed on
-  /// the market” refers to the release of the Medicinal Product into the distribution
-  /// chain.
-  pub fn restore_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("restoreDate") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Where a Medicines Regulatory Agency has granted a marketing authorisation for
-  /// which specific provisions within a jurisdiction apply, the jurisdiction can be
-  /// specified using an appropriate controlled terminology The controlled term and
-  /// the controlled term identifier shall be specified.
-  pub fn jurisdiction(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("jurisdiction") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The country in which the marketing authorisation has been granted shall be
-  /// specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.
-  pub fn country(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["country"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -66,14 +25,6 @@ impl MarketingStatus<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for restoreDate
-  pub fn _restore_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_restoreDate") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -92,10 +43,50 @@ impl MarketingStatus<'_> {
   /// month and year shall be specified using the ISO 8601 date format NOTE “Placed on
   /// the market” refers to the release of the Medicinal Product into the distribution
   /// chain.
+  pub fn restore_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("restoreDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The date when the Medicinal Product is placed on the market by the Marketing
+  /// Authorisation Holder (or where applicable, the manufacturer/distributor) in a
+  /// country and/or jurisdiction shall be provided A complete date consisting of day,
+  /// month and year shall be specified using the ISO 8601 date format NOTE “Placed on
+  /// the market” refers to the release of the Medicinal Product into the distribution
+  /// chain.
   pub fn date_range(&self) -> Period {
     Period {
       value: &self.value["dateRange"],
     }
+  }
+
+  /// The country in which the marketing authorisation has been granted shall be
+  /// specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.
+  pub fn country(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["country"],
+    }
+  }
+
+  /// Where a Medicines Regulatory Agency has granted a marketing authorisation for
+  /// which specific provisions within a jurisdiction apply, the jurisdiction can be
+  /// specified using an appropriate controlled terminology The controlled term and
+  /// the controlled term identifier shall be specified.
+  pub fn jurisdiction(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("jurisdiction") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for restoreDate
+  pub fn _restore_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_restoreDate") {
+      return Some(Element { value: val });
+    }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -114,6 +105,38 @@ impl MarketingStatus<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.status().validate();
+    if let Some(_val) = self.restore_date() {
+    }
+    let _ = self.date_range().validate();
+    let _ = self.country().validate();
+    if let Some(_val) = self.jurisdiction() {
+      _val.validate();
+    }
+    if let Some(_val) = self._restore_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    return true;
   }
 
 }

@@ -31,14 +31,6 @@ impl Range<'_> {
     return None;
   }
 
-  /// The low limit. The boundary is inclusive.
-  pub fn low(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("low") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -49,6 +41,29 @@ impl Range<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The low limit. The boundary is inclusive.
+  pub fn low(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("low") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.high() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.low() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

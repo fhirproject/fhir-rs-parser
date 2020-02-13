@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Money::Money;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -20,6 +20,14 @@ impl InsurancePlan_GeneralCost<'_> {
   pub fn cost(&self) -> Option<Money> {
     if let Some(val) = self.value.get("cost") {
       return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// Type of cost.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -45,25 +53,25 @@ impl InsurancePlan_GeneralCost<'_> {
     return None;
   }
 
-  /// Number of participants enrolled in the plan.
-  pub fn group_size(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("groupSize") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Type of cost.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for groupSize
   pub fn _group_size(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_groupSize") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Additional information about the general costs associated with this plan.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
       return Some(Element { value: val });
     }
     return None;
@@ -87,20 +95,40 @@ impl InsurancePlan_GeneralCost<'_> {
     return None;
   }
 
-  /// Additional information about the general costs associated with this plan.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
+  /// Number of participants enrolled in the plan.
+  pub fn group_size(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("groupSize") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
 
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.cost() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._group_size() {
+      _val.validate();
+    }
+    if let Some(_val) = self.comment() {
+    }
+    if let Some(_val) = self._comment() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.group_size() {
+    }
+    return true;
   }
 
 }

@@ -32,6 +32,16 @@ impl ElementDefinition_Binding<'_> {
     return None;
   }
 
+  /// Indicates the degree of conformance expectations associated with this binding -
+  /// that is, the degree to which the provided value set must be adhered to in the
+  /// instances.
+  pub fn strength(&self) -> Option<ElementDefinition_BindingStrength> {
+    if let Some(Value::String(val)) = self.value.get("strength") {
+      return Some(ElementDefinition_BindingStrength::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
@@ -40,20 +50,19 @@ impl ElementDefinition_Binding<'_> {
     return None;
   }
 
-  /// Extensions for strength
-  pub fn _strength(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_strength") {
-      return Some(Element { value: val });
+  /// Refers to the value set that identifies the set of codes the binding refers to.
+  pub fn value_set(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueSet") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Indicates the degree of conformance expectations associated with this binding -
-  /// that is, the degree to which the provided value set must be adhered to in the
-  /// instances.
-  pub fn strength(&self) -> Option<ElementDefinition_BindingStrength> {
-    if let Some(Value::String(val)) = self.value.get("strength") {
-      return Some(ElementDefinition_BindingStrength::from_string(&val).unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -70,15 +79,6 @@ impl ElementDefinition_Binding<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Describes the intended use of this particular set of codes.
   pub fn description(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("description") {
@@ -87,12 +87,36 @@ impl ElementDefinition_Binding<'_> {
     return None;
   }
 
-  /// Refers to the value set that identifies the set of codes the binding refers to.
-  pub fn value_set(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueSet") {
-      return Some(string.to_string());
+  /// Extensions for strength
+  pub fn _strength(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_strength") {
+      return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.strength() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_set() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self._strength() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

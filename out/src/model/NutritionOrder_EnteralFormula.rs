@@ -18,51 +18,6 @@ pub struct NutritionOrder_EnteralFormula<'a> {
 }
 
 impl NutritionOrder_EnteralFormula<'_> {
-  /// The product or brand name of the enteral or infant formula product such as "ACME
-  /// Adult Standard Formula".
-  pub fn base_formula_product_name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("baseFormulaProductName") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The route or physiological path of administration into the patient's
-  /// gastrointestinal  tract for purposes of providing the formula feeding, e.g.
-  /// nasogastric tube.
-  pub fn routeof_administration(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("routeofAdministration") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Free text formula administration, feeding instructions or additional
-  /// instructions or information.
-  pub fn administration_instruction(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("administrationInstruction") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The product or brand name of the type of modular component to be added to the
-  /// formula.
-  pub fn additive_product_name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("additiveProductName") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for administrationInstruction
-  pub fn _administration_instruction(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_administrationInstruction") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -81,6 +36,33 @@ impl NutritionOrder_EnteralFormula<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The type of enteral or infant formula such as an adult standard formula with
+  /// fiber or a soy-based infant formula.
+  pub fn base_formula_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("baseFormulaType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Free text formula administration, feeding instructions or additional
+  /// instructions or information.
+  pub fn administration_instruction(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("administrationInstruction") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// The amount of energy (calories) that the formula should provide per specified
   /// volume, typically per mL or fluid oz.  For example, an infant may require a
   /// formula that provides 24 calories per fluid ounce or an adult may require an
@@ -92,22 +74,21 @@ impl NutritionOrder_EnteralFormula<'_> {
     return None;
   }
 
-  /// Formula administration instructions as structured data.  This repeating
-  /// structure allows for changing the administration rate or volume over time for
-  /// both bolus and continuous feeding.  An example of this would be an instruction
-  /// to increase the rate of continuous feeding every 2 hours.
-  pub fn administration(&self) -> Option<Vec<NutritionOrder_Administration>> {
-    if let Some(Value::Array(val)) = self.value.get("administration") {
-      return Some(val.into_iter().map(|e| NutritionOrder_Administration { value: e }).collect::<Vec<_>>());
+  /// The product or brand name of the type of modular component to be added to the
+  /// formula.
+  pub fn additive_product_name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("additiveProductName") {
+      return Some(string.to_string());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The route or physiological path of administration into the patient's
+  /// gastrointestinal  tract for purposes of providing the formula feeding, e.g.
+  /// nasogastric tube.
+  pub fn routeof_administration(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("routeofAdministration") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -124,6 +105,25 @@ impl NutritionOrder_EnteralFormula<'_> {
     return None;
   }
 
+  /// Formula administration instructions as structured data.  This repeating
+  /// structure allows for changing the administration rate or volume over time for
+  /// both bolus and continuous feeding.  An example of this would be an instruction
+  /// to increase the rate of continuous feeding every 2 hours.
+  pub fn administration(&self) -> Option<Vec<NutritionOrder_Administration>> {
+    if let Some(Value::Array(val)) = self.value.get("administration") {
+      return Some(val.into_iter().map(|e| NutritionOrder_Administration { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for administrationInstruction
+  pub fn _administration_instruction(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_administrationInstruction") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// The maximum total quantity of formula that may be administered to a subject over
   /// the period of time, e.g. 1440 mL over 24 hours.
   pub fn max_volume_to_deliver(&self) -> Option<Quantity> {
@@ -133,10 +133,20 @@ impl NutritionOrder_EnteralFormula<'_> {
     return None;
   }
 
-  /// Extensions for additiveProductName
-  pub fn _additive_product_name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_additiveProductName") {
-      return Some(Element { value: val });
+  /// Indicates the type of modular component such as protein, carbohydrate, fat or
+  /// fiber to be provided in addition to or mixed with the base formula.
+  pub fn additive_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("additiveType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The product or brand name of the enteral or infant formula product such as "ACME
+  /// Adult Standard Formula".
+  pub fn base_formula_product_name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("baseFormulaProductName") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -149,22 +159,57 @@ impl NutritionOrder_EnteralFormula<'_> {
     return None;
   }
 
-  /// The type of enteral or infant formula such as an adult standard formula with
-  /// fiber or a soy-based infant formula.
-  pub fn base_formula_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("baseFormulaType") {
-      return Some(CodeableConcept { value: val });
+  /// Extensions for additiveProductName
+  pub fn _additive_product_name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_additiveProductName") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Indicates the type of modular component such as protein, carbohydrate, fat or
-  /// fiber to be provided in addition to or mixed with the base formula.
-  pub fn additive_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("additiveType") {
-      return Some(CodeableConcept { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.base_formula_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.administration_instruction() {
+    }
+    if let Some(_val) = self.caloric_density() {
+      _val.validate();
+    }
+    if let Some(_val) = self.additive_product_name() {
+    }
+    if let Some(_val) = self.routeof_administration() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.administration() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._administration_instruction() {
+      _val.validate();
+    }
+    if let Some(_val) = self.max_volume_to_deliver() {
+      _val.validate();
+    }
+    if let Some(_val) = self.additive_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.base_formula_product_name() {
+    }
+    if let Some(_val) = self._base_formula_product_name() {
+      _val.validate();
+    }
+    if let Some(_val) = self._additive_product_name() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

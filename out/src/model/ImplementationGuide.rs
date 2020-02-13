@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::ImplementationGuide_DependsOn::ImplementationGuide_DependsOn;
+use crate::model::Narrative::Narrative;
 use crate::model::Meta::Meta;
-use crate::model::ImplementationGuide_Definition::ImplementationGuide_Definition;
-use crate::model::ImplementationGuide_Global::ImplementationGuide_Global;
-use crate::model::ImplementationGuide_Manifest::ImplementationGuide_Manifest;
 use crate::model::Element::Element;
 use crate::model::UsageContext::UsageContext;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
-use crate::model::ResourceList::ResourceList;
-use crate::model::ImplementationGuide_DependsOn::ImplementationGuide_DependsOn;
+use crate::model::ImplementationGuide_Manifest::ImplementationGuide_Manifest;
+use crate::model::ImplementationGuide_Global::ImplementationGuide_Global;
+use crate::model::ImplementationGuide_Definition::ImplementationGuide_Definition;
 use crate::model::ContactDetail::ContactDetail;
-use crate::model::Narrative::Narrative;
+use crate::model::ResourceList::ResourceList;
 use serde_json::value::Value;
 
 
@@ -27,97 +27,10 @@ pub struct ImplementationGuide<'a> {
 }
 
 impl ImplementationGuide<'_> {
-  /// A set of profiles that all resources covered by this implementation guide must
-  /// conform to.
-  pub fn global(&self) -> Option<Vec<ImplementationGuide_Global>> {
-    if let Some(Value::Array(val)) = self.value.get("global") {
-      return Some(val.into_iter().map(|e| ImplementationGuide_Global { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A free text natural language description of the implementation guide from a
   /// consumer's perspective.
   pub fn description(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for publisher
-  pub fn _publisher(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publisher") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A legal or geographic region in which the implementation guide is intended to be
-  /// used.
-  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A copyright statement relating to the implementation guide and/or its contents.
-  /// Copyright statements are generally legal restrictions on the use and publishing
-  /// of the implementation guide.
-  pub fn copyright(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("copyright") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for packageId
-  pub fn _package_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_packageId") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for copyright
-  pub fn _copyright(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_copyright") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The date  (and optionally time) when the implementation guide was published. The
-  /// date must change when the business version changes and it must change if the
-  /// status code changes. In addition, it should change when the substantive content
-  /// of the implementation guide changes.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
       return Some(string.to_string());
     }
     return None;
@@ -137,66 +50,12 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// The NPM package name for this Implementation Guide, used in the NPM package
-  /// distribution, which is the primary mechanism by which FHIR based tooling manages
-  /// IG dependencies. This value must be globally unique, and should be assigned with
-  /// care.
-  pub fn package_id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("packageId") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Another implementation guide that this implementation depends on. Typically, an
-  /// implementation guide uses value sets, profiles etc.defined in other
-  /// implementation guides.
-  pub fn depends_on(&self) -> Option<Vec<ImplementationGuide_DependsOn>> {
-    if let Some(Value::Array(val)) = self.value.get("dependsOn") {
-      return Some(val.into_iter().map(|e| ImplementationGuide_DependsOn { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
   pub fn implicit_rules(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("contact") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
     }
     return None;
@@ -212,20 +71,52 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// The name of the organization or individual that published the implementation
-  /// guide.
-  pub fn publisher(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("publisher") {
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A short, descriptive, user-friendly title for the implementation guide.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Information about an assembled implementation guide, created by the publication
-  /// tooling.
-  pub fn manifest(&self) -> Option<ImplementationGuide_Manifest> {
-    if let Some(val) = self.value.get("manifest") {
-      return Some(ImplementationGuide_Manifest { value: val });
+  /// The status of this implementation guide. Enables tracking the life-cycle of the
+  /// content.
+  pub fn status(&self) -> Option<ImplementationGuideStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(ImplementationGuideStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -250,15 +141,26 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  pub fn text(&self) -> Option<Narrative> {
-    if let Some(val) = self.value.get("text") {
-      return Some(Narrative { value: val });
+  /// Extensions for fhirVersion
+  pub fn _fhir_version(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_fhirVersion") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for packageId
+  pub fn _package_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_packageId") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -271,10 +173,18 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// Extensions for fhirVersion
-  pub fn _fhir_version(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_fhirVersion") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -289,11 +199,120 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
+  /// Information about an assembled implementation guide, created by the publication
+  /// tooling.
+  pub fn manifest(&self) -> Option<ImplementationGuide_Manifest> {
+    if let Some(val) = self.value.get("manifest") {
+      return Some(ImplementationGuide_Manifest { value: val });
+    }
+    return None;
+  }
+
+  /// Another implementation guide that this implementation depends on. Typically, an
+  /// implementation guide uses value sets, profiles etc.defined in other
+  /// implementation guides.
+  pub fn depends_on(&self) -> Option<Vec<ImplementationGuide_DependsOn>> {
+    if let Some(Value::Array(val)) = self.value.get("dependsOn") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_DependsOn { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A set of profiles that all resources covered by this implementation guide must
+  /// conform to.
+  pub fn global(&self) -> Option<Vec<ImplementationGuide_Global>> {
+    if let Some(Value::Array(val)) = self.value.get("global") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_Global { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// The logical id of the resource, as used in the URL for the resource. Once
   /// assigned, this value never changes.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
       return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A natural language name identifying the implementation guide. This name should
+  /// be usable as an identifier for the module by machine processing applications
+  /// such as code generation.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The name of the organization or individual that published the implementation
+  /// guide.
+  pub fn publisher(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the implementation guide is intended to be
+  /// used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The NPM package name for this Implementation Guide, used in the NPM package
+  /// distribution, which is the primary mechanism by which FHIR based tooling manages
+  /// IG dependencies. This value must be globally unique, and should be assigned with
+  /// care.
+  pub fn package_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("packageId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The license that applies to this Implementation Guide, using an SPDX license
+  /// code, or 'not-open-source'.
+  pub fn license(&self) -> Option<ImplementationGuideLicense> {
+    if let Some(Value::String(val)) = self.value.get("license") {
+      return Some(ImplementationGuideLicense::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The information needed by an IG publisher tool to publish the whole
+  /// implementation guide.
+  pub fn definition(&self) -> Option<ImplementationGuide_Definition> {
+    if let Some(val) = self.value.get("definition") {
+      return Some(ImplementationGuide_Definition { value: val });
     }
     return None;
   }
@@ -317,19 +336,84 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// A natural language name identifying the implementation guide. This name should
-  /// be usable as an identifier for the module by machine processing applications
-  /// such as code generation.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
+  /// The identifier that is used to identify this version of the implementation guide
+  /// when it is referenced in a specification, model, design or instance. This is an
+  /// arbitrary value managed by the implementation guide author and is not expected
+  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+  /// managed version is not available. There is also no expectation that versions can
+  /// be placed in a lexicographical sequence.
+  pub fn version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("version") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for copyright
+  pub fn _copyright(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_copyright") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date  (and optionally time) when the implementation guide was published. The
+  /// date must change when the business version changes and it must change if the
+  /// status code changes. In addition, it should change when the substantive content
+  /// of the implementation guide changes.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A copyright statement relating to the implementation guide and/or its contents.
+  /// Copyright statements are generally legal restrictions on the use and publishing
+  /// of the implementation guide.
+  pub fn copyright(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("copyright") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
       return Some(Element { value: val });
     }
     return None;
@@ -345,91 +429,143 @@ impl ImplementationGuide<'_> {
     return None;
   }
 
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.description() {
     }
-    return None;
-  }
-
-  /// The identifier that is used to identify this version of the implementation guide
-  /// when it is referenced in a specification, model, design or instance. This is an
-  /// arbitrary value managed by the implementation guide author and is not expected
-  /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-  /// managed version is not available. There is also no expectation that versions can
-  /// be placed in a lexicographical sequence.
-  pub fn version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("version") {
-      return Some(string.to_string());
+    if let Some(_val) = self.url() {
     }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    if let Some(_val) = self.implicit_rules() {
     }
-    return None;
-  }
-
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The license that applies to this Implementation Guide, using an SPDX license
-  /// code, or 'not-open-source'.
-  pub fn license(&self) -> Option<ImplementationGuideLicense> {
-    if let Some(Value::String(val)) = self.value.get("license") {
-      return Some(ImplementationGuideLicense::from_string(&val).unwrap());
+    if let Some(_val) = self.text() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The status of this implementation guide. Enables tracking the life-cycle of the
-  /// content.
-  pub fn status(&self) -> Option<ImplementationGuideStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(ImplementationGuideStatus::from_string(&val).unwrap());
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// The information needed by an IG publisher tool to publish the whole
-  /// implementation guide.
-  pub fn definition(&self) -> Option<ImplementationGuide_Definition> {
-    if let Some(val) = self.value.get("definition") {
-      return Some(ImplementationGuide_Definition { value: val });
+    if let Some(_val) = self.title() {
     }
-    return None;
-  }
-
-  /// Extensions for url
-  pub fn _url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_url") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.status() {
     }
-    return None;
-  }
-
-  /// A short, descriptive, user-friendly title for the implementation guide.
-  pub fn title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("title") {
-      return Some(string.to_string());
+    if let Some(_val) = self._date() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self._experimental() {
+      _val.validate();
+    }
+    if let Some(_val) = self.use_context() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._fhir_version() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self._package_id() {
+      _val.validate();
+    }
+    if let Some(_val) = self._license() {
+      _val.validate();
+    }
+    if let Some(_val) = self._title() {
+      _val.validate();
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.experimental() {
+    }
+    if let Some(_val) = self.manifest() {
+      _val.validate();
+    }
+    if let Some(_val) = self.depends_on() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.global() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self.publisher() {
+    }
+    if let Some(_val) = self.jurisdiction() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.package_id() {
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self.license() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.definition() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.version() {
+    }
+    if let Some(_val) = self._publisher() {
+      _val.validate();
+    }
+    if let Some(_val) = self._copyright() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self._url() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date() {
+    }
+    if let Some(_val) = self.contact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.copyright() {
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.meta() {
+      _val.validate();
+    }
+    return true;
   }
 
 }
+
+#[derive(Debug)]
+pub enum ImplementationGuideStatus {
+  Draft,
+  Active,
+  Retired,
+  Unknown,
+}
+
+impl ImplementationGuideStatus {
+    pub fn from_string(string: &str) -> Option<ImplementationGuideStatus> {
+      match string {
+        "draft" => Some(ImplementationGuideStatus::Draft),
+        "active" => Some(ImplementationGuideStatus::Active),
+        "retired" => Some(ImplementationGuideStatus::Retired),
+        "unknown" => Some(ImplementationGuideStatus::Unknown),
+        _ => None,
+    }
+  }
+}
+
 
 #[derive(Debug)]
 pub enum ImplementationGuideLicense {
@@ -1130,27 +1266,6 @@ impl ImplementationGuideLicense {
         "ZPL-1.1" => Some(ImplementationGuideLicense::Zpl11),
         "ZPL-2.0" => Some(ImplementationGuideLicense::Zpl20),
         "ZPL-2.1" => Some(ImplementationGuideLicense::Zpl21),
-        _ => None,
-    }
-  }
-}
-
-
-#[derive(Debug)]
-pub enum ImplementationGuideStatus {
-  Draft,
-  Active,
-  Retired,
-  Unknown,
-}
-
-impl ImplementationGuideStatus {
-    pub fn from_string(string: &str) -> Option<ImplementationGuideStatus> {
-      match string {
-        "draft" => Some(ImplementationGuideStatus::Draft),
-        "active" => Some(ImplementationGuideStatus::Active),
-        "retired" => Some(ImplementationGuideStatus::Retired),
-        "unknown" => Some(ImplementationGuideStatus::Unknown),
         _ => None,
     }
   }

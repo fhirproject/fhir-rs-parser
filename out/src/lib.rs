@@ -1,5 +1,6 @@
+extern crate regex;
+
 pub mod model;
-pub mod parser;
 
 #[cfg(test)]
 mod tests {
@@ -24,6 +25,7 @@ mod tests {
         Ok(value) => {
           println!("Successfully parsed {}", &unwrapped_path.to_str().unwrap());
           let resource = crate::model::ResourceList::ResourceList { value: &value };
+          resource.validate();
           let value = resource.resource();
           match value {
             Some(crate::model::ResourceList::ResourceListEnum::ResourceAccount(acct)) => {

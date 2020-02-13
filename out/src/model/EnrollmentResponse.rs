@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::ResourceList::ResourceList;
-use crate::model::Reference::Reference;
 use crate::model::Identifier::Identifier;
-use crate::model::Element::Element;
-use crate::model::Narrative::Narrative;
-use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use crate::model::Meta::Meta;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Narrative::Narrative;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -20,6 +20,71 @@ pub struct EnrollmentResponse<'a> {
 }
 
 impl EnrollmentResponse<'_> {
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A description of the status of the adjudication.
+  pub fn disposition(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("disposition") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Original request resource reference.
+  pub fn request(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("request") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for disposition
+  pub fn _disposition(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_disposition") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
   /// that contains it and/or the understanding of the containing element's
@@ -39,28 +104,10 @@ impl EnrollmentResponse<'_> {
     return None;
   }
 
-  /// Processing status: error, complete.
-  pub fn outcome(&self) -> Option<EnrollmentResponseOutcome> {
-    if let Some(Value::String(val)) = self.value.get("outcome") {
-      return Some(EnrollmentResponseOutcome::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// The Insurer who produced this adjudicated response.
   pub fn organization(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("organization") {
       return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -73,61 +120,10 @@ impl EnrollmentResponse<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Original request resource reference.
-  pub fn request(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("request") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// A description of the status of the adjudication.
-  pub fn disposition(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("disposition") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The status of the resource instance.
-  pub fn status(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("status") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The date when the enclosed suite of services were performed or completed.
-  pub fn created(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("created") {
-      return Some(string.to_string());
+  /// Processing status: error, complete.
+  pub fn outcome(&self) -> Option<EnrollmentResponseOutcome> {
+    if let Some(Value::String(val)) = self.value.get("outcome") {
+      return Some(EnrollmentResponseOutcome::from_string(&val).unwrap());
     }
     return None;
   }
@@ -145,43 +141,18 @@ impl EnrollmentResponse<'_> {
     return None;
   }
 
-  /// Extensions for created
-  pub fn _created(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_created") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for disposition
-  pub fn _disposition(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_disposition") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// The Response business identifier.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
+  /// The date when the enclosed suite of services were performed or completed.
+  pub fn created(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("created") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -196,22 +167,51 @@ impl EnrollmentResponse<'_> {
     return None;
   }
 
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The status of the resource instance.
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for created
+  pub fn _created(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_created") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The Response business identifier.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -222,6 +222,69 @@ impl EnrollmentResponse<'_> {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.disposition() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.request() {
+      _val.validate();
+    }
+    if let Some(_val) = self._disposition() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.organization() {
+      _val.validate();
+    }
+    if let Some(_val) = self.request_provider() {
+      _val.validate();
+    }
+    if let Some(_val) = self.outcome() {
+    }
+    if let Some(_val) = self.text() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.created() {
+    }
+    if let Some(_val) = self.meta() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self._created() {
+      _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self._outcome() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

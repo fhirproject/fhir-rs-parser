@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,6 +14,14 @@ pub struct TestReport_Assert<'a> {
 }
 
 impl TestReport_Assert<'_> {
+  /// An explanatory message associated with the result.
+  pub fn message(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("message") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -22,6 +30,38 @@ impl TestReport_Assert<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A link to further details on the result.
+  pub fn detail(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("detail") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for message
+  pub fn _message(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_message") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for result
+  pub fn _result(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_result") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The result of this assertion.
+  pub fn result(&self) -> Option<TestReport_AssertResult> {
+    if let Some(Value::String(val)) = self.value.get("result") {
+      return Some(TestReport_AssertResult::from_string(&val).unwrap());
     }
     return None;
   }
@@ -44,34 +84,10 @@ impl TestReport_Assert<'_> {
     return None;
   }
 
-  /// The result of this assertion.
-  pub fn result(&self) -> Option<TestReport_AssertResult> {
-    if let Some(Value::String(val)) = self.value.get("result") {
-      return Some(TestReport_AssertResult::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for result
-  pub fn _result(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_result") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A link to further details on the result.
-  pub fn detail(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("detail") {
       return Some(string.to_string());
     }
     return None;
@@ -85,20 +101,31 @@ impl TestReport_Assert<'_> {
     return None;
   }
 
-  /// An explanatory message associated with the result.
-  pub fn message(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("message") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.message() {
     }
-    return None;
-  }
-
-  /// Extensions for message
-  pub fn _message(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_message") {
-      return Some(Element { value: val });
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
+    if let Some(_val) = self.detail() {
+    }
+    if let Some(_val) = self._message() {
+      _val.validate();
+    }
+    if let Some(_val) = self._result() {
+      _val.validate();
+    }
+    if let Some(_val) = self.result() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._detail() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -14,13 +14,6 @@ pub struct MedicinalProductPharmaceutical_Characteristics<'a> {
 }
 
 impl MedicinalProductPharmaceutical_Characteristics<'_> {
-  /// A coded characteristic.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
@@ -30,12 +23,11 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
     return None;
   }
 
-  /// The status of characteristic e.g. assigned or pending.
-  pub fn status(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("status") {
-      return Some(CodeableConcept { value: val });
+  /// A coded characteristic.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -66,6 +58,30 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// The status of characteristic e.g. assigned or pending.
+  pub fn status(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("status") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.code().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.status() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

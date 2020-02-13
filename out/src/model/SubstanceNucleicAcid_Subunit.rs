@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::SubstanceNucleicAcid_Sugar::SubstanceNucleicAcid_Sugar;
+use crate::model::Extension::Extension;
 use crate::model::Attachment::Attachment;
 use crate::model::SubstanceNucleicAcid_Linkage::SubstanceNucleicAcid_Linkage;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -31,9 +31,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     return None;
   }
 
-  /// Extensions for subunit
-  pub fn _subunit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subunit") {
+  /// Extensions for sequence
+  pub fn _sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sequence") {
       return Some(Element { value: val });
     }
     return None;
@@ -50,27 +50,18 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The linkages between sugar residues will also be captured.
-  pub fn linkage(&self) -> Option<Vec<SubstanceNucleicAcid_Linkage>> {
-    if let Some(Value::Array(val)) = self.value.get("linkage") {
-      return Some(val.into_iter().map(|e| SubstanceNucleicAcid_Linkage { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// 5.3.6.8.1 Sugar ID (Mandatory).
   pub fn sugar(&self) -> Option<Vec<SubstanceNucleicAcid_Sugar>> {
     if let Some(Value::Array(val)) = self.value.get("sugar") {
       return Some(val.into_iter().map(|e| SubstanceNucleicAcid_Sugar { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for subunit
+  pub fn _subunit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subunit") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -95,26 +86,11 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     return None;
   }
 
-  /// The length of the sequence shall be captured.
-  pub fn length(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("length") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for sequence
-  pub fn _sequence(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sequence") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for length
-  pub fn _length(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_length") {
-      return Some(Element { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -149,12 +125,78 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     return None;
   }
 
+  /// Extensions for length
+  pub fn _length(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_length") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// (TBC).
   pub fn sequence_attachment(&self) -> Option<Attachment> {
     if let Some(val) = self.value.get("sequenceAttachment") {
       return Some(Attachment { value: val });
     }
     return None;
+  }
+
+  /// The linkages between sugar residues will also be captured.
+  pub fn linkage(&self) -> Option<Vec<SubstanceNucleicAcid_Linkage>> {
+    if let Some(Value::Array(val)) = self.value.get("linkage") {
+      return Some(val.into_iter().map(|e| SubstanceNucleicAcid_Linkage { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The length of the sequence shall be captured.
+  pub fn length(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("length") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.five_prime() {
+      _val.validate();
+    }
+    if let Some(_val) = self._sequence() {
+      _val.validate();
+    }
+    if let Some(_val) = self.three_prime() {
+      _val.validate();
+    }
+    if let Some(_val) = self.sugar() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._subunit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.sequence() {
+    }
+    if let Some(_val) = self.subunit() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._length() {
+      _val.validate();
+    }
+    if let Some(_val) = self.sequence_attachment() {
+      _val.validate();
+    }
+    if let Some(_val) = self.linkage() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.length() {
+    }
+    return true;
   }
 
 }

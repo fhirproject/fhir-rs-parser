@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,18 +15,19 @@ pub struct TestScript_Variable<'a> {
 }
 
 impl TestScript_Variable<'_> {
-  /// Descriptive name for this variable.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+  /// Extensions for sourceId
+  pub fn _source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceId") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for headerField
-  pub fn _header_field(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_headerField") {
-      return Some(Element { value: val });
+  /// The FHIRPath expression to evaluate against the fixture body. When variables are
+  /// defined, only one of either expression, headerField or path must be specified.
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -57,11 +58,10 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against
-  /// within this variable.
-  pub fn source_id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sourceId") {
-      return Some(string.to_string());
+  /// Extensions for defaultValue
+  pub fn _default_value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValue") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -75,34 +75,10 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Extensions for hint
-  pub fn _hint(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_hint") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A default, hard-coded, or user-defined value for this variable.
-  pub fn default_value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("defaultValue") {
       return Some(string.to_string());
     }
     return None;
@@ -117,9 +93,18 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Extensions for sourceId
-  pub fn _source_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_sourceId") {
+  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against
+  /// within this variable.
+  pub fn source_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sourceId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
@@ -133,26 +118,9 @@ impl TestScript_Variable<'_> {
     return None;
   }
 
-  /// Displayable text string with hint help information to the user when entering a
-  /// default value.
-  pub fn hint(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("hint") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for defaultValue
-  pub fn _default_value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_defaultValue") {
+  /// Extensions for headerField
+  pub fn _header_field(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_headerField") {
       return Some(Element { value: val });
     }
     return None;
@@ -162,15 +130,6 @@ impl TestScript_Variable<'_> {
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The FHIRPath expression to evaluate against the fixture body. When variables are
-  /// defined, only one of either expression, headerField or path must be specified.
-  pub fn expression(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("expression") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -185,6 +144,99 @@ impl TestScript_Variable<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// A default, hard-coded, or user-defined value for this variable.
+  pub fn default_value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValue") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Displayable text string with hint help information to the user when entering a
+  /// default value.
+  pub fn hint(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("hint") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Descriptive name for this variable.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for hint
+  pub fn _hint(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_hint") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._source_id() {
+      _val.validate();
+    }
+    if let Some(_val) = self.expression() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._expression() {
+      _val.validate();
+    }
+    if let Some(_val) = self._default_value() {
+      _val.validate();
+    }
+    if let Some(_val) = self.header_field() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.path() {
+    }
+    if let Some(_val) = self.source_id() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self._header_field() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.default_value() {
+    }
+    if let Some(_val) = self._path() {
+      _val.validate();
+    }
+    if let Some(_val) = self.hint() {
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self._hint() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

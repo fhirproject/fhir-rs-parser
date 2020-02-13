@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,10 +18,12 @@ pub struct Subscription_Channel<'a> {
 }
 
 impl Subscription_Channel<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// The mime type to send the payload in - either application/fhir+xml, or
+  /// application/fhir+json. If the payload is not present, then there is no payload
+  /// in the notification, just a notification. The mime type "text/plain" may also be
+  /// used for Email and SMS subscriptions.
+  pub fn payload(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("payload") {
       return Some(string.to_string());
     }
     return None;
@@ -35,6 +37,31 @@ impl Subscription_Channel<'_> {
     return None;
   }
 
+  /// Extensions for endpoint
+  pub fn _endpoint(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_endpoint") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The url that describes the actual end-point to send messages to.
+  pub fn endpoint(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("endpoint") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Additional headers / information to send as part of the notification.
   pub fn header(&self) -> Option<Vec<String>> {
     if let Some(Value::Array(val)) = self.value.get("header") {
@@ -43,18 +70,18 @@ impl Subscription_Channel<'_> {
     return None;
   }
 
-  /// Extensions for payload
-  pub fn _payload(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_payload") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for header
   pub fn _header(&self) -> Option<Vec<Element>> {
     if let Some(Value::Array(val)) = self.value.get("_header") {
       return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The type of channel to send notifications on.
+  pub fn fhir_type(&self) -> Option<Subscription_ChannelType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(Subscription_ChannelType::from_string(&val).unwrap());
     }
     return None;
   }
@@ -77,10 +104,10 @@ impl Subscription_Channel<'_> {
     return None;
   }
 
-  /// The type of channel to send notifications on.
-  pub fn fhir_type(&self) -> Option<Subscription_ChannelType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(Subscription_ChannelType::from_string(&val).unwrap());
+  /// Extensions for payload
+  pub fn _payload(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_payload") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -97,31 +124,37 @@ impl Subscription_Channel<'_> {
     return None;
   }
 
-  /// The url that describes the actual end-point to send messages to.
-  pub fn endpoint(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("endpoint") {
-      return Some(string.to_string());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.payload() {
     }
-    return None;
-  }
-
-  /// Extensions for endpoint
-  pub fn _endpoint(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_endpoint") {
-      return Some(Element { value: val });
+    if let Some(_val) = self._type() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The mime type to send the payload in - either application/fhir+xml, or
-  /// application/fhir+json. If the payload is not present, then there is no payload
-  /// in the notification, just a notification. The mime type "text/plain" may also be
-  /// used for Email and SMS subscriptions.
-  pub fn payload(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("payload") {
-      return Some(string.to_string());
+    if let Some(_val) = self._endpoint() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.endpoint() {
+    }
+    if let Some(_val) = self.header() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self._header() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._payload() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

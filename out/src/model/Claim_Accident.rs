@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Address::Address;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Address::Address;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,6 +19,27 @@ pub struct Claim_Accident<'a> {
 }
 
 impl Claim_Accident<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -37,11 +58,18 @@ impl Claim_Accident<'_> {
     return None;
   }
 
-  /// Date of an accident event  related to the products and services contained in the
-  /// claim.
-  pub fn date(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("date") {
-      return Some(val.as_i64().unwrap());
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The physical location of the accident event.
+  pub fn location_address(&self) -> Option<Address> {
+    if let Some(val) = self.value.get("locationAddress") {
+      return Some(Address { value: val });
     }
     return None;
   }
@@ -57,14 +85,6 @@ impl Claim_Accident<'_> {
   }
 
   /// The physical location of the accident event.
-  pub fn location_address(&self) -> Option<Address> {
-    if let Some(val) = self.value.get("locationAddress") {
-      return Some(Address { value: val });
-    }
-    return None;
-  }
-
-  /// The physical location of the accident event.
   pub fn location_reference(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("locationReference") {
       return Some(Reference { value: val });
@@ -72,33 +92,39 @@ impl Claim_Accident<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
+  /// Date of an accident event  related to the products and services contained in the
+  /// claim.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.location_address() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.location_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date() {
+    }
+    return true;
   }
 
 }

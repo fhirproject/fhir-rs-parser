@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Attachment::Attachment;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Attachment::Attachment;
 use serde_json::value::Value;
 
 
@@ -17,10 +17,27 @@ pub struct SubstanceSpecification_Representation<'a> {
 }
 
 impl SubstanceSpecification_Representation<'_> {
-  /// Extensions for representation
-  pub fn _representation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_representation") {
-      return Some(Element { value: val });
+  /// The structural representation as text string in a format e.g. InChI, SMILES,
+  /// MOLFILE, CDX.
+  pub fn representation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("representation") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An attached file with the structural representation.
+  pub fn attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("attachment") {
+      return Some(Attachment { value: val });
+    }
+    return None;
+  }
+
+  /// The type of structure (e.g. Full, Partial, Representative).
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -43,10 +60,19 @@ impl SubstanceSpecification_Representation<'_> {
     return None;
   }
 
-  /// The type of structure (e.g. Full, Partial, Representative).
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
+  /// Extensions for representation
+  pub fn _representation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_representation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -63,30 +89,27 @@ impl SubstanceSpecification_Representation<'_> {
     return None;
   }
 
-  /// An attached file with the structural representation.
-  pub fn attachment(&self) -> Option<Attachment> {
-    if let Some(val) = self.value.get("attachment") {
-      return Some(Attachment { value: val });
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.representation() {
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self.attachment() {
+      _val.validate();
     }
-    return None;
-  }
-
-  /// The structural representation as text string in a format e.g. InChI, SMILES,
-  /// MOLFILE, CDX.
-  pub fn representation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("representation") {
-      return Some(string.to_string());
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._representation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

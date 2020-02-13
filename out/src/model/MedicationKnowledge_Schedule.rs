@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,6 +14,13 @@ pub struct MedicationKnowledge_Schedule<'a> {
 }
 
 impl MedicationKnowledge_Schedule<'_> {
+  /// Specifies the specific drug schedule.
+  pub fn schedule(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["schedule"],
+    }
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -53,11 +60,17 @@ impl MedicationKnowledge_Schedule<'_> {
     return None;
   }
 
-  /// Specifies the specific drug schedule.
-  pub fn schedule(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["schedule"],
+  pub fn validate(&self) -> bool {
+    let _ = self.schedule().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

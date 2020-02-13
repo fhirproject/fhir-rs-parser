@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::SubstanceAmount::SubstanceAmount;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,10 +16,14 @@ pub struct SubstancePolymer_StartingMaterial<'a> {
 }
 
 impl SubstancePolymer_StartingMaterial<'_> {
-  /// Todo.
-  pub fn is_defining(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("isDefining") {
-      return Some(val.as_bool().unwrap());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -33,46 +37,10 @@ impl SubstancePolymer_StartingMaterial<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn material(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("material") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for isDefining
-  pub fn _is_defining(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_isDefining") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Todo.
   pub fn amount(&self) -> Option<SubstanceAmount> {
     if let Some(val) = self.value.get("amount") {
       return Some(SubstanceAmount { value: val });
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -93,6 +61,64 @@ impl SubstancePolymer_StartingMaterial<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Todo.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn is_defining(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("isDefining") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn material(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("material") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for isDefining
+  pub fn _is_defining(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_isDefining") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.amount() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.is_defining() {
+    }
+    if let Some(_val) = self.material() {
+      _val.validate();
+    }
+    if let Some(_val) = self._is_defining() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::CapabilityStatement_Endpoint::CapabilityStatement_Endpoint;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::CapabilityStatement_SupportedMessage::CapabilityStatement_SupportedMessage;
-use crate::model::CapabilityStatement_Endpoint::CapabilityStatement_Endpoint;
 use serde_json::value::Value;
 
 
@@ -19,35 +19,6 @@ pub struct CapabilityStatement_Messaging<'a> {
 }
 
 impl CapabilityStatement_Messaging<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for reliableCache
-  pub fn _reliable_cache(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_reliableCache") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Documentation about the system's messaging capabilities for this endpoint not
   /// otherwise documented by the capability statement.  For example, the process for
   /// becoming an authorized messaging exchange partner.
@@ -66,11 +37,10 @@ impl CapabilityStatement_Messaging<'_> {
     return None;
   }
 
-  /// Length if the receiver's reliable messaging cache in minutes (if a receiver) or
-  /// how long the cache length on the receiver should be (if a sender).
-  pub fn reliable_cache(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("reliableCache") {
-      return Some(val.as_u64().unwrap());
+  /// Extensions for reliableCache
+  pub fn _reliable_cache(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_reliableCache") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -93,6 +63,45 @@ impl CapabilityStatement_Messaging<'_> {
     return None;
   }
 
+  /// An endpoint (network accessible address) to which messages and/or replies are to
+  /// be sent.
+  pub fn endpoint(&self) -> Option<Vec<CapabilityStatement_Endpoint>> {
+    if let Some(Value::Array(val)) = self.value.get("endpoint") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_Endpoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Length if the receiver's reliable messaging cache in minutes (if a receiver) or
+  /// how long the cache length on the receiver should be (if a sender).
+  pub fn reliable_cache(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("reliableCache") {
+      return Some(val.as_u64().unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// References to message definitions for messages this system can send or receive.
   pub fn supported_message(&self) -> Option<Vec<CapabilityStatement_SupportedMessage>> {
     if let Some(Value::Array(val)) = self.value.get("supportedMessage") {
@@ -101,13 +110,32 @@ impl CapabilityStatement_Messaging<'_> {
     return None;
   }
 
-  /// An endpoint (network accessible address) to which messages and/or replies are to
-  /// be sent.
-  pub fn endpoint(&self) -> Option<Vec<CapabilityStatement_Endpoint>> {
-    if let Some(Value::Array(val)) = self.value.get("endpoint") {
-      return Some(val.into_iter().map(|e| CapabilityStatement_Endpoint { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.documentation() {
     }
-    return None;
+    if let Some(_val) = self._documentation() {
+      _val.validate();
+    }
+    if let Some(_val) = self._reliable_cache() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.endpoint() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.reliable_cache() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.supported_message() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    return true;
   }
 
 }

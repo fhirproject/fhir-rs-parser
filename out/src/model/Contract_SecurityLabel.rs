@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Coding::Coding;
 use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use serde_json::value::Value;
 
 
@@ -28,19 +28,27 @@ impl Contract_SecurityLabel<'_> {
     return None;
   }
 
-  /// Security label privacy tag that species the level of confidentiality protection
-  /// required for this term and/or term elements.
-  pub fn classification(&self) -> Coding {
-    Coding {
-      value: &self.value["classification"],
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
+    return None;
   }
 
-  /// Security label privacy tag that species the manner in which term and/or term
-  /// elements are to be protected.
-  pub fn control(&self) -> Option<Vec<Coding>> {
-    if let Some(Value::Array(val)) = self.value.get("control") {
-      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
+  /// Extensions for number
+  pub fn _number(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_number") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Number used to link this term or term element to the applicable Security Label.
+  pub fn number(&self) -> Option<Vec<u64>> {
+    if let Some(Value::Array(val)) = self.value.get("number") {
+      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -54,27 +62,11 @@ impl Contract_SecurityLabel<'_> {
     return None;
   }
 
-  /// Number used to link this term or term element to the applicable Security Label.
-  pub fn number(&self) -> Option<Vec<u64>> {
-    if let Some(Value::Array(val)) = self.value.get("number") {
-      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for number
-  pub fn _number(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_number") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Security label privacy tag that species the manner in which term and/or term
+  /// elements are to be protected.
+  pub fn control(&self) -> Option<Vec<Coding>> {
+    if let Some(Value::Array(val)) = self.value.get("control") {
+      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -95,6 +87,39 @@ impl Contract_SecurityLabel<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Security label privacy tag that species the level of confidentiality protection
+  /// required for this term and/or term elements.
+  pub fn classification(&self) -> Coding {
+    Coding {
+      value: &self.value["classification"],
+    }
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._number() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.number() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.category() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.control() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.classification().validate();
+    return true;
   }
 
 }

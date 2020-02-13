@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,45 +14,39 @@ pub struct Bundle_Request<'a> {
 }
 
 impl Bundle_Request<'_> {
-  /// Only perform the operation if the Etag value matches. For more information, see
-  /// the API section ["Managing Resource Contention"](http.html#concurrency).
-  pub fn if_match(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("ifMatch") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Only perform the operation if the last updated date matches. See the API
-  /// documentation for ["Conditional Read"](http.html#cread).
-  pub fn if_modified_since(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("ifModifiedSince") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for method
-  pub fn _method(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_method") {
+  /// Extensions for ifNoneExist
+  pub fn _if_none_exist(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_ifNoneExist") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for ifNoneMatch
-  pub fn _if_none_match(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_ifNoneMatch") {
+  /// The URL for this entry, relative to the root (the address to which the request
+  /// is posted).
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for ifModifiedSince
+  pub fn _if_modified_since(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_ifModifiedSince") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// If the ETag values match, return a 304 Not Modified status. See the API
-  /// documentation for ["Conditional Read"](http.html#cread).
-  pub fn if_none_match(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("ifNoneMatch") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -94,11 +88,18 @@ impl Bundle_Request<'_> {
     return None;
   }
 
-  /// The URL for this entry, relative to the root (the address to which the request
-  /// is posted).
-  pub fn url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("url") {
-      return Some(string.to_string());
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for ifNoneMatch
+  pub fn _if_none_match(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_ifNoneMatch") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -112,30 +113,11 @@ impl Bundle_Request<'_> {
     return None;
   }
 
-  /// Extensions for url
-  pub fn _url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_url") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for ifModifiedSince
-  pub fn _if_modified_since(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_ifModifiedSince") {
-      return Some(Element { value: val });
+  /// Only perform the operation if the Etag value matches. For more information, see
+  /// the API section ["Managing Resource Contention"](http.html#concurrency).
+  pub fn if_match(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("ifMatch") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -149,12 +131,72 @@ impl Bundle_Request<'_> {
     return None;
   }
 
-  /// Extensions for ifNoneExist
-  pub fn _if_none_exist(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_ifNoneExist") {
+  /// Extensions for method
+  pub fn _method(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_method") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// If the ETag values match, return a 304 Not Modified status. See the API
+  /// documentation for ["Conditional Read"](http.html#cread).
+  pub fn if_none_match(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("ifNoneMatch") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Only perform the operation if the last updated date matches. See the API
+  /// documentation for ["Conditional Read"](http.html#cread).
+  pub fn if_modified_since(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("ifModifiedSince") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._if_none_exist() {
+      _val.validate();
+    }
+    if let Some(_val) = self.url() {
+    }
+    if let Some(_val) = self._if_modified_since() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.if_none_exist() {
+    }
+    if let Some(_val) = self._if_match() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._url() {
+      _val.validate();
+    }
+    if let Some(_val) = self._if_none_match() {
+      _val.validate();
+    }
+    if let Some(_val) = self.method() {
+    }
+    if let Some(_val) = self.if_match() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._method() {
+      _val.validate();
+    }
+    if let Some(_val) = self.if_none_match() {
+    }
+    if let Some(_val) = self.if_modified_since() {
+    }
+    return true;
   }
 
 }

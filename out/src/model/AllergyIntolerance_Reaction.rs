@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
-use crate::model::Annotation::Annotation;
 use crate::model::Extension::Extension;
+use crate::model::Annotation::Annotation;
+use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -17,10 +17,10 @@ pub struct AllergyIntolerance_Reaction<'a> {
 }
 
 impl AllergyIntolerance_Reaction<'_> {
-  /// Extensions for onset
-  pub fn _onset(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_onset") {
-      return Some(Element { value: val });
+  /// Identification of the route by which the subject was exposed to the substance.
+  pub fn exposure_route(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("exposureRoute") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -33,65 +33,6 @@ impl AllergyIntolerance_Reaction<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Clinical assessment of the severity of the reaction event as a whole,
-  /// potentially considering multiple different manifestations.
-  pub fn severity(&self) -> Option<AllergyIntolerance_ReactionSeverity> {
-    if let Some(Value::String(val)) = self.value.get("severity") {
-      return Some(AllergyIntolerance_ReactionSeverity::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Identification of the specific substance (or pharmaceutical product) considered
-  /// to be responsible for the Adverse Reaction event. Note: the substance for a
-  /// specific reaction may be different from the substance identified as the cause of
-  /// the risk, but it must be consistent with it. For instance, it may be a more
-  /// specific substance (e.g. a brand medication) or a composite product that
-  /// includes the identified substance. It must be clinically safe to only process
-  /// the 'code' and ignore the 'reaction.substance'.  If a receiving system is unable
-  /// to confirm that AllergyIntolerance.reaction.substance falls within the semantic
-  /// scope of AllergyIntolerance.code, then the receiving system should ignore
-  /// AllergyIntolerance.reaction.substance.
-  pub fn substance(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("substance") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Identification of the route by which the subject was exposed to the substance.
-  pub fn exposure_route(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("exposureRoute") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for severity
-  pub fn _severity(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_severity") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Record of the date and/or time of the onset of the Reaction.
-  pub fn onset(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("onset") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -114,16 +55,61 @@ impl AllergyIntolerance_Reaction<'_> {
     return None;
   }
 
-  /// Clinical symptoms and/or signs that are observed or associated with the adverse
-  /// reaction event.
-  pub fn manifestation(&self) -> Vec<CodeableConcept> {
-    self.value.get("manifestation").unwrap().as_array().unwrap().into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>()
+  /// Extensions for onset
+  pub fn _onset(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_onset") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identification of the specific substance (or pharmaceutical product) considered
+  /// to be responsible for the Adverse Reaction event. Note: the substance for a
+  /// specific reaction may be different from the substance identified as the cause of
+  /// the risk, but it must be consistent with it. For instance, it may be a more
+  /// specific substance (e.g. a brand medication) or a composite product that
+  /// includes the identified substance. It must be clinically safe to only process
+  /// the 'code' and ignore the 'reaction.substance'.  If a receiving system is unable
+  /// to confirm that AllergyIntolerance.reaction.substance falls within the semantic
+  /// scope of AllergyIntolerance.code, then the receiving system should ignore
+  /// AllergyIntolerance.reaction.substance.
+  pub fn substance(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("substance") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Text description about the reaction as a whole, including details of the
+  /// manifestation if required.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for severity
+  pub fn _severity(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_severity") {
+      return Some(Element { value: val });
+    }
+    return None;
   }
 
   /// Additional text about the adverse reaction event not captured in other fields.
   pub fn note(&self) -> Option<Vec<Annotation>> {
     if let Some(Value::Array(val)) = self.value.get("note") {
       return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -136,13 +122,64 @@ impl AllergyIntolerance_Reaction<'_> {
     return None;
   }
 
-  /// Text description about the reaction as a whole, including details of the
-  /// manifestation if required.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
+  /// Clinical symptoms and/or signs that are observed or associated with the adverse
+  /// reaction event.
+  pub fn manifestation(&self) -> Vec<CodeableConcept> {
+    self.value.get("manifestation").unwrap().as_array().unwrap().into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>()
+  }
+
+  /// Record of the date and/or time of the onset of the Reaction.
+  pub fn onset(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("onset") {
       return Some(string.to_string());
     }
     return None;
+  }
+
+  /// Clinical assessment of the severity of the reaction event as a whole,
+  /// potentially considering multiple different manifestations.
+  pub fn severity(&self) -> Option<AllergyIntolerance_ReactionSeverity> {
+    if let Some(Value::String(val)) = self.value.get("severity") {
+      return Some(AllergyIntolerance_ReactionSeverity::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.exposure_route() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._onset() {
+      _val.validate();
+    }
+    if let Some(_val) = self.substance() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self._severity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.note() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    let _ = self.manifestation().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.onset() {
+    }
+    if let Some(_val) = self.severity() {
+    }
+    return true;
   }
 
 }

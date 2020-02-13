@@ -15,10 +15,35 @@ pub struct OperationDefinition_Overload<'a> {
 }
 
 impl OperationDefinition_Overload<'_> {
+  /// Extensions for parameterName
+  pub fn _parameter_name(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_parameterName") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Comments to go on overload.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for comment
   pub fn _comment(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_comment") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -61,29 +86,27 @@ impl OperationDefinition_Overload<'_> {
     return None;
   }
 
-  /// Extensions for parameterName
-  pub fn _parameter_name(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_parameterName") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._parameter_name() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    return None;
-  }
-
-  /// Comments to go on overload.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
+    if let Some(_val) = self.comment() {
     }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+    if let Some(_val) = self._comment() {
+      _val.validate();
     }
-    return None;
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.parameter_name() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    return true;
   }
 
 }

@@ -1,11 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Timing::Timing;
-use crate::model::DataRequirement::DataRequirement;
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::DataRequirement::DataRequirement;
+use crate::model::Timing::Timing;
+use crate::model::Extension::Extension;
 use crate::model::Expression::Expression;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,23 +19,10 @@ pub struct TriggerDefinition<'a> {
 }
 
 impl TriggerDefinition<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A boolean-valued expression that is evaluated in the context of the container of
-  /// the trigger definition and returns whether or not the trigger fires.
-  pub fn condition(&self) -> Option<Expression> {
-    if let Some(val) = self.value.get("condition") {
-      return Some(Expression { value: val });
+  /// The timing of the event (if this is a periodic trigger).
+  pub fn timing_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("timingDate") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -44,22 +31,6 @@ impl TriggerDefinition<'_> {
   pub fn timing_reference(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("timingReference") {
       return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The timing of the event (if this is a periodic trigger).
-  pub fn timing_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timingDateTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The timing of the event (if this is a periodic trigger).
-  pub fn timing_timing(&self) -> Option<Timing> {
-    if let Some(val) = self.value.get("timingTiming") {
-      return Some(Timing { value: val });
     }
     return None;
   }
@@ -82,40 +53,6 @@ impl TriggerDefinition<'_> {
     return None;
   }
 
-  /// The timing of the event (if this is a periodic trigger).
-  pub fn timing_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timingDate") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for timingDate
-  pub fn _timing_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_timingDate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A formal name for the event. This may be an absolute URI that identifies the
-  /// event formally (e.g. from a trigger registry), or a simple relative URI that
-  /// identifies the event in a local context.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for timingDateTime
-  pub fn _timing_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_timingDateTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for type
   pub fn _type(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_type") {
@@ -132,12 +69,116 @@ impl TriggerDefinition<'_> {
     return None;
   }
 
+  /// The timing of the event (if this is a periodic trigger).
+  pub fn timing_timing(&self) -> Option<Timing> {
+    if let Some(val) = self.value.get("timingTiming") {
+      return Some(Timing { value: val });
+    }
+    return None;
+  }
+
+  /// A formal name for the event. This may be an absolute URI that identifies the
+  /// event formally (e.g. from a trigger registry), or a simple relative URI that
+  /// identifies the event in a local context.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Extensions for name
   pub fn _name(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
+  }
+
+  /// Extensions for timingDate
+  pub fn _timing_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_timingDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The timing of the event (if this is a periodic trigger).
+  pub fn timing_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("timingDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for timingDateTime
+  pub fn _timing_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_timingDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A boolean-valued expression that is evaluated in the context of the container of
+  /// the trigger definition and returns whether or not the trigger fires.
+  pub fn condition(&self) -> Option<Expression> {
+    if let Some(val) = self.value.get("condition") {
+      return Some(Expression { value: val });
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.timing_date() {
+    }
+    if let Some(_val) = self.timing_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.data() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._type() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.timing_timing() {
+      _val.validate();
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self._timing_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.timing_date_time() {
+    }
+    if let Some(_val) = self._timing_date_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.condition() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

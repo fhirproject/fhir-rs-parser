@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -34,6 +34,14 @@ impl Person_Link<'_> {
     return None;
   }
 
+  /// Level of assurance that this link is associated with the target resource.
+  pub fn assurance(&self) -> Option<Person_LinkAssurance> {
+    if let Some(Value::String(val)) = self.value.get("assurance") {
+      return Some(Person_LinkAssurance::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -55,12 +63,11 @@ impl Person_Link<'_> {
     return None;
   }
 
-  /// Level of assurance that this link is associated with the target resource.
-  pub fn assurance(&self) -> Option<Person_LinkAssurance> {
-    if let Some(Value::String(val)) = self.value.get("assurance") {
-      return Some(Person_LinkAssurance::from_string(&val).unwrap());
+  /// The resource to which this actual person is associated.
+  pub fn target(&self) -> Reference {
+    Reference {
+      value: &self.value["target"],
     }
-    return None;
   }
 
   /// Extensions for assurance
@@ -71,11 +78,22 @@ impl Person_Link<'_> {
     return None;
   }
 
-  /// The resource to which this actual person is associated.
-  pub fn target(&self) -> Reference {
-    Reference {
-      value: &self.value["target"],
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.assurance() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    let _ = self.target().validate();
+    if let Some(_val) = self._assurance() {
+      _val.validate();
+    }
+    return true;
   }
 
 }

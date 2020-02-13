@@ -1,14 +1,14 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Narrative::Narrative;
-use crate::model::Extension::Extension;
-use crate::model::ResourceList::ResourceList;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::Meta::Meta;
+use crate::model::Extension::Extension;
+use crate::model::Narrative::Narrative;
+use crate::model::ResourceList::ResourceList;
+use crate::model::NamingSystem_UniqueId::NamingSystem_UniqueId;
 use crate::model::ContactDetail::ContactDetail;
 use crate::model::UsageContext::UsageContext;
-use crate::model::Meta::Meta;
-use crate::model::Element::Element;
-use crate::model::NamingSystem_UniqueId::NamingSystem_UniqueId;
 use serde_json::value::Value;
 
 
@@ -23,160 +23,20 @@ pub struct NamingSystem<'a> {
 }
 
 impl NamingSystem<'_> {
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for publisher
-  pub fn _publisher(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publisher") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("contact") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate naming system
-  /// instances.
-  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
-    if let Some(Value::Array(val)) = self.value.get("useContext") {
-      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Categorizes a naming system for easier search by grouping related naming
-  /// systems.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The date  (and optionally time) when the naming system was published. The date
-  /// must change when the business version changes and it must change if the status
-  /// code changes. In addition, it should change when the substantive content of the
-  /// naming system changes.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The name of the organization or individual that published the naming system.
-  pub fn publisher(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("publisher") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The name of the organization that is responsible for issuing identifiers or
-  /// codes for this namespace and ensuring their non-collision.
-  pub fn responsible(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("responsible") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for responsible
-  pub fn _responsible(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_responsible") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A natural language name identifying the naming system. This name should be
-  /// usable as an identifier for the module by machine processing applications such
-  /// as code generation.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Indicates how the system may be identified when referenced in electronic
-  /// exchange.
-  pub fn unique_id(&self) -> Vec<NamingSystem_UniqueId> {
-    self.value.get("uniqueId").unwrap().as_array().unwrap().into_iter().map(|e| NamingSystem_UniqueId { value: e }).collect::<Vec<_>>()
-  }
-
-  /// Extensions for usage
-  pub fn _usage(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_usage") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The logical id of the resource, as used in the URL for the resource. Once
   /// assigned, this value never changes.
   pub fn id(&self) -> Option<String> {
     if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A free text natural language description of the naming system from a consumer's
+  /// perspective. Details about what the namespace identifies including scope,
+  /// granularity, version labeling, etc.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
       return Some(string.to_string());
     }
     return None;
@@ -193,45 +53,104 @@ impl NamingSystem<'_> {
     return None;
   }
 
-  /// Provides guidance on the use of the namespace, including the handling of
-  /// formatting characters, use of upper vs. lower case, etc.
-  pub fn usage(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("usage") {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A natural language name identifying the naming system. This name should be
+  /// usable as an identifier for the module by machine processing applications such
+  /// as code generation.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
+  /// Extensions for usage
+  pub fn _usage(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_usage") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The status of this naming system. Enables tracking the life-cycle of the
-  /// content.
-  pub fn status(&self) -> Option<NamingSystemStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(NamingSystemStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Indicates the purpose for the naming system - what kinds of things does it make
-  /// unique?
-  pub fn kind(&self) -> Option<NamingSystemKind> {
-    if let Some(Value::String(val)) = self.value.get("kind") {
-      return Some(NamingSystemKind::from_string(&val).unwrap());
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate naming system
+  /// instances.
+  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+    if let Some(Value::Array(val)) = self.value.get("useContext") {
+      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for kind
+  pub fn _kind(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_kind") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date  (and optionally time) when the naming system was published. The date
+  /// must change when the business version changes and it must change if the status
+  /// code changes. In addition, it should change when the substantive content of the
+  /// naming system changes.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Indicates how the system may be identified when referenced in electronic
+  /// exchange.
+  pub fn unique_id(&self) -> Vec<NamingSystem_UniqueId> {
+    self.value.get("uniqueId").unwrap().as_array().unwrap().into_iter().map(|e| NamingSystem_UniqueId { value: e }).collect::<Vec<_>>()
+  }
+
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -255,22 +174,11 @@ impl NamingSystem<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A legal or geographic region in which the naming system is intended to be used.
-  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// The name of the organization that is responsible for issuing identifiers or
+  /// codes for this namespace and ensuring their non-collision.
+  pub fn responsible(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("responsible") {
+      return Some(string.to_string());
     }
     return None;
   }
@@ -278,6 +186,24 @@ impl NamingSystem<'_> {
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
       return Some(Element { value: val });
     }
     return None;
@@ -296,25 +222,202 @@ impl NamingSystem<'_> {
     return None;
   }
 
-  /// A free text natural language description of the naming system from a consumer's
-  /// perspective. Details about what the namespace identifies including scope,
-  /// granularity, version labeling, etc.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
       return Some(string.to_string());
     }
     return None;
   }
 
-  /// Extensions for kind
-  pub fn _kind(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_kind") {
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
   }
 
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The name of the organization or individual that published the naming system.
+  pub fn publisher(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the naming system is intended to be used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates the purpose for the naming system - what kinds of things does it make
+  /// unique?
+  pub fn kind(&self) -> Option<NamingSystemKind> {
+    if let Some(Value::String(val)) = self.value.get("kind") {
+      return Some(NamingSystemKind::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Categorizes a naming system for easier search by grouping related naming
+  /// systems.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for responsible
+  pub fn _responsible(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_responsible") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Provides guidance on the use of the namespace, including the handling of
+  /// formatting characters, use of upper vs. lower case, etc.
+  pub fn usage(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("usage") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The status of this naming system. Enables tracking the life-cycle of the
+  /// content.
+  pub fn status(&self) -> Option<NamingSystemStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(NamingSystemStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self._usage() {
+      _val.validate();
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self._publisher() {
+      _val.validate();
+    }
+    if let Some(_val) = self.use_context() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._kind() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date() {
+    }
+    let _ = self.unique_id().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.contact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.responsible() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.meta() {
+      _val.validate();
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.text() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self._date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.publisher() {
+    }
+    if let Some(_val) = self.jurisdiction() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.kind() {
+    }
+    if let Some(_val) = self.fhir_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._responsible() {
+      _val.validate();
+    }
+    if let Some(_val) = self.usage() {
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self.status() {
+    }
+    return true;
+  }
+
 }
+
+#[derive(Debug)]
+pub enum NamingSystemKind {
+  Codesystem,
+  Identifier,
+  Root,
+}
+
+impl NamingSystemKind {
+    pub fn from_string(string: &str) -> Option<NamingSystemKind> {
+      match string {
+        "codesystem" => Some(NamingSystemKind::Codesystem),
+        "identifier" => Some(NamingSystemKind::Identifier),
+        "root" => Some(NamingSystemKind::Root),
+        _ => None,
+    }
+  }
+}
+
 
 #[derive(Debug)]
 pub enum NamingSystemStatus {
@@ -331,25 +434,6 @@ impl NamingSystemStatus {
         "active" => Some(NamingSystemStatus::Active),
         "retired" => Some(NamingSystemStatus::Retired),
         "unknown" => Some(NamingSystemStatus::Unknown),
-        _ => None,
-    }
-  }
-}
-
-
-#[derive(Debug)]
-pub enum NamingSystemKind {
-  Codesystem,
-  Identifier,
-  Root,
-}
-
-impl NamingSystemKind {
-    pub fn from_string(string: &str) -> Option<NamingSystemKind> {
-      match string {
-        "codesystem" => Some(NamingSystemKind::Codesystem),
-        "identifier" => Some(NamingSystemKind::Identifier),
-        "root" => Some(NamingSystemKind::Root),
         _ => None,
     }
   }
