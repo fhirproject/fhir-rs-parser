@@ -29,6 +29,9 @@ mod tests {
             Some(crate::model::ResourceList::ResourceListEnum::ResourceAccount(acct)) => {
               println!("found resource account!: {:?}", acct)
             }
+            Some(crate::model::ResourceList::ResourceListEnum::ResourceCodeSystem(csys)) => {
+              println!("found codesystem: {:?}", csys);
+            }
             _ => {}
           }
           // println!("Resource: {:?}", resource.resource());
