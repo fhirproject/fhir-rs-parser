@@ -26,16 +26,6 @@ mod tests {
           println!("Successfully parsed {}", &unwrapped_path.to_str().unwrap());
           let resource = crate::model::ResourceList::ResourceList { value: &value };
           resource.validate();
-          let value = resource.resource();
-          match value {
-            Some(crate::model::ResourceList::ResourceListEnum::ResourceAccount(acct)) => {
-              println!("found resource account!: {:?}", acct)
-            }
-            Some(crate::model::ResourceList::ResourceListEnum::ResourceCodeSystem(csys)) => {
-              println!("found codesystem: {:?}", csys);
-            }
-            _ => {}
-          }
           // println!("Resource: {:?}", resource.resource());
         }
         Err(m) => assert!(
