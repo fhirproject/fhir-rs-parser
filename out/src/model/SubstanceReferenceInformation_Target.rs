@@ -1,59 +1,76 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
-use crate::model::Quantity::Quantity;
-use crate::model::Identifier::Identifier;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Range::Range;
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::Identifier::Identifier;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Quantity::Quantity;
+use serde_json::value::Value;
+
 
 
 /// Todo.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstanceReferenceInformation_Target {
+
+#[derive(Debug)]
+pub struct SubstanceReferenceInformation_Target<'a> {
+  pub value: &'a Value,
+}
+
+impl SubstanceReferenceInformation_Target<'_> {
+  /// Extensions for amountString
+  pub fn _amount_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Todo.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
-
-  /// Todo.
-  #[serde(rename = "amountRange")]
-  amount_range: Option<Range>,
-
-  /// Todo.
-  #[serde(rename = "amountType")]
-  amount_type: Option<CodeableConcept>,
-
-  /// Todo.
-  interaction: Option<CodeableConcept>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Todo.
-  #[serde(rename = "organismType")]
-  organism_type: Option<CodeableConcept>,
+  pub fn target(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("target") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
 
   /// Todo.
-  organism: Option<CodeableConcept>,
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// Todo.
-  #[serde(rename = "amountQuantity")]
-  amount_quantity: Option<Quantity>,
-
-  /// Extensions for amountString
-  #[serde(rename = "_amountString")]
-  _amount_string: Option<Element>,
+  pub fn organism_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("organismType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -66,17 +83,67 @@ pub struct SubstanceReferenceInformation_Target {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Todo.
-  #[serde(rename = "amountString")]
-  amount_string: Option<String>,
+  pub fn amount_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("amountQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
 
   /// Todo.
-  target: Option<Identifier>,
+  pub fn amount_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("amountType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// Todo.
-  source: Option<Vec<Box<Reference>>>,
+  pub fn amount_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn source(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("source") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn interaction(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("interaction") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn amount_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("amountRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn organism(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("organism") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
 }

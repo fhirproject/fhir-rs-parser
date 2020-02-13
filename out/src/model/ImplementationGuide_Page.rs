@@ -1,18 +1,43 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
 /// gather all the parts of an implementation guide into a logical whole and to
 /// publish a computable definition of all the parts.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ImplementationGuide_Page {
+
+#[derive(Debug)]
+pub struct ImplementationGuide_Page<'a> {
+  pub value: &'a Value,
+}
+
+impl ImplementationGuide_Page<'_> {
+  /// The source address for the page.
+  pub fn name_url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("nameUrl") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -24,64 +49,98 @@ pub struct ImplementationGuide_Page {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for title
-  #[serde(rename = "_title")]
-  _title: Option<Element>,
+  /// The source address for the page.
+  pub fn name_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("nameReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for nameUrl
-  #[serde(rename = "_nameUrl")]
-  _name_url: Option<Element>,
-
-  /// Nested Pages/Sections under this page.
-  page: Option<Vec<ImplementationGuide_Page>>,
-
-  /// A short title used to represent this page in navigational structures such as
-  /// table of contents, bread crumbs, etc.
-  title: Option<String>,
+  /// Extensions for generation
+  pub fn _generation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_generation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A short title used to represent this page in navigational structures such as
+  /// table of contents, bread crumbs, etc.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for nameUrl
+  pub fn _name_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_nameUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A code that indicates how the page is generated.
-  generation: Option<ImplementationGuide_PageGeneration>,
+  pub fn generation(&self) -> Option<ImplementationGuide_PageGeneration> {
+    if let Some(Value::String(val)) = self.value.get("generation") {
+      return Some(ImplementationGuide_PageGeneration::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The source address for the page.
-  #[serde(rename = "nameUrl")]
-  name_url: Option<String>,
-
-  /// The source address for the page.
-  #[serde(rename = "nameReference")]
-  name_reference: Option<Box<Reference>>,
-
-  /// Extensions for generation
-  #[serde(rename = "_generation")]
-  _generation: Option<Element>,
+  /// Nested Pages/Sections under this page.
+  pub fn page(&self) -> Option<Vec<ImplementationGuide_Page>> {
+    if let Some(Value::Array(val)) = self.value.get("page") {
+      return Some(val.into_iter().map(|e| ImplementationGuide_Page { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum ImplementationGuide_PageGeneration {
-  #[serde(rename = "html")]
   Html,
-
-  #[serde(rename = "markdown")]
   Markdown,
-
-  #[serde(rename = "xml")]
   Xml,
-
-  #[serde(rename = "generated")]
   Generated,
-
 }
+
+impl ImplementationGuide_PageGeneration {
+    pub fn from_string(string: &str) -> Option<ImplementationGuide_PageGeneration> {
+      match string {
+        "html" => Some(ImplementationGuide_PageGeneration::Html),
+        "markdown" => Some(ImplementationGuide_PageGeneration::Markdown),
+        "xml" => Some(ImplementationGuide_PageGeneration::Xml),
+        "generated" => Some(ImplementationGuide_PageGeneration::Generated),
+        _ => None,
+    }
+  }
+}
+

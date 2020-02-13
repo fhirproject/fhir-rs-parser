@@ -1,15 +1,145 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TestScript_Assert {
+
+#[derive(Debug)]
+pub struct TestScript_Assert<'a> {
+  pub value: &'a Value,
+}
+
+impl TestScript_Assert<'_> {
+  /// The direction to use for the assertion.
+  pub fn direction(&self) -> Option<TestScript_AssertDirection> {
+    if let Some(Value::String(val)) = self.value.get("direction") {
+      return Some(TestScript_AssertDirection::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for responseCode
+  pub fn _response_code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_responseCode") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for validateProfileId
+  pub fn _validate_profile_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_validateProfileId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for sourceId
+  pub fn _source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The type of the resource.  See http://build.fhir.org/resourcelist.html.
+  pub fn resource(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("resource") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for label
+  pub fn _label(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_label") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Id of the source fixture used as the contents to be evaluated by either the
+  /// "source/expression" or "sourceId/path" definition.
+  pub fn compare_to_source_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("compareToSourceId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The label would be used for tracking/logging purposes by test engines.
+  pub fn label(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("label") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The FHIRPath expression to evaluate against the source fixture. When
+  /// compareToSourceId is defined, either compareToSourceExpression or
+  /// compareToSourcePath must be defined, but not both.
+  pub fn compare_to_source_expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("compareToSourceExpression") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The value of the HTTP response code to be tested.
+  pub fn response_code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("responseCode") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for minimumId
+  pub fn _minimum_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_minimumId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for requestMethod
+  pub fn _request_method(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_requestMethod") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The description would be used by test engines for tracking and reporting
+  /// purposes.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -21,312 +151,390 @@ pub struct TestScript_Assert {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for warningOnly
-  #[serde(rename = "_warningOnly")]
-  _warning_only: Option<Element>,
+  /// The value to use in a comparison against the request URL path string.
+  pub fn request_u_r_l(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("requestURL") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The operator type defines the conditional behavior of the assert. If not
-  /// defined, the default is equals.
-  operator: Option<TestScript_AssertOperator>,
+  /// The XPath or JSONPath expression to be evaluated against the fixture
+  /// representing the response received from server.
+  pub fn path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("path") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for requestURL
+  pub fn _request_u_r_l(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_requestURL") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for navigationLinks
+  pub fn _navigation_links(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_navigationLinks") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The mime-type contents to compare against the request or response message
+  /// 'Content-Type' header.
+  pub fn content_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("contentType") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for direction
+  pub fn _direction(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_direction") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Whether or not the test execution will produce a warning only on error for this
+  /// assert.
+  pub fn warning_only(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("warningOnly") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
   /// The HTTP header field name e.g. 'Location'.
-  #[serde(rename = "headerField")]
-  header_field: Option<String>,
+  pub fn header_field(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("headerField") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The label would be used for tracking/logging purposes by test engines.
-  label: Option<String>,
+  /// The value to compare to.
+  pub fn value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for label
-  #[serde(rename = "_label")]
-  _label: Option<Element>,
+  /// Extensions for headerField
+  pub fn _header_field(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_headerField") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// The FHIRPath expression to be evaluated against the request or response message
   /// contents - HTTP headers and payload.
-  expression: Option<String>,
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for requestMethod
-  #[serde(rename = "_requestMethod")]
-  _request_method: Option<Element>,
+  /// The request method or HTTP operation code to compare against that used by the
+  /// client system under test.
+  pub fn request_method(&self) -> Option<TestScript_AssertRequestMethod> {
+    if let Some(Value::String(val)) = self.value.get("requestMethod") {
+      return Some(TestScript_AssertRequestMethod::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// okay | created | noContent | notModified | bad | forbidden | notFound |
+  /// methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.
+  pub fn response(&self) -> Option<TestScript_AssertResponse> {
+    if let Some(Value::String(val)) = self.value.get("response") {
+      return Some(TestScript_AssertResponse::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for response
+  pub fn _response(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_response") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The ID of a fixture.  Asserts that the response contains at a minimum the
+  /// fixture specified by minimumId.
+  pub fn minimum_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("minimumId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for warningOnly
+  pub fn _warning_only(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_warningOnly") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// XPath or JSONPath expression to evaluate against the source fixture. When
   /// compareToSourceId is defined, either compareToSourceExpression or
   /// compareToSourcePath must be defined, but not both.
-  #[serde(rename = "compareToSourcePath")]
-  compare_to_source_path: Option<String>,
+  pub fn compare_to_source_path(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("compareToSourcePath") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for validateProfileId
-  #[serde(rename = "_validateProfileId")]
-  _validate_profile_id: Option<Element>,
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for sourceId
-  #[serde(rename = "_sourceId")]
-  _source_id: Option<Element>,
+  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against.
+  pub fn source_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sourceId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Whether or not the test execution will produce a warning only on error for this
-  /// assert.
-  #[serde(rename = "warningOnly")]
-  warning_only: Option<bool>,
+  /// The ID of the Profile to validate against.
+  pub fn validate_profile_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("validateProfileId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for operator
-  #[serde(rename = "_operator")]
-  _operator: Option<Element>,
-
-  /// Id of the source fixture used as the contents to be evaluated by either the
-  /// "source/expression" or "sourceId/path" definition.
-  #[serde(rename = "compareToSourceId")]
-  compare_to_source_id: Option<String>,
-
-  /// The description would be used by test engines for tracking and reporting
-  /// purposes.
-  description: Option<String>,
-
-  /// The FHIRPath expression to evaluate against the source fixture. When
-  /// compareToSourceId is defined, either compareToSourceExpression or
-  /// compareToSourcePath must be defined, but not both.
-  #[serde(rename = "compareToSourceExpression")]
-  compare_to_source_expression: Option<String>,
+  /// The operator type defines the conditional behavior of the assert. If not
+  /// defined, the default is equals.
+  pub fn operator(&self) -> Option<TestScript_AssertOperator> {
+    if let Some(Value::String(val)) = self.value.get("operator") {
+      return Some(TestScript_AssertOperator::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// Whether or not the test execution performs validation on the bundle navigation
   /// links.
-  #[serde(rename = "navigationLinks")]
-  navigation_links: Option<bool>,
+  pub fn navigation_links(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("navigationLinks") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
-  /// Extensions for compareToSourceId
-  #[serde(rename = "_compareToSourceId")]
-  _compare_to_source_id: Option<Element>,
+  /// Extensions for compareToSourceExpression
+  pub fn _compare_to_source_expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_compareToSourceExpression") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for responseCode
-  #[serde(rename = "_responseCode")]
-  _response_code: Option<Element>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// Extensions for response
-  #[serde(rename = "_response")]
-  _response: Option<Element>,
-
-  /// The mime-type contents to compare against the request or response message
-  /// 'Content-Type' header.
-  #[serde(rename = "contentType")]
-  content_type: Option<String>,
-
-  /// The value of the HTTP response code to be tested.
-  #[serde(rename = "responseCode")]
-  response_code: Option<String>,
-
-  /// The ID of a fixture.  Asserts that the response contains at a minimum the
-  /// fixture specified by minimumId.
-  #[serde(rename = "minimumId")]
-  minimum_id: Option<String>,
-
-  /// Extensions for direction
-  #[serde(rename = "_direction")]
-  _direction: Option<Element>,
-
-  /// The value to compare to.
-  value: Option<String>,
+  /// Extensions for compareToSourcePath
+  pub fn _compare_to_source_path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_compareToSourcePath") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Fixture to evaluate the XPath/JSONPath expression or the headerField  against.
-  #[serde(rename = "sourceId")]
-  source_id: Option<String>,
-
-  /// Extensions for headerField
-  #[serde(rename = "_headerField")]
-  _header_field: Option<Element>,
-
-  /// Extensions for expression
-  #[serde(rename = "_expression")]
-  _expression: Option<Element>,
-
-  /// The direction to use for the assertion.
-  direction: Option<TestScript_AssertDirection>,
-
-  /// Extensions for path
-  #[serde(rename = "_path")]
-  _path: Option<Element>,
-
-  /// Extensions for value
-  #[serde(rename = "_value")]
-  _value: Option<Element>,
-
-  /// Extensions for contentType
-  #[serde(rename = "_contentType")]
-  _content_type: Option<Element>,
-
-  /// The XPath or JSONPath expression to be evaluated against the fixture
-  /// representing the response received from server.
-  path: Option<String>,
-
-  /// Extensions for minimumId
-  #[serde(rename = "_minimumId")]
-  _minimum_id: Option<Element>,
-
-  /// The request method or HTTP operation code to compare against that used by the
-  /// client system under test.
-  #[serde(rename = "requestMethod")]
-  request_method: Option<TestScript_AssertRequestMethod>,
-
-  /// Extensions for navigationLinks
-  #[serde(rename = "_navigationLinks")]
-  _navigation_links: Option<Element>,
-
-  /// The type of the resource.  See http://build.fhir.org/resourcelist.html.
-  resource: Option<String>,
-
-  /// Extensions for compareToSourcePath
-  #[serde(rename = "_compareToSourcePath")]
-  _compare_to_source_path: Option<Element>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for resource
-  #[serde(rename = "_resource")]
-  _resource: Option<Element>,
+  pub fn _resource(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_resource") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The ID of the Profile to validate against.
-  #[serde(rename = "validateProfileId")]
-  validate_profile_id: Option<String>,
+  /// Extensions for operator
+  pub fn _operator(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_operator") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for compareToSourceExpression
-  #[serde(rename = "_compareToSourceExpression")]
-  _compare_to_source_expression: Option<Element>,
+  /// Extensions for compareToSourceId
+  pub fn _compare_to_source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_compareToSourceId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for requestURL
-  #[serde(rename = "_requestURL")]
-  _request_u_r_l: Option<Element>,
-
-  /// The value to use in a comparison against the request URL path string.
-  #[serde(rename = "requestURL")]
-  request_u_r_l: Option<String>,
-
-  /// okay | created | noContent | notModified | bad | forbidden | notFound |
-  /// methodNotAllowed | conflict | gone | preconditionFailed | unprocessable.
-  response: Option<TestScript_AssertResponse>,
-
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub enum TestScript_AssertOperator {
-  #[serde(rename = "equals")]
-  Equals,
-
-  #[serde(rename = "notEquals")]
-  NotEquals,
-
-  #[serde(rename = "in")]
-  In,
-
-  #[serde(rename = "notIn")]
-  NotIn,
-
-  #[serde(rename = "greaterThan")]
-  GreaterThan,
-
-  #[serde(rename = "lessThan")]
-  LessThan,
-
-  #[serde(rename = "empty")]
-  Empty,
-
-  #[serde(rename = "notEmpty")]
-  NotEmpty,
-
-  #[serde(rename = "contains")]
-  Contains,
-
-  #[serde(rename = "notContains")]
-  NotContains,
-
-  #[serde(rename = "eval")]
-  Eval,
+  /// Extensions for contentType
+  pub fn _content_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum TestScript_AssertDirection {
-  #[serde(rename = "response")]
   Response,
-
-  #[serde(rename = "request")]
   Request,
-
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl TestScript_AssertDirection {
+    pub fn from_string(string: &str) -> Option<TestScript_AssertDirection> {
+      match string {
+        "response" => Some(TestScript_AssertDirection::Response),
+        "request" => Some(TestScript_AssertDirection::Request),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
 pub enum TestScript_AssertRequestMethod {
-  #[serde(rename = "delete")]
   Delete,
-
-  #[serde(rename = "get")]
   Get,
-
-  #[serde(rename = "options")]
   Options,
-
-  #[serde(rename = "patch")]
   Patch,
-
-  #[serde(rename = "post")]
   Post,
-
-  #[serde(rename = "put")]
   Put,
-
-  #[serde(rename = "head")]
   Head,
-
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl TestScript_AssertRequestMethod {
+    pub fn from_string(string: &str) -> Option<TestScript_AssertRequestMethod> {
+      match string {
+        "delete" => Some(TestScript_AssertRequestMethod::Delete),
+        "get" => Some(TestScript_AssertRequestMethod::Get),
+        "options" => Some(TestScript_AssertRequestMethod::Options),
+        "patch" => Some(TestScript_AssertRequestMethod::Patch),
+        "post" => Some(TestScript_AssertRequestMethod::Post),
+        "put" => Some(TestScript_AssertRequestMethod::Put),
+        "head" => Some(TestScript_AssertRequestMethod::Head),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
 pub enum TestScript_AssertResponse {
-  #[serde(rename = "okay")]
   Okay,
-
-  #[serde(rename = "created")]
   Created,
-
-  #[serde(rename = "noContent")]
   NoContent,
-
-  #[serde(rename = "notModified")]
   NotModified,
-
-  #[serde(rename = "bad")]
   Bad,
-
-  #[serde(rename = "forbidden")]
   Forbidden,
-
-  #[serde(rename = "notFound")]
   NotFound,
-
-  #[serde(rename = "methodNotAllowed")]
   MethodNotAllowed,
-
-  #[serde(rename = "conflict")]
   Conflict,
-
-  #[serde(rename = "gone")]
   Gone,
-
-  #[serde(rename = "preconditionFailed")]
   PreconditionFailed,
-
-  #[serde(rename = "unprocessable")]
   Unprocessable,
-
 }
+
+impl TestScript_AssertResponse {
+    pub fn from_string(string: &str) -> Option<TestScript_AssertResponse> {
+      match string {
+        "okay" => Some(TestScript_AssertResponse::Okay),
+        "created" => Some(TestScript_AssertResponse::Created),
+        "noContent" => Some(TestScript_AssertResponse::NoContent),
+        "notModified" => Some(TestScript_AssertResponse::NotModified),
+        "bad" => Some(TestScript_AssertResponse::Bad),
+        "forbidden" => Some(TestScript_AssertResponse::Forbidden),
+        "notFound" => Some(TestScript_AssertResponse::NotFound),
+        "methodNotAllowed" => Some(TestScript_AssertResponse::MethodNotAllowed),
+        "conflict" => Some(TestScript_AssertResponse::Conflict),
+        "gone" => Some(TestScript_AssertResponse::Gone),
+        "preconditionFailed" => Some(TestScript_AssertResponse::PreconditionFailed),
+        "unprocessable" => Some(TestScript_AssertResponse::Unprocessable),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum TestScript_AssertOperator {
+  Equals,
+  NotEquals,
+  In,
+  NotIn,
+  GreaterThan,
+  LessThan,
+  Empty,
+  NotEmpty,
+  Contains,
+  NotContains,
+  Eval,
+}
+
+impl TestScript_AssertOperator {
+    pub fn from_string(string: &str) -> Option<TestScript_AssertOperator> {
+      match string {
+        "equals" => Some(TestScript_AssertOperator::Equals),
+        "notEquals" => Some(TestScript_AssertOperator::NotEquals),
+        "in" => Some(TestScript_AssertOperator::In),
+        "notIn" => Some(TestScript_AssertOperator::NotIn),
+        "greaterThan" => Some(TestScript_AssertOperator::GreaterThan),
+        "lessThan" => Some(TestScript_AssertOperator::LessThan),
+        "empty" => Some(TestScript_AssertOperator::Empty),
+        "notEmpty" => Some(TestScript_AssertOperator::NotEmpty),
+        "contains" => Some(TestScript_AssertOperator::Contains),
+        "notContains" => Some(TestScript_AssertOperator::NotContains),
+        "eval" => Some(TestScript_AssertOperator::Eval),
+        _ => None,
+    }
+  }
+}
+

@@ -1,38 +1,29 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
-use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::Period::Period;
+use serde_json::value::Value;
+
 
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
 /// providing healthcare service(s) or assessing the health status of a patient.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Encounter_Participant {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+#[derive(Debug)]
+pub struct Encounter_Participant<'a> {
+  pub value: &'a Value,
+}
 
-  /// Role of participant in encounter.
-  #[serde(rename = "type")]
-  fhir_type: Option<Vec<CodeableConcept>>,
-
-  /// The period of time that the specified participant participated in the encounter.
-  /// These can overlap or be sub-sets of the overall encounter's period.
-  period: Option<Period>,
-
+impl Encounter_Participant<'_> {
   /// Persons involved in the encounter other than the patient.
-  individual: Option<Box<Reference>>,
+  pub fn individual(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("individual") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -45,7 +36,49 @@ pub struct Encounter_Participant {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Role of participant in encounter.
+  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("type") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The period of time that the specified participant participated in the encounter.
+  /// These can overlap or be sub-sets of the overall encounter's period.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
 }

@@ -1,58 +1,103 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Meta::Meta;
-use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
-use crate::model::PaymentReconciliation_ProcessNote::PaymentReconciliation_ProcessNote;
-use crate::model::Identifier::Identifier;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::ResourceList::ResourceList;
-use crate::model::PaymentReconciliation_Detail::PaymentReconciliation_Detail;
-use crate::model::Extension::Extension;
-use crate::model::Money::Money;
-use crate::model::Element::Element;
+use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
+use crate::model::Meta::Meta;
+use crate::model::Money::Money;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Identifier::Identifier;
+use crate::model::Element::Element;
+use crate::model::PaymentReconciliation_Detail::PaymentReconciliation_Detail;
+use crate::model::PaymentReconciliation_ProcessNote::PaymentReconciliation_ProcessNote;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// This resource provides the details including amount of a payment and allocates
 /// the payment items being paid.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct PaymentReconciliation {
-  /// Extensions for created
-  #[serde(rename = "_created")]
-  _created: Option<Element>,
 
-  /// The period of time for which payments have been gathered into this bulk payment
-  /// for settlement.
-  period: Option<Period>,
+#[derive(Debug)]
+pub struct PaymentReconciliation<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// A unique identifier assigned to this payment reconciliation.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Extensions for disposition
-  #[serde(rename = "_disposition")]
-  _disposition: Option<Element>,
+impl PaymentReconciliation<'_> {
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The party who generated the payment.
-  #[serde(rename = "paymentIssuer")]
-  payment_issuer: Option<Box<Reference>>,
+  pub fn payment_issuer(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("paymentIssuer") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// The outcome of a request for a reconciliation.
-  outcome: Option<PaymentReconciliationOutcome>,
+  /// The date when the resource was created.
+  pub fn created(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("created") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// A code for the form to be used for printing the content.
-  #[serde(rename = "formCode")]
-  form_code: Option<CodeableConcept>,
+  /// The practitioner who is responsible for the services rendered to the patient.
+  pub fn requestor(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("requestor") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for paymentDate
+  pub fn _payment_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_paymentDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A note that describes or explains the processing in a human readable form.
-  #[serde(rename = "processNote")]
-  process_note: Option<Vec<PaymentReconciliation_ProcessNote>>,
+  pub fn process_note(&self) -> Option<Vec<PaymentReconciliation_ProcessNote>> {
+    if let Some(Value::Array(val)) = self.value.get("processNote") {
+      return Some(val.into_iter().map(|e| PaymentReconciliation_ProcessNote { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A unique identifier assigned to this payment reconciliation.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -66,18 +111,28 @@ pub struct PaymentReconciliation {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Distribution of the payment amount for a previously acknowledged payable.
-  detail: Option<Vec<PaymentReconciliation_Detail>>,
+  /// The outcome of a request for a reconciliation.
+  pub fn outcome(&self) -> Option<PaymentReconciliationOutcome> {
+    if let Some(Value::String(val)) = self.value.get("outcome") {
+      return Some(PaymentReconciliationOutcome::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
-  /// The date of payment as indicated on the financial instrument.
-  #[serde(rename = "paymentDate")]
-  payment_date: Option<i32>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// Issuer's unique identifier for the payment instrument.
+  pub fn payment_identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("paymentIdentifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -85,90 +140,179 @@ pub struct PaymentReconciliation {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// The status of the resource instance.
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The date of payment as indicated on the financial instrument.
+  pub fn payment_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("paymentDate") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Distribution of the payment amount for a previously acknowledged payable.
+  pub fn detail(&self) -> Option<Vec<PaymentReconciliation_Detail>> {
+    if let Some(Value::Array(val)) = self.value.get("detail") {
+      return Some(val.into_iter().map(|e| PaymentReconciliation_Detail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for created
+  pub fn _created(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_created") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for disposition
+  pub fn _disposition(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_disposition") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A human readable description of the status of the request for the
   /// reconciliation.
-  disposition: Option<String>,
-
-  /// Original request resource reference.
-  request: Option<Box<Reference>>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// The date when the resource was created.
-  created: Option<String>,
-
-  /// Total payment amount as indicated on the financial instrument.
-  #[serde(rename = "paymentAmount")]
-  payment_amount: Money,
-
-  /// Issuer's unique identifier for the payment instrument.
-  #[serde(rename = "paymentIdentifier")]
-  payment_identifier: Option<Identifier>,
-
-  /// Extensions for outcome
-  #[serde(rename = "_outcome")]
-  _outcome: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// The practitioner who is responsible for the services rendered to the patient.
-  requestor: Option<Box<Reference>>,
-
-  /// Extensions for paymentDate
-  #[serde(rename = "_paymentDate")]
-  _payment_date: Option<Element>,
+  pub fn disposition(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("disposition") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
-  meta: Option<Meta>,
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  /// Total payment amount as indicated on the financial instrument.
+  pub fn payment_amount(&self) -> Money {
+    Money {
+      value: &self.value["paymentAmount"],
+    }
+  }
 
-  /// The status of the resource instance.
-  status: Option<String>,
+  /// Original request resource reference.
+  pub fn request(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("request") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
+  /// Extensions for outcome
+  pub fn _outcome(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_outcome") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A code for the form to be used for printing the content.
+  pub fn form_code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("formCode") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The period of time for which payments have been gathered into this bulk payment
+  /// for settlement.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum PaymentReconciliationOutcome {
-  #[serde(rename = "queued")]
   Queued,
-
-  #[serde(rename = "complete")]
   Complete,
-
-  #[serde(rename = "error")]
   Error,
-
-  #[serde(rename = "partial")]
   Partial,
-
 }
+
+impl PaymentReconciliationOutcome {
+    pub fn from_string(string: &str) -> Option<PaymentReconciliationOutcome> {
+      match string {
+        "queued" => Some(PaymentReconciliationOutcome::Queued),
+        "complete" => Some(PaymentReconciliationOutcome::Complete),
+        "error" => Some(PaymentReconciliationOutcome::Error),
+        "partial" => Some(PaymentReconciliationOutcome::Partial),
+        _ => None,
+    }
+  }
+}
+

@@ -1,50 +1,272 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
+use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
 use crate::model::TestScript_RequestHeader::TestScript_RequestHeader;
 use crate::model::Element::Element;
-use crate::model::Coding::Coding;
+use serde_json::value::Value;
+
 
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TestScript_Operation {
-  /// Extensions for label
-  #[serde(rename = "_label")]
-  _label: Option<Element>,
 
-  /// Complete request URL.
-  url: Option<String>,
+#[derive(Debug)]
+pub struct TestScript_Operation<'a> {
+  pub value: &'a Value,
+}
+
+impl TestScript_Operation<'_> {
+  /// Extensions for sourceId
+  pub fn _source_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sourceId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for targetId
+  pub fn _target_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_targetId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for responseId
-  #[serde(rename = "_responseId")]
-  _response_id: Option<Element>,
+  pub fn _response_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_responseId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for requestId
-  #[serde(rename = "_requestId")]
-  _request_id: Option<Element>,
+  /// Server interaction or operation type.
+  pub fn fhir_type(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("type") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Header elements would be used to set HTTP headers.
+  pub fn request_header(&self) -> Option<Vec<TestScript_RequestHeader>> {
+    if let Some(Value::Array(val)) = self.value.get("requestHeader") {
+      return Some(val.into_iter().map(|e| TestScript_RequestHeader { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for url
-  #[serde(rename = "_url")]
-  _url: Option<Element>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The fixture id (maybe new) to map to the response.
-  #[serde(rename = "responseId")]
-  response_id: Option<String>,
+  /// Extensions for label
+  pub fn _label(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_label") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The label would be used for tracking/logging purposes by test engines.
-  label: Option<String>,
+  /// The HTTP method the test engine MUST use for this operation regardless of any
+  /// other operation details.
+  pub fn method(&self) -> Option<TestScript_OperationMethod> {
+    if let Some(Value::String(val)) = self.value.get("method") {
+      return Some(TestScript_OperationMethod::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Complete request URL.
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The server where the request message is destined for.  Must be one of the server
   /// numbers listed in TestScript.destination section.
-  destination: Option<i32>,
+  pub fn destination(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("destination") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// The mime-type to use for RESTful operation in the 'Accept' header.
+  pub fn accept(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("accept") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for destination
+  pub fn _destination(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_destination") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Whether or not to implicitly send the request url in encoded format. The default
+  /// is true to match the standard RESTful client behavior. Set to false when
+  /// communicating with a server that does not support encoded url paths.
+  pub fn encode_request_url(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("encodeRequestUrl") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for origin
+  pub fn _origin(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_origin") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for params
+  pub fn _params(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_params") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The description would be used by test engines for tracking and reporting
+  /// purposes.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Path plus parameters after [type].  Used to set parts of the request URL
+  /// explicitly.
+  pub fn params(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("params") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for encodeRequestUrl
+  pub fn _encode_request_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_encodeRequestUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The server where the request message originates from.  Must be one of the server
+  /// numbers listed in TestScript.origin section.
+  pub fn origin(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("origin") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for requestId
+  pub fn _request_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_requestId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The fixture id (maybe new) to map to the response.
+  pub fn response_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("responseId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The type of the resource.  See http://build.fhir.org/resourcelist.html.
+  pub fn resource(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("resource") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for resource
+  pub fn _resource(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_resource") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for method
+  pub fn _method(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_method") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The fixture id (maybe new) to map to the request.
+  pub fn request_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("requestId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for accept
+  pub fn _accept(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_accept") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The label would be used for tracking/logging purposes by test engines.
+  pub fn label(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("label") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Id of fixture used for extracting the [id],  [type], and [vid] for GET requests.
+  pub fn target_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("targetId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for contentType
+  pub fn _content_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -57,135 +279,71 @@ pub struct TestScript_Operation {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Whether or not to implicitly send the request url in encoded format. The default
-  /// is true to match the standard RESTful client behavior. Set to false when
-  /// communicating with a server that does not support encoded url paths.
-  #[serde(rename = "encodeRequestUrl")]
-  encode_request_url: Option<bool>,
-
-  /// Extensions for sourceId
-  #[serde(rename = "_sourceId")]
-  _source_id: Option<Element>,
-
-  /// Id of fixture used for extracting the [id],  [type], and [vid] for GET requests.
-  #[serde(rename = "targetId")]
-  target_id: Option<String>,
-
-  /// Server interaction or operation type.
-  #[serde(rename = "type")]
-  fhir_type: Option<Coding>,
-
-  /// Extensions for destination
-  #[serde(rename = "_destination")]
-  _destination: Option<Element>,
-
-  /// The mime-type to use for RESTful operation in the 'Accept' header.
-  accept: Option<String>,
-
-  /// The mime-type to use for RESTful operation in the 'Content-Type' header.
-  #[serde(rename = "contentType")]
-  content_type: Option<String>,
-
-  /// Extensions for method
-  #[serde(rename = "_method")]
-  _method: Option<Element>,
-
-  /// Extensions for params
-  #[serde(rename = "_params")]
-  _params: Option<Element>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The id of the fixture used as the body of a PUT or POST request.
-  #[serde(rename = "sourceId")]
-  source_id: Option<String>,
+  pub fn source_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("sourceId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The fixture id (maybe new) to map to the request.
-  #[serde(rename = "requestId")]
-  request_id: Option<String>,
-
-  /// Extensions for targetId
-  #[serde(rename = "_targetId")]
-  _target_id: Option<Element>,
-
-  /// Path plus parameters after [type].  Used to set parts of the request URL
-  /// explicitly.
-  params: Option<String>,
-
-  /// The type of the resource.  See http://build.fhir.org/resourcelist.html.
-  resource: Option<String>,
-
-  /// The description would be used by test engines for tracking and reporting
-  /// purposes.
-  description: Option<String>,
-
-  /// Extensions for encodeRequestUrl
-  #[serde(rename = "_encodeRequestUrl")]
-  _encode_request_url: Option<Element>,
-
-  /// The server where the request message originates from.  Must be one of the server
-  /// numbers listed in TestScript.origin section.
-  origin: Option<i32>,
-
-  /// Extensions for contentType
-  #[serde(rename = "_contentType")]
-  _content_type: Option<Element>,
-
-  /// Header elements would be used to set HTTP headers.
-  #[serde(rename = "requestHeader")]
-  request_header: Option<Vec<TestScript_RequestHeader>>,
-
-  /// The HTTP method the test engine MUST use for this operation regardless of any
-  /// other operation details.
-  method: Option<TestScript_OperationMethod>,
-
-  /// Extensions for resource
-  #[serde(rename = "_resource")]
-  _resource: Option<Element>,
-
-  /// Extensions for origin
-  #[serde(rename = "_origin")]
-  _origin: Option<Element>,
-
-  /// Extensions for accept
-  #[serde(rename = "_accept")]
-  _accept: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  /// The mime-type to use for RESTful operation in the 'Content-Type' header.
+  pub fn content_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("contentType") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum TestScript_OperationMethod {
-  #[serde(rename = "delete")]
   Delete,
-
-  #[serde(rename = "get")]
   Get,
-
-  #[serde(rename = "options")]
   Options,
-
-  #[serde(rename = "patch")]
   Patch,
-
-  #[serde(rename = "post")]
   Post,
-
-  #[serde(rename = "put")]
   Put,
-
-  #[serde(rename = "head")]
   Head,
-
 }
+
+impl TestScript_OperationMethod {
+    pub fn from_string(string: &str) -> Option<TestScript_OperationMethod> {
+      match string {
+        "delete" => Some(TestScript_OperationMethod::Delete),
+        "get" => Some(TestScript_OperationMethod::Get),
+        "options" => Some(TestScript_OperationMethod::Options),
+        "patch" => Some(TestScript_OperationMethod::Patch),
+        "post" => Some(TestScript_OperationMethod::Post),
+        "put" => Some(TestScript_OperationMethod::Put),
+        "head" => Some(TestScript_OperationMethod::Head),
+        _ => None,
+    }
+  }
+}
+

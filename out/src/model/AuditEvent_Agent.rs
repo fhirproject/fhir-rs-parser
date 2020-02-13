@@ -1,64 +1,76 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Coding::Coding;
-use crate::model::Extension::Extension;
-use crate::model::AuditEvent_Network::AuditEvent_Network;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::AuditEvent_Network::AuditEvent_Network;
+use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// A record of an event made for purposes of maintaining a security log. Typical
 /// uses include detection of intrusion attempts and monitoring for inappropriate
 /// usage.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct AuditEvent_Agent {
-  /// Indicator that the user is or is not the requestor, or initiator, for the event
-  /// being audited.
-  requestor: Option<bool>,
 
-  /// Type of media involved. Used when the event is about exporting/importing onto
-  /// media.
-  media: Option<Coding>,
+#[derive(Debug)]
+pub struct AuditEvent_Agent<'a> {
+  pub value: &'a Value,
+}
 
+impl AuditEvent_Agent<'_> {
   /// Human-meaningful name for the agent.
-  name: Option<String>,
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The reason (purpose of use), specific to this agent, that was used during the
-  /// event being recorded.
-  #[serde(rename = "purposeOfUse")]
-  purpose_of_use: Option<Vec<CodeableConcept>>,
-
-  /// Reference to who this agent is that was involved in the event.
-  who: Option<Box<Reference>>,
-
-  /// Alternative agent Identifier. For a human, this should be a user identifier text
-  /// string from authentication system. This identifier would be one known to a
-  /// common authentication system (e.g. single sign-on), if available.
-  #[serde(rename = "altId")]
-  alt_id: Option<String>,
+  /// Logical network location for application activity, if the activity has a network
+  /// location.
+  pub fn network(&self) -> Option<AuditEvent_Network> {
+    if let Some(val) = self.value.get("network") {
+      return Some(AuditEvent_Network { value: val });
+    }
+    return None;
+  }
 
   /// The security role that the user was acting under, that come from local codes
   /// defined by the access control security system (e.g. RBAC, ABAC) used in the
   /// local context.
-  role: Option<Vec<CodeableConcept>>,
+  pub fn role(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("role") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// The reason (purpose of use), specific to this agent, that was used during the
+  /// event being recorded.
+  pub fn purpose_of_use(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("purposeOfUse") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  /// Extensions for requestor
+  pub fn _requestor(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_requestor") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
+  /// Extensions for policy
+  pub fn _policy(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_policy") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -71,36 +83,111 @@ pub struct AuditEvent_Agent {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Specification of the participation type the user plays when performing the
-  /// event.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for requestor
-  #[serde(rename = "_requestor")]
-  _requestor: Option<Element>,
+  /// Extensions for altId
+  pub fn _alt_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_altId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicator that the user is or is not the requestor, or initiator, for the event
+  /// being audited.
+  pub fn requestor(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("requestor") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Where the event occurred.
-  location: Option<Box<Reference>>,
+  pub fn location(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("location") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The policy or plan that authorized the activity being recorded. Typically, a
   /// single activity may have multiple applicable policies, such as patient consent,
   /// guarantor funding, etc. The policy would also indicate the security token used.
-  policy: Option<Vec<String>>,
+  pub fn policy(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("policy") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for policy
-  #[serde(rename = "_policy")]
-  _policy: Option<Vec<Element>>,
+  /// Reference to who this agent is that was involved in the event.
+  pub fn who(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("who") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Logical network location for application activity, if the activity has a network
-  /// location.
-  network: Option<AuditEvent_Network>,
+  /// Alternative agent Identifier. For a human, this should be a user identifier text
+  /// string from authentication system. This identifier would be one known to a
+  /// common authentication system (e.g. single sign-on), if available.
+  pub fn alt_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("altId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for altId
-  #[serde(rename = "_altId")]
-  _alt_id: Option<Element>,
+  /// Specification of the participation type the user plays when performing the
+  /// event.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Type of media involved. Used when the event is about exporting/importing onto
+  /// media.
+  pub fn media(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("media") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
 
 }

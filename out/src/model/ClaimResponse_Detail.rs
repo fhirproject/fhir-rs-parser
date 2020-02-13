@@ -1,40 +1,59 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::ClaimResponse_SubDetail::ClaimResponse_SubDetail;
-use crate::model::ClaimResponse_Adjudication::ClaimResponse_Adjudication;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::ClaimResponse_Adjudication::ClaimResponse_Adjudication;
+use crate::model::ClaimResponse_SubDetail::ClaimResponse_SubDetail;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ClaimResponse_Detail {
+
+#[derive(Debug)]
+pub struct ClaimResponse_Detail<'a> {
+  pub value: &'a Value,
+}
+
+impl ClaimResponse_Detail<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for detailSequence
-  #[serde(rename = "_detailSequence")]
-  _detail_sequence: Option<Element>,
+  pub fn _detail_sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detailSequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// A number to uniquely reference the claim detail entry.
-  #[serde(rename = "detailSequence")]
-  detail_sequence: Option<i32>,
+  /// Extensions for noteNumber
+  pub fn _note_number(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_noteNumber") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The numbers associated with notes below which apply to the adjudication of this
-  /// item.
-  #[serde(rename = "noteNumber")]
-  note_number: Option<Vec<i32>>,
+  /// The adjudication results.
+  pub fn adjudication(&self) -> Vec<ClaimResponse_Adjudication> {
+    self.value.get("adjudication").unwrap().as_array().unwrap().into_iter().map(|e| ClaimResponse_Adjudication { value: e }).collect::<Vec<_>>()
+  }
+
+  /// A sub-detail adjudication of a simple product or service.
+  pub fn sub_detail(&self) -> Option<Vec<ClaimResponse_SubDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("subDetail") {
+      return Some(val.into_iter().map(|e| ClaimResponse_SubDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -47,18 +66,40 @@ pub struct ClaimResponse_Detail {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// A sub-detail adjudication of a simple product or service.
-  #[serde(rename = "subDetail")]
-  sub_detail: Option<Vec<ClaimResponse_SubDetail>>,
+  /// A number to uniquely reference the claim detail entry.
+  pub fn detail_sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("detailSequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
-  /// Extensions for noteNumber
-  #[serde(rename = "_noteNumber")]
-  _note_number: Option<Vec<Element>>,
+  /// The numbers associated with notes below which apply to the adjudication of this
+  /// item.
+  pub fn note_number(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("noteNumber") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The adjudication results.
-  adjudication: Vec<ClaimResponse_Adjudication>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

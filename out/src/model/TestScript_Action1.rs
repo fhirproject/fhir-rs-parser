@@ -1,30 +1,58 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::TestScript_Assert::TestScript_Assert;
-use crate::model::Extension::Extension;
 use crate::model::TestScript_Operation::TestScript_Operation;
+use crate::model::Extension::Extension;
+use crate::model::TestScript_Assert::TestScript_Assert;
+use serde_json::value::Value;
+
 
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TestScript_Action1 {
-  /// Evaluates the results of previous operations to determine if the server under
-  /// test behaves appropriately.
-  assert: Option<TestScript_Assert>,
+
+#[derive(Debug)]
+pub struct TestScript_Action1<'a> {
+  pub value: &'a Value,
+}
+
+impl TestScript_Action1<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An operation would involve a REST request to a server.
+  pub fn operation(&self) -> Option<TestScript_Operation> {
+    if let Some(val) = self.value.get("operation") {
+      return Some(TestScript_Operation { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Evaluates the results of previous operations to determine if the server under
+  /// test behaves appropriately.
+  pub fn assert(&self) -> Option<TestScript_Assert> {
+    if let Some(val) = self.value.get("assert") {
+      return Some(TestScript_Assert { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -37,10 +65,11 @@ pub struct TestScript_Action1 {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// An operation would involve a REST request to a server.
-  operation: Option<TestScript_Operation>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

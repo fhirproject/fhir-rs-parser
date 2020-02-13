@@ -1,39 +1,115 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// Describes the event of a patient being administered a vaccine or a record of an
 /// immunization as reported by a patient, a clinician or another party.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Immunization_ProtocolApplied {
-  /// Extensions for seriesDosesString
-  #[serde(rename = "_seriesDosesString")]
-  _series_doses_string: Option<Element>,
 
-  /// One possible path to achieve presumed immunity against a disease - within the
-  /// context of an authority.
-  series: Option<String>,
+#[derive(Debug)]
+pub struct Immunization_ProtocolApplied<'a> {
+  pub value: &'a Value,
+}
 
-  /// The recommended number of doses to achieve immunity.
-  #[serde(rename = "seriesDosesString")]
-  series_doses_string: Option<String>,
+impl Immunization_ProtocolApplied<'_> {
+  /// Extensions for seriesDosesPositiveInt
+  pub fn _series_doses_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_seriesDosesPositiveInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for doseNumberString
+  pub fn _dose_number_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_doseNumberString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for series
+  pub fn _series(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_series") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The vaccine preventable disease the dose is being administered against.
+  pub fn target_disease(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("targetDisease") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Nominal position in a series.
+  pub fn dose_number_positive_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("doseNumberPositiveInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// One possible path to achieve presumed immunity against a disease - within the
+  /// context of an authority.
+  pub fn series(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("series") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Nominal position in a series.
+  pub fn dose_number_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("doseNumberString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The recommended number of doses to achieve immunity.
+  pub fn series_doses_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("seriesDosesString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for doseNumberPositiveInt
-  #[serde(rename = "_doseNumberPositiveInt")]
-  _dose_number_positive_int: Option<Element>,
+  pub fn _dose_number_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_doseNumberPositiveInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -46,43 +122,36 @@ pub struct Immunization_ProtocolApplied {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for doseNumberString
-  #[serde(rename = "_doseNumberString")]
-  _dose_number_string: Option<Element>,
-
-  /// Nominal position in a series.
-  #[serde(rename = "doseNumberString")]
-  dose_number_string: Option<String>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for series
-  #[serde(rename = "_series")]
-  _series: Option<Element>,
-
-  /// Extensions for seriesDosesPositiveInt
-  #[serde(rename = "_seriesDosesPositiveInt")]
-  _series_doses_positive_int: Option<Element>,
+  /// The recommended number of doses to achieve immunity.
+  pub fn series_doses_positive_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("seriesDosesPositiveInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
   /// Indicates the authority who published the protocol (e.g. ACIP) that is being
   /// followed.
-  authority: Option<Box<Reference>>,
+  pub fn authority(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("authority") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// The recommended number of doses to achieve immunity.
-  #[serde(rename = "seriesDosesPositiveInt")]
-  series_doses_positive_int: Option<i32>,
-
-  /// Nominal position in a series.
-  #[serde(rename = "doseNumberPositiveInt")]
-  dose_number_positive_int: Option<i32>,
-
-  /// The vaccine preventable disease the dose is being administered against.
-  #[serde(rename = "targetDisease")]
-  target_disease: Option<Vec<CodeableConcept>>,
+  /// Extensions for seriesDosesString
+  pub fn _series_doses_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_seriesDosesString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

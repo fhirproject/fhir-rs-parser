@@ -1,75 +1,43 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// Raw data describing a biological sequence.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MolecularSequence_Repository {
-  /// Id of the variant in this external repository. The server will understand how to
-  /// use this id to call for more info about datasets in external repository.
-  #[serde(rename = "datasetId")]
-  dataset_id: Option<String>,
 
-  /// Extensions for url
-  #[serde(rename = "_url")]
-  _url: Option<Element>,
+#[derive(Debug)]
+pub struct MolecularSequence_Repository<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for datasetId
-  #[serde(rename = "_datasetId")]
-  _dataset_id: Option<Element>,
-
-  /// Extensions for readsetId
-  #[serde(rename = "_readsetId")]
-  _readset_id: Option<Element>,
-
-  /// Id of the variantset in this external repository. The server will understand how
-  /// to use this id to call for more info about variantsets in external repository.
-  #[serde(rename = "variantsetId")]
-  variantset_id: Option<String>,
-
-  /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
+impl MolecularSequence_Repository<'_> {
   /// Extensions for variantsetId
-  #[serde(rename = "_variantsetId")]
-  _variantset_id: Option<Element>,
-
-  /// URI of an external repository which contains further details about the genetics
-  /// data.
-  url: Option<String>,
+  pub fn _variantset_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_variantsetId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Id of the read in this external repository.
-  #[serde(rename = "readsetId")]
-  readset_id: Option<String>,
-
-  /// URI of an external repository which contains further details about the genetics
-  /// data.
-  name: Option<String>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn readset_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("readsetId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Click and see / RESTful API / Need login to see / RESTful API with
   /// authentication / Other ways to see resource.
-  #[serde(rename = "type")]
-  fhir_type: Option<MolecularSequence_RepositoryType>,
+  pub fn fhir_type(&self) -> Option<MolecularSequence_RepositoryType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(MolecularSequence_RepositoryType::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -82,26 +50,131 @@ pub struct MolecularSequence_Repository {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for datasetId
+  pub fn _dataset_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_datasetId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for readsetId
+  pub fn _readset_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_readsetId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// URI of an external repository which contains further details about the genetics
+  /// data.
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Id of the variantset in this external repository. The server will understand how
+  /// to use this id to call for more info about variantsets in external repository.
+  pub fn variantset_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("variantsetId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// URI of an external repository which contains further details about the genetics
+  /// data.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Id of the variant in this external repository. The server will understand how to
+  /// use this id to call for more info about datasets in external repository.
+  pub fn dataset_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("datasetId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum MolecularSequence_RepositoryType {
-  #[serde(rename = "directlink")]
   Directlink,
-
-  #[serde(rename = "openapi")]
   Openapi,
-
-  #[serde(rename = "login")]
   Login,
-
-  #[serde(rename = "oauth")]
   Oauth,
-
-  #[serde(rename = "other")]
   Other,
-
 }
+
+impl MolecularSequence_RepositoryType {
+    pub fn from_string(string: &str) -> Option<MolecularSequence_RepositoryType> {
+      match string {
+        "directlink" => Some(MolecularSequence_RepositoryType::Directlink),
+        "openapi" => Some(MolecularSequence_RepositoryType::Openapi),
+        "login" => Some(MolecularSequence_RepositoryType::Login),
+        "oauth" => Some(MolecularSequence_RepositoryType::Oauth),
+        "other" => Some(MolecularSequence_RepositoryType::Other),
+        _ => None,
+    }
+  }
+}
+

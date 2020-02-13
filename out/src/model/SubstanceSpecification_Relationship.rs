@@ -1,57 +1,151 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Range::Range;
-use crate::model::Element::Element;
-use crate::model::Reference::Reference;
-use crate::model::Quantity::Quantity;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 use crate::model::Ratio::Ratio;
+use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Range::Range;
+use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstanceSpecification_Relationship {
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_Relationship<'a> {
+  pub value: &'a Value,
+}
+
+impl SubstanceSpecification_Relationship<'_> {
   /// Extensions for amountString
-  #[serde(rename = "_amountString")]
-  _amount_string: Option<Element>,
+  pub fn _amount_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// For example where an enzyme strongly bonds with a particular substance, this is
+  /// a defining relationship for that enzyme, out of several possible substance
+  /// relationships.
+  pub fn is_defining(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("isDefining") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// A pointer to another substance, as a resource or just a representational code.
+  pub fn substance_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("substanceCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A numeric factor for the relationship, for instance to express that the salt of
+  /// a substance has some percentage of the active substance in relation to some
+  /// other.
+  pub fn amount_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("amountQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// A numeric factor for the relationship, for instance to express that the salt of
+  /// a substance has some percentage of the active substance in relation to some
+  /// other.
+  pub fn amount_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A numeric factor for the relationship, for instance to express that the salt of
+  /// a substance has some percentage of the active substance in relation to some
+  /// other.
+  pub fn amount_ratio(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("amountRatio") {
+      return Some(Ratio { value: val });
+    }
+    return None;
+  }
+
+  /// A numeric factor for the relationship, for instance to express that the salt of
+  /// a substance has some percentage of the active substance in relation to some
+  /// other.
+  pub fn amount_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("amountRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
 
   /// For example "salt to parent", "active moiety", "starting material".
-  relationship: Option<CodeableConcept>,
+  pub fn relationship(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("relationship") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
-  /// Supporting literature.
-  source: Option<Vec<Box<Reference>>>,
+  /// An operator for the amount, for example "average", "approximately", "less than".
+  pub fn amount_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("amountType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for isDefining
-  #[serde(rename = "_isDefining")]
-  _is_defining: Option<Element>,
-
-  /// A pointer to another substance, as a resource or just a representational code.
-  #[serde(rename = "substanceReference")]
-  substance_reference: Option<Box<Reference>>,
-
-  /// A numeric factor for the relationship, for instance to express that the salt of
-  /// a substance has some percentage of the active substance in relation to some
-  /// other.
-  #[serde(rename = "amountRatio")]
-  amount_ratio: Option<Ratio>,
-
-  /// A numeric factor for the relationship, for instance to express that the salt of
-  /// a substance has some percentage of the active substance in relation to some
-  /// other.
-  #[serde(rename = "amountQuantity")]
-  amount_quantity: Option<Quantity>,
+  pub fn _is_defining(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_isDefining") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// For use when the numeric.
-  #[serde(rename = "amountRatioLowLimit")]
-  amount_ratio_low_limit: Option<Ratio>,
+  pub fn amount_ratio_low_limit(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("amountRatioLowLimit") {
+      return Some(Ratio { value: val });
+    }
+    return None;
+  }
 
-  /// A pointer to another substance, as a resource or just a representational code.
-  #[serde(rename = "substanceCodeableConcept")]
-  substance_codeable_concept: Option<CodeableConcept>,
+  /// Supporting literature.
+  pub fn source(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("source") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -64,40 +158,19 @@ pub struct SubstanceSpecification_Relationship {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// A numeric factor for the relationship, for instance to express that the salt of
-  /// a substance has some percentage of the active substance in relation to some
-  /// other.
-  #[serde(rename = "amountString")]
-  amount_string: Option<String>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// For example where an enzyme strongly bonds with a particular substance, this is
-  /// a defining relationship for that enzyme, out of several possible substance
-  /// relationships.
-  #[serde(rename = "isDefining")]
-  is_defining: Option<bool>,
-
-  /// An operator for the amount, for example "average", "approximately", "less than".
-  #[serde(rename = "amountType")]
-  amount_type: Option<CodeableConcept>,
-
-  /// A numeric factor for the relationship, for instance to express that the salt of
-  /// a substance has some percentage of the active substance in relation to some
-  /// other.
-  #[serde(rename = "amountRange")]
-  amount_range: Option<Range>,
+  /// A pointer to another substance, as a resource or just a representational code.
+  pub fn substance_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("substanceReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
 }

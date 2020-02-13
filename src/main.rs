@@ -127,41 +127,28 @@ fn main() {
   }
 
   let builtin_type_to_class_map: HashMap<&str, (&str, Option<&str>)> = hashmap! {
-    "int" => ("i32", None),
-    "integer" => ("i32", None),
-    "number" => ("i32", None), // todo
+    "int" => ("i64", None),
+    "integer" => ("i64", None),
+    "number" => ("i64", None), // todo
     "uri" => ("String", None),
     "url" => ("String", None),
     "markdown" => ("String", None),
     "xhtml" => ("String", None),
-    "decimal" => ("f32", None),
-    "positiveInt" => ("i32", None),
+    "decimal" => ("f64", None),
+    "positiveInt" => ("i64", None),
     "canonical" => ("String", None),
-    "float" => ("f32", None),
+    "float" => ("f64", None),
     "string" => ("String", None),
     "code" => ("String", None),
     "boolean" => ("bool", None),
-    "unsignedInt" => ("u32", None),
+    "unsignedInt" => ("u64", None),
     "id" => ("String", None),
     "time" => ("String", None), // todo
     "time" => ("String", None), // todo
     "instant" => ("String", None), // todo
-    "date" => ("i32", None), // todo
+    "date" => ("i64", None), // todo
     "base64Binary" => ("String", None),
     "dateTime" => ("String", None), // todo
-    // These structs are way too heavyweight to remain on the stack,
-    // so we break them into heap references.
-    "Reference" => ("Box<Reference>", Some("crate::model::Reference::Reference")),
-    "ElementDefinition" => ("Box<ElementDefinition>", Some("crate::model::ElementDefinition::ElementDefinition")),
-    "StructureDefinition" => ("Box<StructureDefinition>", Some("crate::model::StructureDefinition::StructureDefinition")),
-    "Extension" => ("Box<Extension>", Some("crate::model::Extension::Extension")),
-    "ImplementationGuide" => ("Box<ImplementationGuide>", Some("crate::model::ImplementationGuide::ImplementationGuide")),
-    "ActivityDefinition" => ("Box<ActivityDefinition>", Some("crate::model::ActivityDefinition::ActivityDefinition")),
-    "StructureMap_Source" => ("Box<StructureMap_Source>", Some("crate::model::StructureMap_Source::StructureMap_Source")),
-    "Measure" => ("Box<Measure>", Some("crate::model::Measure::Measure")),
-    "ResearchElementDefinition" => ("Box<ResearchElementDefinition>", Some("crate::model::ResearchElementDefinition::ResearchElementDefinition")),
-    "ElementDefinition_Example" => ("Box<ElementDefinition_Example>", Some("crate::model::ElementDefinition_Example::ElementDefinition_Example")),
-    "Observation" => ("Box<Observation>", Some("crate::model::Observation::Observation")),
 
   };
 
@@ -200,7 +187,7 @@ fn main() {
   model_mod_contents.push_str("#![allow(non_snake_case)]\n\n");
 
   for (definition_name, definition) in &fhir_schema.definitions {
-    let contents = generate_class(
+    let contents = generate_trait(
       &definition_name,
       &definition,
       &reference_to_class_name_map,
@@ -224,22 +211,18 @@ fn main() {
 
   parser_string.push_str("#![allow(unused_imports, non_camel_case_types)]\n\n");
 
-  parser_string.push_str("use serde::{Deserialize, Serialize};\nuse crate::model;\n\n");
+  parser_string.push_str("use crate::model;\n\n");
 
-  parser_string.push_str("#[derive(Debug, Serialize, Deserialize)]\n");
-  parser_string.push_str("#[serde(tag = \"resourceType\")]\n");
-  parser_string.push_str("pub enum FHIRResource {\n");
+  parser_string.push_str("#[derive(Debug)]\n");
+  parser_string.push_str("pub enum FHIRResourceEnum<'a> {\n");
   for (resource_name, _) in &fhir_schema.discriminator.mapping {
-    parser_string.push_str("  #[serde(rename = \"");
-    parser_string.push_str(&resource_name);
-    parser_string.push_str("\")]\n");
     parser_string.push_str("  Parsed");
     parser_string.push_str(&resource_name);
     parser_string.push_str("(model::");
     parser_string.push_str(&resource_name);
     parser_string.push_str("::");
     parser_string.push_str(&resource_name);
-    parser_string.push_str("),\n\n");
+    parser_string.push_str("<'a>),\n");
   }
   parser_string.push_str("}");
 
@@ -265,7 +248,7 @@ fn write_string_to_file(contents: &str, path_string: &str) -> bool {
   return true;
 }
 
-fn generate_class(
+fn generate_trait(
   name: &str,
   definition: &Definition,
   reference_to_class_name_map: &HashMap<String, String>,
@@ -279,48 +262,79 @@ fn generate_class(
 
   string.push_str("#![allow(unused_imports, non_camel_case_types)]\n\n");
 
-  string.push_str("use serde::{Deserialize, Serialize};\n");
-
   let mut inner_string = String::new();
 
+  inner_string.push_str("use serde_json::value::Value;\n\n");
+
   if let Some(one_of) = &definition.one_of {
-    inner_string.push_str("\n#[derive(Debug, Serialize, Deserialize)]\n");
-    inner_string.push_str("#[serde(tag = \"resourceType\")]\n");
+    inner_string.push_str("\n#[derive(Debug)]\n");
+    inner_string.push_str("pub struct ");
+    inner_string.push_str(name);
+    inner_string.push_str("<'a> {\n");
+    inner_string.push_str("  pub value: &'a Value,\n");
+    inner_string.push_str("}\n\n");
+
+    let mut impl_string = String::new();
+    impl_string.push_str("impl ");
+    impl_string.push_str(name);
+    impl_string.push_str("<'_> {\n");
+    impl_string.push_str("  pub fn resource(&self) -> Option<");
+    impl_string.push_str(name);
+    impl_string.push_str("Enum> {\n");
+    impl_string.push_str("    let fhir_type = self.value[\"resourceType\"].as_str().unwrap();\n");
+    impl_string.push_str("    match fhir_type {\n");
+
+    inner_string.push_str("#[derive(Debug)]\n");
     inner_string.push_str("pub enum ");
     inner_string.push_str(name);
-    inner_string.push_str(" {\n");
+    inner_string.push_str("Enum<'a> {\n");
     for hash_map in one_of {
       let fhir_ref = &hash_map["$ref"];
       let original_name = extract_type_from_ref(&fhir_ref);
-      let (fhir_name, import) = class_name_from_fhir_ref(
+      let type_definition = type_definition_from_fhir_ref(
         &fhir_ref,
         &reference_to_class_name_map,
         builtin_type_to_class_map,
       );
-      if let Some(import) = import {
+      if let Some(import) = type_definition.import {
         pending_imports.insert(import);
       }
-      inner_string.push_str("  #[serde(rename = \"");
-      inner_string.push_str(&original_name);
-      inner_string.push_str("\")]\n");
       inner_string.push_str("  Resource");
       inner_string.push_str(&original_name);
       inner_string.push_str("(");
-      inner_string.push_str(&fhir_name);
-      inner_string.push_str("),\n\n");
+      inner_string.push_str(&type_definition.name);
+      inner_string.push_str("<'a>),\n");
+      impl_string.push_str("      \"");
+      impl_string.push_str(&original_name);
+      impl_string.push_str("\" => Some(");
+      impl_string.push_str(name);
+      impl_string.push_str("Enum::Resource");
+      impl_string.push_str(&type_definition.name);
+      impl_string.push_str("(");
+      impl_string.push_str(&type_definition.name);
+      impl_string.push_str(" { value: self.value })),\n");
     }
-    inner_string.push_str("}\n")
+    impl_string.push_str("      _ => None,\n");
+    impl_string.push_str("    }\n");
+    impl_string.push_str("  }\n");
+    impl_string.push_str("}\n\n");
+    inner_string.push_str("}\n\n");
+    inner_string.push_str(&impl_string);
   } else {
     inner_string.push_str("\n\n");
 
     if let Some(description) = &definition.description {
       inner_string.push_str(&indent(&fill(&description, 80), "/// "));
     }
-    inner_string.push_str("#[derive(Debug, Serialize, Deserialize)]\n");
-    inner_string.push_str("#[serde(rename_all = \"camelCase\")]\n");
+    inner_string.push_str("\n#[derive(Debug)]\n");
     inner_string.push_str("pub struct ");
     inner_string.push_str(name);
-    inner_string.push_str(" {\n");
+    inner_string.push_str("<'a> {\n");
+    inner_string.push_str("  pub value: &'a Value,\n}\n\n");
+
+    inner_string.push_str("impl ");
+    inner_string.push_str(name);
+    inner_string.push_str("<'_> {\n");
 
     let properties = match &definition.properties {
       Some(properties) => properties,
@@ -333,80 +347,58 @@ fn generate_class(
     };
 
     for (property_name, property) in properties {
-      let sanitized_name = sanitize_property_name(property_name, &property_replacement_map);
-      let needs_rename = &sanitized_name != property_name || sanitized_name.starts_with("_");
       let required = required_property_names.contains(&property_name[..]);
       match property {
         Property::Reference {
           description,
           fhir_ref,
         } => {
-          let (class_name, import) = class_name_from_fhir_ref(
+          let type_definition = type_definition_from_fhir_ref(
             &fhir_ref,
             reference_to_class_name_map,
             builtin_type_to_class_map,
           );
 
-          if let Some(import) = import {
-            pending_imports.insert(import);
+          if let Some(import) = &type_definition.import {
+            pending_imports.insert(import.clone());
           }
 
-          inner_string.push_str(&indent(
-            &fill(&sanitize_description(description), 80),
-            "  /// ",
-          ));
-          if needs_rename {
-            inner_string.push_str("  #[serde(rename = \"");
-            inner_string.push_str(property_name);
-            inner_string.push_str("\")]\n");
-          }
-          inner_string.push_str("  ");
-          inner_string.push_str(&sanitized_name);
-          inner_string.push_str(": ");
-          if !required {
-            inner_string.push_str("Option<");
-          }
-          inner_string.push_str(&class_name);
-          if !required {
-            inner_string.push_str(">");
-          }
-          inner_string.push_str(",\n\n");
+          write_property(
+            &mut inner_string,
+            &property_name,
+            &type_definition,
+            &description,
+            required,
+            false,
+            "  ",
+            &property_replacement_map,
+          );
         }
         Property::PatternedTyped {
           description,
           pattern: _,
           fhir_type,
         } => {
-          let (class_name, import) = class_name_from_fhir_type(
+          let type_definition = type_definition_from_fhir_type(
             &fhir_type,
             reference_to_class_name_map,
             builtin_type_to_class_map,
           );
 
-          if let Some(import) = import {
-            pending_imports.insert(import);
+          if let Some(import) = &type_definition.import {
+            pending_imports.insert(import.clone());
           }
 
-          inner_string.push_str(&indent(
-            &fill(&sanitize_description(description), 80),
-            "  /// ",
-          ));
-          if needs_rename {
-            inner_string.push_str("  #[serde(rename = \"");
-            inner_string.push_str(property_name);
-            inner_string.push_str("\")]\n");
-          }
-          inner_string.push_str("  ");
-          inner_string.push_str(&sanitized_name);
-          inner_string.push_str(": ");
-          if !required {
-            inner_string.push_str("Option<");
-          }
-          inner_string.push_str(&class_name);
-          if !required {
-            inner_string.push_str(">");
-          }
-          inner_string.push_str(",\n\n");
+          write_property(
+            &mut inner_string,
+            &property_name,
+            &type_definition,
+            &description,
+            required,
+            false,
+            "  ",
+            &property_replacement_map,
+          );
         }
         Property::Array {
           description,
@@ -415,116 +407,88 @@ fn generate_class(
         } => {
           assert_eq!(fhir_type, "array");
           if let Some(Item::Ref(item_ref)) = items.get("$ref") {
-            let (class_name, import) = class_name_from_fhir_ref(
+            let type_definition = type_definition_from_fhir_ref(
               &item_ref,
               reference_to_class_name_map,
               builtin_type_to_class_map,
             );
-            if let Some(import) = import {
-              pending_imports.insert(import);
+            if let Some(import) = &type_definition.import {
+              pending_imports.insert(import.clone());
             }
-            inner_string.push_str(&indent(
-              &fill(&sanitize_description(description), 80),
-              "  /// ",
-            ));
-            if needs_rename {
-              inner_string.push_str("  #[serde(rename = \"");
-              inner_string.push_str(property_name);
-              inner_string.push_str("\")]\n");
-            }
-            inner_string.push_str("  ");
-            inner_string.push_str(&sanitized_name);
-            inner_string.push_str(": ");
-            if !required {
-              inner_string.push_str("Option<");
-            }
-            inner_string.push_str("Vec<");
-            inner_string.push_str(&class_name);
-            if !required {
-              inner_string.push_str(">");
-            }
-            inner_string.push_str(">,\n\n");
+            write_property(
+              &mut inner_string,
+              &property_name,
+              &type_definition,
+              &description,
+              required,
+              true,
+              "  ",
+              &property_replacement_map,
+            );
           } else if let Some(Item::Enum(item_enum)) = items.get("$ref") {
-            let enum_name = format!("{}{}", name, property_name.to_class_case());
-            pending_enums.push((enum_name.clone(), item_enum));
-
-            inner_string.push_str(&indent(
-              &fill(&sanitize_description(description), 80),
-              "  /// ",
-            ));
-            if needs_rename {
-              inner_string.push_str("  #[serde(rename = \"");
-              inner_string.push_str(property_name);
-              inner_string.push_str("\")]\n");
-            }
-            inner_string.push_str("  ");
-            inner_string.push_str(&sanitized_name);
-            inner_string.push_str(": ");
-            if !required {
-              inner_string.push_str("Option<");
-            }
-            inner_string.push_str("Vec<");
-            inner_string.push_str(&enum_name);
-            if !required {
-              inner_string.push_str(">");
-            }
-            inner_string.push_str(">,\n\n");
+            let type_definition = TypeDefinition {
+              name: format!("{}{}", name, property_name.to_class_case()),
+              builtin: false,
+              string_enum: true,
+              import: None,
+            };
+            pending_enums.push((type_definition.name.clone(), item_enum));
+            write_property(
+              &mut inner_string,
+              &property_name,
+              &type_definition,
+              &description,
+              required,
+              false,
+              "  ",
+              &property_replacement_map,
+            );
           }
         }
         Property::Typed {
           description,
           fhir_type,
         } => {
-          let (class_name, import) = class_name_from_fhir_type(
+          let type_definition = type_definition_from_fhir_type(
             &fhir_type,
             reference_to_class_name_map,
             builtin_type_to_class_map,
           );
-          if let Some(import) = import {
-            pending_imports.insert(import);
+          if let Some(import) = &type_definition.import {
+            pending_imports.insert(import.clone());
           }
-          inner_string.push_str(&indent(&fill(description, 80), "  /// "));
-          if needs_rename {
-            inner_string.push_str("  #[serde(rename = \"");
-            inner_string.push_str(property_name);
-            inner_string.push_str("\")]\n");
-          }
-          inner_string.push_str("  ");
-          inner_string.push_str(&sanitized_name);
-          inner_string.push_str(": ");
-          if !required {
-            inner_string.push_str("Option<");
-          }
-          inner_string.push_str(&class_name);
-          if !required {
-            inner_string.push_str(">");
-          }
-          inner_string.push_str(",\n\n");
+          write_property(
+            &mut inner_string,
+            &property_name,
+            &type_definition,
+            &description,
+            required,
+            false,
+            "  ",
+            &property_replacement_map,
+          );
         }
         Property::Enum {
           description,
           fhir_enum,
         } => {
-          let enum_name = format!("{}{}", name, property_name.to_class_case());
-          pending_enums.push((enum_name.clone(), fhir_enum));
-
-          inner_string.push_str(&indent(&fill(description, 80), "  /// "));
-          if needs_rename {
-            inner_string.push_str("  #[serde(rename = \"");
-            inner_string.push_str(property_name);
-            inner_string.push_str("\")]\n");
-          }
-          inner_string.push_str("  ");
-          inner_string.push_str(&sanitized_name);
-          inner_string.push_str(": ");
-          if !required {
-            inner_string.push_str("Option<");
-          }
-          inner_string.push_str(&enum_name);
-          if !required {
-            inner_string.push_str(">");
-          }
-          inner_string.push_str(",\n\n");
+          let type_definition = TypeDefinition {
+            name: format!("{}{}", name, property_name.to_class_case()),
+            builtin: false,
+            string_enum: true,
+            import: None,
+          };
+          pending_enums.push((type_definition.name.clone(), fhir_enum));
+          write_property(
+            &mut inner_string,
+            &property_name,
+            &type_definition,
+            &description,
+            required,
+            false,
+            "  ",
+            &property_replacement_map,
+          );
         }
         Property::Const {
           description: _,
@@ -537,19 +501,36 @@ fn generate_class(
   }
 
   for (enum_name, values) in pending_enums {
-    inner_string.push_str("\n#[derive(Debug, Serialize, Deserialize)]\n");
+    inner_string.push_str("\n#[derive(Debug)]\n");
     inner_string.push_str("pub enum ");
     inner_string.push_str(&enum_name);
     inner_string.push_str(" {\n");
+    let mut enum_impl_string = String::new();
+    enum_impl_string.push_str("impl ");
+    enum_impl_string.push_str(&enum_name);
+    enum_impl_string.push_str(" {\n");
+    enum_impl_string.push_str("    pub fn from_string(string: &str) -> Option<");
+    enum_impl_string.push_str(&enum_name);
+    enum_impl_string.push_str("> {\n");
+    enum_impl_string.push_str("      match string {\n");
     for value in values {
-      inner_string.push_str("  #[serde(rename = \"");
-      inner_string.push_str(&value);
-      inner_string.push_str("\")]\n");
+      let sanitized_name = sanitize_name(value, property_replacement_map).to_class_case();
       inner_string.push_str("  ");
-      inner_string.push_str(&sanitize_name(value, property_replacement_map).to_class_case());
-      inner_string.push_str(",\n\n");
+      inner_string.push_str(&sanitized_name);
+      inner_string.push_str(",\n");
+      enum_impl_string.push_str("        \"");
+      enum_impl_string.push_str(&value);
+      enum_impl_string.push_str("\" => Some(");
+      enum_impl_string.push_str(&enum_name);
+      enum_impl_string.push_str("::");
+      enum_impl_string.push_str(&sanitized_name);
+      enum_impl_string.push_str("),\n");
     }
-    inner_string.push_str("}\n")
+    inner_string.push_str("}\n\n");
+    enum_impl_string.push_str("        _ => None,\n");
+    enum_impl_string.push_str("    }\n  }\n}\n\n");
+
+    inner_string.push_str(&enum_impl_string);
   }
 
   for import in pending_imports {
@@ -562,37 +543,218 @@ fn generate_class(
   return string;
 }
 
-fn class_name_from_fhir_type(
+fn write_property(
+  inner_string: &mut String,
+  property_name: &str,
+  type_definition: &TypeDefinition,
+  description: &str,
+  required: bool,
+  array: bool,
+  indentation_level: &str,
+  property_replacement_map: &HashMap<&str, &str>,
+) {
+  let sanitized_name = sanitize_property_name(property_name, &property_replacement_map);
+  let _needs_rename = &sanitized_name != property_name || sanitized_name.starts_with("_");
+
+  let mut type_name = String::new();
+  {
+    if !required {
+      type_name.push_str("Option<");
+    }
+    if array {
+      type_name.push_str("Vec<")
+    }
+    type_name.push_str(&type_definition.name);
+    if array {
+      type_name.push_str(">")
+    }
+    if !required {
+      type_name.push_str(">");
+    }
+  }
+
+  let mut getter = String::new();
+  // getter
+  getter.push_str("  pub fn ");
+  getter.push_str(&sanitized_name);
+  getter.push_str("(&self) -> ");
+  getter.push_str(&type_name);
+
+  // generated impl
+  inner_string.push_str(&indent(
+    &fill(&sanitize_description(description), 80),
+    &format!("{}{}", indentation_level, "/// "),
+  ));
+  inner_string.push_str(&getter);
+  inner_string.push_str(" {\n");
+  if array {
+    if type_definition.builtin {
+      if required {
+        if type_definition.name == "String" {
+          inner_string.push_str("    self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>()\n");
+        } else {
+          inner_string.push_str("    self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| e.as_");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str("().unwrap()).collect::<Vec<_>>()\n");
+        }
+      } else {
+        if type_definition.name == "String" {
+          inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string
+            .push_str("\") {\n      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());\n    }\n    return None;\n");
+        } else {
+          inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\") {\n      return Some(val.into_iter().map(|e| e.as_");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str("().unwrap()).collect::<Vec<_>>());\n    }\n    return None;\n");
+        }
+      }
+    } else {
+      if required {
+        if type_definition.string_enum {
+          inner_string.push_str("    self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| ");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str("::from_string(&e).unwrap()).collect::<Vec<_>>()\n");
+        } else {
+          inner_string.push_str("    self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| ");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str(" { value: e }).collect::<Vec<_>>()\n");
+        }
+      } else {
+        if type_definition.string_enum {
+          inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\") {\n      return Some(val.into_iter().map(|e| ");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str(
+            "::from_string(&e).unwrap()).collect::<Vec<_>>());\n    }\n    return None;\n",
+          );
+        } else {
+          inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
+          inner_string.push_str(&property_name);
+          inner_string.push_str("\") {\n      return Some(val.into_iter().map(|e| ");
+          inner_string.push_str(&type_definition.name);
+          inner_string.push_str(" { value: e }).collect::<Vec<_>>());\n    }\n    return None;\n");
+        }
+      }
+    }
+  // end arrays
+  } else if type_definition.builtin {
+    if required {
+      if type_definition.name == "String" {
+        inner_string.push_str("    self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\").unwrap().as_str().unwrap().to_string()\n");
+      } else {
+        inner_string.push_str("    self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\").unwrap().as_");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str("().unwrap()\n");
+      }
+    } else {
+      if type_definition.name == "String" {
+        inner_string.push_str("    if let Some(Value::String(string)) = self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string
+          .push_str("\") {\n      return Some(string.to_string());\n    }\n    return None;\n");
+      } else {
+        inner_string.push_str("    if let Some(val) = self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\") {\n      return Some(val.as_");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str("().unwrap());\n    }\n    return None;\n");
+      }
+    }
+  } else {
+    if required {
+      if type_definition.string_enum {
+        inner_string.push_str("    ");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str("::from_string(");
+        inner_string.push_str("&self.value[\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\"].as_str().unwrap().to_string()).unwrap()\n");
+      } else {
+        inner_string.push_str("    ");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str(" {\n");
+        inner_string.push_str("      value: &self.value[\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\"],\n    }\n");
+      }
+    } else {
+      if type_definition.string_enum {
+        inner_string.push_str("    if let Some(Value::String(val)) = self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\") {\n      return Some(");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str("::from_string(&val).unwrap());\n    }\n    return None;\n");
+      } else {
+        inner_string.push_str("    if let Some(val) = self.value.get(\"");
+        inner_string.push_str(&property_name);
+        inner_string.push_str("\") {\n      return Some(");
+        inner_string.push_str(&type_definition.name);
+        inner_string.push_str(" { value: val });\n    }\n    return None;\n");
+      }
+    }
+  }
+  // todo arrays!
+  inner_string.push_str("  }\n\n");
+}
+
+struct TypeDefinition {
+  name: String,
+  builtin: bool,
+  string_enum: bool,
+  import: Option<String>,
+}
+
+fn type_definition_from_fhir_type(
   fhir_type: &str,
   reference_to_class_name_map: &HashMap<String, String>,
   builtin_type_to_class_map: &HashMap<&str, (&str, Option<&str>)>,
-) -> (String, Option<String>) {
+) -> TypeDefinition {
   if let Some(builtin) = builtin_type_to_class_map.get(&fhir_type) {
-    return (
-      builtin.0.to_string(),
-      match builtin.1 {
+    return TypeDefinition {
+      name: builtin.0.to_string(),
+      builtin: true,
+      string_enum: false,
+      import: match builtin.1 {
         Some(import) => Some(import.to_string()),
         None => None,
       },
-    );
+    };
   }
   if let None = reference_to_class_name_map.get(fhir_type) {
     // println!("Missing non-builtin class: {}", fhir_type);
   }
 
-  return (
-    fhir_type.to_string(),
-    Some(format!("crate::model::{}::{}", fhir_type, fhir_type)),
-  );
+  return TypeDefinition {
+    name: fhir_type.to_string(),
+    builtin: false,
+    string_enum: false,
+    import: Some(format!("crate::model::{}::{}", fhir_type, fhir_type)),
+  };
 }
 
-fn class_name_from_fhir_ref(
+fn type_definition_from_fhir_ref(
   fhir_ref: &str,
   reference_to_class_name_map: &HashMap<String, String>,
   builtin_type_to_class_map: &HashMap<&str, (&str, Option<&str>)>,
-) -> (String, Option<String>) {
+) -> TypeDefinition {
   let extracted = extract_type_from_ref(&fhir_ref);
-  return class_name_from_fhir_type(
+  return type_definition_from_fhir_type(
     extracted,
     reference_to_class_name_map,
     builtin_type_to_class_map,

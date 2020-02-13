@@ -1,26 +1,47 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Identifier::Identifier;
-use crate::model::Extension::Extension;
-use crate::model::ContactPoint::ContactPoint;
-use crate::model::Address::Address;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Element::Element;
-use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
-use crate::model::Organization_Contact::Organization_Contact;
+use crate::model::Identifier::Identifier;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Meta::Meta;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Address::Address;
+use crate::model::Organization_Contact::Organization_Contact;
+use crate::model::ContactPoint::ContactPoint;
+use crate::model::Narrative::Narrative;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A formally or informally recognized grouping of people or organizations formed
 /// for the purpose of achieving some form of collective action.  Includes
 /// companies, institutions, corporations, departments, community groups, healthcare
 /// practice groups, payer/insurer, etc.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Organization {
+
+#[derive(Debug)]
+pub struct Organization<'a> {
+  pub value: &'a Value,
+}
+
+impl Organization<'_> {
+  /// Contact for the organization for a certain purpose.
+  pub fn contact(&self) -> Option<Vec<Organization_Contact>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| Organization_Contact { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
   /// that contains it and/or the understanding of the containing element's
@@ -33,15 +54,22 @@ pub struct Organization {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// An address for the organization.
-  address: Option<Vec<Address>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -49,84 +77,167 @@ pub struct Organization {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Extensions for active
-  #[serde(rename = "_active")]
-  _active: Option<Element>,
-
-  /// The kind(s) of organization that this is.
-  #[serde(rename = "type")]
-  fhir_type: Option<Vec<CodeableConcept>>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// Identifier for the organization that is used to identify the organization across
-  /// multiple disparate systems.
-  identifier: Option<Vec<Identifier>>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// A list of alternate names that the organization is known as, or was known as in
-  /// the past.
-  alias: Option<Vec<String>>,
-
-  /// Extensions for alias
-  #[serde(rename = "_alias")]
-  _alias: Option<Vec<Element>>,
-
-  /// A name associated with the organization.
-  name: Option<String>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// A contact detail for the organization.
-  telecom: Option<Vec<ContactPoint>>,
-
-  /// Whether the organization's record is still in active use.
-  active: Option<bool>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// The organization of which this organization forms a part.
-  #[serde(rename = "partOf")]
-  part_of: Option<Box<Reference>>,
-
-  /// Contact for the organization for a certain purpose.
-  contact: Option<Vec<Organization_Contact>>,
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A name associated with the organization.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An address for the organization.
+  pub fn address(&self) -> Option<Vec<Address>> {
+    if let Some(Value::Array(val)) = self.value.get("address") {
+      return Some(val.into_iter().map(|e| Address { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The kind(s) of organization that this is.
+  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("type") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A list of alternate names that the organization is known as, or was known as in
+  /// the past.
+  pub fn alias(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("alias") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifier for the organization that is used to identify the organization across
+  /// multiple disparate systems.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for alias
+  pub fn _alias(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_alias") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for active
+  pub fn _active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_active") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The organization of which this organization forms a part.
+  pub fn part_of(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("partOf") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Whether the organization's record is still in active use.
+  pub fn active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("active") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
   /// Technical endpoints providing access to services operated for the organization.
-  endpoint: Option<Vec<Box<Reference>>>,
+  pub fn endpoint(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("endpoint") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

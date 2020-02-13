@@ -1,25 +1,155 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::ResourceList::ResourceList;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Group_Characteristic::Group_Characteristic;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Identifier::Identifier;
 use crate::model::Narrative::Narrative;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Group_Member::Group_Member;
 use crate::model::Meta::Meta;
 use crate::model::Reference::Reference;
-use crate::model::Group_Member::Group_Member;
-use crate::model::Identifier::Identifier;
-use crate::model::Group_Characteristic::Group_Characteristic;
-use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// Represents a defined collection of entities that may be discussed or acted upon
 /// collectively but which are not expected to act collectively, and are not
 /// formally or legally recognized; i.e. a collection of entities that isn't an
 /// Organization.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Group {
+
+#[derive(Debug)]
+pub struct Group<'a> {
+  pub value: &'a Value,
+}
+
+impl Group<'_> {
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies the broad classification of the kind of resources the group includes.
+  pub fn fhir_type(&self) -> Option<GroupType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(GroupType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A unique business identifier for this group.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for actual
+  pub fn _actual(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_actual") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If true, indicates that the resource refers to a specific group of real
+  /// individuals.  If false, the group defines a set of intended individuals.
+  pub fn actual(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("actual") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
   /// that contains it and/or the understanding of the containing element's
@@ -32,34 +162,87 @@ pub struct Group {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// A unique business identifier for this group.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Provides a specific type of resource the group includes; e.g. "cow", "syringe",
-  /// etc.
-  code: Option<CodeableConcept>,
-
-  /// A count of the number of resource instances that are part of the group.
-  quantity: Option<u32>,
-
-  /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// Identifies the broad classification of the kind of resources the group includes.
-  #[serde(rename = "type")]
-  fhir_type: Option<GroupType>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Indicates whether the record for the group is available for use or is merely
   /// being retained for historical purposes.
-  active: Option<bool>,
+  pub fn active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("active") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Provides a specific type of resource the group includes; e.g. "cow", "syringe",
+  /// etc.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A label assigned to the group for human identification and communication.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A count of the number of resource instances that are part of the group.
+  pub fn quantity(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(val.as_u64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for quantity
+  pub fn _quantity(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_quantity") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for active
+  pub fn _active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_active") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Entity responsible for defining and maintaining Group characteristics and/or
+  /// registered members.
+  pub fn managing_entity(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("managingEntity") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies traits whose presence r absence is shared by members of the group.
+  pub fn characteristic(&self) -> Option<Vec<Group_Characteristic>> {
+    if let Some(Value::Array(val)) = self.value.get("characteristic") {
+      return Some(val.into_iter().map(|e| Group_Characteristic { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Identifies the resource instances that are members of the group.
+  pub fn member(&self) -> Option<Vec<Group_Member>> {
+    if let Some(Value::Array(val)) = self.value.get("member") {
+      return Some(val.into_iter().map(|e| Group_Member { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -67,97 +250,36 @@ pub struct Group {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// A label assigned to the group for human identification and communication.
-  name: Option<String>,
-
-  /// Extensions for active
-  #[serde(rename = "_active")]
-  _active: Option<Element>,
-
-  /// Extensions for actual
-  #[serde(rename = "_actual")]
-  _actual: Option<Element>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// Extensions for quantity
-  #[serde(rename = "_quantity")]
-  _quantity: Option<Element>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// Entity responsible for defining and maintaining Group characteristics and/or
-  /// registered members.
-  #[serde(rename = "managingEntity")]
-  managing_entity: Option<Box<Reference>>,
-
-  /// Identifies the resource instances that are members of the group.
-  member: Option<Vec<Group_Member>>,
-
-  /// If true, indicates that the resource refers to a specific group of real
-  /// individuals.  If false, the group defines a set of intended individuals.
-  actual: Option<bool>,
-
-  /// Identifies traits whose presence r absence is shared by members of the group.
-  characteristic: Option<Vec<Group_Characteristic>>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum GroupType {
-  #[serde(rename = "person")]
   Person,
-
-  #[serde(rename = "animal")]
   Animal,
-
-  #[serde(rename = "practitioner")]
   Practitioner,
-
-  #[serde(rename = "device")]
   Device,
-
-  #[serde(rename = "medication")]
   Medication,
-
-  #[serde(rename = "substance")]
   Substance,
-
 }
+
+impl GroupType {
+    pub fn from_string(string: &str) -> Option<GroupType> {
+      match string {
+        "person" => Some(GroupType::Person),
+        "animal" => Some(GroupType::Animal),
+        "practitioner" => Some(GroupType::Practitioner),
+        "device" => Some(GroupType::Device),
+        "medication" => Some(GroupType::Medication),
+        "substance" => Some(GroupType::Substance),
+        _ => None,
+    }
+  }
+}
+

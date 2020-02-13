@@ -1,41 +1,27 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Describes the event of a patient being administered a vaccine or a record of an
 /// immunization as reported by a patient, a clinician or another party.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Immunization_Education {
+
+#[derive(Debug)]
+pub struct Immunization_Education<'a> {
+  pub value: &'a Value,
+}
+
+impl Immunization_Education<'_> {
   /// Extensions for presentationDate
-  #[serde(rename = "_presentationDate")]
-  _presentation_date: Option<Element>,
-
-  /// Reference pointer to the educational material given to the patient if the
-  /// information was on line.
-  reference: Option<String>,
-
-  /// Date the educational material was given to the patient.
-  #[serde(rename = "presentationDate")]
-  presentation_date: Option<String>,
-
-  /// Extensions for reference
-  #[serde(rename = "_reference")]
-  _reference: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Date the educational material was published.
-  #[serde(rename = "publicationDate")]
-  publication_date: Option<String>,
+  pub fn _presentation_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_presentationDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -48,23 +34,89 @@ pub struct Immunization_Education {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for reference
+  pub fn _reference(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_reference") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifier of the material presented to the patient.
+  pub fn document_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentType") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for publicationDate
-  #[serde(rename = "_publicationDate")]
-  _publication_date: Option<Element>,
+  pub fn _publication_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publicationDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Reference pointer to the educational material given to the patient if the
+  /// information was on line.
+  pub fn reference(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("reference") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Date the educational material was published.
+  pub fn publication_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publicationDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for documentType
-  #[serde(rename = "_documentType")]
-  _document_type: Option<Element>,
+  pub fn _document_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Identifier of the material presented to the patient.
-  #[serde(rename = "documentType")]
-  document_type: Option<String>,
+  /// Date the educational material was given to the patient.
+  pub fn presentation_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("presentationDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

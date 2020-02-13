@@ -1,51 +1,66 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
+use crate::model::Meta::Meta;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Identifier::Identifier;
 use crate::model::Address::Address;
-use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
 use crate::model::Practitioner_Qualification::Practitioner_Qualification;
-use crate::model::Attachment::Attachment;
 use crate::model::ContactPoint::ContactPoint;
 use crate::model::Narrative::Narrative;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::HumanName::HumanName;
+use crate::model::Attachment::Attachment;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A person who is directly or indirectly involved in the provisioning of
 /// healthcare.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Practitioner {
-  /// Address(es) of the practitioner that are not role specific (typically home
-  /// address).   Work addresses are not typically entered in this property as they
-  /// are usually role dependent.
-  address: Option<Vec<Address>>,
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
+#[derive(Debug)]
+pub struct Practitioner<'a> {
+  pub value: &'a Value,
+}
 
-  /// Image of the person.
-  photo: Option<Vec<Attachment>>,
-
-  /// Whether this practitioner's record is in active use.
-  active: Option<bool>,
-
+impl Practitioner<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for active
+  pub fn _active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_active") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -53,62 +68,114 @@ pub struct Practitioner {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// The name(s) associated with the practitioner.
-  name: Option<Vec<HumanName>>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// Extensions for gender
-  #[serde(rename = "_gender")]
-  _gender: Option<Element>,
-
-  /// A contact detail for the practitioner, e.g. a telephone number or an email
-  /// address.
-  telecom: Option<Vec<ContactPoint>>,
-
-  /// The date of birth for the practitioner.
-  #[serde(rename = "birthDate")]
-  birth_date: Option<i32>,
-
-  /// Administrative Gender - the gender that the person is considered to have for
-  /// administration and record keeping purposes.
-  gender: Option<PractitionerGender>,
-
-  /// An identifier that applies to this person in this role.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// The official certifications, training, and licenses that authorize or otherwise
   /// pertain to the provision of care by the practitioner.  For example, a medical
   /// license issued by a medical board authorizing the practitioner to practice
   /// medicine within a certian locality.
-  qualification: Option<Vec<Practitioner_Qualification>>,
+  pub fn qualification(&self) -> Option<Vec<Practitioner_Qualification>> {
+    if let Some(Value::Array(val)) = self.value.get("qualification") {
+      return Some(val.into_iter().map(|e| Practitioner_Qualification { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The name(s) associated with the practitioner.
+  pub fn name(&self) -> Option<Vec<HumanName>> {
+    if let Some(Value::Array(val)) = self.value.get("name") {
+      return Some(val.into_iter().map(|e| HumanName { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Image of the person.
+  pub fn photo(&self) -> Option<Vec<Attachment>> {
+    if let Some(Value::Array(val)) = self.value.get("photo") {
+      return Some(val.into_iter().map(|e| Attachment { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// These resources do not have an independent existence apart from the resource
   /// that contains them - they cannot be identified independently, and nor can they
   /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for birthDate
-  #[serde(rename = "_birthDate")]
-  _birth_date: Option<Element>,
+  /// Address(es) of the practitioner that are not role specific (typically home
+  /// address).   Work addresses are not typically entered in this property as they
+  /// are usually role dependent.
+  pub fn address(&self) -> Option<Vec<Address>> {
+    if let Some(Value::Array(val)) = self.value.get("address") {
+      return Some(val.into_iter().map(|e| Address { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for active
-  #[serde(rename = "_active")]
-  _active: Option<Element>,
+  /// Administrative Gender - the gender that the person is considered to have for
+  /// administration and record keeping purposes.
+  pub fn gender(&self) -> Option<PractitionerGender> {
+    if let Some(Value::String(val)) = self.value.get("gender") {
+      return Some(PractitionerGender::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// A contact detail for the practitioner, e.g. a telephone number or an email
+  /// address.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -122,30 +189,80 @@ pub struct Practitioner {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// An identifier that applies to this person in this role.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for gender
+  pub fn _gender(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_gender") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A language the practitioner can use in patient communication.
-  communication: Option<Vec<CodeableConcept>>,
+  pub fn communication(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("communication") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// Extensions for birthDate
+  pub fn _birth_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_birthDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Whether this practitioner's record is in active use.
+  pub fn active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("active") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// The date of birth for the practitioner.
+  pub fn birth_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("birthDate") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum PractitionerGender {
-  #[serde(rename = "male")]
   Male,
-
-  #[serde(rename = "female")]
   Female,
-
-  #[serde(rename = "other")]
   Other,
-
-  #[serde(rename = "unknown")]
   Unknown,
-
 }
+
+impl PractitionerGender {
+    pub fn from_string(string: &str) -> Option<PractitionerGender> {
+      match string {
+        "male" => Some(PractitionerGender::Male),
+        "female" => Some(PractitionerGender::Female),
+        "other" => Some(PractitionerGender::Other),
+        "unknown" => Some(PractitionerGender::Unknown),
+        _ => None,
+    }
+  }
+}
+

@@ -1,330 +1,81 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Attachment::Attachment;
-use crate::model::Dosage::Dosage;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Quantity::Quantity;
-use crate::model::Signature::Signature;
-use crate::model::DataRequirement::DataRequirement;
-use crate::model::Coding::Coding;
-use crate::model::Contributor::Contributor;
-use crate::model::Identifier::Identifier;
-use crate::model::Count::Count;
-use crate::model::Element::Element;
-use crate::model::Annotation::Annotation;
+use crate::model::Duration::Duration;
 use crate::model::SampledData::SampledData;
-use crate::model::Address::Address;
-use crate::model::Range::Range;
-use crate::model::ContactPoint::ContactPoint;
+use crate::model::Contributor::Contributor;
 use crate::model::Extension::Extension;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Attachment::Attachment;
+use crate::model::HumanName::HumanName;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::Age::Age;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Signature::Signature;
+use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::Timing::Timing;
+use crate::model::Meta::Meta;
+use crate::model::Coding::Coding;
+use crate::model::Range::Range;
+use crate::model::DataRequirement::DataRequirement;
+use crate::model::Distance::Distance;
+use crate::model::Expression::Expression;
 use crate::model::Reference::Reference;
 use crate::model::RelatedArtifact::RelatedArtifact;
-use crate::model::ParameterDefinition::ParameterDefinition;
-use crate::model::TriggerDefinition::TriggerDefinition;
-use crate::model::Expression::Expression;
-use crate::model::Meta::Meta;
-use crate::model::Duration::Duration;
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::Period::Period;
-use crate::model::HumanName::HumanName;
-use crate::model::UsageContext::UsageContext;
-use crate::model::Money::Money;
-use crate::model::Distance::Distance;
-use crate::model::Age::Age;
+use crate::model::Quantity::Quantity;
 use crate::model::Ratio::Ratio;
+use crate::model::Identifier::Identifier;
+use crate::model::Count::Count;
+use crate::model::ParameterDefinition::ParameterDefinition;
+use crate::model::Address::Address;
+use crate::model::Period::Period;
+use crate::model::Element::Element;
+use crate::model::Annotation::Annotation;
+use crate::model::Dosage::Dosage;
+use crate::model::ContactPoint::ContactPoint;
+use crate::model::Money::Money;
+use serde_json::value::Value;
+
 
 
 /// A Map of relationships between 2 structures that can be used to transform data.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct StructureMap_Source {
+
+#[derive(Debug)]
+pub struct StructureMap_Source<'a> {
+  pub value: &'a Value,
+}
+
+impl StructureMap_Source<'_> {
   /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueUnsignedInt")]
-  default_value_unsigned_int: Option<i32>,
+  pub fn default_value_signature(&self) -> Option<Signature> {
+    if let Some(val) = self.value.get("defaultValueSignature") {
+      return Some(Signature { value: val });
+    }
+    return None;
+  }
 
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueCanonical")]
-  default_value_canonical: Option<String>,
+  /// Extensions for context
+  pub fn _context(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_context") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for defaultValueDecimal
-  #[serde(rename = "_defaultValueDecimal")]
-  _default_value_decimal: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValuePeriod")]
-  default_value_period: Option<Period>,
-
-  /// Extensions for element
-  #[serde(rename = "_element")]
-  _element: Option<Element>,
-
-  /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueAge")]
-  default_value_age: Option<Age>,
+  /// Extensions for listMode
+  pub fn _list_mode(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_listMode") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueCount")]
-  default_value_count: Option<Count>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDate")]
-  default_value_date: Option<String>,
-
-  /// Extensions for defaultValueString
-  #[serde(rename = "_defaultValueString")]
-  _default_value_string: Option<Element>,
-
-  /// Extensions for defaultValueUrl
-  #[serde(rename = "_defaultValueUrl")]
-  _default_value_url: Option<Element>,
-
-  /// Extensions for check
-  #[serde(rename = "_check")]
-  _check: Option<Element>,
-
-  /// A FHIRPath expression which specifies a message to put in the transform log when
-  /// content matching the source rule is found.
-  #[serde(rename = "logMessage")]
-  log_message: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueBase64Binary")]
-  default_value_base_6_4_binary: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueMarkdown")]
-  default_value_markdown: Option<String>,
-
-  /// Extensions for defaultValuePositiveInt
-  #[serde(rename = "_defaultValuePositiveInt")]
-  _default_value_positive_int: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDuration")]
-  default_value_duration: Option<Duration>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueReference")]
-  default_value_reference: Option<Box<Reference>>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueSampledData")]
-  default_value_sampled_data: Option<SampledData>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueContributor")]
-  default_value_contributor: Option<Contributor>,
-
-  /// Extensions for min
-  #[serde(rename = "_min")]
-  _min: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueParameterDefinition")]
-  default_value_parameter_definition: Option<ParameterDefinition>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueTriggerDefinition")]
-  default_value_trigger_definition: Option<TriggerDefinition>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueUsageContext")]
-  default_value_usage_context: Option<UsageContext>,
-
-  /// Optional field for this source.
-  element: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDecimal")]
-  default_value_decimal: Option<i32>,
-
-  /// Extensions for defaultValueTime
-  #[serde(rename = "_defaultValueTime")]
-  _default_value_time: Option<Element>,
-
-  /// FHIRPath expression  - must be true or the rule does not apply.
-  condition: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValuePositiveInt")]
-  default_value_positive_int: Option<i32>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueUuid")]
-  default_value_uuid: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueId")]
-  default_value_id: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueCoding")]
-  default_value_coding: Option<Coding>,
-
-  /// Extensions for max
-  #[serde(rename = "_max")]
-  _max: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueIdentifier")]
-  default_value_identifier: Option<Identifier>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueRange")]
-  default_value_range: Option<Range>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueRelatedArtifact")]
-  default_value_related_artifact: Option<RelatedArtifact>,
-
-  /// Extensions for variable
-  #[serde(rename = "_variable")]
-  _variable: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueContactDetail")]
-  default_value_contact_detail: Option<ContactDetail>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueHumanName")]
-  default_value_human_name: Option<HumanName>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueContactPoint")]
-  default_value_contact_point: Option<ContactPoint>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueQuantity")]
-  default_value_quantity: Option<Quantity>,
-
-  /// FHIRPath expression  - must be true or the mapping engine throws an error
-  /// instead of completing.
-  check: Option<String>,
-
-  /// Extensions for defaultValueMarkdown
-  #[serde(rename = "_defaultValueMarkdown")]
-  _default_value_markdown: Option<Element>,
-
-  /// Specified minimum cardinality for the element. This is optional; if present, it
-  /// acts an implicit check on the input content.
-  min: Option<i32>,
-
-  /// Extensions for logMessage
-  #[serde(rename = "_logMessage")]
-  _log_message: Option<Element>,
-
-  /// Specified type for the element. This works as a condition on the mapping - use
-  /// for polymorphic elements.
-  #[serde(rename = "type")]
-  fhir_type: Option<String>,
-
-  /// Extensions for defaultValueDateTime
-  #[serde(rename = "_defaultValueDateTime")]
-  _default_value_date_time: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueInstant")]
-  default_value_instant: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueAddress")]
-  default_value_address: Option<Address>,
-
-  /// Extensions for defaultValueInteger
-  #[serde(rename = "_defaultValueInteger")]
-  _default_value_integer: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueInteger")]
-  default_value_integer: Option<i32>,
-
-  /// Extensions for defaultValueCanonical
-  #[serde(rename = "_defaultValueCanonical")]
-  _default_value_canonical: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueUri")]
-  default_value_uri: Option<String>,
-
-  /// Extensions for defaultValueId
-  #[serde(rename = "_defaultValueId")]
-  _default_value_id: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDistance")]
-  default_value_distance: Option<Distance>,
-
-  /// Extensions for defaultValueOid
-  #[serde(rename = "_defaultValueOid")]
-  _default_value_oid: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueSignature")]
-  default_value_signature: Option<Signature>,
-
-  /// Extensions for defaultValueUri
-  #[serde(rename = "_defaultValueUri")]
-  _default_value_uri: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDataRequirement")]
-  default_value_data_requirement: Option<DataRequirement>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueString")]
-  default_value_string: Option<String>,
-
-  /// Extensions for defaultValueBase64Binary
-  #[serde(rename = "_defaultValueBase64Binary")]
-  _default_value_base_6_4_binary: Option<Element>,
-
-  /// Named context for field, if a field is specified.
-  variable: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueMoney")]
-  default_value_money: Option<Money>,
-
-  /// Extensions for condition
-  #[serde(rename = "_condition")]
-  _condition: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueTiming")]
-  default_value_timing: Option<Timing>,
-
-  /// Extensions for defaultValueInstant
-  #[serde(rename = "_defaultValueInstant")]
-  _default_value_instant: Option<Element>,
-
-  /// How to handle the list mode for this element.
-  #[serde(rename = "listMode")]
-  list_mode: Option<StructureMap_SourceListMode>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueCode")]
-  default_value_code: Option<String>,
-
-  /// Extensions for defaultValueUnsignedInt
-  #[serde(rename = "_defaultValueUnsignedInt")]
-  _default_value_unsigned_int: Option<Element>,
+  pub fn default_value_age(&self) -> Option<Age> {
+    if let Some(val) = self.value.get("defaultValueAge") {
+      return Some(Age { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -337,106 +88,741 @@ pub struct StructureMap_Source {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueDecimal
+  pub fn _default_value_decimal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueDecimal") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueInstant
+  pub fn _default_value_instant(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueInstant") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueAnnotation")]
-  default_value_annotation: Option<Annotation>,
+  pub fn default_value_annotation(&self) -> Option<Annotation> {
+    if let Some(val) = self.value.get("defaultValueAnnotation") {
+      return Some(Annotation { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_ratio(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("defaultValueRatio") {
+      return Some(Ratio { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_oid(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueOid") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_address(&self) -> Option<Address> {
+    if let Some(val) = self.value.get("defaultValueAddress") {
+      return Some(Address { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("defaultValueDuration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("defaultValueIdentifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_sampled_data(&self) -> Option<SampledData> {
+    if let Some(val) = self.value.get("defaultValueSampledData") {
+      return Some(SampledData { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_data_requirement(&self) -> Option<DataRequirement> {
+    if let Some(val) = self.value.get("defaultValueDataRequirement") {
+      return Some(DataRequirement { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_parameter_definition(&self) -> Option<ParameterDefinition> {
+    if let Some(val) = self.value.get("defaultValueParameterDefinition") {
+      return Some(ParameterDefinition { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_positive_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("defaultValuePositiveInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for condition
+  pub fn _condition(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_condition") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("defaultValueRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueUrl") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// How to handle the list mode for this element.
+  pub fn list_mode(&self) -> Option<StructureMap_SourceListMode> {
+    if let Some(Value::String(val)) = self.value.get("listMode") {
+      return Some(StructureMap_SourceListMode::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_count(&self) -> Option<Count> {
+    if let Some(val) = self.value.get("defaultValueCount") {
+      return Some(Count { value: val });
+    }
+    return None;
+  }
+
+  /// FHIRPath expression  - must be true or the mapping engine throws an error
+  /// instead of completing.
+  pub fn check(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("check") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for logMessage
+  pub fn _log_message(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_logMessage") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueBoolean
+  pub fn _default_value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Type or variable this rule applies to.
+  pub fn context(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("context") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_instant(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueInstant") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_base_6_4_binary(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueBase64Binary") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueUrl
+  pub fn _default_value_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("defaultValueAttachment") {
+      return Some(Attachment { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_money(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("defaultValueMoney") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("defaultValueReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for max
+  pub fn _max(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_max") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_contact_point(&self) -> Option<ContactPoint> {
+    if let Some(val) = self.value.get("defaultValueContactPoint") {
+      return Some(ContactPoint { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_timing(&self) -> Option<Timing> {
+    if let Some(val) = self.value.get("defaultValueTiming") {
+      return Some(Timing { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_distance(&self) -> Option<Distance> {
+    if let Some(val) = self.value.get("defaultValueDistance") {
+      return Some(Distance { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_usage_context(&self) -> Option<UsageContext> {
+    if let Some(val) = self.value.get("defaultValueUsageContext") {
+      return Some(UsageContext { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_uuid(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueUuid") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_dosage(&self) -> Option<Dosage> {
+    if let Some(val) = self.value.get("defaultValueDosage") {
+      return Some(Dosage { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_related_artifact(&self) -> Option<RelatedArtifact> {
+    if let Some(val) = self.value.get("defaultValueRelatedArtifact") {
+      return Some(RelatedArtifact { value: val });
+    }
+    return None;
+  }
+
+  /// Optional field for this source.
+  pub fn element(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("element") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("defaultValueQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// Named context for field, if a field is specified.
+  pub fn variable(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("variable") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// FHIRPath expression  - must be true or the rule does not apply.
+  pub fn condition(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("condition") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_canonical(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueCanonical") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("defaultValueCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for check
+  pub fn _check(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_check") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueId
+  pub fn _default_value_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for variable
+  pub fn _variable(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_variable") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueCanonical
+  pub fn _default_value_canonical(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueCanonical") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("defaultValuePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for element
+  pub fn _element(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_element") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_expression(&self) -> Option<Expression> {
+    if let Some(val) = self.value.get("defaultValueExpression") {
+      return Some(Expression { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueDateTime
+  pub fn _default_value_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueString
+  pub fn _default_value_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_contributor(&self) -> Option<Contributor> {
+    if let Some(val) = self.value.get("defaultValueContributor") {
+      return Some(Contributor { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueCode") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Specified minimum cardinality for the element. This is optional; if present, it
+  /// acts an implicit check on the input content.
+  pub fn min(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("min") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueTime
+  pub fn _default_value_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueCode
+  pub fn _default_value_code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueCode") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_unsigned_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("defaultValueUnsignedInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_integer(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("defaultValueInteger") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Specified maximum cardinality for the element - a number or a "*". This is
   /// optional; if present, it acts an implicit check on the input content (* just
   /// serves as documentation; it's the default value).
-  max: Option<String>,
+  pub fn max(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("max") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueUnsignedInt
+  pub fn _default_value_unsigned_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueUnsignedInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueBase64Binary
+  pub fn _default_value_base_6_4_binary(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueBase64Binary") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueTime")]
-  default_value_time: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueMeta")]
-  default_value_meta: Option<Meta>,
-
-  /// Extensions for defaultValueBoolean
-  #[serde(rename = "_defaultValueBoolean")]
-  _default_value_boolean: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueUrl")]
-  default_value_url: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueRatio")]
-  default_value_ratio: Option<Ratio>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDateTime")]
-  default_value_date_time: Option<String>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueAttachment")]
-  default_value_attachment: Option<Attachment>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueDosage")]
-  default_value_dosage: Option<Dosage>,
-
-  /// Extensions for context
-  #[serde(rename = "_context")]
-  _context: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueBoolean")]
-  default_value_boolean: Option<bool>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueOid")]
-  default_value_oid: Option<String>,
-
-  /// Extensions for defaultValueCode
-  #[serde(rename = "_defaultValueCode")]
-  _default_value_code: Option<Element>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueCodeableConcept")]
-  default_value_codeable_concept: Option<CodeableConcept>,
-
-  /// A value to use if there is no existing value in the source object.
-  #[serde(rename = "defaultValueExpression")]
-  default_value_expression: Option<Expression>,
-
-  /// Extensions for listMode
-  #[serde(rename = "_listMode")]
-  _list_mode: Option<Element>,
+  pub fn default_value_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for defaultValueDate
-  #[serde(rename = "_defaultValueDate")]
-  _default_value_date: Option<Element>,
+  pub fn _default_value_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Type or variable this rule applies to.
-  context: Option<String>,
+  /// Extensions for defaultValueOid
+  pub fn _default_value_oid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueOid") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for min
+  pub fn _min(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_min") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("defaultValueBoolean") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_decimal(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("defaultValueDecimal") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_markdown(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueMarkdown") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValuePositiveInt
+  pub fn _default_value_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValuePositiveInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_uri(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("defaultValueUri") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Specified type for the element. This works as a condition on the mapping - use
+  /// for polymorphic elements.
+  pub fn fhir_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("type") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueInteger
+  pub fn _default_value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for defaultValueUuid
-  #[serde(rename = "_defaultValueUuid")]
-  _default_value_uuid: Option<Element>,
+  pub fn _default_value_uuid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueUuid") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueUri
+  pub fn _default_value_uri(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueUri") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_coding(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("defaultValueCoding") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_contact_detail(&self) -> Option<ContactDetail> {
+    if let Some(val) = self.value.get("defaultValueContactDetail") {
+      return Some(ContactDetail { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_trigger_definition(&self) -> Option<TriggerDefinition> {
+    if let Some(val) = self.value.get("defaultValueTriggerDefinition") {
+      return Some(TriggerDefinition { value: val });
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("defaultValueMeta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// A FHIRPath expression which specifies a message to put in the transform log when
+  /// content matching the source rule is found.
+  pub fn log_message(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("logMessage") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A value to use if there is no existing value in the source object.
+  pub fn default_value_human_name(&self) -> Option<HumanName> {
+    if let Some(val) = self.value.get("defaultValueHumanName") {
+      return Some(HumanName { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for defaultValueMarkdown
+  pub fn _default_value_markdown(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_defaultValueMarkdown") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum StructureMap_SourceListMode {
-  #[serde(rename = "first")]
   First,
-
-  #[serde(rename = "not_first")]
   NotFirst,
-
-  #[serde(rename = "last")]
   Last,
-
-  #[serde(rename = "not_last")]
   NotLast,
-
-  #[serde(rename = "only_one")]
   OnlyOne,
-
 }
+
+impl StructureMap_SourceListMode {
+    pub fn from_string(string: &str) -> Option<StructureMap_SourceListMode> {
+      match string {
+        "first" => Some(StructureMap_SourceListMode::First),
+        "not_first" => Some(StructureMap_SourceListMode::NotFirst),
+        "last" => Some(StructureMap_SourceListMode::Last),
+        "not_last" => Some(StructureMap_SourceListMode::NotLast),
+        "only_one" => Some(StructureMap_SourceListMode::OnlyOne),
+        _ => None,
+    }
+  }
+}
+

@@ -1,19 +1,26 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A summary of information based on the results of executing a TestScript.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TestReport_Assert {
-  /// A link to further details on the result.
-  detail: Option<String>,
 
-  /// An explanatory message associated with the result.
-  message: Option<String>,
+#[derive(Debug)]
+pub struct TestReport_Assert<'a> {
+  pub value: &'a Value,
+}
+
+impl TestReport_Assert<'_> {
+  /// Extensions for detail
+  pub fn _detail(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_detail") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -26,52 +33,95 @@ pub struct TestReport_Assert {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for result
-  #[serde(rename = "_result")]
-  _result: Option<Element>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The result of this assertion.
-  result: Option<TestReport_AssertResult>,
+  pub fn result(&self) -> Option<TestReport_AssertResult> {
+    if let Some(Value::String(val)) = self.value.get("result") {
+      return Some(TestReport_AssertResult::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for detail
-  #[serde(rename = "_detail")]
-  _detail: Option<Element>,
+  /// Extensions for result
+  pub fn _result(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_result") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A link to further details on the result.
+  pub fn detail(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("detail") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// An explanatory message associated with the result.
+  pub fn message(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("message") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for message
-  #[serde(rename = "_message")]
-  _message: Option<Element>,
+  pub fn _message(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_message") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum TestReport_AssertResult {
-  #[serde(rename = "pass")]
   Pass,
-
-  #[serde(rename = "skip")]
   Skip,
-
-  #[serde(rename = "fail")]
   Fail,
-
-  #[serde(rename = "warning")]
   Warning,
-
-  #[serde(rename = "error")]
   Error,
-
 }
+
+impl TestReport_AssertResult {
+    pub fn from_string(string: &str) -> Option<TestReport_AssertResult> {
+      match string {
+        "pass" => Some(TestReport_AssertResult::Pass),
+        "skip" => Some(TestReport_AssertResult::Skip),
+        "fail" => Some(TestReport_AssertResult::Fail),
+        "warning" => Some(TestReport_AssertResult::Warning),
+        "error" => Some(TestReport_AssertResult::Error),
+        _ => None,
+    }
+  }
+}
+

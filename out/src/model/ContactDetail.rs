@@ -1,35 +1,64 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::ContactPoint::ContactPoint;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Specifies contact information for a person or organization.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ContactDetail {
+
+#[derive(Debug)]
+pub struct ContactDetail<'a> {
+  pub value: &'a Value,
+}
+
+impl ContactDetail<'_> {
+  /// The contact details for the individual (if a name was provided) or the
+  /// organization.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// The contact details for the individual (if a name was provided) or the
-  /// organization.
-  telecom: Option<Vec<ContactPoint>>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The name of an individual to contact.
-  name: Option<String>,
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

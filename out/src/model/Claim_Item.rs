@@ -1,99 +1,290 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Address::Address;
-use crate::model::Period::Period;
-use crate::model::Claim_Detail::Claim_Detail;
-use crate::model::Quantity::Quantity;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Money::Money;
+use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
+use crate::model::Claim_Detail::Claim_Detail;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
+use crate::model::Period::Period;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// A provider issued list of professional services and products which have been
 /// provided, or are to be provided, to a patient which is sent to an insurer for
 /// reimbursement.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Claim_Item {
-  /// If the item is not a group then this is the fee for the product or service,
-  /// otherwise this is the total of the fees for the details of the group.
-  #[serde(rename = "unitPrice")]
-  unit_price: Option<Money>,
 
-  /// Exceptions, special conditions and supporting information applicable for this
-  /// service or product.
-  #[serde(rename = "informationSequence")]
-  information_sequence: Option<Vec<i32>>,
+#[derive(Debug)]
+pub struct Claim_Item<'a> {
+  pub value: &'a Value,
+}
 
-  /// The date or dates when the service or product was supplied, performed or
-  /// completed.
-  #[serde(rename = "servicedDate")]
-  serviced_date: Option<String>,
-
-  /// The number of repetitions of a service or product.
-  quantity: Option<Quantity>,
-
-  /// Extensions for informationSequence
-  #[serde(rename = "_informationSequence")]
-  _information_sequence: Option<Vec<Element>>,
+impl Claim_Item<'_> {
+  /// Physical service site on the patient (limb, tooth, etc.).
+  pub fn body_site(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("bodySite") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for diagnosisSequence
-  #[serde(rename = "_diagnosisSequence")]
-  _diagnosis_sequence: Option<Vec<Element>>,
+  pub fn _diagnosis_sequence(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_diagnosisSequence") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Where the product or service was provided.
-  #[serde(rename = "locationReference")]
-  location_reference: Option<Box<Reference>>,
+  /// The type of revenue or cost center providing the product and/or service.
+  pub fn revenue(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("revenue") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
-  /// The date or dates when the service or product was supplied, performed or
-  /// completed.
-  #[serde(rename = "servicedPeriod")]
-  serviced_period: Option<Period>,
+  /// Extensions for servicedDate
+  pub fn _serviced_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_servicedDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Code to identify the general type of benefits under which products and services
+  /// are provided.
+  pub fn category(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("category") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// When the value is a group code then this item collects a set of related claim
   /// details, otherwise this contains the product, service, drug or other billing
   /// code for the item.
-  #[serde(rename = "productOrService")]
-  product_or_service: CodeableConcept,
+  pub fn product_or_service(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["productOrService"],
+    }
+  }
 
-  /// Procedures applicable for this service or product.
-  #[serde(rename = "procedureSequence")]
-  procedure_sequence: Option<Vec<i32>>,
+  /// CareTeam members related to this service or product.
+  pub fn care_team_sequence(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("careTeamSequence") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The type of revenue or cost center providing the product and/or service.
-  revenue: Option<CodeableConcept>,
+  /// Extensions for informationSequence
+  pub fn _information_sequence(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_informationSequence") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Where the product or service was provided.
+  pub fn location_address(&self) -> Option<Address> {
+    if let Some(val) = self.value.get("locationAddress") {
+      return Some(Address { value: val });
+    }
+    return None;
+  }
+
+  /// Where the product or service was provided.
+  pub fn location_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("locationReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies the program under which this may be recovered.
+  pub fn program_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("programCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Item typification or modifiers codes to convey additional context for the
+  /// product or service.
+  pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("modifier") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A real number that represents a multiplier used in determining the overall value
+  /// of services delivered and/or goods received. The concept of a Factor allows for
+  /// a discount or surcharge multiplier to be applied to a monetary amount.
+  pub fn factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("factor") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
 
   /// The Encounters during which this Claim was created or to which the creation of
   /// this record is tightly associated.
-  encounter: Option<Vec<Box<Reference>>>,
+  pub fn encounter(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("encounter") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for procedureSequence
-  #[serde(rename = "_procedureSequence")]
-  _procedure_sequence: Option<Vec<Element>>,
-
-  /// A number to uniquely identify item entries.
-  sequence: Option<i32>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The quantity times the unit price for an additional service or product or
   /// charge.
-  net: Option<Money>,
+  pub fn net(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("net") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// Unique Device Identifiers associated with this line item.
+  pub fn udi(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("udi") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for careTeamSequence
+  pub fn _care_team_sequence(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_careTeamSequence") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for sequence
+  pub fn _sequence(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_sequence") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Procedures applicable for this service or product.
+  pub fn procedure_sequence(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("procedureSequence") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Exceptions, special conditions and supporting information applicable for this
+  /// service or product.
+  pub fn information_sequence(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("informationSequence") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A region or surface of the bodySite, e.g. limb region or tooth surface(s).
+  pub fn sub_site(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("subSite") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for procedureSequence
+  pub fn _procedure_sequence(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_procedureSequence") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The date or dates when the service or product was supplied, performed or
+  /// completed.
+  pub fn serviced_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("servicedPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// The number of repetitions of a service or product.
+  pub fn quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
 
   /// Diagnosis applicable for this service or product.
-  #[serde(rename = "diagnosisSequence")]
-  diagnosis_sequence: Option<Vec<i32>>,
+  pub fn diagnosis_sequence(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("diagnosisSequence") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Unique Device Identifiers associated with this line item.
-  udi: Option<Vec<Box<Reference>>>,
+  /// Where the product or service was provided.
+  pub fn location_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("locationCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A number to uniquely identify item entries.
+  pub fn sequence(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("sequence") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for factor
+  pub fn _factor(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_factor") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date or dates when the service or product was supplied, performed or
+  /// completed.
+  pub fn serviced_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("servicedDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -106,68 +297,29 @@ pub struct Claim_Item {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// A real number that represents a multiplier used in determining the overall value
-  /// of services delivered and/or goods received. The concept of a Factor allows for
-  /// a discount or surcharge multiplier to be applied to a monetary amount.
-  factor: Option<f32>,
-
-  /// A region or surface of the bodySite, e.g. limb region or tooth surface(s).
-  #[serde(rename = "subSite")]
-  sub_site: Option<Vec<CodeableConcept>>,
-
-  /// Where the product or service was provided.
-  #[serde(rename = "locationCodeableConcept")]
-  location_codeable_concept: Option<CodeableConcept>,
-
-  /// Physical service site on the patient (limb, tooth, etc.).
-  #[serde(rename = "bodySite")]
-  body_site: Option<CodeableConcept>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A claim detail line. Either a simple (a product or service) or a 'group' of sub-
   /// details which are simple items.
-  detail: Option<Vec<Claim_Detail>>,
+  pub fn detail(&self) -> Option<Vec<Claim_Detail>> {
+    if let Some(Value::Array(val)) = self.value.get("detail") {
+      return Some(val.into_iter().map(|e| Claim_Detail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for sequence
-  #[serde(rename = "_sequence")]
-  _sequence: Option<Element>,
-
-  /// Extensions for careTeamSequence
-  #[serde(rename = "_careTeamSequence")]
-  _care_team_sequence: Option<Vec<Element>>,
-
-  /// Where the product or service was provided.
-  #[serde(rename = "locationAddress")]
-  location_address: Option<Address>,
-
-  /// CareTeam members related to this service or product.
-  #[serde(rename = "careTeamSequence")]
-  care_team_sequence: Option<Vec<i32>>,
-
-  /// Identifies the program under which this may be recovered.
-  #[serde(rename = "programCode")]
-  program_code: Option<Vec<CodeableConcept>>,
-
-  /// Extensions for factor
-  #[serde(rename = "_factor")]
-  _factor: Option<Element>,
-
-  /// Code to identify the general type of benefits under which products and services
-  /// are provided.
-  category: Option<CodeableConcept>,
-
-  /// Item typification or modifiers codes to convey additional context for the
-  /// product or service.
-  modifier: Option<Vec<CodeableConcept>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for servicedDate
-  #[serde(rename = "_servicedDate")]
-  _serviced_date: Option<Element>,
+  /// If the item is not a group then this is the fee for the product or service,
+  /// otherwise this is the total of the fees for the details of the group.
+  pub fn unit_price(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("unitPrice") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
 
 }

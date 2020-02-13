@@ -1,10 +1,11 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use crate::model::Provenance_Agent::Provenance_Agent;
 use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// Provenance of a resource is a record that describes entities and processes
@@ -16,29 +17,68 @@ use crate::model::Reference::Reference;
 /// confidence in authenticity, reliability, and trustworthiness, integrity, and
 /// stage in lifecycle (e.g. Document Completion - has the artifact been legally
 /// authenticated), all of which may impact security, privacy, and trust policies.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Provenance_Entity {
-  /// How the entity was used during the activity.
-  role: Option<Provenance_EntityRole>,
+
+#[derive(Debug)]
+pub struct Provenance_Entity<'a> {
+  pub value: &'a Value,
+}
+
+impl Provenance_Entity<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Identity of the  Entity used. May be a logical or physical uri and maybe
+  /// absolute or relative.
+  pub fn what(&self) -> Reference {
+    Reference {
+      value: &self.value["what"],
+    }
+  }
 
   /// Extensions for role
-  #[serde(rename = "_role")]
-  _role: Option<Element>,
+  pub fn _role(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_role") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// How the entity was used during the activity.
+  pub fn role(&self) -> Option<Provenance_EntityRole> {
+    if let Some(Value::String(val)) = self.value.get("role") {
+      return Some(Provenance_EntityRole::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// The entity is attributed to an agent to express the agent's responsibility for
   /// that entity, possibly along with other agents. This description can be
   /// understood as shorthand for saying that the agent was responsible for the
   /// activity which generated the entity.
-  agent: Option<Vec<Provenance_Agent>>,
-
-  /// Identity of the  Entity used. May be a logical or physical uri and maybe
-  /// absolute or relative.
-  what: Box<Reference>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn agent(&self) -> Option<Vec<Provenance_Agent>> {
+    if let Some(Value::Array(val)) = self.value.get("agent") {
+      return Some(val.into_iter().map(|e| Provenance_Agent { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -51,33 +91,34 @@ pub struct Provenance_Entity {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum Provenance_EntityRole {
-  #[serde(rename = "derivation")]
   Derivation,
-
-  #[serde(rename = "revision")]
   Revision,
-
-  #[serde(rename = "quotation")]
   Quotation,
-
-  #[serde(rename = "source")]
   Source,
-
-  #[serde(rename = "removal")]
   Removal,
-
 }
+
+impl Provenance_EntityRole {
+    pub fn from_string(string: &str) -> Option<Provenance_EntityRole> {
+      match string {
+        "derivation" => Some(Provenance_EntityRole::Derivation),
+        "revision" => Some(Provenance_EntityRole::Revision),
+        "quotation" => Some(Provenance_EntityRole::Quotation),
+        "source" => Some(Provenance_EntityRole::Source),
+        "removal" => Some(Provenance_EntityRole::Removal),
+        _ => None,
+    }
+  }
+}
+

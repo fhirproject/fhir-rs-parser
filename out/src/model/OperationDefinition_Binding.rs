@@ -1,15 +1,65 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A formal computable definition of an operation (on the RESTful interface) or a
 /// named query (using the search interaction).
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct OperationDefinition_Binding {
+
+#[derive(Debug)]
+pub struct OperationDefinition_Binding<'a> {
+  pub value: &'a Value,
+}
+
+impl OperationDefinition_Binding<'_> {
+  /// Extensions for strength
+  pub fn _strength(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_strength") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Points to the value set or external definition (e.g. implicit value set) that
+  /// identifies the set of codes to be used.
+  pub fn value_set(&self) -> String {
+    self.value.get("valueSet").unwrap().as_str().unwrap().to_string()
+  }
+
+  /// Indicates the degree of conformance expectations associated with this binding -
+  /// that is, the degree to which the provided value set must be adhered to in the
+  /// instances.
+  pub fn strength(&self) -> Option<OperationDefinition_BindingStrength> {
+    if let Some(Value::String(val)) = self.value.get("strength") {
+      return Some(OperationDefinition_BindingStrength::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -21,48 +71,32 @@ pub struct OperationDefinition_Binding {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Indicates the degree of conformance expectations associated with this binding -
-  /// that is, the degree to which the provided value set must be adhered to in the
-  /// instances.
-  strength: Option<OperationDefinition_BindingStrength>,
-
-  /// Extensions for strength
-  #[serde(rename = "_strength")]
-  _strength: Option<Element>,
-
-  /// Points to the value set or external definition (e.g. implicit value set) that
-  /// identifies the set of codes to be used.
-  #[serde(rename = "valueSet")]
-  value_set: String,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum OperationDefinition_BindingStrength {
-  #[serde(rename = "required")]
   Required,
-
-  #[serde(rename = "extensible")]
   Extensible,
-
-  #[serde(rename = "preferred")]
   Preferred,
-
-  #[serde(rename = "example")]
   Example,
-
 }
+
+impl OperationDefinition_BindingStrength {
+    pub fn from_string(string: &str) -> Option<OperationDefinition_BindingStrength> {
+      match string {
+        "required" => Some(OperationDefinition_BindingStrength::Required),
+        "extensible" => Some(OperationDefinition_BindingStrength::Extensible),
+        "preferred" => Some(OperationDefinition_BindingStrength::Preferred),
+        "example" => Some(OperationDefinition_BindingStrength::Example),
+        _ => None,
+    }
+  }
+}
+

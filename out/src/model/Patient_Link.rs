@@ -1,26 +1,64 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// Demographics and other administrative information about an individual or animal
 /// receiving care or other health-related services.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Patient_Link {
+
+#[derive(Debug)]
+pub struct Patient_Link<'a> {
+  pub value: &'a Value,
+}
+
+impl Patient_Link<'_> {
+  /// The type of link between this patient resource and another patient resource.
+  pub fn fhir_type(&self) -> Option<Patient_LinkType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(Patient_LinkType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The other patient resource that the link refers to.
+  pub fn other(&self) -> Reference {
+    Reference {
+      value: &self.value["other"],
+    }
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -33,34 +71,32 @@ pub struct Patient_Link {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// The other patient resource that the link refers to.
-  other: Box<Reference>,
-
-  /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// The type of link between this patient resource and another patient resource.
-  #[serde(rename = "type")]
-  fhir_type: Option<Patient_LinkType>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum Patient_LinkType {
-  #[serde(rename = "replaced-by")]
   ReplacedBy,
-
-  #[serde(rename = "replaces")]
   Replaces,
-
-  #[serde(rename = "refer")]
   Refer,
-
-  #[serde(rename = "seealso")]
   Seealso,
-
 }
+
+impl Patient_LinkType {
+    pub fn from_string(string: &str) -> Option<Patient_LinkType> {
+      match string {
+        "replaced-by" => Some(Patient_LinkType::ReplacedBy),
+        "replaces" => Some(Patient_LinkType::Replaces),
+        "refer" => Some(Patient_LinkType::Refer),
+        "seealso" => Some(Patient_LinkType::Seealso),
+        _ => None,
+    }
+  }
+}
+

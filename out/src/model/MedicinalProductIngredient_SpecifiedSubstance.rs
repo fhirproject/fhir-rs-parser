@@ -1,22 +1,20 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
 use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// An ingredient of a manufactured item or pharmaceutical product.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MedicinalProductIngredient_SpecifiedSubstance {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
 
+#[derive(Debug)]
+pub struct MedicinalProductIngredient_SpecifiedSubstance<'a> {
+  pub value: &'a Value,
+}
+
+impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -28,24 +26,63 @@ pub struct MedicinalProductIngredient_SpecifiedSubstance {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Confidentiality level of the specified substance as the ingredient.
+  pub fn confidentiality(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("confidentiality") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The specified substance.
-  code: CodeableConcept,
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
+  }
+
+  /// The group of specified substance, e.g. group 1 to 4.
+  pub fn group(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["group"],
+    }
+  }
 
   /// Quantity of the substance or specified substance present in the manufactured
   /// item or pharmaceutical product.
-  strength: Option<Vec<MedicinalProductIngredient_Strength>>,
-
-  /// Confidentiality level of the specified substance as the ingredient.
-  confidentiality: Option<CodeableConcept>,
-
-  /// The group of specified substance, e.g. group 1 to 4.
-  group: CodeableConcept,
+  pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
+    if let Some(Value::Array(val)) = self.value.get("strength") {
+      return Some(val.into_iter().map(|e| MedicinalProductIngredient_Strength { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

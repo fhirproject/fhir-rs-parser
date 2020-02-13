@@ -1,75 +1,226 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::VerificationResult_Validator::VerificationResult_Validator;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Timing::Timing;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
-use crate::model::Meta::Meta;
-use crate::model::VerificationResult_Attestation::VerificationResult_Attestation;
+use crate::model::Reference::Reference;
+use crate::model::VerificationResult_Validator::VerificationResult_Validator;
 use crate::model::VerificationResult_PrimarySource::VerificationResult_PrimarySource;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::VerificationResult_Attestation::VerificationResult_Attestation;
+use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
-use crate::model::Element::Element;
-use crate::model::Timing::Timing;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// Describes validation requirements, source(s), status and dates for one or more
 /// elements.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct VerificationResult {
+
+#[derive(Debug)]
+pub struct VerificationResult<'a> {
+  pub value: &'a Value,
+}
+
+impl VerificationResult<'_> {
+  /// The date/time validation was last completed (including failed validations).
+  pub fn last_performed(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("lastPerformed") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// Information about the entity validating information.
-  validator: Option<Vec<VerificationResult_Validator>>,
+  pub fn validator(&self) -> Option<Vec<VerificationResult_Validator>> {
+    if let Some(Value::Array(val)) = self.value.get("validator") {
+      return Some(val.into_iter().map(|e| VerificationResult_Validator { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for targetLocation
+  pub fn _target_location(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_targetLocation") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Information about the primary source(s) involved in validation.
+  pub fn primary_source(&self) -> Option<Vec<VerificationResult_PrimarySource>> {
+    if let Some(Value::Array(val)) = self.value.get("primarySource") {
+      return Some(val.into_iter().map(|e| VerificationResult_PrimarySource { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for lastPerformed
+  pub fn _last_performed(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastPerformed") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// What the target is validated against (nothing; primary source; multiple
+  /// sources).
+  pub fn validation_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("validationType") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The fhirpath location(s) within the resource that was validated.
+  pub fn target_location(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("targetLocation") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The frequency with which the target must be validated (none; initial; periodic).
+  pub fn need(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("need") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The date when target is next validated, if appropriate.
+  pub fn next_scheduled(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("nextScheduled") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for nextScheduled
+  pub fn _next_scheduled(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_nextScheduled") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// When the validation status was updated.
+  pub fn status_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("statusDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for statusDate
-  #[serde(rename = "_statusDate")]
-  _status_date: Option<Element>,
-
-  /// The validation status of the target (attested; validated; in process; requires
-  /// revalidation; validation failed; revalidation failed).
-  status: Option<String>,
-
-  /// The frequency with which the target must be validated (none; initial; periodic).
-  need: Option<CodeableConcept>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// The result if validation fails (fatal; warning; record only; none).
-  #[serde(rename = "failureAction")]
-  failure_action: Option<CodeableConcept>,
-
-  /// Information about the entity attesting to information.
-  attestation: Option<VerificationResult_Attestation>,
-
-  /// Extensions for nextScheduled
-  #[serde(rename = "_nextScheduled")]
-  _next_scheduled: Option<Element>,
-
-  /// Information about the primary source(s) involved in validation.
-  #[serde(rename = "primarySource")]
-  primary_source: Option<Vec<VerificationResult_PrimarySource>>,
-
-  /// The fhirpath location(s) within the resource that was validated.
-  #[serde(rename = "targetLocation")]
-  target_location: Option<Vec<String>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Information about the entity attesting to information.
+  pub fn attestation(&self) -> Option<VerificationResult_Attestation> {
+    if let Some(val) = self.value.get("attestation") {
+      return Some(VerificationResult_Attestation { value: val });
+    }
+    return None;
+  }
+
+  /// The result if validation fails (fatal; warning; record only; none).
+  pub fn failure_action(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("failureAction") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The validation status of the target (attested; validated; in process; requires
+  /// revalidation; validation failed; revalidation failed).
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -77,44 +228,20 @@ pub struct VerificationResult {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
-  /// Frequency of revalidation.
-  frequency: Option<Timing>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// What the target is validated against (nothing; primary source; multiple
-  /// sources).
-  #[serde(rename = "validationType")]
-  validation_type: Option<CodeableConcept>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// Extensions for targetLocation
-  #[serde(rename = "_targetLocation")]
-  _target_location: Option<Vec<Element>>,
-
-  /// The date/time validation was last completed (including failed validations).
-  #[serde(rename = "lastPerformed")]
-  last_performed: Option<String>,
-
-  /// The primary process by which the target is validated (edit check; value set;
-  /// primary source; multiple sources; standalone; in context).
-  #[serde(rename = "validationProcess")]
-  validation_process: Option<Vec<CodeableConcept>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// A resource that was validated.
+  pub fn target(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("target") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -128,30 +255,36 @@ pub struct VerificationResult {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// A resource that was validated.
-  target: Option<Vec<Box<Reference>>>,
+  /// Extensions for statusDate
+  pub fn _status_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_statusDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for lastPerformed
-  #[serde(rename = "_lastPerformed")]
-  _last_performed: Option<Element>,
+  /// Frequency of revalidation.
+  pub fn frequency(&self) -> Option<Timing> {
+    if let Some(val) = self.value.get("frequency") {
+      return Some(Timing { value: val });
+    }
+    return None;
+  }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// The date when target is next validated, if appropriate.
-  #[serde(rename = "nextScheduled")]
-  next_scheduled: Option<i32>,
-
-  /// When the validation status was updated.
-  #[serde(rename = "statusDate")]
-  status_date: Option<String>,
+  /// The primary process by which the target is validated (edit check; value set;
+  /// primary source; multiple sources; standalone; in context).
+  pub fn validation_process(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("validationProcess") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

@@ -1,20 +1,98 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// The EffectEvidenceSynthesis resource describes the difference in an outcome
 /// between exposures states in a population where the effect estimate is derived
 /// from a combination of research studies.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct EffectEvidenceSynthesis_PrecisionEstimate {
+
+#[derive(Debug)]
+pub struct EffectEvidenceSynthesis_PrecisionEstimate<'a> {
+  pub value: &'a Value,
+}
+
+impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for level
+  pub fn _level(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_level") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Examples include confidence interval and interquartile range.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for to
+  pub fn _to(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_to") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Upper bound of confidence interval.
+  pub fn to(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("to") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Use 95 for a 95% confidence interval.
+  pub fn level(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("level") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   /// Extensions for from
-  #[serde(rename = "_from")]
-  _from: Option<Element>,
+  pub fn _from(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_from") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Lower bound of confidence interval.
+  pub fn from(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("from") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -27,39 +105,11 @@ pub struct EffectEvidenceSynthesis_PrecisionEstimate {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for to
-  #[serde(rename = "_to")]
-  _to: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Examples include confidence interval and interquartile range.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
-
-  /// Extensions for level
-  #[serde(rename = "_level")]
-  _level: Option<Element>,
-
-  /// Lower bound of confidence interval.
-  from: Option<f32>,
-
-  /// Use 95 for a 95% confidence interval.
-  level: Option<f32>,
-
-  /// Upper bound of confidence interval.
-  to: Option<f32>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

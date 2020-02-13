@@ -1,34 +1,53 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Captures constraints on each element within the resource, profile, or extension.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ElementDefinition_Constraint {
-  /// Text that can be used to describe the constraint in messages identifying that
-  /// the constraint has been violated.
-  human: Option<String>,
+
+#[derive(Debug)]
+pub struct ElementDefinition_Constraint<'a> {
+  pub value: &'a Value,
+}
+
+impl ElementDefinition_Constraint<'_> {
+  /// Extensions for key
+  pub fn _key(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_key") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies the impact constraint violation has on the conformance of the
+  /// instance.
+  pub fn severity(&self) -> Option<ElementDefinition_ConstraintSeverity> {
+    if let Some(Value::String(val)) = self.value.get("severity") {
+      return Some(ElementDefinition_ConstraintSeverity::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// A [FHIRPath](fhirpath.html) expression of constraint that can be executed to see
   /// if this constraint is met.
-  expression: Option<String>,
-
-  /// Allows identification of which elements have their cardinalities impacted by the
-  /// constraint.  Will not be referenced for constraints that do not affect
-  /// cardinality.
-  key: Option<String>,
-
-  /// Extensions for severity
-  #[serde(rename = "_severity")]
-  _severity: Option<Element>,
-
-  /// Extensions for key
-  #[serde(rename = "_key")]
-  _key: Option<Element>,
+  pub fn expression(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("expression") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -41,58 +60,124 @@ pub struct ElementDefinition_Constraint {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for expression
-  #[serde(rename = "_expression")]
-  _expression: Option<Element>,
-
-  /// Description of why this constraint is necessary or appropriate.
-  requirements: Option<String>,
-
-  /// Extensions for xpath
-  #[serde(rename = "_xpath")]
-  _xpath: Option<Element>,
-
-  /// Extensions for requirements
-  #[serde(rename = "_requirements")]
-  _requirements: Option<Element>,
-
-  /// Identifies the impact constraint violation has on the conformance of the
-  /// instance.
-  severity: Option<ElementDefinition_ConstraintSeverity>,
+  /// Allows identification of which elements have their cardinalities impacted by the
+  /// constraint.  Will not be referenced for constraints that do not affect
+  /// cardinality.
+  pub fn key(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("key") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for human
-  #[serde(rename = "_human")]
-  _human: Option<Element>,
+  pub fn _human(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_human") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// An XPath expression of constraint that can be executed to see if this constraint
   /// is met.
-  xpath: Option<String>,
+  pub fn xpath(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("xpath") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for severity
+  pub fn _severity(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_severity") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for xpath
+  pub fn _xpath(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_xpath") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Text that can be used to describe the constraint in messages identifying that
+  /// the constraint has been violated.
+  pub fn human(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("human") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for requirements
+  pub fn _requirements(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_requirements") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A reference to the original source of the constraint, for traceability purposes.
-  source: Option<String>,
+  pub fn source(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("source") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Description of why this constraint is necessary or appropriate.
+  pub fn requirements(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("requirements") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum ElementDefinition_ConstraintSeverity {
-  #[serde(rename = "error")]
   Error,
-
-  #[serde(rename = "warning")]
   Warning,
-
 }
+
+impl ElementDefinition_ConstraintSeverity {
+    pub fn from_string(string: &str) -> Option<ElementDefinition_ConstraintSeverity> {
+      match string {
+        "error" => Some(ElementDefinition_ConstraintSeverity::Error),
+        "warning" => Some(ElementDefinition_ConstraintSeverity::Warning),
+        _ => None,
+    }
+  }
+}
+

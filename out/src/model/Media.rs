@@ -1,103 +1,36 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Reference::Reference;
-use crate::model::Annotation::Annotation;
-use crate::model::Attachment::Attachment;
-use crate::model::Meta::Meta;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Narrative::Narrative;
-use crate::model::Period::Period;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Identifier::Identifier;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
+use crate::model::Narrative::Narrative;
+use crate::model::Annotation::Annotation;
+use crate::model::Reference::Reference;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Period::Period;
+use crate::model::Meta::Meta;
+use crate::model::Attachment::Attachment;
+use serde_json::value::Value;
+
 
 
 /// A photo, video, or audio recording acquired or used in healthcare. The actual
 /// content may be inline or provided by direct reference.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Media {
-  /// Describes why the event occurred in coded or textual form.
-  #[serde(rename = "reasonCode")]
-  reason_code: Option<Vec<CodeableConcept>>,
 
-  /// Height of the image in pixels (photo/video).
-  height: Option<i32>,
+#[derive(Debug)]
+pub struct Media<'a> {
+  pub value: &'a Value,
+}
 
-  /// Width of the image in pixels (photo/video).
-  width: Option<i32>,
-
-  /// Extensions for deviceName
-  #[serde(rename = "_deviceName")]
-  _device_name: Option<Element>,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// Who/What this Media is a record of.
-  subject: Option<Box<Reference>>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
-
-  /// Extensions for width
-  #[serde(rename = "_width")]
-  _width: Option<Element>,
-
-  /// A larger event of which this particular event is a component or step.
-  #[serde(rename = "partOf")]
-  part_of: Option<Vec<Box<Reference>>>,
-
-  /// The current state of the {{title}}.
-  status: Option<String>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// Indicates the site on the subject's body where the observation was made (i.e.
-  /// the target site).
-  #[serde(rename = "bodySite")]
-  body_site: Option<CodeableConcept>,
-
-  /// Extensions for createdDateTime
-  #[serde(rename = "_createdDateTime")]
-  _created_date_time: Option<Element>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// The encounter that establishes the context for this media.
-  encounter: Option<Box<Reference>>,
-
-  /// A code that classifies whether the media is an image, video or audio recording
-  /// or some other media category.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// Comments made about the media by the performer, subject or other participants.
-  note: Option<Vec<Annotation>>,
+impl Media<'_> {
+  /// The name of the imaging view e.g. Lateral or Antero-posterior (AP).
+  pub fn view(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("view") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -111,96 +44,352 @@ pub struct Media {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The date and time(s) at which the media was collected.
-  #[serde(rename = "createdDateTime")]
-  created_date_time: Option<String>,
+  /// Extensions for duration
+  pub fn _duration(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_duration") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for issued
-  #[serde(rename = "_issued")]
-  _issued: Option<Element>,
+  /// A procedure that is fulfilled in whole or in part by the creation of this media.
+  pub fn based_on(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("basedOn") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The name of the imaging view e.g. Lateral or Antero-posterior (AP).
-  view: Option<CodeableConcept>,
+  /// Extensions for height
+  pub fn _height(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_height") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Identifiers associated with the image - these may include identifiers for the
-  /// image itself, identifiers for the context of its collection (e.g. series ids)
-  /// and context ids such as accession numbers or other workflow identifiers.
-  identifier: Option<Vec<Identifier>>,
+  /// Height of the image in pixels (photo/video).
+  pub fn height(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("height") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for frames
+  pub fn _frames(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_frames") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The actual content of the media - inline or by direct reference to the media
+  /// source file.
+  pub fn content(&self) -> Attachment {
+    Attachment {
+      value: &self.value["content"],
+    }
+  }
+
+  /// The duration of the recording in seconds - for audio and video.
+  pub fn duration(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("duration") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// Describes why the event occurred in coded or textual form.
+  pub fn reason_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("reasonCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The current state of the {{title}}.
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Details of the type of the media - usually, how it was acquired (what type of
   /// device). If images sourced from a DICOM system, are wrapped in a Media resource,
   /// then this is the modality.
-  modality: Option<CodeableConcept>,
+  pub fn modality(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("modality") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// The device used to collect the media.
-  device: Option<Box<Reference>>,
+  pub fn device(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("device") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for height
-  #[serde(rename = "_height")]
-  _height: Option<Element>,
+  /// Extensions for deviceName
+  pub fn _device_name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_deviceName") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The date and time(s) at which the media was collected.
-  #[serde(rename = "createdPeriod")]
-  created_period: Option<Period>,
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
-  /// The number of frames in a photo. This is used with a multi-page fax, or an
-  /// imaging acquisition context that takes multiple slices in a single image, or an
-  /// animated gif. If there is more than one frame, this SHALL have a value in order
-  /// to alert interface software that a multi-frame capable rendering widget is
-  /// required.
-  frames: Option<i32>,
+  /// The encounter that establishes the context for this media.
+  pub fn encounter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("encounter") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for frames
-  #[serde(rename = "_frames")]
-  _frames: Option<Element>,
+  /// Extensions for issued
+  pub fn _issued(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_issued") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The duration of the recording in seconds - for audio and video.
-  duration: Option<f32>,
-
-  /// The date and time this version of the media was made available to providers,
-  /// typically after having been reviewed.
-  issued: Option<String>,
-
-  /// The actual content of the media - inline or by direct reference to the media
-  /// source file.
-  content: Attachment,
-
-  /// The person who administered the collection of the image.
-  operator: Option<Box<Reference>>,
-
-  /// The name of the device / manufacturer of the device  that was used to make the
-  /// recording.
-  #[serde(rename = "deviceName")]
-  device_name: Option<String>,
+  /// A code that classifies whether the media is an image, video or audio recording
+  /// or some other media category.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
+  /// Indicates the site on the subject's body where the observation was made (i.e.
+  /// the target site).
+  pub fn body_site(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("bodySite") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
-  /// A procedure that is fulfilled in whole or in part by the creation of this media.
-  #[serde(rename = "basedOn")]
-  based_on: Option<Vec<Box<Reference>>>,
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Width of the image in pixels (photo/video).
+  pub fn width(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("width") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for width
+  pub fn _width(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_width") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifiers associated with the image - these may include identifiers for the
+  /// image itself, identifiers for the context of its collection (e.g. series ids)
+  /// and context ids such as accession numbers or other workflow identifiers.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date and time(s) at which the media was collected.
+  pub fn created_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("createdDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The name of the device / manufacturer of the device  that was used to make the
+  /// recording.
+  pub fn device_name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("deviceName") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The number of frames in a photo. This is used with a multi-page fax, or an
+  /// imaging acquisition context that takes multiple slices in a single image, or an
+  /// animated gif. If there is more than one frame, this SHALL have a value in order
+  /// to alert interface software that a multi-frame capable rendering widget is
+  /// required.
+  pub fn frames(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("frames") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// The person who administered the collection of the image.
+  pub fn operator(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("operator") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Comments made about the media by the performer, subject or other participants.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The base language in which the resource is written.
-  language: Option<String>,
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for duration
-  #[serde(rename = "_duration")]
-  _duration: Option<Element>,
+  /// The date and time(s) at which the media was collected.
+  pub fn created_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("createdPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// A larger event of which this particular event is a component or step.
+  pub fn part_of(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("partOf") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The date and time this version of the media was made available to providers,
+  /// typically after having been reviewed.
+  pub fn issued(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("issued") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Who/What this Media is a record of.
+  pub fn subject(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("subject") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for createdDateTime
+  pub fn _created_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_createdDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

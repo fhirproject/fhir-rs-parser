@@ -1,14 +1,72 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Describes a measurement, calculation or setting capability of a medical device.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DeviceMetric_Calibration {
+
+#[derive(Debug)]
+pub struct DeviceMetric_Calibration<'a> {
+  pub value: &'a Value,
+}
+
+impl DeviceMetric_Calibration<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Describes the type of the calibration method.
+  pub fn fhir_type(&self) -> Option<DeviceMetric_CalibrationType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(DeviceMetric_CalibrationType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Describes the time last calibration has been performed.
+  pub fn time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("time") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for time
+  pub fn _time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_time") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Describes the state of the calibration.
+  pub fn state(&self) -> Option<DeviceMetric_CalibrationState> {
+    if let Some(Value::String(val)) = self.value.get("state") {
+      return Some(DeviceMetric_CalibrationState::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -20,72 +78,69 @@ pub struct DeviceMetric_Calibration {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for time
-  #[serde(rename = "_time")]
-  _time: Option<Element>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
-
-  /// Describes the time last calibration has been performed.
-  time: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for state
-  #[serde(rename = "_state")]
-  _state: Option<Element>,
-
-  /// Describes the type of the calibration method.
-  #[serde(rename = "type")]
-  fhir_type: Option<DeviceMetric_CalibrationType>,
-
-  /// Describes the state of the calibration.
-  state: Option<DeviceMetric_CalibrationState>,
+  pub fn _state(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_state") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum DeviceMetric_CalibrationType {
-  #[serde(rename = "unspecified")]
   Unspecified,
-
-  #[serde(rename = "offset")]
   Offset,
-
-  #[serde(rename = "gain")]
   Gain,
-
-  #[serde(rename = "two-point")]
   TwoPoint,
-
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl DeviceMetric_CalibrationType {
+    pub fn from_string(string: &str) -> Option<DeviceMetric_CalibrationType> {
+      match string {
+        "unspecified" => Some(DeviceMetric_CalibrationType::Unspecified),
+        "offset" => Some(DeviceMetric_CalibrationType::Offset),
+        "gain" => Some(DeviceMetric_CalibrationType::Gain),
+        "two-point" => Some(DeviceMetric_CalibrationType::TwoPoint),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
 pub enum DeviceMetric_CalibrationState {
-  #[serde(rename = "not-calibrated")]
   NotCalibrated,
-
-  #[serde(rename = "calibration-required")]
   CalibrationRequired,
-
-  #[serde(rename = "calibrated")]
   Calibrated,
-
-  #[serde(rename = "unspecified")]
   Unspecified,
-
 }
+
+impl DeviceMetric_CalibrationState {
+    pub fn from_string(string: &str) -> Option<DeviceMetric_CalibrationState> {
+      match string {
+        "not-calibrated" => Some(DeviceMetric_CalibrationState::NotCalibrated),
+        "calibration-required" => Some(DeviceMetric_CalibrationState::CalibrationRequired),
+        "calibrated" => Some(DeviceMetric_CalibrationState::Calibrated),
+        "unspecified" => Some(DeviceMetric_CalibrationState::Unspecified),
+        _ => None,
+    }
+  }
+}
+

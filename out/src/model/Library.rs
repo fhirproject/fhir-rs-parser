@@ -1,73 +1,207 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::ResourceList::ResourceList;
-use crate::model::Reference::Reference;
-use crate::model::ParameterDefinition::ParameterDefinition;
-use crate::model::Extension::Extension;
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::Identifier::Identifier;
-use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::Attachment::Attachment;
-use crate::model::Period::Period;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::DataRequirement::DataRequirement;
-use crate::model::Element::Element;
 use crate::model::UsageContext::UsageContext;
-use crate::model::Meta::Meta;
+use crate::model::Element::Element;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::Extension::Extension;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Identifier::Identifier;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::Narrative::Narrative;
+use crate::model::Period::Period;
+use crate::model::ParameterDefinition::ParameterDefinition;
+use crate::model::DataRequirement::DataRequirement;
+use crate::model::Reference::Reference;
+use crate::model::Meta::Meta;
+use serde_json::value::Value;
+
 
 
 /// The Library resource is a general-purpose container for knowledge asset
 /// definitions. It can be used to describe and expose existing knowledge assets
 /// such as logic libraries and information model descriptions, as well as to
 /// describe a collection of knowledge assets.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Library {
-  /// Extensions for subtitle
-  #[serde(rename = "_subtitle")]
-  _subtitle: Option<Element>,
+
+#[derive(Debug)]
+pub struct Library<'a> {
+  pub value: &'a Value,
+}
+
+impl Library<'_> {
+  /// Extensions for copyright
+  pub fn _copyright(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_copyright") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the library is intended to be used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The base language in which the resource is written.
-  language: Option<String>,
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for approvalDate
-  #[serde(rename = "_approvalDate")]
-  _approval_date: Option<Element>,
+  /// A natural language name identifying the library. This name should be usable as
+  /// an identifier for the module by machine processing applications such as code
+  /// generation.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The parameter element defines parameters used by the library.
-  parameter: Option<Vec<ParameterDefinition>>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Explanation of why this library is needed and why it has been designed as it
-  /// has.
-  purpose: Option<String>,
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate library instances.
+  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+    if let Some(Value::Array(val)) = self.value.get("useContext") {
+      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The date on which the resource content was last reviewed. Review happens
+  /// periodically after approval but does not change the original approval date.
+  pub fn last_review_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("lastReviewDate") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// The identifier that is used to identify this version of the library when it is
+  /// referenced in a specification, model, design or instance. This is an arbitrary
+  /// value managed by the library author and is not expected to be globally unique.
+  /// For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not
+  /// available. There is also no expectation that versions can be placed in a
+  /// lexicographical sequence. To provide a version consistent with the Decision
+  /// Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0).
+  /// For more information on versioning knowledge assets, refer to the Decision
+  /// Support Service specification. Note that a version is required for non-
+  /// experimental active artifacts.
+  pub fn version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("version") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date on which the resource content was approved by the publisher. Approval
+  /// happens once when the content is officially approved for usage.
+  pub fn approval_date(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("approvalDate") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for usage
+  pub fn _usage(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_usage") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A formal identifier that is used to identify this library when it is represented
+  /// in other formats, or referenced in a specification, model, design or an
+  /// instance. e.g. CMS or NQF identifiers for a measure artifact. Note that at least
+  /// one identifier is required for non-experimental active artifacts.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// An individual or organization primarily responsible for review of some aspect of
+  /// the content.
+  pub fn reviewer(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("reviewer") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The content of the library as an Attachment. The content may be a reference to a
   /// url, or may be directly embedded as a base-64 string. Either way, the
   /// contentType of the attachment determines how to interpret the content.
-  content: Option<Vec<Attachment>>,
+  pub fn content(&self) -> Option<Vec<Attachment>> {
+    if let Some(Value::Array(val)) = self.value.get("content") {
+      return Some(val.into_iter().map(|e| Attachment { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// Extensions for version
-  #[serde(rename = "_version")]
-  _version: Option<Element>,
-
-  /// A free text natural language description of the library from a consumer's
-  /// perspective.
-  description: Option<String>,
-
-  /// Extensions for copyright
-  #[serde(rename = "_copyright")]
-  _copyright: Option<Element>,
-
-  /// Extensions for usage
-  #[serde(rename = "_usage")]
-  _usage: Option<Element>,
+  /// Contact details to assist a user in finding and communicating with the
+  /// publisher.
+  pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -81,67 +215,54 @@ pub struct Library {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The date on which the resource content was last reviewed. Review happens
-  /// periodically after approval but does not change the original approval date.
-  #[serde(rename = "lastReviewDate")]
-  last_review_date: Option<i32>,
+  /// An individual or organization responsible for officially endorsing the content
+  /// for use in some setting.
+  pub fn endorser(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("endorser") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for publisher
-  #[serde(rename = "_publisher")]
-  _publisher: Option<Element>,
+  /// Extensions for purpose
+  pub fn _purpose(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_purpose") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The period during which the library content was or is planned to be in active
-  /// use.
-  #[serde(rename = "effectivePeriod")]
-  effective_period: Option<Period>,
+  /// Extensions for approvalDate
+  pub fn _approval_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_approvalDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// An individiual or organization primarily involved in the creation and
-  /// maintenance of the content.
-  author: Option<Vec<ContactDetail>>,
-
-  /// Extensions for url
-  #[serde(rename = "_url")]
-  _url: Option<Element>,
-
-  /// Describes a set of data that must be provided in order to be able to
-  /// successfully perform the computations defined by the library.
-  #[serde(rename = "dataRequirement")]
-  data_requirement: Option<Vec<DataRequirement>>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
-
-  /// An explanatory or alternate title for the library giving additional information
-  /// about its content.
-  subtitle: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// Contact details to assist a user in finding and communicating with the
-  /// publisher.
-  contact: Option<Vec<ContactDetail>>,
+  /// An individual or organization primarily responsible for internal coherence of
+  /// the content.
+  pub fn editor(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("editor") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// An absolute URI that is used to identify this library when it is referenced in a
   /// specification, model, design or an instance; also called its canonical
@@ -149,20 +270,249 @@ pub struct Library {
   /// which at which an authoritative instance of this library is (or will be)
   /// published. This URL can be the target of a canonical reference. It SHALL remain
   /// the same when the library is stored on different servers.
-  url: Option<String>,
+  pub fn url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date  (and optionally time) when the library was published. The date must
+  /// change when the business version changes and it must change if the status code
+  /// changes. In addition, it should change when the substantive content of the
+  /// library changes.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A Boolean value to indicate that this library is authored for testing purposes
+  /// (or education/evaluation/marketing) and is not intended to be used for genuine
+  /// usage.
+  pub fn experimental(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("experimental") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// A detailed description of how the library is used from a clinical perspective.
+  pub fn usage(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("usage") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A copyright statement relating to the library and/or its contents. Copyright
+  /// statements are generally legal restrictions on the use and publishing of the
+  /// library.
+  pub fn copyright(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("copyright") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for lastReviewDate
+  pub fn _last_review_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastReviewDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A code or group definition that describes the intended subject of the contents
+  /// of the library.
+  pub fn subject_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("subjectReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The name of the organization or individual that published the library.
+  pub fn publisher(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Explanation of why this library is needed and why it has been designed as it
+  /// has.
+  pub fn purpose(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("purpose") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An individiual or organization primarily involved in the creation and
+  /// maintenance of the content.
+  pub fn author(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("author") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The period during which the library content was or is planned to be in active
+  /// use.
+  pub fn effective_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("effectivePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// A free text natural language description of the library from a consumer's
+  /// perspective.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A code or group definition that describes the intended subject of the contents
+  /// of the library.
+  pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("subjectCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The parameter element defines parameters used by the library.
+  pub fn parameter(&self) -> Option<Vec<ParameterDefinition>> {
+    if let Some(Value::Array(val)) = self.value.get("parameter") {
+      return Some(val.into_iter().map(|e| ParameterDefinition { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An explanatory or alternate title for the library giving additional information
+  /// about its content.
+  pub fn subtitle(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("subtitle") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A short, descriptive, user-friendly title for the library.
+  pub fn title(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Related artifacts such as additional documentation, justification, or
   /// bibliographic references.
-  #[serde(rename = "relatedArtifact")]
-  related_artifact: Option<Vec<RelatedArtifact>>,
+  pub fn related_artifact(&self) -> Option<Vec<RelatedArtifact>> {
+    if let Some(Value::Array(val)) = self.value.get("relatedArtifact") {
+      return Some(val.into_iter().map(|e| RelatedArtifact { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The status of this library. Enables tracking the life-cycle of the content.
+  pub fn status(&self) -> Option<LibraryStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(LibraryStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// Extensions for experimental
-  #[serde(rename = "_experimental")]
-  _experimental: Option<Element>,
+  pub fn _experimental(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_experimental") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// Extensions for lastReviewDate
-  #[serde(rename = "_lastReviewDate")]
-  _last_review_date: Option<Element>,
+  /// Descriptive topics related to the content of the library. Topics provide a high-
+  /// level categorization of the library that can be useful for filtering and
+  /// searching.
+  pub fn topic(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("topic") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -170,151 +520,67 @@ pub struct Library {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// An individual or organization primarily responsible for internal coherence of
-  /// the content.
-  editor: Option<Vec<ContactDetail>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// A natural language name identifying the library. This name should be usable as
-  /// an identifier for the module by machine processing applications such as code
-  /// generation.
-  name: Option<String>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// The status of this library. Enables tracking the life-cycle of the content.
-  status: Option<LibraryStatus>,
-
-  /// The name of the organization or individual that published the library.
-  publisher: Option<String>,
-
-  /// A copyright statement relating to the library and/or its contents. Copyright
-  /// statements are generally legal restrictions on the use and publishing of the
-  /// library.
-  copyright: Option<String>,
-
-  /// A legal or geographic region in which the library is intended to be used.
-  jurisdiction: Option<Vec<CodeableConcept>>,
-
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate library instances.
-  #[serde(rename = "useContext")]
-  use_context: Option<Vec<UsageContext>>,
-
-  /// The date on which the resource content was approved by the publisher. Approval
-  /// happens once when the content is officially approved for usage.
-  #[serde(rename = "approvalDate")]
-  approval_date: Option<i32>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// A code or group definition that describes the intended subject of the contents
-  /// of the library.
-  #[serde(rename = "subjectCodeableConcept")]
-  subject_codeable_concept: Option<CodeableConcept>,
-
-  /// A short, descriptive, user-friendly title for the library.
-  title: Option<String>,
-
-  /// A code or group definition that describes the intended subject of the contents
-  /// of the library.
-  #[serde(rename = "subjectReference")]
-  subject_reference: Option<Box<Reference>>,
-
-  /// The identifier that is used to identify this version of the library when it is
-  /// referenced in a specification, model, design or instance. This is an arbitrary
-  /// value managed by the library author and is not expected to be globally unique.
-  /// For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not
-  /// available. There is also no expectation that versions can be placed in a
-  /// lexicographical sequence. To provide a version consistent with the Decision
-  /// Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0).
-  /// For more information on versioning knowledge assets, refer to the Decision
-  /// Support Service specification. Note that a version is required for non-
-  /// experimental active artifacts.
-  version: Option<String>,
-
-  /// A formal identifier that is used to identify this library when it is represented
-  /// in other formats, or referenced in a specification, model, design or an
-  /// instance. e.g. CMS or NQF identifiers for a measure artifact. Note that at least
-  /// one identifier is required for non-experimental active artifacts.
-  identifier: Option<Vec<Identifier>>,
-
-  /// A detailed description of how the library is used from a clinical perspective.
-  usage: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// Identifies the type of library such as a Logic Library, Model Definition, Asset
   /// Collection, or Module Definition.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
 
-  /// Extensions for purpose
-  #[serde(rename = "_purpose")]
-  _purpose: Option<Element>,
+  /// Extensions for subtitle
+  pub fn _subtitle(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subtitle") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// An individual or organization responsible for officially endorsing the content
-  /// for use in some setting.
-  endorser: Option<Vec<ContactDetail>>,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// An individual or organization primarily responsible for review of some aspect of
-  /// the content.
-  reviewer: Option<Vec<ContactDetail>>,
-
-  /// A Boolean value to indicate that this library is authored for testing purposes
-  /// (or education/evaluation/marketing) and is not intended to be used for genuine
-  /// usage.
-  experimental: Option<bool>,
-
-  /// The date  (and optionally time) when the library was published. The date must
-  /// change when the business version changes and it must change if the status code
-  /// changes. In addition, it should change when the substantive content of the
-  /// library changes.
-  date: Option<String>,
-
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
-
-  /// Extensions for title
-  #[serde(rename = "_title")]
-  _title: Option<Element>,
-
-  /// Descriptive topics related to the content of the library. Topics provide a high-
-  /// level categorization of the library that can be useful for filtering and
-  /// searching.
-  topic: Option<Vec<CodeableConcept>>,
+  /// Describes a set of data that must be provided in order to be able to
+  /// successfully perform the computations defined by the library.
+  pub fn data_requirement(&self) -> Option<Vec<DataRequirement>> {
+    if let Some(Value::Array(val)) = self.value.get("dataRequirement") {
+      return Some(val.into_iter().map(|e| DataRequirement { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum LibraryStatus {
-  #[serde(rename = "draft")]
   Draft,
-
-  #[serde(rename = "active")]
   Active,
-
-  #[serde(rename = "retired")]
   Retired,
-
-  #[serde(rename = "unknown")]
   Unknown,
-
 }
+
+impl LibraryStatus {
+    pub fn from_string(string: &str) -> Option<LibraryStatus> {
+      match string {
+        "draft" => Some(LibraryStatus::Draft),
+        "active" => Some(LibraryStatus::Active),
+        "retired" => Some(LibraryStatus::Retired),
+        "unknown" => Some(LibraryStatus::Unknown),
+        _ => None,
+    }
+  }
+}
+

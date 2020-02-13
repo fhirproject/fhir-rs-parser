@@ -1,37 +1,32 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Coding::Coding;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Contract_SecurityLabel {
+
+#[derive(Debug)]
+pub struct Contract_SecurityLabel<'a> {
+  pub value: &'a Value,
+}
+
+impl Contract_SecurityLabel<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for number
-  #[serde(rename = "_number")]
-  _number: Option<Vec<Element>>,
-
-  /// Number used to link this term or term element to the applicable Security Label.
-  number: Option<Vec<u32>>,
-
-  /// Security label privacy tag that species the manner in which term and/or term
-  /// elements are to be protected.
-  control: Option<Vec<Coding>>,
-
-  /// Security label privacy tag that species the applicable privacy and security
-  /// policies governing this term and/or term elements.
-  category: Option<Vec<Coding>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -44,15 +39,62 @@ pub struct Contract_SecurityLabel {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for number
+  pub fn _number(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_number") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Number used to link this term or term element to the applicable Security Label.
+  pub fn number(&self) -> Option<Vec<u64>> {
+    if let Some(Value::Array(val)) = self.value.get("number") {
+      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Security label privacy tag that species the level of confidentiality protection
   /// required for this term and/or term elements.
-  classification: Coding,
+  pub fn classification(&self) -> Coding {
+    Coding {
+      value: &self.value["classification"],
+    }
+  }
+
+  /// Security label privacy tag that species the applicable privacy and security
+  /// policies governing this term and/or term elements.
+  pub fn category(&self) -> Option<Vec<Coding>> {
+    if let Some(Value::Array(val)) = self.value.get("category") {
+      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Security label privacy tag that species the manner in which term and/or term
+  /// elements are to be protected.
+  pub fn control(&self) -> Option<Vec<Coding>> {
+    if let Some(Value::Array(val)) = self.value.get("control") {
+      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

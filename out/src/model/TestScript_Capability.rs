@@ -1,72 +1,123 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct TestScript_Capability {
-  /// Extensions for link
-  #[serde(rename = "_link")]
-  _link: Option<Vec<Element>>,
 
-  /// Whether or not the test execution will validate the given capabilities of the
-  /// server in order for this test script to execute.
-  validated: Option<bool>,
+#[derive(Debug)]
+pub struct TestScript_Capability<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for destination
-  #[serde(rename = "_destination")]
-  _destination: Option<Element>,
-
+impl TestScript_Capability<'_> {
   /// Extensions for validated
-  #[serde(rename = "_validated")]
-  _validated: Option<Element>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// Which origin server these requirements apply to.
-  origin: Option<Vec<i32>>,
-
-  /// Extensions for origin
-  #[serde(rename = "_origin")]
-  _origin: Option<Vec<Element>>,
-
-  /// Which server these requirements apply to.
-  destination: Option<i32>,
-
-  /// Links to the FHIR specification that describes this interaction and the
-  /// resources involved in more detail.
-  link: Option<Vec<String>>,
-
-  /// Description of the capabilities that this test script is requiring the server to
-  /// support.
-  description: Option<String>,
+  pub fn _validated(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_validated") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Description of the capabilities that this test script is requiring the server to
+  /// support.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Whether or not the test execution will require the given capabilities of the
+  /// server in order for this test script to execute.
+  pub fn required(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("required") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Whether or not the test execution will validate the given capabilities of the
+  /// server in order for this test script to execute.
+  pub fn validated(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("validated") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Links to the FHIR specification that describes this interaction and the
+  /// resources involved in more detail.
+  pub fn link(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("link") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Minimum capabilities required of server for test script to execute successfully.
   /// If server does not meet at a minimum the referenced capability statement, then
   /// all tests in this script are skipped.
-  capabilities: String,
+  pub fn capabilities(&self) -> String {
+    self.value.get("capabilities").unwrap().as_str().unwrap().to_string()
+  }
+
+  /// Extensions for origin
+  pub fn _origin(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_origin") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for destination
+  pub fn _destination(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_destination") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Which server these requirements apply to.
+  pub fn destination(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("destination") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for required
+  pub fn _required(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_required") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Whether or not the test execution will require the given capabilities of the
-  /// server in order for this test script to execute.
-  required: Option<bool>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -79,11 +130,35 @@ pub struct TestScript_Capability {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for required
-  #[serde(rename = "_required")]
-  _required: Option<Element>,
+  /// Which origin server these requirements apply to.
+  pub fn origin(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("origin") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for link
+  pub fn _link(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_link") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

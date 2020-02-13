@@ -1,135 +1,56 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
-use crate::model::CapabilityStatement_SearchParam::CapabilityStatement_SearchParam;
-use crate::model::CapabilityStatement_Interaction::CapabilityStatement_Interaction;
 use crate::model::CapabilityStatement_Operation::CapabilityStatement_Operation;
+use crate::model::Extension::Extension;
+use crate::model::CapabilityStatement_Interaction::CapabilityStatement_Interaction;
+use crate::model::Element::Element;
+use crate::model::CapabilityStatement_SearchParam::CapabilityStatement_SearchParam;
+use serde_json::value::Value;
+
 
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
 /// Server for a particular version of FHIR that may be used as a statement of
 /// actual server functionality or a statement of required or desired server
 /// implementation.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CapabilityStatement_Resource {
-  /// A code that indicates how the server supports conditional read.
-  #[serde(rename = "conditionalRead")]
-  conditional_read: Option<CapabilityStatement_ResourceConditionalRead>,
 
-  /// Extensions for updateCreate
-  #[serde(rename = "_updateCreate")]
-  _update_create: Option<Element>,
+#[derive(Debug)]
+pub struct CapabilityStatement_Resource<'a> {
+  pub value: &'a Value,
+}
 
-  /// A list of _revinclude (reverse include) values supported by the server.
-  #[serde(rename = "searchRevInclude")]
-  search_rev_include: Option<Vec<String>>,
+impl CapabilityStatement_Resource<'_> {
+  /// Extensions for readHistory
+  pub fn _read_history(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_readHistory") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for conditionalCreate
-  #[serde(rename = "_conditionalCreate")]
-  _conditional_create: Option<Element>,
+  pub fn _conditional_create(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_conditionalCreate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for type
-  #[serde(rename = "_type")]
-  _type: Option<Element>,
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// A flag to indicate that the server allows or needs to allow the client to create
-  /// new identities on the server (that is, the client PUTs to a location where there
-  /// is no existing resource). Allowing this operation means that the server allows
-  /// the client to create new identities on the server.
-  #[serde(rename = "updateCreate")]
-  update_create: Option<bool>,
-
-  /// Extensions for conditionalDelete
-  #[serde(rename = "_conditionalDelete")]
-  _conditional_delete: Option<Element>,
-
-  /// Extensions for conditionalRead
-  #[serde(rename = "_conditionalRead")]
-  _conditional_read: Option<Element>,
-
-  /// Extensions for readHistory
-  #[serde(rename = "_readHistory")]
-  _read_history: Option<Element>,
-
-  /// A list of _include values supported by the server.
-  #[serde(rename = "searchInclude")]
-  search_include: Option<Vec<String>>,
-
-  /// Extensions for referencePolicy
-  #[serde(rename = "_referencePolicy")]
-  _reference_policy: Option<Vec<Element>>,
-
-  /// Extensions for conditionalUpdate
-  #[serde(rename = "_conditionalUpdate")]
-  _conditional_update: Option<Element>,
-
-  /// A type of resource exposed via the restful interface.
-  #[serde(rename = "type")]
-  fhir_type: Option<String>,
-
-  /// Extensions for versioning
-  #[serde(rename = "_versioning")]
-  _versioning: Option<Element>,
-
-  /// A list of profiles that represent different use cases supported by the system.
-  /// For a server, "supported by the system" means the system hosts/produces a set of
-  /// resources that are conformant to a particular profile, and allows clients that
-  /// use its services to search using this profile and to find appropriate data. For
-  /// a client, it means the system will search by this profile and process data
-  /// according to the guidance implicit in the profile. See further discussion in
-  /// [Using Profiles](profiling.html#profile-uses).
-  #[serde(rename = "supportedProfile")]
-  supported_profile: Option<Vec<String>>,
-
-  /// Extensions for documentation
-  #[serde(rename = "_documentation")]
-  _documentation: Option<Element>,
-
-  /// Identifies a restful operation supported by the solution.
-  interaction: Option<Vec<CapabilityStatement_Interaction>>,
-
-  /// A specification of the profile that describes the solution's overall support for
-  /// the resource, including any constraints on cardinality, bindings, lengths or
-  /// other limitations. See further discussion in [Using
-  /// Profiles](profiling.html#profile-uses).
-  profile: Option<String>,
-
-  /// A code that indicates how the server supports conditional delete.
-  #[serde(rename = "conditionalDelete")]
-  conditional_delete: Option<CapabilityStatement_ResourceConditionalDelete>,
-
-  /// Search parameters for implementations to support and/or make use of - either
-  /// references to ones defined in the specification, or additional ones defined
-  /// for/by the implementation.
-  #[serde(rename = "searchParam")]
-  search_param: Option<Vec<CapabilityStatement_SearchParam>>,
-
-  /// Definition of an operation or a named query together with its parameters and
-  /// their meaning and type. Consult the definition of the operation for details
-  /// about how to invoke the operation, and the parameters.
-  operation: Option<Vec<CapabilityStatement_Operation>>,
-
-  /// Extensions for searchRevInclude
-  #[serde(rename = "_searchRevInclude")]
-  _search_rev_include: Option<Vec<Element>>,
-
-  /// Additional information about the resource type used by the system.
-  documentation: Option<String>,
-
-  /// This field is set to no-version to specify that the system does not support
-  /// (server) or use (client) versioning for this resource type. If this has some
-  /// other value, the server must at least correctly track and populate the versionId
-  /// meta-property on resources. If the value is 'versioned-update', then the server
-  /// supports all the versioning features, including using e-tags for version
-  /// integrity in the API.
-  versioning: Option<CapabilityStatement_ResourceVersioning>,
-
-  /// Extensions for searchInclude
-  #[serde(rename = "_searchInclude")]
-  _search_include: Option<Vec<Element>>,
+  /// A code that indicates how the server supports conditional read.
+  pub fn conditional_read(&self) -> Option<CapabilityStatement_ResourceConditionalRead> {
+    if let Some(Value::String(val)) = self.value.get("conditionalRead") {
+      return Some(CapabilityStatement_ResourceConditionalRead::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -142,73 +63,305 @@ pub struct CapabilityStatement_Resource {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// A flag that indicates that the server supports conditional update.
-  #[serde(rename = "conditionalUpdate")]
-  conditional_update: Option<bool>,
+  /// Extensions for versioning
+  pub fn _versioning(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_versioning") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// A flag that indicates that the server supports conditional create.
-  #[serde(rename = "conditionalCreate")]
-  conditional_create: Option<bool>,
+  /// A type of resource exposed via the restful interface.
+  pub fn fhir_type(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("type") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Extensions for referencePolicy
+  pub fn _reference_policy(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_referencePolicy") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A flag for whether the server is able to return past versions as part of the
   /// vRead operation.
-  #[serde(rename = "readHistory")]
-  read_history: Option<bool>,
+  pub fn read_history(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("readHistory") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for searchInclude
+  pub fn _search_include(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_searchInclude") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A specification of the profile that describes the solution's overall support for
+  /// the resource, including any constraints on cardinality, bindings, lengths or
+  /// other limitations. See further discussion in [Using
+  /// Profiles](profiling.html#profile-uses).
+  pub fn profile(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("profile") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// This field is set to no-version to specify that the system does not support
+  /// (server) or use (client) versioning for this resource type. If this has some
+  /// other value, the server must at least correctly track and populate the versionId
+  /// meta-property on resources. If the value is 'versioned-update', then the server
+  /// supports all the versioning features, including using e-tags for version
+  /// integrity in the API.
+  pub fn versioning(&self) -> Option<CapabilityStatement_ResourceVersioning> {
+    if let Some(Value::String(val)) = self.value.get("versioning") {
+      return Some(CapabilityStatement_ResourceVersioning::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// A list of profiles that represent different use cases supported by the system.
+  /// For a server, "supported by the system" means the system hosts/produces a set of
+  /// resources that are conformant to a particular profile, and allows clients that
+  /// use its services to search using this profile and to find appropriate data. For
+  /// a client, it means the system will search by this profile and process data
+  /// according to the guidance implicit in the profile. See further discussion in
+  /// [Using Profiles](profiling.html#profile-uses).
+  pub fn supported_profile(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("supportedProfile") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A list of _revinclude (reverse include) values supported by the server.
+  pub fn search_rev_include(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("searchRevInclude") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Identifies a restful operation supported by the solution.
+  pub fn interaction(&self) -> Option<Vec<CapabilityStatement_Interaction>> {
+    if let Some(Value::Array(val)) = self.value.get("interaction") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_Interaction { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for updateCreate
+  pub fn _update_create(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_updateCreate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Definition of an operation or a named query together with its parameters and
+  /// their meaning and type. Consult the definition of the operation for details
+  /// about how to invoke the operation, and the parameters.
+  pub fn operation(&self) -> Option<Vec<CapabilityStatement_Operation>> {
+    if let Some(Value::Array(val)) = self.value.get("operation") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_Operation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for conditionalRead
+  pub fn _conditional_read(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_conditionalRead") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A flag to indicate that the server allows or needs to allow the client to create
+  /// new identities on the server (that is, the client PUTs to a location where there
+  /// is no existing resource). Allowing this operation means that the server allows
+  /// the client to create new identities on the server.
+  pub fn update_create(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("updateCreate") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// A flag that indicates that the server supports conditional update.
+  pub fn conditional_update(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("conditionalUpdate") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Search parameters for implementations to support and/or make use of - either
+  /// references to ones defined in the specification, or additional ones defined
+  /// for/by the implementation.
+  pub fn search_param(&self) -> Option<Vec<CapabilityStatement_SearchParam>> {
+    if let Some(Value::Array(val)) = self.value.get("searchParam") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_SearchParam { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A code that indicates how the server supports conditional delete.
+  pub fn conditional_delete(&self) -> Option<CapabilityStatement_ResourceConditionalDelete> {
+    if let Some(Value::String(val)) = self.value.get("conditionalDelete") {
+      return Some(CapabilityStatement_ResourceConditionalDelete::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for searchRevInclude
+  pub fn _search_rev_include(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_searchRevInclude") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A flag that indicates that the server supports conditional create.
+  pub fn conditional_create(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("conditionalCreate") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for conditionalUpdate
+  pub fn _conditional_update(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_conditionalUpdate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Additional information about the resource type used by the system.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A list of _include values supported by the server.
+  pub fn search_include(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("searchInclude") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for conditionalDelete
+  pub fn _conditional_delete(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_conditionalDelete") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum CapabilityStatement_ResourceConditionalRead {
-  #[serde(rename = "not-supported")]
   NotSupported,
-
-  #[serde(rename = "modified-since")]
   ModifiedSince,
-
-  #[serde(rename = "not-match")]
   NotMatch,
-
-  #[serde(rename = "full-support")]
   FullSupport,
-
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum CapabilityStatement_ResourceConditionalDelete {
-  #[serde(rename = "not-supported")]
-  NotSupported,
-
-  #[serde(rename = "single")]
-  Single,
-
-  #[serde(rename = "multiple")]
-  Multiple,
-
+impl CapabilityStatement_ResourceConditionalRead {
+    pub fn from_string(string: &str) -> Option<CapabilityStatement_ResourceConditionalRead> {
+      match string {
+        "not-supported" => Some(CapabilityStatement_ResourceConditionalRead::NotSupported),
+        "modified-since" => Some(CapabilityStatement_ResourceConditionalRead::ModifiedSince),
+        "not-match" => Some(CapabilityStatement_ResourceConditionalRead::NotMatch),
+        "full-support" => Some(CapabilityStatement_ResourceConditionalRead::FullSupport),
+        _ => None,
+    }
+  }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+
+#[derive(Debug)]
 pub enum CapabilityStatement_ResourceVersioning {
-  #[serde(rename = "no-version")]
   NoVersion,
-
-  #[serde(rename = "versioned")]
   Versioned,
-
-  #[serde(rename = "versioned-update")]
   VersionedUpdate,
-
 }
+
+impl CapabilityStatement_ResourceVersioning {
+    pub fn from_string(string: &str) -> Option<CapabilityStatement_ResourceVersioning> {
+      match string {
+        "no-version" => Some(CapabilityStatement_ResourceVersioning::NoVersion),
+        "versioned" => Some(CapabilityStatement_ResourceVersioning::Versioned),
+        "versioned-update" => Some(CapabilityStatement_ResourceVersioning::VersionedUpdate),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum CapabilityStatement_ResourceConditionalDelete {
+  NotSupported,
+  Single,
+  Multiple,
+}
+
+impl CapabilityStatement_ResourceConditionalDelete {
+    pub fn from_string(string: &str) -> Option<CapabilityStatement_ResourceConditionalDelete> {
+      match string {
+        "not-supported" => Some(CapabilityStatement_ResourceConditionalDelete::NotSupported),
+        "single" => Some(CapabilityStatement_ResourceConditionalDelete::Single),
+        "multiple" => Some(CapabilityStatement_ResourceConditionalDelete::Multiple),
+        _ => None,
+    }
+  }
+}
+

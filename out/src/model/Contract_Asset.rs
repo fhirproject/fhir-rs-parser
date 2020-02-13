@@ -1,43 +1,44 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
+use crate::model::Coding::Coding;
 use crate::model::Contract_Answer::Contract_Answer;
 use crate::model::Reference::Reference;
-use crate::model::Coding::Coding;
-use crate::model::Element::Element;
-use crate::model::Period::Period;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Contract_ValuedItem::Contract_ValuedItem;
+use crate::model::Period::Period;
 use crate::model::Contract_Context::Contract_Context;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Contract_Asset {
-  /// Time period of asset use.
-  #[serde(rename = "usePeriod")]
-  use_period: Option<Vec<Period>>,
 
-  /// May be a subtype or part of an offered asset.
-  subtype: Option<Vec<CodeableConcept>>,
+#[derive(Debug)]
+pub struct Contract_Asset<'a> {
+  pub value: &'a Value,
+}
 
-  /// Target entity type about which the term may be concerned.
-  #[serde(rename = "type")]
-  fhir_type: Option<Vec<CodeableConcept>>,
+impl Contract_Asset<'_> {
+  /// Response to assets.
+  pub fn answer(&self) -> Option<Vec<Contract_Answer>> {
+    if let Some(Value::Array(val)) = self.value.get("answer") {
+      return Some(val.into_iter().map(|e| Contract_Answer { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for condition
-  #[serde(rename = "_condition")]
-  _condition: Option<Element>,
+  /// Specifies the applicability of the term to an asset resource instance, and
+  /// instances it refers to orinstances that refer to it, and/or are owned by the
+  /// offeree.
+  pub fn relationship(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("relationship") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -50,69 +51,171 @@ pub struct Contract_Asset {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for securityLabelNumber
-  #[serde(rename = "_securityLabelNumber")]
-  _security_label_number: Option<Vec<Element>>,
-
-  /// Contract Valued Item List.
-  #[serde(rename = "valuedItem")]
-  valued_item: Option<Vec<Contract_ValuedItem>>,
-
-  /// Security labels that protects the asset.
-  #[serde(rename = "securityLabelNumber")]
-  security_label_number: Option<Vec<u32>>,
-
-  /// Asset relevant contractual time period.
-  period: Option<Vec<Period>>,
-
-  /// Circumstance of the asset.
-  context: Option<Vec<Contract_Context>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Description of the quality and completeness of the asset that imay be a factor
   /// in its valuation.
-  condition: Option<String>,
-
-  /// Extensions for text
-  #[serde(rename = "_text")]
-  _text: Option<Element>,
-
-  /// Response to assets.
-  answer: Option<Vec<Contract_Answer>>,
-
-  /// Associated entities.
-  #[serde(rename = "typeReference")]
-  type_reference: Option<Vec<Box<Reference>>>,
-
-  /// Specifies the applicability of the term to an asset resource instance, and
-  /// instances it refers to orinstances that refer to it, and/or are owned by the
-  /// offeree.
-  relationship: Option<Coding>,
+  pub fn condition(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("condition") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Differentiates the kind of the asset .
-  scope: Option<CodeableConcept>,
+  pub fn scope(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("scope") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Type of Asset availability for use or ownership.
+  pub fn period_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("periodType") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for linkId
-  #[serde(rename = "_linkId")]
-  _link_id: Option<Vec<Element>>,
+  /// Target entity type about which the term may be concerned.
+  pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("type") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Id [identifier??] of the clause or question text about the asset in the
-  /// referenced form or QuestionnaireResponse.
-  #[serde(rename = "linkId")]
-  link_id: Option<Vec<String>>,
+  /// Extensions for condition
+  pub fn _condition(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_condition") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Circumstance of the asset.
+  pub fn context(&self) -> Option<Vec<Contract_Context>> {
+    if let Some(Value::Array(val)) = self.value.get("context") {
+      return Some(val.into_iter().map(|e| Contract_Context { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be a subtype or part of an offered asset.
+  pub fn subtype(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("subtype") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Clause or question text (Prose Object) concerning the asset in a linked form,
   /// such as a QuestionnaireResponse used in the formation of the contract.
-  text: Option<String>,
+  pub fn text(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("text") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Type of Asset availability for use or ownership.
-  #[serde(rename = "periodType")]
-  period_type: Option<Vec<CodeableConcept>>,
+  /// Asset relevant contractual time period.
+  pub fn period(&self) -> Option<Vec<Period>> {
+    if let Some(Value::Array(val)) = self.value.get("period") {
+      return Some(val.into_iter().map(|e| Period { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Time period of asset use.
+  pub fn use_period(&self) -> Option<Vec<Period>> {
+    if let Some(Value::Array(val)) = self.value.get("usePeriod") {
+      return Some(val.into_iter().map(|e| Period { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for linkId
+  pub fn _link_id(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_linkId") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Associated entities.
+  pub fn type_reference(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("typeReference") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Security labels that protects the asset.
+  pub fn security_label_number(&self) -> Option<Vec<u64>> {
+    if let Some(Value::Array(val)) = self.value.get("securityLabelNumber") {
+      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Id [identifier??] of the clause or question text about the asset in the
+  /// referenced form or QuestionnaireResponse.
+  pub fn link_id(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("linkId") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for securityLabelNumber
+  pub fn _security_label_number(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Contract Valued Item List.
+  pub fn valued_item(&self) -> Option<Vec<Contract_ValuedItem>> {
+    if let Some(Value::Array(val)) = self.value.get("valuedItem") {
+      return Some(val.into_iter().map(|e| Contract_ValuedItem { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for text
+  pub fn _text(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_text") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

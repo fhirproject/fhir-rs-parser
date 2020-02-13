@@ -1,56 +1,23 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::Identifier::Identifier;
-use crate::model::Quantity::Quantity;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Identifier::Identifier;
+use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
+use serde_json::value::Value;
+
 
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstanceSpecification_Moiety {
-  /// Optical activity type.
-  #[serde(rename = "opticalActivity")]
-  optical_activity: Option<CodeableConcept>,
 
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
+#[derive(Debug)]
+pub struct SubstanceSpecification_Moiety<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for molecularFormula
-  #[serde(rename = "_molecularFormula")]
-  _molecular_formula: Option<Element>,
-
-  /// Quantitative value for this moiety.
-  #[serde(rename = "amountQuantity")]
-  amount_quantity: Option<Quantity>,
-
-  /// Extensions for amountString
-  #[serde(rename = "_amountString")]
-  _amount_string: Option<Element>,
-
-  /// Molecular formula.
-  #[serde(rename = "molecularFormula")]
-  molecular_formula: Option<String>,
-
-  /// Quantitative value for this moiety.
-  #[serde(rename = "amountString")]
-  amount_string: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Identifier by which this moiety substance is known.
-  identifier: Option<Identifier>,
-
+impl SubstanceSpecification_Moiety<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -62,20 +29,120 @@ pub struct SubstanceSpecification_Moiety {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Stereochemistry type.
-  stereochemistry: Option<CodeableConcept>,
+  /// Extensions for molecularFormula
+  pub fn _molecular_formula(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_molecularFormula") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Textual name for this moiety substance.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Role that the moiety is playing.
-  role: Option<CodeableConcept>,
+  pub fn role(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("role") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Quantitative value for this moiety.
+  pub fn amount_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("amountQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// Quantitative value for this moiety.
+  pub fn amount_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("amountString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Identifier by which this moiety substance is known.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for amountString
+  pub fn _amount_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amountString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Molecular formula.
+  pub fn molecular_formula(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("molecularFormula") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Textual name for this moiety substance.
-  name: Option<String>,
+  /// Stereochemistry type.
+  pub fn stereochemistry(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("stereochemistry") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Optical activity type.
+  pub fn optical_activity(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("opticalActivity") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
 }

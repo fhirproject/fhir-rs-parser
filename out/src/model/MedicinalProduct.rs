@@ -1,90 +1,193 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
+use crate::model::MedicinalProduct_SpecialDesignation::MedicinalProduct_SpecialDesignation;
+use crate::model::Meta::Meta;
+use crate::model::MarketingStatus::MarketingStatus;
+use crate::model::Coding::Coding;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::Identifier::Identifier;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProduct_Name::MedicinalProduct_Name;
 use crate::model::Element::Element;
-use crate::model::MarketingStatus::MarketingStatus;
-use crate::model::ResourceList::ResourceList;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Meta::Meta;
-use crate::model::Identifier::Identifier;
-use crate::model::Narrative::Narrative;
-use crate::model::MedicinalProduct_SpecialDesignation::MedicinalProduct_SpecialDesignation;
 use crate::model::MedicinalProduct_ManufacturingBusinessOperation::MedicinalProduct_ManufacturingBusinessOperation;
-use crate::model::Coding::Coding;
+use crate::model::Narrative::Narrative;
+use serde_json::value::Value;
+
 
 
 /// Detailed definition of a medicinal product, typically for uses other than direct
 /// patient care (e.g. regulatory use).
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MedicinalProduct {
-  /// If authorised for use in children.
-  #[serde(rename = "paediatricUseIndicator")]
-  paediatric_use_indicator: Option<CodeableConcept>,
+
+#[derive(Debug)]
+pub struct MedicinalProduct<'a> {
+  pub value: &'a Value,
+}
+
+impl MedicinalProduct<'_> {
+  /// The product's name, including full name and possibly coded parts.
+  pub fn name(&self) -> Vec<MedicinalProduct_Name> {
+    self.value.get("name").unwrap().as_array().unwrap().into_iter().map(|e| MedicinalProduct_Name { value: e }).collect::<Vec<_>>()
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// A master file for to the medicinal product (e.g. Pharmacovigilance System Master
-  /// File).
-  #[serde(rename = "masterFile")]
-  master_file: Option<Vec<Box<Reference>>>,
+  /// Pharmaceutical aspects of product.
+  pub fn pharmaceutical_product(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("pharmaceuticalProduct") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Business identifier for this product. Could be an MPID.
-  identifier: Option<Vec<Identifier>>,
+  /// Clinical trials or studies that this product is involved in.
+  pub fn clinical_trial(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("clinicalTrial") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Regulatory type, e.g. Investigational or Authorized.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
+  /// Allows the product to be classified by various systems.
+  pub fn product_classification(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("productClassification") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Whether the Medicinal Product is subject to additional monitoring for regulatory
-  /// reasons.
-  #[serde(rename = "additionalMonitoringIndicator")]
-  additional_monitoring_indicator: Option<CodeableConcept>,
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The legal status of supply of the medicinal product as classified by the
   /// regulator.
-  #[serde(rename = "legalStatusOfSupply")]
-  legal_status_of_supply: Option<CodeableConcept>,
+  pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("legalStatusOfSupply") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A master file for to the medicinal product (e.g. Pharmacovigilance System Master
+  /// File).
+  pub fn master_file(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("masterFile") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates if the medicinal product has an orphan designation for the treatment
+  /// of a rare disease.
+  pub fn special_designation(&self) -> Option<Vec<MedicinalProduct_SpecialDesignation>> {
+    if let Some(Value::Array(val)) = self.value.get("specialDesignation") {
+      return Some(val.into_iter().map(|e| MedicinalProduct_SpecialDesignation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Whether the Medicinal Product is subject to additional monitoring for regulatory
+  /// reasons.
+  pub fn additional_monitoring_indicator(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("additionalMonitoringIndicator") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for specialMeasures
+  pub fn _special_measures(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_specialMeasures") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Whether the Medicinal Product is subject to special measures for regulatory
   /// reasons.
-  #[serde(rename = "specialMeasures")]
-  special_measures: Option<Vec<String>>,
+  pub fn special_measures(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("specialMeasures") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Pharmaceutical aspects of product.
-  #[serde(rename = "pharmaceuticalProduct")]
-  pharmaceutical_product: Option<Vec<Box<Reference>>>,
-
-  /// Extensions for specialMeasures
-  #[serde(rename = "_specialMeasures")]
-  _special_measures: Option<Vec<Element>>,
-
-  /// A product specific contact, person (in a role), or an organization.
-  contact: Option<Vec<Box<Reference>>>,
-
-  /// The product's name, including full name and possibly coded parts.
-  name: Vec<MedicinalProduct_Name>,
+  /// Business identifier for this product. Could be an MPID.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The base language in which the resource is written.
-  language: Option<String>,
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Marketing status of the medicinal product, in contrast to marketing
+  /// authorizaton.
+  pub fn marketing_status(&self) -> Option<Vec<MarketingStatus>> {
+    if let Some(Value::Array(val)) = self.value.get("marketingStatus") {
+      return Some(val.into_iter().map(|e| MarketingStatus { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Regulatory type, e.g. Investigational or Authorized.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
-  meta: Option<Meta>,
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// The dose form for a single part product, or combined form of a multiple part
+  /// product.
+  pub fn combined_pharmaceutical_dose_form(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("combinedPharmaceuticalDoseForm") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -92,32 +195,20 @@ pub struct MedicinalProduct {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// Marketing status of the medicinal product, in contrast to marketing
-  /// authorizaton.
-  #[serde(rename = "marketingStatus")]
-  marketing_status: Option<Vec<MarketingStatus>>,
-
-  /// Reference to another product, e.g. for linking authorised to investigational
-  /// product.
-  #[serde(rename = "crossReference")]
-  cross_reference: Option<Vec<Identifier>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// Allows the product to be classified by various systems.
-  #[serde(rename = "productClassification")]
-  product_classification: Option<Vec<CodeableConcept>>,
-
-  /// If this medicine applies to human or veterinary uses.
-  domain: Option<Coding>,
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -131,45 +222,90 @@ pub struct MedicinalProduct {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Reference to another product, e.g. for linking authorised to investigational
+  /// product.
+  pub fn cross_reference(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("crossReference") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// If this medicine applies to human or veterinary uses.
+  pub fn domain(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("domain") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
 
   /// Package representation for the product.
-  #[serde(rename = "packagedMedicinalProduct")]
-  packaged_medicinal_product: Option<Vec<Box<Reference>>>,
-
-  /// Clinical trials or studies that this product is involved in.
-  #[serde(rename = "clinicalTrial")]
-  clinical_trial: Option<Vec<Box<Reference>>>,
-
-  /// Supporting documentation, typically for regulatory submission.
-  #[serde(rename = "attachedDocument")]
-  attached_document: Option<Vec<Box<Reference>>>,
-
-  /// Indicates if the medicinal product has an orphan designation for the treatment
-  /// of a rare disease.
-  #[serde(rename = "specialDesignation")]
-  special_designation: Option<Vec<MedicinalProduct_SpecialDesignation>>,
+  pub fn packaged_medicinal_product(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("packagedMedicinalProduct") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// An operation applied to the product, for manufacturing or adminsitrative
   /// purpose.
-  #[serde(rename = "manufacturingBusinessOperation")]
-  manufacturing_business_operation: Option<Vec<MedicinalProduct_ManufacturingBusinessOperation>>,
+  pub fn manufacturing_business_operation(&self) -> Option<Vec<MedicinalProduct_ManufacturingBusinessOperation>> {
+    if let Some(Value::Array(val)) = self.value.get("manufacturingBusinessOperation") {
+      return Some(val.into_iter().map(|e| MedicinalProduct_ManufacturingBusinessOperation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The dose form for a single part product, or combined form of a multiple part
-  /// product.
-  #[serde(rename = "combinedPharmaceuticalDoseForm")]
-  combined_pharmaceutical_dose_form: Option<CodeableConcept>,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  /// If authorised for use in children.
+  pub fn paediatric_use_indicator(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("paediatricUseIndicator") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Supporting documentation, typically for regulatory submission.
+  pub fn attached_document(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("attachedDocument") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A product specific contact, person (in a role), or an organization.
+  pub fn contact(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

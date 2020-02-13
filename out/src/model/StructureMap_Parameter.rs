@@ -1,52 +1,103 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A Map of relationships between 2 structures that can be used to transform data.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct StructureMap_Parameter {
-  /// Extensions for valueId
-  #[serde(rename = "_valueId")]
-  _value_id: Option<Element>,
 
-  /// Extensions for valueDecimal
-  #[serde(rename = "_valueDecimal")]
-  _value_decimal: Option<Element>,
+#[derive(Debug)]
+pub struct StructureMap_Parameter<'a> {
+  pub value: &'a Value,
+}
 
-  /// Parameter value - variable or literal.
-  #[serde(rename = "valueId")]
-  value_id: Option<String>,
-
-  /// Parameter value - variable or literal.
-  #[serde(rename = "valueBoolean")]
-  value_boolean: Option<bool>,
-
-  /// Parameter value - variable or literal.
-  #[serde(rename = "valueString")]
-  value_string: Option<String>,
+impl StructureMap_Parameter<'_> {
+  /// Extensions for valueInteger
+  pub fn _value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for valueString
-  #[serde(rename = "_valueString")]
-  _value_string: Option<Element>,
+  pub fn _value_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for valueBoolean
-  #[serde(rename = "_valueBoolean")]
-  _value_boolean: Option<Element>,
+  pub fn _value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for valueInteger
-  #[serde(rename = "_valueInteger")]
-  _value_integer: Option<Element>,
+  /// Extensions for valueId
+  pub fn _value_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_integer(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueInteger") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_decimal(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueDecimal") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("valueBoolean") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -59,19 +110,27 @@ pub struct StructureMap_Parameter {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Extensions for valueDecimal
+  pub fn _value_decimal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDecimal") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Parameter value - variable or literal.
-  #[serde(rename = "valueInteger")]
-  value_integer: Option<i32>,
-
-  /// Parameter value - variable or literal.
-  #[serde(rename = "valueDecimal")]
-  value_decimal: Option<i32>,
+  pub fn value_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

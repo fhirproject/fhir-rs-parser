@@ -1,17 +1,18 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Reference::Reference;
+use crate::model::Element::Element;
+use crate::model::Identifier::Identifier;
+use crate::model::DocumentReference_Context::DocumentReference_Context;
+use crate::model::DocumentReference_RelatesTo::DocumentReference_RelatesTo;
+use crate::model::Meta::Meta;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Extension::Extension;
 use crate::model::DocumentReference_Content::DocumentReference_Content;
-use crate::model::DocumentReference_RelatesTo::DocumentReference_RelatesTo;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Identifier::Identifier;
-use crate::model::Meta::Meta;
-use crate::model::DocumentReference_Context::DocumentReference_Context;
 use crate::model::Narrative::Narrative;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// A reference to a document of any kind for any purpose. Provides metadata about
@@ -19,45 +20,255 @@ use crate::model::Narrative::Narrative;
 /// document is any seralized object with a mime-type, so includes formal patient
 /// centric documents (CDA), cliical notes, scanned paper, and non-patient specific
 /// documents like policy text.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct DocumentReference {
+
+#[derive(Debug)]
+pub struct DocumentReference<'a> {
+  pub value: &'a Value,
+}
+
+impl DocumentReference<'_> {
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The clinical context in which the document was prepared.
+  pub fn context(&self) -> Option<DocumentReference_Context> {
+    if let Some(val) = self.value.get("context") {
+      return Some(DocumentReference_Context { value: val });
+    }
+    return None;
+  }
+
+  /// The document and format referenced. There may be multiple content element
+  /// repetitions, each with a different format.
+  pub fn content(&self) -> Vec<DocumentReference_Content> {
+    self.value.get("content").unwrap().as_array().unwrap().into_iter().map(|e| DocumentReference_Content { value: e }).collect::<Vec<_>>()
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The status of this document reference.
+  pub fn status(&self) -> Option<DocumentReferenceStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(DocumentReferenceStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Specifies the particular kind of document referenced  (e.g. History and
+  /// Physical, Discharge Summary, Progress Note). This usually equates to the purpose
+  /// of making the document referenced.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Human-readable description of the source document.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Identifies the organization or group who is responsible for ongoing maintenance
+  /// of and access to the document.
+  pub fn custodian(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("custodian") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies who is responsible for adding the information to the document.
+  pub fn author(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("author") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Document identifier as assigned by the source of the document. This identifier
+  /// is specific to this version of the document. This unique identifier may be used
+  /// elsewhere to identify this version of the document.
+  pub fn master_identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("masterIdentifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// A categorization for the type of document referenced - helps for indexing and
+  /// searching. This may be implied by or derived from the code specified in the
+  /// DocumentReference.type.
+  pub fn category(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("category") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// When the document reference was created.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The status of the underlying document.
+  pub fn doc_status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("docStatus") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// Which person or organization authenticates that this document is valid.
+  pub fn authenticator(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("authenticator") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Relationships that this document has with other document references that already
+  /// exist.
+  pub fn relates_to(&self) -> Option<Vec<DocumentReference_RelatesTo>> {
+    if let Some(Value::Array(val)) = self.value.get("relatesTo") {
+      return Some(val.into_iter().map(|e| DocumentReference_RelatesTo { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Extensions for docStatus
-  #[serde(rename = "_docStatus")]
-  _doc_status: Option<Element>,
+  pub fn _doc_status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_docStatus") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
   /// A set of Security-Tag codes specifying the level of privacy/security of the
   /// Document. Note that DocumentReference.meta.security contains the security labels
   /// of the "reference" to the document, while DocumentReference.securityLabel
   /// contains a snapshot of the security labels on the document the reference refers
   /// to.
-  #[serde(rename = "securityLabel")]
-  security_label: Option<Vec<CodeableConcept>>,
-
-  /// The status of this document reference.
-  status: Option<DocumentReferenceStatus>,
-
-  /// Document identifier as assigned by the source of the document. This identifier
-  /// is specific to this version of the document. This unique identifier may be used
-  /// elsewhere to identify this version of the document.
-  #[serde(rename = "masterIdentifier")]
-  master_identifier: Option<Identifier>,
-
-  /// Identifies who is responsible for adding the information to the document.
-  author: Option<Vec<Box<Reference>>>,
-
-  /// Specifies the particular kind of document referenced  (e.g. History and
-  /// Physical, Discharge Summary, Progress Note). This usually equates to the purpose
-  /// of making the document referenced.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
-
-  /// Other identifiers associated with the document, including version independent
-  /// identifiers.
-  identifier: Option<Vec<Identifier>>,
+  pub fn security_label(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("securityLabel") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The base language in which the resource is written.
-  language: Option<String>,
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -71,116 +282,50 @@ pub struct DocumentReference {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// The status of the underlying document.
-  #[serde(rename = "docStatus")]
-  doc_status: Option<String>,
-
-  /// The document and format referenced. There may be multiple content element
-  /// repetitions, each with a different format.
-  content: Vec<DocumentReference_Content>,
-
-  /// Which person or organization authenticates that this document is valid.
-  authenticator: Option<Box<Reference>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// A categorization for the type of document referenced - helps for indexing and
-  /// searching. This may be implied by or derived from the code specified in the
-  /// DocumentReference.type.
-  category: Option<Vec<CodeableConcept>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Who or what the document is about. The document can be about a person, (patient
   /// or healthcare practitioner), a device (e.g. a machine) or even a group of
   /// subjects (such as a document about a herd of farm animals, or a set of patients
   /// that share a common exposure).
-  subject: Option<Box<Reference>>,
+  pub fn subject(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("subject") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// Relationships that this document has with other document references that already
-  /// exist.
-  #[serde(rename = "relatesTo")]
-  relates_to: Option<Vec<DocumentReference_RelatesTo>>,
-
-  /// When the document reference was created.
-  date: Option<String>,
-
-  /// Human-readable description of the source document.
-  description: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
-
-  /// The clinical context in which the document was prepared.
-  context: Option<DocumentReference_Context>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Identifies the organization or group who is responsible for ongoing maintenance
-  /// of and access to the document.
-  custodian: Option<Box<Reference>>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  /// Other identifiers associated with the document, including version independent
+  /// identifiers.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum DocumentReferenceStatus {
-  #[serde(rename = "current")]
   Current,
-
-  #[serde(rename = "superseded")]
   Superseded,
-
-  #[serde(rename = "entered-in-error")]
   EnteredInError,
-
 }
+
+impl DocumentReferenceStatus {
+    pub fn from_string(string: &str) -> Option<DocumentReferenceStatus> {
+      match string {
+        "current" => Some(DocumentReferenceStatus::Current),
+        "superseded" => Some(DocumentReferenceStatus::Superseded),
+        "entered-in-error" => Some(DocumentReferenceStatus::EnteredInError),
+        _ => None,
+    }
+  }
+}
+

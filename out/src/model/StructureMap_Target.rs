@@ -1,61 +1,55 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::StructureMap_Parameter::StructureMap_Parameter;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// A Map of relationships between 2 structures that can be used to transform data.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct StructureMap_Target {
-  /// Extensions for element
-  #[serde(rename = "_element")]
-  _element: Option<Element>,
 
-  /// Parameters to the transform.
-  parameter: Option<Vec<StructureMap_Parameter>>,
+#[derive(Debug)]
+pub struct StructureMap_Target<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for context
-  #[serde(rename = "_context")]
-  _context: Option<Element>,
-
-  /// Extensions for transform
-  #[serde(rename = "_transform")]
-  _transform: Option<Element>,
-
-  /// Type or variable this rule applies to.
-  context: Option<String>,
-
-  /// How the data is copied / created.
-  transform: Option<StructureMap_TargetTransform>,
-
-  /// Field to create in the context.
-  element: Option<String>,
-
-  /// Extensions for listRuleId
-  #[serde(rename = "_listRuleId")]
-  _list_rule_id: Option<Element>,
-
-  /// Extensions for variable
-  #[serde(rename = "_variable")]
-  _variable: Option<Element>,
-
-  /// How to interpret the context.
-  #[serde(rename = "contextType")]
-  context_type: Option<StructureMap_TargetContextType>,
+impl StructureMap_Target<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for contextType
-  #[serde(rename = "_contextType")]
-  _context_type: Option<Element>,
+  pub fn _context_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contextType") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Named context for field, if desired, and a field is specified.
-  variable: Option<String>,
+  pub fn variable(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("variable") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Internal rule reference for shared list items.
+  pub fn list_rule_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("listRuleId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -68,87 +62,172 @@ pub struct StructureMap_Target {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  /// Type or variable this rule applies to.
+  pub fn context(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("context") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Internal rule reference for shared list items.
-  #[serde(rename = "listRuleId")]
-  list_rule_id: Option<String>,
+  /// How the data is copied / created.
+  pub fn transform(&self) -> Option<StructureMap_TargetTransform> {
+    if let Some(Value::String(val)) = self.value.get("transform") {
+      return Some(StructureMap_TargetTransform::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for variable
+  pub fn _variable(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_variable") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for listRuleId
+  pub fn _list_rule_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_listRuleId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// How to interpret the context.
+  pub fn context_type(&self) -> Option<StructureMap_TargetContextType> {
+    if let Some(Value::String(val)) = self.value.get("contextType") {
+      return Some(StructureMap_TargetContextType::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// Extensions for listMode
-  #[serde(rename = "_listMode")]
-  _list_mode: Option<Vec<Element>>,
+  pub fn _list_mode(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_listMode") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for transform
+  pub fn _transform(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_transform") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Parameters to the transform.
+  pub fn parameter(&self) -> Option<Vec<StructureMap_Parameter>> {
+    if let Some(Value::Array(val)) = self.value.get("parameter") {
+      return Some(val.into_iter().map(|e| StructureMap_Parameter { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for context
+  pub fn _context(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_context") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Field to create in the context.
+  pub fn element(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("element") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for element
+  pub fn _element(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_element") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum StructureMap_TargetTransform {
-  #[serde(rename = "create")]
   Create,
-
-  #[serde(rename = "copy")]
   Copy,
-
-  #[serde(rename = "truncate")]
   Truncate,
-
-  #[serde(rename = "escape")]
   Escape,
-
-  #[serde(rename = "cast")]
   Cast,
-
-  #[serde(rename = "append")]
   Append,
-
-  #[serde(rename = "translate")]
   Translate,
-
-  #[serde(rename = "reference")]
   Reference,
-
-  #[serde(rename = "dateOp")]
   DateOp,
-
-  #[serde(rename = "uuid")]
   Uuid,
-
-  #[serde(rename = "pointer")]
   Pointer,
-
-  #[serde(rename = "evaluate")]
   Evaluate,
-
-  #[serde(rename = "cc")]
   Cc,
-
-  #[serde(rename = "c")]
   C,
-
-  #[serde(rename = "qty")]
   Qty,
-
-  #[serde(rename = "id")]
   Id,
-
-  #[serde(rename = "cp")]
   Cp,
-
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+impl StructureMap_TargetTransform {
+    pub fn from_string(string: &str) -> Option<StructureMap_TargetTransform> {
+      match string {
+        "create" => Some(StructureMap_TargetTransform::Create),
+        "copy" => Some(StructureMap_TargetTransform::Copy),
+        "truncate" => Some(StructureMap_TargetTransform::Truncate),
+        "escape" => Some(StructureMap_TargetTransform::Escape),
+        "cast" => Some(StructureMap_TargetTransform::Cast),
+        "append" => Some(StructureMap_TargetTransform::Append),
+        "translate" => Some(StructureMap_TargetTransform::Translate),
+        "reference" => Some(StructureMap_TargetTransform::Reference),
+        "dateOp" => Some(StructureMap_TargetTransform::DateOp),
+        "uuid" => Some(StructureMap_TargetTransform::Uuid),
+        "pointer" => Some(StructureMap_TargetTransform::Pointer),
+        "evaluate" => Some(StructureMap_TargetTransform::Evaluate),
+        "cc" => Some(StructureMap_TargetTransform::Cc),
+        "c" => Some(StructureMap_TargetTransform::C),
+        "qty" => Some(StructureMap_TargetTransform::Qty),
+        "id" => Some(StructureMap_TargetTransform::Id),
+        "cp" => Some(StructureMap_TargetTransform::Cp),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
 pub enum StructureMap_TargetContextType {
-  #[serde(rename = "type")]
   FhirType,
-
-  #[serde(rename = "variable")]
   Variable,
-
 }
+
+impl StructureMap_TargetContextType {
+    pub fn from_string(string: &str) -> Option<StructureMap_TargetContextType> {
+      match string {
+        "type" => Some(StructureMap_TargetContextType::FhirType),
+        "variable" => Some(StructureMap_TargetContextType::Variable),
+        _ => None,
+    }
+  }
+}
+

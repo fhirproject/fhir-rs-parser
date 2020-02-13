@@ -1,18 +1,19 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::CoverageEligibilityRequest_Item::CoverageEligibilityRequest_Item;
-use crate::model::Extension::Extension;
-use crate::model::Identifier::Identifier;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Period::Period;
 use crate::model::CoverageEligibilityRequest_Insurance::CoverageEligibilityRequest_Insurance;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
-use crate::model::CoverageEligibilityRequest_SupportingInfo::CoverageEligibilityRequest_SupportingInfo;
-use crate::model::Meta::Meta;
-use crate::model::Element::Element;
+use crate::model::Period::Period;
+use crate::model::CoverageEligibilityRequest_Item::CoverageEligibilityRequest_Item;
+use crate::model::ResourceList::ResourceList;
 use crate::model::Narrative::Narrative;
+use crate::model::CoverageEligibilityRequest_SupportingInfo::CoverageEligibilityRequest_SupportingInfo;
+use crate::model::Element::Element;
+use crate::model::Identifier::Identifier;
+use crate::model::Reference::Reference;
+use crate::model::Meta::Meta;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// The CoverageEligibilityRequest provides patient and insurance coverage
@@ -20,80 +21,65 @@ use crate::model::Narrative::Narrative;
 /// CoverageEligibilityResponse, with information regarding whether the stated
 /// coverage is valid and in-force and optionally to provide the insurance details
 /// of the policy.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CoverageEligibilityRequest {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
 
-  /// The party who is the beneficiary of the supplied coverage and for whom
-  /// eligibility is sought.
-  patient: Box<Reference>,
+#[derive(Debug)]
+pub struct CoverageEligibilityRequest<'a> {
+  pub value: &'a Value,
+}
 
-  /// Service categories or billable services for which benefit details and/or an
-  /// authorization prior to service delivery may be required by the payor.
-  item: Option<Vec<CoverageEligibilityRequest_Item>>,
+impl CoverageEligibilityRequest<'_> {
+  /// The date when this resource was created.
+  pub fn created(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("created") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The provider which is responsible for the request.
-  provider: Option<Box<Reference>>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// The date when this resource was created.
-  created: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  pub fn provider(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("provider") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for purpose
-  #[serde(rename = "_purpose")]
-  _purpose: Option<Vec<Element>>,
+  pub fn _purpose(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_purpose") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// When the requestor expects the processor to complete processing.
-  priority: Option<CodeableConcept>,
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// The date or dates when the enclosed suite of services were performed or
-  /// completed.
-  #[serde(rename = "servicedDate")]
-  serviced_date: Option<String>,
-
-  /// Additional information codes regarding exceptions, special considerations, the
-  /// condition, situation, prior or concurrent issues.
-  #[serde(rename = "supportingInfo")]
-  supporting_info: Option<Vec<CoverageEligibilityRequest_SupportingInfo>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Facility where the services are intended to be provided.
-  facility: Option<Box<Reference>>,
-
-  /// The date or dates when the enclosed suite of services were performed or
-  /// completed.
-  #[serde(rename = "servicedPeriod")]
-  serviced_period: Option<Period>,
-
-  /// A unique identifier assigned to this coverage eligiblity request.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Extensions for created
-  #[serde(rename = "_created")]
-  _created: Option<Element>,
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
@@ -101,38 +87,95 @@ pub struct CoverageEligibilityRequest {
   /// make it "clinically safe" for a human to just read the narrative. Resource
   /// definitions may define what content should be represented in the narrative to
   /// ensure clinical safety.
-  text: Option<Narrative>,
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
-  /// Financial instruments for reimbursement for the health care products and
-  /// services.
-  insurance: Option<Vec<CoverageEligibilityRequest_Insurance>>,
+  /// Extensions for servicedDate
+  pub fn _serviced_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_servicedDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  /// A unique identifier assigned to this coverage eligiblity request.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for created
+  pub fn _created(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_created") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date or dates when the enclosed suite of services were performed or
+  /// completed.
+  pub fn serviced_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("servicedDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Service categories or billable services for which benefit details and/or an
+  /// authorization prior to service delivery may be required by the payor.
+  pub fn item(&self) -> Option<Vec<CoverageEligibilityRequest_Item>> {
+    if let Some(Value::Array(val)) = self.value.get("item") {
+      return Some(val.into_iter().map(|e| CoverageEligibilityRequest_Item { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The status of the resource instance.
-  status: Option<String>,
-
-  /// Person who created the request.
-  enterer: Option<Box<Reference>>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The Insurer who issued the coverage in question and is the recipient of the
   /// request.
-  insurer: Box<Reference>,
+  pub fn insurer(&self) -> Reference {
+    Reference {
+      value: &self.value["insurer"],
+    }
+  }
+
+  /// Additional information codes regarding exceptions, special considerations, the
+  /// condition, situation, prior or concurrent issues.
+  pub fn supporting_info(&self) -> Option<Vec<CoverageEligibilityRequest_SupportingInfo>> {
+    if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
+      return Some(val.into_iter().map(|e| CoverageEligibilityRequest_SupportingInfo { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -146,11 +189,100 @@ pub struct CoverageEligibilityRequest {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for servicedDate
-  #[serde(rename = "_servicedDate")]
-  _serviced_date: Option<Element>,
+  /// The date or dates when the enclosed suite of services were performed or
+  /// completed.
+  pub fn serviced_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("servicedPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Financial instruments for reimbursement for the health care products and
+  /// services.
+  pub fn insurance(&self) -> Option<Vec<CoverageEligibilityRequest_Insurance>> {
+    if let Some(Value::Array(val)) = self.value.get("insurance") {
+      return Some(val.into_iter().map(|e| CoverageEligibilityRequest_Insurance { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Facility where the services are intended to be provided.
+  pub fn facility(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("facility") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The party who is the beneficiary of the supplied coverage and for whom
+  /// eligibility is sought.
+  pub fn patient(&self) -> Reference {
+    Reference {
+      value: &self.value["patient"],
+    }
+  }
+
+  /// Person who created the request.
+  pub fn enterer(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("enterer") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// When the requestor expects the processor to complete processing.
+  pub fn priority(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("priority") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
 }

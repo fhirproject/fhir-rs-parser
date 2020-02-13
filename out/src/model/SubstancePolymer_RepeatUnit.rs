@@ -1,21 +1,50 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
+use crate::model::SubstancePolymer_StructuralRepresentation::SubstancePolymer_StructuralRepresentation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::SubstancePolymer_DegreeOfPolymerisation::SubstancePolymer_DegreeOfPolymerisation;
-use crate::model::SubstancePolymer_StructuralRepresentation::SubstancePolymer_StructuralRepresentation;
 use crate::model::SubstanceAmount::SubstanceAmount;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Todo.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstancePolymer_RepeatUnit {
+
+#[derive(Debug)]
+pub struct SubstancePolymer_RepeatUnit<'a> {
+  pub value: &'a Value,
+}
+
+impl SubstancePolymer_RepeatUnit<'_> {
   /// Todo.
-  #[serde(rename = "structuralRepresentation")]
-  structural_representation: Option<Vec<SubstancePolymer_StructuralRepresentation>>,
+  pub fn orientation_of_polymerisation(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("orientationOfPolymerisation") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn amount(&self) -> Option<SubstanceAmount> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(SubstanceAmount { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -28,37 +57,52 @@ pub struct SubstancePolymer_RepeatUnit {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Todo.
-  #[serde(rename = "orientationOfPolymerisation")]
-  orientation_of_polymerisation: Option<CodeableConcept>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Todo.
-  #[serde(rename = "repeatUnit")]
-  repeat_unit: Option<String>,
-
-  /// Todo.
-  amount: Option<SubstanceAmount>,
-
-  /// Todo.
-  #[serde(rename = "degreeOfPolymerisation")]
-  degree_of_polymerisation: Option<Vec<SubstancePolymer_DegreeOfPolymerisation>>,
+  pub fn structural_representation(&self) -> Option<Vec<SubstancePolymer_StructuralRepresentation>> {
+    if let Some(Value::Array(val)) = self.value.get("structuralRepresentation") {
+      return Some(val.into_iter().map(|e| SubstancePolymer_StructuralRepresentation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for repeatUnit
-  #[serde(rename = "_repeatUnit")]
-  _repeat_unit: Option<Element>,
+  pub fn _repeat_unit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_repeatUnit") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn degree_of_polymerisation(&self) -> Option<Vec<SubstancePolymer_DegreeOfPolymerisation>> {
+    if let Some(Value::Array(val)) = self.value.get("degreeOfPolymerisation") {
+      return Some(val.into_iter().map(|e| SubstancePolymer_DegreeOfPolymerisation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn repeat_unit(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("repeatUnit") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

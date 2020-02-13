@@ -1,22 +1,37 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// Set of definitional characteristics for a kind of observation or measurement
 /// produced or consumed by an orderable health care service.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ObservationDefinition_QuantitativeDetails {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+
+#[derive(Debug)]
+pub struct ObservationDefinition_QuantitativeDetails<'a> {
+  pub value: &'a Value,
+}
+
+impl ObservationDefinition_QuantitativeDetails<'_> {
+  /// Extensions for decimalPrecision
+  pub fn _decimal_precision(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_decimalPrecision") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// SI unit used to report quantitative results of observations conforming to this
+  /// ObservationDefinition.
+  pub fn unit(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("unit") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -29,38 +44,67 @@ pub struct ObservationDefinition_QuantitativeDetails {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// SI unit used to report quantitative results of observations conforming to this
-  /// ObservationDefinition.
-  unit: Option<CodeableConcept>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for decimalPrecision
-  #[serde(rename = "_decimalPrecision")]
-  _decimal_precision: Option<Element>,
-
-  /// Extensions for conversionFactor
-  #[serde(rename = "_conversionFactor")]
-  _conversion_factor: Option<Element>,
-
-  /// Customary unit used to report quantitative results of observations conforming to
-  /// this ObservationDefinition.
-  #[serde(rename = "customaryUnit")]
-  customary_unit: Option<CodeableConcept>,
-
-  /// Number of digits after decimal separator when the results of such observations
-  /// are of type Quantity.
-  #[serde(rename = "decimalPrecision")]
-  decimal_precision: Option<i32>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Factor for converting value expressed with SI unit to value expressed with
   /// customary unit.
-  #[serde(rename = "conversionFactor")]
-  conversion_factor: Option<f32>,
+  pub fn conversion_factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("conversionFactor") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Customary unit used to report quantitative results of observations conforming to
+  /// this ObservationDefinition.
+  pub fn customary_unit(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("customaryUnit") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for conversionFactor
+  pub fn _conversion_factor(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_conversionFactor") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Number of digits after decimal separator when the results of such observations
+  /// are of type Quantity.
+  pub fn decimal_precision(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("decimalPrecision") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

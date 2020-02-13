@@ -1,49 +1,21 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// The CodeSystem resource is used to declare the existence of and describe a code
 /// system or code system supplement and its key properties, and optionally define a
 /// part or all of its content.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CodeSystem_Filter {
-  /// The code that identifies this filter when it is used as a filter in
-  /// [[[ValueSet]]].compose.include.filter.
-  code: Option<String>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+#[derive(Debug)]
+pub struct CodeSystem_Filter<'a> {
+  pub value: &'a Value,
+}
 
-  /// A description of what the value for the filter should be.
-  value: Option<String>,
-
-  /// Extensions for code
-  #[serde(rename = "_code")]
-  _code: Option<Element>,
-
-  /// Extensions for operator
-  #[serde(rename = "_operator")]
-  _operator: Option<Vec<Element>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for value
-  #[serde(rename = "_value")]
-  _value: Option<Element>,
-
-  /// A description of how or why the filter is used.
-  description: Option<String>,
-
+impl CodeSystem_Filter<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -55,14 +27,97 @@ pub struct CodeSystem_Filter {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A description of how or why the filter is used.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The code that identifies this filter when it is used as a filter in
+  /// [[[ValueSet]]].compose.include.filter.
+  pub fn code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for operator
+  pub fn _operator(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_operator") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A description of what the value for the filter should be.
+  pub fn value(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// A list of operators that can be used with the filter.
-  operator: Option<Vec<String>>,
+  pub fn operator(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("operator") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

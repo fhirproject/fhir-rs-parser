@@ -1,32 +1,36 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Period::Period;
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Identifier::Identifier;
+use crate::model::Period::Period;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// The regulatory authorization of a medicinal product.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MedicinalProductAuthorization_JurisdictionalAuthorization {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
 
-  /// Jurisdiction within a country.
-  jurisdiction: Option<Vec<CodeableConcept>>,
+#[derive(Debug)]
+pub struct MedicinalProductAuthorization_JurisdictionalAuthorization<'a> {
+  pub value: &'a Value,
+}
 
-  /// Country of authorization.
-  country: Option<CodeableConcept>,
+impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
+  /// The start and expected end date of the authorization.
+  pub fn validity_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("validityPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// The legal status of supply in a jurisdiction or region.
+  pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("legalStatusOfSupply") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -39,18 +43,56 @@ pub struct MedicinalProductAuthorization_JurisdictionalAuthorization {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The assigned number for the marketing authorization.
-  identifier: Option<Vec<Identifier>>,
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The legal status of supply in a jurisdiction or region.
-  #[serde(rename = "legalStatusOfSupply")]
-  legal_status_of_supply: Option<CodeableConcept>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The start and expected end date of the authorization.
-  #[serde(rename = "validityPeriod")]
-  validity_period: Option<Period>,
+  /// Jurisdiction within a country.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Country of authorization.
+  pub fn country(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("country") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
 }

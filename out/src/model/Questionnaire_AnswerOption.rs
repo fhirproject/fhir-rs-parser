@@ -1,33 +1,55 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Coding::Coding;
+use crate::model::Reference::Reference;
+use serde_json::value::Value;
+
 
 
 /// A structured set of questions intended to guide the collection of answers from
 /// end-users. Questionnaires provide detailed control over order, presentation,
 /// phraseology and grouping to allow coherent, consistent data collection.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Questionnaire_AnswerOption {
+
+#[derive(Debug)]
+pub struct Questionnaire_AnswerOption<'a> {
+  pub value: &'a Value,
+}
+
+impl Questionnaire_AnswerOption<'_> {
+  /// Extensions for valueTime
+  pub fn _value_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueInteger
+  pub fn _value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates whether the answer value is selected when the list of possible answers
+  /// is initially shown.
+  pub fn initial_selected(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("initialSelected") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
   /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueInteger")]
-  value_integer: Option<i32>,
-
-  /// Extensions for initialSelected
-  #[serde(rename = "_initialSelected")]
-  _initial_selected: Option<Element>,
-
-  /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueReference")]
-  value_reference: Option<Box<Reference>>,
-
-  /// Extensions for valueString
-  #[serde(rename = "_valueString")]
-  _value_string: Option<Element>,
+  pub fn value_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -40,51 +62,96 @@ pub struct Questionnaire_AnswerOption {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueCoding")]
-  value_coding: Option<Coding>,
+  pub fn value_integer(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueInteger") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// A potential answer that's allowed as the answer to this question.
+  pub fn value_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A potential answer that's allowed as the answer to this question.
+  pub fn value_coding(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("valueCoding") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// A potential answer that's allowed as the answer to this question.
+  pub fn value_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("valueReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for initialSelected
+  pub fn _initial_selected(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_initialSelected") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueString
+  pub fn _value_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A potential answer that's allowed as the answer to this question.
+  pub fn value_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for valueDate
-  #[serde(rename = "_valueDate")]
-  _value_date: Option<Element>,
-
-  /// Extensions for valueInteger
-  #[serde(rename = "_valueInteger")]
-  _value_integer: Option<Element>,
-
-  /// Extensions for valueTime
-  #[serde(rename = "_valueTime")]
-  _value_time: Option<Element>,
-
-  /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueDate")]
-  value_date: Option<String>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Indicates whether the answer value is selected when the list of possible answers
-  /// is initially shown.
-  #[serde(rename = "initialSelected")]
-  initial_selected: Option<bool>,
-
-  /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueString")]
-  value_string: Option<String>,
-
-  /// A potential answer that's allowed as the answer to this question.
-  #[serde(rename = "valueTime")]
-  value_time: Option<String>,
+  pub fn _value_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

@@ -1,68 +1,132 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use crate::model::SubstanceSpecification_Official::SubstanceSpecification_Official;
+use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstanceSpecification_Name {
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_Name<'a> {
+  pub value: &'a Value,
+}
+
+impl SubstanceSpecification_Name<'_> {
+  /// Details of the official nature of this name.
+  pub fn official(&self) -> Option<Vec<SubstanceSpecification_Official>> {
+    if let Some(Value::Array(val)) = self.value.get("official") {
+      return Some(val.into_iter().map(|e| SubstanceSpecification_Official { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The actual name.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If this is the preferred name for this substance.
+  pub fn preferred(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("preferred") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// The jurisdiction where this name applies.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A synonym of this name.
+  pub fn synonym(&self) -> Option<Vec<SubstanceSpecification_Name>> {
+    if let Some(Value::Array(val)) = self.value.get("synonym") {
+      return Some(val.into_iter().map(|e| SubstanceSpecification_Name { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for preferred
+  pub fn _preferred(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_preferred") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Supporting literature.
+  pub fn source(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("source") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Name type.
-  #[serde(rename = "type")]
-  fhir_type: Option<CodeableConcept>,
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Supporting literature.
-  source: Option<Vec<Box<Reference>>>,
-
-  /// Language of the name.
-  language: Option<Vec<CodeableConcept>>,
-
-  /// The actual name.
-  name: Option<String>,
-
-  /// A synonym of this name.
-  synonym: Option<Vec<SubstanceSpecification_Name>>,
-
-  /// Extensions for preferred
-  #[serde(rename = "_preferred")]
-  _preferred: Option<Element>,
-
-  /// Details of the official nature of this name.
-  official: Option<Vec<SubstanceSpecification_Official>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// If this is the preferred name for this substance.
-  preferred: Option<bool>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// A translation for this name.
-  translation: Option<Vec<SubstanceSpecification_Name>>,
+  /// The status of the name.
+  pub fn status(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("status") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// The use context of this name for example if there is a different name a drug
   /// active ingredient as opposed to a food colour additive.
-  domain: Option<Vec<CodeableConcept>>,
+  pub fn domain(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("domain") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The status of the name.
-  status: Option<CodeableConcept>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -75,10 +139,27 @@ pub struct SubstanceSpecification_Name {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// The jurisdiction where this name applies.
-  jurisdiction: Option<Vec<CodeableConcept>>,
+  /// A translation for this name.
+  pub fn translation(&self) -> Option<Vec<SubstanceSpecification_Name>> {
+    if let Some(Value::Array(val)) = self.value.get("translation") {
+      return Some(val.into_iter().map(|e| SubstanceSpecification_Name { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Language of the name.
+  pub fn language(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("language") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

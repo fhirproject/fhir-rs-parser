@@ -1,21 +1,56 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// An authorization for the provision of glasses and/or contact lenses to a
 /// patient.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct VisionPrescription_Prism {
+
+#[derive(Debug)]
+pub struct VisionPrescription_Prism<'a> {
+  pub value: &'a Value,
+}
+
+impl VisionPrescription_Prism<'_> {
+  /// Amount of prism to compensate for eye alignment in fractional units.
+  pub fn amount(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// The relative base, or reference lens edge, for the prism.
-  base: Option<VisionPrescription_PrismBase>,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for amount
+  pub fn _amount(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_amount") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -28,41 +63,48 @@ pub struct VisionPrescription_Prism {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for amount
-  #[serde(rename = "_amount")]
-  _amount: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Amount of prism to compensate for eye alignment in fractional units.
-  amount: Option<f32>,
+  /// The relative base, or reference lens edge, for the prism.
+  pub fn base(&self) -> Option<VisionPrescription_PrismBase> {
+    if let Some(Value::String(val)) = self.value.get("base") {
+      return Some(VisionPrescription_PrismBase::from_string(&val).unwrap());
+    }
+    return None;
+  }
 
   /// Extensions for base
-  #[serde(rename = "_base")]
-  _base: Option<Element>,
+  pub fn _base(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_base") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum VisionPrescription_PrismBase {
-  #[serde(rename = "up")]
   Up,
-
-  #[serde(rename = "down")]
   Down,
-
-  #[serde(rename = "in")]
   In,
-
-  #[serde(rename = "out")]
   Out,
-
 }
+
+impl VisionPrescription_PrismBase {
+    pub fn from_string(string: &str) -> Option<VisionPrescription_PrismBase> {
+      match string {
+        "up" => Some(VisionPrescription_PrismBase::Up),
+        "down" => Some(VisionPrescription_PrismBase::Down),
+        "in" => Some(VisionPrescription_PrismBase::In),
+        "out" => Some(VisionPrescription_PrismBase::Out),
+        _ => None,
+    }
+  }
+}
+

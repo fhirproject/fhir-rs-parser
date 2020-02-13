@@ -1,26 +1,43 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// Actual or  potential/avoided event causing unintended physical injury resulting
 /// from or contributed to by medical care, a research study or other healthcare
 /// setting factors that requires additional monitoring, treatment, or
 /// hospitalization, or that results in death.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct AdverseEvent_Causality {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+
+#[derive(Debug)]
+pub struct AdverseEvent_Causality<'a> {
+  pub value: &'a Value,
+}
+
+impl AdverseEvent_Causality<'_> {
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for productRelatedness
-  #[serde(rename = "_productRelatedness")]
-  _product_relatedness: Option<Element>,
+  pub fn _product_relatedness(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_productRelatedness") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -33,27 +50,52 @@ pub struct AdverseEvent_Causality {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// AdverseEvent.suspectEntity.causalityProductRelatedness.
-  #[serde(rename = "productRelatedness")]
-  product_relatedness: Option<String>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// AdverseEvent.suspectEntity.causalityAuthor.
-  author: Option<Box<Reference>>,
+  pub fn author(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("author") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Assessment of if the entity caused the event.
-  assessment: Option<CodeableConcept>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn assessment(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("assessment") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
   /// ProbabilityScale | Bayesian | Checklist.
-  method: Option<CodeableConcept>,
+  pub fn method(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("method") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// AdverseEvent.suspectEntity.causalityProductRelatedness.
+  pub fn product_relatedness(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("productRelatedness") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

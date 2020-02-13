@@ -1,18 +1,19 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Narrative::Narrative;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::ClinicalImpression_Investigation::ClinicalImpression_Investigation;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Annotation::Annotation;
-use crate::model::Meta::Meta;
-use crate::model::Identifier::Identifier;
 use crate::model::ResourceList::ResourceList;
-use crate::model::ClinicalImpression_Finding::ClinicalImpression_Finding;
 use crate::model::Reference::Reference;
 use crate::model::Period::Period;
+use crate::model::Identifier::Identifier;
+use crate::model::Narrative::Narrative;
+use crate::model::Extension::Extension;
+use crate::model::ClinicalImpression_Investigation::ClinicalImpression_Investigation;
+use crate::model::Element::Element;
+use crate::model::ClinicalImpression_Finding::ClinicalImpression_Finding;
+use crate::model::Meta::Meta;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// A record of a clinical assessment performed to determine what problem(s) may
@@ -22,72 +23,217 @@ use crate::model::Period::Period;
 /// clinical workflow. This resource is called "ClinicalImpression" rather than
 /// "ClinicalAssessment" to avoid confusion with the recording of assessment tools
 /// such as Apgar score.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ClinicalImpression {
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+#[derive(Debug)]
+pub struct ClinicalImpression<'a> {
+  pub value: &'a Value,
+}
 
-  /// Identifies the workflow status of the assessment.
-  status: Option<String>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// A reference to the last assessment that was conducted on this patient.
-  /// Assessments are often/usually ongoing in nature; a care provider (practitioner
-  /// or team) will make new assessments on an ongoing basis as new data arises or the
-  /// patient's conditions changes.
-  previous: Option<Box<Reference>>,
-
-  /// Business identifiers assigned to this clinical impression by the performer or
-  /// other systems which remain constant as the resource is updated and propagates
-  /// from server to server.
-  identifier: Option<Vec<Identifier>>,
-
-  /// Estimate of likely outcome.
-  #[serde(rename = "prognosisCodeableConcept")]
-  prognosis_codeable_concept: Option<Vec<CodeableConcept>>,
-
-  /// The point in time or period over which the subject was assessed.
-  #[serde(rename = "effectiveDateTime")]
-  effective_date_time: Option<String>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
-
-  /// Captures the reason for the current state of the ClinicalImpression.
-  #[serde(rename = "statusReason")]
-  status_reason: Option<CodeableConcept>,
-
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
-
-  /// A text summary of the investigations and the diagnosis.
-  summary: Option<String>,
+impl ClinicalImpression<'_> {
+  /// One or more sets of investigations (signs, symptoms, etc.). The actual grouping
+  /// of investigations varies greatly depending on the type and context of the
+  /// assessment. These investigations may include data generated during the
+  /// assessment process, or data previously generated and recorded that is pertinent
+  /// to the outcomes.
+  pub fn investigation(&self) -> Option<Vec<ClinicalImpression_Investigation>> {
+    if let Some(Value::Array(val)) = self.value.get("investigation") {
+      return Some(val.into_iter().map(|e| ClinicalImpression_Investigation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Reference to a specific published clinical protocol that was followed during
+  /// this assessment, and/or that provides evidence in support of the diagnosis.
+  pub fn protocol(&self) -> Option<Vec<String>> {
+    if let Some(Value::Array(val)) = self.value.get("protocol") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
+
+  /// Categorizes the type of clinical assessment performed.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The clinician performing the assessment.
+  pub fn assessor(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("assessor") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for protocol
+  pub fn _protocol(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_protocol") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A text summary of the investigations and the diagnosis.
+  pub fn summary(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("summary") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Commentary about the impression, typically recorded after the impression itself
+  /// was made, though supplemental notes by the original author could also appear.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Estimate of likely outcome.
+  pub fn prognosis_codeable_concept(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("prognosisCodeableConcept") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// RiskAssessment expressing likely outcome.
+  pub fn prognosis_reference(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("prognosisReference") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A summary of the context and/or cause of the assessment - why / where it was
+  /// performed, and what patient events/status prompted it.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// The patient or group of individuals assessed as part of this record.
+  pub fn subject(&self) -> Reference {
+    Reference {
+      value: &self.value["subject"],
+    }
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for summary
+  pub fn _summary(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_summary") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// The base language in which the resource is written.
-  language: Option<String>,
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Specific findings or diagnoses that were considered likely or relevant to
+  /// ongoing treatment.
+  pub fn finding(&self) -> Option<Vec<ClinicalImpression_Finding>> {
+    if let Some(Value::Array(val)) = self.value.get("finding") {
+      return Some(val.into_iter().map(|e| ClinicalImpression_Finding { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identifies the workflow status of the assessment.
+  pub fn status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Business identifiers assigned to this clinical impression by the performer or
+  /// other systems which remain constant as the resource is updated and propagates
+  /// from server to server.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Information supporting the clinical impression.
+  pub fn supporting_info(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -101,97 +247,124 @@ pub struct ClinicalImpression {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for protocol
-  #[serde(rename = "_protocol")]
-  _protocol: Option<Vec<Element>>,
-
-  /// Extensions for effectiveDateTime
-  #[serde(rename = "_effectiveDateTime")]
-  _effective_date_time: Option<Element>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Categorizes the type of clinical assessment performed.
-  code: Option<CodeableConcept>,
-
-  /// Indicates when the documentation of the assessment was complete.
-  date: Option<String>,
-
-  /// Extensions for summary
-  #[serde(rename = "_summary")]
-  _summary: Option<Element>,
-
-  /// A list of the relevant problems/conditions for a patient.
-  problem: Option<Vec<Box<Reference>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// The point in time or period over which the subject was assessed.
-  #[serde(rename = "effectivePeriod")]
-  effective_period: Option<Period>,
-
-  /// Information supporting the clinical impression.
-  #[serde(rename = "supportingInfo")]
-  supporting_info: Option<Vec<Box<Reference>>>,
-
-  /// The clinician performing the assessment.
-  assessor: Option<Box<Reference>>,
-
-  /// Extensions for status
-  #[serde(rename = "_status")]
-  _status: Option<Element>,
-
-  /// One or more sets of investigations (signs, symptoms, etc.). The actual grouping
-  /// of investigations varies greatly depending on the type and context of the
-  /// assessment. These investigations may include data generated during the
-  /// assessment process, or data previously generated and recorded that is pertinent
-  /// to the outcomes.
-  investigation: Option<Vec<ClinicalImpression_Investigation>>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
+  pub fn effective_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("effectiveDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// The Encounter during which this ClinicalImpression was created or to which the
   /// creation of this record is tightly associated.
-  encounter: Option<Box<Reference>>,
+  pub fn encounter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("encounter") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Specific findings or diagnoses that were considered likely or relevant to
-  /// ongoing treatment.
-  finding: Option<Vec<ClinicalImpression_Finding>>,
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// The patient or group of individuals assessed as part of this record.
-  subject: Box<Reference>,
+  /// The point in time or period over which the subject was assessed.
+  pub fn effective_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("effectivePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
-  /// Commentary about the impression, typically recorded after the impression itself
-  /// was made, though supplemental notes by the original author could also appear.
-  note: Option<Vec<Annotation>>,
+  /// Extensions for effectiveDateTime
+  pub fn _effective_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_effectiveDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
-  /// A summary of the context and/or cause of the assessment - why / where it was
-  /// performed, and what patient events/status prompted it.
-  description: Option<String>,
+  /// Indicates when the documentation of the assessment was complete.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
+  /// A reference to the last assessment that was conducted on this patient.
+  /// Assessments are often/usually ongoing in nature; a care provider (practitioner
+  /// or team) will make new assessments on an ongoing basis as new data arises or the
+  /// patient's conditions changes.
+  pub fn previous(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("previous") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
 
-  /// Reference to a specific published clinical protocol that was followed during
-  /// this assessment, and/or that provides evidence in support of the diagnosis.
-  protocol: Option<Vec<String>>,
+  /// Captures the reason for the current state of the ClinicalImpression.
+  pub fn status_reason(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("statusReason") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A list of the relevant problems/conditions for a patient.
+  pub fn problem(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("problem") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// RiskAssessment expressing likely outcome.
-  #[serde(rename = "prognosisReference")]
-  prognosis_reference: Option<Vec<Box<Reference>>>,
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

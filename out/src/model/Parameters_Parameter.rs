@@ -1,292 +1,625 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::HumanName::HumanName;
-use crate::model::Distance::Distance;
+use crate::model::Duration::Duration;
+use crate::model::Expression::Expression;
+use crate::model::Extension::Extension;
+use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::Range::Range;
-use crate::model::Attachment::Attachment;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Contributor::Contributor;
+use crate::model::Count::Count;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::ContactDetail::ContactDetail;
-use crate::model::Quantity::Quantity;
+use crate::model::ResourceList::ResourceList;
+use crate::model::SampledData::SampledData;
+use crate::model::HumanName::HumanName;
+use crate::model::Coding::Coding;
+use crate::model::Attachment::Attachment;
+use crate::model::Address::Address;
+use crate::model::Element::Element;
+use crate::model::Meta::Meta;
+use crate::model::Age::Age;
+use crate::model::Money::Money;
+use crate::model::DataRequirement::DataRequirement;
+use crate::model::Ratio::Ratio;
+use crate::model::Period::Period;
 use crate::model::ParameterDefinition::ParameterDefinition;
+use crate::model::Annotation::Annotation;
+use crate::model::ContactPoint::ContactPoint;
+use crate::model::Timing::Timing;
 use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::Reference::Reference;
-use crate::model::DataRequirement::DataRequirement;
-use crate::model::TriggerDefinition::TriggerDefinition;
-use crate::model::Period::Period;
-use crate::model::Address::Address;
-use crate::model::Annotation::Annotation;
-use crate::model::UsageContext::UsageContext;
-use crate::model::Dosage::Dosage;
-use crate::model::Duration::Duration;
-use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Count::Count;
-use crate::model::Contributor::Contributor;
-use crate::model::Age::Age;
-use crate::model::ContactPoint::ContactPoint;
-use crate::model::Element::Element;
-use crate::model::Ratio::Ratio;
-use crate::model::Expression::Expression;
-use crate::model::Coding::Coding;
-use crate::model::SampledData::SampledData;
-use crate::model::Money::Money;
+use crate::model::Distance::Distance;
+use crate::model::ContactDetail::ContactDetail;
 use crate::model::Signature::Signature;
-use crate::model::Timing::Timing;
+use crate::model::Dosage::Dosage;
+use crate::model::Quantity::Quantity;
 use crate::model::Identifier::Identifier;
+use serde_json::value::Value;
+
 
 
 /// This resource is a non-persisted resource used to pass information into and back
 /// from an [operation](operations.html). It has no other use, and there is no
 /// RESTful endpoint associated with it.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Parameters_Parameter {
+
+#[derive(Debug)]
+pub struct Parameters_Parameter<'a> {
+  pub value: &'a Value,
+}
+
+impl Parameters_Parameter<'_> {
   /// If the parameter is a data type.
-  #[serde(rename = "valueAge")]
-  value_age: Option<Age>,
+  pub fn value_positive_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valuePositiveInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
-  /// If the parameter is a data type.
-  #[serde(rename = "valueHumanName")]
-  value_human_name: Option<HumanName>,
-
-  /// Extensions for valueId
-  #[serde(rename = "_valueId")]
-  _value_id: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueQuantity")]
-  value_quantity: Option<Quantity>,
-
-  /// Extensions for valueInteger
-  #[serde(rename = "_valueInteger")]
-  _value_integer: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueMarkdown")]
-  value_markdown: Option<String>,
+  /// Extensions for valueBoolean
+  pub fn _value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueUnsignedInt")]
-  value_unsigned_int: Option<i32>,
-
-  /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
-
-  /// Extensions for valueUuid
-  #[serde(rename = "_valueUuid")]
-  _value_uuid: Option<Element>,
-
-  /// Extensions for valueBase64Binary
-  #[serde(rename = "_valueBase64Binary")]
-  _value_base_6_4_binary: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueCoding")]
-  value_coding: Option<Coding>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueOid")]
-  value_oid: Option<String>,
-
-  /// The name of the parameter (reference to the operation definition).
-  name: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueParameterDefinition")]
-  value_parameter_definition: Option<ParameterDefinition>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueAddress")]
-  value_address: Option<Address>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueUri")]
-  value_uri: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueDateTime")]
-  value_date_time: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueReference")]
-  value_reference: Option<Box<Reference>>,
-
-  /// If the parameter is a whole resource.
-  resource: Option<ResourceList>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueId")]
-  value_id: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueRange")]
-  value_range: Option<Range>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueContactDetail")]
-  value_contact_detail: Option<ContactDetail>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueDosage")]
-  value_dosage: Option<Dosage>,
-
-  /// Extensions for valueDateTime
-  #[serde(rename = "_valueDateTime")]
-  _value_date_time: Option<Element>,
-
-  /// Extensions for valueUri
-  #[serde(rename = "_valueUri")]
-  _value_uri: Option<Element>,
-
-  /// Extensions for valueDecimal
-  #[serde(rename = "_valueDecimal")]
-  _value_decimal: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueAnnotation")]
-  value_annotation: Option<Annotation>,
-
-  /// Extensions for valueCode
-  #[serde(rename = "_valueCode")]
-  _value_code: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueCodeableConcept")]
-  value_codeable_concept: Option<CodeableConcept>,
+  pub fn value_age(&self) -> Option<Age> {
+    if let Some(val) = self.value.get("valueAge") {
+      return Some(Age { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for valueMarkdown
-  #[serde(rename = "_valueMarkdown")]
-  _value_markdown: Option<Element>,
+  pub fn _value_markdown(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueMarkdown") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueString
+  pub fn _value_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueUri
+  pub fn _value_uri(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueUri") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueDataRequirement")]
-  value_data_requirement: Option<DataRequirement>,
+  pub fn value_oid(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueOid") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueUsageContext")]
-  value_usage_context: Option<UsageContext>,
+  pub fn value_ratio(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("valueRatio") {
+      return Some(Ratio { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueCode
+  pub fn _value_code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueCode") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueUnsignedInt
+  pub fn _value_unsigned_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueUnsignedInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_signature(&self) -> Option<Signature> {
+    if let Some(val) = self.value.get("valueSignature") {
+      return Some(Signature { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_decimal(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueDecimal") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_count(&self) -> Option<Count> {
+    if let Some(val) = self.value.get("valueCount") {
+      return Some(Count { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_contributor(&self) -> Option<Contributor> {
+    if let Some(val) = self.value.get("valueContributor") {
+      return Some(Contributor { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_integer(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueInteger") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_related_artifact(&self) -> Option<RelatedArtifact> {
+    if let Some(val) = self.value.get("valueRelatedArtifact") {
+      return Some(RelatedArtifact { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueInstant
+  pub fn _value_instant(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInstant") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_string(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueString") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_uuid(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueUuid") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_address(&self) -> Option<Address> {
+    if let Some(val) = self.value.get("valueAddress") {
+      return Some(Address { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_duration(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("valueDuration") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_code(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueCode") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_unsigned_int(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("valueUnsignedInt") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_usage_context(&self) -> Option<UsageContext> {
+    if let Some(val) = self.value.get("valueUsageContext") {
+      return Some(UsageContext { value: val });
+    }
+    return None;
+  }
+
+  /// A named part of a multi-part parameter.
+  pub fn part(&self) -> Option<Vec<Parameters_Parameter>> {
+    if let Some(Value::Array(val)) = self.value.get("part") {
+      return Some(val.into_iter().map(|e| Parameters_Parameter { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for valuePositiveInt
+  pub fn _value_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valuePositiveInt") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueDecimal
+  pub fn _value_decimal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDecimal") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("valueRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_sampled_data(&self) -> Option<SampledData> {
+    if let Some(val) = self.value.get("valueSampledData") {
+      return Some(SampledData { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueTime
+  pub fn _value_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueId
+  pub fn _value_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for valueDateTime
+  pub fn _value_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueBase64Binary
+  pub fn _value_base_6_4_binary(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBase64Binary") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("valueBoolean") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_expression(&self) -> Option<Expression> {
+    if let Some(val) = self.value.get("valueExpression") {
+      return Some(Expression { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a whole resource.
+  pub fn resource(&self) -> Option<ResourceList> {
+    if let Some(val) = self.value.get("resource") {
+      return Some(ResourceList { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_coding(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("valueCoding") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("valueReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_uri(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueUri") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for valueUrl
+  pub fn _value_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueUrl") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_base_6_4_binary(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueBase64Binary") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("valueCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_trigger_definition(&self) -> Option<TriggerDefinition> {
+    if let Some(val) = self.value.get("valueTriggerDefinition") {
+      return Some(TriggerDefinition { value: val });
+    }
+    return None;
+  }
+
+  /// The name of the parameter (reference to the operation definition).
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_contact_detail(&self) -> Option<ContactDetail> {
+    if let Some(val) = self.value.get("valueContactDetail") {
+      return Some(ContactDetail { value: val });
+    }
+    return None;
+  }
+
+  /// If the parameter is a data type.
+  pub fn value_identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("valueIdentifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueCanonical
+  pub fn _value_canonical(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueCanonical") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueInteger")]
-  value_integer: Option<i32>,
-
-  /// Extensions for valueString
-  #[serde(rename = "_valueString")]
-  _value_string: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueBoolean")]
-  value_boolean: Option<bool>,
+  pub fn value_contact_point(&self) -> Option<ContactPoint> {
+    if let Some(val) = self.value.get("valueContactPoint") {
+      return Some(ContactPoint { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueIdentifier")]
-  value_identifier: Option<Identifier>,
+  pub fn value_attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("valueAttachment") {
+      return Some(Attachment { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueInstant")]
-  value_instant: Option<String>,
+  pub fn value_url(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueUrl") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueUuid")]
-  value_uuid: Option<String>,
-
-  /// Extensions for valueUnsignedInt
-  #[serde(rename = "_valueUnsignedInt")]
-  _value_unsigned_int: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueCanonical")]
-  value_canonical: Option<String>,
+  pub fn value_annotation(&self) -> Option<Annotation> {
+    if let Some(val) = self.value.get("valueAnnotation") {
+      return Some(Annotation { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueTriggerDefinition")]
-  value_trigger_definition: Option<TriggerDefinition>,
+  pub fn value_human_name(&self) -> Option<HumanName> {
+    if let Some(val) = self.value.get("valueHumanName") {
+      return Some(HumanName { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueMeta")]
-  value_meta: Option<Meta>,
+  pub fn value_timing(&self) -> Option<Timing> {
+    if let Some(val) = self.value.get("valueTiming") {
+      return Some(Timing { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueTime")]
-  value_time: Option<String>,
+  pub fn value_meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("valueMeta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for valueInteger
+  pub fn _value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueSampledData")]
-  value_sampled_data: Option<SampledData>,
+  pub fn value_canonical(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueCanonical") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Extensions for valueInstant
-  #[serde(rename = "_valueInstant")]
-  _value_instant: Option<Element>,
-
-  /// Extensions for valueUrl
-  #[serde(rename = "_valueUrl")]
-  _value_url: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueRatio")]
-  value_ratio: Option<Ratio>,
-
-  /// Extensions for valueCanonical
-  #[serde(rename = "_valueCanonical")]
-  _value_canonical: Option<Element>,
+  /// Extensions for valueDate
+  pub fn _value_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valuePositiveInt")]
-  value_positive_int: Option<i32>,
+  pub fn value_money(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("valueMoney") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valuePeriod")]
-  value_period: Option<Period>,
-
-  /// Extensions for valueTime
-  #[serde(rename = "_valueTime")]
-  _value_time: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueExpression")]
-  value_expression: Option<Expression>,
+  pub fn value_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("valueQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueCode")]
-  value_code: Option<String>,
+  pub fn value_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("valuePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueDistance")]
-  value_distance: Option<Distance>,
-
-  /// Extensions for valueOid
-  #[serde(rename = "_valueOid")]
-  _value_oid: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueContactPoint")]
-  value_contact_point: Option<ContactPoint>,
+  pub fn value_date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueDate") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueMoney")]
-  value_money: Option<Money>,
+  pub fn value_instant(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueInstant") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueSignature")]
-  value_signature: Option<Signature>,
+  pub fn value_markdown(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("valueMarkdown") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for valueUuid
+  pub fn _value_uuid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueUuid") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueAttachment")]
-  value_attachment: Option<Attachment>,
+  pub fn value_distance(&self) -> Option<Distance> {
+    if let Some(val) = self.value.get("valueDistance") {
+      return Some(Distance { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -299,62 +632,43 @@ pub struct Parameters_Parameter {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueBase64Binary")]
-  value_base_6_4_binary: Option<String>,
-
-  /// A named part of a multi-part parameter.
-  part: Option<Vec<Parameters_Parameter>>,
-
-  /// Extensions for valueDate
-  #[serde(rename = "_valueDate")]
-  _value_date: Option<Element>,
-
-  /// Extensions for valuePositiveInt
-  #[serde(rename = "_valuePositiveInt")]
-  _value_positive_int: Option<Element>,
+  pub fn value_parameter_definition(&self) -> Option<ParameterDefinition> {
+    if let Some(val) = self.value.get("valueParameterDefinition") {
+      return Some(ParameterDefinition { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueString")]
-  value_string: Option<String>,
+  pub fn value_dosage(&self) -> Option<Dosage> {
+    if let Some(val) = self.value.get("valueDosage") {
+      return Some(Dosage { value: val });
+    }
+    return None;
+  }
 
   /// If the parameter is a data type.
-  #[serde(rename = "valueDecimal")]
-  value_decimal: Option<i32>,
+  pub fn value_data_requirement(&self) -> Option<DataRequirement> {
+    if let Some(val) = self.value.get("valueDataRequirement") {
+      return Some(DataRequirement { value: val });
+    }
+    return None;
+  }
 
-  /// If the parameter is a data type.
-  #[serde(rename = "valueCount")]
-  value_count: Option<Count>,
-
-  /// Extensions for valueBoolean
-  #[serde(rename = "_valueBoolean")]
-  _value_boolean: Option<Element>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueDate")]
-  value_date: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueUrl")]
-  value_url: Option<String>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueRelatedArtifact")]
-  value_related_artifact: Option<RelatedArtifact>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueDuration")]
-  value_duration: Option<Duration>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueTiming")]
-  value_timing: Option<Timing>,
-
-  /// If the parameter is a data type.
-  #[serde(rename = "valueContributor")]
-  value_contributor: Option<Contributor>,
+  /// Extensions for valueOid
+  pub fn _value_oid(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueOid") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

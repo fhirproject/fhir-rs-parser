@@ -1,42 +1,29 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Period::Period;
 use crate::model::Identifier::Identifier;
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// The regulatory authorization of a medicinal product.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MedicinalProductAuthorization_Procedure {
-  /// Applcations submitted to obtain a marketing authorization.
-  application: Option<Vec<MedicinalProductAuthorization_Procedure>>,
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+#[derive(Debug)]
+pub struct MedicinalProductAuthorization_Procedure<'a> {
+  pub value: &'a Value,
+}
 
-  /// Type of procedure.
-  #[serde(rename = "type")]
-  fhir_type: CodeableConcept,
-
-  /// Date of procedure.
-  #[serde(rename = "dateDateTime")]
-  date_date_time: Option<String>,
-
+impl MedicinalProductAuthorization_Procedure<'_> {
   /// Extensions for dateDateTime
-  #[serde(rename = "_dateDateTime")]
-  _date_date_time: Option<Element>,
-
-  /// Date of procedure.
-  #[serde(rename = "datePeriod")]
-  date_period: Option<Period>,
+  pub fn _date_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_dateDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -49,14 +36,71 @@ pub struct MedicinalProductAuthorization_Procedure {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Identifier for this procedure.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Type of procedure.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// Date of procedure.
+  pub fn date_date_time(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("dateDateTime") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Applcations submitted to obtain a marketing authorization.
+  pub fn application(&self) -> Option<Vec<MedicinalProductAuthorization_Procedure>> {
+    if let Some(Value::Array(val)) = self.value.get("application") {
+      return Some(val.into_iter().map(|e| MedicinalProductAuthorization_Procedure { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Identifier for this procedure.
-  identifier: Option<Identifier>,
+  /// Date of procedure.
+  pub fn date_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("datePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
 }

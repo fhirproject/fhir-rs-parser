@@ -1,36 +1,23 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
+use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Range::Range;
 use crate::model::Extension::Extension;
-use crate::model::Period::Period;
+use serde_json::value::Value;
+
 
 
 /// An assessment of the likely outcome(s) for a patient or other subject as well as
 /// the likelihood of each outcome.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct RiskAssessment_Prediction {
-  /// Indicates the risk for this particular subject (with their specific
-  /// characteristics) divided by the risk of the population in general.  (Numbers
-  /// greater than 1 = higher risk than the population, numbers less than 1 = lower
-  /// risk.).
-  #[serde(rename = "relativeRisk")]
-  relative_risk: Option<f32>,
 
-  /// Additional information explaining the basis for the prediction.
-  rationale: Option<String>,
+#[derive(Debug)]
+pub struct RiskAssessment_Prediction<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for rationale
-  #[serde(rename = "_rationale")]
-  _rationale: Option<Element>,
-
-  /// One of the potential outcomes for the patient (e.g. remission, death,  a
-  /// particular condition).
-  outcome: Option<CodeableConcept>,
-
+impl RiskAssessment_Prediction<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -42,49 +29,127 @@ pub struct RiskAssessment_Prediction {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for relativeRisk
-  #[serde(rename = "_relativeRisk")]
-  _relative_risk: Option<Element>,
+  pub fn _relative_risk(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_relativeRisk") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Indicates how likely the outcome is (in the specified timeframe).
+  pub fn probability_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("probabilityRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the risk for this particular subject (with their specific
+  /// characteristics) divided by the risk of the population in general.  (Numbers
+  /// greater than 1 = higher risk than the population, numbers less than 1 = lower
+  /// risk.).
+  pub fn relative_risk(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("relativeRisk") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Indicates the period of time or age range of the subject to which the specified
+  /// probability applies.
+  pub fn when_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("whenRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for probabilityDecimal
-  #[serde(rename = "_probabilityDecimal")]
-  _probability_decimal: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Indicates how likely the outcome is (in the specified timeframe).
-  #[serde(rename = "probabilityRange")]
-  probability_range: Option<Range>,
-
-  /// Indicates how likely the outcome is (in the specified timeframe).
-  #[serde(rename = "probabilityDecimal")]
-  probability_decimal: Option<i32>,
+  /// Indicates the period of time or age range of the subject to which the specified
+  /// probability applies.
+  pub fn when_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("whenPeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
 
   /// Indicates how likely the outcome is (in the specified timeframe), expressed as a
   /// qualitative value (e.g. low, medium, or high).
-  #[serde(rename = "qualitativeRisk")]
-  qualitative_risk: Option<CodeableConcept>,
+  pub fn qualitative_risk(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("qualitativeRisk") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
-  /// Indicates the period of time or age range of the subject to which the specified
-  /// probability applies.
-  #[serde(rename = "whenRange")]
-  when_range: Option<Range>,
+  /// Additional information explaining the basis for the prediction.
+  pub fn rationale(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("rationale") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Indicates the period of time or age range of the subject to which the specified
-  /// probability applies.
-  #[serde(rename = "whenPeriod")]
-  when_period: Option<Period>,
+  /// Extensions for rationale
+  pub fn _rationale(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_rationale") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates how likely the outcome is (in the specified timeframe).
+  pub fn probability_decimal(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("probabilityDecimal") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for probabilityDecimal
+  pub fn _probability_decimal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_probabilityDecimal") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// One of the potential outcomes for the patient (e.g. remission, death,  a
+  /// particular condition).
+  pub fn outcome(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("outcome") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
 
 }

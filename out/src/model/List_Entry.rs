@@ -1,29 +1,89 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// A list is a curated collection of resources.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct List_Entry {
-  /// Extensions for date
-  #[serde(rename = "_date")]
-  _date: Option<Element>,
+
+#[derive(Debug)]
+pub struct List_Entry<'a> {
+  pub value: &'a Value,
+}
+
+impl List_Entry<'_> {
+  /// When this item was added to the list.
+  pub fn date(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for deleted
+  pub fn _deleted(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_deleted") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The flag allows the system constructing the list to indicate the role and
+  /// significance of the item in the list.
+  pub fn flag(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("flag") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// True if this item is marked as deleted in the list.
+  pub fn deleted(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("deleted") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// When this item was added to the list.
-  date: Option<String>,
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to the actual resource from which data was derived.
+  pub fn item(&self) -> Reference {
+    Reference {
+      value: &self.value["item"],
+    }
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -36,25 +96,11 @@ pub struct List_Entry {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// A reference to the actual resource from which data was derived.
-  item: Box<Reference>,
-
-  /// The flag allows the system constructing the list to indicate the role and
-  /// significance of the item in the list.
-  flag: Option<CodeableConcept>,
-
-  /// True if this item is marked as deleted in the list.
-  deleted: Option<bool>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Extensions for deleted
-  #[serde(rename = "_deleted")]
-  _deleted: Option<Element>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

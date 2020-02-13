@@ -1,40 +1,22 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
 /// gather all the parts of an implementation guide into a logical whole and to
 /// publish a computable definition of all the parts.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ImplementationGuide_DependsOn {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
 
-  /// The NPM package name for the Implementation Guide that this IG depends on.
-  #[serde(rename = "packageId")]
-  package_id: Option<String>,
+#[derive(Debug)]
+pub struct ImplementationGuide_DependsOn<'a> {
+  pub value: &'a Value,
+}
 
-  /// Extensions for packageId
-  #[serde(rename = "_packageId")]
-  _package_id: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// The version of the IG that is depended on, when the correct version is required
-  /// to understand the IG correctly.
-  version: Option<String>,
-
+impl ImplementationGuide_DependsOn<'_> {
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -46,14 +28,70 @@ pub struct ImplementationGuide_DependsOn {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// A canonical reference to the Implementation guide for the dependency.
-  uri: String,
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for packageId
+  pub fn _package_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_packageId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for version
-  #[serde(rename = "_version")]
-  _version: Option<Element>,
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The version of the IG that is depended on, when the correct version is required
+  /// to understand the IG correctly.
+  pub fn version(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("version") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// A canonical reference to the Implementation guide for the dependency.
+  pub fn uri(&self) -> String {
+    self.value.get("uri").unwrap().as_str().unwrap().to_string()
+  }
+
+  /// The NPM package name for the Implementation Guide that this IG depends on.
+  pub fn package_id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("packageId") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

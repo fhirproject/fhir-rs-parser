@@ -1,61 +1,134 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Meta::Meta;
+use crate::model::Narrative::Narrative;
+use crate::model::Identifier::Identifier;
+use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
-use crate::model::Meta::Meta;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
-use crate::model::Narrative::Narrative;
-use crate::model::Period::Period;
-use crate::model::Identifier::Identifier;
-use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// A container for slots of time that may be available for booking appointments.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Schedule {
-  /// The specialty of a practitioner that would be required to perform the service
-  /// requested in this appointment.
-  specialty: Option<Vec<CodeableConcept>>,
 
-  /// Extensions for comment
-  #[serde(rename = "_comment")]
-  _comment: Option<Element>,
+#[derive(Debug)]
+pub struct Schedule<'a> {
+  pub value: &'a Value,
+}
+
+impl Schedule<'_> {
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// External Ids for this item.
-  identifier: Option<Vec<Identifier>>,
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The period of time that the slots that reference this Schedule resource cover
+  /// (even if none exist). These  cover the amount of time that an organization's
+  /// planning horizon; the interval for which they are currently accepting
+  /// appointments. This does not define a "template" for planning outside these
+  /// dates.
+  pub fn planning_horizon(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("planningHorizon") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// The logical id of the resource, as used in the URL for the resource. Once
   /// assigned, this value never changes.
-  id: Option<String>,
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for active
-  #[serde(rename = "_active")]
-  _active: Option<Element>,
+  /// Comments on the availability to describe any extended information. Such as
+  /// custom constraints on the slots that may be associated.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A broad categorization of the service that is to be performed during this
+  /// appointment.
+  pub fn service_category(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("serviceCategory") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -69,57 +142,77 @@ pub struct Schedule {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The specialty of a practitioner that would be required to perform the service
+  /// requested in this appointment.
+  pub fn specialty(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("specialty") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The specific service that is to be performed during this appointment.
+  pub fn service_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("serviceType") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for active
+  pub fn _active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_active") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Whether this schedule record is in active use or should not be used (such as was
   /// entered in error).
-  active: Option<bool>,
-
-  /// Slots that reference this schedule resource provide the availability details to
-  /// these referenced resource(s).
-  actor: Vec<Box<Reference>>,
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
-
-  /// The period of time that the slots that reference this Schedule resource cover
-  /// (even if none exist). These  cover the amount of time that an organization's
-  /// planning horizon; the interval for which they are currently accepting
-  /// appointments. This does not define a "template" for planning outside these
-  /// dates.
-  #[serde(rename = "planningHorizon")]
-  planning_horizon: Option<Period>,
-
-  /// The specific service that is to be performed during this appointment.
-  #[serde(rename = "serviceType")]
-  service_type: Option<Vec<CodeableConcept>>,
-
-  /// Comments on the availability to describe any extended information. Such as
-  /// custom constraints on the slots that may be associated.
-  comment: Option<String>,
+  pub fn active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("active") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
 
   /// The metadata about the resource. This is content that is maintained by the
   /// infrastructure. Changes to the content might not always be associated with
   /// version changes to the resource.
-  meta: Option<Meta>,
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
 
-  /// The base language in which the resource is written.
-  language: Option<String>,
-
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// A broad categorization of the service that is to be performed during this
-  /// appointment.
-  #[serde(rename = "serviceCategory")]
-  service_category: Option<Vec<CodeableConcept>>,
+  /// Slots that reference this schedule resource provide the availability details to
+  /// these referenced resource(s).
+  pub fn actor(&self) -> Vec<Reference> {
+    self.value.get("actor").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
+  }
 
 }

@@ -1,36 +1,34 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::StructureMap_Target::StructureMap_Target;
-use crate::model::StructureMap_Dependent::StructureMap_Dependent;
 use crate::model::Extension::Extension;
 use crate::model::StructureMap_Source::StructureMap_Source;
 use crate::model::Element::Element;
+use crate::model::StructureMap_Dependent::StructureMap_Dependent;
+use crate::model::StructureMap_Target::StructureMap_Target;
+use serde_json::value::Value;
+
 
 
 /// A Map of relationships between 2 structures that can be used to transform data.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct StructureMap_Rule {
-  /// Rules contained in this rule.
-  rule: Option<Vec<StructureMap_Rule>>,
 
-  /// Documentation for this instance of data.
-  documentation: Option<String>,
+#[derive(Debug)]
+pub struct StructureMap_Rule<'a> {
+  pub value: &'a Value,
+}
+
+impl StructureMap_Rule<'_> {
+  /// Source inputs to the mapping.
+  pub fn source(&self) -> Vec<StructureMap_Source> {
+    self.value.get("source").unwrap().as_array().unwrap().into_iter().map(|e| StructureMap_Source { value: e }).collect::<Vec<_>>()
+  }
 
   /// Content to create because of this mapping rule.
-  target: Option<Vec<StructureMap_Target>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// Which other rules to apply in the context of this rule.
-  dependent: Option<Vec<StructureMap_Dependent>>,
-
-  /// Extensions for documentation
-  #[serde(rename = "_documentation")]
-  _documentation: Option<Element>,
+  pub fn target(&self) -> Option<Vec<StructureMap_Target>> {
+    if let Some(Value::Array(val)) = self.value.get("target") {
+      return Some(val.into_iter().map(|e| StructureMap_Target { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -43,24 +41,80 @@ pub struct StructureMap_Rule {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Source inputs to the mapping.
-  source: Vec<Box<StructureMap_Source>>,
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// Name of the rule for internal references.
-  name: Option<String>,
+  /// Which other rules to apply in the context of this rule.
+  pub fn dependent(&self) -> Option<Vec<StructureMap_Dependent>> {
+    if let Some(Value::Array(val)) = self.value.get("dependent") {
+      return Some(val.into_iter().map(|e| StructureMap_Dependent { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Rules contained in this rule.
+  pub fn rule(&self) -> Option<Vec<StructureMap_Rule>> {
+    if let Some(Value::Array(val)) = self.value.get("rule") {
+      return Some(val.into_iter().map(|e| StructureMap_Rule { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Name of the rule for internal references.
+  pub fn name(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Documentation for this instance of data.
+  pub fn documentation(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for name
-  #[serde(rename = "_name")]
-  _name: Option<Element>,
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }

@@ -1,17 +1,114 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use serde_json::value::Value;
+
 
 
 /// Raw data describing a biological sequence.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct MolecularSequence_Roc {
+
+#[derive(Debug)]
+pub struct MolecularSequence_Roc<'a> {
+  pub value: &'a Value,
+}
+
+impl MolecularSequence_Roc<'_> {
+  /// Invidual data point representing the GQ (genotype quality) score threshold.
+  pub fn score(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("score") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Calculated fScore if the GQ score threshold was set to "score" field value.
-  #[serde(rename = "fMeasure")]
-  f_measure: Option<Vec<f32>>,
+  pub fn f_measure(&self) -> Option<Vec<f64>> {
+    if let Some(Value::Array(val)) = self.value.get("fMeasure") {
+      return Some(val.into_iter().map(|e| e.as_f64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The number of false negatives if the GQ score threshold was set to "score" field
+  /// value.
+  pub fn num_f_n(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("numFN") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for numFP
+  pub fn _num_f_p(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_numFP") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for numFN
+  pub fn _num_f_n(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_numFN") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The number of true positives if the GQ score threshold was set to "score" field
+  /// value.
+  pub fn num_t_p(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("numTP") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The number of false positives if the GQ score threshold was set to "score" field
+  /// value.
+  pub fn num_f_p(&self) -> Option<Vec<i64>> {
+    if let Some(Value::Array(val)) = self.value.get("numFP") {
+      return Some(val.into_iter().map(|e| e.as_i64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for sensitivity
+  pub fn _sensitivity(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_sensitivity") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Calculated sensitivity if the GQ score threshold was set to "score" field value.
+  pub fn sensitivity(&self) -> Option<Vec<f64>> {
+    if let Some(Value::Array(val)) = self.value.get("sensitivity") {
+      return Some(val.into_iter().map(|e| e.as_f64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -24,70 +121,51 @@ pub struct MolecularSequence_Roc {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for sensitivity
-  #[serde(rename = "_sensitivity")]
-  _sensitivity: Option<Vec<Element>>,
-
-  /// Extensions for fMeasure
-  #[serde(rename = "_fMeasure")]
-  _f_measure: Option<Vec<Element>>,
-
-  /// Invidual data point representing the GQ (genotype quality) score threshold.
-  score: Option<Vec<i32>>,
-
-  /// The number of true positives if the GQ score threshold was set to "score" field
-  /// value.
-  #[serde(rename = "numTP")]
-  num_t_p: Option<Vec<i32>>,
-
-  /// Extensions for numFP
-  #[serde(rename = "_numFP")]
-  _num_f_p: Option<Vec<Element>>,
-
-  /// Calculated precision if the GQ score threshold was set to "score" field value.
-  precision: Option<Vec<f32>>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
-
-  /// The number of false positives if the GQ score threshold was set to "score" field
-  /// value.
-  #[serde(rename = "numFP")]
-  num_f_p: Option<Vec<i32>>,
-
-  /// The number of false negatives if the GQ score threshold was set to "score" field
-  /// value.
-  #[serde(rename = "numFN")]
-  num_f_n: Option<Vec<i32>>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// Extensions for score
-  #[serde(rename = "_score")]
-  _score: Option<Vec<Element>>,
-
-  /// Extensions for numFN
-  #[serde(rename = "_numFN")]
-  _num_f_n: Option<Vec<Element>>,
-
-  /// Calculated sensitivity if the GQ score threshold was set to "score" field value.
-  sensitivity: Option<Vec<f32>>,
-
-  /// Extensions for precision
-  #[serde(rename = "_precision")]
-  _precision: Option<Vec<Element>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for numTP
-  #[serde(rename = "_numTP")]
-  _num_t_p: Option<Vec<Element>>,
+  pub fn _num_t_p(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_numTP") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for score
+  pub fn _score(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_score") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for precision
+  pub fn _precision(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_precision") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for fMeasure
+  pub fn _f_measure(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_fMeasure") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Calculated precision if the GQ score threshold was set to "score" field value.
+  pub fn precision(&self) -> Option<Vec<f64>> {
+    if let Some(Value::Array(val)) = self.value.get("precision") {
+      return Some(val.into_iter().map(|e| e.as_f64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }

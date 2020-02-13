@@ -1,18 +1,74 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::ElementDefinition_Discriminator::ElementDefinition_Discriminator;
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use crate::model::ElementDefinition_Discriminator::ElementDefinition_Discriminator;
+use serde_json::value::Value;
+
 
 
 /// Captures constraints on each element within the resource, profile, or extension.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ElementDefinition_Slicing {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+
+#[derive(Debug)]
+pub struct ElementDefinition_Slicing<'a> {
+  pub value: &'a Value,
+}
+
+impl ElementDefinition_Slicing<'_> {
+  /// Extensions for rules
+  pub fn _rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_rules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for ordered
+  pub fn _ordered(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_ordered") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Whether additional slices are allowed or not. When the slices are ordered,
+  /// profile authors can also say that additional slices are only allowed at the end.
+  pub fn rules(&self) -> Option<ElementDefinition_SlicingRules> {
+    if let Some(Value::String(val)) = self.value.get("rules") {
+      return Some(ElementDefinition_SlicingRules::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// A human-readable text description of how the slicing works. If there is no
+  /// discriminator, this is required to be present to provide whatever information is
+  /// possible about how the slices can be differentiated.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -25,59 +81,60 @@ pub struct ElementDefinition_Slicing {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
+  /// If the matching elements have to occur in the same order as defined in the
+  /// profile.
+  pub fn ordered(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("ordered") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Designates which child elements are used to discriminate between the slices when
   /// processing an instance. If one or more discriminators are provided, the value of
   /// the child elements in the instance data SHALL completely distinguish which slice
   /// the element in the resource matches based on the allowed values for those
   /// elements in each of the slices.
-  discriminator: Option<Vec<ElementDefinition_Discriminator>>,
-
-  /// Extensions for ordered
-  #[serde(rename = "_ordered")]
-  _ordered: Option<Element>,
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
-
-  /// If the matching elements have to occur in the same order as defined in the
-  /// profile.
-  ordered: Option<bool>,
-
-  /// Whether additional slices are allowed or not. When the slices are ordered,
-  /// profile authors can also say that additional slices are only allowed at the end.
-  rules: Option<ElementDefinition_SlicingRules>,
-
-  /// A human-readable text description of how the slicing works. If there is no
-  /// discriminator, this is required to be present to provide whatever information is
-  /// possible about how the slices can be differentiated.
-  description: Option<String>,
-
-  /// Extensions for rules
-  #[serde(rename = "_rules")]
-  _rules: Option<Element>,
+  pub fn discriminator(&self) -> Option<Vec<ElementDefinition_Discriminator>> {
+    if let Some(Value::Array(val)) = self.value.get("discriminator") {
+      return Some(val.into_iter().map(|e| ElementDefinition_Discriminator { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub enum ElementDefinition_SlicingRules {
-  #[serde(rename = "closed")]
   Closed,
-
-  #[serde(rename = "open")]
   Open,
-
-  #[serde(rename = "openAtEnd")]
   OpenAtEnd,
-
 }
+
+impl ElementDefinition_SlicingRules {
+    pub fn from_string(string: &str) -> Option<ElementDefinition_SlicingRules> {
+      match string {
+        "closed" => Some(ElementDefinition_SlicingRules::Closed),
+        "open" => Some(ElementDefinition_SlicingRules::Open),
+        "openAtEnd" => Some(ElementDefinition_SlicingRules::OpenAtEnd),
+        _ => None,
+    }
+  }
+}
+

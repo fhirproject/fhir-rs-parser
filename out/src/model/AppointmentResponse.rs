@@ -1,39 +1,72 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Meta::Meta;
-use crate::model::Reference::Reference;
-use crate::model::Identifier::Identifier;
-use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::ResourceList::ResourceList;
+use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use crate::model::Narrative::Narrative;
+use crate::model::Identifier::Identifier;
+use crate::model::Meta::Meta;
+use crate::model::CodeableConcept::CodeableConcept;
+use serde_json::value::Value;
+
 
 
 /// A reply to an appointment request for a patient and/or practitioner(s), such as
 /// a confirmation or rejection.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct AppointmentResponse {
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  meta: Option<Meta>,
 
-  /// Appointment that this response is replying to.
-  appointment: Box<Reference>,
+#[derive(Debug)]
+pub struct AppointmentResponse<'a> {
+  pub value: &'a Value,
+}
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  #[serde(rename = "implicitRules")]
-  implicit_rules: Option<String>,
+impl AppointmentResponse<'_> {
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// Extensions for participantStatus
+  pub fn _participant_status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_participantStatus") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// This may be either the same as the appointment request to confirm the details of
+  /// the appointment, or alternately a new time to request a re-negotiation of the
+  /// end time.
+  pub fn end(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("end") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Extensions for comment
-  #[serde(rename = "_comment")]
-  _comment: Option<Element>,
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A human-readable narrative that contains a summary of the resource and can be
+  /// used to represent the content of the resource to a human. The narrative need not
+  /// encode all the structured data, but is required to contain sufficient detail to
+  /// make it "clinically safe" for a human to just read the narrative. Resource
+  /// definitions may define what content should be represented in the narrative to
+  /// ensure clinical safety.
+  pub fn text(&self) -> Option<Narrative> {
+    if let Some(val) = self.value.get("text") {
+      return Some(Narrative { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
@@ -47,86 +80,157 @@ pub struct AppointmentResponse {
   /// extensions SHALL NOT change the meaning of any elements on Resource or
   /// DomainResource (including cannot change the meaning of modifierExtension
   /// itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
-
-  /// Role of participant in the appointment.
-  #[serde(rename = "participantType")]
-  participant_type: Option<Vec<CodeableConcept>>,
-
-  /// Extensions for language
-  #[serde(rename = "_language")]
-  _language: Option<Element>,
-
-  /// Extensions for start
-  #[serde(rename = "_start")]
-  _start: Option<Element>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Extensions for implicitRules
-  #[serde(rename = "_implicitRules")]
-  _implicit_rules: Option<Element>,
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// This may be either the same as the appointment request to confirm the details of
-  /// the appointment, or alternately a new time to request a re-negotiation of the
-  /// end time.
-  end: Option<String>,
+  /// Role of participant in the appointment.
+  pub fn participant_type(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("participantType") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Extensions for end
-  #[serde(rename = "_end")]
-  _end: Option<Element>,
-
-  /// The base language in which the resource is written.
-  language: Option<String>,
+  /// Additional comments about the appointment.
+  pub fn comment(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// A Person, Location, HealthcareService, or Device that is participating in the
   /// appointment.
-  actor: Option<Box<Reference>>,
+  pub fn actor(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("actor") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
   /// Participation status of the participant. When the status is declined or
   /// tentative if the start/end times are different to the appointment, then these
   /// times should be interpreted as a requested time change. When the status is
   /// accepted, the times can either be the time of the appointment (as a confirmation
   /// of the time) or can be empty.
-  #[serde(rename = "participantStatus")]
-  participant_status: Option<String>,
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  id: Option<String>,
-
-  /// Additional comments about the appointment.
-  comment: Option<String>,
+  pub fn participant_status(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("participantStatus") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// Date/Time that the appointment is to take place, or requested new start time.
-  start: Option<String>,
+  pub fn start(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("start") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for start
+  pub fn _start(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_start") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Appointment that this response is replying to.
+  pub fn appointment(&self) -> Reference {
+    Reference {
+      value: &self.value["appointment"],
+    }
+  }
+
+  /// Extensions for end
+  pub fn _end(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_end") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// This records identifiers associated with this appointment response concern that
   /// are defined by business processes and/ or used to refer to it when a direct URL
   /// reference to the resource itself is not appropriate.
-  identifier: Option<Vec<Identifier>>,
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  contained: Option<Vec<ResourceList>>,
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
-  /// A human-readable narrative that contains a summary of the resource and can be
-  /// used to represent the content of the resource to a human. The narrative need not
-  /// encode all the structured data, but is required to contain sufficient detail to
-  /// make it "clinically safe" for a human to just read the narrative. Resource
-  /// definitions may define what content should be represented in the narrative to
-  /// ensure clinical safety.
-  text: Option<Narrative>,
-
-  /// Extensions for participantStatus
-  #[serde(rename = "_participantStatus")]
-  _participant_status: Option<Element>,
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
 }

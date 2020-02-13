@@ -1,34 +1,49 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use serde::{Deserialize, Serialize};
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
+use serde_json::value::Value;
+
 
 
 /// The EffectEvidenceSynthesis resource describes the difference in an outcome
 /// between exposures states in a population where the effect estimate is derived
 /// from a combination of research studies.
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct EffectEvidenceSynthesis_SampleSize {
+
+#[derive(Debug)]
+pub struct EffectEvidenceSynthesis_SampleSize<'a> {
+  pub value: &'a Value,
+}
+
+impl EffectEvidenceSynthesis_SampleSize<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
   /// extensions. Though any implementer can define an extension, there is a set of
   /// requirements that SHALL be met as part of the definition of the extension.
-  extension: Option<Vec<Box<Extension>>>,
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
 
-  /// Number of studies included in this evidence synthesis.
-  #[serde(rename = "numberOfStudies")]
-  number_of_studies: Option<i32>,
-
-  /// Extensions for description
-  #[serde(rename = "_description")]
-  _description: Option<Element>,
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  id: Option<String>,
+  /// Human-readable summary of sample size.
+  pub fn description(&self) -> Option<String> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string.to_string());
+    }
+    return None;
+  }
 
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
@@ -41,22 +56,51 @@ pub struct EffectEvidenceSynthesis_SampleSize {
   /// resource are required to check for modifier extensions.    Modifier extensions
   /// SHALL NOT change the meaning of any elements on Resource or DomainResource
   /// (including cannot change the meaning of modifierExtension itself).
-  #[serde(rename = "modifierExtension")]
-  modifier_extension: Option<Vec<Box<Extension>>>,
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Number of studies included in this evidence synthesis.
+  pub fn number_of_studies(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("numberOfStudies") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
 
   /// Extensions for numberOfStudies
-  #[serde(rename = "_numberOfStudies")]
-  _number_of_studies: Option<Element>,
-
-  /// Human-readable summary of sample size.
-  description: Option<String>,
+  pub fn _number_of_studies(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_numberOfStudies") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Number of participants included in this evidence synthesis.
-  #[serde(rename = "numberOfParticipants")]
-  number_of_participants: Option<i32>,
+  pub fn number_of_participants(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("numberOfParticipants") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
   /// Extensions for numberOfParticipants
-  #[serde(rename = "_numberOfParticipants")]
-  _number_of_participants: Option<Element>,
+  pub fn _number_of_participants(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_numberOfParticipants") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
 
 }
