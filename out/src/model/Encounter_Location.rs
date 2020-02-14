@@ -16,6 +16,46 @@ pub struct Encounter_Location<'a> {
 }
 
 impl Encounter_Location<'_> {
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The location where the encounter takes place.
+    pub fn location(&self) -> Reference {
+        Reference {
+            value: &self.value["location"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -38,37 +78,10 @@ impl Encounter_Location<'_> {
         return None;
     }
 
-    /// The status of the participants' presence at the specified location during the
-    /// period specified. If the participant is no longer at the location, then the
-    /// period will have an end date/time.
-    pub fn status(&self) -> Option<Encounter_LocationStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(Encounter_LocationStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Time period during which the patient was present at the location.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
     }
@@ -82,52 +95,39 @@ impl Encounter_Location<'_> {
         return None;
     }
 
-    /// Time period during which the patient was present at the location.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+    /// The status of the participants' presence at the specified location during the
+    /// period specified. If the participant is no longer at the location, then the
+    /// period will have an end date/time.
+    pub fn status(&self) -> Option<Encounter_LocationStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(Encounter_LocationStatus::from_string(&val).unwrap());
         }
         return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The location where the encounter takes place.
-    pub fn location(&self) -> Reference {
-        Reference {
-            value: &self.value["location"],
-        }
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._status() {
+            _val.validate();
         }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.physical_type() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        let _ = self.location().validate();
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.period() {
             _val.validate();
         }
-        if let Some(_val) = self._status() {
+        if let Some(_val) = self.physical_type() {
             _val.validate();
         }
-        let _ = self.location().validate();
+        if let Some(_val) = self.status() {}
         return true;
     }
 }
@@ -153,10 +153,10 @@ impl Encounter_LocationStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            Encounter_LocationStatus::Planned => "planned",
-            Encounter_LocationStatus::Active => "active",
-            Encounter_LocationStatus::Reserved => "reserved",
-            Encounter_LocationStatus::Completed => "completed",
+            Encounter_LocationStatus::Planned => "planned".to_string(),
+            Encounter_LocationStatus::Active => "active".to_string(),
+            Encounter_LocationStatus::Reserved => "reserved".to_string(),
+            Encounter_LocationStatus::Completed => "completed".to_string(),
         }
     }
 }

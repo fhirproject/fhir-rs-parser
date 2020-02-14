@@ -15,14 +15,6 @@ pub struct ExplanationOfBenefit_ProcessNote<'a> {
 }
 
 impl ExplanationOfBenefit_ProcessNote<'_> {
-    /// A number to uniquely identify a note entry.
-    pub fn number(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("number") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
@@ -31,18 +23,34 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
         return None;
     }
 
-    /// The explanation or description associated with the processing.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -86,18 +94,18 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// A number to uniquely identify a note entry.
+    pub fn number(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("number") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// The explanation or description associated with the processing.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
+            return Some(string);
         }
         return None;
     }
@@ -110,22 +118,20 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.number() {}
         if let Some(_val) = self._number() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {}
         if let Some(_val) = self._text() {
             _val.validate();
+        }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.language() {
@@ -136,15 +142,9 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        if let Some(_val) = self.number() {}
+        if let Some(_val) = self.text() {}
         if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
         return true;
     }
 }
@@ -168,9 +168,9 @@ impl ExplanationOfBenefit_ProcessNoteType {
 
     pub fn to_string(&self) -> String {
         match self {
-            ExplanationOfBenefit_ProcessNoteType::Display => "display",
-            ExplanationOfBenefit_ProcessNoteType::Print => "print",
-            ExplanationOfBenefit_ProcessNoteType::Printoper => "printoper",
+            ExplanationOfBenefit_ProcessNoteType::Display => "display".to_string(),
+            ExplanationOfBenefit_ProcessNoteType::Print => "print".to_string(),
+            ExplanationOfBenefit_ProcessNoteType::Printoper => "printoper".to_string(),
         }
     }
 }

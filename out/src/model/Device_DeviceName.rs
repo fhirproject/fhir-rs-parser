@@ -14,11 +14,18 @@ pub struct Device_DeviceName<'a> {
 }
 
 impl Device_DeviceName<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -35,6 +42,15 @@ impl Device_DeviceName<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -69,14 +85,6 @@ impl Device_DeviceName<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
     /// ManufactureDeviceName | ModelName.
     pub fn fhir_type(&self) -> Option<Device_DeviceNameType> {
@@ -86,34 +94,26 @@ impl Device_DeviceName<'_> {
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.name() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
         if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
         return true;
     }
 }
@@ -143,12 +143,12 @@ impl Device_DeviceNameType {
 
     pub fn to_string(&self) -> String {
         match self {
-            Device_DeviceNameType::UdiLabelName => "udi-label-name",
-            Device_DeviceNameType::UserFriendlyName => "user-friendly-name",
-            Device_DeviceNameType::PatientReportedName => "patient-reported-name",
-            Device_DeviceNameType::ManufacturerName => "manufacturer-name",
-            Device_DeviceNameType::ModelName => "model-name",
-            Device_DeviceNameType::Other => "other",
+            Device_DeviceNameType::UdiLabelName => "udi-label-name".to_string(),
+            Device_DeviceNameType::UserFriendlyName => "user-friendly-name".to_string(),
+            Device_DeviceNameType::PatientReportedName => "patient-reported-name".to_string(),
+            Device_DeviceNameType::ManufacturerName => "manufacturer-name".to_string(),
+            Device_DeviceNameType::ModelName => "model-name".to_string(),
+            Device_DeviceNameType::Other => "other".to_string(),
         }
     }
 }

@@ -21,12 +21,119 @@ pub struct OrganizationAffiliation<'a> {
 }
 
 impl OrganizationAffiliation<'_> {
+    /// Extensions for active
+    pub fn _active(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_active") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Whether this organization affiliation record is in active use.
+    pub fn active(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("active") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Definition of the role the participatingOrganization plays in the association.
+    pub fn code(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("code") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Technical endpoints providing access to services operated for this role.
+    pub fn endpoint(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("endpoint") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Healthcare services provided through the role.
     pub fn healthcare_service(&self) -> Option<Vec<Reference>> {
         if let Some(Value::Array(val)) = self.value.get("healthcareService") {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Business identifiers that are specific to this role.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -44,10 +151,22 @@ impl OrganizationAffiliation<'_> {
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The location(s) at which the role occurs.
+    pub fn location(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("location") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -58,30 +177,6 @@ impl OrganizationAffiliation<'_> {
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
             return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Organization where the role is available (primary organization/has members).
-    pub fn organization(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("organization") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
         }
         return None;
     }
@@ -109,6 +204,28 @@ impl OrganizationAffiliation<'_> {
         return None;
     }
 
+    /// Health insurance provider network in which the participatingOrganization
+    /// provides the role's services (if defined) at the indicated locations (if
+    /// defined).
+    pub fn network(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("network") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Organization where the role is available (primary organization/has members).
+    pub fn organization(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("organization") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// The Participating Organization provides/performs the role(s) defined by the code
     /// to the Primary Organization (e.g. providing services or is a member of).
     pub fn participating_organization(&self) -> Option<Reference> {
@@ -118,22 +235,11 @@ impl OrganizationAffiliation<'_> {
         return None;
     }
 
-    /// Whether this organization affiliation record is in active use.
-    pub fn active(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("active") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Definition of the role the participatingOrganization plays in the association.
-    pub fn code(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("code") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The period during which the participatingOrganization is affiliated with the
+    /// primary organization.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
     }
@@ -144,18 +250,6 @@ impl OrganizationAffiliation<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The location(s) at which the role occurs.
-    pub fn location(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("location") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -174,39 +268,6 @@ impl OrganizationAffiliation<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for active
-    pub fn _active(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// A human-readable narrative that contains a summary of the resource and can be
     /// used to represent the content of the resource to a human. The narrative need not
     /// encode all the structured data, but is required to contain sufficient detail to
@@ -220,93 +281,14 @@ impl OrganizationAffiliation<'_> {
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The period during which the participatingOrganization is affiliated with the
-    /// primary organization.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Health insurance provider network in which the participatingOrganization
-    /// provides the role's services (if defined) at the indicated locations (if
-    /// defined).
-    pub fn network(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("network") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Technical endpoints providing access to services operated for this role.
-    pub fn endpoint(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("endpoint") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Business identifiers that are specific to this role.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.healthcare_service() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._active() {
+            _val.validate();
         }
-        if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
         if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.organization() {
-            _val.validate();
-        }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.participating_organization() {
             _val.validate();
         }
         if let Some(_val) = self.active() {}
@@ -315,42 +297,7 @@ impl OrganizationAffiliation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.specialty() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.location() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._active() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
         if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
-        if let Some(_val) = self.network() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -360,10 +307,63 @@ impl OrganizationAffiliation<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.healthcare_service() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.location() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.network() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.organization() {
+            _val.validate();
+        }
+        if let Some(_val) = self.participating_organization() {
+            _val.validate();
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        if let Some(_val) = self.specialty() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.telecom() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         return true;
     }

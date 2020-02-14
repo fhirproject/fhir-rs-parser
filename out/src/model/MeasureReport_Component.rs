@@ -13,10 +13,10 @@ pub struct MeasureReport_Component<'a> {
 }
 
 impl MeasureReport_Component<'_> {
-    /// The stratum component value.
-    pub fn value(&self) -> CodeableConcept {
+    /// The code for the stratum component value.
+    pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["value"],
+            value: &self.value["code"],
         }
     }
 
@@ -32,6 +32,15 @@ impl MeasureReport_Component<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -58,36 +67,27 @@ impl MeasureReport_Component<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The code for the stratum component value.
-    pub fn code(&self) -> CodeableConcept {
+    /// The stratum component value.
+    pub fn value(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: &self.value["value"],
         }
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.value().validate();
+        let _ = self.code().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        let _ = self.code().validate();
+        let _ = self.value().validate();
         return true;
     }
 }

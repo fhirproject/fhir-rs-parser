@@ -12,11 +12,26 @@ pub struct MolecularSequence_Repository<'a> {
 }
 
 impl MolecularSequence_Repository<'_> {
-    /// Click and see / RESTful API / Need login to see / RESTful API with
-    /// authentication / Other ways to see resource.
-    pub fn fhir_type(&self) -> Option<MolecularSequence_RepositoryType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(MolecularSequence_RepositoryType::from_string(&val).unwrap());
+    /// Extensions for datasetId
+    pub fn _dataset_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_datasetId") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for readsetId
+    pub fn _readset_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_readsetId") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -25,6 +40,31 @@ impl MolecularSequence_Repository<'_> {
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for variantsetId
+    pub fn _variantset_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_variantsetId") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Id of the variant in this external repository. The server will understand how to
+    /// use this id to call for more info about datasets in external repository.
+    pub fn dataset_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("datasetId") {
+            return Some(string);
         }
         return None;
     }
@@ -45,51 +85,10 @@ impl MolecularSequence_Repository<'_> {
         return None;
     }
 
-    /// Extensions for variantsetId
-    pub fn _variantset_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_variantsetId") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Id of the read in this external repository.
-    pub fn readset_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("readsetId") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for readsetId
-    pub fn _readset_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_readsetId") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Id of the variant in this external repository. The server will understand how to
-    /// use this id to call for more info about datasets in external repository.
-    pub fn dataset_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("datasetId") {
             return Some(string);
         }
         return None;
@@ -117,18 +116,28 @@ impl MolecularSequence_Repository<'_> {
         return None;
     }
 
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+    /// URI of an external repository which contains further details about the genetics
+    /// data.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for datasetId
-    pub fn _dataset_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_datasetId") {
-            return Some(Element { value: val });
+    /// Id of the read in this external repository.
+    pub fn readset_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("readsetId") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Click and see / RESTful API / Need login to see / RESTful API with
+    /// authentication / Other ways to see resource.
+    pub fn fhir_type(&self) -> Option<MolecularSequence_RepositoryType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(MolecularSequence_RepositoryType::from_string(&val).unwrap());
         }
         return None;
     }
@@ -137,15 +146,6 @@ impl MolecularSequence_Repository<'_> {
     /// data.
     pub fn url(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("url") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// URI of an external repository which contains further details about the genetics
-    /// data.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
         }
         return None;
@@ -161,40 +161,40 @@ impl MolecularSequence_Repository<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._variantset_id() {
+        if let Some(_val) = self._dataset_id() {
             _val.validate();
         }
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.readset_id() {}
         if let Some(_val) = self._readset_id() {
             _val.validate();
         }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self._url() {
+            _val.validate();
+        }
+        if let Some(_val) = self._variantset_id() {
+            _val.validate();
+        }
         if let Some(_val) = self.dataset_id() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._url() {
-            _val.validate();
-        }
-        if let Some(_val) = self._dataset_id() {
-            _val.validate();
-        }
-        if let Some(_val) = self.url() {}
         if let Some(_val) = self.name() {}
+        if let Some(_val) = self.readset_id() {}
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.url() {}
         if let Some(_val) = self.variantset_id() {}
         return true;
     }
@@ -223,11 +223,11 @@ impl MolecularSequence_RepositoryType {
 
     pub fn to_string(&self) -> String {
         match self {
-            MolecularSequence_RepositoryType::Directlink => "directlink",
-            MolecularSequence_RepositoryType::Openapi => "openapi",
-            MolecularSequence_RepositoryType::Login => "login",
-            MolecularSequence_RepositoryType::Oauth => "oauth",
-            MolecularSequence_RepositoryType::Other => "other",
+            MolecularSequence_RepositoryType::Directlink => "directlink".to_string(),
+            MolecularSequence_RepositoryType::Openapi => "openapi".to_string(),
+            MolecularSequence_RepositoryType::Login => "login".to_string(),
+            MolecularSequence_RepositoryType::Oauth => "oauth".to_string(),
+            MolecularSequence_RepositoryType::Other => "other".to_string(),
         }
     }
 }

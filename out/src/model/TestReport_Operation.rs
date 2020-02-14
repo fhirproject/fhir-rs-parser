@@ -12,43 +12,10 @@ pub struct TestReport_Operation<'a> {
 }
 
 impl TestReport_Operation<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for result
-    pub fn _result(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_result") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for detail
     pub fn _detail(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detail") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The result of this operation.
-    pub fn result(&self) -> Option<TestReport_OperationResult> {
-        if let Some(Value::String(val)) = self.value.get("result") {
-            return Some(TestReport_OperationResult::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// An explanatory message associated with the result.
-    pub fn message(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("message") {
-            return Some(string);
         }
         return None;
     }
@@ -61,9 +28,50 @@ impl TestReport_Operation<'_> {
         return None;
     }
 
+    /// Extensions for result
+    pub fn _result(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_result") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// A link to further details on the result.
     pub fn detail(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("detail") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// An explanatory message associated with the result.
+    pub fn message(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("message") {
             return Some(string);
         }
         return None;
@@ -91,46 +99,38 @@ impl TestReport_Operation<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The result of this operation.
+    pub fn result(&self) -> Option<TestReport_OperationResult> {
+        if let Some(Value::String(val)) = self.value.get("result") {
+            return Some(TestReport_OperationResult::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._result() {
-            _val.validate();
-        }
         if let Some(_val) = self._detail() {
             _val.validate();
         }
-        if let Some(_val) = self.result() {}
-        if let Some(_val) = self.message() {}
         if let Some(_val) = self._message() {
             _val.validate();
         }
-        if let Some(_val) = self.detail() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._result() {
+            _val.validate();
         }
+        if let Some(_val) = self.detail() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.message() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.result() {}
         return true;
     }
 }
@@ -158,11 +158,11 @@ impl TestReport_OperationResult {
 
     pub fn to_string(&self) -> String {
         match self {
-            TestReport_OperationResult::Pass => "pass",
-            TestReport_OperationResult::Skip => "skip",
-            TestReport_OperationResult::Fail => "fail",
-            TestReport_OperationResult::Warning => "warning",
-            TestReport_OperationResult::Error => "error",
+            TestReport_OperationResult::Pass => "pass".to_string(),
+            TestReport_OperationResult::Skip => "skip".to_string(),
+            TestReport_OperationResult::Fail => "fail".to_string(),
+            TestReport_OperationResult::Warning => "warning".to_string(),
+            TestReport_OperationResult::Error => "error".to_string(),
         }
     }
 }

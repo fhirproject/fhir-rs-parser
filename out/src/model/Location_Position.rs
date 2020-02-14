@@ -14,10 +14,35 @@ pub struct Location_Position<'a> {
 }
 
 impl Location_Position<'_> {
+    /// Extensions for altitude
+    pub fn _altitude(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_altitude") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for latitude
+    pub fn _latitude(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_latitude") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for longitude
     pub fn _longitude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_longitude") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Altitude. The value domain and the interpretation are the same as for the text
+    /// of the altitude element in KML (see notes below).
+    pub fn altitude(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("altitude") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
@@ -38,31 +63,6 @@ impl Location_Position<'_> {
         return None;
     }
 
-    /// Extensions for latitude
-    pub fn _latitude(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_latitude") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Longitude. The value domain and the interpretation are the same as for the text
-    /// of the longitude element in KML (see notes below).
-    pub fn longitude(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("longitude") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for altitude
-    pub fn _altitude(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_altitude") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -72,19 +72,19 @@ impl Location_Position<'_> {
         return None;
     }
 
-    /// Altitude. The value domain and the interpretation are the same as for the text
-    /// of the altitude element in KML (see notes below).
-    pub fn altitude(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("altitude") {
+    /// Latitude. The value domain and the interpretation are the same as for the text
+    /// of the latitude element in KML (see notes below).
+    pub fn latitude(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("latitude") {
             return Some(val.as_f64().unwrap());
         }
         return None;
     }
 
-    /// Latitude. The value domain and the interpretation are the same as for the text
-    /// of the latitude element in KML (see notes below).
-    pub fn latitude(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("latitude") {
+    /// Longitude. The value domain and the interpretation are the same as for the text
+    /// of the longitude element in KML (see notes below).
+    pub fn longitude(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("longitude") {
             return Some(val.as_f64().unwrap());
         }
         return None;
@@ -113,24 +113,24 @@ impl Location_Position<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._altitude() {
+            _val.validate();
+        }
+        if let Some(_val) = self._latitude() {
+            _val.validate();
+        }
         if let Some(_val) = self._longitude() {
             _val.validate();
         }
+        if let Some(_val) = self.altitude() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._latitude() {
-            _val.validate();
-        }
-        if let Some(_val) = self.longitude() {}
-        if let Some(_val) = self._altitude() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.altitude() {}
         if let Some(_val) = self.latitude() {}
+        if let Some(_val) = self.longitude() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

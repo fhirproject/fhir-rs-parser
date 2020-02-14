@@ -15,10 +15,58 @@ pub struct ObservationDefinition_QualifiedInterval<'a> {
 }
 
 impl ObservationDefinition_QualifiedInterval<'_> {
+    /// Extensions for category
+    pub fn _category(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_category") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for condition
+    pub fn _condition(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_condition") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for gender
     pub fn _gender(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_gender") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The age at which this reference range is applicable. This is a neonatal age
+    /// (e.g. number of weeks at term) if the meaning says so.
+    pub fn age(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("age") {
+            return Some(Range { value: val });
+        }
+        return None;
+    }
+
+    /// Codes to indicate the target population this reference range applies to.
+    pub fn applies_to(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("appliesTo") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The category of interval of values for continuous or ordinal observations
+    /// conforming to this ObservationDefinition.
+    pub fn category(&self) -> Option<ObservationDefinition_QualifiedIntervalCategory> {
+        if let Some(Value::String(val)) = self.value.get("category") {
+            return Some(
+                ObservationDefinition_QualifiedIntervalCategory::from_string(&val).unwrap(),
+            );
         }
         return None;
     }
@@ -31,19 +79,11 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         return None;
     }
 
-    /// The gestational age to which this reference range is applicable, in the context
-    /// of pregnancy.
-    pub fn gestational_age(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("gestationalAge") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// Sex of the population the range applies to.
-    pub fn gender(&self) -> Option<ObservationDefinition_QualifiedIntervalGender> {
-        if let Some(Value::String(val)) = self.value.get("gender") {
-            return Some(ObservationDefinition_QualifiedIntervalGender::from_string(&val).unwrap());
+    /// Codes to indicate the health context the range applies to. For example, the
+    /// normal or therapeutic range.
+    pub fn context(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("context") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -64,30 +104,28 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         return None;
     }
 
-    /// Codes to indicate the health context the range applies to. For example, the
-    /// normal or therapeutic range.
-    pub fn context(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("context") {
-            return Some(CodeableConcept { value: val });
+    /// Sex of the population the range applies to.
+    pub fn gender(&self) -> Option<ObservationDefinition_QualifiedIntervalGender> {
+        if let Some(Value::String(val)) = self.value.get("gender") {
+            return Some(ObservationDefinition_QualifiedIntervalGender::from_string(&val).unwrap());
         }
         return None;
     }
 
-    /// Extensions for category
-    pub fn _category(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_category") {
-            return Some(Element { value: val });
+    /// The gestational age to which this reference range is applicable, in the context
+    /// of pregnancy.
+    pub fn gestational_age(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("gestationalAge") {
+            return Some(Range { value: val });
         }
         return None;
     }
 
-    /// The category of interval of values for continuous or ordinal observations
-    /// conforming to this ObservationDefinition.
-    pub fn category(&self) -> Option<ObservationDefinition_QualifiedIntervalCategory> {
-        if let Some(Value::String(val)) = self.value.get("category") {
-            return Some(
-                ObservationDefinition_QualifiedIntervalCategory::from_string(&val).unwrap(),
-            );
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -123,65 +161,39 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Codes to indicate the target population this reference range applies to.
-    pub fn applies_to(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("appliesTo") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The age at which this reference range is applicable. This is a neonatal age
-    /// (e.g. number of weeks at term) if the meaning says so.
-    pub fn age(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("age") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for condition
-    pub fn _condition(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_condition") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._category() {
+            _val.validate();
+        }
+        if let Some(_val) = self._condition() {
+            _val.validate();
+        }
         if let Some(_val) = self._gender() {
             _val.validate();
         }
-        if let Some(_val) = self.condition() {}
-        if let Some(_val) = self.gestational_age() {
+        if let Some(_val) = self.age() {
             _val.validate();
         }
-        if let Some(_val) = self.gender() {}
+        if let Some(_val) = self.applies_to() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.category() {}
+        if let Some(_val) = self.condition() {}
+        if let Some(_val) = self.context() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.context() {
+        if let Some(_val) = self.gender() {}
+        if let Some(_val) = self.gestational_age() {
             _val.validate();
         }
-        if let Some(_val) = self._category() {
-            _val.validate();
-        }
-        if let Some(_val) = self.category() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -190,19 +202,33 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         if let Some(_val) = self.range() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.applies_to() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.age() {
-            _val.validate();
-        }
-        if let Some(_val) = self._condition() {
-            _val.validate();
-        }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub enum ObservationDefinition_QualifiedIntervalCategory {
+    Reference,
+    Critical,
+    Absolute,
+}
+
+impl ObservationDefinition_QualifiedIntervalCategory {
+    pub fn from_string(string: &str) -> Option<ObservationDefinition_QualifiedIntervalCategory> {
+        match string {
+            "reference" => Some(ObservationDefinition_QualifiedIntervalCategory::Reference),
+            "critical" => Some(ObservationDefinition_QualifiedIntervalCategory::Critical),
+            "absolute" => Some(ObservationDefinition_QualifiedIntervalCategory::Absolute),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ObservationDefinition_QualifiedIntervalCategory::Reference => "reference".to_string(),
+            ObservationDefinition_QualifiedIntervalCategory::Critical => "critical".to_string(),
+            ObservationDefinition_QualifiedIntervalCategory::Absolute => "absolute".to_string(),
+        }
     }
 }
 
@@ -227,36 +253,10 @@ impl ObservationDefinition_QualifiedIntervalGender {
 
     pub fn to_string(&self) -> String {
         match self {
-            ObservationDefinition_QualifiedIntervalGender::Male => "male",
-            ObservationDefinition_QualifiedIntervalGender::Female => "female",
-            ObservationDefinition_QualifiedIntervalGender::Other => "other",
-            ObservationDefinition_QualifiedIntervalGender::Unknown => "unknown",
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum ObservationDefinition_QualifiedIntervalCategory {
-    Reference,
-    Critical,
-    Absolute,
-}
-
-impl ObservationDefinition_QualifiedIntervalCategory {
-    pub fn from_string(string: &str) -> Option<ObservationDefinition_QualifiedIntervalCategory> {
-        match string {
-            "reference" => Some(ObservationDefinition_QualifiedIntervalCategory::Reference),
-            "critical" => Some(ObservationDefinition_QualifiedIntervalCategory::Critical),
-            "absolute" => Some(ObservationDefinition_QualifiedIntervalCategory::Absolute),
-            _ => None,
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        match self {
-            ObservationDefinition_QualifiedIntervalCategory::Reference => "reference",
-            ObservationDefinition_QualifiedIntervalCategory::Critical => "critical",
-            ObservationDefinition_QualifiedIntervalCategory::Absolute => "absolute",
+            ObservationDefinition_QualifiedIntervalGender::Male => "male".to_string(),
+            ObservationDefinition_QualifiedIntervalGender::Female => "female".to_string(),
+            ObservationDefinition_QualifiedIntervalGender::Other => "other".to_string(),
+            ObservationDefinition_QualifiedIntervalGender::Unknown => "unknown".to_string(),
         }
     }
 }

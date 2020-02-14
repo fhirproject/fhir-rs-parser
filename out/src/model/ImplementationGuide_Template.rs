@@ -15,10 +15,26 @@ pub struct ImplementationGuide_Template<'a> {
 }
 
 impl ImplementationGuide_Template<'_> {
-    /// The source location for the template.
-    pub fn source(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("source") {
-            return Some(string);
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for scope
+    pub fn _scope(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_scope") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for source
+    pub fn _source(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_source") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -31,10 +47,27 @@ impl ImplementationGuide_Template<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -69,71 +102,38 @@ impl ImplementationGuide_Template<'_> {
         return None;
     }
 
-    /// Extensions for scope
-    pub fn _scope(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_scope") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for source
-    pub fn _source(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_source") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The source location for the template.
+    pub fn source(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("source") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.source() {}
-        if let Some(_val) = self.code() {}
         if let Some(_val) = self._code() {
             _val.validate();
         }
+        if let Some(_val) = self._scope() {
+            _val.validate();
+        }
+        if let Some(_val) = self._source() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.scope() {}
-        if let Some(_val) = self._scope() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._source() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.source() {}
         return true;
     }
 }

@@ -16,34 +16,10 @@ pub struct MeasureReport_Group<'a> {
 }
 
 impl MeasureReport_Group<'_> {
-    /// The measure score for this population group, calculated as appropriate for the
-    /// measure type and scoring method, and based on the contents of the populations
-    /// defined in the group.
-    pub fn measure_score(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("measureScore") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
-    /// When a measure includes multiple stratifiers, there will be a stratifier group
-    /// for each stratifier defined by the measure.
-    pub fn stratifier(&self) -> Option<Vec<MeasureReport_Stratifier>> {
-        if let Some(Value::Array(val)) = self.value.get("stratifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MeasureReport_Stratifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The meaning of the population group as defined in the measure definition.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -64,10 +40,21 @@ impl MeasureReport_Group<'_> {
         return None;
     }
 
-    /// The meaning of the population group as defined in the measure definition.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The measure score for this population group, calculated as appropriate for the
+    /// measure type and scoring method, and based on the contents of the populations
+    /// defined in the group.
+    pub fn measure_score(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("measureScore") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -107,22 +94,30 @@ impl MeasureReport_Group<'_> {
         return None;
     }
 
+    /// When a measure includes multiple stratifiers, there will be a stratifier group
+    /// for each stratifier defined by the measure.
+    pub fn stratifier(&self) -> Option<Vec<MeasureReport_Stratifier>> {
+        if let Some(Value::Array(val)) = self.value.get("stratifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| MeasureReport_Stratifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.measure_score() {
+        if let Some(_val) = self.code() {
             _val.validate();
         }
-        if let Some(_val) = self.stratifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.measure_score() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -131,6 +126,11 @@ impl MeasureReport_Group<'_> {
             });
         }
         if let Some(_val) = self.population() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.stratifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

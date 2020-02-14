@@ -16,6 +16,38 @@ pub struct SubstanceSpecification_Moiety<'a> {
 }
 
 impl SubstanceSpecification_Moiety<'_> {
+    /// Extensions for amountString
+    pub fn _amount_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_amountString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for molecularFormula
+    pub fn _molecular_formula(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_molecularFormula") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Quantitative value for this moiety.
+    pub fn amount_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("amountQuantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
     /// Quantitative value for this moiety.
     pub fn amount_string(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("amountString") {
@@ -40,46 +72,6 @@ impl SubstanceSpecification_Moiety<'_> {
         return None;
     }
 
-    /// Molecular formula.
-    pub fn molecular_formula(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("molecularFormula") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for molecularFormula
-    pub fn _molecular_formula(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_molecularFormula") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for amountString
-    pub fn _amount_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifier by which this moiety substance is known.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -89,10 +81,10 @@ impl SubstanceSpecification_Moiety<'_> {
         return None;
     }
 
-    /// Optical activity type.
-    pub fn optical_activity(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("opticalActivity") {
-            return Some(CodeableConcept { value: val });
+    /// Identifier by which this moiety substance is known.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
         }
         return None;
     }
@@ -119,10 +111,10 @@ impl SubstanceSpecification_Moiety<'_> {
         return None;
     }
 
-    /// Role that the moiety is playing.
-    pub fn role(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+    /// Molecular formula.
+    pub fn molecular_formula(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("molecularFormula") {
+            return Some(string);
         }
         return None;
     }
@@ -135,10 +127,18 @@ impl SubstanceSpecification_Moiety<'_> {
         return None;
     }
 
-    /// Quantitative value for this moiety.
-    pub fn amount_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+    /// Optical activity type.
+    pub fn optical_activity(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("opticalActivity") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Role that the moiety is playing.
+    pub fn role(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("role") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -152,27 +152,26 @@ impl SubstanceSpecification_Moiety<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.amount_string() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._amount_string() {
+            _val.validate();
         }
-        if let Some(_val) = self.molecular_formula() {}
         if let Some(_val) = self._molecular_formula() {
             _val.validate();
         }
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self._amount_string() {
+        if let Some(_val) = self.amount_quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.identifier() {
-            _val.validate();
+        if let Some(_val) = self.amount_string() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.optical_activity() {
+        if let Some(_val) = self.identifier() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -180,11 +179,12 @@ impl SubstanceSpecification_Moiety<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.role() {
+        if let Some(_val) = self.molecular_formula() {}
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.optical_activity() {
             _val.validate();
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.amount_quantity() {
+        if let Some(_val) = self.role() {
             _val.validate();
         }
         if let Some(_val) = self.stereochemistry() {

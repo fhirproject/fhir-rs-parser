@@ -22,21 +22,10 @@ pub struct Account<'a> {
 }
 
 impl Account<'_> {
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates the service area, hospital, department, etc. with responsibility for
-    /// managing the Account.
-    pub fn owner(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("owner") {
-            return Some(Reference { value: val });
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -49,24 +38,18 @@ impl Account<'_> {
         return None;
     }
 
-    /// Indicates whether the account is presently used/usable or not.
-    pub fn status(&self) -> Option<AccountStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(AccountStatus::from_string(&val).unwrap());
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Identifies the entity which incurs the expenses. While the immediate recipients
-    /// of services or goods might be entities related to the subject, the expenses were
-    /// ultimately incurred by the subject of the Account.
-    pub fn subject(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("subject") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -75,6 +58,20 @@ impl Account<'_> {
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -92,13 +89,25 @@ impl Account<'_> {
         return None;
     }
 
-    /// Unique identifier used to reference the account.  Might or might not be intended
-    /// for human use (e.g. credit card number).
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
+    /// Provides additional information about what the account tracks and how it is
+    /// used.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,6 +121,28 @@ impl Account<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| Account_Guarantor { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique identifier used to reference the account.  Might or might not be intended
+    /// for human use (e.g. credit card number).
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,6 +164,16 @@ impl Account<'_> {
     pub fn language(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("language") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -160,18 +201,19 @@ impl Account<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+    /// Name used for the account when displaying it to humans in reports, etc.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+    /// Indicates the service area, hospital, department, etc. with responsibility for
+    /// managing the Account.
+    pub fn owner(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("owner") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -192,6 +234,28 @@ impl Account<'_> {
         return None;
     }
 
+    /// Indicates whether the account is presently used/usable or not.
+    pub fn status(&self) -> Option<AccountStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(AccountStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Identifies the entity which incurs the expenses. While the immediate recipients
+    /// of services or goods might be entities related to the subject, the expenses were
+    /// ultimately incurred by the subject of the Account.
+    pub fn subject(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("subject") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// A human-readable narrative that contains a summary of the resource and can be
     /// used to represent the content of the resource to a human. The narrative need not
     /// encode all the structured data, but is required to contain sufficient detail to
@@ -205,31 +269,6 @@ impl Account<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Categorizes the account for reporting and searching purposes.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
@@ -238,70 +277,34 @@ impl Account<'_> {
         return None;
     }
 
-    /// Name used for the account when displaying it to humans in reports, etc.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Provides additional information about what the account tracks and how it is
-    /// used.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.owner() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.subject() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
         }
         if let Some(_val) = self._status() {
             _val.validate();
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.coverage() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.identifier() {
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -311,17 +314,24 @@ impl Account<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.owner() {
             _val.validate();
         }
         if let Some(_val) = self.part_of() {
@@ -330,28 +340,18 @@ impl Account<'_> {
         if let Some(_val) = self.service_period() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.subject() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.description() {}
         return true;
     }
 }
@@ -379,11 +379,11 @@ impl AccountStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            AccountStatus::Active => "active",
-            AccountStatus::Inactive => "inactive",
-            AccountStatus::EnteredInError => "entered-in-error",
-            AccountStatus::OnHold => "on-hold",
-            AccountStatus::Unknown => "unknown",
+            AccountStatus::Active => "active".to_string(),
+            AccountStatus::Inactive => "inactive".to_string(),
+            AccountStatus::EnteredInError => "entered-in-error".to_string(),
+            AccountStatus::OnHold => "on-hold".to_string(),
+            AccountStatus::Unknown => "unknown".to_string(),
         }
     }
 }

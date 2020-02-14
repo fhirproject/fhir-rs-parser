@@ -16,6 +16,14 @@ pub struct MedicationDispense_Performer<'a> {
 }
 
 impl MedicationDispense_Performer<'_> {
+    /// The device, practitioner, etc. who performed the action.  It should be assumed
+    /// that the actor is the dispenser of the medication.
+    pub fn actor(&self) -> Reference {
+        Reference {
+            value: &self.value["actor"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -28,6 +36,24 @@ impl MedicationDispense_Performer<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Distinguishes the type of performer in the dispense.  For example, date enterer,
+    /// packager, final checker.
+    pub fn function(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("function") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -54,48 +80,22 @@ impl MedicationDispense_Performer<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Distinguishes the type of performer in the dispense.  For example, date enterer,
-    /// packager, final checker.
-    pub fn function(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("function") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The device, practitioner, etc. who performed the action.  It should be assumed
-    /// that the actor is the dispenser of the medication.
-    pub fn actor(&self) -> Reference {
-        Reference {
-            value: &self.value["actor"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
+        let _ = self.actor().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.function() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.function() {
-            _val.validate();
-        }
-        let _ = self.actor().validate();
         return true;
     }
 }

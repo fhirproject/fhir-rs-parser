@@ -15,18 +15,26 @@ pub struct ImplementationGuide_Grouping<'a> {
 }
 
 impl ImplementationGuide_Grouping<'_> {
-    /// Human readable text describing the package.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Human readable text describing the package.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
         }
         return None;
     }
@@ -43,23 +51,6 @@ impl ImplementationGuide_Grouping<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The human-readable title to display for the package of resources when rendering
-    /// the implementation guide.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -95,19 +86,27 @@ impl ImplementationGuide_Grouping<'_> {
         return None;
     }
 
+    /// The human-readable title to display for the package of resources when rendering
+    /// the implementation guide.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.description() {}
         if let Some(_val) = self._description() {
             _val.validate();
         }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -115,6 +114,7 @@ impl ImplementationGuide_Grouping<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.name() {}
         return true;
     }
 }

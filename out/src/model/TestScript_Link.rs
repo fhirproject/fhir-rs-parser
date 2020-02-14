@@ -13,6 +13,30 @@ pub struct TestScript_Link<'a> {
 }
 
 impl TestScript_Link<'_> {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Short description of the link.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -34,38 +58,6 @@ impl TestScript_Link<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Short description of the link.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// URL to a particular requirement or feature within the FHIR specification.
-    pub fn url(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("url") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -92,26 +84,34 @@ impl TestScript_Link<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// URL to a particular requirement or feature within the FHIR specification.
+    pub fn url(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("url") {
+            return Some(string);
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self.url() {}
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self._description() {
             _val.validate();
         }
         if let Some(_val) = self._url() {
             _val.validate();
         }
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.url() {}
         return true;
     }
 }

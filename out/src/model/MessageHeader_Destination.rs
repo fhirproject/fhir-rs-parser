@@ -16,6 +16,30 @@ pub struct MessageHeader_Destination<'a> {
 }
 
 impl MessageHeader_Destination<'_> {
+    /// Extensions for endpoint
+    pub fn _endpoint(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_endpoint") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates where the message should be routed to.
+    pub fn endpoint(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("endpoint") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -32,52 +56,10 @@ impl MessageHeader_Destination<'_> {
         return None;
     }
 
-    /// Extensions for endpoint
-    pub fn _endpoint(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_endpoint") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Allows data conveyed by a message to be addressed to a particular person or
-    /// department when routing to a specific application isn't sufficient.
-    pub fn receiver(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("receiver") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the target end system in situations where the initial message
-    /// transmission is to an intermediary system.
-    pub fn target(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("target") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates where the message should be routed to.
-    pub fn endpoint(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("endpoint") {
             return Some(string);
         }
         return None;
@@ -113,32 +95,50 @@ impl MessageHeader_Destination<'_> {
         return None;
     }
 
+    /// Allows data conveyed by a message to be addressed to a particular person or
+    /// department when routing to a specific application isn't sufficient.
+    pub fn receiver(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("receiver") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies the target end system in situations where the initial message
+    /// transmission is to an intermediary system.
+    pub fn target(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("target") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._endpoint() {
+            _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self.endpoint() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._endpoint() {
-            _val.validate();
-        }
-        if let Some(_val) = self.receiver() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.target() {
-            _val.validate();
-        }
-        if let Some(_val) = self.endpoint() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.name() {}
+        if let Some(_val) = self.receiver() {
+            _val.validate();
+        }
+        if let Some(_val) = self.target() {
+            _val.validate();
+        }
         return true;
     }
 }

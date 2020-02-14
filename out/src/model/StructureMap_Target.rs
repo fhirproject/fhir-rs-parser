@@ -13,18 +13,38 @@ pub struct StructureMap_Target<'a> {
 }
 
 impl StructureMap_Target<'_> {
-    /// Extensions for transform
-    pub fn _transform(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_transform") {
+    /// Extensions for context
+    pub fn _context(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_context") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Internal rule reference for shared list items.
-    pub fn list_rule_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("listRuleId") {
-            return Some(string);
+    /// Extensions for contextType
+    pub fn _context_type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_contextType") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for element
+    pub fn _element(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_element") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for listMode
+    pub fn _list_mode(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_listMode") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -33,6 +53,46 @@ impl StructureMap_Target<'_> {
     pub fn _list_rule_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_listRuleId") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for transform
+    pub fn _transform(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_transform") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for variable
+    pub fn _variable(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_variable") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Type or variable this rule applies to.
+    pub fn context(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("context") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// How to interpret the context.
+    pub fn context_type(&self) -> Option<StructureMap_TargetContextType> {
+        if let Some(Value::String(val)) = self.value.get("contextType") {
+            return Some(StructureMap_TargetContextType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Field to create in the context.
+    pub fn element(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("element") {
+            return Some(string);
         }
         return None;
     }
@@ -53,25 +113,18 @@ impl StructureMap_Target<'_> {
         return None;
     }
 
-    /// Extensions for context
-    pub fn _context(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_context") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Field to create in the context.
-    pub fn element(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("element") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    /// Type or variable this rule applies to.
-    pub fn context(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("context") {
+    /// Internal rule reference for shared list items.
+    pub fn list_rule_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("listRuleId") {
             return Some(string);
         }
         return None;
@@ -99,59 +152,6 @@ impl StructureMap_Target<'_> {
         return None;
     }
 
-    /// Extensions for variable
-    pub fn _variable(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_variable") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for listMode
-    pub fn _list_mode(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_listMode") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// How to interpret the context.
-    pub fn context_type(&self) -> Option<StructureMap_TargetContextType> {
-        if let Some(Value::String(val)) = self.value.get("contextType") {
-            return Some(StructureMap_TargetContextType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for element
-    pub fn _element(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_element") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Named context for field, if desired, and a field is specified.
-    pub fn variable(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("variable") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Parameters to the transform.
     pub fn parameter(&self) -> Option<Vec<StructureMap_Parameter>> {
         if let Some(Value::Array(val)) = self.value.get("parameter") {
@@ -164,14 +164,6 @@ impl StructureMap_Target<'_> {
         return None;
     }
 
-    /// Extensions for contextType
-    pub fn _context_type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_contextType") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// How the data is copied / created.
     pub fn transform(&self) -> Option<StructureMap_TargetTransform> {
         if let Some(Value::String(val)) = self.value.get("transform") {
@@ -180,30 +172,22 @@ impl StructureMap_Target<'_> {
         return None;
     }
 
+    /// Named context for field, if desired, and a field is specified.
+    pub fn variable(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("variable") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._transform() {
-            _val.validate();
-        }
-        if let Some(_val) = self.list_rule_id() {}
-        if let Some(_val) = self._list_rule_id() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._context() {
             _val.validate();
         }
-        if let Some(_val) = self.element() {}
-        if let Some(_val) = self.context() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._context_type() {
+            _val.validate();
         }
-        if let Some(_val) = self._variable() {
+        if let Some(_val) = self._element() {
             _val.validate();
         }
         if let Some(_val) = self._list_mode() {
@@ -211,21 +195,37 @@ impl StructureMap_Target<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.context_type() {}
-        if let Some(_val) = self._element() {
+        if let Some(_val) = self._list_rule_id() {
             _val.validate();
         }
+        if let Some(_val) = self._transform() {
+            _val.validate();
+        }
+        if let Some(_val) = self._variable() {
+            _val.validate();
+        }
+        if let Some(_val) = self.context() {}
+        if let Some(_val) = self.context_type() {}
+        if let Some(_val) = self.element() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.variable() {}
+        if let Some(_val) = self.list_rule_id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._context_type() {
-            _val.validate();
-        }
         if let Some(_val) = self.transform() {}
+        if let Some(_val) = self.variable() {}
         return true;
     }
 }
@@ -247,8 +247,8 @@ impl StructureMap_TargetContextType {
 
     pub fn to_string(&self) -> String {
         match self {
-            StructureMap_TargetContextType::FhirType => "type",
-            StructureMap_TargetContextType::Variable => "variable",
+            StructureMap_TargetContextType::FhirType => "type".to_string(),
+            StructureMap_TargetContextType::Variable => "variable".to_string(),
         }
     }
 }
@@ -300,23 +300,23 @@ impl StructureMap_TargetTransform {
 
     pub fn to_string(&self) -> String {
         match self {
-            StructureMap_TargetTransform::Create => "create",
-            StructureMap_TargetTransform::Copy => "copy",
-            StructureMap_TargetTransform::Truncate => "truncate",
-            StructureMap_TargetTransform::Escape => "escape",
-            StructureMap_TargetTransform::Cast => "cast",
-            StructureMap_TargetTransform::Append => "append",
-            StructureMap_TargetTransform::Translate => "translate",
-            StructureMap_TargetTransform::Reference => "reference",
-            StructureMap_TargetTransform::DateOp => "dateOp",
-            StructureMap_TargetTransform::Uuid => "uuid",
-            StructureMap_TargetTransform::Pointer => "pointer",
-            StructureMap_TargetTransform::Evaluate => "evaluate",
-            StructureMap_TargetTransform::Cc => "cc",
-            StructureMap_TargetTransform::C => "c",
-            StructureMap_TargetTransform::Qty => "qty",
-            StructureMap_TargetTransform::Id => "id",
-            StructureMap_TargetTransform::Cp => "cp",
+            StructureMap_TargetTransform::Create => "create".to_string(),
+            StructureMap_TargetTransform::Copy => "copy".to_string(),
+            StructureMap_TargetTransform::Truncate => "truncate".to_string(),
+            StructureMap_TargetTransform::Escape => "escape".to_string(),
+            StructureMap_TargetTransform::Cast => "cast".to_string(),
+            StructureMap_TargetTransform::Append => "append".to_string(),
+            StructureMap_TargetTransform::Translate => "translate".to_string(),
+            StructureMap_TargetTransform::Reference => "reference".to_string(),
+            StructureMap_TargetTransform::DateOp => "dateOp".to_string(),
+            StructureMap_TargetTransform::Uuid => "uuid".to_string(),
+            StructureMap_TargetTransform::Pointer => "pointer".to_string(),
+            StructureMap_TargetTransform::Evaluate => "evaluate".to_string(),
+            StructureMap_TargetTransform::Cc => "cc".to_string(),
+            StructureMap_TargetTransform::C => "c".to_string(),
+            StructureMap_TargetTransform::Qty => "qty".to_string(),
+            StructureMap_TargetTransform::Id => "id".to_string(),
+            StructureMap_TargetTransform::Cp => "cp".to_string(),
         }
     }
 }

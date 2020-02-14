@@ -14,6 +14,51 @@ pub struct MedicinalProductIngredient_ReferenceStrength<'a> {
 }
 
 impl MedicinalProductIngredient_ReferenceStrength<'_> {
+    /// Extensions for measurementPoint
+    pub fn _measurement_point(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_measurementPoint") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The country or countries for which the strength range applies.
+    pub fn country(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("country") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// For when strength is measured at a particular point or distance.
     pub fn measurement_point(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("measurementPoint") {
@@ -44,50 +89,6 @@ impl MedicinalProductIngredient_ReferenceStrength<'_> {
         return None;
     }
 
-    /// Relevant reference substance.
-    pub fn substance(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("substance") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The country or countries for which the strength range applies.
-    pub fn country(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("country") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for measurementPoint
-    pub fn _measurement_point(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_measurementPoint") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Strength expressed in terms of a reference substance.
     pub fn strength(&self) -> Ratio {
         Ratio {
@@ -103,23 +104,16 @@ impl MedicinalProductIngredient_ReferenceStrength<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Relevant reference substance.
+    pub fn substance(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("substance") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.measurement_point() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.substance() {
+        if let Some(_val) = self._measurement_point() {
             _val.validate();
         }
         if let Some(_val) = self.country() {
@@ -127,10 +121,14 @@ impl MedicinalProductIngredient_ReferenceStrength<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._measurement_point() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.measurement_point() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -139,7 +137,9 @@ impl MedicinalProductIngredient_ReferenceStrength<'_> {
         if let Some(_val) = self.strength_low_limit() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.substance() {
+            _val.validate();
+        }
         return true;
     }
 }

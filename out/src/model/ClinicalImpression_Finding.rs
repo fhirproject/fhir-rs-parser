@@ -20,20 +20,10 @@ pub struct ClinicalImpression_Finding<'a> {
 }
 
 impl ClinicalImpression_Finding<'_> {
-    /// Specific reference for finding or diagnosis, which may include ruled-out or
-    /// resolved conditions.
-    pub fn item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for basis
+    pub fn _basis(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_basis") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -42,14 +32,6 @@ impl ClinicalImpression_Finding<'_> {
     pub fn basis(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("basis") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for basis
-    pub fn _basis(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_basis") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -70,11 +52,29 @@ impl ClinicalImpression_Finding<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Specific text or code for finding or diagnosis, which may include ruled-out or
     /// resolved conditions.
     pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("itemCodeableConcept") {
             return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Specific reference for finding or diagnosis, which may include ruled-out or
+    /// resolved conditions.
+    pub fn item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("itemReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -102,20 +102,20 @@ impl ClinicalImpression_Finding<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.item_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.basis() {}
         if let Some(_val) = self._basis() {
             _val.validate();
         }
+        if let Some(_val) = self.basis() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.item_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.item_reference() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {

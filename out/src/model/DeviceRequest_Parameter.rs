@@ -16,35 +16,18 @@ pub struct DeviceRequest_Parameter<'a> {
 }
 
 impl DeviceRequest_Parameter<'_> {
-    /// The value of the device detail.
-    pub fn value_boolean(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("valueBoolean") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The value of the device detail.
-    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A code or string that identifies the device detail being asserted.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -61,6 +44,15 @@ impl DeviceRequest_Parameter<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -88,6 +80,22 @@ impl DeviceRequest_Parameter<'_> {
     }
 
     /// The value of the device detail.
+    pub fn value_boolean(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("valueBoolean") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// The value of the device detail.
+    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("valueCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The value of the device detail.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
             return Some(Quantity { value: val });
@@ -103,21 +111,11 @@ impl DeviceRequest_Parameter<'_> {
         return None;
     }
 
-    /// A code or string that identifies the device detail being asserted.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value_boolean() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.value_codeable_concept() {
+        if let Some(_val) = self._value_boolean() {
             _val.validate();
         }
-        if let Some(_val) = self._value_boolean() {
+        if let Some(_val) = self.code() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -125,18 +123,20 @@ impl DeviceRequest_Parameter<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.value_boolean() {}
+        if let Some(_val) = self.value_codeable_concept() {
+            _val.validate();
+        }
         if let Some(_val) = self.value_quantity() {
             _val.validate();
         }
         if let Some(_val) = self.value_range() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {
             _val.validate();
         }
         return true;

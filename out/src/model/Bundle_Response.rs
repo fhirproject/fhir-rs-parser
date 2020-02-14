@@ -13,12 +13,18 @@ pub struct Bundle_Response<'a> {
 }
 
 impl Bundle_Response<'_> {
-    /// The Etag for the resource, if the operation for the entry produced a versioned
-    /// resource (see [Resource Metadata and Versioning](http.html#versioning) and
-    /// [Managing Resource Contention](http.html#concurrency)).
-    pub fn etag(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("etag") {
-            return Some(string);
+    /// Extensions for etag
+    pub fn _etag(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_etag") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for lastModified
+    pub fn _last_modified(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_lastModified") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -31,9 +37,19 @@ impl Bundle_Response<'_> {
         return None;
     }
 
-    /// The date/time that the resource was modified on the server.
-    pub fn last_modified(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("lastModified") {
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The Etag for the resource, if the operation for the entry produced a versioned
+    /// resource (see [Resource Metadata and Versioning](http.html#versioning) and
+    /// [Managing Resource Contention](http.html#concurrency)).
+    pub fn etag(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("etag") {
             return Some(string);
         }
         return None;
@@ -55,15 +71,6 @@ impl Bundle_Response<'_> {
         return None;
     }
 
-    /// An OperationOutcome containing hints and warnings produced as part of processing
-    /// this entry in a batch or transaction.
-    pub fn outcome(&self) -> Option<ResourceList> {
-        if let Some(val) = self.value.get("outcome") {
-            return Some(ResourceList { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -73,10 +80,19 @@ impl Bundle_Response<'_> {
         return None;
     }
 
-    /// Extensions for lastModified
-    pub fn _last_modified(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_lastModified") {
-            return Some(Element { value: val });
+    /// The date/time that the resource was modified on the server.
+    pub fn last_modified(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("lastModified") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The location header created by processing this operation, populated if the
+    /// operation returns a location.
+    pub fn location(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("location") {
+            return Some(string);
         }
         return None;
     }
@@ -103,11 +119,11 @@ impl Bundle_Response<'_> {
         return None;
     }
 
-    /// The location header created by processing this operation, populated if the
-    /// operation returns a location.
-    pub fn location(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("location") {
-            return Some(string);
+    /// An OperationOutcome containing hints and warnings produced as part of processing
+    /// this entry in a batch or transaction.
+    pub fn outcome(&self) -> Option<ResourceList> {
+        if let Some(val) = self.value.get("outcome") {
+            return Some(ResourceList { value: val });
         }
         return None;
     }
@@ -122,29 +138,29 @@ impl Bundle_Response<'_> {
         return None;
     }
 
-    /// Extensions for etag
-    pub fn _etag(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_etag") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.etag() {}
+        if let Some(_val) = self._etag() {
+            _val.validate();
+        }
+        if let Some(_val) = self._last_modified() {
+            _val.validate();
+        }
         if let Some(_val) = self._location() {
             _val.validate();
         }
-        if let Some(_val) = self.last_modified() {}
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.etag() {}
         if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.last_modified() {}
+        if let Some(_val) = self.location() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -152,23 +168,7 @@ impl Bundle_Response<'_> {
         if let Some(_val) = self.outcome() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._last_modified() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.location() {}
         if let Some(_val) = self.status() {}
-        if let Some(_val) = self._etag() {
-            _val.validate();
-        }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
         return true;
     }
 }

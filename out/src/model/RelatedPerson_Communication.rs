@@ -15,40 +15,12 @@ pub struct RelatedPerson_Communication<'a> {
 }
 
 impl RelatedPerson_Communication<'_> {
-    /// Indicates whether or not the patient prefers this language (over other languages
-    /// he masters up a certain level).
-    pub fn preferred(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("preferred") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for preferred
     pub fn _preferred(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferred") {
             return Some(Element { value: val });
         }
         return None;
-    }
-
-    /// The ISO-639-1 alpha 2 code in lower case for the language, optionally followed
-    /// by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g.
-    /// "en" for English, or "en-US" for American English versus "en-EN" for England
-    /// English.
-    pub fn language(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["language"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -65,6 +37,25 @@ impl RelatedPerson_Communication<'_> {
             );
         }
         return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The ISO-639-1 alpha 2 code in lower case for the language, optionally followed
+    /// by a hyphen and the ISO-3166-1 alpha 2 code for the region in upper case; e.g.
+    /// "en" for English, or "en-US" for American English versus "en-EN" for England
+    /// English.
+    pub fn language(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["language"],
+        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -89,23 +80,32 @@ impl RelatedPerson_Communication<'_> {
         return None;
     }
 
+    /// Indicates whether or not the patient prefers this language (over other languages
+    /// he masters up a certain level).
+    pub fn preferred(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("preferred") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.preferred() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._preferred() {
             _val.validate();
         }
-        let _ = self.language().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        let _ = self.language().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.preferred() {}
         return true;
     }
 }

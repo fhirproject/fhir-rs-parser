@@ -19,12 +19,26 @@ pub struct ClinicalImpression_Investigation<'a> {
 }
 
 impl ClinicalImpression_Investigation<'_> {
-    /// A record of a specific investigation that was undertaken.
-    pub fn item(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("item") {
+    /// A name/code for the group ("set") of investigations. Typically, this will be
+    /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
+    /// not constrained, and others such groups such as
+    /// (exposure|family|travel|nutritional) history may be used.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -40,16 +54,12 @@ impl ClinicalImpression_Investigation<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// A record of a specific investigation that was undertaken.
+    pub fn item(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Reference { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -78,24 +88,15 @@ impl ClinicalImpression_Investigation<'_> {
         return None;
     }
 
-    /// A name/code for the group ("set") of investigations. Typically, this will be
-    /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
-    /// not constrained, and others such groups such as
-    /// (exposure|family|travel|nutritional) history may be used.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.item() {
+        let _ = self.code().validate();
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.item() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -105,7 +106,6 @@ impl ClinicalImpression_Investigation<'_> {
                 e.validate();
             });
         }
-        let _ = self.code().validate();
         return true;
     }
 }

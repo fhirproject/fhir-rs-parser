@@ -13,6 +13,37 @@ pub struct MedicinalProductIngredient_SpecifiedSubstance<'a> {
 }
 
 impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
+    /// The specified substance.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// Confidentiality level of the specified substance as the ingredient.
+    pub fn confidentiality(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("confidentiality") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// The group of specified substance, e.g. group 1 to 4.
     pub fn group(&self) -> CodeableConcept {
         CodeableConcept {
@@ -20,23 +51,11 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
         }
     }
 
-    /// Quantity of the substance or specified substance present in the manufactured
-    /// item or pharmaceutical product.
-    pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
-        if let Some(Value::Array(val)) = self.value.get("strength") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MedicinalProductIngredient_Strength { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Confidentiality level of the specified substance as the ingredient.
-    pub fn confidentiality(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("confidentiality") {
-            return Some(CodeableConcept { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -63,32 +82,13 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
         return None;
     }
 
-    /// The specified substance.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Quantity of the substance or specified substance present in the manufactured
+    /// item or pharmaceutical product.
+    pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
+        if let Some(Value::Array(val)) = self.value.get("strength") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| MedicinalProductIngredient_Strength { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -96,23 +96,23 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.group().validate();
-        if let Some(_val) = self.strength() {
+        let _ = self.code().validate();
+        if let Some(_val) = self.confidentiality() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.confidentiality() {
-            _val.validate();
-        }
+        let _ = self.group().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.code().validate();
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.strength() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

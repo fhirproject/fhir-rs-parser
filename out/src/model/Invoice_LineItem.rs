@@ -16,11 +16,10 @@ pub struct Invoice_LineItem<'a> {
 }
 
 impl Invoice_LineItem<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for sequence
+    pub fn _sequence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sequence") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -35,19 +34,37 @@ impl Invoice_LineItem<'_> {
         return None;
     }
 
-    /// The price for a ChargeItem may be calculated as a base price with
-    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
-    /// resource that defines the prices, factors and conditions that apply to a billing
-    /// code is currently under development. The priceComponent element can be used to
-    /// offer transparency to the recipient of the Invoice as to how the prices have
-    /// been calculated.
-    pub fn price_component(&self) -> Option<Vec<Invoice_PriceComponent>> {
-        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
+    /// The ChargeItem contains information such as the billing code, date, amount etc.
+    /// If no further details are required for the lineItem, inline billing codes can be
+    /// added using the CodeableConcept data type instead of the Reference.
+    pub fn charge_item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("chargeItemReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Invoice_PriceComponent { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -74,12 +91,19 @@ impl Invoice_LineItem<'_> {
         return None;
     }
 
-    /// The ChargeItem contains information such as the billing code, date, amount etc.
-    /// If no further details are required for the lineItem, inline billing codes can be
-    /// added using the CodeableConcept data type instead of the Reference.
-    pub fn charge_item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("chargeItemReference") {
-            return Some(Reference { value: val });
+    /// The price for a ChargeItem may be calculated as a base price with
+    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
+    /// resource that defines the prices, factors and conditions that apply to a billing
+    /// code is currently under development. The priceComponent element can be used to
+    /// offer transparency to the recipient of the Invoice as to how the prices have
+    /// been calculated.
+    pub fn price_component(&self) -> Option<Vec<Invoice_PriceComponent>> {
+        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Invoice_PriceComponent { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -92,57 +116,33 @@ impl Invoice_LineItem<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for sequence
-    pub fn _sequence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._sequence() {
+            _val.validate();
+        }
         if let Some(_val) = self.charge_item_codeable_concept() {
             _val.validate();
+        }
+        if let Some(_val) = self.charge_item_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.price_component() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.charge_item_reference() {
-            _val.validate();
-        }
         if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._sequence() {
-            _val.validate();
-        }
         return true;
     }
 }

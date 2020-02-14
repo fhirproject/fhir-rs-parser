@@ -16,18 +16,51 @@ pub struct EffectEvidenceSynthesis_EffectEstimate<'a> {
 }
 
 impl EffectEvidenceSynthesis_EffectEstimate<'_> {
-    /// Used to define variant exposure states such as low-risk state.
-    pub fn variant_state(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("variantState") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Specifies the UCUM unit for the outcome.
-    pub fn unit_of_measure(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("unitOfMeasure") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Human-readable summary of effect estimate.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -54,30 +87,6 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         return None;
     }
 
-    /// Human-readable summary of effect estimate.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Examples include relative risk and mean difference.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// A description of the precision of the estimate for the effect.
     pub fn precision_estimate(&self) -> Option<Vec<EffectEvidenceSynthesis_PrecisionEstimate>> {
         if let Some(Value::Array(val)) = self.value.get("precisionEstimate") {
@@ -90,11 +99,18 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Examples include relative risk and mean difference.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Specifies the UCUM unit for the outcome.
+    pub fn unit_of_measure(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("unitOfMeasure") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -107,62 +123,46 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+    /// Used to define variant exposure states such as low-risk state.
+    pub fn variant_state(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("variantState") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.variant_state() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self.unit_of_measure() {
+        if let Some(_val) = self._value() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.precision_estimate() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
         }
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self.unit_of_measure() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value() {}
+        if let Some(_val) = self.variant_state() {
             _val.validate();
         }
         return true;

@@ -14,19 +14,58 @@ pub struct ParameterDefinition<'a> {
 }
 
 impl ParameterDefinition<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for documentation
+    pub fn _documentation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_documentation") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The maximum number of times this element is permitted to appear in the request
-    /// or response.
-    pub fn max(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("max") {
+    /// Extensions for max
+    pub fn _max(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_max") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for min
+    pub fn _min(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_min") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for use
+    pub fn _use(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_use") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A brief discussion of what the parameter is for and how it is used by the
+    /// module.
+    pub fn documentation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("documentation") {
             return Some(string);
         }
         return None;
@@ -48,67 +87,20 @@ impl ParameterDefinition<'_> {
         return None;
     }
 
-    /// A brief discussion of what the parameter is for and how it is used by the
-    /// module.
-    pub fn documentation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("documentation") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    /// Whether the parameter is input or output for the module.
-    pub fn fhir_use(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("use") {
+    /// The maximum number of times this element is permitted to appear in the request
+    /// or response.
+    pub fn max(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("max") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for use
-    pub fn _use(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for max
-    pub fn _max(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for documentation
-    pub fn _documentation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The type of the parameter.
-    pub fn fhir_type(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("type") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -122,10 +114,11 @@ impl ParameterDefinition<'_> {
         return None;
     }
 
-    /// Extensions for min
-    pub fn _min(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
+    /// The name of the parameter used to allow access to the value of the parameter in
+    /// evaluation contexts.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
         }
         return None;
     }
@@ -139,47 +132,54 @@ impl ParameterDefinition<'_> {
         return None;
     }
 
-    /// The name of the parameter used to allow access to the value of the parameter in
-    /// evaluation contexts.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
+    /// The type of the parameter.
+    pub fn fhir_type(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("type") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Whether the parameter is input or output for the module.
+    pub fn fhir_use(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("use") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.max() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.documentation() {}
-        if let Some(_val) = self.fhir_use() {}
-        if let Some(_val) = self._use() {
+        if let Some(_val) = self._documentation() {
             _val.validate();
         }
         if let Some(_val) = self._max() {
             _val.validate();
         }
-        if let Some(_val) = self._documentation() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._type() {
+        if let Some(_val) = self._min() {
             _val.validate();
         }
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.min() {}
-        if let Some(_val) = self._min() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
-        if let Some(_val) = self.profile() {}
+        if let Some(_val) = self._use() {
+            _val.validate();
+        }
+        if let Some(_val) = self.documentation() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.max() {}
+        if let Some(_val) = self.min() {}
         if let Some(_val) = self.name() {}
+        if let Some(_val) = self.profile() {}
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.fhir_use() {}
         return true;
     }
 }

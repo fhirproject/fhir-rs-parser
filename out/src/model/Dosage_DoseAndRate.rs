@@ -15,22 +15,6 @@ pub struct Dosage_DoseAndRate<'a> {
 }
 
 impl Dosage_DoseAndRate<'_> {
-    /// Amount of medication per unit of time.
-    pub fn rate_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("rateRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// Amount of medication per unit of time.
-    pub fn rate_ratio(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("rateRatio") {
-            return Some(Ratio { value: val });
-        }
-        return None;
-    }
-
     /// Amount of medication per dose.
     pub fn dose_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("doseQuantity") {
@@ -39,10 +23,10 @@ impl Dosage_DoseAndRate<'_> {
         return None;
     }
 
-    /// Amount of medication per unit of time.
-    pub fn rate_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("rateQuantity") {
-            return Some(Quantity { value: val });
+    /// Amount of medication per dose.
+    pub fn dose_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("doseRange") {
+            return Some(Range { value: val });
         }
         return None;
     }
@@ -63,10 +47,11 @@ impl Dosage_DoseAndRate<'_> {
         return None;
     }
 
-    /// Amount of medication per dose.
-    pub fn dose_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("doseRange") {
-            return Some(Range { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -93,6 +78,30 @@ impl Dosage_DoseAndRate<'_> {
         return None;
     }
 
+    /// Amount of medication per unit of time.
+    pub fn rate_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("rateQuantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Amount of medication per unit of time.
+    pub fn rate_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("rateRange") {
+            return Some(Range { value: val });
+        }
+        return None;
+    }
+
+    /// Amount of medication per unit of time.
+    pub fn rate_ratio(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("rateRatio") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
     /// The kind of dose or rate specified, for example, ordered or calculated.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
@@ -101,26 +110,11 @@ impl Dosage_DoseAndRate<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.rate_range() {
-            _val.validate();
-        }
-        if let Some(_val) = self.rate_ratio() {
-            _val.validate();
-        }
         if let Some(_val) = self.dose_quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.rate_quantity() {
+        if let Some(_val) = self.dose_range() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -128,18 +122,24 @@ impl Dosage_DoseAndRate<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.dose_range() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.rate_quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.rate_range() {
+            _val.validate();
+        }
+        if let Some(_val) = self.rate_ratio() {
+            _val.validate();
+        }
         if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

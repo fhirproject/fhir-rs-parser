@@ -17,15 +17,6 @@ pub struct Group_Member<'a> {
 }
 
 impl Group_Member<'_> {
-    /// A flag to indicate that the member is no longer in the group, but previously may
-    /// have been a member.
-    pub fn inactive(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("inactive") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for inactive
     pub fn _inactive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_inactive") {
@@ -34,10 +25,44 @@ impl Group_Member<'_> {
         return None;
     }
 
-    /// The period that the member was in the group, if known.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+    /// A reference to the entity that is a member of the group. Must be consistent with
+    /// Group.type. If the entity is another group, then the type must be the same.
+    pub fn entity(&self) -> Reference {
+        Reference {
+            value: &self.value["entity"],
+        }
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A flag to indicate that the member is no longer in the group, but previously may
+    /// have been a member.
+    pub fn inactive(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("inactive") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -64,59 +89,34 @@ impl Group_Member<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The period that the member was in the group, if known.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A reference to the entity that is a member of the group. Must be consistent with
-    /// Group.type. If the entity is another group, then the type must be the same.
-    pub fn entity(&self) -> Reference {
-        Reference {
-            value: &self.value["entity"],
-        }
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.inactive() {}
         if let Some(_val) = self._inactive() {
             _val.validate();
         }
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
+        let _ = self.entity().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.entity().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.inactive() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
         return true;
     }
 }

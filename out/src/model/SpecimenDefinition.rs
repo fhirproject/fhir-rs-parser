@@ -18,22 +18,18 @@ pub struct SpecimenDefinition<'a> {
 }
 
 impl SpecimenDefinition<'_> {
-    /// Specimen conditioned in a container as expected by the testing laboratory.
-    pub fn type_tested(&self) -> Option<Vec<SpecimenDefinition_TypeTested>> {
-        if let Some(Value::Array(val)) = self.value.get("typeTested") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SpecimenDefinition_TypeTested { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -42,6 +38,32 @@ impl SpecimenDefinition<'_> {
     pub fn _time_aspect(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timeAspect") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The action to be performed for collecting the specimen.
+    pub fn collection(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("collection") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -62,6 +84,23 @@ impl SpecimenDefinition<'_> {
         return None;
     }
 
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A business identifier associated with the kind of specimen.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
     /// A reference to a set of rules that were followed when the resource was
     /// constructed, and which must be understood when processing the content. Often,
     /// this is a reference to an implementation guide that defines the special rules
@@ -73,24 +112,10 @@ impl SpecimenDefinition<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -128,72 +153,6 @@ impl SpecimenDefinition<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Time aspect of specimen collection (duration or offset).
-    pub fn time_aspect(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("timeAspect") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A business identifier associated with the kind of specimen.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// The action to be performed for collecting the specimen.
-    pub fn collection(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("collection") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The kind of material to be collected.
-    pub fn type_collected(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("typeCollected") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Preparation of the patient for specimen collection.
     pub fn patient_preparation(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("patientPreparation") {
@@ -206,26 +165,78 @@ impl SpecimenDefinition<'_> {
         return None;
     }
 
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// Time aspect of specimen collection (duration or offset).
+    pub fn time_aspect(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("timeAspect") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The kind of material to be collected.
+    pub fn type_collected(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("typeCollected") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Specimen conditioned in a container as expected by the testing laboratory.
+    pub fn type_tested(&self) -> Option<Vec<SpecimenDefinition_TypeTested>> {
+        if let Some(Value::Array(val)) = self.value.get("typeTested") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SpecimenDefinition_TypeTested { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.type_tested() {
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self._time_aspect() {
+            _val.validate();
+        }
+        if let Some(_val) = self.collection() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self._time_aspect() {
-            _val.validate();
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self.identifier() {
             _val.validate();
         }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
         if let Some(_val) = self.meta() {
             _val.validate();
         }
@@ -234,30 +245,19 @@ impl SpecimenDefinition<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
+        if let Some(_val) = self.patient_preparation() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         if let Some(_val) = self.time_aspect() {}
-        if let Some(_val) = self.identifier() {
-            _val.validate();
-        }
-        if let Some(_val) = self.collection() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.type_collected() {
             _val.validate();
         }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.patient_preparation() {
+        if let Some(_val) = self.type_tested() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

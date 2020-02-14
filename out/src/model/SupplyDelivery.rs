@@ -21,31 +21,10 @@ pub struct SupplyDelivery<'a> {
 }
 
 impl SupplyDelivery<'_> {
-    /// The individual responsible for dispensing the medication, supplier or device.
-    pub fn supplier(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("supplier") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Identification of the facility/location where the Supply was shipped to, as part
-    /// of the dispense event.
-    pub fn destination(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("destination") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the person who picked up the Supply.
-    pub fn receiver(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("receiver") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -54,6 +33,34 @@ impl SupplyDelivery<'_> {
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for occurrenceDateTime
+    pub fn _occurrence_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_occurrenceDateTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A plan, proposal or order that is fulfilled in whole or in part by this event.
+    pub fn based_on(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("basedOn") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -72,10 +79,49 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// Extensions for occurrenceDateTime
-    pub fn _occurrence_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+    /// Identification of the facility/location where the Supply was shipped to, as part
+    /// of the dispense event.
+    pub fn destination(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("destination") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifier for the supply delivery event that is used to identify it across
+    /// multiple disparate systems.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -91,55 +137,20 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
 
-    /// A link to a resource representing the person whom the delivered item is for.
-    pub fn patient(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates the type of dispensing event that is performed. Examples include:
-    /// Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The date or time(s) the activity occurred.
-    pub fn occurrence_timing(&self) -> Option<Timing> {
-        if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
-        }
-        return None;
-    }
-
-    /// A larger event of which this particular event is a component or step.
-    pub fn part_of(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("partOf") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -167,15 +178,10 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// Identifier for the supply delivery event that is used to identify it across
-    /// multiple disparate systems.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The date or time(s) the activity occurred.
+    pub fn occurrence_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("occurrenceDateTime") {
+            return Some(string);
         }
         return None;
     }
@@ -188,27 +194,17 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// The date or time(s) the activity occurred.
+    pub fn occurrence_timing(&self) -> Option<Timing> {
+        if let Some(val) = self.value.get("occurrenceTiming") {
+            return Some(Timing { value: val });
         }
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// A plan, proposal or order that is fulfilled in whole or in part by this event.
-    pub fn based_on(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("basedOn") {
+    /// A larger event of which this particular event is a component or step.
+    pub fn part_of(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
@@ -218,34 +214,22 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// The date or time(s) the activity occurred.
-    pub fn occurrence_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("occurrenceDateTime") {
-            return Some(string);
+    /// A link to a resource representing the person whom the delivered item is for.
+    pub fn patient(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("patient") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Identifies the person who picked up the Supply.
+    pub fn receiver(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("receiver") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Reference { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The item that is being delivered or has been supplied.
-    pub fn supplied_item(&self) -> Option<SupplyDelivery_SuppliedItem> {
-        if let Some(val) = self.value.get("suppliedItem") {
-            return Some(SupplyDelivery_SuppliedItem { value: val });
         }
         return None;
     }
@@ -258,11 +242,18 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The item that is being delivered or has been supplied.
+    pub fn supplied_item(&self) -> Option<SupplyDelivery_SuppliedItem> {
+        if let Some(val) = self.value.get("suppliedItem") {
+            return Some(SupplyDelivery_SuppliedItem { value: val });
+        }
+        return None;
+    }
+
+    /// The individual responsible for dispensing the medication, supplier or device.
+    pub fn supplier(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("supplier") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -280,40 +271,64 @@ impl SupplyDelivery<'_> {
         return None;
     }
 
+    /// Indicates the type of dispensing event that is performed. Examples include:
+    /// Trial Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.supplier() {
+        if let Some(_val) = self._implicit_rules() {
             _val.validate();
-        }
-        if let Some(_val) = self.destination() {
-            _val.validate();
-        }
-        if let Some(_val) = self.receiver() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self._language() {
             _val.validate();
+        }
+        if let Some(_val) = self._occurrence_date_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.based_on() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._occurrence_date_time() {
+        if let Some(_val) = self.destination() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self._implicit_rules() {
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.patient() {
-            _val.validate();
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._status() {
+        if let Some(_val) = self.occurrence_date_time() {}
+        if let Some(_val) = self.occurrence_period() {
             _val.validate();
         }
         if let Some(_val) = self.occurrence_timing() {
@@ -324,40 +339,25 @@ impl SupplyDelivery<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.occurrence_period() {
+        if let Some(_val) = self.patient() {
             _val.validate();
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.based_on() {
+        if let Some(_val) = self.receiver() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.occurrence_date_time() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        if let Some(_val) = self.status() {}
         if let Some(_val) = self.supplied_item() {
             _val.validate();
         }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.supplier() {
+            _val.validate();
+        }
         if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;
@@ -385,10 +385,10 @@ impl SupplyDeliveryStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            SupplyDeliveryStatus::InProgress => "in-progress",
-            SupplyDeliveryStatus::Completed => "completed",
-            SupplyDeliveryStatus::Abandoned => "abandoned",
-            SupplyDeliveryStatus::EnteredInError => "entered-in-error",
+            SupplyDeliveryStatus::InProgress => "in-progress".to_string(),
+            SupplyDeliveryStatus::Completed => "completed".to_string(),
+            SupplyDeliveryStatus::Abandoned => "abandoned".to_string(),
+            SupplyDeliveryStatus::EnteredInError => "entered-in-error".to_string(),
         }
     }
 }

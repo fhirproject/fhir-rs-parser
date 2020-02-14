@@ -29,21 +29,6 @@ impl MedicationKnowledge_MaxDispense<'_> {
         return None;
     }
 
-    /// The maximum number of units of the medication that can be dispensed.
-    pub fn quantity(&self) -> Quantity {
-        Quantity {
-            value: &self.value["quantity"],
-        }
-    }
-
-    /// The period that applies to the maximum number of units.
-    pub fn period(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Duration { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -75,15 +60,26 @@ impl MedicationKnowledge_MaxDispense<'_> {
         return None;
     }
 
+    /// The period that applies to the maximum number of units.
+    pub fn period(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Duration { value: val });
+        }
+        return None;
+    }
+
+    /// The maximum number of units of the medication that can be dispensed.
+    pub fn quantity(&self) -> Quantity {
+        Quantity {
+            value: &self.value["quantity"],
+        }
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        let _ = self.quantity().validate();
-        if let Some(_val) = self.period() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -91,6 +87,10 @@ impl MedicationKnowledge_MaxDispense<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        let _ = self.quantity().validate();
         return true;
     }
 }

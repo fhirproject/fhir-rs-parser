@@ -13,6 +13,18 @@ pub struct MedicationKnowledge_Dosage<'a> {
 }
 
 impl MedicationKnowledge_Dosage<'_> {
+    /// Dosage for the medication for the specific guidelines.
+    pub fn dosage(&self) -> Vec<Dosage> {
+        self.value
+            .get("dosage")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| Dosage { value: e })
+            .collect::<Vec<_>>()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -27,18 +39,6 @@ impl MedicationKnowledge_Dosage<'_> {
             );
         }
         return None;
-    }
-
-    /// Dosage for the medication for the specific guidelines.
-    pub fn dosage(&self) -> Vec<Dosage> {
-        self.value
-            .get("dosage")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| Dosage { value: e })
-            .collect::<Vec<_>>()
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -80,14 +80,14 @@ impl MedicationKnowledge_Dosage<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        let _ = self.dosage().into_iter().for_each(|e| {
+            e.validate();
+        });
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.dosage().into_iter().for_each(|e| {
-            e.validate();
-        });
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {

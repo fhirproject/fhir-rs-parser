@@ -14,18 +14,9 @@ pub struct GraphDefinition_Compartment<'a> {
 }
 
 impl GraphDefinition_Compartment<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for rule
-    pub fn _rule(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_rule") {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
             return Some(Element { value: val });
         }
         return None;
@@ -47,9 +38,66 @@ impl GraphDefinition_Compartment<'_> {
         return None;
     }
 
+    /// Extensions for rule
+    pub fn _rule(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_rule") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for use
+    pub fn _use(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_use") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies the compartment.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Documentation for FHIRPath expression.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Custom rule, as a FHIRPath expression.
     pub fn expression(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("expression") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -77,10 +125,10 @@ impl GraphDefinition_Compartment<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+    /// identical | matching | different | no-rule | custom.
+    pub fn rule(&self) -> Option<GraphDefinition_CompartmentRule> {
+        if let Some(Value::String(val)) = self.value.get("rule") {
+            return Some(GraphDefinition_CompartmentRule::from_string(&val).unwrap());
         }
         return None;
     }
@@ -95,57 +143,8 @@ impl GraphDefinition_Compartment<'_> {
         return None;
     }
 
-    /// Extensions for use
-    pub fn _use(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the compartment.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// identical | matching | different | no-rule | custom.
-    pub fn rule(&self) -> Option<GraphDefinition_CompartmentRule> {
-        if let Some(Value::String(val)) = self.value.get("rule") {
-            return Some(GraphDefinition_CompartmentRule::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Documentation for FHIRPath expression.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._rule() {
+        if let Some(_val) = self._code() {
             _val.validate();
         }
         if let Some(_val) = self._description() {
@@ -154,51 +153,29 @@ impl GraphDefinition_Compartment<'_> {
         if let Some(_val) = self._expression() {
             _val.validate();
         }
-        if let Some(_val) = self.expression() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._code() {
+        if let Some(_val) = self._rule() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_use() {}
         if let Some(_val) = self._use() {
             _val.validate();
         }
         if let Some(_val) = self.code() {}
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.expression() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.rule() {}
-        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.fhir_use() {}
         return true;
-    }
-}
-
-#[derive(Debug)]
-pub enum GraphDefinition_CompartmentUse {
-    Condition,
-    Requirement,
-}
-
-impl GraphDefinition_CompartmentUse {
-    pub fn from_string(string: &str) -> Option<GraphDefinition_CompartmentUse> {
-        match string {
-            "condition" => Some(GraphDefinition_CompartmentUse::Condition),
-            "requirement" => Some(GraphDefinition_CompartmentUse::Requirement),
-            _ => None,
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        match self {
-            GraphDefinition_CompartmentUse::Condition => "condition",
-            GraphDefinition_CompartmentUse::Requirement => "requirement",
-        }
     }
 }
 
@@ -223,10 +200,33 @@ impl GraphDefinition_CompartmentRule {
 
     pub fn to_string(&self) -> String {
         match self {
-            GraphDefinition_CompartmentRule::Identical => "identical",
-            GraphDefinition_CompartmentRule::Matching => "matching",
-            GraphDefinition_CompartmentRule::Different => "different",
-            GraphDefinition_CompartmentRule::Custom => "custom",
+            GraphDefinition_CompartmentRule::Identical => "identical".to_string(),
+            GraphDefinition_CompartmentRule::Matching => "matching".to_string(),
+            GraphDefinition_CompartmentRule::Different => "different".to_string(),
+            GraphDefinition_CompartmentRule::Custom => "custom".to_string(),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum GraphDefinition_CompartmentUse {
+    Condition,
+    Requirement,
+}
+
+impl GraphDefinition_CompartmentUse {
+    pub fn from_string(string: &str) -> Option<GraphDefinition_CompartmentUse> {
+        match string {
+            "condition" => Some(GraphDefinition_CompartmentUse::Condition),
+            "requirement" => Some(GraphDefinition_CompartmentUse::Requirement),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            GraphDefinition_CompartmentUse::Condition => "condition".to_string(),
+            GraphDefinition_CompartmentUse::Requirement => "requirement".to_string(),
         }
     }
 }

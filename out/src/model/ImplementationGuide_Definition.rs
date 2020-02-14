@@ -19,11 +19,18 @@ pub struct ImplementationGuide_Definition<'a> {
 }
 
 impl ImplementationGuide_Definition<'_> {
-    /// A page / section in the implementation guide. The root page is the
-    /// implementation guide home page.
-    pub fn page(&self) -> Option<ImplementationGuide_Page> {
-        if let Some(val) = self.value.get("page") {
-            return Some(ImplementationGuide_Page { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -45,33 +52,6 @@ impl ImplementationGuide_Definition<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// A resource that is part of the implementation guide. Conformance resources
-    /// (value set, structure definition, capability statements etc.) are obvious
-    /// candidates for inclusion, but any kind of resource can be included as an example
-    /// resource.
-    pub fn resource(&self) -> Vec<ImplementationGuide_Resource> {
-        self.value
-            .get("resource")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ImplementationGuide_Resource { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// Defines how IG is built by tools.
-    pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
-        if let Some(Value::Array(val)) = self.value.get("parameter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ImplementationGuide_Parameter { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -98,6 +78,42 @@ impl ImplementationGuide_Definition<'_> {
         return None;
     }
 
+    /// A page / section in the implementation guide. The root page is the
+    /// implementation guide home page.
+    pub fn page(&self) -> Option<ImplementationGuide_Page> {
+        if let Some(val) = self.value.get("page") {
+            return Some(ImplementationGuide_Page { value: val });
+        }
+        return None;
+    }
+
+    /// Defines how IG is built by tools.
+    pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
+        if let Some(Value::Array(val)) = self.value.get("parameter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ImplementationGuide_Parameter { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A resource that is part of the implementation guide. Conformance resources
+    /// (value set, structure definition, capability statements etc.) are obvious
+    /// candidates for inclusion, but any kind of resource can be included as an example
+    /// resource.
+    pub fn resource(&self) -> Vec<ImplementationGuide_Resource> {
+        self.value
+            .get("resource")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ImplementationGuide_Resource { value: e })
+            .collect::<Vec<_>>()
+    }
+
     /// A template for building resources.
     pub fn template(&self) -> Option<Vec<ImplementationGuide_Template>> {
         if let Some(Value::Array(val)) = self.value.get("template") {
@@ -110,25 +126,11 @@ impl ImplementationGuide_Definition<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.page() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.grouping() {
             _val.into_iter().for_each(|e| {
@@ -136,25 +138,23 @@ impl ImplementationGuide_Definition<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.resource().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.parameter() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.template() {
+        if let Some(_val) = self.page() {
+            _val.validate();
+        }
+        if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
+        let _ = self.resource().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.template() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

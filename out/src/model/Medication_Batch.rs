@@ -14,18 +14,25 @@ pub struct Medication_Batch<'a> {
 }
 
 impl Medication_Batch<'_> {
-    /// The assigned lot number of a batch of the specified product.
-    pub fn lot_number(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("lotNumber") {
-            return Some(string);
+    /// Extensions for expirationDate
+    pub fn _expiration_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_expirationDate") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Extensions for lotNumber
+    pub fn _lot_number(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_lotNumber") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// When this specific batch of product will expire.
+    pub fn expiration_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("expirationDate") {
             return Some(string);
         }
         return None;
@@ -43,6 +50,23 @@ impl Medication_Batch<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The assigned lot number of a batch of the specified product.
+    pub fn lot_number(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("lotNumber") {
+            return Some(string);
         }
         return None;
     }
@@ -69,49 +93,25 @@ impl Medication_Batch<'_> {
         return None;
     }
 
-    /// Extensions for lotNumber
-    pub fn _lot_number(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_lotNumber") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// When this specific batch of product will expire.
-    pub fn expiration_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("expirationDate") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for expirationDate
-    pub fn _expiration_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_expirationDate") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.lot_number() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._expiration_date() {
+            _val.validate();
         }
         if let Some(_val) = self._lot_number() {
             _val.validate();
         }
         if let Some(_val) = self.expiration_date() {}
-        if let Some(_val) = self._expiration_date() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.lot_number() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

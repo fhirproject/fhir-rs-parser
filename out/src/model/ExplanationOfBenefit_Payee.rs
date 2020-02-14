@@ -40,22 +40,6 @@ impl ExplanationOfBenefit_Payee<'_> {
         return None;
     }
 
-    /// Type of Party to be reimbursed: Subscriber, provider, other.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Reference to the individual or organization to whom any payment will be made.
-    pub fn party(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("party") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -78,6 +62,22 @@ impl ExplanationOfBenefit_Payee<'_> {
         return None;
     }
 
+    /// Reference to the individual or organization to whom any payment will be made.
+    pub fn party(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("party") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Type of Party to be reimbursed: Subscriber, provider, other.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -85,16 +85,16 @@ impl ExplanationOfBenefit_Payee<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.party() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.party() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
         }
         return true;
     }

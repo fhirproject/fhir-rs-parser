@@ -14,9 +14,25 @@ pub struct ClaimResponse_ProcessNote<'a> {
 }
 
 impl ClaimResponse_ProcessNote<'_> {
+    /// Extensions for number
+    pub fn _number(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_number") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
             return Some(Element { value: val });
         }
         return None;
@@ -47,34 +63,10 @@ impl ClaimResponse_ProcessNote<'_> {
         return None;
     }
 
-    /// The business purpose of the note text.
-    pub fn fhir_type(&self) -> Option<ClaimResponse_ProcessNoteType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(ClaimResponse_ProcessNoteType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     /// A code to define the language used in the text of the note.
     pub fn language(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("language") {
             return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A number to uniquely identify a note entry.
-    pub fn number(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("number") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// The explanation or description associated with the processing.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
         }
         return None;
     }
@@ -101,24 +93,38 @@ impl ClaimResponse_ProcessNote<'_> {
         return None;
     }
 
-    /// Extensions for number
-    pub fn _number(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_number") {
-            return Some(Element { value: val });
+    /// A number to uniquely identify a note entry.
+    pub fn number(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("number") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+    /// The explanation or description associated with the processing.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The business purpose of the note text.
+    pub fn fhir_type(&self) -> Option<ClaimResponse_ProcessNoteType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(ClaimResponse_ProcessNoteType::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._number() {
+            _val.validate();
+        }
         if let Some(_val) = self._text() {
+            _val.validate();
+        }
+        if let Some(_val) = self._type() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -127,23 +133,17 @@ impl ClaimResponse_ProcessNote<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.language() {
             _val.validate();
         }
-        if let Some(_val) = self.number() {}
-        if let Some(_val) = self.text() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._number() {
-            _val.validate();
-        }
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
+        if let Some(_val) = self.number() {}
+        if let Some(_val) = self.text() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -167,9 +167,9 @@ impl ClaimResponse_ProcessNoteType {
 
     pub fn to_string(&self) -> String {
         match self {
-            ClaimResponse_ProcessNoteType::Display => "display",
-            ClaimResponse_ProcessNoteType::Print => "print",
-            ClaimResponse_ProcessNoteType::Printoper => "printoper",
+            ClaimResponse_ProcessNoteType::Display => "display".to_string(),
+            ClaimResponse_ProcessNoteType::Print => "print".to_string(),
+            ClaimResponse_ProcessNoteType::Printoper => "printoper".to_string(),
         }
     }
 }

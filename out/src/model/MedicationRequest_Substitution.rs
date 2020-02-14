@@ -17,6 +17,32 @@ pub struct MedicationRequest_Substitution<'a> {
 }
 
 impl MedicationRequest_Substitution<'_> {
+    /// Extensions for allowedBoolean
+    pub fn _allowed_boolean(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allowedBoolean") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// True if the prescriber allows a different drug to be dispensed from what was
+    /// prescribed.
+    pub fn allowed_boolean(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("allowedBoolean") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// True if the prescriber allows a different drug to be dispensed from what was
+    /// prescribed.
+    pub fn allowed_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("allowedCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -38,23 +64,6 @@ impl MedicationRequest_Substitution<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for allowedBoolean
-    pub fn _allowed_boolean(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allowedBoolean") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// True if the prescriber allows a different drug to be dispensed from what was
-    /// prescribed.
-    pub fn allowed_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("allowedCodeableConcept") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -81,15 +90,6 @@ impl MedicationRequest_Substitution<'_> {
         return None;
     }
 
-    /// True if the prescriber allows a different drug to be dispensed from what was
-    /// prescribed.
-    pub fn allowed_boolean(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("allowedBoolean") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     /// Indicates the reason for the substitution, or why substitution must or must not
     /// be performed.
     pub fn reason(&self) -> Option<CodeableConcept> {
@@ -100,24 +100,24 @@ impl MedicationRequest_Substitution<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._allowed_boolean() {
+            _val.validate();
+        }
+        if let Some(_val) = self.allowed_boolean() {}
+        if let Some(_val) = self.allowed_codeable_concept() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._allowed_boolean() {
-            _val.validate();
-        }
-        if let Some(_val) = self.allowed_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.allowed_boolean() {}
         if let Some(_val) = self.reason() {
             _val.validate();
         }

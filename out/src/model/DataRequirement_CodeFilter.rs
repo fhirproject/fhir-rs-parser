@@ -22,6 +22,14 @@ impl DataRequirement_CodeFilter<'_> {
         return None;
     }
 
+    /// Extensions for searchParam
+    pub fn _search_param(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_searchParam") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// The codes for the code filter. If values are given, the filter will return only
     /// those data items for which the code-valued attribute specified by the path has a
     /// value that is one of the specified codes. If codes are specified in addition to
@@ -54,25 +62,11 @@ impl DataRequirement_CodeFilter<'_> {
         return None;
     }
 
-    /// The code-valued attribute of the filter. The specified path SHALL be a FHIRPath
-    /// resolveable on the specified type of the DataRequirement, and SHALL consist only
-    /// of identifiers, constant indexers, and .resolve(). The path is allowed to
-    /// contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to
-    /// traverse multiple-cardinality sub-elements (see the [Simple FHIRPath
-    /// Profile](fhirpath.html#simple) for full details). Note that the index must be an
-    /// integer constant. The path must resolve to an element of type code, Coding, or
-    /// CodeableConcept.
-    pub fn path(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("path") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for searchParam
-    pub fn _search_param(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_searchParam") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -99,6 +93,21 @@ impl DataRequirement_CodeFilter<'_> {
         return None;
     }
 
+    /// The code-valued attribute of the filter. The specified path SHALL be a FHIRPath
+    /// resolveable on the specified type of the DataRequirement, and SHALL consist only
+    /// of identifiers, constant indexers, and .resolve(). The path is allowed to
+    /// contain qualifiers (.) to traverse sub-elements, as well as indexers ([x]) to
+    /// traverse multiple-cardinality sub-elements (see the [Simple FHIRPath
+    /// Profile](fhirpath.html#simple) for full details). Note that the index must be an
+    /// integer constant. The path must resolve to an element of type code, Coding, or
+    /// CodeableConcept.
+    pub fn path(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("path") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// A token parameter that refers to a search parameter defined on the specified
     /// type of the DataRequirement, and which searches on elements of type code,
     /// Coding, or CodeableConcept.
@@ -120,17 +129,11 @@ impl DataRequirement_CodeFilter<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._path() {
+            _val.validate();
+        }
+        if let Some(_val) = self._search_param() {
             _val.validate();
         }
         if let Some(_val) = self.code() {
@@ -143,18 +146,15 @@ impl DataRequirement_CodeFilter<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.path() {}
-        if let Some(_val) = self._search_param() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.path() {}
         if let Some(_val) = self.search_param() {}
         if let Some(_val) = self.value_set() {}
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

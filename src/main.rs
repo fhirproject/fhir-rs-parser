@@ -1,7 +1,7 @@
 use inflector::Inflector;
 use maplit::hashmap;
 use serde::{Deserialize, Serialize};
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::error::Error;
 use std::fs;
 use std::fs::File;
@@ -99,13 +99,13 @@ struct Definition {
 
   description: Option<String>,
 
-  properties: Option<HashMap<String, Property>>,
+  properties: Option<BTreeMap<String, Property>>,
 
   additional_properties: Option<bool>,
 
   required: Option<Vec<String>>,
 
-  one_of: Option<Vec<HashMap<String, String>>>,
+  one_of: Option<Vec<BTreeMap<String, String>>>,
 }
 
 fn main() {
@@ -562,7 +562,7 @@ fn generate_trait(
       enum_serialization_string.push_str(&sanitized_name);
       enum_serialization_string.push_str(" => \"");
       enum_serialization_string.push_str(&value);
-      enum_serialization_string.push_str("\",\n");
+      enum_serialization_string.push_str("\".to_string(),\n");
     }
     enum_serialization_string.push_str("    }\n  }\n");
     inner_string.push_str("}\n\n");

@@ -25,22 +25,6 @@ impl DeviceDefinition_Capability<'_> {
         return None;
     }
 
-    /// Type of capability.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -53,6 +37,15 @@ impl DeviceDefinition_Capability<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -79,24 +72,31 @@ impl DeviceDefinition_Capability<'_> {
         return None;
     }
 
+    /// Type of capability.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
+        }
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.description() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.fhir_type().validate();
         return true;
     }
 }

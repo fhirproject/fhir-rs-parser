@@ -14,15 +14,6 @@ pub struct InsurancePlan_GeneralCost<'a> {
 }
 
 impl InsurancePlan_GeneralCost<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -31,18 +22,26 @@ impl InsurancePlan_GeneralCost<'_> {
         return None;
     }
 
-    /// Type of cost.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for groupSize
     pub fn _group_size(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_groupSize") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Additional information about the general costs associated with this plan.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Value of the cost.
+    pub fn cost(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("cost") {
+            return Some(Money { value: val });
         }
         return None;
     }
@@ -71,9 +70,10 @@ impl InsurancePlan_GeneralCost<'_> {
         return None;
     }
 
-    /// Additional information about the general costs associated with this plan.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -101,23 +101,23 @@ impl InsurancePlan_GeneralCost<'_> {
         return None;
     }
 
-    /// Value of the cost.
-    pub fn cost(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("cost") {
-            return Some(Money { value: val });
+    /// Type of cost.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._comment() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self._group_size() {
             _val.validate();
         }
-        if let Some(_val) = self._group_size() {
+        if let Some(_val) = self.comment() {}
+        if let Some(_val) = self.cost() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -126,13 +126,13 @@ impl InsurancePlan_GeneralCost<'_> {
             });
         }
         if let Some(_val) = self.group_size() {}
-        if let Some(_val) = self.comment() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.cost() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;

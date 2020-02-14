@@ -13,10 +13,12 @@ pub struct OperationDefinition_Binding<'a> {
 }
 
 impl OperationDefinition_Binding<'_> {
-    /// Points to the value set or external definition (e.g. implicit value set) that
-    /// identifies the set of codes to be used.
-    pub fn value_set(&self) -> &str {
-        self.value.get("valueSet").unwrap().as_str().unwrap()
+    /// Extensions for strength
+    pub fn _strength(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_strength") {
+            return Some(Element { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -31,24 +33,6 @@ impl OperationDefinition_Binding<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Indicates the degree of conformance expectations associated with this binding -
-    /// that is, the degree to which the provided value set must be adhered to in the
-    /// instances.
-    pub fn strength(&self) -> Option<OperationDefinition_BindingStrength> {
-        if let Some(Value::String(val)) = self.value.get("strength") {
-            return Some(OperationDefinition_BindingStrength::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for strength
-    pub fn _strength(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_strength") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -84,16 +68,30 @@ impl OperationDefinition_Binding<'_> {
         return None;
     }
 
+    /// Indicates the degree of conformance expectations associated with this binding -
+    /// that is, the degree to which the provided value set must be adhered to in the
+    /// instances.
+    pub fn strength(&self) -> Option<OperationDefinition_BindingStrength> {
+        if let Some(Value::String(val)) = self.value.get("strength") {
+            return Some(OperationDefinition_BindingStrength::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Points to the value set or external definition (e.g. implicit value set) that
+    /// identifies the set of codes to be used.
+    pub fn value_set(&self) -> &str {
+        self.value.get("valueSet").unwrap().as_str().unwrap()
+    }
+
     pub fn validate(&self) -> bool {
-        let _ = self.value_set();
+        if let Some(_val) = self._strength() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.strength() {}
-        if let Some(_val) = self._strength() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -101,6 +99,8 @@ impl OperationDefinition_Binding<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.strength() {}
+        let _ = self.value_set();
         return true;
     }
 }
@@ -126,10 +126,10 @@ impl OperationDefinition_BindingStrength {
 
     pub fn to_string(&self) -> String {
         match self {
-            OperationDefinition_BindingStrength::Required => "required",
-            OperationDefinition_BindingStrength::Extensible => "extensible",
-            OperationDefinition_BindingStrength::Preferred => "preferred",
-            OperationDefinition_BindingStrength::Example => "example",
+            OperationDefinition_BindingStrength::Required => "required".to_string(),
+            OperationDefinition_BindingStrength::Extensible => "extensible".to_string(),
+            OperationDefinition_BindingStrength::Preferred => "preferred".to_string(),
+            OperationDefinition_BindingStrength::Example => "example".to_string(),
         }
     }
 }

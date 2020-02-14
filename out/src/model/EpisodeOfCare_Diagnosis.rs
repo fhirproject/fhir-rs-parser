@@ -16,6 +16,38 @@ pub struct EpisodeOfCare_Diagnosis<'a> {
 }
 
 impl EpisodeOfCare_Diagnosis<'_> {
+    /// Extensions for rank
+    pub fn _rank(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_rank") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A list of conditions/problems/diagnoses that this episode of care is intended to
+    /// be providing care for.
+    pub fn condition(&self) -> Reference {
+        Reference {
+            value: &self.value["condition"],
+        }
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -47,26 +79,10 @@ impl EpisodeOfCare_Diagnosis<'_> {
         return None;
     }
 
-    /// A list of conditions/problems/diagnoses that this episode of care is intended to
-    /// be providing care for.
-    pub fn condition(&self) -> Reference {
-        Reference {
-            value: &self.value["condition"],
-        }
-    }
-
     /// Ranking of the diagnosis (for each role type).
     pub fn rank(&self) -> Option<i64> {
         if let Some(val) = self.value.get("rank") {
             return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for rank
-    pub fn _rank(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_rank") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -80,41 +96,25 @@ impl EpisodeOfCare_Diagnosis<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._rank() {
+            _val.validate();
+        }
+        let _ = self.condition().validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.condition().validate();
         if let Some(_val) = self.rank() {}
-        if let Some(_val) = self._rank() {
-            _val.validate();
-        }
         if let Some(_val) = self.role() {
             _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         return true;
     }

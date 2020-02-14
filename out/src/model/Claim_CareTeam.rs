@@ -24,36 +24,10 @@ impl Claim_CareTeam<'_> {
         return None;
     }
 
-    /// The qualification of the practitioner which is applicable for this service.
-    pub fn qualification(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("qualification") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A number to uniquely identify care team entries.
-    pub fn sequence(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("sequence") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The lead, assisting or supervising practitioner and their discipline if a
-    /// multidisciplinary team.
-    pub fn role(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for sequence
+    pub fn _sequence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sequence") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -70,6 +44,15 @@ impl Claim_CareTeam<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -96,10 +79,17 @@ impl Claim_CareTeam<'_> {
         return None;
     }
 
-    /// Extensions for sequence
-    pub fn _sequence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+    /// Member of the team who provided the product or service.
+    pub fn provider(&self) -> Reference {
+        Reference {
+            value: &self.value["provider"],
+        }
+    }
+
+    /// The qualification of the practitioner which is applicable for this service.
+    pub fn qualification(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("qualification") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -113,23 +103,28 @@ impl Claim_CareTeam<'_> {
         return None;
     }
 
-    /// Member of the team who provided the product or service.
-    pub fn provider(&self) -> Reference {
-        Reference {
-            value: &self.value["provider"],
+    /// The lead, assisting or supervising practitioner and their discipline if a
+    /// multidisciplinary team.
+    pub fn role(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("role") {
+            return Some(CodeableConcept { value: val });
         }
+        return None;
+    }
+
+    /// A number to uniquely identify care team entries.
+    pub fn sequence(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("sequence") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
     }
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._responsible() {
             _val.validate();
         }
-        if let Some(_val) = self.qualification() {
-            _val.validate();
-        }
-        if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.role() {
+        if let Some(_val) = self._sequence() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -137,16 +132,21 @@ impl Claim_CareTeam<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._sequence() {
+        let _ = self.provider().validate();
+        if let Some(_val) = self.qualification() {
             _val.validate();
         }
         if let Some(_val) = self.responsible() {}
-        let _ = self.provider().validate();
+        if let Some(_val) = self.role() {
+            _val.validate();
+        }
+        if let Some(_val) = self.sequence() {}
         return true;
     }
 }

@@ -13,15 +13,6 @@ pub struct InsurancePlan_SpecificCost<'a> {
 }
 
 impl InsurancePlan_SpecificCost<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// List of the specific benefits under this category of benefit.
     pub fn benefit(&self) -> Option<Vec<InsurancePlan_Benefit1>> {
         if let Some(Value::Array(val)) = self.value.get("benefit") {
@@ -32,6 +23,14 @@ impl InsurancePlan_SpecificCost<'_> {
             );
         }
         return None;
+    }
+
+    /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
+    /// Substance Abuse; Hospice, Home Health).
+    pub fn category(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["category"],
+        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -50,12 +49,13 @@ impl InsurancePlan_SpecificCost<'_> {
         return None;
     }
 
-    /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
-    /// Substance Abuse; Hospice, Home Health).
-    pub fn category(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["category"],
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -81,18 +81,18 @@ impl InsurancePlan_SpecificCost<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.benefit() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.category().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.category().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

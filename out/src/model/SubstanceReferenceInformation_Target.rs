@@ -17,14 +17,6 @@ pub struct SubstanceReferenceInformation_Target<'a> {
 }
 
 impl SubstanceReferenceInformation_Target<'_> {
-    /// Todo.
-    pub fn amount_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("amountString") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -34,17 +26,58 @@ impl SubstanceReferenceInformation_Target<'_> {
     }
 
     /// Todo.
-    pub fn target(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("target") {
-            return Some(Identifier { value: val });
+    pub fn amount_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("amountQuantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
 
     /// Todo.
-    pub fn amount_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+    pub fn amount_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("amountRange") {
+            return Some(Range { value: val });
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn amount_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("amountString") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn amount_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("amountType") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -79,39 +112,6 @@ impl SubstanceReferenceInformation_Target<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Todo.
-    pub fn amount_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("amountType") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Todo.
     pub fn organism(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("organism") {
@@ -129,22 +129,6 @@ impl SubstanceReferenceInformation_Target<'_> {
     }
 
     /// Todo.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Todo.
-    pub fn amount_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("amountRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// Todo.
     pub fn source(&self) -> Option<Vec<Reference>> {
         if let Some(Value::Array(val)) = self.value.get("source") {
             return Some(
@@ -156,30 +140,46 @@ impl SubstanceReferenceInformation_Target<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.amount_string() {}
-        if let Some(_val) = self._amount_string() {
-            _val.validate();
+    /// Todo.
+    pub fn target(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("target") {
+            return Some(Identifier { value: val });
         }
-        if let Some(_val) = self.target() {
+        return None;
+    }
+
+    /// Todo.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self._amount_string() {
             _val.validate();
         }
         if let Some(_val) = self.amount_quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.interaction() {
+        if let Some(_val) = self.amount_range() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.amount_string() {}
+        if let Some(_val) = self.amount_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.amount_type() {
+        if let Some(_val) = self.interaction() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -190,16 +190,16 @@ impl SubstanceReferenceInformation_Target<'_> {
         if let Some(_val) = self.organism_type() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.amount_range() {
-            _val.validate();
-        }
         if let Some(_val) = self.source() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.target() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
         }
         return true;
     }

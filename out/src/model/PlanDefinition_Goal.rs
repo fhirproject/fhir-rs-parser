@@ -17,19 +17,15 @@ pub struct PlanDefinition_Goal<'a> {
 }
 
 impl PlanDefinition_Goal<'_> {
-    /// The event after which the goal should begin being pursued.
-    pub fn start(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("start") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Identifies problems, conditions, issues, or concerns the goal is intended to
+    /// address.
+    pub fn addresses(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("addresses") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -42,11 +38,25 @@ impl PlanDefinition_Goal<'_> {
         return None;
     }
 
-    /// Identifies the expected level of importance associated with reaching/sustaining
-    /// the defined goal.
-    pub fn priority(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("priority") {
-            return Some(CodeableConcept { value: val });
+    /// Human-readable and/or coded description of a specific desired objective of care,
+    /// such as "control blood pressure" or "negotiate an obstacle course" or "dance
+    /// with child at wedding".
+    pub fn description(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["description"],
+        }
+    }
+
+    /// Didactic or other informational resources associated with the goal that provide
+    /// further supporting information about the goal. Information resources can include
+    /// inline text commentary and links to web resources.
+    pub fn documentation(&self) -> Option<Vec<RelatedArtifact>> {
+        if let Some(Value::Array(val)) = self.value.get("documentation") {
+            return Some(
+                val.into_iter()
+                    .map(|e| RelatedArtifact { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -67,50 +77,11 @@ impl PlanDefinition_Goal<'_> {
         return None;
     }
 
-    /// Indicates what should be done and within what timeframe.
-    pub fn target(&self) -> Option<Vec<PlanDefinition_Target>> {
-        if let Some(Value::Array(val)) = self.value.get("target") {
-            return Some(
-                val.into_iter()
-                    .map(|e| PlanDefinition_Target { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Didactic or other informational resources associated with the goal that provide
-    /// further supporting information about the goal. Information resources can include
-    /// inline text commentary and links to web resources.
-    pub fn documentation(&self) -> Option<Vec<RelatedArtifact>> {
-        if let Some(Value::Array(val)) = self.value.get("documentation") {
-            return Some(
-                val.into_iter()
-                    .map(|e| RelatedArtifact { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Human-readable and/or coded description of a specific desired objective of care,
-    /// such as "control blood pressure" or "negotiate an obstacle course" or "dance
-    /// with child at wedding".
-    pub fn description(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["description"],
-        }
-    }
-
-    /// Identifies problems, conditions, issues, or concerns the goal is intended to
-    /// address.
-    pub fn addresses(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("addresses") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -137,39 +108,68 @@ impl PlanDefinition_Goal<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.start() {
-            _val.validate();
+    /// Identifies the expected level of importance associated with reaching/sustaining
+    /// the defined goal.
+    pub fn priority(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("priority") {
+            return Some(CodeableConcept { value: val });
         }
-        if let Some(_val) = self.id() {}
+        return None;
+    }
+
+    /// The event after which the goal should begin being pursued.
+    pub fn start(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("start") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates what should be done and within what timeframe.
+    pub fn target(&self) -> Option<Vec<PlanDefinition_Target>> {
+        if let Some(Value::Array(val)) = self.value.get("target") {
+            return Some(
+                val.into_iter()
+                    .map(|e| PlanDefinition_Target { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self.addresses() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.category() {
             _val.validate();
         }
-        if let Some(_val) = self.priority() {
-            _val.validate();
+        let _ = self.description().validate();
+        if let Some(_val) = self.documentation() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.target() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.documentation() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.description().validate();
-        if let Some(_val) = self.addresses() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.priority() {
+            _val.validate();
+        }
+        if let Some(_val) = self.start() {
+            _val.validate();
+        }
+        if let Some(_val) = self.target() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

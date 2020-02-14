@@ -14,11 +14,12 @@ pub struct TestScript_Destination<'a> {
 }
 
 impl TestScript_Destination<'_> {
-    /// The type of destination profile the test system supports.
-    pub fn profile(&self) -> Coding {
-        Coding {
-            value: &self.value["profile"],
+    /// Extensions for index
+    pub fn _index(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_index") {
+            return Some(Element { value: val });
         }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -33,6 +34,24 @@ impl TestScript_Destination<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Abstract name given to a destination server in this test script.  The name is
+    /// provided as a number starting at 1.
+    pub fn index(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("index") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
@@ -59,49 +78,30 @@ impl TestScript_Destination<'_> {
         return None;
     }
 
-    /// Extensions for index
-    pub fn _index(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_index") {
-            return Some(Element { value: val });
+    /// The type of destination profile the test system supports.
+    pub fn profile(&self) -> Coding {
+        Coding {
+            value: &self.value["profile"],
         }
-        return None;
-    }
-
-    /// Abstract name given to a destination server in this test script.  The name is
-    /// provided as a number starting at 1.
-    pub fn index(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("index") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.profile().validate();
+        if let Some(_val) = self._index() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.index() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._index() {
-            _val.validate();
-        }
-        if let Some(_val) = self.index() {}
-        if let Some(_val) = self.id() {}
+        let _ = self.profile().validate();
         return true;
     }
 }

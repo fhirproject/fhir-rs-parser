@@ -16,11 +16,30 @@ pub struct MeasureReport_Stratum<'a> {
 }
 
 impl MeasureReport_Stratum<'_> {
-    /// The measure score for this stratum, calculated as appropriate for the measure
-    /// type and scoring method, and based on only the members of this stratum.
-    pub fn measure_score(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("measureScore") {
-            return Some(Quantity { value: val });
+    /// A stratifier component value.
+    pub fn component(&self) -> Option<Vec<MeasureReport_Component>> {
+        if let Some(Value::Array(val)) = self.value.get("component") {
+            return Some(
+                val.into_iter()
+                    .map(|e| MeasureReport_Component { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -30,6 +49,15 @@ impl MeasureReport_Stratum<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The measure score for this stratum, calculated as appropriate for the measure
+    /// type and scoring method, and based on only the members of this stratum.
+    pub fn measure_score(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("measureScore") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -69,34 +97,6 @@ impl MeasureReport_Stratum<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A stratifier component value.
-    pub fn component(&self) -> Option<Vec<MeasureReport_Component>> {
-        if let Some(Value::Array(val)) = self.value.get("component") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MeasureReport_Component { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// The value for this stratum, expressed as a CodeableConcept. When defining
     /// stratifiers on complex values, the value must be rendered such that the value
     /// for each stratum within the stratifier is unique.
@@ -108,16 +108,7 @@ impl MeasureReport_Stratum<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.measure_score() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.population() {
+        if let Some(_val) = self.component() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -127,7 +118,16 @@ impl MeasureReport_Stratum<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.component() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.measure_score() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.population() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

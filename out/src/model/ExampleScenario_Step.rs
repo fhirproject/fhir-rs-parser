@@ -15,22 +15,6 @@ pub struct ExampleScenario_Step<'a> {
 }
 
 impl ExampleScenario_Step<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Extensions for pause
     pub fn _pause(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_pause") {
@@ -52,31 +36,27 @@ impl ExampleScenario_Step<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Nested process.
-    pub fn process(&self) -> Option<Vec<ExampleScenario_Process>> {
-        if let Some(Value::Array(val)) = self.value.get("process") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExampleScenario_Process { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// If there is a pause in the flow.
-    pub fn pause(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("pause") {
-            return Some(val.as_bool().unwrap());
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -111,12 +91,27 @@ impl ExampleScenario_Step<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// If there is a pause in the flow.
+    pub fn pause(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("pause") {
+            return Some(val.as_bool().unwrap());
         }
+        return None;
+    }
+
+    /// Nested process.
+    pub fn process(&self) -> Option<Vec<ExampleScenario_Process>> {
+        if let Some(Value::Array(val)) = self.value.get("process") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ExampleScenario_Process { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self._pause() {
             _val.validate();
         }
@@ -125,13 +120,12 @@ impl ExampleScenario_Step<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.process() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.pause() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -139,6 +133,12 @@ impl ExampleScenario_Step<'_> {
         }
         if let Some(_val) = self.operation() {
             _val.validate();
+        }
+        if let Some(_val) = self.pause() {}
+        if let Some(_val) = self.process() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

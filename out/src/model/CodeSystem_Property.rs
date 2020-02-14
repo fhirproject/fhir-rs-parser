@@ -14,20 +14,10 @@ pub struct CodeSystem_Property<'a> {
 }
 
 impl CodeSystem_Property<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Reference to the formal meaning of the property. One possible source of meaning
-    /// is the [Concept Properties](codesystem-concept-properties.html) code system.
-    pub fn uri(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("uri") {
-            return Some(string);
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -36,6 +26,41 @@ impl CodeSystem_Property<'_> {
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for uri
+    pub fn _uri(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_uri") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A code that is used to identify the property. The code is used internally (in
+    /// CodeSystem.concept.property.code) and also externally, such as in property
+    /// filters.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A description of the property- why it is defined, and how its value might be
+    /// used.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
         }
         return None;
     }
@@ -56,36 +81,11 @@ impl CodeSystem_Property<'_> {
         return None;
     }
 
-    /// A description of the property- why it is defined, and how its value might be
-    /// used.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The type of the property value. Properties of type "code" contain a code defined
-    /// by the code system (e.g. a reference to another defined concept).
-    pub fn fhir_type(&self) -> Option<CodeSystem_PropertyType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(CodeSystem_PropertyType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for uri
-    pub fn _uri(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_uri") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -112,52 +112,52 @@ impl CodeSystem_Property<'_> {
         return None;
     }
 
-    /// A code that is used to identify the property. The code is used internally (in
-    /// CodeSystem.concept.property.code) and also externally, such as in property
-    /// filters.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
+    /// The type of the property value. Properties of type "code" contain a code defined
+    /// by the code system (e.g. a reference to another defined concept).
+    pub fn fhir_type(&self) -> Option<CodeSystem_PropertyType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(CodeSystem_PropertyType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Reference to the formal meaning of the property. One possible source of meaning
+    /// is the [Concept Properties](codesystem-concept-properties.html) code system.
+    pub fn uri(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("uri") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.uri() {}
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._code() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
         if let Some(_val) = self._uri() {
             _val.validate();
         }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.uri() {}
         return true;
     }
 }
@@ -189,13 +189,13 @@ impl CodeSystem_PropertyType {
 
     pub fn to_string(&self) -> String {
         match self {
-            CodeSystem_PropertyType::Code => "code",
-            CodeSystem_PropertyType::Coding => "Coding",
-            CodeSystem_PropertyType::String => "string",
-            CodeSystem_PropertyType::Integer => "integer",
-            CodeSystem_PropertyType::Boolean => "boolean",
-            CodeSystem_PropertyType::DateTime => "dateTime",
-            CodeSystem_PropertyType::Decimal => "decimal",
+            CodeSystem_PropertyType::Code => "code".to_string(),
+            CodeSystem_PropertyType::Coding => "Coding".to_string(),
+            CodeSystem_PropertyType::String => "string".to_string(),
+            CodeSystem_PropertyType::Integer => "integer".to_string(),
+            CodeSystem_PropertyType::Boolean => "boolean".to_string(),
+            CodeSystem_PropertyType::DateTime => "dateTime".to_string(),
+            CodeSystem_PropertyType::Decimal => "decimal".to_string(),
         }
     }
 }

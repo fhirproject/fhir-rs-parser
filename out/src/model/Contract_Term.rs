@@ -21,19 +21,69 @@ pub struct Contract_Term<'a> {
 }
 
 impl Contract_Term<'_> {
-    /// When this Contract Provision was issued.
-    pub fn issued(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("issued") {
-            return Some(string);
+    /// Extensions for issued
+    pub fn _issued(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_issued") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The matter of concern in the context of this provision of the agrement.
-    pub fn offer(&self) -> Contract_Offer {
-        Contract_Offer {
-            value: &self.value["offer"],
+    /// Extensions for text
+    pub fn _text(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
         }
+        return None;
+    }
+
+    /// An actor taking a role in an activity for which it can be assigned some degree
+    /// of responsibility for the activity taking place.
+    pub fn action(&self) -> Option<Vec<Contract_Action>> {
+        if let Some(Value::Array(val)) = self.value.get("action") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Contract_Action { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Relevant time or time-period when this Contract Provision is applicable.
+    pub fn applies(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("applies") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
+    /// Contract Term Asset List.
+    pub fn asset(&self) -> Option<Vec<Contract_Asset>> {
+        if let Some(Value::Array(val)) = self.value.get("asset") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Contract_Asset { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
     }
 
     /// Nested group of Contract Provisions.
@@ -48,14 +98,27 @@ impl Contract_Term<'_> {
         return None;
     }
 
-    /// Contract Term Asset List.
-    pub fn asset(&self) -> Option<Vec<Contract_Asset>> {
-        if let Some(Value::Array(val)) = self.value.get("asset") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Contract_Asset { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique identifier for this particular Contract Provision.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
+    /// When this Contract Provision was issued.
+    pub fn issued(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("issued") {
+            return Some(string);
         }
         return None;
     }
@@ -82,50 +145,11 @@ impl Contract_Term<'_> {
         return None;
     }
 
-    /// An actor taking a role in an activity for which it can be assigned some degree
-    /// of responsibility for the activity taking place.
-    pub fn action(&self) -> Option<Vec<Contract_Action>> {
-        if let Some(Value::Array(val)) = self.value.get("action") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Contract_Action { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The matter of concern in the context of this provision of the agrement.
+    pub fn offer(&self) -> Contract_Offer {
+        Contract_Offer {
+            value: &self.value["offer"],
         }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A specialized legal clause or condition based on overarching contract type.
-    pub fn sub_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("subType") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for issued
-    pub fn _issued(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The entity that the term applies to.
-    pub fn topic_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("topicReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
     }
 
     /// Security labels that protect the handling of information about the term and its
@@ -141,10 +165,18 @@ impl Contract_Term<'_> {
         return None;
     }
 
-    /// Extensions for text
-    pub fn _text(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+    /// A specialized legal clause or condition based on overarching contract type.
+    pub fn sub_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("subType") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Statement of a provision in a policy or a contract.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
+            return Some(string);
         }
         return None;
     }
@@ -153,6 +185,14 @@ impl Contract_Term<'_> {
     pub fn topic_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("topicCodeableConcept") {
             return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The entity that the term applies to.
+    pub fn topic_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("topicReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -168,105 +208,65 @@ impl Contract_Term<'_> {
         return None;
     }
 
-    /// Relevant time or time-period when this Contract Provision is applicable.
-    pub fn applies(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("applies") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Unique identifier for this particular Contract Provision.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Statement of a provision in a policy or a contract.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.issued() {}
-        let _ = self.offer().validate();
-        if let Some(_val) = self.group() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._issued() {
+            _val.validate();
         }
-        if let Some(_val) = self.asset() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._text() {
+            _val.validate();
         }
         if let Some(_val) = self.action() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.sub_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._issued() {
-            _val.validate();
-        }
-        if let Some(_val) = self.topic_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.security_label() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.topic_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
         if let Some(_val) = self.applies() {
             _val.validate();
         }
-        if let Some(_val) = self.identifier() {
-            _val.validate();
+        if let Some(_val) = self.asset() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.group() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.validate();
+        }
+        if let Some(_val) = self.issued() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        let _ = self.offer().validate();
+        if let Some(_val) = self.security_label() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.sub_type() {
+            _val.validate();
+        }
         if let Some(_val) = self.text() {}
+        if let Some(_val) = self.topic_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.topic_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
         return true;
     }
 }

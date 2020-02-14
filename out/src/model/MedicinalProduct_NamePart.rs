@@ -14,36 +14,6 @@ pub struct MedicinalProduct_NamePart<'a> {
 }
 
 impl MedicinalProduct_NamePart<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A fragment of a product name.
-    pub fn part(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("part") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for part
     pub fn _part(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_part") {
@@ -77,6 +47,36 @@ impl MedicinalProduct_NamePart<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A fragment of a product name.
+    pub fn part(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("part") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Idenifying type for this part of the name (e.g. strength part).
     pub fn fhir_type(&self) -> Coding {
         Coding {
@@ -85,12 +85,6 @@ impl MedicinalProduct_NamePart<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.part() {}
         if let Some(_val) = self._part() {
             _val.validate();
         }
@@ -100,6 +94,12 @@ impl MedicinalProduct_NamePart<'_> {
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.part() {}
         let _ = self.fhir_type().validate();
         return true;
     }

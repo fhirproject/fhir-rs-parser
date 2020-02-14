@@ -23,23 +23,58 @@ pub struct Endpoint<'a> {
 }
 
 impl Endpoint<'_> {
-    /// The payload type describes the acceptable content that can be communicated on
-    /// the endpoint.
-    pub fn payload_type(&self) -> Vec<CodeableConcept> {
-        self.value
-            .get("payloadType")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| CodeableConcept { value: e })
-            .collect::<Vec<_>>()
+    /// Extensions for address
+    pub fn _address(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_address") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for header
+    pub fn _header(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_header") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
     }
 
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for payloadMimeType
+    pub fn _payload_mime_type(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_payloadMimeType") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -52,10 +87,46 @@ impl Endpoint<'_> {
         return None;
     }
 
-    /// Extensions for address
-    pub fn _address(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_address") {
-            return Some(Element { value: val });
+    /// The uri that describes the actual end-point to connect to.
+    pub fn address(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("address") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A coded value that represents the technical details of the usage of this
+    /// endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-
+    /// hook).
+    pub fn connection_type(&self) -> Coding {
+        Coding {
+            value: &self.value["connectionType"],
+        }
+    }
+
+    /// Contact details for a human to contact about the subscription. The primary use
+    /// of this for system administrator troubleshooting.
+    pub fn contact(&self) -> Option<Vec<ContactPoint>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactPoint { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -76,10 +147,65 @@ impl Endpoint<'_> {
         return None;
     }
 
-    /// A friendly name that this endpoint can be referred to with.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
+    /// Additional headers / information to send as part of the notification.
+    pub fn header(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("header") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifier for the organization that is used to identify the endpoint across
+    /// multiple disparate systems.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The organization that manages this endpoint (even if technically another
+    /// organization is hosting this in the cloud, it is the organization associated
+    /// with the data).
+    pub fn managing_organization(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("managingOrganization") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -92,23 +218,6 @@ impl Endpoint<'_> {
             return Some(Meta { value: val });
         }
         return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A coded value that represents the technical details of the usage of this
-    /// endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-
-    /// hook).
-    pub fn connection_type(&self) -> Coding {
-        Coding {
-            value: &self.value["connectionType"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -134,56 +243,10 @@ impl Endpoint<'_> {
         return None;
     }
 
-    /// Identifier for the organization that is used to identify the endpoint across
-    /// multiple disparate systems.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// A friendly name that this endpoint can be referred to with.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Contact details for a human to contact about the subscription. The primary use
-    /// of this for system administrator troubleshooting.
-    pub fn contact(&self) -> Option<Vec<ContactPoint>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactPoint { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -202,22 +265,31 @@ impl Endpoint<'_> {
         return None;
     }
 
-    /// Extensions for payloadMimeType
-    pub fn _payload_mime_type(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_payloadMimeType") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The payload type describes the acceptable content that can be communicated on
+    /// the endpoint.
+    pub fn payload_type(&self) -> Vec<CodeableConcept> {
+        self.value
+            .get("payloadType")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| CodeableConcept { value: e })
+            .collect::<Vec<_>>()
+    }
+
+    /// The interval during which the endpoint is expected to be operational.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
     }
 
-    /// The uri that describes the actual end-point to connect to.
-    pub fn address(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("address") {
-            return Some(string);
+    /// active | suspended | error | off | test.
+    pub fn status(&self) -> Option<EndpointStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(EndpointStatus::from_string(&val).unwrap());
         }
         return None;
     }
@@ -235,149 +307,8 @@ impl Endpoint<'_> {
         return None;
     }
 
-    /// Additional headers / information to send as part of the notification.
-    pub fn header(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("header") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The organization that manages this endpoint (even if technically another
-    /// organization is hosting this in the cloud, it is the organization associated
-    /// with the data).
-    pub fn managing_organization(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("managingOrganization") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The interval during which the endpoint is expected to be operational.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for header
-    pub fn _header(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_header") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// active | suspended | error | off | test.
-    pub fn status(&self) -> Option<EndpointStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(EndpointStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        let _ = self.payload_type().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
         if let Some(_val) = self._address() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        let _ = self.connection_type().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.contact() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.payload_mime_type() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._payload_mime_type() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.address() {}
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.header() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.managing_organization() {
-            _val.validate();
-        }
-        if let Some(_val) = self.period() {
             _val.validate();
         }
         if let Some(_val) = self._header() {
@@ -385,7 +316,76 @@ impl Endpoint<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self._payload_mime_type() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.address() {}
+        let _ = self.connection_type().validate();
+        if let Some(_val) = self.contact() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.header() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.managing_organization() {
+            _val.validate();
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.payload_mime_type() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        let _ = self.payload_type().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
         if let Some(_val) = self.status() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
         return true;
     }
 }
@@ -415,12 +415,12 @@ impl EndpointStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            EndpointStatus::Active => "active",
-            EndpointStatus::Suspended => "suspended",
-            EndpointStatus::Error => "error",
-            EndpointStatus::Off => "off",
-            EndpointStatus::EnteredInError => "entered-in-error",
-            EndpointStatus::Test => "test",
+            EndpointStatus::Active => "active".to_string(),
+            EndpointStatus::Suspended => "suspended".to_string(),
+            EndpointStatus::Error => "error".to_string(),
+            EndpointStatus::Off => "off".to_string(),
+            EndpointStatus::EnteredInError => "entered-in-error".to_string(),
+            EndpointStatus::Test => "test".to_string(),
         }
     }
 }

@@ -16,6 +16,14 @@ pub struct MessageHeader_Response<'a> {
 }
 
 impl MessageHeader_Response<'_> {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for identifier
     pub fn _identifier(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identifier") {
@@ -24,10 +32,19 @@ impl MessageHeader_Response<'_> {
         return None;
     }
 
-    /// The MessageHeader.id of the message to which this message is a response.
-    pub fn identifier(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("identifier") {
-            return Some(string);
+    /// Code that identifies the type of response to the message - whether it was
+    /// successful or not, and whether it should be resent or not.
+    pub fn code(&self) -> Option<MessageHeader_ResponseCode> {
+        if let Some(Value::String(val)) = self.value.get("code") {
+            return Some(MessageHeader_ResponseCode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Full details of any issues found in the message.
+    pub fn details(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("details") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -48,27 +65,18 @@ impl MessageHeader_Response<'_> {
         return None;
     }
 
-    /// Code that identifies the type of response to the message - whether it was
-    /// successful or not, and whether it should be resent or not.
-    pub fn code(&self) -> Option<MessageHeader_ResponseCode> {
-        if let Some(Value::String(val)) = self.value.get("code") {
-            return Some(MessageHeader_ResponseCode::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The MessageHeader.id of the message to which this message is a response.
+    pub fn identifier(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("identifier") {
             return Some(string);
         }
         return None;
@@ -96,36 +104,28 @@ impl MessageHeader_Response<'_> {
         return None;
     }
 
-    /// Full details of any issues found in the message.
-    pub fn details(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("details") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self._identifier() {
             _val.validate();
         }
-        if let Some(_val) = self.identifier() {}
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.details() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.details() {
-            _val.validate();
         }
         return true;
     }
@@ -150,9 +150,9 @@ impl MessageHeader_ResponseCode {
 
     pub fn to_string(&self) -> String {
         match self {
-            MessageHeader_ResponseCode::Ok => "ok",
-            MessageHeader_ResponseCode::TransientError => "transient-error",
-            MessageHeader_ResponseCode::FatalError => "fatal-error",
+            MessageHeader_ResponseCode::Ok => "ok".to_string(),
+            MessageHeader_ResponseCode::TransientError => "transient-error".to_string(),
+            MessageHeader_ResponseCode::FatalError => "fatal-error".to_string(),
         }
     }
 }

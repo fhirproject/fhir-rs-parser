@@ -12,21 +12,18 @@ pub struct ElementDefinition_Discriminator<'a> {
 }
 
 impl ElementDefinition_Discriminator<'_> {
-    /// A FHIRPath expression, using [the simple subset of
-    /// FHIRPath](fhirpath.html#simple), that is used to identify the element on which
-    /// discrimination is based.
-    pub fn path(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("path") {
-            return Some(string);
+    /// Extensions for path
+    pub fn _path(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_path") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -47,10 +44,11 @@ impl ElementDefinition_Discriminator<'_> {
         return None;
     }
 
-    /// Extensions for path
-    pub fn _path(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -77,10 +75,12 @@ impl ElementDefinition_Discriminator<'_> {
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+    /// A FHIRPath expression, using [the simple subset of
+    /// FHIRPath](fhirpath.html#simple), that is used to identify the element on which
+    /// discrimination is based.
+    pub fn path(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("path") {
+            return Some(string);
         }
         return None;
     }
@@ -94,24 +94,24 @@ impl ElementDefinition_Discriminator<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.path() {}
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._path() {
+            _val.validate();
+        }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._path() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
+        if let Some(_val) = self.path() {}
         if let Some(_val) = self.fhir_type() {}
         return true;
     }
@@ -140,11 +140,11 @@ impl ElementDefinition_DiscriminatorType {
 
     pub fn to_string(&self) -> String {
         match self {
-            ElementDefinition_DiscriminatorType::Value => "value",
-            ElementDefinition_DiscriminatorType::Exists => "exists",
-            ElementDefinition_DiscriminatorType::Pattern => "pattern",
-            ElementDefinition_DiscriminatorType::FhirType => "type",
-            ElementDefinition_DiscriminatorType::Profile => "profile",
+            ElementDefinition_DiscriminatorType::Value => "value".to_string(),
+            ElementDefinition_DiscriminatorType::Exists => "exists".to_string(),
+            ElementDefinition_DiscriminatorType::Pattern => "pattern".to_string(),
+            ElementDefinition_DiscriminatorType::FhirType => "type".to_string(),
+            ElementDefinition_DiscriminatorType::Profile => "profile".to_string(),
         }
     }
 }

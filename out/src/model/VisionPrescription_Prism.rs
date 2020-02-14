@@ -13,6 +13,38 @@ pub struct VisionPrescription_Prism<'a> {
 }
 
 impl VisionPrescription_Prism<'_> {
+    /// Extensions for amount
+    pub fn _amount(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_amount") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for base
+    pub fn _base(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_base") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Amount of prism to compensate for eye alignment in fractional units.
+    pub fn amount(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("amount") {
+            return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
+    /// The relative base, or reference lens edge, for the prism.
+    pub fn base(&self) -> Option<VisionPrescription_PrismBase> {
+        if let Some(Value::String(val)) = self.value.get("base") {
+            return Some(VisionPrescription_PrismBase::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -29,26 +61,11 @@ impl VisionPrescription_Prism<'_> {
         return None;
     }
 
-    /// Amount of prism to compensate for eye alignment in fractional units.
-    pub fn amount(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("amount") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for amount
-    pub fn _amount(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_amount") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for base
-    pub fn _base(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_base") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -75,43 +92,26 @@ impl VisionPrescription_Prism<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The relative base, or reference lens edge, for the prism.
-    pub fn base(&self) -> Option<VisionPrescription_PrismBase> {
-        if let Some(Value::String(val)) = self.value.get("base") {
-            return Some(VisionPrescription_PrismBase::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.amount() {}
         if let Some(_val) = self._amount() {
             _val.validate();
         }
         if let Some(_val) = self._base() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.amount() {}
+        if let Some(_val) = self.base() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.base() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }
@@ -137,10 +137,10 @@ impl VisionPrescription_PrismBase {
 
     pub fn to_string(&self) -> String {
         match self {
-            VisionPrescription_PrismBase::Up => "up",
-            VisionPrescription_PrismBase::Down => "down",
-            VisionPrescription_PrismBase::In => "in",
-            VisionPrescription_PrismBase::Out => "out",
+            VisionPrescription_PrismBase::Up => "up".to_string(),
+            VisionPrescription_PrismBase::Down => "down".to_string(),
+            VisionPrescription_PrismBase::In => "in".to_string(),
+            VisionPrescription_PrismBase::Out => "out".to_string(),
         }
     }
 }

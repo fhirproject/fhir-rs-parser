@@ -21,6 +21,11 @@ impl Narrative<'_> {
         return None;
     }
 
+    /// The actual narrative content, a stripped down version of XHTML.
+    pub fn div(&self) -> &str {
+        self.value.get("div").unwrap().as_str().unwrap()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -37,9 +42,13 @@ impl Narrative<'_> {
         return None;
     }
 
-    /// The actual narrative content, a stripped down version of XHTML.
-    pub fn div(&self) -> &str {
-        self.value.get("div").unwrap().as_str().unwrap()
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
     }
 
     /// The status of the narrative - whether it's entirely generated (from just the
@@ -52,27 +61,18 @@ impl Narrative<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._status() {
             _val.validate();
         }
+        let _ = self.div();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.div();
-        if let Some(_val) = self.status() {}
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.status() {}
         return true;
     }
 }
@@ -98,10 +98,10 @@ impl NarrativeStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            NarrativeStatus::Generated => "generated",
-            NarrativeStatus::Extensions => "extensions",
-            NarrativeStatus::Additional => "additional",
-            NarrativeStatus::Empty => "empty",
+            NarrativeStatus::Generated => "generated".to_string(),
+            NarrativeStatus::Extensions => "extensions".to_string(),
+            NarrativeStatus::Additional => "additional".to_string(),
+            NarrativeStatus::Empty => "empty".to_string(),
         }
     }
 }

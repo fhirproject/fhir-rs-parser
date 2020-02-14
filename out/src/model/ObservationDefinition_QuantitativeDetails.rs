@@ -14,29 +14,27 @@ pub struct ObservationDefinition_QuantitativeDetails<'a> {
 }
 
 impl ObservationDefinition_QuantitativeDetails<'_> {
+    /// Extensions for conversionFactor
+    pub fn _conversion_factor(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_conversionFactor") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for decimalPrecision
+    pub fn _decimal_precision(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_decimalPrecision") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Factor for converting value expressed with SI unit to value expressed with
     /// customary unit.
     pub fn conversion_factor(&self) -> Option<f64> {
         if let Some(val) = self.value.get("conversionFactor") {
             return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Number of digits after decimal separator when the results of such observations
-    /// are of type Quantity.
-    pub fn decimal_precision(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("decimalPrecision") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// SI unit used to report quantitative results of observations conforming to this
-    /// ObservationDefinition.
-    pub fn unit(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("unit") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -50,18 +48,36 @@ impl ObservationDefinition_QuantitativeDetails<'_> {
         return None;
     }
 
-    /// Extensions for decimalPrecision
-    pub fn _decimal_precision(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_decimalPrecision") {
-            return Some(Element { value: val });
+    /// Number of digits after decimal separator when the results of such observations
+    /// are of type Quantity.
+    pub fn decimal_precision(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("decimalPrecision") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
 
-    /// Extensions for conversionFactor
-    pub fn _conversion_factor(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_conversionFactor") {
-            return Some(Element { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -88,56 +104,40 @@ impl ObservationDefinition_QuantitativeDetails<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// SI unit used to report quantitative results of observations conforming to this
+    /// ObservationDefinition.
+    pub fn unit(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("unit") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.conversion_factor() {}
-        if let Some(_val) = self.decimal_precision() {}
-        if let Some(_val) = self.unit() {
-            _val.validate();
-        }
-        if let Some(_val) = self.customary_unit() {
+        if let Some(_val) = self._conversion_factor() {
             _val.validate();
         }
         if let Some(_val) = self._decimal_precision() {
             _val.validate();
         }
-        if let Some(_val) = self._conversion_factor() {
+        if let Some(_val) = self.conversion_factor() {}
+        if let Some(_val) = self.customary_unit() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.decimal_precision() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.unit() {
+            _val.validate();
         }
         return true;
     }

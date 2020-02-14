@@ -13,15 +13,6 @@ pub struct NutritionOrder_Texture<'a> {
 }
 
 impl NutritionOrder_Texture<'_> {
-    /// Any texture modifications (for solid foods) that should be made, e.g. easy to
-    /// chew, chopped, ground, and pureed.
-    pub fn modifier(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("modifier") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -56,6 +47,15 @@ impl NutritionOrder_Texture<'_> {
         return None;
     }
 
+    /// Any texture modifications (for solid foods) that should be made, e.g. easy to
+    /// chew, chopped, ground, and pureed.
+    pub fn modifier(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("modifier") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -79,9 +79,6 @@ impl NutritionOrder_Texture<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -91,6 +88,9 @@ impl NutritionOrder_Texture<'_> {
             _val.validate();
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

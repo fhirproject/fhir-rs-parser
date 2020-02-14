@@ -16,10 +16,10 @@ pub struct PlanDefinition_Participant<'a> {
 }
 
 impl PlanDefinition_Participant<'_> {
-    /// The role the participant should play in performing the described action.
-    pub fn role(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -40,10 +40,11 @@ impl PlanDefinition_Participant<'_> {
         return None;
     }
 
-    /// The type of participant in the action.
-    pub fn fhir_type(&self) -> Option<PlanDefinition_ParticipantType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(PlanDefinition_ParticipantType::from_string(&val).unwrap());
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -70,25 +71,24 @@ impl PlanDefinition_Participant<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The role the participant should play in performing the described action.
+    pub fn role(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("role") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+    /// The type of participant in the action.
+    pub fn fhir_type(&self) -> Option<PlanDefinition_ParticipantType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(PlanDefinition_ParticipantType::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.role() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -96,16 +96,16 @@ impl PlanDefinition_Participant<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._type() {
+        if let Some(_val) = self.role() {
             _val.validate();
         }
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -131,10 +131,10 @@ impl PlanDefinition_ParticipantType {
 
     pub fn to_string(&self) -> String {
         match self {
-            PlanDefinition_ParticipantType::Patient => "patient",
-            PlanDefinition_ParticipantType::Practitioner => "practitioner",
-            PlanDefinition_ParticipantType::RelatedPerson => "related-person",
-            PlanDefinition_ParticipantType::Device => "device",
+            PlanDefinition_ParticipantType::Patient => "patient".to_string(),
+            PlanDefinition_ParticipantType::Practitioner => "practitioner".to_string(),
+            PlanDefinition_ParticipantType::RelatedPerson => "related-person".to_string(),
+            PlanDefinition_ParticipantType::Device => "device".to_string(),
         }
     }
 }

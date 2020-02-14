@@ -12,10 +12,26 @@ pub struct Distance<'a> {
 }
 
 impl Distance<'_> {
-    /// A human-readable form of the unit.
-    pub fn unit(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("unit") {
-            return Some(string);
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for comparator
+    pub fn _comparator(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comparator") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -24,6 +40,22 @@ impl Distance<'_> {
     pub fn _unit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_unit") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A computer processable form of the unit in some unit representation system.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
         }
         return None;
     }
@@ -54,14 +86,6 @@ impl Distance<'_> {
         return None;
     }
 
-    /// A computer processable form of the unit in some unit representation system.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -79,6 +103,14 @@ impl Distance<'_> {
         return None;
     }
 
+    /// A human-readable form of the unit.
+    pub fn unit(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("unit") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The value of the measured amount. The value includes an implicit precision in
     /// the presentation of the value.
     pub fn value(&self) -> Option<f64> {
@@ -88,65 +120,33 @@ impl Distance<'_> {
         return None;
     }
 
-    /// Extensions for comparator
-    pub fn _comparator(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comparator") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.unit() {}
-        if let Some(_val) = self._unit() {
+        if let Some(_val) = self._code() {
             _val.validate();
         }
-        if let Some(_val) = self.comparator() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.system() {}
-        if let Some(_val) = self.value() {}
         if let Some(_val) = self._comparator() {
             _val.validate();
         }
         if let Some(_val) = self._system() {
             _val.validate();
         }
+        if let Some(_val) = self._unit() {
+            _val.validate();
+        }
         if let Some(_val) = self._value() {
             _val.validate();
         }
-        if let Some(_val) = self._code() {
-            _val.validate();
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.comparator() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self.unit() {}
+        if let Some(_val) = self.value() {}
         return true;
     }
 }
@@ -172,10 +172,10 @@ impl DistanceComparator {
 
     pub fn to_string(&self) -> String {
         match self {
-            DistanceComparator::LessThan => "<",
-            DistanceComparator::LessThanOrEqual => "<=",
-            DistanceComparator::GreaterThanOrEqual => ">=",
-            DistanceComparator::GreaterThan => ">",
+            DistanceComparator::LessThan => "<".to_string(),
+            DistanceComparator::LessThanOrEqual => "<=".to_string(),
+            DistanceComparator::GreaterThanOrEqual => ">=".to_string(),
+            DistanceComparator::GreaterThan => ">".to_string(),
         }
     }
 }

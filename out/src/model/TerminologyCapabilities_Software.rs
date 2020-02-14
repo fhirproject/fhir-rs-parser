@@ -22,27 +22,10 @@ impl TerminologyCapabilities_Software<'_> {
         return None;
     }
 
-    /// The version identifier for the software covered by this statement.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -59,6 +42,15 @@ impl TerminologyCapabilities_Software<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -93,26 +85,34 @@ impl TerminologyCapabilities_Software<'_> {
         return None;
     }
 
+    /// The version identifier for the software covered by this statement.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.version() {}
         if let Some(_val) = self._version() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.name() {}
+        if let Some(_val) = self.version() {}
         return true;
     }
 }

@@ -19,26 +19,10 @@ pub struct Patient_Contact<'a> {
 }
 
 impl Patient_Contact<'_> {
-    /// The nature of the relationship between the patient and the contact person.
-    pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("relationship") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A contact detail for the person, e.g. a telephone number or an email address.
-    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-        if let Some(Value::Array(val)) = self.value.get("telecom") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactPoint { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for gender
+    pub fn _gender(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_gender") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -47,41 +31,6 @@ impl Patient_Contact<'_> {
     pub fn address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("address") {
             return Some(Address { value: val });
-        }
-        return None;
-    }
-
-    /// The period during which this contact person or organization is valid to be
-    /// contacted relating to this patient.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A name associated with the contact person.
-    pub fn name(&self) -> Option<HumanName> {
-        if let Some(val) = self.value.get("name") {
-            return Some(HumanName { value: val });
-        }
-        return None;
-    }
-
-    /// Organization on behalf of which the contact is acting or for which the contact
-    /// is working.
-    pub fn organization(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("organization") {
-            return Some(Reference { value: val });
         }
         return None;
     }
@@ -111,10 +60,11 @@ impl Patient_Contact<'_> {
         return None;
     }
 
-    /// Extensions for gender
-    pub fn _gender(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_gender") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -141,28 +91,61 @@ impl Patient_Contact<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.relationship() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// A name associated with the contact person.
+    pub fn name(&self) -> Option<HumanName> {
+        if let Some(val) = self.value.get("name") {
+            return Some(HumanName { value: val });
         }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        return None;
+    }
+
+    /// Organization on behalf of which the contact is acting or for which the contact
+    /// is working.
+    pub fn organization(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("organization") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// The period during which this contact person or organization is valid to be
+    /// contacted relating to this patient.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
+    /// The nature of the relationship between the patient and the contact person.
+    pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("relationship") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A contact detail for the person, e.g. a telephone number or an email address.
+    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+        if let Some(Value::Array(val)) = self.value.get("telecom") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactPoint { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self._gender() {
+            _val.validate();
         }
         if let Some(_val) = self.address() {
-            _val.validate();
-        }
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.organization() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -171,10 +154,27 @@ impl Patient_Contact<'_> {
             });
         }
         if let Some(_val) = self.gender() {}
-        if let Some(_val) = self._gender() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.name() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.organization() {
+            _val.validate();
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        if let Some(_val) = self.relationship() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.telecom() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -204,10 +204,10 @@ impl Patient_ContactGender {
 
     pub fn to_string(&self) -> String {
         match self {
-            Patient_ContactGender::Male => "male",
-            Patient_ContactGender::Female => "female",
-            Patient_ContactGender::Other => "other",
-            Patient_ContactGender::Unknown => "unknown",
+            Patient_ContactGender::Male => "male".to_string(),
+            Patient_ContactGender::Female => "female".to_string(),
+            Patient_ContactGender::Other => "other".to_string(),
+            Patient_ContactGender::Unknown => "unknown".to_string(),
         }
     }
 }

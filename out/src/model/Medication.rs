@@ -31,31 +31,62 @@ impl Medication<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+    /// Specific amount of the drug in the packaged product.  For example, when
+    /// specifying a product that has the same strength (For example, Insulin glargine
+    /// 100 unit per mL solution for injection), this attribute provides additional
+    /// clarification of the package amount (For example, 3 mL, 10mL, etc.).
+    pub fn amount(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("amount") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// Information that only applies to packages (not products).
+    pub fn batch(&self) -> Option<Medication_Batch> {
+        if let Some(val) = self.value.get("batch") {
+            return Some(Medication_Batch { value: val });
+        }
+        return None;
+    }
+
+    /// A code (or set of codes) that specify this medication, or a textual description
+    /// if no code is available. Usage note: This could be a standard medication code
+    /// such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or
+    /// local formulary code, optionally with translations to other code systems.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -76,14 +107,10 @@ impl Medication<'_> {
         return None;
     }
 
-    /// Identifies a particular constituent of interest in the product.
-    pub fn ingredient(&self) -> Option<Vec<Medication_Ingredient>> {
-        if let Some(Value::Array(val)) = self.value.get("ingredient") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Medication_Ingredient { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Describes the form of the item.  Powder; tablets; capsule.
+    pub fn form(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("form") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -109,24 +136,52 @@ impl Medication<'_> {
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifies a particular constituent of interest in the product.
+    pub fn ingredient(&self) -> Option<Vec<Medication_Ingredient>> {
+        if let Some(Value::Array(val)) = self.value.get("ingredient") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| Medication_Ingredient { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Information that only applies to packages (not products).
-    pub fn batch(&self) -> Option<Medication_Batch> {
-        if let Some(val) = self.value.get("batch") {
-            return Some(Medication_Batch { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Describes the details of the manufacturer of the medication product.  This is
+    /// not intended to represent the distributor of a medication product.
+    pub fn manufacturer(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("manufacturer") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -154,30 +209,10 @@ impl Medication<'_> {
         return None;
     }
 
-    /// Describes the details of the manufacturer of the medication product.  This is
-    /// not intended to represent the distributor of a medication product.
-    pub fn manufacturer(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("manufacturer") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Specific amount of the drug in the packaged product.  For example, when
-    /// specifying a product that has the same strength (For example, Insulin glargine
-    /// 100 unit per mL solution for injection), this attribute provides additional
-    /// clarification of the package amount (For example, 3 mL, 10mL, etc.).
-    pub fn amount(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("amount") {
-            return Some(Ratio { value: val });
+    /// A code to indicate if the medication is in active use.
+    pub fn status(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("status") {
+            return Some(string);
         }
         return None;
     }
@@ -195,80 +230,11 @@ impl Medication<'_> {
         return None;
     }
 
-    /// A code (or set of codes) that specify this medication, or a textual description
-    /// if no code is available. Usage note: This could be a standard medication code
-    /// such as a code from RxNorm, SNOMED CT, IDMP etc. It could also be a national or
-    /// local formulary code, optionally with translations to other code systems.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Describes the form of the item.  Powder; tablets; capsule.
-    pub fn form(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("form") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A code to indicate if the medication is in active use.
-    pub fn status(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("status") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.ingredient() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.batch() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.manufacturer() {
+        if let Some(_val) = self._language() {
             _val.validate();
         }
         if let Some(_val) = self._status() {
@@ -277,19 +243,53 @@ impl Medication<'_> {
         if let Some(_val) = self.amount() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self.batch() {
             _val.validate();
         }
         if let Some(_val) = self.code() {
             _val.validate();
         }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.form() {
             _val.validate();
         }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.ingredient() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.manufacturer() {
             _val.validate();
         }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.status() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
         return true;
     }
 }

@@ -22,10 +22,18 @@ impl Annotation<'_> {
         return None;
     }
 
-    /// The text of the annotation in markdown format.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
+    /// Extensions for text
+    pub fn _text(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for time
+    pub fn _time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_time") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -38,10 +46,9 @@ impl Annotation<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The individual responsible for making the annotation.
+    pub fn author_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("authorString") {
             return Some(string);
         }
         return None;
@@ -63,17 +70,18 @@ impl Annotation<'_> {
         return None;
     }
 
-    /// Extensions for text
-    pub fn _text(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// The individual responsible for making the annotation.
-    pub fn author_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("authorString") {
+    /// The text of the annotation in markdown format.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
             return Some(string);
         }
         return None;
@@ -87,36 +95,28 @@ impl Annotation<'_> {
         return None;
     }
 
-    /// Extensions for time
-    pub fn _time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_time") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._author_string() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {}
+        if let Some(_val) = self._text() {
+            _val.validate();
+        }
+        if let Some(_val) = self._time() {
+            _val.validate();
+        }
         if let Some(_val) = self.author_reference() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.author_string() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.author_string() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.text() {}
         if let Some(_val) = self.time() {}
-        if let Some(_val) = self._time() {
-            _val.validate();
-        }
         return true;
     }
 }

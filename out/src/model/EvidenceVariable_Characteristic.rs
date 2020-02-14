@@ -22,12 +22,157 @@ pub struct EvidenceVariable_Characteristic<'a> {
 }
 
 impl EvidenceVariable_Characteristic<'_> {
+    /// Extensions for definitionCanonical
+    pub fn _definition_canonical(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_definitionCanonical") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for exclude
+    pub fn _exclude(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_exclude") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for groupMeasure
+    pub fn _group_measure(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_groupMeasure") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for participantEffectiveDateTime
+    pub fn _participant_effective_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_participantEffectiveDateTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Define members of the evidence element using Codes (such as condition,
     /// medication, or observation), Expressions ( using an expression language such as
     /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
     /// last year).
     pub fn definition_canonical(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("definitionCanonical") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Define members of the evidence element using Codes (such as condition,
+    /// medication, or observation), Expressions ( using an expression language such as
+    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
+    /// last year).
+    pub fn definition_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("definitionCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Define members of the evidence element using Codes (such as condition,
+    /// medication, or observation), Expressions ( using an expression language such as
+    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
+    /// last year).
+    pub fn definition_data_requirement(&self) -> Option<DataRequirement> {
+        if let Some(val) = self.value.get("definitionDataRequirement") {
+            return Some(DataRequirement { value: val });
+        }
+        return None;
+    }
+
+    /// Define members of the evidence element using Codes (such as condition,
+    /// medication, or observation), Expressions ( using an expression language such as
+    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
+    /// last year).
+    pub fn definition_expression(&self) -> Option<Expression> {
+        if let Some(val) = self.value.get("definitionExpression") {
+            return Some(Expression { value: val });
+        }
+        return None;
+    }
+
+    /// Define members of the evidence element using Codes (such as condition,
+    /// medication, or observation), Expressions ( using an expression language such as
+    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
+    /// last year).
+    pub fn definition_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("definitionReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Define members of the evidence element using Codes (such as condition,
+    /// medication, or observation), Expressions ( using an expression language such as
+    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
+    /// last year).
+    pub fn definition_trigger_definition(&self) -> Option<TriggerDefinition> {
+        if let Some(val) = self.value.get("definitionTriggerDefinition") {
+            return Some(TriggerDefinition { value: val });
+        }
+        return None;
+    }
+
+    /// A short, natural language description of the characteristic that could be used
+    /// to communicate the criteria to an end-user.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// When true, members with this characteristic are excluded from the element.
+    pub fn exclude(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("exclude") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Indicates how elements are aggregated within the study effective period.
+    pub fn group_measure(&self) -> Option<EvidenceVariable_CharacteristicGroupMeasure> {
+        if let Some(Value::String(val)) = self.value.get("groupMeasure") {
+            return Some(EvidenceVariable_CharacteristicGroupMeasure::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -55,65 +200,18 @@ impl EvidenceVariable_Characteristic<'_> {
         return None;
     }
 
-    /// Define members of the evidence element using Codes (such as condition,
-    /// medication, or observation), Expressions ( using an expression language such as
-    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
-    /// last year).
-    pub fn definition_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("definitionReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Define members of the evidence element using Codes (such as condition,
-    /// medication, or observation), Expressions ( using an expression language such as
-    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
-    /// last year).
-    pub fn definition_data_requirement(&self) -> Option<DataRequirement> {
-        if let Some(val) = self.value.get("definitionDataRequirement") {
-            return Some(DataRequirement { value: val });
+    /// Indicates what effective period the study covers.
+    pub fn participant_effective_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("participantEffectiveDateTime") {
+            return Some(string);
         }
         return None;
     }
 
     /// Indicates what effective period the study covers.
-    pub fn participant_effective_timing(&self) -> Option<Timing> {
-        if let Some(val) = self.value.get("participantEffectiveTiming") {
-            return Some(Timing { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for groupMeasure
-    pub fn _group_measure(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_groupMeasure") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A short, natural language description of the characteristic that could be used
-    /// to communicate the criteria to an end-user.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
+    pub fn participant_effective_duration(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("participantEffectiveDuration") {
+            return Some(Duration { value: val });
         }
         return None;
     }
@@ -126,60 +224,18 @@ impl EvidenceVariable_Characteristic<'_> {
         return None;
     }
 
-    /// Define members of the evidence element using Codes (such as condition,
-    /// medication, or observation), Expressions ( using an expression language such as
-    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
-    /// last year).
-    pub fn definition_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("definitionCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Define members of the evidence element using Codes (such as condition,
-    /// medication, or observation), Expressions ( using an expression language such as
-    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
-    /// last year).
-    pub fn definition_expression(&self) -> Option<Expression> {
-        if let Some(val) = self.value.get("definitionExpression") {
-            return Some(Expression { value: val });
-        }
-        return None;
-    }
-
     /// Indicates what effective period the study covers.
-    pub fn participant_effective_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("participantEffectiveDateTime") {
-            return Some(string);
+    pub fn participant_effective_timing(&self) -> Option<Timing> {
+        if let Some(val) = self.value.get("participantEffectiveTiming") {
+            return Some(Timing { value: val });
         }
         return None;
     }
 
-    /// Extensions for participantEffectiveDateTime
-    pub fn _participant_effective_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_participantEffectiveDateTime") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Define members of the evidence element using Codes (such as condition,
-    /// medication, or observation), Expressions ( using an expression language such as
-    /// FHIRPath or CQL) or DataRequirements (such as Diabetes diagnosis onset in the
-    /// last year).
-    pub fn definition_trigger_definition(&self) -> Option<TriggerDefinition> {
-        if let Some(val) = self.value.get("definitionTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+    /// Indicates duration from the participant's study entry.
+    pub fn time_from_start(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("timeFromStart") {
+            return Some(Duration { value: val });
         }
         return None;
     }
@@ -197,125 +253,69 @@ impl EvidenceVariable_Characteristic<'_> {
         return None;
     }
 
-    /// Indicates how elements are aggregated within the study effective period.
-    pub fn group_measure(&self) -> Option<EvidenceVariable_CharacteristicGroupMeasure> {
-        if let Some(Value::String(val)) = self.value.get("groupMeasure") {
-            return Some(EvidenceVariable_CharacteristicGroupMeasure::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Indicates duration from the participant's study entry.
-    pub fn time_from_start(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("timeFromStart") {
-            return Some(Duration { value: val });
-        }
-        return None;
-    }
-
-    /// When true, members with this characteristic are excluded from the element.
-    pub fn exclude(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("exclude") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for definitionCanonical
-    pub fn _definition_canonical(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_definitionCanonical") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates what effective period the study covers.
-    pub fn participant_effective_duration(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("participantEffectiveDuration") {
-            return Some(Duration { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for exclude
-    pub fn _exclude(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_exclude") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.definition_canonical() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._definition_canonical() {
+            _val.validate();
         }
-        if let Some(_val) = self.definition_reference() {
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self._exclude() {
+            _val.validate();
+        }
+        if let Some(_val) = self._group_measure() {
+            _val.validate();
+        }
+        if let Some(_val) = self._participant_effective_date_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self.definition_canonical() {}
+        if let Some(_val) = self.definition_codeable_concept() {
             _val.validate();
         }
         if let Some(_val) = self.definition_data_requirement() {
             _val.validate();
         }
-        if let Some(_val) = self.participant_effective_timing() {
+        if let Some(_val) = self.definition_expression() {
             _val.validate();
         }
+        if let Some(_val) = self.definition_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.definition_trigger_definition() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.exclude() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._group_measure() {
+        if let Some(_val) = self.group_measure() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.participant_effective_date_time() {}
+        if let Some(_val) = self.participant_effective_duration() {
             _val.validate();
         }
-        if let Some(_val) = self.description() {}
         if let Some(_val) = self.participant_effective_period() {
             _val.validate();
         }
-        if let Some(_val) = self.definition_codeable_concept() {
+        if let Some(_val) = self.participant_effective_timing() {
             _val.validate();
         }
-        if let Some(_val) = self.definition_expression() {
-            _val.validate();
-        }
-        if let Some(_val) = self.participant_effective_date_time() {}
-        if let Some(_val) = self._participant_effective_date_time() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.definition_trigger_definition() {
+        if let Some(_val) = self.time_from_start() {
             _val.validate();
         }
         if let Some(_val) = self.usage_context() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.group_measure() {}
-        if let Some(_val) = self.time_from_start() {
-            _val.validate();
-        }
-        if let Some(_val) = self.exclude() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
-        if let Some(_val) = self._definition_canonical() {
-            _val.validate();
-        }
-        if let Some(_val) = self.participant_effective_duration() {
-            _val.validate();
-        }
-        if let Some(_val) = self._exclude() {
-            _val.validate();
         }
         return true;
     }
@@ -346,12 +346,18 @@ impl EvidenceVariable_CharacteristicGroupMeasure {
 
     pub fn to_string(&self) -> String {
         match self {
-            EvidenceVariable_CharacteristicGroupMeasure::Mean => "mean",
-            EvidenceVariable_CharacteristicGroupMeasure::Median => "median",
-            EvidenceVariable_CharacteristicGroupMeasure::MeanOfMean => "mean-of-mean",
-            EvidenceVariable_CharacteristicGroupMeasure::MeanOfMedian => "mean-of-median",
-            EvidenceVariable_CharacteristicGroupMeasure::MedianOfMean => "median-of-mean",
-            EvidenceVariable_CharacteristicGroupMeasure::MedianOfMedian => "median-of-median",
+            EvidenceVariable_CharacteristicGroupMeasure::Mean => "mean".to_string(),
+            EvidenceVariable_CharacteristicGroupMeasure::Median => "median".to_string(),
+            EvidenceVariable_CharacteristicGroupMeasure::MeanOfMean => "mean-of-mean".to_string(),
+            EvidenceVariable_CharacteristicGroupMeasure::MeanOfMedian => {
+                "mean-of-median".to_string()
+            }
+            EvidenceVariable_CharacteristicGroupMeasure::MedianOfMean => {
+                "median-of-mean".to_string()
+            }
+            EvidenceVariable_CharacteristicGroupMeasure::MedianOfMedian => {
+                "median-of-median".to_string()
+            }
         }
     }
 }

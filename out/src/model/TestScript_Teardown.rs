@@ -13,13 +13,16 @@ pub struct TestScript_Teardown<'a> {
 }
 
 impl TestScript_Teardown<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
+    /// The teardown action will only contain an operation.
+    pub fn action(&self) -> Vec<TestScript_Action2> {
+        self.value
+            .get("action")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| TestScript_Action2 { value: e })
+            .collect::<Vec<_>>()
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -34,6 +37,15 @@ impl TestScript_Teardown<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -60,33 +72,21 @@ impl TestScript_Teardown<'_> {
         return None;
     }
 
-    /// The teardown action will only contain an operation.
-    pub fn action(&self) -> Vec<TestScript_Action2> {
-        self.value
-            .get("action")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| TestScript_Action2 { value: e })
-            .collect::<Vec<_>>()
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.action().into_iter().for_each(|e| {
+            e.validate();
+        });
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.action().into_iter().for_each(|e| {
-            e.validate();
-        });
         return true;
     }
 }

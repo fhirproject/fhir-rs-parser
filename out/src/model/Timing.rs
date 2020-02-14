@@ -18,6 +18,18 @@ pub struct Timing<'a> {
 }
 
 impl Timing<'_> {
+    /// Extensions for event
+    pub fn _event(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_event") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// A code for the timing schedule (or just text in code.text). Some codes such as
     /// BID are ubiquitous, but many institutions define their own additional codes. If
     /// a code is provided, the code is understood to be a complete statement of
@@ -27,6 +39,18 @@ impl Timing<'_> {
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
             return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies specific times when the event occurs.
+    pub fn event(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("event") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -43,6 +67,15 @@ impl Timing<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -77,48 +110,24 @@ impl Timing<'_> {
         return None;
     }
 
-    /// Extensions for event
-    pub fn _event(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_event") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Identifies specific times when the event occurs.
-    pub fn event(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("event") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._event() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.code() {
             _val.validate();
+        }
+        if let Some(_val) = self.event() {
+            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -126,15 +135,6 @@ impl Timing<'_> {
         }
         if let Some(_val) = self.repeat() {
             _val.validate();
-        }
-        if let Some(_val) = self._event() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.event() {
-            _val.into_iter().for_each(|_e| {});
         }
         return true;
     }

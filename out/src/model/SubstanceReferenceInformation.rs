@@ -19,10 +19,10 @@ pub struct SubstanceReferenceInformation<'a> {
 }
 
 impl SubstanceReferenceInformation<'_> {
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// Extensions for comment
+    pub fn _comment(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comment") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -35,6 +35,26 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn classification(&self) -> Option<Vec<SubstanceReferenceInformation_Classification>> {
+        if let Some(Value::Array(val)) = self.value.get("classification") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceReferenceInformation_Classification { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Todo.
     pub fn comment(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("comment") {
@@ -43,12 +63,14 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
-    /// Todo.
-    pub fn gene(&self) -> Option<Vec<SubstanceReferenceInformation_Gene>> {
-        if let Some(Value::Array(val)) = self.value.get("gene") {
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceReferenceInformation_Gene { value: e })
+                    .map(|e| ResourceList { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,10 +93,26 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
-    /// Extensions for comment
-    pub fn _comment(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+    /// Todo.
+    pub fn gene(&self) -> Option<Vec<SubstanceReferenceInformation_Gene>> {
+        if let Some(Value::Array(val)) = self.value.get("gene") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceReferenceInformation_Gene { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn gene_element(&self) -> Option<Vec<SubstanceReferenceInformation_GeneElement>> {
+        if let Some(Value::Array(val)) = self.value.get("geneElement") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceReferenceInformation_GeneElement { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -84,53 +122,6 @@ impl SubstanceReferenceInformation<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Todo.
-    pub fn classification(&self) -> Option<Vec<SubstanceReferenceInformation_Classification>> {
-        if let Some(Value::Array(val)) = self.value.get("classification") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceReferenceInformation_Classification { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -146,14 +137,20 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
-    /// Todo.
-    pub fn gene_element(&self) -> Option<Vec<SubstanceReferenceInformation_GeneElement>> {
-        if let Some(Value::Array(val)) = self.value.get("geneElement") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceReferenceInformation_GeneElement { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -181,16 +178,6 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
     /// Todo.
     pub fn target(&self) -> Option<Vec<SubstanceReferenceInformation_Target>> {
         if let Some(Value::Array(val)) = self.value.get("target") {
@@ -203,13 +190,36 @@ impl SubstanceReferenceInformation<'_> {
         return None;
     }
 
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.language() {}
+        if let Some(_val) = self._comment() {
+            _val.validate();
+        }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.classification() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.comment() {}
-        if let Some(_val) = self.gene() {
+        if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -219,44 +229,34 @@ impl SubstanceReferenceInformation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._comment() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
+        if let Some(_val) = self.gene() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.classification() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self.gene_element() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
         if let Some(_val) = self.target() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         return true;
     }

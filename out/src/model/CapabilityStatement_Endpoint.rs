@@ -24,6 +24,15 @@ impl CapabilityStatement_Endpoint<'_> {
         return None;
     }
 
+    /// The network address of the endpoint. For solutions that do not use network
+    /// addresses for routing, it can be just an identifier.
+    pub fn address(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("address") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -44,23 +53,6 @@ impl CapabilityStatement_Endpoint<'_> {
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A list of the messaging transport protocol(s) identifiers, supported by this
-    /// endpoint.
-    pub fn protocol(&self) -> Coding {
-        Coding {
-            value: &self.value["protocol"],
-        }
-    }
-
-    /// The network address of the endpoint. For solutions that do not use network
-    /// addresses for routing, it can be just an identifier.
-    pub fn address(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("address") {
             return Some(string);
         }
         return None;
@@ -88,23 +80,31 @@ impl CapabilityStatement_Endpoint<'_> {
         return None;
     }
 
+    /// A list of the messaging transport protocol(s) identifiers, supported by this
+    /// endpoint.
+    pub fn protocol(&self) -> Coding {
+        Coding {
+            value: &self.value["protocol"],
+        }
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._address() {
             _val.validate();
         }
+        if let Some(_val) = self.address() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.protocol().validate();
-        if let Some(_val) = self.address() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.protocol().validate();
         return true;
     }
 }

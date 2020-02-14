@@ -17,9 +17,9 @@ pub struct TriggerDefinition<'a> {
 }
 
 impl TriggerDefinition<'_> {
-    /// Extensions for timingDateTime
-    pub fn _timing_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_timingDateTime") {
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
             return Some(Element { value: val });
         }
         return None;
@@ -33,38 +33,9 @@ impl TriggerDefinition<'_> {
         return None;
     }
 
-    /// The type of triggering event.
-    pub fn fhir_type(&self) -> Option<TriggerDefinitionType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(TriggerDefinitionType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// The timing of the event (if this is a periodic trigger).
-    pub fn timing_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("timingDate") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The triggering data of the event (if this is a data trigger). If more than one
-    /// data is requirement is specified, then all the data requirements must be true.
-    pub fn data(&self) -> Option<Vec<DataRequirement>> {
-        if let Some(Value::Array(val)) = self.value.get("data") {
-            return Some(
-                val.into_iter()
-                    .map(|e| DataRequirement { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
+    /// Extensions for timingDateTime
+    pub fn _timing_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_timingDateTime") {
             return Some(Element { value: val });
         }
         return None;
@@ -78,15 +49,6 @@ impl TriggerDefinition<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// A boolean-valued expression that is evaluated in the context of the container of
     /// the trigger definition and returns whether or not the trigger fires.
     pub fn condition(&self) -> Option<Expression> {
@@ -96,28 +58,15 @@ impl TriggerDefinition<'_> {
         return None;
     }
 
-    /// A formal name for the event. This may be an absolute URI that identifies the
-    /// event formally (e.g. from a trigger registry), or a simple relative URI that
-    /// identifies the event in a local context.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The timing of the event (if this is a periodic trigger).
-    pub fn timing_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("timingDateTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The timing of the event (if this is a periodic trigger).
-    pub fn timing_timing(&self) -> Option<Timing> {
-        if let Some(val) = self.value.get("timingTiming") {
-            return Some(Timing { value: val });
+    /// The triggering data of the event (if this is a data trigger). If more than one
+    /// data is requirement is specified, then all the data requirements must be true.
+    pub fn data(&self) -> Option<Vec<DataRequirement>> {
+        if let Some(Value::Array(val)) = self.value.get("data") {
+            return Some(
+                val.into_iter()
+                    .map(|e| DataRequirement { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -138,6 +87,41 @@ impl TriggerDefinition<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A formal name for the event. This may be an absolute URI that identifies the
+    /// event formally (e.g. from a trigger registry), or a simple relative URI that
+    /// identifies the event in a local context.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The timing of the event (if this is a periodic trigger).
+    pub fn timing_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("timingDate") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The timing of the event (if this is a periodic trigger).
+    pub fn timing_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("timingDateTime") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The timing of the event (if this is a periodic trigger).
     pub fn timing_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("timingReference") {
@@ -146,43 +130,59 @@ impl TriggerDefinition<'_> {
         return None;
     }
 
+    /// The timing of the event (if this is a periodic trigger).
+    pub fn timing_timing(&self) -> Option<Timing> {
+        if let Some(val) = self.value.get("timingTiming") {
+            return Some(Timing { value: val });
+        }
+        return None;
+    }
+
+    /// The type of triggering event.
+    pub fn fhir_type(&self) -> Option<TriggerDefinitionType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(TriggerDefinitionType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._timing_date_time() {
+        if let Some(_val) = self._name() {
             _val.validate();
         }
         if let Some(_val) = self._timing_date() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.timing_date() {}
-        if let Some(_val) = self.data() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._name() {
+        if let Some(_val) = self._timing_date_time() {
             _val.validate();
         }
         if let Some(_val) = self._type() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.condition() {
             _val.validate();
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.timing_date_time() {}
-        if let Some(_val) = self.timing_timing() {
-            _val.validate();
+        if let Some(_val) = self.data() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.timing_date() {}
+        if let Some(_val) = self.timing_date_time() {}
         if let Some(_val) = self.timing_reference() {
             _val.validate();
         }
+        if let Some(_val) = self.timing_timing() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -216,14 +216,14 @@ impl TriggerDefinitionType {
 
     pub fn to_string(&self) -> String {
         match self {
-            TriggerDefinitionType::NamedEvent => "named-event",
-            TriggerDefinitionType::Periodic => "periodic",
-            TriggerDefinitionType::DataChanged => "data-changed",
-            TriggerDefinitionType::DataAdded => "data-added",
-            TriggerDefinitionType::DataModified => "data-modified",
-            TriggerDefinitionType::DataRemoved => "data-removed",
-            TriggerDefinitionType::DataAccessed => "data-accessed",
-            TriggerDefinitionType::DataAccessEnded => "data-access-ended",
+            TriggerDefinitionType::NamedEvent => "named-event".to_string(),
+            TriggerDefinitionType::Periodic => "periodic".to_string(),
+            TriggerDefinitionType::DataChanged => "data-changed".to_string(),
+            TriggerDefinitionType::DataAdded => "data-added".to_string(),
+            TriggerDefinitionType::DataModified => "data-modified".to_string(),
+            TriggerDefinitionType::DataRemoved => "data-removed".to_string(),
+            TriggerDefinitionType::DataAccessed => "data-accessed".to_string(),
+            TriggerDefinitionType::DataAccessEnded => "data-access-ended".to_string(),
         }
     }
 }

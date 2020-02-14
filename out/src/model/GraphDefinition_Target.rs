@@ -16,50 +16,6 @@ pub struct GraphDefinition_Target<'a> {
 }
 
 impl GraphDefinition_Target<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Type of resource this link refers to.
-    pub fn fhir_type(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("type") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A set of parameters to look up.
-    pub fn params(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("params") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Compartment Consistency Rules.
-    pub fn compartment(&self) -> Option<Vec<GraphDefinition_Compartment>> {
-        if let Some(Value::Array(val)) = self.value.get("compartment") {
-            return Some(
-                val.into_iter()
-                    .map(|e| GraphDefinition_Compartment { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Extensions for params
     pub fn _params(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_params") {
@@ -76,12 +32,28 @@ impl GraphDefinition_Target<'_> {
         return None;
     }
 
-    /// Additional links from target resource.
-    pub fn link(&self) -> Option<Vec<GraphDefinition_Link>> {
-        if let Some(Value::Array(val)) = self.value.get("link") {
+    /// Compartment Consistency Rules.
+    pub fn compartment(&self) -> Option<Vec<GraphDefinition_Compartment>> {
+        if let Some(Value::Array(val)) = self.value.get("compartment") {
             return Some(
                 val.into_iter()
-                    .map(|e| GraphDefinition_Link { value: e })
+                    .map(|e| GraphDefinition_Compartment { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,6 +65,18 @@ impl GraphDefinition_Target<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Additional links from target resource.
+    pub fn link(&self) -> Option<Vec<GraphDefinition_Link>> {
+        if let Some(Value::Array(val)) = self.value.get("link") {
+            return Some(
+                val.into_iter()
+                    .map(|e| GraphDefinition_Link { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -119,6 +103,14 @@ impl GraphDefinition_Target<'_> {
         return None;
     }
 
+    /// A set of parameters to look up.
+    pub fn params(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("params") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Profile for the target resource.
     pub fn profile(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("profile") {
@@ -127,37 +119,45 @@ impl GraphDefinition_Target<'_> {
         return None;
     }
 
+    /// Type of resource this link refers to.
+    pub fn fhir_type(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("type") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.params() {}
-        if let Some(_val) = self.compartment() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._params() {
             _val.validate();
         }
         if let Some(_val) = self._type() {
             _val.validate();
         }
-        if let Some(_val) = self.link() {
+        if let Some(_val) = self.compartment() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.link() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.params() {}
         if let Some(_val) = self.profile() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }

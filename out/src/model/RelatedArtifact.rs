@@ -14,27 +14,10 @@ pub struct RelatedArtifact<'a> {
 }
 
 impl RelatedArtifact<'_> {
-    /// The related resource, such as a library, value set, profile, or other knowledge
-    /// resource.
-    pub fn resource(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("resource") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for citation
+    pub fn _citation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_citation") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -51,6 +34,65 @@ impl RelatedArtifact<'_> {
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A bibliographic citation for the related artifact. This text SHOULD be formatted
+    /// according to an accepted citation format.
+    pub fn citation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("citation") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A brief description of the document or knowledge resource being referenced,
+    /// suitable for display to a consumer.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The document being referenced, represented as an attachment. This is exclusive
+    /// with the resource element.
+    pub fn document(&self) -> Option<Attachment> {
+        if let Some(val) = self.value.get("document") {
+            return Some(Attachment { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -73,6 +115,15 @@ impl RelatedArtifact<'_> {
         return None;
     }
 
+    /// The related resource, such as a library, value set, profile, or other knowledge
+    /// resource.
+    pub fn resource(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("resource") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The type of relationship to the related artifact.
     pub fn fhir_type(&self) -> Option<RelatedArtifactType> {
         if let Some(Value::String(val)) = self.value.get("type") {
@@ -89,63 +140,9 @@ impl RelatedArtifact<'_> {
         return None;
     }
 
-    /// A brief description of the document or knowledge resource being referenced,
-    /// suitable for display to a consumer.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for citation
-    pub fn _citation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_citation") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The document being referenced, represented as an attachment. This is exclusive
-    /// with the resource element.
-    pub fn document(&self) -> Option<Attachment> {
-        if let Some(val) = self.value.get("document") {
-            return Some(Attachment { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A bibliographic citation for the related artifact. This text SHOULD be formatted
-    /// according to an accepted citation format.
-    pub fn citation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("citation") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.resource() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._citation() {
+            _val.validate();
         }
         if let Some(_val) = self._display() {
             _val.validate();
@@ -153,24 +150,27 @@ impl RelatedArtifact<'_> {
         if let Some(_val) = self._label() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.label() {}
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.url() {}
-        if let Some(_val) = self.display() {}
-        if let Some(_val) = self._citation() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
         if let Some(_val) = self._url() {
             _val.validate();
         }
+        if let Some(_val) = self.citation() {}
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self.document() {
             _val.validate();
         }
-        if let Some(_val) = self._type() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.citation() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.label() {}
+        if let Some(_val) = self.resource() {}
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.url() {}
         return true;
     }
 }
@@ -204,14 +204,14 @@ impl RelatedArtifactType {
 
     pub fn to_string(&self) -> String {
         match self {
-            RelatedArtifactType::Documentation => "documentation",
-            RelatedArtifactType::Justification => "justification",
-            RelatedArtifactType::Citation => "citation",
-            RelatedArtifactType::Predecessor => "predecessor",
-            RelatedArtifactType::Successor => "successor",
-            RelatedArtifactType::DerivedFrom => "derived-from",
-            RelatedArtifactType::DependsOn => "depends-on",
-            RelatedArtifactType::ComposedOf => "composed-of",
+            RelatedArtifactType::Documentation => "documentation".to_string(),
+            RelatedArtifactType::Justification => "justification".to_string(),
+            RelatedArtifactType::Citation => "citation".to_string(),
+            RelatedArtifactType::Predecessor => "predecessor".to_string(),
+            RelatedArtifactType::Successor => "successor".to_string(),
+            RelatedArtifactType::DerivedFrom => "derived-from".to_string(),
+            RelatedArtifactType::DependsOn => "depends-on".to_string(),
+            RelatedArtifactType::ComposedOf => "composed-of".to_string(),
         }
     }
 }

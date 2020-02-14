@@ -14,12 +14,24 @@ pub struct InsurancePlan_Benefit<'a> {
 }
 
 impl InsurancePlan_Benefit<'_> {
-    /// The specific limits on the benefit.
-    pub fn limit(&self) -> Option<Vec<InsurancePlan_Limit>> {
-        if let Some(Value::Array(val)) = self.value.get("limit") {
+    /// Extensions for requirement
+    pub fn _requirement(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_requirement") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| InsurancePlan_Limit { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -35,23 +47,12 @@ impl InsurancePlan_Benefit<'_> {
         return None;
     }
 
-    /// Type of benefit (primary care; speciality care; inpatient; outpatient).
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// The specific limits on the benefit.
+    pub fn limit(&self) -> Option<Vec<InsurancePlan_Limit>> {
+        if let Some(Value::Array(val)) = self.value.get("limit") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| InsurancePlan_Limit { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,23 +89,24 @@ impl InsurancePlan_Benefit<'_> {
         return None;
     }
 
-    /// Extensions for requirement
-    pub fn _requirement(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_requirement") {
-            return Some(Element { value: val });
+    /// Type of benefit (primary care; speciality care; inpatient; outpatient).
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.limit() {
+        if let Some(_val) = self._requirement() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.limit() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -115,9 +117,7 @@ impl InsurancePlan_Benefit<'_> {
             });
         }
         if let Some(_val) = self.requirement() {}
-        if let Some(_val) = self._requirement() {
-            _val.validate();
-        }
+        let _ = self.fhir_type().validate();
         return true;
     }
 }

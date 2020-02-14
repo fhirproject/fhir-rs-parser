@@ -16,6 +16,13 @@ pub struct MedicinalProductPharmaceutical_RouteOfAdministration<'a> {
 }
 
 impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
+    /// Coded expression for the route.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -32,11 +39,11 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
         return None;
     }
 
-    /// The maximum dose per day (maximum dose quantity to be administered in any one
-    /// 24-h period) that can be administered as per the protocol referenced in the
-    /// clinical trial authorisation.
-    pub fn max_dose_per_day(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("maxDosePerDay") {
+    /// The first dose (dose quantity) administered in humans can be specified, for a
+    /// product under investigation, using a numerical value and its unit of
+    /// measurement.
+    pub fn first_dose(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("firstDose") {
             return Some(Quantity { value: val });
         }
         return None;
@@ -47,6 +54,25 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The maximum dose per day (maximum dose quantity to be administered in any one
+    /// 24-h period) that can be administered as per the protocol referenced in the
+    /// clinical trial authorisation.
+    pub fn max_dose_per_day(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("maxDosePerDay") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// The maximum dose per treatment period that can be administered as per the
+    /// protocol referenced in the clinical trial authorisation.
+    pub fn max_dose_per_treatment_period(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("maxDosePerTreatmentPeriod") {
+            return Some(Ratio { value: val });
         }
         return None;
     }
@@ -67,28 +93,6 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     pub fn max_treatment_period(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("maxTreatmentPeriod") {
             return Some(Duration { value: val });
-        }
-        return None;
-    }
-
-    /// The first dose (dose quantity) administered in humans can be specified, for a
-    /// product under investigation, using a numerical value and its unit of
-    /// measurement.
-    pub fn first_dose(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("firstDose") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
-    /// A species for which this route applies.
-    pub fn target_species(&self) -> Option<Vec<MedicinalProductPharmaceutical_TargetSpecies>> {
-        if let Some(Value::Array(val)) = self.value.get("targetSpecies") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MedicinalProductPharmaceutical_TargetSpecies { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -115,55 +119,51 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
         return None;
     }
 
-    /// The maximum dose per treatment period that can be administered as per the
-    /// protocol referenced in the clinical trial authorisation.
-    pub fn max_dose_per_treatment_period(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("maxDosePerTreatmentPeriod") {
-            return Some(Ratio { value: val });
+    /// A species for which this route applies.
+    pub fn target_species(&self) -> Option<Vec<MedicinalProductPharmaceutical_TargetSpecies>> {
+        if let Some(Value::Array(val)) = self.value.get("targetSpecies") {
+            return Some(
+                val.into_iter()
+                    .map(|e| MedicinalProductPharmaceutical_TargetSpecies { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// Coded expression for the route.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
+        let _ = self.code().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.max_dose_per_day() {
+        if let Some(_val) = self.first_dose() {
             _val.validate();
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.max_dose_per_day() {
+            _val.validate();
+        }
+        if let Some(_val) = self.max_dose_per_treatment_period() {
+            _val.validate();
+        }
         if let Some(_val) = self.max_single_dose() {
             _val.validate();
         }
         if let Some(_val) = self.max_treatment_period() {
             _val.validate();
         }
-        if let Some(_val) = self.first_dose() {
-            _val.validate();
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.target_species() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.max_dose_per_treatment_period() {
-            _val.validate();
-        }
-        let _ = self.code().validate();
         return true;
     }
 }

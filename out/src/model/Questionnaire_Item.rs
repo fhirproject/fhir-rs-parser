@@ -18,20 +18,10 @@ pub struct Questionnaire_Item<'a> {
 }
 
 impl Questionnaire_Item<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// An identifier that is unique within the Questionnaire allowing linkage to the
-    /// equivalent item in a QuestionnaireResponse resource.
-    pub fn link_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("linkId") {
-            return Some(string);
+    /// Extensions for definition
+    pub fn _definition(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_definition") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -40,6 +30,169 @@ impl Questionnaire_Item<'_> {
     pub fn _enable_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_enableBehavior") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for linkId
+    pub fn _link_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_linkId") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for maxLength
+    pub fn _max_length(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_maxLength") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for prefix
+    pub fn _prefix(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_prefix") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for readOnly
+    pub fn _read_only(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_readOnly") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for repeats
+    pub fn _repeats(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_repeats") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for required
+    pub fn _required(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_required") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for text
+    pub fn _text(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// One of the permitted answers for a "choice" or "open-choice" question.
+    pub fn answer_option(&self) -> Option<Vec<Questionnaire_AnswerOption>> {
+        if let Some(Value::Array(val)) = self.value.get("answerOption") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Questionnaire_AnswerOption { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a value set containing a list of codes representing permitted
+    /// answers for a "choice" or "open-choice" question.
+    pub fn answer_value_set(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("answerValueSet") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A terminology code that corresponds to this group or question (e.g. a code from
+    /// LOINC, which defines many questions and answers).
+    pub fn code(&self) -> Option<Vec<Coding>> {
+        if let Some(Value::Array(val)) = self.value.get("code") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Coding { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// This element is a URI that refers to an [[[ElementDefinition]]] that provides
+    /// information about this item, including information that might otherwise be
+    /// included in the instance of the Questionnaire resource. A detailed description
+    /// of the construction of the URI is shown in Comments, below. If this element is
+    /// present then the following element values MAY be derived from the Element
+    /// Definition if the corresponding elements of this Questionnaire resource instance
+    /// have no value:    * code (ElementDefinition.code)   * type
+    /// (ElementDefinition.type)   * required (ElementDefinition.min)   * repeats
+    /// (ElementDefinition.max)   * maxLength (ElementDefinition.maxLength)   *
+    /// answerValueSet (ElementDefinition.binding)  * options
+    /// (ElementDefinition.binding).
+    pub fn definition(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("definition") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Controls how multiple enableWhen values are interpreted -  whether all or any
+    /// must be true.
+    pub fn enable_behavior(&self) -> Option<Questionnaire_ItemEnableBehavior> {
+        if let Some(Value::String(val)) = self.value.get("enableBehavior") {
+            return Some(Questionnaire_ItemEnableBehavior::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A constraint indicating that this item should only be enabled (displayed/allow
+    /// answers to be captured) when the specified condition is true.
+    pub fn enable_when(&self) -> Option<Vec<Questionnaire_EnableWhen>> {
+        if let Some(Value::Array(val)) = self.value.get("enableWhen") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Questionnaire_EnableWhen { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -69,79 +222,20 @@ impl Questionnaire_Item<'_> {
         return None;
     }
 
-    /// An indication, if true, that the item may occur multiple times in the response,
-    /// collecting multiple answers for questions or multiple sets of answers for
-    /// groups.
-    pub fn repeats(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("repeats") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for repeats
-    pub fn _repeats(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_repeats") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// This element is a URI that refers to an [[[ElementDefinition]]] that provides
-    /// information about this item, including information that might otherwise be
-    /// included in the instance of the Questionnaire resource. A detailed description
-    /// of the construction of the URI is shown in Comments, below. If this element is
-    /// present then the following element values MAY be derived from the Element
-    /// Definition if the corresponding elements of this Questionnaire resource instance
-    /// have no value:    * code (ElementDefinition.code)   * type
-    /// (ElementDefinition.type)   * required (ElementDefinition.min)   * repeats
-    /// (ElementDefinition.max)   * maxLength (ElementDefinition.maxLength)   *
-    /// answerValueSet (ElementDefinition.binding)  * options
-    /// (ElementDefinition.binding).
-    pub fn definition(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("definition") {
+    /// An identifier that is unique within the Questionnaire allowing linkage to the
+    /// equivalent item in a QuestionnaireResponse resource.
+    pub fn link_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("linkId") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for linkId
-    pub fn _link_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_linkId") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Controls how multiple enableWhen values are interpreted -  whether all or any
-    /// must be true.
-    pub fn enable_behavior(&self) -> Option<Questionnaire_ItemEnableBehavior> {
-        if let Some(Value::String(val)) = self.value.get("enableBehavior") {
-            return Some(Questionnaire_ItemEnableBehavior::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for maxLength
-    pub fn _max_length(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_maxLength") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for text
-    pub fn _text(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+    /// The maximum number of characters that are permitted in the answer to be
+    /// considered a "valid" QuestionnaireResponse.
+    pub fn max_length(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("maxLength") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
@@ -168,20 +262,11 @@ impl Questionnaire_Item<'_> {
         return None;
     }
 
-    /// An indication, if true, that the item must be present in a "completed"
-    /// QuestionnaireResponse.  If false, the item may be skipped when answering the
-    /// questionnaire.
-    pub fn required(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("required") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for definition
-    pub fn _definition(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_definition") {
-            return Some(Element { value: val });
+    /// A short label for a particular group, question or set of display text within the
+    /// questionnaire used for reference by the individual completing the questionnaire.
+    pub fn prefix(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("prefix") {
+            return Some(string);
         }
         return None;
     }
@@ -195,36 +280,31 @@ impl Questionnaire_Item<'_> {
         return None;
     }
 
-    /// The maximum number of characters that are permitted in the answer to be
-    /// considered a "valid" QuestionnaireResponse.
-    pub fn max_length(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("maxLength") {
-            return Some(val.as_i64().unwrap());
+    /// An indication, if true, that the item may occur multiple times in the response,
+    /// collecting multiple answers for questions or multiple sets of answers for
+    /// groups.
+    pub fn repeats(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("repeats") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
 
-    /// A reference to a value set containing a list of codes representing permitted
-    /// answers for a "choice" or "open-choice" question.
-    pub fn answer_value_set(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("answerValueSet") {
+    /// An indication, if true, that the item must be present in a "completed"
+    /// QuestionnaireResponse.  If false, the item may be skipped when answering the
+    /// questionnaire.
+    pub fn required(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("required") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// The name of a section, the text of a question or text content for a display
+    /// item.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -239,92 +319,61 @@ impl Questionnaire_Item<'_> {
         return None;
     }
 
-    /// A constraint indicating that this item should only be enabled (displayed/allow
-    /// answers to be captured) when the specified condition is true.
-    pub fn enable_when(&self) -> Option<Vec<Questionnaire_EnableWhen>> {
-        if let Some(Value::Array(val)) = self.value.get("enableWhen") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Questionnaire_EnableWhen { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The name of a section, the text of a question or text content for a display
-    /// item.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A terminology code that corresponds to this group or question (e.g. a code from
-    /// LOINC, which defines many questions and answers).
-    pub fn code(&self) -> Option<Vec<Coding>> {
-        if let Some(Value::Array(val)) = self.value.get("code") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Coding { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for required
-    pub fn _required(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_required") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A short label for a particular group, question or set of display text within the
-    /// questionnaire used for reference by the individual completing the questionnaire.
-    pub fn prefix(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("prefix") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for prefix
-    pub fn _prefix(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_prefix") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// One of the permitted answers for a "choice" or "open-choice" question.
-    pub fn answer_option(&self) -> Option<Vec<Questionnaire_AnswerOption>> {
-        if let Some(Value::Array(val)) = self.value.get("answerOption") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Questionnaire_AnswerOption { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for readOnly
-    pub fn _read_only(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_readOnly") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.link_id() {}
+        if let Some(_val) = self._definition() {
+            _val.validate();
+        }
         if let Some(_val) = self._enable_behavior() {
             _val.validate();
         }
+        if let Some(_val) = self._link_id() {
+            _val.validate();
+        }
+        if let Some(_val) = self._max_length() {
+            _val.validate();
+        }
+        if let Some(_val) = self._prefix() {
+            _val.validate();
+        }
+        if let Some(_val) = self._read_only() {
+            _val.validate();
+        }
+        if let Some(_val) = self._repeats() {
+            _val.validate();
+        }
+        if let Some(_val) = self._required() {
+            _val.validate();
+        }
+        if let Some(_val) = self._text() {
+            _val.validate();
+        }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.answer_option() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.answer_value_set() {}
+        if let Some(_val) = self.code() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.definition() {}
+        if let Some(_val) = self.enable_behavior() {}
+        if let Some(_val) = self.enable_when() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.initial() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -335,68 +384,19 @@ impl Questionnaire_Item<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.repeats() {}
-        if let Some(_val) = self._repeats() {
-            _val.validate();
-        }
-        if let Some(_val) = self.definition() {}
-        if let Some(_val) = self._link_id() {
-            _val.validate();
-        }
-        if let Some(_val) = self.enable_behavior() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._max_length() {
-            _val.validate();
-        }
-        if let Some(_val) = self._text() {
-            _val.validate();
-        }
+        if let Some(_val) = self.link_id() {}
+        if let Some(_val) = self.max_length() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.required() {}
-        if let Some(_val) = self._definition() {
-            _val.validate();
-        }
-        if let Some(_val) = self.read_only() {}
-        if let Some(_val) = self.max_length() {}
-        if let Some(_val) = self.answer_value_set() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.enable_when() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {}
-        if let Some(_val) = self.code() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._required() {
-            _val.validate();
-        }
         if let Some(_val) = self.prefix() {}
-        if let Some(_val) = self._prefix() {
-            _val.validate();
-        }
-        if let Some(_val) = self.answer_option() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._read_only() {
-            _val.validate();
-        }
+        if let Some(_val) = self.read_only() {}
+        if let Some(_val) = self.repeats() {}
+        if let Some(_val) = self.required() {}
+        if let Some(_val) = self.text() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -418,8 +418,8 @@ impl Questionnaire_ItemEnableBehavior {
 
     pub fn to_string(&self) -> String {
         match self {
-            Questionnaire_ItemEnableBehavior::All => "all",
-            Questionnaire_ItemEnableBehavior::Any => "any",
+            Questionnaire_ItemEnableBehavior::All => "all".to_string(),
+            Questionnaire_ItemEnableBehavior::Any => "any".to_string(),
         }
     }
 }
@@ -469,22 +469,22 @@ impl Questionnaire_ItemType {
 
     pub fn to_string(&self) -> String {
         match self {
-            Questionnaire_ItemType::Group => "group",
-            Questionnaire_ItemType::Display => "display",
-            Questionnaire_ItemType::Boolean => "boolean",
-            Questionnaire_ItemType::Decimal => "decimal",
-            Questionnaire_ItemType::Integer => "integer",
-            Questionnaire_ItemType::Date => "date",
-            Questionnaire_ItemType::DateTime => "dateTime",
-            Questionnaire_ItemType::Time => "time",
-            Questionnaire_ItemType::String => "string",
-            Questionnaire_ItemType::Text => "text",
-            Questionnaire_ItemType::Url => "url",
-            Questionnaire_ItemType::Choice => "choice",
-            Questionnaire_ItemType::OpenChoice => "open-choice",
-            Questionnaire_ItemType::Attachment => "attachment",
-            Questionnaire_ItemType::Reference => "reference",
-            Questionnaire_ItemType::Quantity => "quantity",
+            Questionnaire_ItemType::Group => "group".to_string(),
+            Questionnaire_ItemType::Display => "display".to_string(),
+            Questionnaire_ItemType::Boolean => "boolean".to_string(),
+            Questionnaire_ItemType::Decimal => "decimal".to_string(),
+            Questionnaire_ItemType::Integer => "integer".to_string(),
+            Questionnaire_ItemType::Date => "date".to_string(),
+            Questionnaire_ItemType::DateTime => "dateTime".to_string(),
+            Questionnaire_ItemType::Time => "time".to_string(),
+            Questionnaire_ItemType::String => "string".to_string(),
+            Questionnaire_ItemType::Text => "text".to_string(),
+            Questionnaire_ItemType::Url => "url".to_string(),
+            Questionnaire_ItemType::Choice => "choice".to_string(),
+            Questionnaire_ItemType::OpenChoice => "open-choice".to_string(),
+            Questionnaire_ItemType::Attachment => "attachment".to_string(),
+            Questionnaire_ItemType::Reference => "reference".to_string(),
+            Questionnaire_ItemType::Quantity => "quantity".to_string(),
         }
     }
 }

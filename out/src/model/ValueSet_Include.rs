@@ -17,15 +17,6 @@ pub struct ValueSet_Include<'a> {
 }
 
 impl ValueSet_Include<'_> {
-    /// The version of the code system that the codes are selected from, or the special
-    /// version '*' for all versions.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
@@ -54,11 +45,32 @@ impl ValueSet_Include<'_> {
         return None;
     }
 
-    /// An absolute URI which is the code system from which the selected codes come
-    /// from.
-    pub fn system(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("system") {
-            return Some(string);
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Select concepts by specify a matching criterion based on the properties
+    /// (including relationships) defined by the system, or on filters defined by the
+    /// system. If multiple filters are specified, they SHALL all be true.
+    pub fn filter(&self) -> Option<Vec<ValueSet_Filter>> {
+        if let Some(Value::Array(val)) = self.value.get("filter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ValueSet_Filter { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -94,18 +106,11 @@ impl ValueSet_Include<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// An absolute URI which is the code system from which the selected codes come
+    /// from.
+    pub fn system(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("system") {
+            return Some(string);
         }
         return None;
     }
@@ -125,22 +130,16 @@ impl ValueSet_Include<'_> {
         return None;
     }
 
-    /// Select concepts by specify a matching criterion based on the properties
-    /// (including relationships) defined by the system, or on filters defined by the
-    /// system. If multiple filters are specified, they SHALL all be true.
-    pub fn filter(&self) -> Option<Vec<ValueSet_Filter>> {
-        if let Some(Value::Array(val)) = self.value.get("filter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ValueSet_Filter { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The version of the code system that the codes are selected from, or the special
+    /// version '*' for all versions.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.version() {}
         if let Some(_val) = self._system() {
             _val.validate();
         }
@@ -152,26 +151,27 @@ impl ValueSet_Include<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.system() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.value_set() {
-            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.filter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self.value_set() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.version() {}
         return true;
     }
 }

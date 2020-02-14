@@ -12,18 +12,58 @@ pub struct ElementDefinition_Constraint<'a> {
 }
 
 impl ElementDefinition_Constraint<'_> {
-    /// An XPath expression of constraint that can be executed to see if this constraint
-    /// is met.
-    pub fn xpath(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("xpath") {
-            return Some(string);
+    /// Extensions for expression
+    pub fn _expression(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_expression") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A reference to the original source of the constraint, for traceability purposes.
-    pub fn source(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("source") {
+    /// Extensions for human
+    pub fn _human(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_human") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for key
+    pub fn _key(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_key") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for requirements
+    pub fn _requirements(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_requirements") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for severity
+    pub fn _severity(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_severity") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for xpath
+    pub fn _xpath(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_xpath") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A [FHIRPath](fhirpath.html) expression of constraint that can be executed to see
+    /// if this constraint is met.
+    pub fn expression(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("expression") {
             return Some(string);
         }
         return None;
@@ -54,22 +94,6 @@ impl ElementDefinition_Constraint<'_> {
         return None;
     }
 
-    /// Extensions for key
-    pub fn _key(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_key") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for xpath
-    pub fn _xpath(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_xpath") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -79,27 +103,12 @@ impl ElementDefinition_Constraint<'_> {
         return None;
     }
 
-    /// Extensions for severity
-    pub fn _severity(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_severity") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A [FHIRPath](fhirpath.html) expression of constraint that can be executed to see
-    /// if this constraint is met.
-    pub fn expression(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("expression") {
+    /// Allows identification of which elements have their cardinalities impacted by the
+    /// constraint.  Will not be referenced for constraints that do not affect
+    /// cardinality.
+    pub fn key(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("key") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for human
-    pub fn _human(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_human") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -126,14 +135,6 @@ impl ElementDefinition_Constraint<'_> {
         return None;
     }
 
-    /// Extensions for expression
-    pub fn _expression(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_expression") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Description of why this constraint is necessary or appropriate.
     pub fn requirements(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("requirements") {
@@ -151,61 +152,60 @@ impl ElementDefinition_Constraint<'_> {
         return None;
     }
 
-    /// Extensions for requirements
-    pub fn _requirements(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_requirements") {
-            return Some(Element { value: val });
+    /// A reference to the original source of the constraint, for traceability purposes.
+    pub fn source(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("source") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Allows identification of which elements have their cardinalities impacted by the
-    /// constraint.  Will not be referenced for constraints that do not affect
-    /// cardinality.
-    pub fn key(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("key") {
+    /// An XPath expression of constraint that can be executed to see if this constraint
+    /// is met.
+    pub fn xpath(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("xpath") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.xpath() {}
-        if let Some(_val) = self.source() {}
+        if let Some(_val) = self._expression() {
+            _val.validate();
+        }
+        if let Some(_val) = self._human() {
+            _val.validate();
+        }
+        if let Some(_val) = self._key() {
+            _val.validate();
+        }
+        if let Some(_val) = self._requirements() {
+            _val.validate();
+        }
+        if let Some(_val) = self._severity() {
+            _val.validate();
+        }
+        if let Some(_val) = self._xpath() {
+            _val.validate();
+        }
+        if let Some(_val) = self.expression() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.human() {}
-        if let Some(_val) = self._key() {
-            _val.validate();
-        }
-        if let Some(_val) = self._xpath() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._severity() {
-            _val.validate();
-        }
-        if let Some(_val) = self.expression() {}
-        if let Some(_val) = self._human() {
-            _val.validate();
-        }
+        if let Some(_val) = self.key() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._expression() {
-            _val.validate();
-        }
         if let Some(_val) = self.requirements() {}
         if let Some(_val) = self.severity() {}
-        if let Some(_val) = self._requirements() {
-            _val.validate();
-        }
-        if let Some(_val) = self.key() {}
+        if let Some(_val) = self.source() {}
+        if let Some(_val) = self.xpath() {}
         return true;
     }
 }
@@ -227,8 +227,8 @@ impl ElementDefinition_ConstraintSeverity {
 
     pub fn to_string(&self) -> String {
         match self {
-            ElementDefinition_ConstraintSeverity::Error => "error",
-            ElementDefinition_ConstraintSeverity::Warning => "warning",
+            ElementDefinition_ConstraintSeverity::Error => "error".to_string(),
+            ElementDefinition_ConstraintSeverity::Warning => "warning".to_string(),
         }
     }
 }

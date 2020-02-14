@@ -46,13 +46,6 @@ impl Encounter_ClassHistory<'_> {
         return None;
     }
 
-    /// The time that the episode was in the specified class.
-    pub fn period(&self) -> Period {
-        Period {
-            value: &self.value["period"],
-        }
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -75,6 +68,13 @@ impl Encounter_ClassHistory<'_> {
         return None;
     }
 
+    /// The time that the episode was in the specified class.
+    pub fn period(&self) -> Period {
+        Period {
+            value: &self.value["period"],
+        }
+    }
+
     pub fn validate(&self) -> bool {
         let _ = self.class().validate();
         if let Some(_val) = self.extension() {
@@ -83,12 +83,12 @@ impl Encounter_ClassHistory<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.period().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.period().validate();
         return true;
     }
 }

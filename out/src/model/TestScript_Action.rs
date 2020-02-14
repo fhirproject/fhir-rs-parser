@@ -14,6 +14,15 @@ pub struct TestScript_Action<'a> {
 }
 
 impl TestScript_Action<'_> {
+    /// Evaluates the results of previous operations to determine if the server under
+    /// test behaves appropriately.
+    pub fn assert(&self) -> Option<TestScript_Assert> {
+        if let Some(val) = self.value.get("assert") {
+            return Some(TestScript_Assert { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -35,14 +44,6 @@ impl TestScript_Action<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The operation to perform.
-    pub fn operation(&self) -> Option<TestScript_Operation> {
-        if let Some(val) = self.value.get("operation") {
-            return Some(TestScript_Operation { value: val });
         }
         return None;
     }
@@ -69,31 +70,30 @@ impl TestScript_Action<'_> {
         return None;
     }
 
-    /// Evaluates the results of previous operations to determine if the server under
-    /// test behaves appropriately.
-    pub fn assert(&self) -> Option<TestScript_Assert> {
-        if let Some(val) = self.value.get("assert") {
-            return Some(TestScript_Assert { value: val });
+    /// The operation to perform.
+    pub fn operation(&self) -> Option<TestScript_Operation> {
+        if let Some(val) = self.value.get("operation") {
+            return Some(TestScript_Operation { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.assert() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.operation() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.assert() {
+        if let Some(_val) = self.operation() {
             _val.validate();
         }
         return true;

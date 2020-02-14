@@ -13,6 +13,81 @@ pub struct ElementDefinition_Slicing<'a> {
 }
 
 impl ElementDefinition_Slicing<'_> {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for ordered
+    pub fn _ordered(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_ordered") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for rules
+    pub fn _rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_rules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A human-readable text description of how the slicing works. If there is no
+    /// discriminator, this is required to be present to provide whatever information is
+    /// possible about how the slices can be differentiated.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Designates which child elements are used to discriminate between the slices when
+    /// processing an instance. If one or more discriminators are provided, the value of
+    /// the child elements in the instance data SHALL completely distinguish which slice
+    /// the element in the resource matches based on the allowed values for those
+    /// elements in each of the slices.
+    pub fn discriminator(&self) -> Option<Vec<ElementDefinition_Discriminator>> {
+        if let Some(Value::Array(val)) = self.value.get("discriminator") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ElementDefinition_Discriminator { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -35,26 +110,11 @@ impl ElementDefinition_Slicing<'_> {
         return None;
     }
 
-    /// Extensions for ordered
-    pub fn _ordered(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_ordered") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for rules
-    pub fn _rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_rules") {
-            return Some(Element { value: val });
+    /// If the matching elements have to occur in the same order as defined in the
+    /// profile.
+    pub fn ordered(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("ordered") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -68,95 +128,35 @@ impl ElementDefinition_Slicing<'_> {
         return None;
     }
 
-    /// If the matching elements have to occur in the same order as defined in the
-    /// profile.
-    pub fn ordered(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("ordered") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Designates which child elements are used to discriminate between the slices when
-    /// processing an instance. If one or more discriminators are provided, the value of
-    /// the child elements in the instance data SHALL completely distinguish which slice
-    /// the element in the resource matches based on the allowed values for those
-    /// elements in each of the slices.
-    pub fn discriminator(&self) -> Option<Vec<ElementDefinition_Discriminator>> {
-        if let Some(Value::Array(val)) = self.value.get("discriminator") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ElementDefinition_Discriminator { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A human-readable text description of how the slicing works. If there is no
-    /// discriminator, this is required to be present to provide whatever information is
-    /// possible about how the slices can be differentiated.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._ordered() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self._ordered() {
             _val.validate();
         }
         if let Some(_val) = self._rules() {
             _val.validate();
         }
-        if let Some(_val) = self.rules() {}
-        if let Some(_val) = self.ordered() {}
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self.discriminator() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.ordered() {}
+        if let Some(_val) = self.rules() {}
         return true;
     }
 }
@@ -180,9 +180,9 @@ impl ElementDefinition_SlicingRules {
 
     pub fn to_string(&self) -> String {
         match self {
-            ElementDefinition_SlicingRules::Closed => "closed",
-            ElementDefinition_SlicingRules::Open => "open",
-            ElementDefinition_SlicingRules::OpenAtEnd => "openAtEnd",
+            ElementDefinition_SlicingRules::Closed => "closed".to_string(),
+            ElementDefinition_SlicingRules::Open => "open".to_string(),
+            ElementDefinition_SlicingRules::OpenAtEnd => "openAtEnd".to_string(),
         }
     }
 }

@@ -15,11 +15,18 @@ pub struct CapabilityStatement_Operation<'a> {
 }
 
 impl CapabilityStatement_Operation<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for documentation
+    pub fn _documentation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_documentation") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -34,6 +41,16 @@ impl CapabilityStatement_Operation<'_> {
     /// supported.
     pub fn definition(&self) -> &str {
         self.value.get("definition").unwrap().as_str().unwrap()
+    }
+
+    /// Documentation that describes anything special about the operation behavior,
+    /// possibly detailing different behavior for system, type and instance-level
+    /// invocation of the operation.
+    pub fn documentation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("documentation") {
+            return Some(string);
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -52,11 +69,10 @@ impl CapabilityStatement_Operation<'_> {
         return None;
     }
 
-    /// Documentation that describes anything special about the operation behavior,
-    /// possibly detailing different behavior for system, type and instance-level
-    /// invocation of the operation.
-    pub fn documentation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("documentation") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -94,43 +110,27 @@ impl CapabilityStatement_Operation<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for documentation
-    pub fn _documentation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._documentation() {
+            _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
         let _ = self.definition();
+        if let Some(_val) = self.documentation() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.documentation() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.name() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self._documentation() {
-            _val.validate();
-        }
         return true;
     }
 }

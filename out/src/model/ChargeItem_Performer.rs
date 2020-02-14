@@ -17,29 +17,11 @@ pub struct ChargeItem_Performer<'a> {
 }
 
 impl ChargeItem_Performer<'_> {
-    /// Describes the type of performance or participation(e.g. primary surgeon,
-    /// anesthesiologiest, etc.).
-    pub fn function(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("function") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// The device, practitioner, etc. who performed or participated in the service.
     pub fn actor(&self) -> Reference {
         Reference {
             value: &self.value["actor"],
         }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -54,6 +36,24 @@ impl ChargeItem_Performer<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Describes the type of performance or participation(e.g. primary surgeon,
+    /// anesthesiologiest, etc.).
+    pub fn function(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("function") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -81,16 +81,16 @@ impl ChargeItem_Performer<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.function() {
-            _val.validate();
-        }
         let _ = self.actor().validate();
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.function() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

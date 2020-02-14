@@ -13,14 +13,6 @@ pub struct DeviceDefinition_DeviceName<'a> {
 }
 
 impl DeviceDefinition_DeviceName<'_> {
-    /// The name of the device.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -29,19 +21,26 @@ impl DeviceDefinition_DeviceName<'_> {
         return None;
     }
 
-    /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
-    /// ManufactureDeviceName | ModelName.
-    pub fn fhir_type(&self) -> Option<DeviceDefinition_DeviceNameType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(DeviceDefinition_DeviceNameType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -77,30 +76,34 @@ impl DeviceDefinition_DeviceName<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The name of the device.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
+    /// ManufactureDeviceName | ModelName.
+    pub fn fhir_type(&self) -> Option<DeviceDefinition_DeviceNameType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(DeviceDefinition_DeviceNameType::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.name() {}
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self._type() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -108,11 +111,8 @@ impl DeviceDefinition_DeviceName<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -142,12 +142,14 @@ impl DeviceDefinition_DeviceNameType {
 
     pub fn to_string(&self) -> String {
         match self {
-            DeviceDefinition_DeviceNameType::UdiLabelName => "udi-label-name",
-            DeviceDefinition_DeviceNameType::UserFriendlyName => "user-friendly-name",
-            DeviceDefinition_DeviceNameType::PatientReportedName => "patient-reported-name",
-            DeviceDefinition_DeviceNameType::ManufacturerName => "manufacturer-name",
-            DeviceDefinition_DeviceNameType::ModelName => "model-name",
-            DeviceDefinition_DeviceNameType::Other => "other",
+            DeviceDefinition_DeviceNameType::UdiLabelName => "udi-label-name".to_string(),
+            DeviceDefinition_DeviceNameType::UserFriendlyName => "user-friendly-name".to_string(),
+            DeviceDefinition_DeviceNameType::PatientReportedName => {
+                "patient-reported-name".to_string()
+            }
+            DeviceDefinition_DeviceNameType::ManufacturerName => "manufacturer-name".to_string(),
+            DeviceDefinition_DeviceNameType::ModelName => "model-name".to_string(),
+            DeviceDefinition_DeviceNameType::Other => "other".to_string(),
         }
     }
 }

@@ -14,6 +14,16 @@ pub struct SubstanceSpecification_MolecularWeight<'a> {
 }
 
 impl SubstanceSpecification_MolecularWeight<'_> {
+    /// Used to capture quantitative values for a variety of elements. If only limits
+    /// are given, the arithmetic mean would be the average. If only a single definite
+    /// value for a given element is given, it would be captured in this field.
+    pub fn amount(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("amount") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -26,15 +36,6 @@ impl SubstanceSpecification_MolecularWeight<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Type of molecular weight such as exact, average (also known as. number average),
-    /// weight average.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -78,24 +79,23 @@ impl SubstanceSpecification_MolecularWeight<'_> {
         return None;
     }
 
-    /// Used to capture quantitative values for a variety of elements. If only limits
-    /// are given, the arithmetic mean would be the average. If only a single definite
-    /// value for a given element is given, it would be captured in this field.
-    pub fn amount(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("amount") {
-            return Some(Quantity { value: val });
+    /// Type of molecular weight such as exact, average (also known as. number average),
+    /// weight average.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.amount() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.method() {
@@ -106,7 +106,7 @@ impl SubstanceSpecification_MolecularWeight<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.amount() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;

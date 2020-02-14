@@ -15,31 +15,10 @@ pub struct ValueSet_Filter<'a> {
 }
 
 impl ValueSet_Filter<'_> {
-    /// The match value may be either a code defined by the system, or a string value,
-    /// which is a regex match on the literal string of the property value  (if the
-    /// filter represents a property defined in CodeSystem) or of the system filter
-    /// value (if the filter represents a filter defined in CodeSystem) when the
-    /// operation is 'regex', or one of the values (true and false), when the operation
-    /// is 'exists'.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The kind of operation to perform as a part of the filter criteria.
-    pub fn op(&self) -> Option<ValueSet_FilterOp> {
-        if let Some(Value::String(val)) = self.value.get("op") {
-            return Some(ValueSet_FilterOp::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// A code that identifies a property or a filter defined in the code system.
-    pub fn property(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("property") {
-            return Some(string);
+    /// Extensions for op
+    pub fn _op(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_op") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -60,23 +39,6 @@ impl ValueSet_Filter<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for op
-    pub fn _op(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_op") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -89,6 +51,15 @@ impl ValueSet_Filter<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -115,18 +86,43 @@ impl ValueSet_Filter<'_> {
         return None;
     }
 
+    /// The kind of operation to perform as a part of the filter criteria.
+    pub fn op(&self) -> Option<ValueSet_FilterOp> {
+        if let Some(Value::String(val)) = self.value.get("op") {
+            return Some(ValueSet_FilterOp::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A code that identifies a property or a filter defined in the code system.
+    pub fn property(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("property") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The match value may be either a code defined by the system, or a string value,
+    /// which is a regex match on the literal string of the property value  (if the
+    /// filter represents a property defined in CodeSystem) or of the system filter
+    /// value (if the filter represents a filter defined in CodeSystem) when the
+    /// operation is 'regex', or one of the values (true and false), when the operation
+    /// is 'exists'.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.op() {}
-        if let Some(_val) = self.property() {}
+        if let Some(_val) = self._op() {
+            _val.validate();
+        }
         if let Some(_val) = self._property() {
             _val.validate();
         }
         if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._op() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -134,11 +130,15 @@ impl ValueSet_Filter<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.op() {}
+        if let Some(_val) = self.property() {}
+        if let Some(_val) = self.value() {}
         return true;
     }
 }
@@ -174,15 +174,15 @@ impl ValueSet_FilterOp {
 
     pub fn to_string(&self) -> String {
         match self {
-            ValueSet_FilterOp::Equal => "=",
-            ValueSet_FilterOp::IsA => "is-a",
-            ValueSet_FilterOp::DescendentOf => "descendent-of",
-            ValueSet_FilterOp::IsNotA => "is-not-a",
-            ValueSet_FilterOp::Regex => "regex",
-            ValueSet_FilterOp::In => "in",
-            ValueSet_FilterOp::NotIn => "not-in",
-            ValueSet_FilterOp::Generalizes => "generalizes",
-            ValueSet_FilterOp::Exists => "exists",
+            ValueSet_FilterOp::Equal => "=".to_string(),
+            ValueSet_FilterOp::IsA => "is-a".to_string(),
+            ValueSet_FilterOp::DescendentOf => "descendent-of".to_string(),
+            ValueSet_FilterOp::IsNotA => "is-not-a".to_string(),
+            ValueSet_FilterOp::Regex => "regex".to_string(),
+            ValueSet_FilterOp::In => "in".to_string(),
+            ValueSet_FilterOp::NotIn => "not-in".to_string(),
+            ValueSet_FilterOp::Generalizes => "generalizes".to_string(),
+            ValueSet_FilterOp::Exists => "exists".to_string(),
         }
     }
 }

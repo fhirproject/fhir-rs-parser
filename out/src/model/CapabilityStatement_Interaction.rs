@@ -15,6 +15,14 @@ pub struct CapabilityStatement_Interaction<'a> {
 }
 
 impl CapabilityStatement_Interaction<'_> {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -31,6 +39,16 @@ impl CapabilityStatement_Interaction<'_> {
         return None;
     }
 
+    /// Guidance specific to the implementation of this operation, such as 'delete is a
+    /// logical delete' or 'updates are only allowed with version id' or 'creates
+    /// permitted from pre-authorized certificates only'.
+    pub fn documentation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("documentation") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -43,6 +61,15 @@ impl CapabilityStatement_Interaction<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -69,53 +96,26 @@ impl CapabilityStatement_Interaction<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Guidance specific to the implementation of this operation, such as 'delete is a
-    /// logical delete' or 'updates are only allowed with version id' or 'creates
-    /// permitted from pre-authorized certificates only'.
-    pub fn documentation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("documentation") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self._documentation() {
             _val.validate();
         }
         if let Some(_val) = self.code() {}
+        if let Some(_val) = self.documentation() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.documentation() {}
-        if let Some(_val) = self.id() {}
         return true;
     }
 }
@@ -151,15 +151,15 @@ impl CapabilityStatement_InteractionCode {
 
     pub fn to_string(&self) -> String {
         match self {
-            CapabilityStatement_InteractionCode::Read => "read",
-            CapabilityStatement_InteractionCode::Vread => "vread",
-            CapabilityStatement_InteractionCode::Update => "update",
-            CapabilityStatement_InteractionCode::Patch => "patch",
-            CapabilityStatement_InteractionCode::Delete => "delete",
-            CapabilityStatement_InteractionCode::HistoryInstance => "history-instance",
-            CapabilityStatement_InteractionCode::HistoryType => "history-type",
-            CapabilityStatement_InteractionCode::Create => "create",
-            CapabilityStatement_InteractionCode::SearchType => "search-type",
+            CapabilityStatement_InteractionCode::Read => "read".to_string(),
+            CapabilityStatement_InteractionCode::Vread => "vread".to_string(),
+            CapabilityStatement_InteractionCode::Update => "update".to_string(),
+            CapabilityStatement_InteractionCode::Patch => "patch".to_string(),
+            CapabilityStatement_InteractionCode::Delete => "delete".to_string(),
+            CapabilityStatement_InteractionCode::HistoryInstance => "history-instance".to_string(),
+            CapabilityStatement_InteractionCode::HistoryType => "history-type".to_string(),
+            CapabilityStatement_InteractionCode::Create => "create".to_string(),
+            CapabilityStatement_InteractionCode::SearchType => "search-type".to_string(),
         }
     }
 }

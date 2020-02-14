@@ -22,6 +22,14 @@ impl Person_Link<'_> {
         return None;
     }
 
+    /// Level of assurance that this link is associated with the target resource.
+    pub fn assurance(&self) -> Option<Person_LinkAssurance> {
+        if let Some(Value::String(val)) = self.value.get("assurance") {
+            return Some(Person_LinkAssurance::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -76,18 +84,11 @@ impl Person_Link<'_> {
         }
     }
 
-    /// Level of assurance that this link is associated with the target resource.
-    pub fn assurance(&self) -> Option<Person_LinkAssurance> {
-        if let Some(Value::String(val)) = self.value.get("assurance") {
-            return Some(Person_LinkAssurance::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._assurance() {
             _val.validate();
         }
+        if let Some(_val) = self.assurance() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -100,7 +101,6 @@ impl Person_Link<'_> {
             });
         }
         let _ = self.target().validate();
-        if let Some(_val) = self.assurance() {}
         return true;
     }
 }
@@ -126,10 +126,10 @@ impl Person_LinkAssurance {
 
     pub fn to_string(&self) -> String {
         match self {
-            Person_LinkAssurance::Level1 => "level1",
-            Person_LinkAssurance::Level2 => "level2",
-            Person_LinkAssurance::Level3 => "level3",
-            Person_LinkAssurance::Level4 => "level4",
+            Person_LinkAssurance::Level1 => "level1".to_string(),
+            Person_LinkAssurance::Level2 => "level2".to_string(),
+            Person_LinkAssurance::Level3 => "level3".to_string(),
+            Person_LinkAssurance::Level4 => "level4".to_string(),
         }
     }
 }

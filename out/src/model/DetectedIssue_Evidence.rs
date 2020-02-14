@@ -15,6 +15,18 @@ pub struct DetectedIssue_Evidence<'a> {
 }
 
 impl DetectedIssue_Evidence<'_> {
+    /// A manifestation that led to the recording of this detected issue.
+    pub fn code(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("code") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Links to resources that constitute evidence for the detected issue such as a
     /// GuidanceResponse or MeasureReport.
     pub fn detail(&self) -> Option<Vec<Reference>> {
@@ -22,18 +34,6 @@ impl DetectedIssue_Evidence<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A manifestation that led to the recording of this detected issue.
-    pub fn code(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("code") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -52,6 +52,15 @@ impl DetectedIssue_Evidence<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -78,22 +87,13 @@ impl DetectedIssue_Evidence<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.detail() {
+        if let Some(_val) = self.code() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {
+        if let Some(_val) = self.detail() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -103,12 +103,12 @@ impl DetectedIssue_Evidence<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

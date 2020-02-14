@@ -17,6 +17,14 @@ pub struct DocumentReference_RelatesTo<'a> {
 }
 
 impl DocumentReference_RelatesTo<'_> {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// The type of relationship that this document has with anther document.
     pub fn code(&self) -> Option<DocumentReference_RelatesToCode> {
         if let Some(Value::String(val)) = self.value.get("code") {
@@ -25,11 +33,20 @@ impl DocumentReference_RelatesTo<'_> {
         return None;
     }
 
-    /// The target document of this relationship.
-    pub fn target(&self) -> Reference {
-        Reference {
-            value: &self.value["target"],
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
+        return None;
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -63,47 +80,30 @@ impl DocumentReference_RelatesTo<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+    /// The target document of this relationship.
+    pub fn target(&self) -> Reference {
+        Reference {
+            value: &self.value["target"],
         }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self.code() {}
-        let _ = self.target().validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        let _ = self.target().validate();
         return true;
     }
 }
@@ -129,10 +129,10 @@ impl DocumentReference_RelatesToCode {
 
     pub fn to_string(&self) -> String {
         match self {
-            DocumentReference_RelatesToCode::Replaces => "replaces",
-            DocumentReference_RelatesToCode::Transforms => "transforms",
-            DocumentReference_RelatesToCode::Signs => "signs",
-            DocumentReference_RelatesToCode::Appends => "appends",
+            DocumentReference_RelatesToCode::Replaces => "replaces".to_string(),
+            DocumentReference_RelatesToCode::Transforms => "transforms".to_string(),
+            DocumentReference_RelatesToCode::Signs => "signs".to_string(),
+            DocumentReference_RelatesToCode::Appends => "appends".to_string(),
         }
     }
 }

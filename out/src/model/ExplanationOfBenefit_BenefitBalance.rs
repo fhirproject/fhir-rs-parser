@@ -16,31 +16,51 @@ pub struct ExplanationOfBenefit_BenefitBalance<'a> {
 }
 
 impl ExplanationOfBenefit_BenefitBalance<'_> {
-    /// Indicates if the benefits apply to an individual or to the family.
-    pub fn unit(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("unit") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The term or period of the values such as 'maximum lifetime benefit' or 'maximum
-    /// annual visits'.
-    pub fn term(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("term") {
-            return Some(CodeableConcept { value: val });
+    /// Extensions for excluded
+    pub fn _excluded(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_excluded") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Benefits Used to date.
-    pub fn financial(&self) -> Option<Vec<ExplanationOfBenefit_Financial>> {
-        if let Some(Value::Array(val)) = self.value.get("financial") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Financial { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Code to identify the general type of benefits under which products and services
+    /// are provided.
+    pub fn category(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["category"],
+        }
+    }
+
+    /// A richer description of the benefit or services covered.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// True if the indicated class of service is excluded from the plan, missing or
+    /// False indicates the product or service is included in the coverage.
+    pub fn excluded(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("excluded") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -61,18 +81,14 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         return None;
     }
 
-    /// Code to identify the general type of benefits under which products and services
-    /// are provided.
-    pub fn category(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["category"],
-        }
-    }
-
-    /// A short name or tag for the benefit.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
+    /// Benefits Used to date.
+    pub fn financial(&self) -> Option<Vec<ExplanationOfBenefit_Financial>> {
+        if let Some(Value::Array(val)) = self.value.get("financial") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ExplanationOfBenefit_Financial { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -108,43 +124,10 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         return None;
     }
 
-    /// Extensions for excluded
-    pub fn _excluded(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_excluded") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// True if the indicated class of service is excluded from the plan, missing or
-    /// False indicates the product or service is included in the coverage.
-    pub fn excluded(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("excluded") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A richer description of the benefit or services covered.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
+    /// A short name or tag for the benefit.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -158,43 +141,60 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         return None;
     }
 
+    /// The term or period of the values such as 'maximum lifetime benefit' or 'maximum
+    /// annual visits'.
+    pub fn term(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("term") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates if the benefits apply to an individual or to the family.
+    pub fn unit(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("unit") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.unit() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self.term() {
+        if let Some(_val) = self._excluded() {
             _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        let _ = self.category().validate();
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.excluded() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.financial() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.category().validate();
-        if let Some(_val) = self.name() {}
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._excluded() {
-            _val.validate();
-        }
-        if let Some(_val) = self.excluded() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.network() {
+            _val.validate();
+        }
+        if let Some(_val) = self.term() {
+            _val.validate();
+        }
+        if let Some(_val) = self.unit() {
             _val.validate();
         }
         return true;

@@ -22,12 +22,43 @@ pub struct Provenance_Entity<'a> {
 }
 
 impl Provenance_Entity<'_> {
-    /// Identity of the  Entity used. May be a logical or physical uri and maybe
-    /// absolute or relative.
-    pub fn what(&self) -> Reference {
-        Reference {
-            value: &self.value["what"],
+    /// Extensions for role
+    pub fn _role(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_role") {
+            return Some(Element { value: val });
         }
+        return None;
+    }
+
+    /// The entity is attributed to an agent to express the agent's responsibility for
+    /// that entity, possibly along with other agents. This description can be
+    /// understood as shorthand for saying that the agent was responsible for the
+    /// activity which generated the entity.
+    pub fn agent(&self) -> Option<Vec<Provenance_Agent>> {
+        if let Some(Value::Array(val)) = self.value.get("agent") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Provenance_Agent { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -61,30 +92,6 @@ impl Provenance_Entity<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for role
-    pub fn _role(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_role") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// How the entity was used during the activity.
     pub fn role(&self) -> Option<Provenance_EntityRole> {
         if let Some(Value::String(val)) = self.value.get("role") {
@@ -93,25 +100,19 @@ impl Provenance_Entity<'_> {
         return None;
     }
 
-    /// The entity is attributed to an agent to express the agent's responsibility for
-    /// that entity, possibly along with other agents. This description can be
-    /// understood as shorthand for saying that the agent was responsible for the
-    /// activity which generated the entity.
-    pub fn agent(&self) -> Option<Vec<Provenance_Agent>> {
-        if let Some(Value::Array(val)) = self.value.get("agent") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Provenance_Agent { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Identity of the  Entity used. May be a logical or physical uri and maybe
+    /// absolute or relative.
+    pub fn what(&self) -> Reference {
+        Reference {
+            value: &self.value["what"],
         }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.what().validate();
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self._role() {
+            _val.validate();
+        }
+        if let Some(_val) = self.agent() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -121,15 +122,14 @@ impl Provenance_Entity<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._role() {
-            _val.validate();
-        }
-        if let Some(_val) = self.role() {}
-        if let Some(_val) = self.agent() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.role() {}
+        let _ = self.what().validate();
         return true;
     }
 }
@@ -157,11 +157,11 @@ impl Provenance_EntityRole {
 
     pub fn to_string(&self) -> String {
         match self {
-            Provenance_EntityRole::Derivation => "derivation",
-            Provenance_EntityRole::Revision => "revision",
-            Provenance_EntityRole::Quotation => "quotation",
-            Provenance_EntityRole::Source => "source",
-            Provenance_EntityRole::Removal => "removal",
+            Provenance_EntityRole::Derivation => "derivation".to_string(),
+            Provenance_EntityRole::Revision => "revision".to_string(),
+            Provenance_EntityRole::Quotation => "quotation".to_string(),
+            Provenance_EntityRole::Source => "source".to_string(),
+            Provenance_EntityRole::Removal => "removal".to_string(),
         }
     }
 }

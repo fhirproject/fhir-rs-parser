@@ -14,6 +14,38 @@ pub struct Immunization_Reaction<'a> {
 }
 
 impl Immunization_Reaction<'_> {
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for reported
+    pub fn _reported(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_reported") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Date of reaction to the immunization.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Details of the reaction.
+    pub fn detail(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("detail") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -30,10 +62,11 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -60,22 +93,6 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Extensions for reported
-    pub fn _reported(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_reported") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Details of the reaction.
-    pub fn detail(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("detail") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Self-reported indicator.
     pub fn reported(&self) -> Option<bool> {
         if let Some(val) = self.value.get("reported") {
@@ -84,46 +101,29 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Date of reaction to the immunization.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._date() {
+            _val.validate();
+        }
+        if let Some(_val) = self._reported() {
+            _val.validate();
+        }
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.detail() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._date() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._reported() {
-            _val.validate();
-        }
-        if let Some(_val) = self.detail() {
-            _val.validate();
-        }
         if let Some(_val) = self.reported() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.date() {}
         return true;
     }
 }

@@ -17,10 +17,51 @@ pub struct PlanDefinition_RelatedAction<'a> {
 }
 
 impl PlanDefinition_RelatedAction<'_> {
-    /// The relationship of this action to the related action.
-    pub fn relationship(&self) -> Option<PlanDefinition_RelatedActionRelationship> {
-        if let Some(Value::String(val)) = self.value.get("relationship") {
-            return Some(PlanDefinition_RelatedActionRelationship::from_string(&val).unwrap());
+    /// Extensions for actionId
+    pub fn _action_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_actionId") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for relationship
+    pub fn _relationship(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_relationship") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The element id of the related action.
+    pub fn action_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("actionId") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -49,48 +90,6 @@ impl PlanDefinition_RelatedAction<'_> {
 
     /// A duration or range of durations to apply to the relationship. For example, 30-
     /// 60 minutes before.
-    pub fn offset_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("offsetRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for relationship
-    pub fn _relationship(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_relationship") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A duration or range of durations to apply to the relationship. For example, 30-
-    /// 60 minutes before.
     pub fn offset_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("offsetDuration") {
             return Some(Duration { value: val });
@@ -98,48 +97,49 @@ impl PlanDefinition_RelatedAction<'_> {
         return None;
     }
 
-    /// Extensions for actionId
-    pub fn _action_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_actionId") {
-            return Some(Element { value: val });
+    /// A duration or range of durations to apply to the relationship. For example, 30-
+    /// 60 minutes before.
+    pub fn offset_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("offsetRange") {
+            return Some(Range { value: val });
         }
         return None;
     }
 
-    /// The element id of the related action.
-    pub fn action_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("actionId") {
-            return Some(string);
+    /// The relationship of this action to the related action.
+    pub fn relationship(&self) -> Option<PlanDefinition_RelatedActionRelationship> {
+        if let Some(Value::String(val)) = self.value.get("relationship") {
+            return Some(PlanDefinition_RelatedActionRelationship::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.relationship() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.offset_range() {
+        if let Some(_val) = self._action_id() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._relationship() {
+            _val.validate();
+        }
+        if let Some(_val) = self.action_id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._relationship() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.offset_duration() {
             _val.validate();
         }
-        if let Some(_val) = self._action_id() {
+        if let Some(_val) = self.offset_range() {
             _val.validate();
         }
-        if let Some(_val) = self.action_id() {}
+        if let Some(_val) = self.relationship() {}
         return true;
     }
 }
@@ -179,17 +179,19 @@ impl PlanDefinition_RelatedActionRelationship {
 
     pub fn to_string(&self) -> String {
         match self {
-            PlanDefinition_RelatedActionRelationship::BeforeStart => "before-start",
-            PlanDefinition_RelatedActionRelationship::Before => "before",
-            PlanDefinition_RelatedActionRelationship::BeforeEnd => "before-end",
+            PlanDefinition_RelatedActionRelationship::BeforeStart => "before-start".to_string(),
+            PlanDefinition_RelatedActionRelationship::Before => "before".to_string(),
+            PlanDefinition_RelatedActionRelationship::BeforeEnd => "before-end".to_string(),
             PlanDefinition_RelatedActionRelationship::ConcurrentWithStart => {
-                "concurrent-with-start"
+                "concurrent-with-start".to_string()
             }
-            PlanDefinition_RelatedActionRelationship::Concurrent => "concurrent",
-            PlanDefinition_RelatedActionRelationship::ConcurrentWithEnd => "concurrent-with-end",
-            PlanDefinition_RelatedActionRelationship::AfterStart => "after-start",
-            PlanDefinition_RelatedActionRelationship::After => "after",
-            PlanDefinition_RelatedActionRelationship::AfterEnd => "after-end",
+            PlanDefinition_RelatedActionRelationship::Concurrent => "concurrent".to_string(),
+            PlanDefinition_RelatedActionRelationship::ConcurrentWithEnd => {
+                "concurrent-with-end".to_string()
+            }
+            PlanDefinition_RelatedActionRelationship::AfterStart => "after-start".to_string(),
+            PlanDefinition_RelatedActionRelationship::After => "after".to_string(),
+            PlanDefinition_RelatedActionRelationship::AfterEnd => "after-end".to_string(),
         }
     }
 }

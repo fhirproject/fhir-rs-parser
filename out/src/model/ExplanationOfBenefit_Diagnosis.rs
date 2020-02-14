@@ -24,32 +24,6 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
         return None;
     }
 
-    /// Indication of whether the diagnosis was present on admission to a facility.
-    pub fn on_admission(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("onAdmission") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A package billing code or bundle code used to group products and services to a
-    /// particular health condition (such as heart attack) which is based on a
-    /// predetermined grouping code system.
-    pub fn package_code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("packageCode") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A number to uniquely identify diagnosis entries.
-    pub fn sequence(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("sequence") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
     /// The nature of illness or problem in a coded form or as a reference to an
     /// external defined Condition.
     pub fn diagnosis_codeable_concept(&self) -> Option<CodeableConcept> {
@@ -59,14 +33,11 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
         return None;
     }
 
-    /// When the condition was observed or the relative ranking.
-    pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("type") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The nature of illness or problem in a coded form or as a reference to an
+    /// external defined Condition.
+    pub fn diagnosis_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("diagnosisReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -96,15 +67,6 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
         return None;
     }
 
-    /// The nature of illness or problem in a coded form or as a reference to an
-    /// external defined Condition.
-    pub fn diagnosis_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("diagnosisReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -127,9 +89,64 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
         return None;
     }
 
+    /// Indication of whether the diagnosis was present on admission to a facility.
+    pub fn on_admission(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("onAdmission") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// A package billing code or bundle code used to group products and services to a
+    /// particular health condition (such as heart attack) which is based on a
+    /// predetermined grouping code system.
+    pub fn package_code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("packageCode") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// A number to uniquely identify diagnosis entries.
+    pub fn sequence(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("sequence") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// When the condition was observed or the relative ranking.
+    pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("type") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._sequence() {
             _val.validate();
+        }
+        if let Some(_val) = self.diagnosis_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.diagnosis_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.on_admission() {
             _val.validate();
@@ -138,24 +155,7 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
             _val.validate();
         }
         if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.diagnosis_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self.fhir_type() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.diagnosis_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

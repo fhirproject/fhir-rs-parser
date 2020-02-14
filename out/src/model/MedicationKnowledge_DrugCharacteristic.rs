@@ -14,18 +14,18 @@ pub struct MedicationKnowledge_DrugCharacteristic<'a> {
 }
 
 impl MedicationKnowledge_DrugCharacteristic<'_> {
-    /// Description of the characteristic.
-    pub fn value_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("valueString") {
-            return Some(string);
+    /// Extensions for valueBase64Binary
+    pub fn _value_base_6_4_binary(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueBase64Binary") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Description of the characteristic.
-    pub fn value_base_6_4_binary(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("valueBase64Binary") {
-            return Some(string);
+    /// Extensions for valueString
+    pub fn _value_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueString") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -42,31 +42,6 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Description of the characteristic.
-    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A code specifying which characteristic of the medicine is being described (for
-    /// example, colour, shape, imprint).
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for valueBase64Binary
-    pub fn _value_base_6_4_binary(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueBase64Binary") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -102,10 +77,27 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
         return None;
     }
 
-    /// Extensions for valueString
-    pub fn _value_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+    /// A code specifying which characteristic of the medicine is being described (for
+    /// example, colour, shape, imprint).
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Description of the characteristic.
+    pub fn value_base_6_4_binary(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("valueBase64Binary") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Description of the characteristic.
+    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("valueCodeableConcept") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -118,22 +110,25 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
         return None;
     }
 
+    /// Description of the characteristic.
+    pub fn value_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("valueString") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value_string() {}
-        if let Some(_val) = self.value_base_6_4_binary() {}
+        if let Some(_val) = self._value_base_6_4_binary() {
+            _val.validate();
+        }
+        if let Some(_val) = self._value_string() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.value_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._value_base_6_4_binary() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -141,12 +136,17 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._value_string() {
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value_base_6_4_binary() {}
+        if let Some(_val) = self.value_codeable_concept() {
             _val.validate();
         }
         if let Some(_val) = self.value_quantity() {
             _val.validate();
         }
+        if let Some(_val) = self.value_string() {}
         return true;
     }
 }

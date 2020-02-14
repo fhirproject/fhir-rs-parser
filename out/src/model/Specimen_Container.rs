@@ -16,6 +16,48 @@ pub struct Specimen_Container<'a> {
 }
 
 impl Specimen_Container<'_> {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Introduced substance to preserve, maintain or enhance the specimen. Examples:
+    /// Formalin, Citrate, EDTA.
+    pub fn additive_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("additiveCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Introduced substance to preserve, maintain or enhance the specimen. Examples:
+    /// Formalin, Citrate, EDTA.
+    pub fn additive_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("additiveReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// The capacity (volume or other measure) the container may contain.
+    pub fn capacity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("capacity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Textual description of the container.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -28,14 +70,6 @@ impl Specimen_Container<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The capacity (volume or other measure) the container may contain.
-    pub fn capacity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("capacity") {
-            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -63,32 +97,6 @@ impl Specimen_Container<'_> {
         return None;
     }
 
-    /// The type of container associated with the specimen (e.g. slide, aliquot, etc.).
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The quantity of specimen in the container; may be volume, dimensions, or other
-    /// appropriate measurements, depending on the specimen type.
-    pub fn specimen_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("specimenQuantity") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
-    /// Introduced substance to preserve, maintain or enhance the specimen. Examples:
-    /// Formalin, Citrate, EDTA.
-    pub fn additive_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("additiveCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -111,39 +119,41 @@ impl Specimen_Container<'_> {
         return None;
     }
 
-    /// Introduced substance to preserve, maintain or enhance the specimen. Examples:
-    /// Formalin, Citrate, EDTA.
-    pub fn additive_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("additiveReference") {
-            return Some(Reference { value: val });
+    /// The quantity of specimen in the container; may be volume, dimensions, or other
+    /// appropriate measurements, depending on the specimen type.
+    pub fn specimen_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("specimenQuantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
 
-    /// Textual description of the container.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+    /// The type of container associated with the specimen (e.g. slide, aliquot, etc.).
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self.additive_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.additive_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.capacity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.capacity() {
-            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
@@ -151,25 +161,15 @@ impl Specimen_Container<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.specimen_quantity() {
-            _val.validate();
-        }
-        if let Some(_val) = self.additive_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.additive_reference() {
+        if let Some(_val) = self.specimen_quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;

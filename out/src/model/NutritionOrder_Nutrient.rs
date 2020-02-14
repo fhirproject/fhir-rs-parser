@@ -14,19 +14,10 @@ pub struct NutritionOrder_Nutrient<'a> {
 }
 
 impl NutritionOrder_Nutrient<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The nutrient that is being modified such as carbohydrate or sodium.
-    pub fn modifier(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("modifier") {
-            return Some(CodeableConcept { value: val });
+    /// The quantity of the specified nutrient to include in diet.
+    pub fn amount(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("amount") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -43,6 +34,23 @@ impl NutritionOrder_Nutrient<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The nutrient that is being modified such as carbohydrate or sodium.
+    pub fn modifier(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("modifier") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -69,17 +77,8 @@ impl NutritionOrder_Nutrient<'_> {
         return None;
     }
 
-    /// The quantity of the specified nutrient to include in diet.
-    pub fn amount(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("amount") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier() {
+        if let Some(_val) = self.amount() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -87,13 +86,14 @@ impl NutritionOrder_Nutrient<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.amount() {
-            _val.validate();
         }
         return true;
     }

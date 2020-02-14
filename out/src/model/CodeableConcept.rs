@@ -14,6 +14,26 @@ pub struct CodeableConcept<'a> {
 }
 
 impl CodeableConcept<'_> {
+    /// Extensions for text
+    pub fn _text(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A reference to a code defined by a terminology system.
+    pub fn coding(&self) -> Option<Vec<Coding>> {
+        if let Some(Value::Array(val)) = self.value.get("coding") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Coding { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -39,18 +59,6 @@ impl CodeableConcept<'_> {
         return None;
     }
 
-    /// A reference to a code defined by a terminology system.
-    pub fn coding(&self) -> Option<Vec<Coding>> {
-        if let Some(Value::Array(val)) = self.value.get("coding") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Coding { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// A human language representation of the concept as seen/selected/uttered by the
     /// user who entered the data and/or which represents the intended meaning of the
     /// user.
@@ -61,30 +69,22 @@ impl CodeableConcept<'_> {
         return None;
     }
 
-    /// Extensions for text
-    pub fn _text(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.coding() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.coding() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.text() {}
-        if let Some(_val) = self._text() {
-            _val.validate();
-        }
         return true;
     }
 }

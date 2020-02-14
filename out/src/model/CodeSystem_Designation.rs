@@ -15,6 +15,22 @@ pub struct CodeSystem_Designation<'a> {
 }
 
 impl CodeSystem_Designation<'_> {
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -27,6 +43,23 @@ impl CodeSystem_Designation<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The language this designation is defined for.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
@@ -53,26 +86,10 @@ impl CodeSystem_Designation<'_> {
         return None;
     }
 
-    /// The language this designation is defined for.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// A code that details how this designation would be used.
     pub fn fhir_use(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("use") {
             return Some(Coding { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -85,46 +102,29 @@ impl CodeSystem_Designation<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self._value() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.language() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.language() {}
         if let Some(_val) = self.fhir_use() {
             _val.validate();
         }
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
         if let Some(_val) = self.value() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
         return true;
     }
 }

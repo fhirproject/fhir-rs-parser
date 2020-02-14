@@ -25,14 +25,34 @@ pub struct DiagnosticReport<'a> {
 }
 
 impl DiagnosticReport<'_> {
-    /// Identifiers assigned to this report by the performer or other systems.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for conclusion
+    pub fn _conclusion(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_conclusion") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for effectiveDateTime
+    pub fn _effective_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_effectiveDateTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for issued
+    pub fn _issued(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_issued") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -45,12 +65,10 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// The subject of the report. Usually, but not always, this is a patient. However,
-    /// diagnostic services also perform analyses on specimens collected from a variety
-    /// of other sources.
-    pub fn subject(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -67,54 +85,45 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// Details about the specimens on which this diagnostic report is based.
-    pub fn specimen(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("specimen") {
+    /// A code that classifies the clinical discipline, department or diagnostic service
+    /// that created the report (e.g. cardiology, biochemistry, hematology, MRI). This
+    /// is used for searching, sorting and display purposes.
+    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Rich text representation of the entire result as issued by the diagnostic
-    /// service. Multiple formats are allowed but they SHALL be semantically equivalent.
-    pub fn presented_form(&self) -> Option<Vec<Attachment>> {
-        if let Some(Value::Array(val)) = self.value.get("presentedForm") {
+    /// A code or name that describes this diagnostic report.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// Concise and clinically contextualized summary conclusion
+    /// (interpretation/impression) of the diagnostic report.
+    pub fn conclusion(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("conclusion") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// One or more codes that represent the summary conclusion
+    /// (interpretation/impression) of the diagnostic report.
+    pub fn conclusion_code(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("conclusionCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
         }
         return None;
     }
@@ -133,47 +142,12 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// Extensions for conclusion
-    pub fn _conclusion(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_conclusion") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// One or more codes that represent the summary conclusion
-    /// (interpretation/impression) of the diagnostic report.
-    pub fn conclusion_code(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("conclusionCode") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for issued
-    pub fn _issued(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for effectiveDateTime
-    pub fn _effective_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_effectiveDateTime") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The date and time that this version of the report was made available to
-    /// providers, typically after the report was reviewed and verified.
-    pub fn issued(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("issued") {
+    /// The time or time-period the observed values are related to. When the subject of
+    /// the report is a patient, this is usually either the time of the procedure or of
+    /// specimen collection(s), but very often the source of the date/time is not known,
+    /// only the date/time itself.
+    pub fn effective_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("effectiveDateTime") {
             return Some(string);
         }
         return None;
@@ -199,16 +173,6 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the resource. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -221,6 +185,94 @@ impl DiagnosticReport<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifiers assigned to this report by the performer or other systems.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// One or more links to full details of any imaging performed during the diagnostic
+    /// investigation. Typically, this is imaging performed by DICOM enabled modalities,
+    /// but this is not required. A fully enabled PACS viewer can use this information
+    /// to provide views of the source images.
+    pub fn imaging_study(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("imagingStudy") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The date and time that this version of the report was made available to
+    /// providers, typically after the report was reviewed and verified.
+    pub fn issued(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("issued") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A list of key images associated with this report. The images are generally
+    /// created during the diagnostic process, and may be directly of the patient, or of
+    /// treated specimens (i.e. slides of interest).
+    pub fn media(&self) -> Option<Vec<DiagnosticReport_Media>> {
+        if let Some(Value::Array(val)) = self.value.get("media") {
+            return Some(
+                val.into_iter()
+                    .map(|e| DiagnosticReport_Media { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -260,47 +312,29 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// A list of key images associated with this report. The images are generally
-    /// created during the diagnostic process, and may be directly of the patient, or of
-    /// treated specimens (i.e. slides of interest).
-    pub fn media(&self) -> Option<Vec<DiagnosticReport_Media>> {
-        if let Some(Value::Array(val)) = self.value.get("media") {
+    /// Rich text representation of the entire result as issued by the diagnostic
+    /// service. Multiple formats are allowed but they SHALL be semantically equivalent.
+    pub fn presented_form(&self) -> Option<Vec<Attachment>> {
+        if let Some(Value::Array(val)) = self.value.get("presentedForm") {
             return Some(
                 val.into_iter()
-                    .map(|e| DiagnosticReport_Media { value: e })
+                    .map(|e| Attachment { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A code that classifies the clinical discipline, department or diagnostic service
-    /// that created the report (e.g. cardiology, biochemistry, hematology, MRI). This
-    /// is used for searching, sorting and display purposes.
-    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("category") {
+    /// [Observations](observation.html)  that are part of this diagnostic report.
+    pub fn result(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("result") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| Reference { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
-    }
-
-    /// A code or name that describes this diagnostic report.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
     }
 
     /// The practitioner or organization that is responsible for the report's
@@ -316,31 +350,14 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// The time or time-period the observed values are related to. When the subject of
-    /// the report is a patient, this is usually either the time of the procedure or of
-    /// specimen collection(s), but very often the source of the date/time is not known,
-    /// only the date/time itself.
-    pub fn effective_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("effectiveDateTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Concise and clinically contextualized summary conclusion
-    /// (interpretation/impression) of the diagnostic report.
-    pub fn conclusion(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("conclusion") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Details about the specimens on which this diagnostic report is based.
+    pub fn specimen(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("specimen") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -353,17 +370,12 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// One or more links to full details of any imaging performed during the diagnostic
-    /// investigation. Typically, this is imaging performed by DICOM enabled modalities,
-    /// but this is not required. A fully enabled PACS viewer can use this information
-    /// to provide views of the source images.
-    pub fn imaging_study(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("imagingStudy") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The subject of the report. Usually, but not always, this is a patient. However,
+    /// diagnostic services also perform analyses on specimens collected from a variety
+    /// of other sources.
+    pub fn subject(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("subject") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -381,28 +393,23 @@ impl DiagnosticReport<'_> {
         return None;
     }
 
-    /// [Observations](observation.html)  that are part of this diagnostic report.
-    pub fn result(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("result") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._conclusion() {
+            _val.validate();
+        }
+        if let Some(_val) = self._effective_date_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._issued() {
+            _val.validate();
         }
         if let Some(_val) = self._language() {
             _val.validate();
         }
-        if let Some(_val) = self.subject() {
+        if let Some(_val) = self._status() {
             _val.validate();
         }
         if let Some(_val) = self.based_on() {
@@ -410,54 +417,56 @@ impl DiagnosticReport<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.specimen() {
+        if let Some(_val) = self.category() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.presented_form() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._conclusion() {
-            _val.validate();
-        }
+        let _ = self.code().validate();
+        if let Some(_val) = self.conclusion() {}
         if let Some(_val) = self.conclusion_code() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._issued() {
-            _val.validate();
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self._effective_date_time() {
-            _val.validate();
-        }
-        if let Some(_val) = self.issued() {}
+        if let Some(_val) = self.effective_date_time() {}
         if let Some(_val) = self.effective_period() {
             _val.validate();
         }
         if let Some(_val) = self.encounter() {
             _val.validate();
         }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.imaging_study() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.issued() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.media() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
@@ -469,41 +478,32 @@ impl DiagnosticReport<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.media() {
+        if let Some(_val) = self.presented_form() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.category() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.code().validate();
-        if let Some(_val) = self.results_interpreter() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.effective_date_time() {}
-        if let Some(_val) = self.conclusion() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.imaging_study() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {
-            _val.validate();
         }
         if let Some(_val) = self.result() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.results_interpreter() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.specimen() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.subject() {
+            _val.validate();
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         return true;
     }
@@ -542,16 +542,16 @@ impl DiagnosticReportStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            DiagnosticReportStatus::Registered => "registered",
-            DiagnosticReportStatus::Partial => "partial",
-            DiagnosticReportStatus::Preliminary => "preliminary",
-            DiagnosticReportStatus::Final => "final",
-            DiagnosticReportStatus::Amended => "amended",
-            DiagnosticReportStatus::Corrected => "corrected",
-            DiagnosticReportStatus::Appended => "appended",
-            DiagnosticReportStatus::Cancelled => "cancelled",
-            DiagnosticReportStatus::EnteredInError => "entered-in-error",
-            DiagnosticReportStatus::Unknown => "unknown",
+            DiagnosticReportStatus::Registered => "registered".to_string(),
+            DiagnosticReportStatus::Partial => "partial".to_string(),
+            DiagnosticReportStatus::Preliminary => "preliminary".to_string(),
+            DiagnosticReportStatus::Final => "final".to_string(),
+            DiagnosticReportStatus::Amended => "amended".to_string(),
+            DiagnosticReportStatus::Corrected => "corrected".to_string(),
+            DiagnosticReportStatus::Appended => "appended".to_string(),
+            DiagnosticReportStatus::Cancelled => "cancelled".to_string(),
+            DiagnosticReportStatus::EnteredInError => "entered-in-error".to_string(),
+            DiagnosticReportStatus::Unknown => "unknown".to_string(),
         }
     }
 }

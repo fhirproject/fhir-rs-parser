@@ -17,13 +17,11 @@ pub struct MedicationAdministration_Performer<'a> {
 }
 
 impl MedicationAdministration_Performer<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Indicates who or what performed the medication administration.
+    pub fn actor(&self) -> Reference {
+        Reference {
+            value: &self.value["actor"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -51,6 +49,15 @@ impl MedicationAdministration_Performer<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -73,15 +80,8 @@ impl MedicationAdministration_Performer<'_> {
         return None;
     }
 
-    /// Indicates who or what performed the medication administration.
-    pub fn actor(&self) -> Reference {
-        Reference {
-            value: &self.value["actor"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.actor().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -90,12 +90,12 @@ impl MedicationAdministration_Performer<'_> {
         if let Some(_val) = self.function() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.actor().validate();
         return true;
     }
 }

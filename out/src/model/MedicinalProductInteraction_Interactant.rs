@@ -39,6 +39,22 @@ impl MedicinalProductInteraction_Interactant<'_> {
         return None;
     }
 
+    /// The specific medication, food or laboratory test that interacts.
+    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("itemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The specific medication, food or laboratory test that interacts.
+    pub fn item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("itemReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -61,22 +77,6 @@ impl MedicinalProductInteraction_Interactant<'_> {
         return None;
     }
 
-    /// The specific medication, food or laboratory test that interacts.
-    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The specific medication, food or laboratory test that interacts.
-    pub fn item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -84,16 +84,16 @@ impl MedicinalProductInteraction_Interactant<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.item_codeable_concept() {
             _val.validate();
         }
         if let Some(_val) = self.item_reference() {
             _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

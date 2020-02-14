@@ -16,15 +16,18 @@ pub struct ValueSet_Compose<'a> {
 }
 
 impl ValueSet_Compose<'_> {
-    /// Whether inactive codes - codes that are not approved for current use - are in
-    /// the value set. If inactive = true, inactive codes are to be included in the
-    /// expansion, if inactive = false, the inactive codes will not be included in the
-    /// expansion. If absent, the behavior is determined by the implementation, or by
-    /// the applicable $expand parameters (but generally, inactive codes would be
-    /// expected to be included).
-    pub fn inactive(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("inactive") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for inactive
+    pub fn _inactive(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_inactive") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for lockedDate
+    pub fn _locked_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_lockedDate") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -38,6 +41,44 @@ impl ValueSet_Compose<'_> {
                     .map(|e| ValueSet_Include { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Whether inactive codes - codes that are not approved for current use - are in
+    /// the value set. If inactive = true, inactive codes are to be included in the
+    /// expansion, if inactive = false, the inactive codes will not be included in the
+    /// expansion. If absent, the behavior is determined by the implementation, or by
+    /// the applicable $expand parameters (but generally, inactive codes would be
+    /// expected to be included).
+    pub fn inactive(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("inactive") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -86,59 +127,14 @@ impl ValueSet_Compose<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for lockedDate
-    pub fn _locked_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_lockedDate") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for inactive
-    pub fn _inactive(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_inactive") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.inactive() {}
-        if let Some(_val) = self.exclude() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._inactive() {
+            _val.validate();
         }
-        let _ = self.include().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.locked_date() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self._locked_date() {
+            _val.validate();
+        }
+        if let Some(_val) = self.exclude() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -148,13 +144,17 @@ impl ValueSet_Compose<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._locked_date() {
-            _val.validate();
-        }
-        if let Some(_val) = self._inactive() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.inactive() {}
+        let _ = self.include().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.locked_date() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }

@@ -21,31 +21,34 @@ pub struct Subscription<'a> {
 }
 
 impl Subscription<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for criteria
+    pub fn _criteria(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_criteria") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Contact details for a human to contact about the subscription. The primary use
-    /// of this for system administrator troubleshooting.
-    pub fn contact(&self) -> Option<Vec<ContactPoint>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactPoint { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for end
+    pub fn _end(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_end") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for error
+    pub fn _error(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_error") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -58,21 +61,39 @@ impl Subscription<'_> {
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+    /// Extensions for reason
+    pub fn _reason(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_reason") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A record of the last error that occurred when the server processed a
-    /// notification.
-    pub fn error(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("error") {
-            return Some(string);
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Details where to send notifications when resources are received that meet the
+    /// criteria.
+    pub fn channel(&self) -> Subscription_Channel {
+        Subscription_Channel {
+            value: &self.value["channel"],
+        }
+    }
+
+    /// Contact details for a human to contact about the subscription. The primary use
+    /// of this for system administrator troubleshooting.
+    pub fn contact(&self) -> Option<Vec<ContactPoint>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactPoint { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -91,18 +112,44 @@ impl Subscription<'_> {
         return None;
     }
 
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+    /// The rules that the server should use to determine when to generate notifications
+    /// for this subscription.
+    pub fn criteria(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("criteria") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+    /// The time for the server to turn the subscription off.
+    pub fn end(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("end") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A record of the last error that occurred when the server processed a
+    /// notification.
+    pub fn error(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("error") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -116,18 +163,31 @@ impl Subscription<'_> {
         return None;
     }
 
-    /// A description of why this subscription is defined.
-    pub fn reason(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("reason") {
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for end
-    pub fn _end(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_end") {
-            return Some(Element { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -155,18 +215,19 @@ impl Subscription<'_> {
         return None;
     }
 
-    /// The time for the server to turn the subscription off.
-    pub fn end(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("end") {
+    /// A description of why this subscription is defined.
+    pub fn reason(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("reason") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for error
-    pub fn _error(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_error") {
-            return Some(Element { value: val });
+    /// The status of the subscription, which marks the server state for managing the
+    /// subscription.
+    pub fn status(&self) -> Option<SubscriptionStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(SubscriptionStatus::from_string(&val).unwrap());
         }
         return None;
     }
@@ -184,99 +245,51 @@ impl Subscription<'_> {
         return None;
     }
 
-    /// Extensions for criteria
-    pub fn _criteria(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_criteria") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Details where to send notifications when resources are received that meet the
-    /// criteria.
-    pub fn channel(&self) -> Subscription_Channel {
-        Subscription_Channel {
-            value: &self.value["channel"],
-        }
-    }
-
-    /// Extensions for reason
-    pub fn _reason(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_reason") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The rules that the server should use to determine when to generate notifications
-    /// for this subscription.
-    pub fn criteria(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("criteria") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The status of the subscription, which marks the server state for managing the
-    /// subscription.
-    pub fn status(&self) -> Option<SubscriptionStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(SubscriptionStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.contact() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self._criteria() {
             _val.validate();
         }
-        if let Some(_val) = self.meta() {
+        if let Some(_val) = self._end() {
             _val.validate();
         }
-        if let Some(_val) = self.error() {}
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._status() {
+        if let Some(_val) = self._error() {
             _val.validate();
         }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self._reason() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        let _ = self.channel().validate();
+        if let Some(_val) = self.contact() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.criteria() {}
+        if let Some(_val) = self.end() {}
+        if let Some(_val) = self.error() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.reason() {}
-        if let Some(_val) = self._end() {
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -284,24 +297,11 @@ impl Subscription<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.end() {}
-        if let Some(_val) = self._error() {
-            _val.validate();
-        }
+        if let Some(_val) = self.reason() {}
+        if let Some(_val) = self.status() {}
         if let Some(_val) = self.text() {
             _val.validate();
         }
-        if let Some(_val) = self._criteria() {
-            _val.validate();
-        }
-        let _ = self.channel().validate();
-        if let Some(_val) = self._reason() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.criteria() {}
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.language() {}
         return true;
     }
 }
@@ -327,10 +327,10 @@ impl SubscriptionStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            SubscriptionStatus::Requested => "requested",
-            SubscriptionStatus::Active => "active",
-            SubscriptionStatus::Error => "error",
-            SubscriptionStatus::Off => "off",
+            SubscriptionStatus::Requested => "requested".to_string(),
+            SubscriptionStatus::Active => "active".to_string(),
+            SubscriptionStatus::Error => "error".to_string(),
+            SubscriptionStatus::Off => "off".to_string(),
         }
     }
 }

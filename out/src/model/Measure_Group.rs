@@ -15,19 +15,20 @@ pub struct Measure_Group<'a> {
 }
 
 impl Measure_Group<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates a meaning for the group. This can be as simple as a unique identifier,
+    /// or it can establish meaning in a broader context by drawing from a terminology,
+    /// allowing groups to be correlated across measures.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -56,24 +57,11 @@ impl Measure_Group<'_> {
         return None;
     }
 
-    /// Indicates a meaning for the group. This can be as simple as a unique identifier,
-    /// or it can establish meaning in a broader context by drawing from a terminology,
-    /// allowing groups to be correlated across measures.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A population criteria for the measure.
-    pub fn population(&self) -> Option<Vec<Measure_Population>> {
-        if let Some(Value::Array(val)) = self.value.get("population") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Measure_Population { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -100,6 +88,18 @@ impl Measure_Group<'_> {
         return None;
     }
 
+    /// A population criteria for the measure.
+    pub fn population(&self) -> Option<Vec<Measure_Population>> {
+        if let Some(Value::Array(val)) = self.value.get("population") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Measure_Population { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// The stratifier criteria for the measure report, specified as either the name of
     /// a valid CQL expression defined within a referenced library or a valid FHIR
     /// Resource Path.
@@ -115,8 +115,10 @@ impl Measure_Group<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {
             _val.validate();
         }
         if let Some(_val) = self.description() {}
@@ -125,15 +127,13 @@ impl Measure_Group<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.population() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.population() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

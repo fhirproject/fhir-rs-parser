@@ -16,6 +16,22 @@ pub struct SubstanceSpecification_Name<'a> {
 }
 
 impl SubstanceSpecification_Name<'_> {
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for preferred
+    pub fn _preferred(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_preferred") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// The use context of this name for example if there is a different name a drug
     /// active ingredient as opposed to a food colour additive.
     pub fn domain(&self) -> Option<Vec<CodeableConcept>> {
@@ -29,22 +45,18 @@ impl SubstanceSpecification_Name<'_> {
         return None;
     }
 
-    /// Supporting literature.
-    pub fn source(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("source") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The actual name.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
         }
         return None;
     }
@@ -54,6 +66,30 @@ impl SubstanceSpecification_Name<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The jurisdiction where this name applies.
+    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Language of the name.
+    pub fn language(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("language") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -80,14 +116,10 @@ impl SubstanceSpecification_Name<'_> {
         return None;
     }
 
-    /// Language of the name.
-    pub fn language(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("language") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The actual name.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
         }
         return None;
     }
@@ -104,22 +136,6 @@ impl SubstanceSpecification_Name<'_> {
         return None;
     }
 
-    /// Name type.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// If this is the preferred name for this substance.
     pub fn preferred(&self) -> Option<bool> {
         if let Some(val) = self.value.get("preferred") {
@@ -128,26 +144,22 @@ impl SubstanceSpecification_Name<'_> {
         return None;
     }
 
-    /// Extensions for preferred
-    pub fn _preferred(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_preferred") {
-            return Some(Element { value: val });
+    /// Supporting literature.
+    pub fn source(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("source") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The status of the name.
+    pub fn status(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("status") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -158,18 +170,6 @@ impl SubstanceSpecification_Name<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| SubstanceSpecification_Name { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The jurisdiction where this name applies.
-    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -188,28 +188,33 @@ impl SubstanceSpecification_Name<'_> {
         return None;
     }
 
-    /// The status of the name.
-    pub fn status(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("status") {
+    /// Name type.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
             return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self._preferred() {
+            _val.validate();
+        }
         if let Some(_val) = self.domain() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.source() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.name() {}
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.jurisdiction() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -219,32 +224,27 @@ impl SubstanceSpecification_Name<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.official() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
         if let Some(_val) = self.preferred() {}
-        if let Some(_val) = self._preferred() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.source() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.status() {
+            _val.validate();
         }
         if let Some(_val) = self.synonym() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.jurisdiction() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -254,7 +254,7 @@ impl SubstanceSpecification_Name<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.status() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;

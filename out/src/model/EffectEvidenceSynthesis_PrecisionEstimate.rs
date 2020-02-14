@@ -15,10 +15,18 @@ pub struct EffectEvidenceSynthesis_PrecisionEstimate<'a> {
 }
 
 impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
-    /// Lower bound of confidence interval.
-    pub fn from(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("from") {
-            return Some(val.as_f64().unwrap());
+    /// Extensions for from
+    pub fn _from(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_from") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for level
+    pub fn _level(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_level") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -47,11 +55,27 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
         return None;
     }
 
+    /// Lower bound of confidence interval.
+    pub fn from(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("from") {
+            return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Use 95 for a 95% confidence interval.
+    pub fn level(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("level") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
@@ -78,22 +102,6 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
         return None;
     }
 
-    /// Examples include confidence interval and interquartile range.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for from
-    pub fn _from(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_from") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Upper bound of confidence interval.
     pub fn to(&self) -> Option<f64> {
         if let Some(val) = self.value.get("to") {
@@ -102,24 +110,21 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
         return None;
     }
 
-    /// Use 95 for a 95% confidence interval.
-    pub fn level(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("level") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for level
-    pub fn _level(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_level") {
-            return Some(Element { value: val });
+    /// Examples include confidence interval and interquartile range.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.from() {}
+        if let Some(_val) = self._from() {
+            _val.validate();
+        }
+        if let Some(_val) = self._level() {
+            _val.validate();
+        }
         if let Some(_val) = self._to() {
             _val.validate();
         }
@@ -128,21 +133,16 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.from() {}
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.level() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._from() {
-            _val.validate();
-        }
         if let Some(_val) = self.to() {}
-        if let Some(_val) = self.level() {}
-        if let Some(_val) = self._level() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
         return true;

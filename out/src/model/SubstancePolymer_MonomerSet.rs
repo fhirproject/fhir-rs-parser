@@ -13,10 +13,18 @@ pub struct SubstancePolymer_MonomerSet<'a> {
 }
 
 impl SubstancePolymer_MonomerSet<'_> {
-    /// Todo.
-    pub fn ratio_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("ratioType") {
-            return Some(CodeableConcept { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -52,18 +60,10 @@ impl SubstancePolymer_MonomerSet<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Todo.
+    pub fn ratio_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("ratioType") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -81,8 +81,10 @@ impl SubstancePolymer_MonomerSet<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.ratio_type() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -90,10 +92,8 @@ impl SubstancePolymer_MonomerSet<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.ratio_type() {
+            _val.validate();
         }
         if let Some(_val) = self.starting_material() {
             _val.into_iter().for_each(|e| {

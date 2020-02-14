@@ -25,37 +25,11 @@ impl ExplanationOfBenefit_Accident<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Date of an accident event  related to the products and services contained in the
+    /// claim.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The type or context of the accident event for the purposes of selection of
-    /// potential insurance coverages and determination of coordination between
-    /// insurers.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The physical location of the accident event.
-    pub fn location_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("locationReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The physical location of the accident event.
-    pub fn location_address(&self) -> Option<Address> {
-        if let Some(val) = self.value.get("locationAddress") {
-            return Some(Address { value: val });
         }
         return None;
     }
@@ -72,6 +46,31 @@ impl ExplanationOfBenefit_Accident<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The physical location of the accident event.
+    pub fn location_address(&self) -> Option<Address> {
+        if let Some(val) = self.value.get("locationAddress") {
+            return Some(Address { value: val });
+        }
+        return None;
+    }
+
+    /// The physical location of the accident event.
+    pub fn location_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("locationReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -98,11 +97,12 @@ impl ExplanationOfBenefit_Accident<'_> {
         return None;
     }
 
-    /// Date of an accident event  related to the products and services contained in the
-    /// claim.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
+    /// The type or context of the accident event for the purposes of selection of
+    /// potential insurance coverages and determination of coordination between
+    /// insurers.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -111,27 +111,27 @@ impl ExplanationOfBenefit_Accident<'_> {
         if let Some(_val) = self._date() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.location_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.location_address() {
-            _val.validate();
-        }
+        if let Some(_val) = self.date() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.location_address() {
+            _val.validate();
+        }
+        if let Some(_val) = self.location_reference() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
         return true;
     }
 }

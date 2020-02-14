@@ -14,11 +14,10 @@ pub struct Consent_Policy<'a> {
 }
 
 impl Consent_Policy<'_> {
-    /// The references to the policies that are included in this consent scope. Policies
-    /// may be organizational, but are often defined jurisdictionally, or in law.
-    pub fn uri(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("uri") {
-            return Some(string);
+    /// Extensions for authority
+    pub fn _authority(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_authority") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -27,6 +26,15 @@ impl Consent_Policy<'_> {
     pub fn _uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_uri") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Entity or Organization having regulatory jurisdiction or accountability for
+    /// enforcing policies pertaining to Consent Directives.
+    pub fn authority(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("authority") {
+            return Some(string);
         }
         return None;
     }
@@ -47,10 +55,11 @@ impl Consent_Policy<'_> {
         return None;
     }
 
-    /// Extensions for authority
-    pub fn _authority(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_authority") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -77,44 +86,35 @@ impl Consent_Policy<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Entity or Organization having regulatory jurisdiction or accountability for
-    /// enforcing policies pertaining to Consent Directives.
-    pub fn authority(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("authority") {
+    /// The references to the policies that are included in this consent scope. Policies
+    /// may be organizational, but are often defined jurisdictionally, or in law.
+    pub fn uri(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("uri") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.uri() {}
+        if let Some(_val) = self._authority() {
+            _val.validate();
+        }
         if let Some(_val) = self._uri() {
             _val.validate();
         }
+        if let Some(_val) = self.authority() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._authority() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.authority() {}
+        if let Some(_val) = self.uri() {}
         return true;
     }
 }

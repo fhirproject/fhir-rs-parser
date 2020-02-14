@@ -15,6 +15,14 @@ pub struct ConceptMap_Target<'a> {
 }
 
 impl ConceptMap_Target<'_> {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -23,42 +31,35 @@ impl ConceptMap_Target<'_> {
         return None;
     }
 
-    /// The display for the code. The display is only provided to help editors when
-    /// editing the concept map.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for equivalence
+    pub fn _equivalence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_equivalence") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Identity (code or path) or the element/item that the map refers to.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
             return Some(string);
         }
         return None;
     }
 
-    /// A set of additional outcomes from this mapping to other elements. To properly
-    /// execute this mapping, the specified element must be mapped to some data element
-    /// or source that is in context. The mapping may still be useful without a place
-    /// for the additional data elements, but the equivalence cannot be relied on.
-    pub fn product(&self) -> Option<Vec<ConceptMap_DependsOn>> {
-        if let Some(Value::Array(val)) = self.value.get("product") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ConceptMap_DependsOn { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// A description of status/issues in mapping that conveys additional information
+    /// not represented in  the structured data.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
+            return Some(string);
         }
         return None;
     }
@@ -77,18 +78,37 @@ impl ConceptMap_Target<'_> {
         return None;
     }
 
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
+    /// The display for the code. The display is only provided to help editors when
+    /// editing the concept map.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+    /// The equivalence between the source and target concepts (counting for the
+    /// dependencies and products). The equivalence is read from target to source (e.g.
+    /// the target is 'wider' than the source).
+    pub fn equivalence(&self) -> Option<ConceptMap_TargetEquivalence> {
+        if let Some(Value::String(val)) = self.value.get("equivalence") {
+            return Some(ConceptMap_TargetEquivalence::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -124,66 +144,47 @@ impl ConceptMap_Target<'_> {
         return None;
     }
 
-    /// Identity (code or path) or the element/item that the map refers to.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The equivalence between the source and target concepts (counting for the
-    /// dependencies and products). The equivalence is read from target to source (e.g.
-    /// the target is 'wider' than the source).
-    pub fn equivalence(&self) -> Option<ConceptMap_TargetEquivalence> {
-        if let Some(Value::String(val)) = self.value.get("equivalence") {
-            return Some(ConceptMap_TargetEquivalence::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for equivalence
-    pub fn _equivalence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_equivalence") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A description of status/issues in mapping that conveys additional information
-    /// not represented in  the structured data.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
-            return Some(string);
+    /// A set of additional outcomes from this mapping to other elements. To properly
+    /// execute this mapping, the specified element must be mapped to some data element
+    /// or source that is in context. The mapping may still be useful without a place
+    /// for the additional data elements, but the equivalence cannot be relied on.
+    pub fn product(&self) -> Option<Vec<ConceptMap_DependsOn>> {
+        if let Some(Value::Array(val)) = self.value.get("product") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ConceptMap_DependsOn { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self._comment() {
             _val.validate();
         }
-        if let Some(_val) = self.display() {}
-        if let Some(_val) = self.product() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._display() {
+            _val.validate();
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._equivalence() {
+            _val.validate();
         }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.comment() {}
         if let Some(_val) = self.depends_on() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._display() {
-            _val.validate();
-        }
-        if let Some(_val) = self._code() {
-            _val.validate();
+        if let Some(_val) = self.display() {}
+        if let Some(_val) = self.equivalence() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -191,12 +192,11 @@ impl ConceptMap_Target<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.equivalence() {}
-        if let Some(_val) = self._equivalence() {
-            _val.validate();
+        if let Some(_val) = self.product() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.comment() {}
         return true;
     }
 }
@@ -234,16 +234,16 @@ impl ConceptMap_TargetEquivalence {
 
     pub fn to_string(&self) -> String {
         match self {
-            ConceptMap_TargetEquivalence::Relatedto => "relatedto",
-            ConceptMap_TargetEquivalence::Equivalent => "equivalent",
-            ConceptMap_TargetEquivalence::Equal => "equal",
-            ConceptMap_TargetEquivalence::Wider => "wider",
-            ConceptMap_TargetEquivalence::Subsumes => "subsumes",
-            ConceptMap_TargetEquivalence::Narrower => "narrower",
-            ConceptMap_TargetEquivalence::Specializes => "specializes",
-            ConceptMap_TargetEquivalence::Inexact => "inexact",
-            ConceptMap_TargetEquivalence::Unmatched => "unmatched",
-            ConceptMap_TargetEquivalence::Disjoint => "disjoint",
+            ConceptMap_TargetEquivalence::Relatedto => "relatedto".to_string(),
+            ConceptMap_TargetEquivalence::Equivalent => "equivalent".to_string(),
+            ConceptMap_TargetEquivalence::Equal => "equal".to_string(),
+            ConceptMap_TargetEquivalence::Wider => "wider".to_string(),
+            ConceptMap_TargetEquivalence::Subsumes => "subsumes".to_string(),
+            ConceptMap_TargetEquivalence::Narrower => "narrower".to_string(),
+            ConceptMap_TargetEquivalence::Specializes => "specializes".to_string(),
+            ConceptMap_TargetEquivalence::Inexact => "inexact".to_string(),
+            ConceptMap_TargetEquivalence::Unmatched => "unmatched".to_string(),
+            ConceptMap_TargetEquivalence::Disjoint => "disjoint".to_string(),
         }
     }
 }

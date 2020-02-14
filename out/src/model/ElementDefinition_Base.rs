@@ -12,9 +12,25 @@ pub struct ElementDefinition_Base<'a> {
 }
 
 impl ElementDefinition_Base<'_> {
+    /// Extensions for max
+    pub fn _max(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_max") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for min
     pub fn _min(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_min") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for path
+    pub fn _path(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_path") {
             return Some(Element { value: val });
         }
         return None;
@@ -32,6 +48,31 @@ impl ElementDefinition_Base<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Maximum cardinality of the base element identified by the path.
+    pub fn max(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("max") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Minimum cardinality of the base element identified by the path.
+    pub fn min(&self) -> Option<u64> {
+        if let Some(val) = self.value.get("min") {
+            return Some(val.as_u64().unwrap());
         }
         return None;
     }
@@ -69,49 +110,14 @@ impl ElementDefinition_Base<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Maximum cardinality of the base element identified by the path.
-    pub fn max(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("max") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for max
-    pub fn _max(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for path
-    pub fn _path(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Minimum cardinality of the base element identified by the path.
-    pub fn min(&self) -> Option<u64> {
-        if let Some(val) = self.value.get("min") {
-            return Some(val.as_u64().unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._max() {
+            _val.validate();
+        }
         if let Some(_val) = self._min() {
+            _val.validate();
+        }
+        if let Some(_val) = self._path() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -119,21 +125,15 @@ impl ElementDefinition_Base<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.max() {}
+        if let Some(_val) = self.min() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.path() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.max() {}
-        if let Some(_val) = self._max() {
-            _val.validate();
-        }
-        if let Some(_val) = self._path() {
-            _val.validate();
-        }
-        if let Some(_val) = self.min() {}
         return true;
     }
 }

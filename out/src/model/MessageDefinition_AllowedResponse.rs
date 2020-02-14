@@ -14,11 +14,10 @@ pub struct MessageDefinition_AllowedResponse<'a> {
 }
 
 impl MessageDefinition_AllowedResponse<'_> {
-    /// Provides a description of the circumstances in which this response should be
-    /// used (as opposed to one of the alternative responses).
-    pub fn situation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("situation") {
-            return Some(string);
+    /// Extensions for situation
+    pub fn _situation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_situation") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -48,6 +47,12 @@ impl MessageDefinition_AllowedResponse<'_> {
         return None;
     }
 
+    /// A reference to the message definition that must be adhered to by this supported
+    /// response.
+    pub fn message(&self) -> &str {
+        self.value.get("message").unwrap().as_str().unwrap()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -70,37 +75,32 @@ impl MessageDefinition_AllowedResponse<'_> {
         return None;
     }
 
-    /// Extensions for situation
-    pub fn _situation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_situation") {
-            return Some(Element { value: val });
+    /// Provides a description of the circumstances in which this response should be
+    /// used (as opposed to one of the alternative responses).
+    pub fn situation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("situation") {
+            return Some(string);
         }
         return None;
     }
 
-    /// A reference to the message definition that must be adhered to by this supported
-    /// response.
-    pub fn message(&self) -> &str {
-        self.value.get("message").unwrap().as_str().unwrap()
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.situation() {}
+        if let Some(_val) = self._situation() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        let _ = self.message();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._situation() {
-            _val.validate();
-        }
-        let _ = self.message();
+        if let Some(_val) = self.situation() {}
         return true;
     }
 }

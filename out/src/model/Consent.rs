@@ -24,10 +24,10 @@ pub struct Consent<'a> {
 }
 
 impl Consent<'_> {
-    /// When this  Consent was issued / created / indexed.
-    pub fn date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("dateTime") {
-            return Some(string);
+    /// Extensions for dateTime
+    pub fn _date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_dateTime") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -40,41 +40,6 @@ impl Consent<'_> {
         return None;
     }
 
-    /// Unique identifier for this copy of the Consent Statement.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for dateTime
-    pub fn _date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_dateTime") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Either the Grantor, which is the entity responsible for granting the rights
-    /// listed in a Consent Directive or the Grantee, which is the entity responsible
-    /// for complying with the Consent Directive, including any obligations or
-    /// limitations on authorizations and enforcement of prohibitions.
-    pub fn performer(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("performer") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
@@ -83,69 +48,45 @@ impl Consent<'_> {
         return None;
     }
 
-    /// The source on which this consent statement is based. The source might be a
-    /// scanned original paper form, or a reference to a consent that links back to such
-    /// a source, a reference to a document repository (e.g. XDS) that stores the
-    /// original consent document.
-    pub fn source_attachment(&self) -> Option<Attachment> {
-        if let Some(val) = self.value.get("sourceAttachment") {
-            return Some(Attachment { value: val });
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// The patient/healthcare consumer to whom this consent applies.
-    pub fn patient(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to the specific base computable regulation or policy.
-    pub fn policy_rule(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("policyRule") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// An exception to the base policy of this consent. An exception can be an addition
-    /// or removal of access permissions.
-    pub fn provision(&self) -> Option<Consent_Provision> {
-        if let Some(val) = self.value.get("provision") {
-            return Some(Consent_Provision { value: val });
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A classification of the type of consents found in the statement. This element
+    /// supports indexing and retrieval of consent statements.
+    pub fn category(&self) -> Vec<CodeableConcept> {
+        self.value
+            .get("category")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| CodeableConcept { value: e })
+            .collect::<Vec<_>>()
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// When this  Consent was issued / created / indexed.
+    pub fn date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("dateTime") {
+            return Some(string);
         }
         return None;
     }
@@ -162,6 +103,56 @@ impl Consent<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique identifier for this copy of the Consent Statement.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -189,78 +180,33 @@ impl Consent<'_> {
         return None;
     }
 
-    /// Indicates the current state of this consent.
-    pub fn status(&self) -> Option<ConsentStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(ConsentStatus::from_string(&val).unwrap());
+    /// The organization that manages the consent, and the framework within which it is
+    /// executed.
+    pub fn organization(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("organization") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A classification of the type of consents found in the statement. This element
-    /// supports indexing and retrieval of consent statements.
-    pub fn category(&self) -> Vec<CodeableConcept> {
-        self.value
-            .get("category")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| CodeableConcept { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// The source on which this consent statement is based. The source might be a
-    /// scanned original paper form, or a reference to a consent that links back to such
-    /// a source, a reference to a document repository (e.g. XDS) that stores the
-    /// original consent document.
-    pub fn source_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("sourceReference") {
+    /// The patient/healthcare consumer to whom this consent applies.
+    pub fn patient(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("patient") {
             return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// A selector of the type of consent being presented: ADR, Privacy, Treatment,
-    /// Research.  This list is now extensible.
-    pub fn scope(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["scope"],
-        }
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The organization that manages the consent, and the framework within which it is
-    /// executed.
-    pub fn organization(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("organization") {
+    /// Either the Grantor, which is the entity responsible for granting the rights
+    /// listed in a Consent Directive or the Grantee, which is the entity responsible
+    /// for complying with the Consent Directive, including any obligations or
+    /// limitations on authorizations and enforcement of prohibitions.
+    pub fn performer(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
@@ -283,16 +229,70 @@ impl Consent<'_> {
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// A reference to the specific base computable regulation or policy.
+    pub fn policy_rule(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("policyRule") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// An exception to the base policy of this consent. An exception can be an addition
+    /// or removal of access permissions.
+    pub fn provision(&self) -> Option<Consent_Provision> {
+        if let Some(val) = self.value.get("provision") {
+            return Some(Consent_Provision { value: val });
+        }
+        return None;
+    }
+
+    /// A selector of the type of consent being presented: ADR, Privacy, Treatment,
+    /// Research.  This list is now extensible.
+    pub fn scope(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["scope"],
+        }
+    }
+
+    /// The source on which this consent statement is based. The source might be a
+    /// scanned original paper form, or a reference to a consent that links back to such
+    /// a source, a reference to a document repository (e.g. XDS) that stores the
+    /// original consent document.
+    pub fn source_attachment(&self) -> Option<Attachment> {
+        if let Some(val) = self.value.get("sourceAttachment") {
+            return Some(Attachment { value: val });
+        }
+        return None;
+    }
+
+    /// The source on which this consent statement is based. The source might be a
+    /// scanned original paper form, or a reference to a consent that links back to such
+    /// a source, a reference to a document repository (e.g. XDS) that stores the
+    /// original consent document.
+    pub fn source_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("sourceReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates the current state of this consent.
+    pub fn status(&self) -> Option<ConsentStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(ConsentStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -311,69 +311,57 @@ impl Consent<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.date_time() {}
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._date_time() {
             _val.validate();
         }
-        if let Some(_val) = self.performer() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
         }
         if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.source_attachment() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.patient() {
-            _val.validate();
-        }
-        if let Some(_val) = self.policy_rule() {
-            _val.validate();
-        }
-        if let Some(_val) = self.provision() {
-            _val.validate();
-        }
-        if let Some(_val) = self.text() {
             _val.validate();
         }
         if let Some(_val) = self._status() {
             _val.validate();
         }
+        let _ = self.category().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.date_time() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.implicit_rules() {}
-        let _ = self.category().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.source_reference() {
+        if let Some(_val) = self.organization() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.patient() {
             _val.validate();
         }
-        let _ = self.scope().validate();
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.organization() {
+        if let Some(_val) = self.performer() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -383,10 +371,22 @@ impl Consent<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.policy_rule() {
+            _val.validate();
+        }
+        if let Some(_val) = self.provision() {
+            _val.validate();
+        }
+        let _ = self.scope().validate();
+        if let Some(_val) = self.source_attachment() {
+            _val.validate();
+        }
+        if let Some(_val) = self.source_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
         if let Some(_val) = self.verification() {
             _val.into_iter().for_each(|e| {
@@ -422,12 +422,12 @@ impl ConsentStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            ConsentStatus::Draft => "draft",
-            ConsentStatus::Proposed => "proposed",
-            ConsentStatus::Active => "active",
-            ConsentStatus::Rejected => "rejected",
-            ConsentStatus::Inactive => "inactive",
-            ConsentStatus::EnteredInError => "entered-in-error",
+            ConsentStatus::Draft => "draft".to_string(),
+            ConsentStatus::Proposed => "proposed".to_string(),
+            ConsentStatus::Active => "active".to_string(),
+            ConsentStatus::Rejected => "rejected".to_string(),
+            ConsentStatus::Inactive => "inactive".to_string(),
+            ConsentStatus::EnteredInError => "entered-in-error".to_string(),
         }
     }
 }

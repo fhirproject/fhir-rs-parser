@@ -21,6 +21,86 @@ pub struct OperationDefinition<'a> {
 }
 
 impl OperationDefinition<'_> {
+    /// Extensions for affectsState
+    pub fn _affects_state(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_affectsState") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for comment
+    pub fn _comment(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comment") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for experimental
+    pub fn _experimental(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_experimental") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for instance
+    pub fn _instance(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_instance") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for kind
+    pub fn _kind(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_kind") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -29,10 +109,262 @@ impl OperationDefinition<'_> {
         return None;
     }
 
+    /// Extensions for publisher
+    pub fn _publisher(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_publisher") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for purpose
+    pub fn _purpose(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_purpose") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for resource
+    pub fn _resource(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_resource") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for title
+    pub fn _title(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_title") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Whether the operation affects state. Side effects such as producing audit trail
+    /// entries do not count as 'affecting  state'.
+    pub fn affects_state(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("affectsState") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Indicates that this operation definition is a constraining profile on the base.
+    pub fn base(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("base") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The name used to invoke the operation.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Additional information about how to use this operation or named query.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Contact details to assist a user in finding and communicating with the
+    /// publisher.
+    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactDetail { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The date  (and optionally time) when the operation definition was published. The
+    /// date must change when the business version changes and it must change if the
+    /// status code changes. In addition, it should change when the substantive content
+    /// of the operation definition changes.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A free text natural language description of the operation definition from a
+    /// consumer's perspective.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A Boolean value to indicate that this operation definition is authored for
+    /// testing purposes (or education/evaluation/marketing) and is not intended to be
+    /// used for genuine usage.
+    pub fn experimental(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("experimental") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Additional validation information for the in parameters - a single profile that
+    /// covers all the parameters. The profile is a constraint on the parameters
+    /// resource as a whole.
+    pub fn input_profile(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("inputProfile") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Indicates whether this operation can be invoked on a particular instance of one
+    /// of the given types.
+    pub fn instance(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("instance") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// A legal or geographic region in which the operation definition is intended to be
+    /// used.
+    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Whether this is an operation or a named query.
+    pub fn kind(&self) -> Option<OperationDefinitionKind> {
+        if let Some(Value::String(val)) = self.value.get("kind") {
+            return Some(OperationDefinitionKind::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -60,38 +392,48 @@ impl OperationDefinition<'_> {
         return None;
     }
 
-    /// Extensions for purpose
-    pub fn _purpose(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+    /// A natural language name identifying the operation definition. This name should
+    /// be usable as an identifier for the module by machine processing applications
+    /// such as code generation.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
         }
         return None;
     }
 
-    /// The status of this operation definition. Enables tracking the life-cycle of the
-    /// content.
-    pub fn status(&self) -> Option<OperationDefinitionStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(OperationDefinitionStatus::from_string(&val).unwrap());
+    /// Additional validation information for the out parameters - a single profile that
+    /// covers all the parameters. The profile is a constraint on the parameters
+    /// resource.
+    pub fn output_profile(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("outputProfile") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for experimental
-    pub fn _experimental(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
+    /// Defines an appropriate combination of parameters to use when invoking this
+    /// operation, to help code generators when generating overloaded parameter sets for
+    /// this operation.
+    pub fn overload(&self) -> Option<Vec<OperationDefinition_Overload>> {
+        if let Some(Value::Array(val)) = self.value.get("overload") {
+            return Some(
+                val.into_iter()
+                    .map(|e| OperationDefinition_Overload { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The parameters for the operation/query.
+    pub fn parameter(&self) -> Option<Vec<OperationDefinition_Parameter>> {
+        if let Some(Value::Array(val)) = self.value.get("parameter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| OperationDefinition_Parameter { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -105,70 +447,54 @@ impl OperationDefinition<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates that this operation definition is a constraining profile on the base.
-    pub fn base(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("base") {
+    /// Explanation of why this operation definition is needed and why it has been
+    /// designed as it has.
+    pub fn purpose(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("purpose") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for resource
-    pub fn _resource(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_resource") {
+    /// The types on which this operation can be executed.
+    pub fn resource(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("resource") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+    /// The status of this operation definition. Enables tracking the life-cycle of the
+    /// content.
+    pub fn status(&self) -> Option<OperationDefinitionStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(OperationDefinitionStatus::from_string(&val).unwrap());
         }
         return None;
     }
 
-    /// Extensions for kind
-    pub fn _kind(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A Boolean value to indicate that this operation definition is authored for
-    /// testing purposes (or education/evaluation/marketing) and is not intended to be
-    /// used for genuine usage.
-    pub fn experimental(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("experimental") {
+    /// Indicates whether this operation or named query can be invoked at the system
+    /// level (e.g. without needing to choose a resource type for the context).
+    pub fn system(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("system") {
             return Some(val.as_bool().unwrap());
         }
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -191,73 +517,16 @@ impl OperationDefinition<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for affectsState
-    pub fn _affects_state(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_affectsState") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// An absolute URI that is used to identify this operation definition when it is
+    /// referenced in a specification, model, design or an instance; also called its
+    /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+    /// address at which at which an authoritative instance of this operation definition
+    /// is (or will be) published. This URL can be the target of a canonical reference.
+    /// It SHALL remain the same when the operation definition is stored on different
+    /// servers.
+    pub fn url(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("url") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// A legal or geographic region in which the operation definition is intended to be
-    /// used.
-    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -278,49 +547,6 @@ impl OperationDefinition<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for instance
-    pub fn _instance(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_instance") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Additional validation information for the out parameters - a single profile that
-    /// covers all the parameters. The profile is a constraint on the parameters
-    /// resource.
-    pub fn output_profile(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("outputProfile") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for comment
-    pub fn _comment(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The name used to invoke the operation.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// The identifier that is used to identify this version of the operation definition
     /// when it is referenced in a specification, model, design or instance. This is an
     /// arbitrary value managed by the operation definition author and is not expected
@@ -334,237 +560,103 @@ impl OperationDefinition<'_> {
         return None;
     }
 
-    /// Additional information about how to use this operation or named query.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A free text natural language description of the operation definition from a
-    /// consumer's perspective.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// An absolute URI that is used to identify this operation definition when it is
-    /// referenced in a specification, model, design or an instance; also called its
-    /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-    /// address at which at which an authoritative instance of this operation definition
-    /// is (or will be) published. This URL can be the target of a canonical reference.
-    /// It SHALL remain the same when the operation definition is stored on different
-    /// servers.
-    pub fn url(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("url") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A natural language name identifying the operation definition. This name should
-    /// be usable as an identifier for the module by machine processing applications
-    /// such as code generation.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The types on which this operation can be executed.
-    pub fn resource(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("resource") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The parameters for the operation/query.
-    pub fn parameter(&self) -> Option<Vec<OperationDefinition_Parameter>> {
-        if let Some(Value::Array(val)) = self.value.get("parameter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| OperationDefinition_Parameter { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Explanation of why this operation definition is needed and why it has been
-    /// designed as it has.
-    pub fn purpose(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("purpose") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The date  (and optionally time) when the operation definition was published. The
-    /// date must change when the business version changes and it must change if the
-    /// status code changes. In addition, it should change when the substantive content
-    /// of the operation definition changes.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Contact details to assist a user in finding and communicating with the
-    /// publisher.
-    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactDetail { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Additional validation information for the in parameters - a single profile that
-    /// covers all the parameters. The profile is a constraint on the parameters
-    /// resource as a whole.
-    pub fn input_profile(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("inputProfile") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Whether the operation affects state. Side effects such as producing audit trail
-    /// entries do not count as 'affecting  state'.
-    pub fn affects_state(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("affectsState") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for title
-    pub fn _title(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates whether this operation or named query can be invoked at the system
-    /// level (e.g. without needing to choose a resource type for the context).
-    pub fn system(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("system") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates whether this operation can be invoked on a particular instance of one
-    /// of the given types.
-    pub fn instance(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("instance") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for publisher
-    pub fn _publisher(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Defines an appropriate combination of parameters to use when invoking this
-    /// operation, to help code generators when generating overloaded parameter sets for
-    /// this operation.
-    pub fn overload(&self) -> Option<Vec<OperationDefinition_Overload>> {
-        if let Some(Value::Array(val)) = self.value.get("overload") {
-            return Some(
-                val.into_iter()
-                    .map(|e| OperationDefinition_Overload { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Whether this is an operation or a named query.
-    pub fn kind(&self) -> Option<OperationDefinitionKind> {
-        if let Some(Value::String(val)) = self.value.get("kind") {
-            return Some(OperationDefinitionKind::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._affects_state() {
+            _val.validate();
+        }
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
+        if let Some(_val) = self._comment() {
+            _val.validate();
+        }
+        if let Some(_val) = self._date() {
+            _val.validate();
+        }
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self._experimental() {
+            _val.validate();
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._instance() {
+            _val.validate();
+        }
+        if let Some(_val) = self._kind() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
         if let Some(_val) = self._name() {
             _val.validate();
         }
+        if let Some(_val) = self._publisher() {
+            _val.validate();
+        }
+        if let Some(_val) = self._purpose() {
+            _val.validate();
+        }
+        if let Some(_val) = self._resource() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self._system() {
+            _val.validate();
+        }
+        if let Some(_val) = self._title() {
+            _val.validate();
+        }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self._url() {
+            _val.validate();
+        }
+        if let Some(_val) = self._version() {
+            _val.validate();
+        }
+        if let Some(_val) = self.affects_state() {}
+        if let Some(_val) = self.base() {}
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.comment() {}
+        if let Some(_val) = self.contact() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.experimental() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.input_profile() {}
+        if let Some(_val) = self.instance() {}
+        if let Some(_val) = self.jurisdiction() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.kind() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -572,130 +664,61 @@ impl OperationDefinition<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._purpose() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self._experimental() {
-            _val.validate();
-        }
-        if let Some(_val) = self.publisher() {}
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.base() {}
-        if let Some(_val) = self._resource() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._system() {
-            _val.validate();
-        }
-        if let Some(_val) = self._kind() {
-            _val.validate();
-        }
-        if let Some(_val) = self.experimental() {}
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.title() {}
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self._affects_state() {
-            _val.validate();
-        }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.jurisdiction() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.use_context() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._instance() {
-            _val.validate();
-        }
-        if let Some(_val) = self.output_profile() {}
-        if let Some(_val) = self._comment() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self.comment() {}
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self.url() {}
-        if let Some(_val) = self._version() {
-            _val.validate();
-        }
         if let Some(_val) = self.name() {}
-        if let Some(_val) = self.resource() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._type() {
-            _val.validate();
+        if let Some(_val) = self.output_profile() {}
+        if let Some(_val) = self.overload() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.publisher() {}
         if let Some(_val) = self.purpose() {}
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self.contact() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.resource() {
+            _val.into_iter().for_each(|_e| {});
         }
-        if let Some(_val) = self.input_profile() {}
-        if let Some(_val) = self._date() {
-            _val.validate();
-        }
-        if let Some(_val) = self.affects_state() {}
-        if let Some(_val) = self._title() {
-            _val.validate();
-        }
+        if let Some(_val) = self.status() {}
         if let Some(_val) = self.system() {}
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.instance() {}
-        if let Some(_val) = self._url() {
-            _val.validate();
-        }
-        if let Some(_val) = self._publisher() {
-            _val.validate();
-        }
-        if let Some(_val) = self.overload() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.kind() {}
         if let Some(_val) = self.text() {
             _val.validate();
         }
+        if let Some(_val) = self.title() {}
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.url() {}
+        if let Some(_val) = self.use_context() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub enum OperationDefinitionKind {
+    Operation,
+    Query,
+}
+
+impl OperationDefinitionKind {
+    pub fn from_string(string: &str) -> Option<OperationDefinitionKind> {
+        match string {
+            "operation" => Some(OperationDefinitionKind::Operation),
+            "query" => Some(OperationDefinitionKind::Query),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            OperationDefinitionKind::Operation => "operation".to_string(),
+            OperationDefinitionKind::Query => "query".to_string(),
+        }
     }
 }
 
@@ -720,33 +743,10 @@ impl OperationDefinitionStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            OperationDefinitionStatus::Draft => "draft",
-            OperationDefinitionStatus::Active => "active",
-            OperationDefinitionStatus::Retired => "retired",
-            OperationDefinitionStatus::Unknown => "unknown",
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum OperationDefinitionKind {
-    Operation,
-    Query,
-}
-
-impl OperationDefinitionKind {
-    pub fn from_string(string: &str) -> Option<OperationDefinitionKind> {
-        match string {
-            "operation" => Some(OperationDefinitionKind::Operation),
-            "query" => Some(OperationDefinitionKind::Query),
-            _ => None,
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        match self {
-            OperationDefinitionKind::Operation => "operation",
-            OperationDefinitionKind::Query => "query",
+            OperationDefinitionStatus::Draft => "draft".to_string(),
+            OperationDefinitionStatus::Active => "active".to_string(),
+            OperationDefinitionStatus::Retired => "retired".to_string(),
+            OperationDefinitionStatus::Unknown => "unknown".to_string(),
         }
     }
 }

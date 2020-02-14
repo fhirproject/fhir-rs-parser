@@ -17,21 +17,6 @@ pub struct ImplementationGuide_Manifest<'a> {
 }
 
 impl ImplementationGuide_Manifest<'_> {
-    /// A resource that is part of the implementation guide. Conformance resources
-    /// (value set, structure definition, capability statements etc.) are obvious
-    /// candidates for inclusion, but any kind of resource can be included as an example
-    /// resource.
-    pub fn resource(&self) -> Vec<ImplementationGuide_Resource1> {
-        self.value
-            .get("resource")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ImplementationGuide_Resource1 { value: e })
-            .collect::<Vec<_>>()
-    }
-
     /// Extensions for image
     pub fn _image(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_image") {
@@ -44,23 +29,36 @@ impl ImplementationGuide_Manifest<'_> {
         return None;
     }
 
-    /// A pointer to official web page, PDF or other rendering of the implementation
-    /// guide.
-    pub fn rendering(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("rendering") {
-            return Some(string);
+    /// Extensions for other
+    pub fn _other(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_other") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// Indicates the relative path of an additional non-page, non-image file that is
-    /// part of the IG - e.g. zip, jar and similar files that could be the target of a
-    /// hyperlink in a derived IG.
-    pub fn other(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("other") {
+    /// Extensions for rendering
+    pub fn _rendering(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_rendering") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,34 +80,6 @@ impl ImplementationGuide_Manifest<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Information about a page within the IG.
-    pub fn page(&self) -> Option<Vec<ImplementationGuide_Page1>> {
-        if let Some(Value::Array(val)) = self.value.get("page") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ImplementationGuide_Page1 { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -138,54 +108,63 @@ impl ImplementationGuide_Manifest<'_> {
         return None;
     }
 
-    /// Extensions for rendering
-    pub fn _rendering(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_rendering") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for other
-    pub fn _other(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_other") {
+    /// Indicates the relative path of an additional non-page, non-image file that is
+    /// part of the IG - e.g. zip, jar and similar files that could be the target of a
+    /// hyperlink in a derived IG.
+    pub fn other(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("other") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
+    /// Information about a page within the IG.
+    pub fn page(&self) -> Option<Vec<ImplementationGuide_Page1>> {
+        if let Some(Value::Array(val)) = self.value.get("page") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ImplementationGuide_Page1 { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A pointer to official web page, PDF or other rendering of the implementation
+    /// guide.
+    pub fn rendering(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("rendering") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A resource that is part of the implementation guide. Conformance resources
+    /// (value set, structure definition, capability statements etc.) are obvious
+    /// candidates for inclusion, but any kind of resource can be included as an example
+    /// resource.
+    pub fn resource(&self) -> Vec<ImplementationGuide_Resource1> {
+        self.value
+            .get("resource")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ImplementationGuide_Resource1 { value: e })
+            .collect::<Vec<_>>()
+    }
+
     pub fn validate(&self) -> bool {
-        let _ = self.resource().into_iter().for_each(|e| {
-            e.validate();
-        });
         if let Some(_val) = self._image() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.rendering() {}
-        if let Some(_val) = self.other() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.image() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.page() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self._other() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -193,11 +172,32 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(_val) = self._rendering() {
             _val.validate();
         }
-        if let Some(_val) = self._other() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.image() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.other() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.page() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.rendering() {}
+        let _ = self.resource().into_iter().for_each(|e| {
+            e.validate();
+        });
         return true;
     }
 }

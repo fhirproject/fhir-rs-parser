@@ -14,6 +14,14 @@ pub struct TerminologyCapabilities_Translation<'a> {
 }
 
 impl TerminologyCapabilities_Translation<'_> {
+    /// Extensions for needsMap
+    pub fn _needs_map(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_needsMap") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -69,15 +77,10 @@ impl TerminologyCapabilities_Translation<'_> {
         return None;
     }
 
-    /// Extensions for needsMap
-    pub fn _needs_map(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_needsMap") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._needs_map() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -90,9 +93,6 @@ impl TerminologyCapabilities_Translation<'_> {
             });
         }
         if let Some(_val) = self.needs_map() {}
-        if let Some(_val) = self._needs_map() {
-            _val.validate();
-        }
         return true;
     }
 }

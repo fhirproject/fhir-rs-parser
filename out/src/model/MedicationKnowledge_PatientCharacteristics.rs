@@ -14,14 +14,32 @@ pub struct MedicationKnowledge_PatientCharacteristics<'a> {
 }
 
 impl MedicationKnowledge_PatientCharacteristics<'_> {
-    /// The specific characteristic (e.g. height, weight, gender, etc.).
-    pub fn value(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("value") {
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_value") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Specific characteristic that is relevant to the administration guideline (e.g.
+    /// height, weight, gender).
+    pub fn characteristic_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("characteristicCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Specific characteristic that is relevant to the administration guideline (e.g.
+    /// height, weight, gender).
+    pub fn characteristic_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("characteristicQuantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -73,39 +91,29 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
         return None;
     }
 
-    /// Specific characteristic that is relevant to the administration guideline (e.g.
-    /// height, weight, gender).
-    pub fn characteristic_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("characteristicCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_value") {
+    /// The specific characteristic (e.g. height, weight, gender, etc.).
+    pub fn value(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("value") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Specific characteristic that is relevant to the administration guideline (e.g.
-    /// height, weight, gender).
-    pub fn characteristic_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("characteristicQuantity") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value() {
-            _val.into_iter().for_each(|_e| {});
+        if let Some(_val) = self._value() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.characteristic_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.characteristic_quantity() {
+            _val.validate();
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -118,16 +126,8 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.characteristic_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self._value() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.characteristic_quantity() {
-            _val.validate();
+        if let Some(_val) = self.value() {
+            _val.into_iter().for_each(|_e| {});
         }
         return true;
     }

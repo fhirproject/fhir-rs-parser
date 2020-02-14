@@ -16,19 +16,10 @@ pub struct RiskAssessment_Prediction<'a> {
 }
 
 impl RiskAssessment_Prediction<'_> {
-    /// Additional information explaining the basis for the prediction.
-    pub fn rationale(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("rationale") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Indicates the period of time or age range of the subject to which the specified
-    /// probability applies.
-    pub fn when_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("whenRange") {
-            return Some(Range { value: val });
+    /// Extensions for probabilityDecimal
+    pub fn _probability_decimal(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_probabilityDecimal") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -41,27 +32,35 @@ impl RiskAssessment_Prediction<'_> {
         return None;
     }
 
-    /// One of the potential outcomes for the patient (e.g. remission, death,  a
-    /// particular condition).
-    pub fn outcome(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("outcome") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates how likely the outcome is (in the specified timeframe).
-    pub fn probability_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("probabilityRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for relativeRisk
     pub fn _relative_risk(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relativeRisk") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -88,10 +87,11 @@ impl RiskAssessment_Prediction<'_> {
         return None;
     }
 
-    /// Extensions for probabilityDecimal
-    pub fn _probability_decimal(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_probabilityDecimal") {
-            return Some(Element { value: val });
+    /// One of the potential outcomes for the patient (e.g. remission, death,  a
+    /// particular condition).
+    pub fn outcome(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("outcome") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -104,11 +104,10 @@ impl RiskAssessment_Prediction<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Indicates how likely the outcome is (in the specified timeframe).
+    pub fn probability_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("probabilityRange") {
+            return Some(Range { value: val });
         }
         return None;
     }
@@ -122,18 +121,10 @@ impl RiskAssessment_Prediction<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Additional information explaining the basis for the prediction.
+    pub fn rationale(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("rationale") {
+            return Some(string);
         }
         return None;
     }
@@ -158,34 +149,23 @@ impl RiskAssessment_Prediction<'_> {
         return None;
     }
 
+    /// Indicates the period of time or age range of the subject to which the specified
+    /// probability applies.
+    pub fn when_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("whenRange") {
+            return Some(Range { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.rationale() {}
-        if let Some(_val) = self.when_range() {
+        if let Some(_val) = self._probability_decimal() {
             _val.validate();
         }
         if let Some(_val) = self._rationale() {
             _val.validate();
         }
-        if let Some(_val) = self.outcome() {
-            _val.validate();
-        }
-        if let Some(_val) = self.probability_range() {
-            _val.validate();
-        }
         if let Some(_val) = self._relative_risk() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._probability_decimal() {
-            _val.validate();
-        }
-        if let Some(_val) = self.probability_decimal() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.qualitative_risk() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -193,8 +173,28 @@ impl RiskAssessment_Prediction<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.outcome() {
+            _val.validate();
+        }
+        if let Some(_val) = self.probability_decimal() {}
+        if let Some(_val) = self.probability_range() {
+            _val.validate();
+        }
+        if let Some(_val) = self.qualitative_risk() {
+            _val.validate();
+        }
+        if let Some(_val) = self.rationale() {}
         if let Some(_val) = self.relative_risk() {}
         if let Some(_val) = self.when_period() {
+            _val.validate();
+        }
+        if let Some(_val) = self.when_range() {
             _val.validate();
         }
         return true;

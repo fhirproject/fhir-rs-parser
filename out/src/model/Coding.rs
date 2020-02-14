@@ -12,21 +12,17 @@ pub struct Coding<'a> {
 }
 
 impl Coding<'_> {
-    /// The version of the code system which was used when choosing this code. Note that
-    /// a well-maintained code system does not need the version reported, because the
-    /// meaning of codes is consistent across versions. However this cannot consistently
-    /// be assured, and when the meaning is not guaranteed to be consistent, the version
-    /// SHOULD be exchanged.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Extensions for userSelected
-    pub fn _user_selected(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_userSelected") {
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
             return Some(Element { value: val });
         }
         return None;
@@ -40,35 +36,17 @@ impl Coding<'_> {
         return None;
     }
 
-    /// A representation of the meaning of the code in the system, following the rules
-    /// of the system.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
+    /// Extensions for userSelected
+    pub fn _user_selected(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_userSelected") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The identification of the code system that defines the meaning of the symbol in
-    /// the code.
-    pub fn system(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("system") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
             return Some(Element { value: val });
         }
         return None;
@@ -83,19 +61,11 @@ impl Coding<'_> {
         return None;
     }
 
-    /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
-    /// of available items (codes or displays).
-    pub fn user_selected(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("userSelected") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+    /// A representation of the meaning of the code in the system, following the rules
+    /// of the system.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
+            return Some(string);
         }
         return None;
     }
@@ -125,33 +95,63 @@ impl Coding<'_> {
         return None;
     }
 
+    /// The identification of the code system that defines the meaning of the symbol in
+    /// the code.
+    pub fn system(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("system") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
+    /// of available items (codes or displays).
+    pub fn user_selected(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("userSelected") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// The version of the code system which was used when choosing this code. Note that
+    /// a well-maintained code system does not need the version reported, because the
+    /// meaning of codes is consistent across versions. However this cannot consistently
+    /// be assured, and when the meaning is not guaranteed to be consistent, the version
+    /// SHOULD be exchanged.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self._user_selected() {
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
+        if let Some(_val) = self._display() {
             _val.validate();
         }
         if let Some(_val) = self._system() {
             _val.validate();
         }
-        if let Some(_val) = self.display() {}
-        if let Some(_val) = self._display() {
+        if let Some(_val) = self._user_selected() {
             _val.validate();
         }
-        if let Some(_val) = self.system() {}
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.user_selected() {}
         if let Some(_val) = self._version() {
             _val.validate();
         }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self.user_selected() {}
+        if let Some(_val) = self.version() {}
         return true;
     }
 }

@@ -15,20 +15,37 @@ pub struct MedicinalProductIngredient_Strength<'a> {
 }
 
 impl MedicinalProductIngredient_Strength<'_> {
-    /// The quantity of substance in the unit of presentation, or in the volume (or
-    /// mass) of the single pharmaceutical product or manufactured item.
-    pub fn presentation(&self) -> Ratio {
-        Ratio {
-            value: &self.value["presentation"],
+    /// Extensions for measurementPoint
+    pub fn _measurement_point(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_measurementPoint") {
+            return Some(Element { value: val });
         }
+        return None;
     }
 
-    /// Strength expressed in terms of a reference substance.
-    pub fn reference_strength(&self) -> Option<Vec<MedicinalProductIngredient_ReferenceStrength>> {
-        if let Some(Value::Array(val)) = self.value.get("referenceStrength") {
+    /// The strength per unitary volume (or mass).
+    pub fn concentration(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("concentration") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// A lower limit for the strength per unitary volume (or mass), for when there is a
+    /// range. The concentration attribute then becomes the upper limit.
+    pub fn concentration_low_limit(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("concentrationLowLimit") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// The country or countries for which the strength range applies.
+    pub fn country(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("country") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductIngredient_ReferenceStrength { value: e })
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -51,19 +68,19 @@ impl MedicinalProductIngredient_Strength<'_> {
         return None;
     }
 
-    /// For when strength is measured at a particular point or distance.
-    pub fn measurement_point(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("measurementPoint") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    /// A lower limit for the strength per unitary volume (or mass), for when there is a
-    /// range. The concentration attribute then becomes the upper limit.
-    pub fn concentration_low_limit(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("concentrationLowLimit") {
-            return Some(Ratio { value: val });
+    /// For when strength is measured at a particular point or distance.
+    pub fn measurement_point(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("measurementPoint") {
+            return Some(string);
         }
         return None;
     }
@@ -90,21 +107,12 @@ impl MedicinalProductIngredient_Strength<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The quantity of substance in the unit of presentation, or in the volume (or
+    /// mass) of the single pharmaceutical product or manufactured item.
+    pub fn presentation(&self) -> Ratio {
+        Ratio {
+            value: &self.value["presentation"],
         }
-        return None;
-    }
-
-    /// The strength per unitary volume (or mass).
-    pub fn concentration(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("concentration") {
-            return Some(Ratio { value: val });
-        }
-        return None;
     }
 
     /// A lower limit for the quantity of substance in the unit of presentation. For use
@@ -117,20 +125,12 @@ impl MedicinalProductIngredient_Strength<'_> {
         return None;
     }
 
-    /// Extensions for measurementPoint
-    pub fn _measurement_point(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_measurementPoint") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The country or countries for which the strength range applies.
-    pub fn country(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("country") {
+    /// Strength expressed in terms of a reference substance.
+    pub fn reference_strength(&self) -> Option<Vec<MedicinalProductIngredient_ReferenceStrength>> {
+        if let Some(Value::Array(val)) = self.value.get("referenceStrength") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| MedicinalProductIngredient_ReferenceStrength { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -138,8 +138,16 @@ impl MedicinalProductIngredient_Strength<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.presentation().validate();
-        if let Some(_val) = self.reference_strength() {
+        if let Some(_val) = self._measurement_point() {
+            _val.validate();
+        }
+        if let Some(_val) = self.concentration() {
+            _val.validate();
+        }
+        if let Some(_val) = self.concentration_low_limit() {
+            _val.validate();
+        }
+        if let Some(_val) = self.country() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -149,26 +157,18 @@ impl MedicinalProductIngredient_Strength<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.measurement_point() {}
-        if let Some(_val) = self.concentration_low_limit() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.concentration() {
-            _val.validate();
-        }
+        let _ = self.presentation().validate();
         if let Some(_val) = self.presentation_low_limit() {
             _val.validate();
         }
-        if let Some(_val) = self._measurement_point() {
-            _val.validate();
-        }
-        if let Some(_val) = self.country() {
+        if let Some(_val) = self.reference_strength() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

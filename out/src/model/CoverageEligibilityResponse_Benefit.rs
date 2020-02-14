@@ -15,10 +15,58 @@ pub struct CoverageEligibilityResponse_Benefit<'a> {
 }
 
 impl CoverageEligibilityResponse_Benefit<'_> {
+    /// Extensions for allowedString
+    pub fn _allowed_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allowedString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for allowedUnsignedInt
     pub fn _allowed_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowedUnsignedInt") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for usedString
+    pub fn _used_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_usedString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for usedUnsignedInt
+    pub fn _used_unsigned_int(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_usedUnsignedInt") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The quantity of the benefit which is permitted under the coverage.
+    pub fn allowed_money(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("allowedMoney") {
+            return Some(Money { value: val });
+        }
+        return None;
+    }
+
+    /// The quantity of the benefit which is permitted under the coverage.
+    pub fn allowed_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("allowedString") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The quantity of the benefit which is permitted under the coverage.
+    pub fn allowed_unsigned_int(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("allowedUnsignedInt") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
@@ -39,33 +87,10 @@ impl CoverageEligibilityResponse_Benefit<'_> {
         return None;
     }
 
-    /// The quantity of the benefit which have been consumed to date.
-    pub fn used_unsigned_int(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("usedUnsignedInt") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Classification of benefit being provided.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The quantity of the benefit which is permitted under the coverage.
-    pub fn allowed_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("allowedString") {
             return Some(string);
         }
         return None;
@@ -93,25 +118,16 @@ impl CoverageEligibilityResponse_Benefit<'_> {
         return None;
     }
 
-    /// The quantity of the benefit which is permitted under the coverage.
-    pub fn allowed_unsigned_int(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("allowedUnsignedInt") {
-            return Some(val.as_f64().unwrap());
+    /// Classification of benefit being provided.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
-        return None;
     }
 
-    /// Extensions for usedUnsignedInt
-    pub fn _used_unsigned_int(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_usedUnsignedInt") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The quantity of the benefit which is permitted under the coverage.
-    pub fn allowed_money(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("allowedMoney") {
+    /// The quantity of the benefit which have been consumed to date.
+    pub fn used_money(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("usedMoney") {
             return Some(Money { value: val });
         }
         return None;
@@ -125,65 +141,49 @@ impl CoverageEligibilityResponse_Benefit<'_> {
         return None;
     }
 
-    /// Extensions for usedString
-    pub fn _used_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_usedString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for allowedString
-    pub fn _allowed_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allowedString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// The quantity of the benefit which have been consumed to date.
-    pub fn used_money(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("usedMoney") {
-            return Some(Money { value: val });
+    pub fn used_unsigned_int(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("usedUnsignedInt") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._allowed_string() {
+            _val.validate();
+        }
         if let Some(_val) = self._allowed_unsigned_int() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._used_string() {
+            _val.validate();
         }
-        if let Some(_val) = self.used_unsigned_int() {}
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.allowed_string() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.allowed_unsigned_int() {}
         if let Some(_val) = self._used_unsigned_int() {
             _val.validate();
         }
         if let Some(_val) = self.allowed_money() {
             _val.validate();
         }
-        if let Some(_val) = self.used_string() {}
-        if let Some(_val) = self._used_string() {
-            _val.validate();
+        if let Some(_val) = self.allowed_string() {}
+        if let Some(_val) = self.allowed_unsigned_int() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self._allowed_string() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.used_money() {
             _val.validate();
         }
+        if let Some(_val) = self.used_string() {}
+        if let Some(_val) = self.used_unsigned_int() {}
         return true;
     }
 }

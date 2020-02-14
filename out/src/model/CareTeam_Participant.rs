@@ -15,6 +15,22 @@ pub struct CareTeam_Participant<'a> {
 }
 
 impl CareTeam_Participant<'_> {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -29,31 +45,6 @@ impl CareTeam_Participant<'_> {
     pub fn member(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("member") {
             return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates when the specific member or organization did (or is intended to) come
-    /// into effect and end.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -80,6 +71,23 @@ impl CareTeam_Participant<'_> {
         return None;
     }
 
+    /// The organization of the practitioner.
+    pub fn on_behalf_of(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("onBehalfOf") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates when the specific member or organization did (or is intended to) come
+    /// into effect and end.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
     /// Indicates specific responsibility of an individual within the care team, such as
     /// "Primary care physician", "Trained social worker counselor", "Caregiver", etc.
     pub fn role(&self) -> Option<Vec<CodeableConcept>> {
@@ -93,39 +101,31 @@ impl CareTeam_Participant<'_> {
         return None;
     }
 
-    /// The organization of the practitioner.
-    pub fn on_behalf_of(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("onBehalfOf") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.member() {
-            _val.validate();
-        }
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.member() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.on_behalf_of() {
+            _val.validate();
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
         if let Some(_val) = self.role() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.on_behalf_of() {
-            _val.validate();
         }
         return true;
     }

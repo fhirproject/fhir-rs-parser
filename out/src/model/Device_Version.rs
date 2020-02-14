@@ -16,14 +16,6 @@ pub struct Device_Version<'a> {
 }
 
 impl Device_Version<'_> {
-    /// A single component of the device version.
-    pub fn component(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("component") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
@@ -32,27 +24,10 @@ impl Device_Version<'_> {
         return None;
     }
 
-    /// The version text.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The type of the device version.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+    /// A single component of the device version.
+    pub fn component(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("component") {
+            return Some(Identifier { value: val });
         }
         return None;
     }
@@ -69,6 +44,15 @@ impl Device_Version<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -95,16 +79,27 @@ impl Device_Version<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.component() {
-            _val.validate();
+    /// The type of the device version.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
+        return None;
+    }
+
+    /// The version text.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self._value() {
             _val.validate();
         }
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self.component() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -112,11 +107,16 @@ impl Device_Version<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value() {}
         return true;
     }
 }

@@ -15,25 +15,6 @@ pub struct Device_Property<'a> {
 }
 
 impl Device_Property<'_> {
-    /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
-    /// Property value as a quantity.
-    pub fn value_quantity(&self) -> Option<Vec<Quantity>> {
-        if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Quantity { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -81,6 +62,13 @@ impl Device_Property<'_> {
         return None;
     }
 
+    /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
+        }
+    }
+
     /// Property value as a code, e.g., NTP4 (synced to NTP).
     pub fn value_code(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("valueCode") {
@@ -93,13 +81,19 @@ impl Device_Property<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.value_quantity() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// Property value as a quantity.
+    pub fn value_quantity(&self) -> Option<Vec<Quantity>> {
+        if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Quantity { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -111,7 +105,13 @@ impl Device_Property<'_> {
                 e.validate();
             });
         }
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.value_code() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.value_quantity() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

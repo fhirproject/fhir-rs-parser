@@ -19,44 +19,10 @@ pub struct ImmunizationRecommendation<'a> {
 }
 
 impl ImmunizationRecommendation<'_> {
-    /// Vaccine administration recommendations.
-    pub fn recommendation(&self) -> Vec<ImmunizationRecommendation_Recommendation> {
-        self.value
-            .get("recommendation")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ImmunizationRecommendation_Recommendation { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// A unique identifier assigned to this particular recommendation record.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The date the immunization recommendation(s) were created.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -69,15 +35,18 @@ impl ImmunizationRecommendation<'_> {
         return None;
     }
 
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates the authority who published the protocol (e.g. ACIP).
+    pub fn authority(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("authority") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -92,6 +61,14 @@ impl ImmunizationRecommendation<'_> {
                     .map(|e| ResourceList { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The date the immunization recommendation(s) were created.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
         }
         return None;
     }
@@ -112,19 +89,54 @@ impl ImmunizationRecommendation<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// The patient the recommendation(s) are for.
-    pub fn patient(&self) -> Reference {
-        Reference {
-            value: &self.value["patient"],
+    /// A unique identifier assigned to this particular recommendation record.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -150,67 +162,49 @@ impl ImmunizationRecommendation<'_> {
         return None;
     }
 
-    /// Indicates the authority who published the protocol (e.g. ACIP).
-    pub fn authority(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("authority") {
-            return Some(Reference { value: val });
+    /// The patient the recommendation(s) are for.
+    pub fn patient(&self) -> Reference {
+        Reference {
+            value: &self.value["patient"],
         }
-        return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
+    /// Vaccine administration recommendations.
+    pub fn recommendation(&self) -> Vec<ImmunizationRecommendation_Recommendation> {
+        self.value
+            .get("recommendation")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ImmunizationRecommendation_Recommendation { value: e })
+            .collect::<Vec<_>>()
     }
 
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.recommendation().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self.meta() {
+        if let Some(_val) = self._date() {
             _val.validate();
         }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.authority() {
             _val.validate();
         }
         if let Some(_val) = self.contained() {
@@ -218,29 +212,35 @@ impl ImmunizationRecommendation<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.date() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
-        let _ = self.patient().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.authority() {
+        let _ = self.patient().validate();
+        let _ = self.recommendation().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.text() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._date() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.language() {}
         return true;
     }
 }

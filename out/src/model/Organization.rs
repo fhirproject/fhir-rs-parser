@@ -24,14 +24,10 @@ pub struct Organization<'a> {
 }
 
 impl Organization<'_> {
-    /// An address for the organization.
-    pub fn address(&self) -> Option<Vec<Address>> {
-        if let Some(Value::Array(val)) = self.value.get("address") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Address { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for active
+    pub fn _active(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_active") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -56,10 +52,38 @@ impl Organization<'_> {
         return None;
     }
 
-    /// Extensions for active
-    pub fn _active(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_active") {
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Whether the organization's record is still in active use.
+    pub fn active(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("active") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// An address for the organization.
+    pub fn address(&self) -> Option<Vec<Address>> {
+        if let Some(Value::Array(val)) = self.value.get("address") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Address { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -73,6 +97,111 @@ impl Organization<'_> {
                     .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Contact for the organization for a certain purpose.
+    pub fn contact(&self) -> Option<Vec<Organization_Contact>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Organization_Contact { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Technical endpoints providing access to services operated for the organization.
+    pub fn endpoint(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("endpoint") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifier for the organization that is used to identify the organization across
+    /// multiple disparate systems.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -100,45 +229,18 @@ impl Organization<'_> {
         return None;
     }
 
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// A name associated with the organization.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifier for the organization that is used to identify the organization across
-    /// multiple disparate systems.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The organization of which this organization forms a part.
+    pub fn part_of(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("partOf") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -155,54 +257,15 @@ impl Organization<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Contact for the organization for a certain purpose.
-    pub fn contact(&self) -> Option<Vec<Organization_Contact>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Organization_Contact { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Whether the organization's record is still in active use.
-    pub fn active(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("active") {
-            return Some(val.as_bool().unwrap());
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -219,74 +282,9 @@ impl Organization<'_> {
         return None;
     }
 
-    /// A name associated with the organization.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Technical endpoints providing access to services operated for the organization.
-    pub fn endpoint(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("endpoint") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// The organization of which this organization forms a part.
-    pub fn part_of(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("partOf") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.address() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._active() {
+            _val.validate();
         }
         if let Some(_val) = self._alias() {
             _val.into_iter().for_each(|e| {
@@ -296,38 +294,32 @@ impl Organization<'_> {
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self._active() {
-            _val.validate();
-        }
-        if let Some(_val) = self.alias() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._language() {
             _val.validate();
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self._name() {
             _val.validate();
         }
+        if let Some(_val) = self.active() {}
+        if let Some(_val) = self.address() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.alias() {
+            _val.into_iter().for_each(|_e| {});
+        }
         if let Some(_val) = self.contact() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.endpoint() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -337,27 +329,35 @@ impl Organization<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.active() {}
-        if let Some(_val) = self.fhir_type() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.endpoint() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
         if let Some(_val) = self.meta() {
             _val.validate();
         }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.part_of() {
             _val.validate();
         }
-        if let Some(_val) = self.contained() {
+        if let Some(_val) = self.telecom() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

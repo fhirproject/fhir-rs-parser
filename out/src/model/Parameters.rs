@@ -15,21 +15,26 @@ pub struct Parameters<'a> {
 }
 
 impl Parameters<'_> {
-    /// A parameter passed to or received from the operation.
-    pub fn parameter(&self) -> Option<Vec<Parameters_Parameter>> {
-        if let Some(Value::Array(val)) = self.value.get("parameter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Parameters_Parameter { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -46,19 +51,10 @@ impl Parameters<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -73,31 +69,35 @@ impl Parameters<'_> {
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+    /// A parameter passed to or received from the operation.
+    pub fn parameter(&self) -> Option<Vec<Parameters_Parameter>> {
+        if let Some(Value::Array(val)) = self.value.get("parameter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Parameters_Parameter { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
         if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
         }
         return true;
     }

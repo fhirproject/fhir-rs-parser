@@ -26,29 +26,9 @@ pub struct CapabilityStatement<'a> {
 }
 
 impl CapabilityStatement<'_> {
-    /// Identifies a specific implementation instance that is described by the
-    /// capability statement - i.e. a particular installation, rather than the
-    /// capabilities of a software program.
-    pub fn implementation(&self) -> Option<CapabilityStatement_Implementation> {
-        if let Some(val) = self.value.get("implementation") {
-            return Some(CapabilityStatement_Implementation { value: val });
-        }
-        return None;
-    }
-
-    /// A natural language name identifying the capability statement. This name should
-    /// be usable as an identifier for the module by machine processing applications
-    /// such as code generation.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
+    /// Extensions for copyright
+    pub fn _copyright(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_copyright") {
             return Some(Element { value: val });
         }
         return None;
@@ -62,38 +42,98 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// A Boolean value to indicate that this capability statement is authored for
-    /// testing purposes (or education/evaluation/marketing) and is not intended to be
-    /// used for genuine usage.
-    pub fn experimental(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("experimental") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A list of the formats supported by this implementation using their content
-    /// types.
-    pub fn format(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("format") {
+    /// Extensions for experimental
+    pub fn _experimental(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_experimental") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for fhirVersion
+    pub fn _fhir_version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_fhirVersion") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for format
+    pub fn _format(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_format") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// A list of implementation guides that the server does (or should) support in
-    /// their entirety.
-    pub fn implementation_guide(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("implementationGuide") {
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for kind
+    pub fn _kind(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_kind") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for patchFormat
+    pub fn _patch_format(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_patchFormat") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Extensions for publisher
+    pub fn _publisher(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_publisher") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for purpose
+    pub fn _purpose(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_purpose") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -106,34 +146,39 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// A definition of the restful capabilities of the solution, if any.
-    pub fn rest(&self) -> Option<Vec<CapabilityStatement_Rest>> {
-        if let Some(Value::Array(val)) = self.value.get("rest") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CapabilityStatement_Rest { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A description of the messaging capabilities of the solution.
-    pub fn messaging(&self) -> Option<Vec<CapabilityStatement_Messaging>> {
-        if let Some(Value::Array(val)) = self.value.get("messaging") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CapabilityStatement_Messaging { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for kind
-    pub fn _kind(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_kind") {
+    /// Extensions for title
+    pub fn _title(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_title") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Contact details to assist a user in finding and communicating with the
+    /// publisher.
+    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactDetail { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -152,6 +197,38 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
+    /// A copyright statement relating to the capability statement and/or its contents.
+    /// Copyright statements are generally legal restrictions on the use and publishing
+    /// of the capability statement.
+    pub fn copyright(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("copyright") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The date  (and optionally time) when the capability statement was published. The
+    /// date must change when the business version changes and it must change if the
+    /// status code changes. In addition, it should change when the substantive content
+    /// of the capability statement changes.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A free text natural language description of the capability statement from a
+    /// consumer's perspective. Typically, this is used when the capability statement
+    /// describes a desired rather than an actual solution, for example as a formal
+    /// expression of requirements as part of an RFP.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// A document definition.
     pub fn document(&self) -> Option<Vec<CapabilityStatement_Document>> {
         if let Some(Value::Array(val)) = self.value.get("document") {
@@ -164,10 +241,46 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// A list of the patch formats supported by this implementation using their content
+    /// A Boolean value to indicate that this capability statement is authored for
+    /// testing purposes (or education/evaluation/marketing) and is not intended to be
+    /// used for genuine usage.
+    pub fn experimental(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("experimental") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The version of the FHIR specification that this CapabilityStatement describes
+    /// (which SHALL be the same as the FHIR version of the CapabilityStatement itself).
+    /// There is no default value.
+    pub fn fhir_version(&self) -> Option<CapabilityStatementFhirVersion> {
+        if let Some(Value::String(val)) = self.value.get("fhirVersion") {
+            return Some(CapabilityStatementFhirVersion::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A list of the formats supported by this implementation using their content
     /// types.
-    pub fn patch_format(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("patchFormat") {
+    pub fn format(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("format") {
             return Some(
                 val.into_iter()
                     .map(|e| e.as_str().unwrap())
@@ -177,18 +290,60 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for title
-    pub fn _title(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+    /// Identifies a specific implementation instance that is described by the
+    /// capability statement - i.e. a particular installation, rather than the
+    /// capabilities of a software program.
+    pub fn implementation(&self) -> Option<CapabilityStatement_Implementation> {
+        if let Some(val) = self.value.get("implementation") {
+            return Some(CapabilityStatement_Implementation { value: val });
+        }
+        return None;
+    }
+
+    /// A list of implementation guides that the server does (or should) support in
+    /// their entirety.
+    pub fn implementation_guide(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("implementationGuide") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Reference to a canonical URL of another CapabilityStatement that this software
+    /// adds to. The capability statement automatically includes everything in the other
+    /// statement, and it is not duplicated, though the server may repeat the same
+    /// resources, interactions and operations to add additional details to them.
+    pub fn imports(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("imports") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -209,30 +364,15 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// Reference to a canonical URL of another CapabilityStatement that this software
-    /// adds to. The capability statement automatically includes everything in the other
-    /// statement, and it is not duplicated, though the server may repeat the same
-    /// resources, interactions and operations to add additional details to them.
-    pub fn imports(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("imports") {
+    /// A legal or geographic region in which the capability statement is intended to be
+    /// used.
+    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The identifier that is used to identify this version of the capability statement
-    /// when it is referenced in a specification, model, design or instance. This is an
-    /// arbitrary value managed by the capability statement author and is not expected
-    /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-    /// managed version is not available. There is also no expectation that versions can
-    /// be placed in a lexicographical sequence.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
         }
         return None;
     }
@@ -247,81 +387,32 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// The date  (and optionally time) when the capability statement was published. The
-    /// date must change when the business version changes and it must change if the
-    /// status code changes. In addition, it should change when the substantive content
-    /// of the capability statement changes.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
             return Some(string);
         }
         return None;
     }
 
-    /// The content was developed with a focus and intent of supporting the contexts
-    /// that are listed. These contexts may be general categories (gender, age, ...) or
-    /// may be references to specific programs (insurance plans, studies, ...) and may
-    /// be used to assist with indexing and searching for appropriate capability
-    /// statement instances.
-    pub fn use_context(&self) -> Option<Vec<UsageContext>> {
-        if let Some(Value::Array(val)) = self.value.get("useContext") {
+    /// A description of the messaging capabilities of the solution.
+    pub fn messaging(&self) -> Option<Vec<CapabilityStatement_Messaging>> {
+        if let Some(Value::Array(val)) = self.value.get("messaging") {
             return Some(
                 val.into_iter()
-                    .map(|e| UsageContext { value: e })
+                    .map(|e| CapabilityStatement_Messaging { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Software that is covered by this capability statement.  It is used when the
-    /// capability statement describes the capabilities of a particular software
-    /// version, independent of an installation.
-    pub fn software(&self) -> Option<CapabilityStatement_Software> {
-        if let Some(val) = self.value.get("software") {
-            return Some(CapabilityStatement_Software { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for patchFormat
-    pub fn _patch_format(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_patchFormat") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The version of the FHIR specification that this CapabilityStatement describes
-    /// (which SHALL be the same as the FHIR version of the CapabilityStatement itself).
-    /// There is no default value.
-    pub fn fhir_version(&self) -> Option<CapabilityStatementFhirVersion> {
-        if let Some(Value::String(val)) = self.value.get("fhirVersion") {
-            return Some(CapabilityStatementFhirVersion::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for format
-    pub fn _format(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_format") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -349,10 +440,95 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// Extensions for purpose
-    pub fn _purpose(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
+    /// A natural language name identifying the capability statement. This name should
+    /// be usable as an identifier for the module by machine processing applications
+    /// such as code generation.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A list of the patch formats supported by this implementation using their content
+    /// types.
+    pub fn patch_format(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("patchFormat") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The name of the organization or individual that published the capability
+    /// statement.
+    pub fn publisher(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("publisher") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Explanation of why this capability statement is needed and why it has been
+    /// designed as it has.
+    pub fn purpose(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("purpose") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A definition of the restful capabilities of the solution, if any.
+    pub fn rest(&self) -> Option<Vec<CapabilityStatement_Rest>> {
+        if let Some(Value::Array(val)) = self.value.get("rest") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CapabilityStatement_Rest { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Software that is covered by this capability statement.  It is used when the
+    /// capability statement describes the capabilities of a particular software
+    /// version, independent of an installation.
+    pub fn software(&self) -> Option<CapabilityStatement_Software> {
+        if let Some(val) = self.value.get("software") {
+            return Some(CapabilityStatement_Software { value: val });
+        }
+        return None;
+    }
+
+    /// The status of this capability statement. Enables tracking the life-cycle of the
+    /// content.
+    pub fn status(&self) -> Option<CapabilityStatementStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(CapabilityStatementStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// A short, descriptive, user-friendly title for the capability statement.
+    pub fn title(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("title") {
+            return Some(string);
         }
         return None;
     }
@@ -371,279 +547,66 @@ impl CapabilityStatement<'_> {
         return None;
     }
 
-    /// A free text natural language description of the capability statement from a
-    /// consumer's perspective. Typically, this is used when the capability statement
-    /// describes a desired rather than an actual solution, for example as a formal
-    /// expression of requirements as part of an RFP.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The name of the organization or individual that published the capability
-    /// statement.
-    pub fn publisher(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("publisher") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// The content was developed with a focus and intent of supporting the contexts
+    /// that are listed. These contexts may be general categories (gender, age, ...) or
+    /// may be references to specific programs (insurance plans, studies, ...) and may
+    /// be used to assist with indexing and searching for appropriate capability
+    /// statement instances.
+    pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+        if let Some(Value::Array(val)) = self.value.get("useContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| UsageContext { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The status of this capability statement. Enables tracking the life-cycle of the
-    /// content.
-    pub fn status(&self) -> Option<CapabilityStatementStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(CapabilityStatementStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// A legal or geographic region in which the capability statement is intended to be
-    /// used.
-    pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A copyright statement relating to the capability statement and/or its contents.
-    /// Copyright statements are generally legal restrictions on the use and publishing
-    /// of the capability statement.
-    pub fn copyright(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("copyright") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A short, descriptive, user-friendly title for the capability statement.
-    pub fn title(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("title") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for copyright
-    pub fn _copyright(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Explanation of why this capability statement is needed and why it has been
-    /// designed as it has.
-    pub fn purpose(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("purpose") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for experimental
-    pub fn _experimental(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for fhirVersion
-    pub fn _fhir_version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_fhirVersion") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for publisher
-    pub fn _publisher(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Contact details to assist a user in finding and communicating with the
-    /// publisher.
-    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactDetail { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// The identifier that is used to identify this version of the capability statement
+    /// when it is referenced in a specification, model, design or instance. This is an
+    /// arbitrary value managed by the capability statement author and is not expected
+    /// to be globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+    /// managed version is not available. There is also no expectation that versions can
+    /// be placed in a lexicographical sequence.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.implementation() {
-            _val.validate();
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._url() {
+        if let Some(_val) = self._copyright() {
             _val.validate();
         }
         if let Some(_val) = self._date() {
             _val.validate();
         }
-        if let Some(_val) = self.experimental() {}
-        if let Some(_val) = self.format() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.implementation_guide() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._status() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self.rest() {
+        if let Some(_val) = self._experimental() {
+            _val.validate();
+        }
+        if let Some(_val) = self._fhir_version() {
+            _val.validate();
+        }
+        if let Some(_val) = self._format() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.messaging() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
         }
         if let Some(_val) = self._kind() {
             _val.validate();
         }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.document() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.patch_format() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._version() {
+        if let Some(_val) = self._language() {
             _val.validate();
         }
-        if let Some(_val) = self._title() {
-            _val.validate();
-        }
-        if let Some(_val) = self.instantiates() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.imports() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self.kind() {}
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self.use_context() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.software() {
+        if let Some(_val) = self._name() {
             _val.validate();
         }
         if let Some(_val) = self._patch_format() {
@@ -651,67 +614,22 @@ impl CapabilityStatement<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._name() {
+        if let Some(_val) = self._publisher() {
             _val.validate();
-        }
-        if let Some(_val) = self.fhir_version() {}
-        if let Some(_val) = self._format() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self._purpose() {
             _val.validate();
         }
-        if let Some(_val) = self.url() {}
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self._status() {
             _val.validate();
         }
-        if let Some(_val) = self.publisher() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self._title() {
             _val.validate();
         }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self._url() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.jurisdiction() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.copyright() {}
-        if let Some(_val) = self.title() {}
-        if let Some(_val) = self._copyright() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.purpose() {}
-        if let Some(_val) = self._experimental() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._fhir_version() {
-            _val.validate();
-        }
-        if let Some(_val) = self._publisher() {
+        if let Some(_val) = self._version() {
             _val.validate();
         }
         if let Some(_val) = self.contact() {
@@ -719,34 +637,90 @@ impl CapabilityStatement<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.copyright() {}
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.document() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.experimental() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.fhir_version() {}
+        if let Some(_val) = self.format() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.implementation() {
+            _val.validate();
+        }
+        if let Some(_val) = self.implementation_guide() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.imports() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.instantiates() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.jurisdiction() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.kind() {}
         if let Some(_val) = self.language() {}
+        if let Some(_val) = self.messaging() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.patch_format() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.publisher() {}
+        if let Some(_val) = self.purpose() {}
+        if let Some(_val) = self.rest() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.software() {
+            _val.validate();
+        }
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.title() {}
+        if let Some(_val) = self.url() {}
+        if let Some(_val) = self.use_context() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.version() {}
         return true;
-    }
-}
-
-#[derive(Debug)]
-pub enum CapabilityStatementKind {
-    Instance,
-    Capability,
-    Requirements,
-}
-
-impl CapabilityStatementKind {
-    pub fn from_string(string: &str) -> Option<CapabilityStatementKind> {
-        match string {
-            "instance" => Some(CapabilityStatementKind::Instance),
-            "capability" => Some(CapabilityStatementKind::Capability),
-            "requirements" => Some(CapabilityStatementKind::Requirements),
-            _ => None,
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        match self {
-            CapabilityStatementKind::Instance => "instance",
-            CapabilityStatementKind::Capability => "capability",
-            CapabilityStatementKind::Requirements => "requirements",
-        }
     }
 }
 
@@ -807,28 +781,54 @@ impl CapabilityStatementFhirVersion {
 
     pub fn to_string(&self) -> String {
         match self {
-            CapabilityStatementFhirVersion::Fhir001 => "0.01",
-            CapabilityStatementFhirVersion::Fhir005 => "0.05",
-            CapabilityStatementFhirVersion::Fhir006 => "0.06",
-            CapabilityStatementFhirVersion::Fhir011 => "0.11",
-            CapabilityStatementFhirVersion::Fhir0080 => "0.0.80",
-            CapabilityStatementFhirVersion::Fhir0081 => "0.0.81",
-            CapabilityStatementFhirVersion::Fhir0082 => "0.0.82",
-            CapabilityStatementFhirVersion::Fhir040 => "0.4.0",
-            CapabilityStatementFhirVersion::Fhir050 => "0.5.0",
-            CapabilityStatementFhirVersion::Fhir100 => "1.0.0",
-            CapabilityStatementFhirVersion::Fhir101 => "1.0.1",
-            CapabilityStatementFhirVersion::Fhir102 => "1.0.2",
-            CapabilityStatementFhirVersion::Fhir110 => "1.1.0",
-            CapabilityStatementFhirVersion::Fhir140 => "1.4.0",
-            CapabilityStatementFhirVersion::Fhir160 => "1.6.0",
-            CapabilityStatementFhirVersion::Fhir180 => "1.8.0",
-            CapabilityStatementFhirVersion::Fhir300 => "3.0.0",
-            CapabilityStatementFhirVersion::Fhir301 => "3.0.1",
-            CapabilityStatementFhirVersion::Fhir330 => "3.3.0",
-            CapabilityStatementFhirVersion::Fhir350 => "3.5.0",
-            CapabilityStatementFhirVersion::Fhir400 => "4.0.0",
-            CapabilityStatementFhirVersion::Fhir401 => "4.0.1",
+            CapabilityStatementFhirVersion::Fhir001 => "0.01".to_string(),
+            CapabilityStatementFhirVersion::Fhir005 => "0.05".to_string(),
+            CapabilityStatementFhirVersion::Fhir006 => "0.06".to_string(),
+            CapabilityStatementFhirVersion::Fhir011 => "0.11".to_string(),
+            CapabilityStatementFhirVersion::Fhir0080 => "0.0.80".to_string(),
+            CapabilityStatementFhirVersion::Fhir0081 => "0.0.81".to_string(),
+            CapabilityStatementFhirVersion::Fhir0082 => "0.0.82".to_string(),
+            CapabilityStatementFhirVersion::Fhir040 => "0.4.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir050 => "0.5.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir100 => "1.0.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir101 => "1.0.1".to_string(),
+            CapabilityStatementFhirVersion::Fhir102 => "1.0.2".to_string(),
+            CapabilityStatementFhirVersion::Fhir110 => "1.1.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir140 => "1.4.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir160 => "1.6.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir180 => "1.8.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir300 => "3.0.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir301 => "3.0.1".to_string(),
+            CapabilityStatementFhirVersion::Fhir330 => "3.3.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir350 => "3.5.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir400 => "4.0.0".to_string(),
+            CapabilityStatementFhirVersion::Fhir401 => "4.0.1".to_string(),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum CapabilityStatementKind {
+    Instance,
+    Capability,
+    Requirements,
+}
+
+impl CapabilityStatementKind {
+    pub fn from_string(string: &str) -> Option<CapabilityStatementKind> {
+        match string {
+            "instance" => Some(CapabilityStatementKind::Instance),
+            "capability" => Some(CapabilityStatementKind::Capability),
+            "requirements" => Some(CapabilityStatementKind::Requirements),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            CapabilityStatementKind::Instance => "instance".to_string(),
+            CapabilityStatementKind::Capability => "capability".to_string(),
+            CapabilityStatementKind::Requirements => "requirements".to_string(),
         }
     }
 }
@@ -854,10 +854,10 @@ impl CapabilityStatementStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            CapabilityStatementStatus::Draft => "draft",
-            CapabilityStatementStatus::Active => "active",
-            CapabilityStatementStatus::Retired => "retired",
-            CapabilityStatementStatus::Unknown => "unknown",
+            CapabilityStatementStatus::Draft => "draft".to_string(),
+            CapabilityStatementStatus::Active => "active".to_string(),
+            CapabilityStatementStatus::Retired => "retired".to_string(),
+            CapabilityStatementStatus::Unknown => "unknown".to_string(),
         }
     }
 }

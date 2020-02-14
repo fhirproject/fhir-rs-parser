@@ -32,6 +32,31 @@ impl SubstanceSpecification_Isotope<'_> {
         return None;
     }
 
+    /// Half life - for a non-natural nuclide.
+    pub fn half_life(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("halfLife") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Substance identifier for each non-natural or radioisotope.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -54,43 +79,10 @@ impl SubstanceSpecification_Isotope<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Half life - for a non-natural nuclide.
-    pub fn half_life(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("halfLife") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     /// The molecular weight or weight range (for proteins, polymers or nucleic acids).
     pub fn molecular_weight(&self) -> Option<SubstanceSpecification_MolecularWeight> {
         if let Some(val) = self.value.get("molecularWeight") {
             return Some(SubstanceSpecification_MolecularWeight { value: val });
-        }
-        return None;
-    }
-
-    /// Substance identifier for each non-natural or radioisotope.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// The type of isotopic substitution present in a single substance.
-    pub fn substitution(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("substitution") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -103,31 +95,39 @@ impl SubstanceSpecification_Isotope<'_> {
         return None;
     }
 
+    /// The type of isotopic substitution present in a single substance.
+    pub fn substitution(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("substitution") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.half_life() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.half_life() {
-            _val.validate();
-        }
         if let Some(_val) = self.molecular_weight() {
             _val.validate();
         }
-        if let Some(_val) = self.identifier() {
+        if let Some(_val) = self.name() {
             _val.validate();
         }
         if let Some(_val) = self.substitution() {
-            _val.validate();
-        }
-        if let Some(_val) = self.name() {
             _val.validate();
         }
         return true;

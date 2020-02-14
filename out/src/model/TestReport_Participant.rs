@@ -12,6 +12,14 @@ pub struct TestReport_Participant<'a> {
 }
 
 impl TestReport_Participant<'_> {
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -20,18 +28,43 @@ impl TestReport_Participant<'_> {
         return None;
     }
 
-    /// The uri of the participant. An absolute URL is preferred.
-    pub fn uri(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("uri") {
+    /// Extensions for uri
+    pub fn _uri(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_uri") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The display name of the participant.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for uri
-    pub fn _uri(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_uri") {
-            return Some(Element { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -58,47 +91,6 @@ impl TestReport_Participant<'_> {
         return None;
     }
 
-    /// The display name of the participant.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// The type of participant.
     pub fn fhir_type(&self) -> Option<TestReport_ParticipantType> {
         if let Some(Value::String(val)) = self.value.get("type") {
@@ -107,30 +99,38 @@ impl TestReport_Participant<'_> {
         return None;
     }
 
+    /// The uri of the participant. An absolute URL is preferred.
+    pub fn uri(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("uri") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.uri() {}
-        if let Some(_val) = self._uri() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.display() {}
         if let Some(_val) = self._display() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self._uri() {
+            _val.validate();
+        }
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.uri() {}
         return true;
     }
 }
@@ -154,9 +154,9 @@ impl TestReport_ParticipantType {
 
     pub fn to_string(&self) -> String {
         match self {
-            TestReport_ParticipantType::TestEngine => "test-engine",
-            TestReport_ParticipantType::Client => "client",
-            TestReport_ParticipantType::Server => "server",
+            TestReport_ParticipantType::TestEngine => "test-engine".to_string(),
+            TestReport_ParticipantType::Client => "client".to_string(),
+            TestReport_ParticipantType::Server => "server".to_string(),
         }
     }
 }

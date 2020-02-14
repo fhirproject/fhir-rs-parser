@@ -21,6 +21,14 @@ impl Population<'_> {
         return None;
     }
 
+    /// The age of the specific population.
+    pub fn age_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("ageRange") {
+            return Some(Range { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -33,6 +41,14 @@ impl Population<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The gender of the specific population.
+    pub fn gender(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("gender") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -68,30 +84,6 @@ impl Population<'_> {
         return None;
     }
 
-    /// Race of the specific population.
-    pub fn race(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("race") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The age of the specific population.
-    pub fn age_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("ageRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
-    /// The gender of the specific population.
-    pub fn gender(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("gender") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// The existing physiological conditions of the specific population to which this
     /// applies.
     pub fn physiological_condition(&self) -> Option<CodeableConcept> {
@@ -101,8 +93,19 @@ impl Population<'_> {
         return None;
     }
 
+    /// Race of the specific population.
+    pub fn race(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("race") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.age_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.age_range() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -110,22 +113,19 @@ impl Population<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.gender() {
+            _val.validate();
+        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.race() {
-            _val.validate();
-        }
-        if let Some(_val) = self.age_range() {
-            _val.validate();
-        }
-        if let Some(_val) = self.gender() {
-            _val.validate();
-        }
         if let Some(_val) = self.physiological_condition() {
+            _val.validate();
+        }
+        if let Some(_val) = self.race() {
             _val.validate();
         }
         return true;

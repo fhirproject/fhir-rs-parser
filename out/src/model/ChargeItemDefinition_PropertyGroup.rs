@@ -16,17 +16,28 @@ pub struct ChargeItemDefinition_PropertyGroup<'a> {
 }
 
 impl ChargeItemDefinition_PropertyGroup<'_> {
-    /// The price for a ChargeItem may be calculated as a base price with
-    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
-    /// resource that defines the prices, factors and conditions that apply to a billing
-    /// code is currently under development. The priceComponent element can be used to
-    /// offer transparency to the recipient of the Invoice of how the prices have been
-    /// calculated.
-    pub fn price_component(&self) -> Option<Vec<ChargeItemDefinition_PriceComponent>> {
-        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
+    /// Expressions that describe applicability criteria for the priceComponent.
+    pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
+        if let Some(Value::Array(val)) = self.value.get("applicability") {
             return Some(
                 val.into_iter()
-                    .map(|e| ChargeItemDefinition_PriceComponent { value: e })
+                    .map(|e| ChargeItemDefinition_Applicability { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,28 +75,17 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// The price for a ChargeItem may be calculated as a base price with
+    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
+    /// resource that defines the prices, factors and conditions that apply to a billing
+    /// code is currently under development. The priceComponent element can be used to
+    /// offer transparency to the recipient of the Invoice of how the prices have been
+    /// calculated.
+    pub fn price_component(&self) -> Option<Vec<ChargeItemDefinition_PriceComponent>> {
+        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Expressions that describe applicability criteria for the priceComponent.
-    pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
-        if let Some(Value::Array(val)) = self.value.get("applicability") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ChargeItemDefinition_Applicability { value: e })
+                    .map(|e| ChargeItemDefinition_PriceComponent { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +93,12 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.price_component() {
+        if let Some(_val) = self.applicability() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -104,12 +109,7 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.applicability() {
+        if let Some(_val) = self.price_component() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

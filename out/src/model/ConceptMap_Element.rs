@@ -23,6 +23,22 @@ impl ConceptMap_Element<'_> {
         return None;
     }
 
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Identity (code or path) or the element/item being mapped.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The display for the code. The display is only provided to help editors when
     /// editing the concept map.
     pub fn display(&self) -> Option<&str> {
@@ -44,14 +60,6 @@ impl ConceptMap_Element<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Identity (code or path) or the element/item being mapped.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
         }
         return None;
     }
@@ -87,14 +95,6 @@ impl ConceptMap_Element<'_> {
         return None;
     }
 
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// A concept from the target value set that this concept maps to.
     pub fn target(&self) -> Option<Vec<ConceptMap_Target>> {
         if let Some(Value::Array(val)) = self.value.get("target") {
@@ -111,21 +111,21 @@ impl ConceptMap_Element<'_> {
         if let Some(_val) = self._code() {
             _val.validate();
         }
+        if let Some(_val) = self._display() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {}
         if let Some(_val) = self.display() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {}
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._display() {
-            _val.validate();
         }
         if let Some(_val) = self.target() {
             _val.into_iter().for_each(|e| {

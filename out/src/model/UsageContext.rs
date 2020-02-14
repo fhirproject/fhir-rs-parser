@@ -19,24 +19,6 @@ pub struct UsageContext<'a> {
 }
 
 impl UsageContext<'_> {
-    /// A value that defines the context specified in this context of use. The
-    /// interpretation of the value is defined by the code.
-    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A value that defines the context specified in this context of use. The
-    /// interpretation of the value is defined by the code.
-    pub fn value_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
-        }
-        return None;
-    }
-
     /// A code that identifies the type of context being specified by this usage
     /// context.
     pub fn code(&self) -> Coding {
@@ -72,9 +54,27 @@ impl UsageContext<'_> {
 
     /// A value that defines the context specified in this context of use. The
     /// interpretation of the value is defined by the code.
+    pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("valueCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// A value that defines the context specified in this context of use. The
+    /// interpretation of the value is defined by the code.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
             return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// A value that defines the context specified in this context of use. The
+    /// interpretation of the value is defined by the code.
+    pub fn value_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("valueRange") {
+            return Some(Range { value: val });
         }
         return None;
     }
@@ -89,12 +89,6 @@ impl UsageContext<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.value_range() {
-            _val.validate();
-        }
         let _ = self.code().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -102,7 +96,13 @@ impl UsageContext<'_> {
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.value_codeable_concept() {
+            _val.validate();
+        }
         if let Some(_val) = self.value_quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value_range() {
             _val.validate();
         }
         if let Some(_val) = self.value_reference() {

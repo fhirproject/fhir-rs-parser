@@ -17,11 +17,35 @@ pub struct ChargeItemDefinition_PriceComponent<'a> {
 }
 
 impl ChargeItemDefinition_PriceComponent<'_> {
-    /// The factor that has been applied on the base price for calculating this
-    /// component.
-    pub fn factor(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("factor") {
-            return Some(val.as_f64().unwrap());
+    /// Extensions for factor
+    pub fn _factor(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_factor") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The amount calculated for this component.
+    pub fn amount(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("amount") {
+            return Some(Money { value: val });
+        }
+        return None;
+    }
+
+    /// A code that identifies the component. Codes may be used to differentiate between
+    /// kinds of taxes, surcharges, discounts etc.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -42,18 +66,20 @@ impl ChargeItemDefinition_PriceComponent<'_> {
         return None;
     }
 
-    /// This code identifies the type of the component.
-    pub fn fhir_type(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("type") {
-            return Some(string);
+    /// The factor that has been applied on the base price for calculating this
+    /// component.
+    pub fn factor(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("factor") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
 
-    /// The amount calculated for this component.
-    pub fn amount(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("amount") {
-            return Some(Money { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -80,66 +106,40 @@ impl ChargeItemDefinition_PriceComponent<'_> {
         return None;
     }
 
-    /// Extensions for factor
-    pub fn _factor(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// This code identifies the type of the component.
+    pub fn fhir_type(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("type") {
             return Some(string);
         }
         return None;
     }
 
-    /// A code that identifies the component. Codes may be used to differentiate between
-    /// kinds of taxes, surcharges, discounts etc.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.factor() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.amount() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._factor() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.code() {
             _val.validate();
         }
         if let Some(_val) = self._type() {
             _val.validate();
         }
+        if let Some(_val) = self.amount() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.factor() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }

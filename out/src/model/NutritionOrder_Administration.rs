@@ -15,51 +15,6 @@ pub struct NutritionOrder_Administration<'a> {
 }
 
 impl NutritionOrder_Administration<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The time period and frequency at which the enteral formula should be delivered
-    /// to the patient.
-    pub fn schedule(&self) -> Option<Timing> {
-        if let Some(val) = self.value.get("schedule") {
-            return Some(Timing { value: val });
-        }
-        return None;
-    }
-
-    /// The volume of formula to provide to the patient per the specified administration
-    /// schedule.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
-    /// The rate of administration of formula via a feeding pump, e.g. 60 mL per hour,
-    /// according to the specified schedule.
-    pub fn rate_ratio(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("rateRatio") {
-            return Some(Ratio { value: val });
-        }
-        return None;
-    }
-
-    /// The rate of administration of formula via a feeding pump, e.g. 60 mL per hour,
-    /// according to the specified schedule.
-    pub fn rate_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("rateQuantity") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -72,6 +27,15 @@ impl NutritionOrder_Administration<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -98,29 +62,65 @@ impl NutritionOrder_Administration<'_> {
         return None;
     }
 
+    /// The volume of formula to provide to the patient per the specified administration
+    /// schedule.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// The rate of administration of formula via a feeding pump, e.g. 60 mL per hour,
+    /// according to the specified schedule.
+    pub fn rate_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("rateQuantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// The rate of administration of formula via a feeding pump, e.g. 60 mL per hour,
+    /// according to the specified schedule.
+    pub fn rate_ratio(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("rateRatio") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// The time period and frequency at which the enteral formula should be delivered
+    /// to the patient.
+    pub fn schedule(&self) -> Option<Timing> {
+        if let Some(val) = self.value.get("schedule") {
+            return Some(Timing { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.schedule() {
-            _val.validate();
-        }
-        if let Some(_val) = self.quantity() {
-            _val.validate();
-        }
-        if let Some(_val) = self.rate_ratio() {
-            _val.validate();
-        }
-        if let Some(_val) = self.rate_quantity() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.rate_quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.rate_ratio() {
+            _val.validate();
+        }
+        if let Some(_val) = self.schedule() {
+            _val.validate();
         }
         return true;
     }

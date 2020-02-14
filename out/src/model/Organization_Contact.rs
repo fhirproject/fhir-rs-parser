@@ -18,36 +18,6 @@ pub struct Organization_Contact<'a> {
 }
 
 impl Organization_Contact<'_> {
-    /// A name associated with the contact.
-    pub fn name(&self) -> Option<HumanName> {
-        if let Some(val) = self.value.get("name") {
-            return Some(HumanName { value: val });
-        }
-        return None;
-    }
-
-    /// A contact detail (e.g. a telephone number or an email address) by which the
-    /// party may be contacted.
-    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-        if let Some(Value::Array(val)) = self.value.get("telecom") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactPoint { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Visiting or postal addresses for the contact.
     pub fn address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("address") {
@@ -68,6 +38,15 @@ impl Organization_Contact<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -94,6 +73,14 @@ impl Organization_Contact<'_> {
         return None;
     }
 
+    /// A name associated with the contact.
+    pub fn name(&self) -> Option<HumanName> {
+        if let Some(val) = self.value.get("name") {
+            return Some(HumanName { value: val });
+        }
+        return None;
+    }
+
     /// Indicates a purpose for which the contact can be reached.
     pub fn purpose(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("purpose") {
@@ -102,16 +89,20 @@ impl Organization_Contact<'_> {
         return None;
     }
 
+    /// A contact detail (e.g. a telephone number or an email address) by which the
+    /// party may be contacted.
+    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+        if let Some(Value::Array(val)) = self.value.get("telecom") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactPoint { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.address() {
             _val.validate();
         }
@@ -120,13 +111,22 @@ impl Organization_Contact<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.name() {
+            _val.validate();
+        }
         if let Some(_val) = self.purpose() {
             _val.validate();
+        }
+        if let Some(_val) = self.telecom() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

@@ -14,14 +14,6 @@ pub struct Encounter_StatusHistory<'a> {
 }
 
 impl Encounter_StatusHistory<'_> {
-    /// planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
-    pub fn status(&self) -> Option<Encounter_StatusHistoryStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(Encounter_StatusHistoryStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
@@ -30,11 +22,29 @@ impl Encounter_StatusHistory<'_> {
         return None;
     }
 
-    /// The time that the episode was in the specified status.
-    pub fn period(&self) -> Period {
-        Period {
-            value: &self.value["period"],
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -59,48 +69,38 @@ impl Encounter_StatusHistory<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The time that the episode was in the specified status.
+    pub fn period(&self) -> Period {
+        Period {
+            value: &self.value["period"],
         }
-        return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+    pub fn status(&self) -> Option<Encounter_StatusHistoryStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(Encounter_StatusHistoryStatus::from_string(&val).unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.status() {}
         if let Some(_val) = self._status() {
             _val.validate();
         }
-        let _ = self.period().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        let _ = self.period().validate();
+        if let Some(_val) = self.status() {}
         return true;
     }
 }
@@ -136,15 +136,15 @@ impl Encounter_StatusHistoryStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            Encounter_StatusHistoryStatus::Planned => "planned",
-            Encounter_StatusHistoryStatus::Arrived => "arrived",
-            Encounter_StatusHistoryStatus::Triaged => "triaged",
-            Encounter_StatusHistoryStatus::InProgress => "in-progress",
-            Encounter_StatusHistoryStatus::Onleave => "onleave",
-            Encounter_StatusHistoryStatus::Finished => "finished",
-            Encounter_StatusHistoryStatus::Cancelled => "cancelled",
-            Encounter_StatusHistoryStatus::EnteredInError => "entered-in-error",
-            Encounter_StatusHistoryStatus::Unknown => "unknown",
+            Encounter_StatusHistoryStatus::Planned => "planned".to_string(),
+            Encounter_StatusHistoryStatus::Arrived => "arrived".to_string(),
+            Encounter_StatusHistoryStatus::Triaged => "triaged".to_string(),
+            Encounter_StatusHistoryStatus::InProgress => "in-progress".to_string(),
+            Encounter_StatusHistoryStatus::Onleave => "onleave".to_string(),
+            Encounter_StatusHistoryStatus::Finished => "finished".to_string(),
+            Encounter_StatusHistoryStatus::Cancelled => "cancelled".to_string(),
+            Encounter_StatusHistoryStatus::EnteredInError => "entered-in-error".to_string(),
+            Encounter_StatusHistoryStatus::Unknown => "unknown".to_string(),
         }
     }
 }

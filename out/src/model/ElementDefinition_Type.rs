@@ -24,6 +24,14 @@ impl ElementDefinition_Type<'_> {
         return None;
     }
 
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for versioning
     pub fn _versioning(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_versioning") {
@@ -32,20 +40,13 @@ impl ElementDefinition_Type<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// URL of Data type or Resource that is a(or the) type used for this element.
+    /// References are URLs that are relative to http://hl7.org/fhir/StructureDefinition
+    /// e.g. "string" is a reference to http://hl7.org/fhir/StructureDefinition/string.
+    /// Absolute URLs are only allowed in logical models.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Whether this reference needs to be version specific or version independent, or
-    /// whether either can be used.
-    pub fn versioning(&self) -> Option<ElementDefinition_TypeVersioning> {
-        if let Some(Value::String(val)) = self.value.get("versioning") {
-            return Some(ElementDefinition_TypeVersioning::from_string(&val).unwrap());
         }
         return None;
     }
@@ -66,10 +67,11 @@ impl ElementDefinition_Type<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -96,13 +98,20 @@ impl ElementDefinition_Type<'_> {
         return None;
     }
 
-    /// URL of Data type or Resource that is a(or the) type used for this element.
-    /// References are URLs that are relative to http://hl7.org/fhir/StructureDefinition
-    /// e.g. "string" is a reference to http://hl7.org/fhir/StructureDefinition/string.
-    /// Absolute URLs are only allowed in logical models.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
+    /// Identifies a profile structure or implementation Guide that applies to the
+    /// datatype this element refers to. If any profiles are specified, then the content
+    /// must conform to at least one of them. The URL can be a local reference - to a
+    /// contained StructureDefinition, or a reference to another StructureDefinition or
+    /// Implementation Guide by a canonical URL. When an implementation guide is
+    /// specified, the type SHALL conform to at least one profile defined in the
+    /// implementation guide.
+    pub fn profile(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("profile") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -126,20 +135,11 @@ impl ElementDefinition_Type<'_> {
         return None;
     }
 
-    /// Identifies a profile structure or implementation Guide that applies to the
-    /// datatype this element refers to. If any profiles are specified, then the content
-    /// must conform to at least one of them. The URL can be a local reference - to a
-    /// contained StructureDefinition, or a reference to another StructureDefinition or
-    /// Implementation Guide by a canonical URL. When an implementation guide is
-    /// specified, the type SHALL conform to at least one profile defined in the
-    /// implementation guide.
-    pub fn profile(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("profile") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
+    /// Whether this reference needs to be version specific or version independent, or
+    /// whether either can be used.
+    pub fn versioning(&self) -> Option<ElementDefinition_TypeVersioning> {
+        if let Some(Value::String(val)) = self.value.get("versioning") {
+            return Some(ElementDefinition_TypeVersioning::from_string(&val).unwrap());
         }
         return None;
     }
@@ -150,31 +150,31 @@ impl ElementDefinition_Type<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
         if let Some(_val) = self._versioning() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.versioning() {}
+        if let Some(_val) = self.code() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.target_profile() {
-            _val.into_iter().for_each(|_e| {});
-        }
         if let Some(_val) = self.profile() {
             _val.into_iter().for_each(|_e| {});
         }
+        if let Some(_val) = self.target_profile() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.versioning() {}
         return true;
     }
 }
@@ -198,9 +198,9 @@ impl ElementDefinition_TypeVersioning {
 
     pub fn to_string(&self) -> String {
         match self {
-            ElementDefinition_TypeVersioning::Either => "either",
-            ElementDefinition_TypeVersioning::Independent => "independent",
-            ElementDefinition_TypeVersioning::Specific => "specific",
+            ElementDefinition_TypeVersioning::Either => "either".to_string(),
+            ElementDefinition_TypeVersioning::Independent => "independent".to_string(),
+            ElementDefinition_TypeVersioning::Specific => "specific".to_string(),
         }
     }
 }

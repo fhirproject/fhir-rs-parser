@@ -16,11 +16,19 @@ pub struct PlanDefinition_Condition<'a> {
 }
 
 impl PlanDefinition_Condition<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for kind
+    pub fn _kind(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_kind") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// An expression that returns true or false, indicating whether the condition is
+    /// satisfied.
+    pub fn expression(&self) -> Option<Expression> {
+        if let Some(val) = self.value.get("expression") {
+            return Some(Expression { value: val });
         }
         return None;
     }
@@ -37,6 +45,15 @@ impl PlanDefinition_Condition<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -71,41 +88,24 @@ impl PlanDefinition_Condition<'_> {
         return None;
     }
 
-    /// Extensions for kind
-    pub fn _kind(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// An expression that returns true or false, indicating whether the condition is
-    /// satisfied.
-    pub fn expression(&self) -> Option<Expression> {
-        if let Some(val) = self.value.get("expression") {
-            return Some(Expression { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.kind() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._kind() {
             _val.validate();
         }
         if let Some(_val) = self.expression() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.kind() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }
@@ -130,9 +130,9 @@ impl PlanDefinition_ConditionKind {
 
     pub fn to_string(&self) -> String {
         match self {
-            PlanDefinition_ConditionKind::Applicability => "applicability",
-            PlanDefinition_ConditionKind::Start => "start",
-            PlanDefinition_ConditionKind::Stop => "stop",
+            PlanDefinition_ConditionKind::Applicability => "applicability".to_string(),
+            PlanDefinition_ConditionKind::Start => "start".to_string(),
+            PlanDefinition_ConditionKind::Stop => "stop".to_string(),
         }
     }
 }

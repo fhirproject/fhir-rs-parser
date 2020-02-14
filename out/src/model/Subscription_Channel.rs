@@ -16,49 +16,10 @@ pub struct Subscription_Channel<'a> {
 }
 
 impl Subscription_Channel<'_> {
-    /// Additional headers / information to send as part of the notification.
-    pub fn header(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("header") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The type of channel to send notifications on.
-    pub fn fhir_type(&self) -> Option<Subscription_ChannelType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(Subscription_ChannelType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// The url that describes the actual end-point to send messages to.
-    pub fn endpoint(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("endpoint") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for payload
-    pub fn _payload(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_payload") {
+    /// Extensions for endpoint
+    pub fn _endpoint(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_endpoint") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The mime type to send the payload in - either application/fhir+xml, or
-    /// application/fhir+json. If the payload is not present, then there is no payload
-    /// in the notification, just a notification. The mime type "text/plain" may also be
-    /// used for Email and SMS subscriptions.
-    pub fn payload(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("payload") {
-            return Some(string);
         }
         return None;
     }
@@ -75,10 +36,26 @@ impl Subscription_Channel<'_> {
         return None;
     }
 
-    /// Extensions for endpoint
-    pub fn _endpoint(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_endpoint") {
+    /// Extensions for payload
+    pub fn _payload(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_payload") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The url that describes the actual end-point to send messages to.
+    pub fn endpoint(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("endpoint") {
+            return Some(string);
         }
         return None;
     }
@@ -99,10 +76,14 @@ impl Subscription_Channel<'_> {
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+    /// Additional headers / information to send as part of the notification.
+    pub fn header(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("header") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -138,31 +119,48 @@ impl Subscription_Channel<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.header() {
-            _val.into_iter().for_each(|_e| {});
+    /// The mime type to send the payload in - either application/fhir+xml, or
+    /// application/fhir+json. If the payload is not present, then there is no payload
+    /// in the notification, just a notification. The mime type "text/plain" may also be
+    /// used for Email and SMS subscriptions.
+    pub fn payload(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("payload") {
+            return Some(string);
         }
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.endpoint() {}
-        if let Some(_val) = self._payload() {
+        return None;
+    }
+
+    /// The type of channel to send notifications on.
+    pub fn fhir_type(&self) -> Option<Subscription_ChannelType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(Subscription_ChannelType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self._endpoint() {
             _val.validate();
         }
-        if let Some(_val) = self.payload() {}
         if let Some(_val) = self._header() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._endpoint() {
+        if let Some(_val) = self._payload() {
             _val.validate();
         }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.endpoint() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._type() {
-            _val.validate();
+        if let Some(_val) = self.header() {
+            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -170,6 +168,8 @@ impl Subscription_Channel<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.payload() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }
@@ -197,11 +197,11 @@ impl Subscription_ChannelType {
 
     pub fn to_string(&self) -> String {
         match self {
-            Subscription_ChannelType::RestHook => "rest-hook",
-            Subscription_ChannelType::Websocket => "websocket",
-            Subscription_ChannelType::Email => "email",
-            Subscription_ChannelType::Sms => "sms",
-            Subscription_ChannelType::Message => "message",
+            Subscription_ChannelType::RestHook => "rest-hook".to_string(),
+            Subscription_ChannelType::Websocket => "websocket".to_string(),
+            Subscription_ChannelType::Email => "email".to_string(),
+            Subscription_ChannelType::Sms => "sms".to_string(),
+            Subscription_ChannelType::Message => "message".to_string(),
         }
     }
 }

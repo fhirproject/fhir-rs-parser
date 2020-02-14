@@ -14,6 +14,14 @@ pub struct Measure_SupplementalData<'a> {
 }
 
 impl Measure_SupplementalData<'_> {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Indicates a meaning for the supplemental data. This can be as simple as a unique
     /// identifier, or it can establish meaning in a broader context by drawing from a
     /// terminology, allowing supplemental data to be correlated across measures.
@@ -24,12 +32,14 @@ impl Measure_SupplementalData<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+    /// The criteria for the supplemental data. This is typically the name of a valid
+    /// expression defined within a referenced library, but it may also be a path to a
+    /// specific data element. The criteria defines the data to be returned for this
+    /// element.
+    pub fn criteria(&self) -> Expression {
+        Expression {
+            value: &self.value["criteria"],
         }
-        return None;
     }
 
     /// The human readable description of this supplemental data.
@@ -52,6 +62,15 @@ impl Measure_SupplementalData<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -94,38 +113,21 @@ impl Measure_SupplementalData<'_> {
         return None;
     }
 
-    /// The criteria for the supplemental data. This is typically the name of a valid
-    /// expression defined within a referenced library, but it may also be a path to a
-    /// specific data element. The criteria defines the data to be returned for this
-    /// element.
-    pub fn criteria(&self) -> Expression {
-        Expression {
-            value: &self.value["criteria"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.code() {
-            _val.validate();
-        }
         if let Some(_val) = self._description() {
             _val.validate();
         }
+        if let Some(_val) = self.code() {
+            _val.validate();
+        }
+        let _ = self.criteria().validate();
         if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -136,8 +138,6 @@ impl Measure_SupplementalData<'_> {
                 e.validate();
             });
         }
-        let _ = self.criteria().validate();
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

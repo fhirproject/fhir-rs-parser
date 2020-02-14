@@ -14,12 +14,18 @@ pub struct SupplyDelivery_SuppliedItem<'a> {
 }
 
 impl SupplyDelivery_SuppliedItem<'_> {
-    /// Identifies the medication, substance or device being dispensed. This is either a
-    /// link to a resource representing the details of the item or a code that
-    /// identifies the item from a known list.
-    pub fn item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -29,6 +35,26 @@ impl SupplyDelivery_SuppliedItem<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifies the medication, substance or device being dispensed. This is either a
+    /// link to a resource representing the details of the item or a code that
+    /// identifies the item from a known list.
+    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("itemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies the medication, substance or device being dispensed. This is either a
+    /// link to a resource representing the details of the item or a code that
+    /// identifies the item from a known list.
+    pub fn item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("itemReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -55,32 +81,6 @@ impl SupplyDelivery_SuppliedItem<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Identifies the medication, substance or device being dispensed. This is either a
-    /// link to a resource representing the details of the item or a code that
-    /// identifies the item from a known list.
-    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// The amount of supply that has been dispensed. Includes unit of measure.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
@@ -90,22 +90,22 @@ impl SupplyDelivery_SuppliedItem<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.item_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.item_codeable_concept() {
             _val.validate();
+        }
+        if let Some(_val) = self.item_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.quantity() {
             _val.validate();

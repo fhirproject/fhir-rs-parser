@@ -16,28 +16,10 @@ pub struct Claim_Related<'a> {
 }
 
 impl Claim_Related<'_> {
-    /// An alternate organizational reference to the case or file to which this
-    /// particular claim pertains.
-    pub fn reference(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("reference") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// A code to convey how the claims are related.
-    pub fn relationship(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("relationship") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Reference to a related claim.
+    pub fn claim(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("claim") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -54,6 +36,15 @@ impl Claim_Related<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -80,33 +71,42 @@ impl Claim_Related<'_> {
         return None;
     }
 
-    /// Reference to a related claim.
-    pub fn claim(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("claim") {
-            return Some(Reference { value: val });
+    /// An alternate organizational reference to the case or file to which this
+    /// particular claim pertains.
+    pub fn reference(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("reference") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
+    /// A code to convey how the claims are related.
+    pub fn relationship(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("relationship") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.reference() {
+        if let Some(_val) = self.claim() {
             _val.validate();
         }
-        if let Some(_val) = self.relationship() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.claim() {
+        if let Some(_val) = self.reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.relationship() {
             _val.validate();
         }
         return true;

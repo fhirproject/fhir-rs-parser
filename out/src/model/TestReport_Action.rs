@@ -13,11 +13,10 @@ pub struct TestReport_Action<'a> {
 }
 
 impl TestReport_Action<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The results of the assertion performed on the previous operations.
+    pub fn assert(&self) -> Option<TestReport_Assert> {
+        if let Some(val) = self.value.get("assert") {
+            return Some(TestReport_Assert { value: val });
         }
         return None;
     }
@@ -38,10 +37,11 @@ impl TestReport_Action<'_> {
         return None;
     }
 
-    /// The operation performed.
-    pub fn operation(&self) -> Option<TestReport_Operation> {
-        if let Some(val) = self.value.get("operation") {
-            return Some(TestReport_Operation { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -68,30 +68,30 @@ impl TestReport_Action<'_> {
         return None;
     }
 
-    /// The results of the assertion performed on the previous operations.
-    pub fn assert(&self) -> Option<TestReport_Assert> {
-        if let Some(val) = self.value.get("assert") {
-            return Some(TestReport_Assert { value: val });
+    /// The operation performed.
+    pub fn operation(&self) -> Option<TestReport_Operation> {
+        if let Some(val) = self.value.get("operation") {
+            return Some(TestReport_Operation { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.assert() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.operation() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.assert() {
+        if let Some(_val) = self.operation() {
             _val.validate();
         }
         return true;

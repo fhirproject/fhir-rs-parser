@@ -12,14 +12,6 @@ pub struct Range<'a> {
 }
 
 impl Range<'_> {
-    /// The low limit. The boundary is inclusive.
-    pub fn low(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("low") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -36,6 +28,14 @@ impl Range<'_> {
         return None;
     }
 
+    /// The high limit. The boundary is inclusive.
+    pub fn high(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("high") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -45,25 +45,25 @@ impl Range<'_> {
         return None;
     }
 
-    /// The high limit. The boundary is inclusive.
-    pub fn high(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("high") {
+    /// The low limit. The boundary is inclusive.
+    pub fn low(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("low") {
             return Some(Quantity { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.low() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.high() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.low() {
             _val.validate();
         }
         return true;

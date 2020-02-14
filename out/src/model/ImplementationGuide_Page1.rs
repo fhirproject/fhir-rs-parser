@@ -15,11 +15,30 @@ pub struct ImplementationGuide_Page1<'a> {
 }
 
 impl ImplementationGuide_Page1<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for anchor
+    pub fn _anchor(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_anchor") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for title
+    pub fn _title(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_title") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -32,14 +51,6 @@ impl ImplementationGuide_Page1<'_> {
                     .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Relative path to the page.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
         }
         return None;
     }
@@ -60,30 +71,11 @@ impl ImplementationGuide_Page1<'_> {
         return None;
     }
 
-    /// Extensions for title
-    pub fn _title(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for anchor
-    pub fn _anchor(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_anchor") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -110,6 +102,14 @@ impl ImplementationGuide_Page1<'_> {
         return None;
     }
 
+    /// Relative path to the page.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Label for the page intended for human display.
     pub fn title(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("title") {
@@ -119,19 +119,6 @@ impl ImplementationGuide_Page1<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.anchor() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._title() {
-            _val.validate();
-        }
         if let Some(_val) = self._anchor() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -140,11 +127,24 @@ impl ImplementationGuide_Page1<'_> {
         if let Some(_val) = self._name() {
             _val.validate();
         }
+        if let Some(_val) = self._title() {
+            _val.validate();
+        }
+        if let Some(_val) = self.anchor() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.title() {}
         return true;
     }

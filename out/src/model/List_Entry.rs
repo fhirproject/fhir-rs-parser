@@ -14,6 +14,63 @@ pub struct List_Entry<'a> {
 }
 
 impl List_Entry<'_> {
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for deleted
+    pub fn _deleted(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_deleted") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// When this item was added to the list.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// True if this item is marked as deleted in the list.
+    pub fn deleted(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("deleted") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The flag allows the system constructing the list to indicate the role and
+    /// significance of the item in the list.
+    pub fn flag(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("flag") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -21,6 +78,13 @@ impl List_Entry<'_> {
             return Some(string);
         }
         return None;
+    }
+
+    /// A reference to the actual resource from which data was derived.
+    pub fn item(&self) -> Reference {
+        Reference {
+            value: &self.value["item"],
+        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -45,93 +109,29 @@ impl List_Entry<'_> {
         return None;
     }
 
-    /// True if this item is marked as deleted in the list.
-    pub fn deleted(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("deleted") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A reference to the actual resource from which data was derived.
-    pub fn item(&self) -> Reference {
-        Reference {
-            value: &self.value["item"],
-        }
-    }
-
-    /// The flag allows the system constructing the list to indicate the role and
-    /// significance of the item in the list.
-    pub fn flag(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("flag") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// When this item was added to the list.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for deleted
-    pub fn _deleted(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_deleted") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.deleted() {}
         if let Some(_val) = self._date() {
             _val.validate();
         }
+        if let Some(_val) = self._deleted() {
+            _val.validate();
+        }
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.deleted() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.item().validate();
         if let Some(_val) = self.flag() {
             _val.validate();
         }
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self._deleted() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        let _ = self.item().validate();
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

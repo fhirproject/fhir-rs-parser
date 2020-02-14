@@ -14,12 +14,10 @@ pub struct MolecularSequence_ReferenceSeq<'a> {
 }
 
 impl MolecularSequence_ReferenceSeq<'_> {
-    /// The Genome Build used for reference, following GRCh build versions e.g. 'GRCh
-    /// 37'.  Version number must be included if a versioned release of a primary build
-    /// was used.
-    pub fn genome_build(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("genomeBuild") {
-            return Some(string);
+    /// Extensions for genomeBuild
+    pub fn _genome_build(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_genomeBuild") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -32,10 +30,81 @@ impl MolecularSequence_ReferenceSeq<'_> {
         return None;
     }
 
+    /// Extensions for referenceSeqString
+    pub fn _reference_seq_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_referenceSeqString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for strand
+    pub fn _strand(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_strand") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for windowEnd
     pub fn _window_end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_windowEnd") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for windowStart
+    pub fn _window_start(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_windowStart") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Structural unit composed of a nucleic acid molecule which controls its own
+    /// replication through the interaction of specific proteins at one or more origins
+    /// of replication
+    /// ([SO:0000340](http://www.sequenceontology.org/browser/current_svn/term/SO:000034
+    /// 0)).
+    pub fn chromosome(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("chromosome") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The Genome Build used for reference, following GRCh build versions e.g. 'GRCh
+    /// 37'.  Version number must be included if a versioned release of a primary build
+    /// was used.
+    pub fn genome_build(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("genomeBuild") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -62,77 +131,12 @@ impl MolecularSequence_ReferenceSeq<'_> {
         return None;
     }
 
-    /// Extensions for genomeBuild
-    pub fn _genome_build(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_genomeBuild") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Structural unit composed of a nucleic acid molecule which controls its own
-    /// replication through the interaction of specific proteins at one or more origins
-    /// of replication
-    /// ([SO:0000340](http://www.sequenceontology.org/browser/current_svn/term/SO:000034
-    /// 0)).
-    pub fn chromosome(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("chromosome") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// A relative reference to a DNA strand based on gene orientation. The strand that
     /// contains the open reading frame of the gene is the "sense" strand, and the
     /// opposite complementary strand is the "antisense" strand.
     pub fn orientation(&self) -> Option<MolecularSequence_ReferenceSeqOrientation> {
         if let Some(Value::String(val)) = self.value.get("orientation") {
             return Some(MolecularSequence_ReferenceSeqOrientation::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// A string like "ACGT".
-    pub fn reference_seq_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("referenceSeqString") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Start position of the window on the reference sequence. If the coordinate system
-    /// is either 0-based or 1-based, then start position is inclusive.
-    pub fn window_start(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("windowStart") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for windowStart
-    pub fn _window_start(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_windowStart") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// End position of the window on the reference sequence. If the coordinate system
-    /// is 0-based then end is exclusive and does not include the last position. If the
-    /// coordinate system is 1-base, then end is inclusive and includes the last
-    /// position.
-    pub fn window_end(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("windowEnd") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -156,34 +160,10 @@ impl MolecularSequence_ReferenceSeq<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for strand
-    pub fn _strand(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_strand") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for referenceSeqString
-    pub fn _reference_seq_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_referenceSeqString") {
-            return Some(Element { value: val });
+    /// A string like "ACGT".
+    pub fn reference_seq_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("referenceSeqString") {
+            return Some(string);
         }
         return None;
     }
@@ -198,37 +178,46 @@ impl MolecularSequence_ReferenceSeq<'_> {
         return None;
     }
 
+    /// End position of the window on the reference sequence. If the coordinate system
+    /// is 0-based then end is exclusive and does not include the last position. If the
+    /// coordinate system is 1-base, then end is inclusive and includes the last
+    /// position.
+    pub fn window_end(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("windowEnd") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// Start position of the window on the reference sequence. If the coordinate system
+    /// is either 0-based or 1-based, then start position is inclusive.
+    pub fn window_start(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("windowStart") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.genome_build() {}
+        if let Some(_val) = self._genome_build() {
+            _val.validate();
+        }
         if let Some(_val) = self._orientation() {
+            _val.validate();
+        }
+        if let Some(_val) = self._reference_seq_string() {
+            _val.validate();
+        }
+        if let Some(_val) = self._strand() {
             _val.validate();
         }
         if let Some(_val) = self._window_end() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._genome_build() {
-            _val.validate();
-        }
-        if let Some(_val) = self.chromosome() {
-            _val.validate();
-        }
-        if let Some(_val) = self.orientation() {}
-        if let Some(_val) = self.reference_seq_string() {}
-        if let Some(_val) = self.window_start() {}
         if let Some(_val) = self._window_start() {
             _val.validate();
         }
-        if let Some(_val) = self.window_end() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.reference_seq_id() {
-            _val.validate();
-        }
-        if let Some(_val) = self.reference_seq_pointer() {
+        if let Some(_val) = self.chromosome() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -236,13 +225,24 @@ impl MolecularSequence_ReferenceSeq<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._strand() {
+        if let Some(_val) = self.genome_build() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.orientation() {}
+        if let Some(_val) = self.reference_seq_id() {
             _val.validate();
         }
-        if let Some(_val) = self._reference_seq_string() {
+        if let Some(_val) = self.reference_seq_pointer() {
             _val.validate();
         }
+        if let Some(_val) = self.reference_seq_string() {}
         if let Some(_val) = self.strand() {}
+        if let Some(_val) = self.window_end() {}
+        if let Some(_val) = self.window_start() {}
         return true;
     }
 }
@@ -264,8 +264,8 @@ impl MolecularSequence_ReferenceSeqOrientation {
 
     pub fn to_string(&self) -> String {
         match self {
-            MolecularSequence_ReferenceSeqOrientation::Sense => "sense",
-            MolecularSequence_ReferenceSeqOrientation::Antisense => "antisense",
+            MolecularSequence_ReferenceSeqOrientation::Sense => "sense".to_string(),
+            MolecularSequence_ReferenceSeqOrientation::Antisense => "antisense".to_string(),
         }
     }
 }
@@ -287,8 +287,8 @@ impl MolecularSequence_ReferenceSeqStrand {
 
     pub fn to_string(&self) -> String {
         match self {
-            MolecularSequence_ReferenceSeqStrand::Watson => "watson",
-            MolecularSequence_ReferenceSeqStrand::Crick => "crick",
+            MolecularSequence_ReferenceSeqStrand::Watson => "watson".to_string(),
+            MolecularSequence_ReferenceSeqStrand::Crick => "crick".to_string(),
         }
     }
 }

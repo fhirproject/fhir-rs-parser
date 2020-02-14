@@ -15,12 +15,11 @@ pub struct Procedure_Performer<'a> {
 }
 
 impl Procedure_Performer<'_> {
-    /// The organization the device or practitioner was acting on behalf of.
-    pub fn on_behalf_of(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("onBehalfOf") {
-            return Some(Reference { value: val });
+    /// The practitioner who was involved in the procedure.
+    pub fn actor(&self) -> Reference {
+        Reference {
+            value: &self.value["actor"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -35,6 +34,15 @@ impl Procedure_Performer<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Distinguishes the type of involvement of the performer in the procedure. For
+    /// example, surgeon, anaesthetist, endoscopist.
+    pub fn function(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("function") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -70,33 +78,17 @@ impl Procedure_Performer<'_> {
         return None;
     }
 
-    /// Distinguishes the type of involvement of the performer in the procedure. For
-    /// example, surgeon, anaesthetist, endoscopist.
-    pub fn function(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("function") {
-            return Some(CodeableConcept { value: val });
+    /// The organization the device or practitioner was acting on behalf of.
+    pub fn on_behalf_of(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("onBehalfOf") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// The practitioner who was involved in the procedure.
-    pub fn actor(&self) -> Reference {
-        Reference {
-            value: &self.value["actor"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.on_behalf_of() {
-            _val.validate();
-        }
+        let _ = self.actor().validate();
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -104,7 +96,15 @@ impl Procedure_Performer<'_> {
         if let Some(_val) = self.function() {
             _val.validate();
         }
-        let _ = self.actor().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.on_behalf_of() {
+            _val.validate();
+        }
         return true;
     }
 }

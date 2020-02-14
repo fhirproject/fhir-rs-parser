@@ -15,18 +15,6 @@ pub struct TerminologyCapabilities_Version<'a> {
 }
 
 impl TerminologyCapabilities_Version<'_> {
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_language") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -35,55 +23,30 @@ impl TerminologyCapabilities_Version<'_> {
         return None;
     }
 
-    /// If the compositional grammar defined by the code system is supported.
-    pub fn compositional(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("compositional") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for compositional
+    pub fn _compositional(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_compositional") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Language Displays supported.
-    pub fn language(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("language") {
+    /// Extensions for isDefault
+    pub fn _is_default(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_isDefault") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_language") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_str().unwrap())
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Filter Properties supported.
-    pub fn filter(&self) -> Option<Vec<TerminologyCapabilities_Filter>> {
-        if let Some(Value::Array(val)) = self.value.get("filter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| TerminologyCapabilities_Filter { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Properties supported for $lookup.
-    pub fn property(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("property") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// For version-less code systems, there should be a single version with no
-    /// identifier.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
         }
         return None;
     }
@@ -100,9 +63,18 @@ impl TerminologyCapabilities_Version<'_> {
         return None;
     }
 
-    /// If this is the default version for this code system.
-    pub fn is_default(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("isDefault") {
+    /// For version-less code systems, there should be a single version with no
+    /// identifier.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// If the compositional grammar defined by the code system is supported.
+    pub fn compositional(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("compositional") {
             return Some(val.as_bool().unwrap());
         }
         return None;
@@ -124,11 +96,43 @@ impl TerminologyCapabilities_Version<'_> {
         return None;
     }
 
+    /// Filter Properties supported.
+    pub fn filter(&self) -> Option<Vec<TerminologyCapabilities_Filter>> {
+        if let Some(Value::Array(val)) = self.value.get("filter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| TerminologyCapabilities_Filter { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// If this is the default version for this code system.
+    pub fn is_default(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("isDefault") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Language Displays supported.
+    pub fn language(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("language") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -155,66 +159,62 @@ impl TerminologyCapabilities_Version<'_> {
         return None;
     }
 
-    /// Extensions for compositional
-    pub fn _compositional(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_compositional") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for isDefault
-    pub fn _is_default(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_isDefault") {
-            return Some(Element { value: val });
+    /// Properties supported for $lookup.
+    pub fn property(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("property") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._language() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._code() {
             _val.validate();
-        }
-        if let Some(_val) = self.compositional() {}
-        if let Some(_val) = self.language() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.filter() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.property() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self._property() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.is_default() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self._compositional() {
             _val.validate();
         }
         if let Some(_val) = self._is_default() {
             _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._property() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.compositional() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.filter() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.is_default() {}
+        if let Some(_val) = self.language() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.property() {
+            _val.into_iter().for_each(|_e| {});
         }
         return true;
     }

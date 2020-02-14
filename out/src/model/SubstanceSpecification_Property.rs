@@ -16,6 +16,46 @@ pub struct SubstanceSpecification_Property<'a> {
 }
 
 impl SubstanceSpecification_Property<'_> {
+    /// Extensions for amountString
+    pub fn _amount_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_amountString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for parameters
+    pub fn _parameters(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_parameters") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Quantitative value for this property.
+    pub fn amount_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("amountQuantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Quantitative value for this property.
+    pub fn amount_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("amountString") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A category for this property, e.g. Physical, Chemical, Enzymatic.
+    pub fn category(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("category") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// Property type e.g. viscosity, pH, isoelectric point.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
@@ -26,17 +66,18 @@ impl SubstanceSpecification_Property<'_> {
 
     /// A substance upon which a defining property depends (e.g. for solubility: in
     /// water, in alcohol).
-    pub fn defining_substance_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("definingSubstanceReference") {
-            return Some(Reference { value: val });
+    pub fn defining_substance_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("definingSubstanceCodeableConcept") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// Quantitative value for this property.
-    pub fn amount_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+    /// A substance upon which a defining property depends (e.g. for solubility: in
+    /// water, in alcohol).
+    pub fn defining_substance_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("definingSubstanceReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -57,45 +98,11 @@ impl SubstanceSpecification_Property<'_> {
         return None;
     }
 
-    /// Quantitative value for this property.
-    pub fn amount_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("amountString") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Parameters that were used in the measurement of a property (e.g. for viscosity:
-    /// measured at 20C with a pH of 7.1).
-    pub fn parameters(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("parameters") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// A category for this property, e.g. Physical, Chemical, Enzymatic.
-    pub fn category(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A substance upon which a defining property depends (e.g. for solubility: in
-    /// water, in alcohol).
-    pub fn defining_substance_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("definingSubstanceCodeableConcept") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -122,30 +129,36 @@ impl SubstanceSpecification_Property<'_> {
         return None;
     }
 
-    /// Extensions for amountString
-    pub fn _amount_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for parameters
-    pub fn _parameters(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_parameters") {
-            return Some(Element { value: val });
+    /// Parameters that were used in the measurement of a property (e.g. for viscosity:
+    /// measured at 20C with a pH of 7.1).
+    pub fn parameters(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("parameters") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.code() {
+        if let Some(_val) = self._amount_string() {
             _val.validate();
         }
-        if let Some(_val) = self.defining_substance_reference() {
+        if let Some(_val) = self._parameters() {
             _val.validate();
         }
         if let Some(_val) = self.amount_quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.amount_string() {}
+        if let Some(_val) = self.category() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {
+            _val.validate();
+        }
+        if let Some(_val) = self.defining_substance_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.defining_substance_reference() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -153,26 +166,13 @@ impl SubstanceSpecification_Property<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.amount_string() {}
-        if let Some(_val) = self.parameters() {}
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.category() {
-            _val.validate();
-        }
-        if let Some(_val) = self.defining_substance_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._amount_string() {
-            _val.validate();
-        }
-        if let Some(_val) = self._parameters() {
-            _val.validate();
-        }
+        if let Some(_val) = self.parameters() {}
         return true;
     }
 }

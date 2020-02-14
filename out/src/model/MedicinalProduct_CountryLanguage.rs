@@ -13,13 +13,11 @@ pub struct MedicinalProduct_CountryLanguage<'a> {
 }
 
 impl MedicinalProduct_CountryLanguage<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Country code for where this name applies.
+    pub fn country(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["country"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -38,10 +36,27 @@ impl MedicinalProduct_CountryLanguage<'_> {
         return None;
     }
 
-    /// Country code for where this name applies.
-    pub fn country(&self) -> CodeableConcept {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Jurisdiction code for where this name applies.
+    pub fn jurisdiction(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("jurisdiction") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Language code for this name.
+    pub fn language(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["country"],
+            value: &self.value["language"],
         }
     }
 
@@ -67,37 +82,22 @@ impl MedicinalProduct_CountryLanguage<'_> {
         return None;
     }
 
-    /// Language code for this name.
-    pub fn language(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["language"],
-        }
-    }
-
-    /// Jurisdiction code for where this name applies.
-    pub fn jurisdiction(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("jurisdiction") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.country().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.country().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.jurisdiction() {
+            _val.validate();
+        }
+        let _ = self.language().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        let _ = self.language().validate();
-        if let Some(_val) = self.jurisdiction() {
-            _val.validate();
         }
         return true;
     }

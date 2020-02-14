@@ -25,10 +25,26 @@ pub struct DocumentReference<'a> {
 }
 
 impl DocumentReference<'_> {
-    /// The status of this document reference.
-    pub fn status(&self) -> Option<DocumentReferenceStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(DocumentReferenceStatus::from_string(&val).unwrap());
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for docStatus
+    pub fn _doc_status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_docStatus") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -41,29 +57,52 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// Who or what the document is about. The document can be about a person, (patient
-    /// or healthcare practitioner), a device (e.g. a machine) or even a group of
-    /// subjects (such as a document about a herd of farm animals, or a set of patients
-    /// that share a common exposure).
-    pub fn subject(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("subject") {
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Which person or organization authenticates that this document is valid.
+    pub fn authenticator(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("authenticator") {
             return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// When the document reference was created.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
+    /// Identifies who is responsible for adding the information to the document.
+    pub fn author(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("author") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// A categorization for the type of document referenced - helps for indexing and
+    /// searching. This may be implied by or derived from the code specified in the
+    /// DocumentReference.type.
+    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("category") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -82,54 +121,17 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// Which person or organization authenticates that this document is valid.
-    pub fn authenticator(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("authenticator") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Relationships that this document has with other document references that already
-    /// exist.
-    pub fn relates_to(&self) -> Option<Vec<DocumentReference_RelatesTo>> {
-        if let Some(Value::Array(val)) = self.value.get("relatesTo") {
-            return Some(
-                val.into_iter()
-                    .map(|e| DocumentReference_RelatesTo { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
-        }
-        return None;
+    /// The document and format referenced. There may be multiple content element
+    /// repetitions, each with a different format.
+    pub fn content(&self) -> Vec<DocumentReference_Content> {
+        self.value
+            .get("content")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| DocumentReference_Content { value: e })
+            .collect::<Vec<_>>()
     }
 
     /// The clinical context in which the document was prepared.
@@ -140,18 +142,112 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+    /// Identifies the organization or group who is responsible for ongoing maintenance
+    /// of and access to the document.
+    pub fn custodian(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("custodian") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+    /// When the document reference was created.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Human-readable description of the source document.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The status of the underlying document.
+    pub fn doc_status(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("docStatus") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Other identifiers associated with the document, including version independent
+    /// identifiers.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Document identifier as assigned by the source of the document. This identifier
+    /// is specific to this version of the document. This unique identifier may be used
+    /// elsewhere to identify this version of the document.
+    pub fn master_identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("masterIdentifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
         }
         return None;
     }
@@ -179,43 +275,13 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The status of the underlying document.
-    pub fn doc_status(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("docStatus") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Relationships that this document has with other document references that already
+    /// exist.
+    pub fn relates_to(&self) -> Option<Vec<DocumentReference_RelatesTo>> {
+        if let Some(Value::Array(val)) = self.value.get("relatesTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| DocumentReference_RelatesTo { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -238,42 +304,34 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// Other identifiers associated with the document, including version independent
-    /// identifiers.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The status of this document reference.
+    pub fn status(&self) -> Option<DocumentReferenceStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(DocumentReferenceStatus::from_string(&val).unwrap());
         }
         return None;
     }
 
-    /// Extensions for docStatus
-    pub fn _doc_status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_docStatus") {
-            return Some(Element { value: val });
+    /// Who or what the document is about. The document can be about a person, (patient
+    /// or healthcare practitioner), a device (e.g. a machine) or even a group of
+    /// subjects (such as a document about a herd of farm animals, or a set of patients
+    /// that share a common exposure).
+    pub fn subject(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("subject") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// Human-readable description of the source document.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -288,103 +346,72 @@ impl DocumentReference<'_> {
         return None;
     }
 
-    /// Document identifier as assigned by the source of the document. This identifier
-    /// is specific to this version of the document. This unique identifier may be used
-    /// elsewhere to identify this version of the document.
-    pub fn master_identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("masterIdentifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// A categorization for the type of document referenced - helps for indexing and
-    /// searching. This may be implied by or derived from the code specified in the
-    /// DocumentReference.type.
-    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("category") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Identifies the organization or group who is responsible for ongoing maintenance
-    /// of and access to the document.
-    pub fn custodian(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("custodian") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The document and format referenced. There may be multiple content element
-    /// repetitions, each with a different format.
-    pub fn content(&self) -> Vec<DocumentReference_Content> {
-        self.value
-            .get("content")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| DocumentReference_Content { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// Identifies who is responsible for adding the information to the document.
-    pub fn author(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("author") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self._implicit_rules() {
+        if let Some(_val) = self._date() {
             _val.validate();
-        }
-        if let Some(_val) = self.subject() {
-            _val.validate();
-        }
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.authenticator() {
-            _val.validate();
-        }
-        if let Some(_val) = self.relates_to() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self._date() {
+        if let Some(_val) = self._doc_status() {
             _val.validate();
         }
-        if let Some(_val) = self.context() {
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
             _val.validate();
         }
         if let Some(_val) = self._status() {
             _val.validate();
         }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self.authenticator() {
+            _val.validate();
+        }
+        if let Some(_val) = self.author() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.category() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        let _ = self.content().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.context() {
+            _val.validate();
+        }
+        if let Some(_val) = self.custodian() {
+            _val.validate();
+        }
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.doc_status() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.master_identifier() {
+            _val.validate();
+        }
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -392,12 +419,7 @@ impl DocumentReference<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.doc_status() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.relates_to() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -407,37 +429,15 @@ impl DocumentReference<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._doc_status() {
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.subject() {
             _val.validate();
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
         if let Some(_val) = self.fhir_type() {
             _val.validate();
-        }
-        if let Some(_val) = self.master_identifier() {
-            _val.validate();
-        }
-        if let Some(_val) = self.category() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.custodian() {
-            _val.validate();
-        }
-        let _ = self.content().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.author() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         return true;
     }
@@ -462,9 +462,9 @@ impl DocumentReferenceStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            DocumentReferenceStatus::Current => "current",
-            DocumentReferenceStatus::Superseded => "superseded",
-            DocumentReferenceStatus::EnteredInError => "entered-in-error",
+            DocumentReferenceStatus::Current => "current".to_string(),
+            DocumentReferenceStatus::Superseded => "superseded".to_string(),
+            DocumentReferenceStatus::EnteredInError => "entered-in-error".to_string(),
         }
     }
 }

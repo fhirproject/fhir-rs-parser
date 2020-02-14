@@ -15,11 +15,10 @@ pub struct SpecimenDefinition_Handling<'a> {
 }
 
 impl SpecimenDefinition_Handling<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for instruction
+    pub fn _instruction(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_instruction") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -36,6 +35,32 @@ impl SpecimenDefinition_Handling<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Additional textual instructions for the preservation or transport of the
+    /// specimen. For instance, 'Protect from light exposure'.
+    pub fn instruction(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("instruction") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The maximum time interval of preservation of the specimen with these conditions.
+    pub fn max_duration(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("maxDuration") {
+            return Some(Duration { value: val });
         }
         return None;
     }
@@ -62,10 +87,12 @@ impl SpecimenDefinition_Handling<'_> {
         return None;
     }
 
-    /// The maximum time interval of preservation of the specimen with these conditions.
-    pub fn max_duration(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("maxDuration") {
-            return Some(Duration { value: val });
+    /// It qualifies the interval of temperature, which characterizes an occurrence of
+    /// handling. Conditions that are not related to temperature may be handled in the
+    /// instruction element.
+    pub fn temperature_qualifier(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("temperatureQualifier") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -78,56 +105,29 @@ impl SpecimenDefinition_Handling<'_> {
         return None;
     }
 
-    /// Additional textual instructions for the preservation or transport of the
-    /// specimen. For instance, 'Protect from light exposure'.
-    pub fn instruction(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("instruction") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// It qualifies the interval of temperature, which characterizes an occurrence of
-    /// handling. Conditions that are not related to temperature may be handled in the
-    /// instruction element.
-    pub fn temperature_qualifier(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("temperatureQualifier") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for instruction
-    pub fn _instruction(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_instruction") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._instruction() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.instruction() {}
+        if let Some(_val) = self.max_duration() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.max_duration() {
-            _val.validate();
-        }
-        if let Some(_val) = self.temperature_range() {
-            _val.validate();
-        }
-        if let Some(_val) = self.instruction() {}
         if let Some(_val) = self.temperature_qualifier() {
             _val.validate();
         }
-        if let Some(_val) = self._instruction() {
+        if let Some(_val) = self.temperature_range() {
             _val.validate();
         }
         return true;

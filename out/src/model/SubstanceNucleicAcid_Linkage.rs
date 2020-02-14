@@ -15,14 +15,6 @@ pub struct SubstanceNucleicAcid_Linkage<'a> {
 }
 
 impl SubstanceNucleicAcid_Linkage<'_> {
-    /// Each linkage will be registered as a fragment and have an ID.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for connectivity
     pub fn _connectivity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_connectivity") {
@@ -31,10 +23,29 @@ impl SubstanceNucleicAcid_Linkage<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for residueSite
+    pub fn _residue_site(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_residueSite") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The entity that links the sugar residues together should also be captured for
+    /// nearly all naturally occurring nucleic acid the linkage is a phosphate group.
+    /// For many synthetic oligonucleotides phosphorothioate linkages are often seen.
+    /// Linkage connectivity is assumed to be 3’-5’. If the linkage is either 3’-3’ or
+    /// 5’-5’ this should be specified.
+    pub fn connectivity(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("connectivity") {
             return Some(string);
         }
         return None;
@@ -56,47 +67,19 @@ impl SubstanceNucleicAcid_Linkage<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The entity that links the sugar residues together should also be captured for
-    /// nearly all naturally occurring nucleic acid the linkage is a phosphate group.
-    /// For many synthetic oligonucleotides phosphorothioate linkages are often seen.
-    /// Linkage connectivity is assumed to be 3’-5’. If the linkage is either 3’-3’ or
-    /// 5’-5’ this should be specified.
-    pub fn connectivity(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("connectivity") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    /// Residues shall be captured as described in 5.3.6.8.3.
-    pub fn residue_site(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("residueSite") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for residueSite
-    pub fn _residue_site(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_residueSite") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Each linkage will be registered as a fragment and have at least one name. A
-    /// single name shall be assigned to each linkage.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
+    /// Each linkage will be registered as a fragment and have an ID.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
         }
         return None;
     }
@@ -123,33 +106,50 @@ impl SubstanceNucleicAcid_Linkage<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.identifier() {
-            _val.validate();
+    /// Each linkage will be registered as a fragment and have at least one name. A
+    /// single name shall be assigned to each linkage.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
         }
+        return None;
+    }
+
+    /// Residues shall be captured as described in 5.3.6.8.3.
+    pub fn residue_site(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("residueSite") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self._connectivity() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self._residue_site() {
+            _val.validate();
+        }
+        if let Some(_val) = self.connectivity() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._name() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
             _val.validate();
         }
-        if let Some(_val) = self.connectivity() {}
-        if let Some(_val) = self.residue_site() {}
-        if let Some(_val) = self._residue_site() {
-            _val.validate();
-        }
-        if let Some(_val) = self.name() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self.residue_site() {}
         return true;
     }
 }

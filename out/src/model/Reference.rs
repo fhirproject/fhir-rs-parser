@@ -13,10 +13,35 @@ pub struct Reference<'a> {
 }
 
 impl Reference<'_> {
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for reference
     pub fn _reference(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_reference") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Plain text narrative that identifies the resource in addition to the resource
+    /// reference.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
+            return Some(string);
         }
         return None;
     }
@@ -46,22 +71,6 @@ impl Reference<'_> {
         return None;
     }
 
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// An identifier for the target resource. This is used when there is no way to
     /// reference the other resource directly, either because the entity it represents
     /// is not available through a FHIR server, or because there is no way for the
@@ -77,10 +86,14 @@ impl Reference<'_> {
         return None;
     }
 
-    /// Plain text narrative that identifies the resource in addition to the resource
-    /// reference.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
+    /// A reference to a location at which the other resource is found. The reference
+    /// may be a relative reference, in which case it is relative to the service base
+    /// URL, or an absolute URL that resolves to the location where the resource is
+    /// found. The reference may be version specific or not. If the reference is not to
+    /// a FHIR RESTful server, then it should be assumed to be version specific.
+    /// Internal fragment references (start with '#') refer to contained resources.
+    pub fn reference(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("reference") {
             return Some(string);
         }
         return None;
@@ -101,41 +114,28 @@ impl Reference<'_> {
         return None;
     }
 
-    /// A reference to a location at which the other resource is found. The reference
-    /// may be a relative reference, in which case it is relative to the service base
-    /// URL, or an absolute URL that resolves to the location where the resource is
-    /// found. The reference may be version specific or not. If the reference is not to
-    /// a FHIR RESTful server, then it should be assumed to be version specific.
-    /// Internal fragment references (start with '#') refer to contained resources.
-    pub fn reference(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("reference") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._display() {
+            _val.validate();
+        }
         if let Some(_val) = self._reference() {
             _val.validate();
         }
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._display() {
-            _val.validate();
-        }
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
         if let Some(_val) = self.identifier() {
             _val.validate();
         }
-        if let Some(_val) = self.display() {}
-        if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.reference() {}
+        if let Some(_val) = self.fhir_type() {}
         return true;
     }
 }

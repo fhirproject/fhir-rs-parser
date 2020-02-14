@@ -14,10 +14,10 @@ pub struct TerminologyCapabilities_Closure<'a> {
 }
 
 impl TerminologyCapabilities_Closure<'_> {
-    /// If cross-system closure is supported.
-    pub fn translation(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("translation") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for translation
+    pub fn _translation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_translation") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -47,14 +47,6 @@ impl TerminologyCapabilities_Closure<'_> {
         return None;
     }
 
-    /// Extensions for translation
-    pub fn _translation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_translation") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -77,22 +69,30 @@ impl TerminologyCapabilities_Closure<'_> {
         return None;
     }
 
+    /// If cross-system closure is supported.
+    pub fn translation(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("translation") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.translation() {}
+        if let Some(_val) = self._translation() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._translation() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.translation() {}
         return true;
     }
 }

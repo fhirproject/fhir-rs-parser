@@ -14,6 +14,18 @@ pub struct StructureDefinition_Differential<'a> {
 }
 
 impl StructureDefinition_Differential<'_> {
+    /// Captures constraints on each element within the resource.
+    pub fn element(&self) -> Vec<ElementDefinition> {
+        self.value
+            .get("element")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ElementDefinition { value: e })
+            .collect::<Vec<_>>()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -28,18 +40,6 @@ impl StructureDefinition_Differential<'_> {
             );
         }
         return None;
-    }
-
-    /// Captures constraints on each element within the resource.
-    pub fn element(&self) -> Vec<ElementDefinition> {
-        self.value
-            .get("element")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ElementDefinition { value: e })
-            .collect::<Vec<_>>()
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -74,14 +74,14 @@ impl StructureDefinition_Differential<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        let _ = self.element().into_iter().for_each(|e| {
+            e.validate();
+        });
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.element().into_iter().for_each(|e| {
-            e.validate();
-        });
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {

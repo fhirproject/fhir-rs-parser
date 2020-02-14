@@ -14,10 +14,27 @@ pub struct TestScript_Action1<'a> {
 }
 
 impl TestScript_Action1<'_> {
-    /// An operation would involve a REST request to a server.
-    pub fn operation(&self) -> Option<TestScript_Operation> {
-        if let Some(val) = self.value.get("operation") {
-            return Some(TestScript_Operation { value: val });
+    /// Evaluates the results of previous operations to determine if the server under
+    /// test behaves appropriately.
+    pub fn assert(&self) -> Option<TestScript_Assert> {
+        if let Some(val) = self.value.get("assert") {
+            return Some(TestScript_Assert { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -53,41 +70,15 @@ impl TestScript_Action1<'_> {
         return None;
     }
 
-    /// Evaluates the results of previous operations to determine if the server under
-    /// test behaves appropriately.
-    pub fn assert(&self) -> Option<TestScript_Assert> {
-        if let Some(val) = self.value.get("assert") {
-            return Some(TestScript_Assert { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// An operation would involve a REST request to a server.
+    pub fn operation(&self) -> Option<TestScript_Operation> {
+        if let Some(val) = self.value.get("operation") {
+            return Some(TestScript_Operation { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.operation() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.assert() {
             _val.validate();
         }
@@ -95,6 +86,15 @@ impl TestScript_Action1<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.operation() {
+            _val.validate();
         }
         return true;
     }

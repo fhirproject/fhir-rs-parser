@@ -16,27 +16,18 @@ pub struct ExplanationOfBenefit_CareTeam<'a> {
 }
 
 impl ExplanationOfBenefit_CareTeam<'_> {
-    /// A number to uniquely identify care team entries.
-    pub fn sequence(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("sequence") {
-            return Some(val.as_i64().unwrap());
+    /// Extensions for responsible
+    pub fn _responsible(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_responsible") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The qualification of the practitioner which is applicable for this service.
-    pub fn qualification(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("qualification") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The party who is billing and/or responsible for the claimed products or
-    /// services.
-    pub fn responsible(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("responsible") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for sequence
+    pub fn _sequence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sequence") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -57,19 +48,13 @@ impl ExplanationOfBenefit_CareTeam<'_> {
         return None;
     }
 
-    /// Extensions for responsible
-    pub fn _responsible(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_responsible") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
-    }
-
-    /// Member of the team who provided the product or service.
-    pub fn provider(&self) -> Reference {
-        Reference {
-            value: &self.value["provider"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -94,11 +79,26 @@ impl ExplanationOfBenefit_CareTeam<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Member of the team who provided the product or service.
+    pub fn provider(&self) -> Reference {
+        Reference {
+            value: &self.value["provider"],
+        }
+    }
+
+    /// The qualification of the practitioner which is applicable for this service.
+    pub fn qualification(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("qualification") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The party who is billing and/or responsible for the claimed products or
+    /// services.
+    pub fn responsible(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("responsible") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -112,41 +112,41 @@ impl ExplanationOfBenefit_CareTeam<'_> {
         return None;
     }
 
-    /// Extensions for sequence
-    pub fn _sequence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+    /// A number to uniquely identify care team entries.
+    pub fn sequence(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("sequence") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.qualification() {
-            _val.validate();
-        }
-        if let Some(_val) = self.responsible() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._responsible() {
-            _val.validate();
-        }
-        let _ = self.provider().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.role() {
             _val.validate();
         }
         if let Some(_val) = self._sequence() {
             _val.validate();
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        let _ = self.provider().validate();
+        if let Some(_val) = self.qualification() {
+            _val.validate();
+        }
+        if let Some(_val) = self.responsible() {}
+        if let Some(_val) = self.role() {
+            _val.validate();
+        }
+        if let Some(_val) = self.sequence() {}
         return true;
     }
 }

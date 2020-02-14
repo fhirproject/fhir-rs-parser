@@ -25,37 +25,6 @@ pub struct SubstanceSourceMaterial_PartDescription<'a> {
 
 impl SubstanceSourceMaterial_PartDescription<'_> {
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The detailed anatomic location when the part can be extracted from different
-    /// anatomical locations of the organism. Multiple alternative locations may apply.
-    pub fn part_location(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("partLocation") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
     /// extensions. Though any implementer can define an extension, there is a set of
@@ -80,6 +49,28 @@ impl SubstanceSourceMaterial_PartDescription<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Entity of anatomical origin of source material within an organism.
     pub fn part(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("part") {
@@ -88,22 +79,31 @@ impl SubstanceSourceMaterial_PartDescription<'_> {
         return None;
     }
 
+    /// The detailed anatomic location when the part can be extracted from different
+    /// anatomical locations of the organism. Multiple alternative locations may apply.
+    pub fn part_location(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("partLocation") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.part_location() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.part() {
+            _val.validate();
+        }
+        if let Some(_val) = self.part_location() {
             _val.validate();
         }
         return true;

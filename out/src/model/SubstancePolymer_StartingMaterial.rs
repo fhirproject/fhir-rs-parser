@@ -14,10 +14,10 @@ pub struct SubstancePolymer_StartingMaterial<'a> {
 }
 
 impl SubstancePolymer_StartingMaterial<'_> {
-    /// Todo.
-    pub fn is_defining(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("isDefining") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for isDefining
+    pub fn _is_defining(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_isDefining") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -46,27 +46,19 @@ impl SubstancePolymer_StartingMaterial<'_> {
         return None;
     }
 
-    /// Todo.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for isDefining
-    pub fn _is_defining(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_isDefining") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn is_defining(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("isDefining") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -101,8 +93,18 @@ impl SubstancePolymer_StartingMaterial<'_> {
         return None;
     }
 
+    /// Todo.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.is_defining() {}
+        if let Some(_val) = self._is_defining() {
+            _val.validate();
+        }
         if let Some(_val) = self.amount() {
             _val.validate();
         }
@@ -111,13 +113,8 @@ impl SubstancePolymer_StartingMaterial<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._is_defining() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.is_defining() {}
         if let Some(_val) = self.material() {
             _val.validate();
         }
@@ -125,6 +122,9 @@ impl SubstancePolymer_StartingMaterial<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
         }
         return true;
     }

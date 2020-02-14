@@ -16,14 +16,6 @@ pub struct MedicinalProduct_SpecialDesignation<'a> {
 }
 
 impl MedicinalProduct_SpecialDesignation<'_> {
-    /// Condition for which the medicinal use applies.
-    pub fn indication_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("indicationCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -32,25 +24,54 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         return None;
     }
 
-    /// Animal species for which this applies.
-    pub fn species(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("species") {
-            return Some(CodeableConcept { value: val });
+    /// Date when the designation was granted.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
         }
         return None;
     }
 
-    /// The intended use of the product, e.g. prevention, treatment.
-    pub fn intended_use(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("intendedUse") {
-            return Some(CodeableConcept { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// The type of special designation, e.g. orphan drug, minor use.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifier for the designation, or procedure number.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Condition for which the medicinal use applies.
+    pub fn indication_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("indicationCodeableConcept") {
             return Some(CodeableConcept { value: val });
         }
         return None;
@@ -60,6 +81,14 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     pub fn indication_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("indicationReference") {
             return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// The intended use of the product, e.g. prevention, treatment.
+    pub fn intended_use(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("intendedUse") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -86,39 +115,10 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Identifier for the designation, or procedure number.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Animal species for which this applies.
+    pub fn species(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("species") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -131,31 +131,37 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         return None;
     }
 
-    /// Date when the designation was granted.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
+    /// The type of special designation, e.g. orphan drug, minor use.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.indication_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self._date() {
             _val.validate();
         }
-        if let Some(_val) = self.species() {
-            _val.validate();
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.intended_use() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self.indication_codeable_concept() {
             _val.validate();
         }
         if let Some(_val) = self.indication_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.intended_use() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -163,21 +169,15 @@ impl MedicinalProduct_SpecialDesignation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.species() {
+            _val.validate();
         }
         if let Some(_val) = self.status() {
             _val.validate();
         }
-        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
         return true;
     }
 }

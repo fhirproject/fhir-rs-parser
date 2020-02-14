@@ -16,6 +16,22 @@ pub struct ConceptMap_Group<'a> {
 }
 
 impl ConceptMap_Group<'_> {
+    /// Extensions for source
+    pub fn _source(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_source") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for sourceVersion
+    pub fn _source_version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sourceVersion") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for target
     pub fn _target(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_target") {
@@ -24,11 +40,39 @@ impl ConceptMap_Group<'_> {
         return None;
     }
 
-    /// The specific version of the code system, as determined by the code system
-    /// authority.
-    pub fn target_version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("targetVersion") {
-            return Some(string);
+    /// Extensions for targetVersion
+    pub fn _target_version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_targetVersion") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Mappings for an individual concept in the source to one or more concepts in the
+    /// target.
+    pub fn element(&self) -> Vec<ConceptMap_Element> {
+        self.value
+            .get("element")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ConceptMap_Element { value: e })
+            .collect::<Vec<_>>()
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -64,10 +108,38 @@ impl ConceptMap_Group<'_> {
         return None;
     }
 
-    /// Extensions for source
-    pub fn _source(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_source") {
-            return Some(Element { value: val });
+    /// An absolute URI that identifies the source system where the concepts to be
+    /// mapped are defined.
+    pub fn source(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("source") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The specific version of the code system, as determined by the code system
+    /// authority.
+    pub fn source_version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("sourceVersion") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// An absolute URI that identifies the target system that the concepts will be
+    /// mapped to.
+    pub fn target(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("target") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The specific version of the code system, as determined by the code system
+    /// authority.
+    pub fn target_version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("targetVersion") {
+            return Some(string);
         }
         return None;
     }
@@ -82,112 +154,40 @@ impl ConceptMap_Group<'_> {
         return None;
     }
 
-    /// The specific version of the code system, as determined by the code system
-    /// authority.
-    pub fn source_version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("sourceVersion") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Mappings for an individual concept in the source to one or more concepts in the
-    /// target.
-    pub fn element(&self) -> Vec<ConceptMap_Element> {
-        self.value
-            .get("element")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ConceptMap_Element { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// An absolute URI that identifies the target system that the concepts will be
-    /// mapped to.
-    pub fn target(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("target") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for targetVersion
-    pub fn _target_version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_targetVersion") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for sourceVersion
-    pub fn _source_version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sourceVersion") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// An absolute URI that identifies the source system where the concepts to be
-    /// mapped are defined.
-    pub fn source(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("source") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._source() {
+            _val.validate();
+        }
+        if let Some(_val) = self._source_version() {
+            _val.validate();
+        }
         if let Some(_val) = self._target() {
             _val.validate();
         }
-        if let Some(_val) = self.target_version() {}
+        if let Some(_val) = self._target_version() {
+            _val.validate();
+        }
+        let _ = self.element().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._source() {
-            _val.validate();
-        }
+        if let Some(_val) = self.source() {}
+        if let Some(_val) = self.source_version() {}
+        if let Some(_val) = self.target() {}
+        if let Some(_val) = self.target_version() {}
         if let Some(_val) = self.unmapped() {
             _val.validate();
         }
-        if let Some(_val) = self.source_version() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.element().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.target() {}
-        if let Some(_val) = self._target_version() {
-            _val.validate();
-        }
-        if let Some(_val) = self._source_version() {
-            _val.validate();
-        }
-        if let Some(_val) = self.source() {}
         return true;
     }
 }

@@ -18,35 +18,10 @@ pub struct ClaimResponse_Detail1<'a> {
 }
 
 impl ClaimResponse_Detail1<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The quantity times the unit price for an additional service or product or
-    /// charge.
-    pub fn net(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("net") {
-            return Some(Money { value: val });
-        }
-        return None;
-    }
-
-    /// The number of repetitions of a service or product.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+    /// Extensions for factor
+    pub fn _factor(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_factor") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -76,32 +51,17 @@ impl ClaimResponse_Detail1<'_> {
     }
 
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// If the item is not a group then this is the fee for the product or service,
-    /// otherwise this is the total of the fees for the details of the group.
-    pub fn unit_price(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("unitPrice") {
-            return Some(Money { value: val });
         }
         return None;
     }
@@ -112,48 +72,6 @@ impl ClaimResponse_Detail1<'_> {
     pub fn factor(&self) -> Option<f64> {
         if let Some(val) = self.value.get("factor") {
             return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// When the value is a group code then this item collects a set of related claim
-    /// details, otherwise this contains the product, service, drug or other billing
-    /// code for the item.
-    pub fn product_or_service(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["productOrService"],
-        }
-    }
-
-    /// Extensions for factor
-    pub fn _factor(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The numbers associated with notes below which apply to the adjudication of this
-    /// item.
-    pub fn note_number(&self) -> Option<Vec<i64>> {
-        if let Some(Value::Array(val)) = self.value.get("noteNumber") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_i64().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The third-tier service adjudications for payor added services.
-    pub fn sub_detail(&self) -> Option<Vec<ClaimResponse_SubDetail1>> {
-        if let Some(Value::Array(val)) = self.value.get("subDetail") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ClaimResponse_SubDetail1 { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -180,16 +98,90 @@ impl ClaimResponse_Detail1<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The quantity times the unit price for an additional service or product or
+    /// charge.
+    pub fn net(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("net") {
+            return Some(Money { value: val });
+        }
+        return None;
+    }
+
+    /// The numbers associated with notes below which apply to the adjudication of this
+    /// item.
+    pub fn note_number(&self) -> Option<Vec<i64>> {
+        if let Some(Value::Array(val)) = self.value.get("noteNumber") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_i64().unwrap())
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// When the value is a group code then this item collects a set of related claim
+    /// details, otherwise this contains the product, service, drug or other billing
+    /// code for the item.
+    pub fn product_or_service(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["productOrService"],
+        }
+    }
+
+    /// The number of repetitions of a service or product.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// The third-tier service adjudications for payor added services.
+    pub fn sub_detail(&self) -> Option<Vec<ClaimResponse_SubDetail1>> {
+        if let Some(Value::Array(val)) = self.value.get("subDetail") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ClaimResponse_SubDetail1 { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// If the item is not a group then this is the fee for the product or service,
+    /// otherwise this is the total of the fees for the details of the group.
+    pub fn unit_price(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("unitPrice") {
+            return Some(Money { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.net() {
-            _val.validate();
-        }
-        if let Some(_val) = self.quantity() {
+        if let Some(_val) = self._factor() {
             _val.validate();
         }
         if let Some(_val) = self._note_number() {
@@ -200,32 +192,40 @@ impl ClaimResponse_Detail1<'_> {
         let _ = self.adjudication().into_iter().for_each(|e| {
             e.validate();
         });
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.factor() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.unit_price() {
-            _val.validate();
-        }
-        if let Some(_val) = self.factor() {}
-        let _ = self.product_or_service().validate();
-        if let Some(_val) = self._factor() {
+        if let Some(_val) = self.net() {
             _val.validate();
         }
         if let Some(_val) = self.note_number() {
             _val.into_iter().for_each(|_e| {});
+        }
+        let _ = self.product_or_service().validate();
+        if let Some(_val) = self.quantity() {
+            _val.validate();
         }
         if let Some(_val) = self.sub_detail() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.unit_price() {
+            _val.validate();
         }
         return true;
     }

@@ -17,11 +17,27 @@ pub struct Appointment_Participant<'a> {
 }
 
 impl Appointment_Participant<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for required
+    pub fn _required(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_required") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A Person, Location/HealthcareService or Device that is participating in the
+    /// appointment.
+    pub fn actor(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("actor") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -42,38 +58,11 @@ impl Appointment_Participant<'_> {
         return None;
     }
 
-    /// Extensions for required
-    pub fn _required(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_required") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Participation status of the actor.
-    pub fn status(&self) -> Option<Appointment_ParticipantStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(Appointment_ParticipantStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Role of participant in the appointment.
-    pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("type") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Participation period of the actor.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -100,10 +89,10 @@ impl Appointment_Participant<'_> {
         return None;
     }
 
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+    /// Participation period of the actor.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
     }
@@ -118,27 +107,43 @@ impl Appointment_Participant<'_> {
         return None;
     }
 
-    /// A Person, Location/HealthcareService or Device that is participating in the
-    /// appointment.
-    pub fn actor(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("actor") {
-            return Some(Reference { value: val });
+    /// Participation status of the actor.
+    pub fn status(&self) -> Option<Appointment_ParticipantStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(Appointment_ParticipantStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Role of participant in the appointment.
+    pub fn fhir_type(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("type") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._required() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.actor() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._required() {
-            _val.validate();
-        }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -146,19 +151,40 @@ impl Appointment_Participant<'_> {
         if let Some(_val) = self.period() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.required() {}
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self.fhir_type() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
-        if let Some(_val) = self.required() {}
-        if let Some(_val) = self.actor() {
-            _val.validate();
-        }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub enum Appointment_ParticipantRequired {
+    Required,
+    Optional,
+    InformationOnly,
+}
+
+impl Appointment_ParticipantRequired {
+    pub fn from_string(string: &str) -> Option<Appointment_ParticipantRequired> {
+        match string {
+            "required" => Some(Appointment_ParticipantRequired::Required),
+            "optional" => Some(Appointment_ParticipantRequired::Optional),
+            "information-only" => Some(Appointment_ParticipantRequired::InformationOnly),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            Appointment_ParticipantRequired::Required => "required".to_string(),
+            Appointment_ParticipantRequired::Optional => "optional".to_string(),
+            Appointment_ParticipantRequired::InformationOnly => "information-only".to_string(),
+        }
     }
 }
 
@@ -183,36 +209,10 @@ impl Appointment_ParticipantStatus {
 
     pub fn to_string(&self) -> String {
         match self {
-            Appointment_ParticipantStatus::Accepted => "accepted",
-            Appointment_ParticipantStatus::Declined => "declined",
-            Appointment_ParticipantStatus::Tentative => "tentative",
-            Appointment_ParticipantStatus::NeedsAction => "needs-action",
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum Appointment_ParticipantRequired {
-    Required,
-    Optional,
-    InformationOnly,
-}
-
-impl Appointment_ParticipantRequired {
-    pub fn from_string(string: &str) -> Option<Appointment_ParticipantRequired> {
-        match string {
-            "required" => Some(Appointment_ParticipantRequired::Required),
-            "optional" => Some(Appointment_ParticipantRequired::Optional),
-            "information-only" => Some(Appointment_ParticipantRequired::InformationOnly),
-            _ => None,
-        }
-    }
-
-    pub fn to_string(&self) -> String {
-        match self {
-            Appointment_ParticipantRequired::Required => "required",
-            Appointment_ParticipantRequired::Optional => "optional",
-            Appointment_ParticipantRequired::InformationOnly => "information-only",
+            Appointment_ParticipantStatus::Accepted => "accepted".to_string(),
+            Appointment_ParticipantStatus::Declined => "declined".to_string(),
+            Appointment_ParticipantStatus::Tentative => "tentative".to_string(),
+            Appointment_ParticipantStatus::NeedsAction => "needs-action".to_string(),
         }
     }
 }

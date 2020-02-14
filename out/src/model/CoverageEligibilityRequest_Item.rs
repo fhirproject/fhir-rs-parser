@@ -21,39 +21,6 @@ pub struct CoverageEligibilityRequest_Item<'a> {
 }
 
 impl CoverageEligibilityRequest_Item<'_> {
-    /// Patient diagnosis for which care is sought.
-    pub fn diagnosis(&self) -> Option<Vec<CoverageEligibilityRequest_Diagnosis>> {
-        if let Some(Value::Array(val)) = self.value.get("diagnosis") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CoverageEligibilityRequest_Diagnosis { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The plan/proposal/order describing the proposed service in detail.
-    pub fn detail(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("detail") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The practitioner who is responsible for the product or service to be rendered to
-    /// the patient.
-    pub fn provider(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("provider") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for supportingInfoSequence
     pub fn _supporting_info_sequence(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_supportingInfoSequence") {
@@ -75,6 +42,30 @@ impl CoverageEligibilityRequest_Item<'_> {
         return None;
     }
 
+    /// The plan/proposal/order describing the proposed service in detail.
+    pub fn detail(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("detail") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Patient diagnosis for which care is sought.
+    pub fn diagnosis(&self) -> Option<Vec<CoverageEligibilityRequest_Diagnosis>> {
+        if let Some(Value::Array(val)) = self.value.get("diagnosis") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CoverageEligibilityRequest_Diagnosis { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -91,13 +82,30 @@ impl CoverageEligibilityRequest_Item<'_> {
         return None;
     }
 
-    /// Exceptions, special conditions and supporting information applicable for this
-    /// service or product line.
-    pub fn supporting_info_sequence(&self) -> Option<Vec<i64>> {
-        if let Some(Value::Array(val)) = self.value.get("supportingInfoSequence") {
+    /// Facility where the services will be provided.
+    pub fn facility(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("facility") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Item typification or modifiers codes to convey additional context for the
+    /// product or service.
+    pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("modifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| e.as_i64().unwrap())
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -126,15 +134,19 @@ impl CoverageEligibilityRequest_Item<'_> {
         return None;
     }
 
-    /// Item typification or modifiers codes to convey additional context for the
-    /// product or service.
-    pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("modifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// This contains the product, service, drug or other billing code for the item.
+    pub fn product_or_service(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("productOrService") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The practitioner who is responsible for the product or service to be rendered to
+    /// the patient.
+    pub fn provider(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("provider") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -147,27 +159,15 @@ impl CoverageEligibilityRequest_Item<'_> {
         return None;
     }
 
-    /// This contains the product, service, drug or other billing code for the item.
-    pub fn product_or_service(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("productOrService") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Facility where the services will be provided.
-    pub fn facility(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("facility") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Exceptions, special conditions and supporting information applicable for this
+    /// service or product line.
+    pub fn supporting_info_sequence(&self) -> Option<Vec<i64>> {
+        if let Some(Value::Array(val)) = self.value.get("supportingInfoSequence") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_i64().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -181,19 +181,6 @@ impl CoverageEligibilityRequest_Item<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.diagnosis() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.detail() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.provider() {
-            _val.validate();
-        }
         if let Some(_val) = self._supporting_info_sequence() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -202,34 +189,47 @@ impl CoverageEligibilityRequest_Item<'_> {
         if let Some(_val) = self.category() {
             _val.validate();
         }
+        if let Some(_val) = self.detail() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.diagnosis() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.supporting_info_sequence() {
-            _val.into_iter().for_each(|_e| {});
+        if let Some(_val) = self.facility() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.product_or_service() {
+            _val.validate();
+        }
+        if let Some(_val) = self.provider() {
+            _val.validate();
         }
         if let Some(_val) = self.quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.product_or_service() {
-            _val.validate();
+        if let Some(_val) = self.supporting_info_sequence() {
+            _val.into_iter().for_each(|_e| {});
         }
-        if let Some(_val) = self.facility() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.unit_price() {
             _val.validate();
         }
