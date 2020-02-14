@@ -16,18 +16,18 @@ pub struct SpecimenDefinition_TypeTested<'a> {
 }
 
 impl SpecimenDefinition_TypeTested<'_> {
-    /// Extensions for preference
-    pub fn _preference(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_preference") {
-            return Some(Element { value: val });
+    /// The kind of specimen conditioned for testing expected by lab.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// Extensions for isDerived
-    pub fn _is_derived(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_isDerived") {
-            return Some(Element { value: val });
+    /// Primary of secondary specimen.
+    pub fn is_derived(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("isDerived") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -40,61 +40,32 @@ impl SpecimenDefinition_TypeTested<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Set of instructions for preservation/transport of the specimen at a defined
+    /// temperature interval, prior the testing process.
+    pub fn handling(&self) -> Option<Vec<SpecimenDefinition_Handling>> {
+        if let Some(Value::Array(val)) = self.value.get("handling") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| SpecimenDefinition_Handling { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Requirements for delivery and special handling of this kind of conditioned
-    /// specimen.
-    pub fn requirement(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("requirement") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The kind of specimen conditioned for testing expected by lab.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for requirement
-    pub fn _requirement(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_requirement") {
+    /// Extensions for isDerived
+    pub fn _is_derived(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_isDerived") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The usual time that a specimen of this kind is retained after the ordered tests
-    /// are completed, for the purpose of additional testing.
-    pub fn retention_time(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("retentionTime") {
-            return Some(Duration { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -121,10 +92,26 @@ impl SpecimenDefinition_TypeTested<'_> {
         return None;
     }
 
-    /// Primary of secondary specimen.
-    pub fn is_derived(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("isDerived") {
-            return Some(val.as_bool().unwrap());
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for preference
+    pub fn _preference(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_preference") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -133,6 +120,23 @@ impl SpecimenDefinition_TypeTested<'_> {
     pub fn container(&self) -> Option<SpecimenDefinition_Container> {
         if let Some(val) = self.value.get("container") {
             return Some(SpecimenDefinition_Container { value: val });
+        }
+        return None;
+    }
+
+    /// The usual time that a specimen of this kind is retained after the ordered tests
+    /// are completed, for the purpose of additional testing.
+    pub fn retention_time(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("retentionTime") {
+            return Some(Duration { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for requirement
+    pub fn _requirement(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_requirement") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -149,50 +153,50 @@ impl SpecimenDefinition_TypeTested<'_> {
         return None;
     }
 
-    /// Set of instructions for preservation/transport of the specimen at a defined
-    /// temperature interval, prior the testing process.
-    pub fn handling(&self) -> Option<Vec<SpecimenDefinition_Handling>> {
-        if let Some(Value::Array(val)) = self.value.get("handling") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SpecimenDefinition_Handling { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Requirements for delivery and special handling of this kind of conditioned
+    /// specimen.
+    pub fn requirement(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("requirement") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._preference() {
+        if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
-        if let Some(_val) = self._is_derived() {
-            _val.validate();
-        }
+        if let Some(_val) = self.is_derived() {}
         if let Some(_val) = self.preference() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.handling() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.requirement() {}
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self._is_derived() {
             _val.validate();
         }
-        if let Some(_val) = self._requirement() {
-            _val.validate();
-        }
-        if let Some(_val) = self.retention_time() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.is_derived() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._preference() {
+            _val.validate();
+        }
         if let Some(_val) = self.container() {
+            _val.validate();
+        }
+        if let Some(_val) = self.retention_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self._requirement() {
             _val.validate();
         }
         if let Some(_val) = self.rejection_criterion() {
@@ -200,11 +204,7 @@ impl SpecimenDefinition_TypeTested<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.handling() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        if let Some(_val) = self.requirement() {}
         return true;
     }
 }
@@ -221,6 +221,13 @@ impl SpecimenDefinition_TypeTestedPreference {
             "preferred" => Some(SpecimenDefinition_TypeTestedPreference::Preferred),
             "alternate" => Some(SpecimenDefinition_TypeTestedPreference::Alternate),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            SpecimenDefinition_TypeTestedPreference::Preferred => "preferred",
+            SpecimenDefinition_TypeTestedPreference::Alternate => "alternate",
         }
     }
 }

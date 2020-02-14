@@ -14,14 +14,6 @@ pub struct ImmunizationRecommendation_DateCriterion<'a> {
 }
 
 impl ImmunizationRecommendation_DateCriterion<'_> {
-    /// The date whose meaning is specified by dateCriterion.code.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -44,6 +36,22 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         return None;
     }
 
+    /// Date classification of recommendation.  For example, earliest date to give,
+    /// latest date to give, etc.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -53,10 +61,10 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         return None;
     }
 
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+    /// The date whose meaning is specified by dateCriterion.code.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
         }
         return None;
     }
@@ -77,31 +85,23 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         return None;
     }
 
-    /// Date classification of recommendation.  For example, earliest date to give,
-    /// latest date to give, etc.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        let _ = self.code().validate();
         if let Some(_val) = self._value() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.code().validate();
         return true;
     }
 }

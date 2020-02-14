@@ -26,9 +26,24 @@ pub struct SubstanceSpecification<'a> {
 }
 
 impl SubstanceSpecification<'_> {
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// Supporting literature.
+    pub fn source(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("source") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
         }
         return None;
@@ -50,6 +65,143 @@ impl SubstanceSpecification<'_> {
         return None;
     }
 
+    /// Moiety, for structural modifications.
+    pub fn moiety(&self) -> Option<Vec<SubstanceSpecification_Moiety>> {
+        if let Some(Value::Array(val)) = self.value.get("moiety") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceSpecification_Moiety { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Names applicable to this substance.
+    pub fn name(&self) -> Option<Vec<SubstanceSpecification_Name>> {
+        if let Some(Value::Array(val)) = self.value.get("name") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceSpecification_Name { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A link between this substance and another, with details of the relationship.
+    pub fn relationship(&self) -> Option<Vec<SubstanceSpecification_Relationship>> {
+        if let Some(Value::Array(val)) = self.value.get("relationship") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstanceSpecification_Relationship { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
+    /// Status of substance within the catalogue e.g. approved.
+    pub fn status(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("status") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Data items specific to proteins.
+    pub fn protein(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("protein") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// Data items specific to polymers.
+    pub fn polymer(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("polymer") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// If the substance applies to only human or veterinary use.
+    pub fn domain(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("domain") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Identifier by which this substance is known.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Codes associated with the substance.
     pub fn code(&self) -> Option<Vec<SubstanceSpecification_Code>> {
         if let Some(Value::Array(val)) = self.value.get("code") {
@@ -58,6 +210,14 @@ impl SubstanceSpecification<'_> {
                     .map(|e| SubstanceSpecification_Code { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
@@ -85,55 +245,18 @@ impl SubstanceSpecification<'_> {
         return None;
     }
 
-    /// General specifications for this substance, including how it is related to other
-    /// substances.
-    pub fn property(&self) -> Option<Vec<SubstanceSpecification_Property>> {
-        if let Some(Value::Array(val)) = self.value.get("property") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceSpecification_Property { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Data items specific to nucleic acids.
+    pub fn nucleic_acid(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("nucleicAcid") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// Structural information.
-    pub fn structure(&self) -> Option<SubstanceSpecification_Structure> {
-        if let Some(val) = self.value.get("structure") {
-            return Some(SubstanceSpecification_Structure { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Textual comment about this record of a substance.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
+    /// Textual description of the substance.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -147,95 +270,6 @@ impl SubstanceSpecification<'_> {
         return None;
     }
 
-    /// Status of substance within the catalogue e.g. approved.
-    pub fn status(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("status") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Material or taxonomic/anatomical source for the substance.
-    pub fn source_material(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("sourceMaterial") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// A link between this substance and another, with details of the relationship.
-    pub fn relationship(&self) -> Option<Vec<SubstanceSpecification_Relationship>> {
-        if let Some(Value::Array(val)) = self.value.get("relationship") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceSpecification_Relationship { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Names applicable to this substance.
-    pub fn name(&self) -> Option<Vec<SubstanceSpecification_Name>> {
-        if let Some(Value::Array(val)) = self.value.get("name") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceSpecification_Name { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Moiety, for structural modifications.
-    pub fn moiety(&self) -> Option<Vec<SubstanceSpecification_Moiety>> {
-        if let Some(Value::Array(val)) = self.value.get("moiety") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstanceSpecification_Moiety { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -244,61 +278,10 @@ impl SubstanceSpecification<'_> {
         return None;
     }
 
-    /// Identifier by which this substance is known.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// Data items specific to nucleic acids.
-    pub fn nucleic_acid(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("nucleicAcid") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// High level categorization, e.g. polymer or nucleic acid.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// General information detailing this substance.
-    pub fn reference_information(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("referenceInformation") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Data items specific to proteins.
-    pub fn protein(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("protein") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// If the substance applies to only human or veterinary use.
-    pub fn domain(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("domain") {
-            return Some(CodeableConcept { value: val });
+    /// Structural information.
+    pub fn structure(&self) -> Option<SubstanceSpecification_Structure> {
+        if let Some(val) = self.value.get("structure") {
+            return Some(SubstanceSpecification_Structure { value: val });
         }
         return None;
     }
@@ -315,80 +298,65 @@ impl SubstanceSpecification<'_> {
         return None;
     }
 
-    /// Supporting literature.
-    pub fn source(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("source") {
+    /// General specifications for this substance, including how it is related to other
+    /// substances.
+    pub fn property(&self) -> Option<Vec<SubstanceSpecification_Property>> {
+        if let Some(Value::Array(val)) = self.value.get("property") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| SubstanceSpecification_Property { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Data items specific to polymers.
-    pub fn polymer(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("polymer") {
+    /// Material or taxonomic/anatomical source for the substance.
+    pub fn source_material(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("sourceMaterial") {
             return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// Textual description of the substance.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
+    /// General information detailing this substance.
+    pub fn reference_information(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("referenceInformation") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// High level categorization, e.g. polymer or nucleic acid.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Textual comment about this record of a substance.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
             return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.source() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
         if let Some(_val) = self._comment() {
             _val.validate();
         }
-        if let Some(_val) = self.code() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.property() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.structure() {
-            _val.validate();
-        }
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.comment() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.status() {
-            _val.validate();
-        }
-        if let Some(_val) = self.source_material() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.relationship() {
+        if let Some(_val) = self.moiety() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -398,7 +366,27 @@ impl SubstanceSpecification<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.relationship() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.protein() {
+            _val.validate();
+        }
         if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.polymer() {
+            _val.validate();
+        }
+        if let Some(_val) = self.domain() {
             _val.validate();
         }
         if let Some(_val) = self.contained() {
@@ -406,31 +394,37 @@ impl SubstanceSpecification<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.moiety() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
         if let Some(_val) = self.identifier() {
             _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.nucleic_acid() {
             _val.validate();
         }
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self.reference_information() {
-            _val.validate();
-        }
-        if let Some(_val) = self.protein() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.domain() {
+        if let Some(_val) = self.structure() {
             _val.validate();
         }
         if let Some(_val) = self.molecular_weight() {
@@ -438,15 +432,21 @@ impl SubstanceSpecification<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.source() {
+        if let Some(_val) = self.property() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.polymer() {
+        if let Some(_val) = self.source_material() {
             _val.validate();
         }
-        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.reference_information() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.comment() {}
         return true;
     }
 }

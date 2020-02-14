@@ -17,10 +17,12 @@ pub struct CapabilityStatement_Messaging<'a> {
 }
 
 impl CapabilityStatement_Messaging<'_> {
-    /// Extensions for reliableCache
-    pub fn _reliable_cache(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_reliableCache") {
-            return Some(Element { value: val });
+    /// Documentation about the system's messaging capabilities for this endpoint not
+    /// otherwise documented by the capability statement.  For example, the process for
+    /// becoming an authorized messaging exchange partner.
+    pub fn documentation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("documentation") {
+            return Some(string);
         }
         return None;
     }
@@ -47,22 +49,6 @@ impl CapabilityStatement_Messaging<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -72,12 +58,21 @@ impl CapabilityStatement_Messaging<'_> {
         return None;
     }
 
-    /// References to message definitions for messages this system can send or receive.
-    pub fn supported_message(&self) -> Option<Vec<CapabilityStatement_SupportedMessage>> {
-        if let Some(Value::Array(val)) = self.value.get("supportedMessage") {
+    /// Extensions for reliableCache
+    pub fn _reliable_cache(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_reliableCache") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// An endpoint (network accessible address) to which messages and/or replies are to
+    /// be sent.
+    pub fn endpoint(&self) -> Option<Vec<CapabilityStatement_Endpoint>> {
+        if let Some(Value::Array(val)) = self.value.get("endpoint") {
             return Some(
                 val.into_iter()
-                    .map(|e| CapabilityStatement_SupportedMessage { value: e })
+                    .map(|e| CapabilityStatement_Endpoint { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,23 +96,28 @@ impl CapabilityStatement_Messaging<'_> {
         return None;
     }
 
-    /// Documentation about the system's messaging capabilities for this endpoint not
-    /// otherwise documented by the capability statement.  For example, the process for
-    /// becoming an authorized messaging exchange partner.
-    pub fn documentation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("documentation") {
-            return Some(string);
+    /// References to message definitions for messages this system can send or receive.
+    pub fn supported_message(&self) -> Option<Vec<CapabilityStatement_SupportedMessage>> {
+        if let Some(Value::Array(val)) = self.value.get("supportedMessage") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CapabilityStatement_SupportedMessage { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// An endpoint (network accessible address) to which messages and/or replies are to
-    /// be sent.
-    pub fn endpoint(&self) -> Option<Vec<CapabilityStatement_Endpoint>> {
-        if let Some(Value::Array(val)) = self.value.get("endpoint") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| CapabilityStatement_Endpoint { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,21 +125,17 @@ impl CapabilityStatement_Messaging<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._reliable_cache() {
-            _val.validate();
-        }
+        if let Some(_val) = self.documentation() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.supported_message() {
+        if let Some(_val) = self._reliable_cache() {
+            _val.validate();
+        }
+        if let Some(_val) = self.endpoint() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -148,8 +144,12 @@ impl CapabilityStatement_Messaging<'_> {
         if let Some(_val) = self._documentation() {
             _val.validate();
         }
-        if let Some(_val) = self.documentation() {}
-        if let Some(_val) = self.endpoint() {
+        if let Some(_val) = self.supported_message() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

@@ -36,11 +36,20 @@ impl MedicinalProduct_NamePart<'_> {
         return None;
     }
 
-    /// Idenifying type for this part of the name (e.g. strength part).
-    pub fn fhir_type(&self) -> Coding {
-        Coding {
-            value: &self.value["type"],
+    /// A fragment of a product name.
+    pub fn part(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("part") {
+            return Some(string);
         }
+        return None;
+    }
+
+    /// Extensions for part
+    pub fn _part(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_part") {
+            return Some(Element { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -59,14 +68,6 @@ impl MedicinalProduct_NamePart<'_> {
         return None;
     }
 
-    /// Extensions for part
-    pub fn _part(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_part") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -76,12 +77,11 @@ impl MedicinalProduct_NamePart<'_> {
         return None;
     }
 
-    /// A fragment of a product name.
-    pub fn part(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("part") {
-            return Some(string);
+    /// Idenifying type for this part of the name (e.g. strength part).
+    pub fn fhir_type(&self) -> Coding {
+        Coding {
+            value: &self.value["type"],
         }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
@@ -90,17 +90,17 @@ impl MedicinalProduct_NamePart<'_> {
                 e.validate();
             });
         }
-        let _ = self.fhir_type().validate();
+        if let Some(_val) = self.part() {}
+        if let Some(_val) = self._part() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._part() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.part() {}
+        let _ = self.fhir_type().validate();
         return true;
     }
 }

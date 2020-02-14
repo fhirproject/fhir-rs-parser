@@ -14,6 +14,18 @@ pub struct ConceptMap_Unmapped<'a> {
 }
 
 impl ConceptMap_Unmapped<'_> {
+    /// Defines which action to take if there is no match for the source concept in the
+    /// target system designated for the group. One of 3 actions are possible: use the
+    /// unmapped code (this is useful when doing a mapping between versions, and only a
+    /// few codes have changed), use a fixed code (a default code), or alternatively, a
+    /// reference to a different concept map can be provided (by canonical URL).
+    pub fn mode(&self) -> Option<ConceptMap_UnmappedMode> {
+        if let Some(Value::String(val)) = self.value.get("mode") {
+            return Some(ConceptMap_UnmappedMode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     /// The display for the code. The display is only provided to help editors when
     /// editing the concept map.
     pub fn display(&self) -> Option<&str> {
@@ -23,18 +35,11 @@ impl ConceptMap_Unmapped<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
+    /// The fixed code to use when the mode = 'fixed'  - all unmapped codes are mapped
+    /// to a single fixed code.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
         }
         return None;
     }
@@ -44,6 +49,15 @@ impl ConceptMap_Unmapped<'_> {
     /// concept.
     pub fn url(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("url") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -71,9 +85,17 @@ impl ConceptMap_Unmapped<'_> {
         return None;
     }
 
-    /// Extensions for mode
-    pub fn _mode(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_mode") {
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
             return Some(Element { value: val });
         }
         return None;
@@ -95,51 +117,29 @@ impl ConceptMap_Unmapped<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The fixed code to use when the mode = 'fixed'  - all unmapped codes are mapped
-    /// to a single fixed code.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Defines which action to take if there is no match for the source concept in the
-    /// target system designated for the group. One of 3 actions are possible: use the
-    /// unmapped code (this is useful when doing a mapping between versions, and only a
-    /// few codes have changed), use a fixed code (a default code), or alternatively, a
-    /// reference to a different concept map can be provided (by canonical URL).
-    pub fn mode(&self) -> Option<ConceptMap_UnmappedMode> {
-        if let Some(Value::String(val)) = self.value.get("mode") {
-            return Some(ConceptMap_UnmappedMode::from_string(&val).unwrap());
+    /// Extensions for mode
+    pub fn _mode(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_mode") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.mode() {}
         if let Some(_val) = self.display() {}
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self._display() {
-            _val.validate();
-        }
+        if let Some(_val) = self.code() {}
         if let Some(_val) = self.url() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._mode() {
+        if let Some(_val) = self._display() {
+            _val.validate();
+        }
+        if let Some(_val) = self._code() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -147,9 +147,9 @@ impl ConceptMap_Unmapped<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.mode() {}
+        if let Some(_val) = self._mode() {
+            _val.validate();
+        }
         return true;
     }
 }
@@ -168,6 +168,14 @@ impl ConceptMap_UnmappedMode {
             "fixed" => Some(ConceptMap_UnmappedMode::Fixed),
             "other-map" => Some(ConceptMap_UnmappedMode::OtherMap),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ConceptMap_UnmappedMode::Provided => "provided",
+            ConceptMap_UnmappedMode::Fixed => "fixed",
+            ConceptMap_UnmappedMode::OtherMap => "other-map",
         }
     }
 }

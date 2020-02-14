@@ -37,13 +37,6 @@ impl EpisodeOfCare_StatusHistory<'_> {
         return None;
     }
 
-    /// The period during this EpisodeOfCare that the specific status applied.
-    pub fn period(&self) -> Period {
-        Period {
-            value: &self.value["period"],
-        }
-    }
-
     /// planned | waitlist | active | onhold | finished | cancelled.
     pub fn status(&self) -> Option<EpisodeOfCare_StatusHistoryStatus> {
         if let Some(Value::String(val)) = self.value.get("status") {
@@ -76,6 +69,13 @@ impl EpisodeOfCare_StatusHistory<'_> {
         return None;
     }
 
+    /// The period during this EpisodeOfCare that the specific status applied.
+    pub fn period(&self) -> Period {
+        Period {
+            value: &self.value["period"],
+        }
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -91,7 +91,6 @@ impl EpisodeOfCare_StatusHistory<'_> {
                 e.validate();
             });
         }
-        let _ = self.period().validate();
         if let Some(_val) = self.status() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -101,6 +100,7 @@ impl EpisodeOfCare_StatusHistory<'_> {
         if let Some(_val) = self._status() {
             _val.validate();
         }
+        let _ = self.period().validate();
         if let Some(_val) = self.id() {}
         return true;
     }
@@ -128,6 +128,18 @@ impl EpisodeOfCare_StatusHistoryStatus {
             "cancelled" => Some(EpisodeOfCare_StatusHistoryStatus::Cancelled),
             "entered-in-error" => Some(EpisodeOfCare_StatusHistoryStatus::EnteredInError),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            EpisodeOfCare_StatusHistoryStatus::Planned => "planned",
+            EpisodeOfCare_StatusHistoryStatus::Waitlist => "waitlist",
+            EpisodeOfCare_StatusHistoryStatus::Active => "active",
+            EpisodeOfCare_StatusHistoryStatus::Onhold => "onhold",
+            EpisodeOfCare_StatusHistoryStatus::Finished => "finished",
+            EpisodeOfCare_StatusHistoryStatus::Cancelled => "cancelled",
+            EpisodeOfCare_StatusHistoryStatus::EnteredInError => "entered-in-error",
         }
     }
 }

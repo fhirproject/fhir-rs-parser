@@ -49,6 +49,20 @@ impl CarePlan_Activity<'_> {
         return None;
     }
 
+    /// Identifies the outcome at the point when the status of the activity is assessed.
+    /// For example, the outcome of an education activity could be patient understands
+    /// (or not).
+    pub fn outcome_codeable_concept(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("outcomeCodeableConcept") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Notes about the adherence/status/progress of the activity.
     pub fn progress(&self) -> Option<Vec<Annotation>> {
         if let Some(Value::Array(val)) = self.value.get("progress") {
@@ -71,10 +85,11 @@ impl CarePlan_Activity<'_> {
         return None;
     }
 
-    /// The details of the proposed activity represented in a specific resource.
-    pub fn reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("reference") {
-            return Some(Reference { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -101,25 +116,10 @@ impl CarePlan_Activity<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Identifies the outcome at the point when the status of the activity is assessed.
-    /// For example, the outcome of an education activity could be patient understands
-    /// (or not).
-    pub fn outcome_codeable_concept(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("outcomeCodeableConcept") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The details of the proposed activity represented in a specific resource.
+    pub fn reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("reference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -135,6 +135,11 @@ impl CarePlan_Activity<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.outcome_codeable_concept() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.progress() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -143,19 +148,14 @@ impl CarePlan_Activity<'_> {
         if let Some(_val) = self.detail() {
             _val.validate();
         }
-        if let Some(_val) = self.reference() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.outcome_codeable_concept() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.reference() {
+            _val.validate();
         }
         return true;
     }

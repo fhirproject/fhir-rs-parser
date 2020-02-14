@@ -13,23 +13,23 @@ pub struct PractitionerRole_AvailableTime<'a> {
 }
 
 impl PractitionerRole_AvailableTime<'_> {
-    /// The closing time of day. Note: If the AllDay flag is set, then this time is
-    /// ignored.
-    pub fn available_end_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("availableEndTime") {
-            return Some(string);
+    /// Extensions for daysOfWeek
+    pub fn _days_of_week(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// Indicates which days of the week are available between the start and end Times.
-    pub fn days_of_week(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
+    /// The opening time of day. Note: If the AllDay flag is set, then this time is
+    /// ignored.
+    pub fn available_start_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("availableStartTime") {
+            return Some(string);
         }
         return None;
     }
@@ -38,22 +38,6 @@ impl PractitionerRole_AvailableTime<'_> {
     pub fn _available_end_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_availableEndTime") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for allDay
-    pub fn _all_day(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allDay") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Is this always available? (hence times are irrelevant) e.g. 24 hour service.
-    pub fn all_day(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("allDay") {
-            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -80,23 +64,14 @@ impl PractitionerRole_AvailableTime<'_> {
         return None;
     }
 
-    /// Extensions for daysOfWeek
-    pub fn _days_of_week(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
+    /// Indicates which days of the week are available between the start and end Times.
+    pub fn days_of_week(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -117,11 +92,18 @@ impl PractitionerRole_AvailableTime<'_> {
         return None;
     }
 
-    /// The opening time of day. Note: If the AllDay flag is set, then this time is
-    /// ignored.
-    pub fn available_start_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("availableStartTime") {
-            return Some(string);
+    /// Is this always available? (hence times are irrelevant) e.g. 24 hour service.
+    pub fn all_day(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("allDay") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for allDay
+    pub fn _all_day(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allDay") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -134,38 +116,56 @@ impl PractitionerRole_AvailableTime<'_> {
         return None;
     }
 
+    /// The closing time of day. Note: If the AllDay flag is set, then this time is
+    /// ignored.
+    pub fn available_end_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("availableEndTime") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.available_end_time() {}
-        if let Some(_val) = self.days_of_week() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._available_end_time() {
-            _val.validate();
-        }
-        if let Some(_val) = self._all_day() {
-            _val.validate();
-        }
-        if let Some(_val) = self.all_day() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._days_of_week() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.available_start_time() {}
+        if let Some(_val) = self._available_end_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.days_of_week() {
+            _val.into_iter().for_each(|_e| {});
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.available_start_time() {}
+        if let Some(_val) = self.all_day() {}
+        if let Some(_val) = self._all_day() {
+            _val.validate();
+        }
         if let Some(_val) = self._available_start_time() {
             _val.validate();
         }
+        if let Some(_val) = self.available_end_time() {}
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

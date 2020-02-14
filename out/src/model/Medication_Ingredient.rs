@@ -17,6 +17,24 @@ pub struct Medication_Ingredient<'a> {
 }
 
 impl Medication_Ingredient<'_> {
+    /// The actual ingredient - either a substance (simple ingredient) or another
+    /// medication of a medication.
+    pub fn item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("itemReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -39,11 +57,21 @@ impl Medication_Ingredient<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The actual ingredient - either a substance (simple ingredient) or another
+    /// medication of a medication.
+    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("itemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Specifies how many (or how much) of the items there are in this Medication.  For
+    /// example, 250 mg per tablet.  This is expressed as a ratio where the numerator is
+    /// 250mg and the denominator is 1 tablet.
+    pub fn strength(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("strength") {
+            return Some(Ratio { value: val });
         }
         return None;
     }
@@ -81,41 +109,22 @@ impl Medication_Ingredient<'_> {
         return None;
     }
 
-    /// Specifies how many (or how much) of the items there are in this Medication.  For
-    /// example, 250 mg per tablet.  This is expressed as a ratio where the numerator is
-    /// 250mg and the denominator is 1 tablet.
-    pub fn strength(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("strength") {
-            return Some(Ratio { value: val });
-        }
-        return None;
-    }
-
-    /// The actual ingredient - either a substance (simple ingredient) or another
-    /// medication of a medication.
-    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The actual ingredient - either a substance (simple ingredient) or another
-    /// medication of a medication.
-    pub fn item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.item_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.item_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.strength() {
+            _val.validate();
+        }
         if let Some(_val) = self._is_active() {
             _val.validate();
         }
@@ -125,15 +134,6 @@ impl Medication_Ingredient<'_> {
             });
         }
         if let Some(_val) = self.is_active() {}
-        if let Some(_val) = self.strength() {
-            _val.validate();
-        }
-        if let Some(_val) = self.item_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.item_reference() {
-            _val.validate();
-        }
         return true;
     }
 }

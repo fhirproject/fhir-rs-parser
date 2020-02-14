@@ -14,15 +14,6 @@ pub struct TerminologyCapabilities_Translation<'a> {
 }
 
 impl TerminologyCapabilities_Translation<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -39,10 +30,11 @@ impl TerminologyCapabilities_Translation<'_> {
         return None;
     }
 
-    /// Whether the client must identify the map.
-    pub fn needs_map(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("needsMap") {
-            return Some(val.as_bool().unwrap());
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -69,6 +61,14 @@ impl TerminologyCapabilities_Translation<'_> {
         return None;
     }
 
+    /// Whether the client must identify the map.
+    pub fn needs_map(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("needsMap") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     /// Extensions for needsMap
     pub fn _needs_map(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_needsMap") {
@@ -78,18 +78,18 @@ impl TerminologyCapabilities_Translation<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.needs_map() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.needs_map() {}
         if let Some(_val) = self._needs_map() {
             _val.validate();
         }

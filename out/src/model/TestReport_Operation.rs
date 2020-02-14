@@ -12,6 +12,63 @@ pub struct TestReport_Operation<'a> {
 }
 
 impl TestReport_Operation<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for result
+    pub fn _result(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_result") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for detail
+    pub fn _detail(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_detail") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The result of this operation.
+    pub fn result(&self) -> Option<TestReport_OperationResult> {
+        if let Some(Value::String(val)) = self.value.get("result") {
+            return Some(TestReport_OperationResult::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// An explanatory message associated with the result.
+    pub fn message(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("message") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for message
+    pub fn _message(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_message") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A link to further details on the result.
+    pub fn detail(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("detail") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -50,64 +107,20 @@ impl TestReport_Operation<'_> {
         return None;
     }
 
-    /// A link to further details on the result.
-    pub fn detail(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("detail") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for message
-    pub fn _message(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_message") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The result of this operation.
-    pub fn result(&self) -> Option<TestReport_OperationResult> {
-        if let Some(Value::String(val)) = self.value.get("result") {
-            return Some(TestReport_OperationResult::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// An explanatory message associated with the result.
-    pub fn message(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("message") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for result
-    pub fn _result(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_result") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for detail
-    pub fn _detail(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_detail") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._result() {
+            _val.validate();
+        }
+        if let Some(_val) = self._detail() {
+            _val.validate();
+        }
+        if let Some(_val) = self.result() {}
+        if let Some(_val) = self.message() {}
+        if let Some(_val) = self._message() {
+            _val.validate();
+        }
+        if let Some(_val) = self.detail() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -117,19 +130,6 @@ impl TestReport_Operation<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.detail() {}
-        if let Some(_val) = self._message() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.result() {}
-        if let Some(_val) = self.message() {}
-        if let Some(_val) = self._result() {
-            _val.validate();
-        }
-        if let Some(_val) = self._detail() {
-            _val.validate();
         }
         return true;
     }
@@ -153,6 +153,16 @@ impl TestReport_OperationResult {
             "warning" => Some(TestReport_OperationResult::Warning),
             "error" => Some(TestReport_OperationResult::Error),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            TestReport_OperationResult::Pass => "pass",
+            TestReport_OperationResult::Skip => "skip",
+            TestReport_OperationResult::Fail => "fail",
+            TestReport_OperationResult::Warning => "warning",
+            TestReport_OperationResult::Error => "error",
         }
     }
 }

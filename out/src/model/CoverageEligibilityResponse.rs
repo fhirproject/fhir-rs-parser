@@ -22,10 +22,20 @@ pub struct CoverageEligibilityResponse<'a> {
 }
 
 impl CoverageEligibilityResponse<'_> {
-    /// Extensions for created
-    pub fn _created(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+    /// The date or dates when the enclosed suite of services were performed or
+    /// completed.
+    pub fn serviced_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("servicedDate") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The date or dates when the enclosed suite of services were performed or
+    /// completed.
+    pub fn serviced_period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("servicedPeriod") {
+            return Some(Period { value: val });
         }
         return None;
     }
@@ -41,32 +51,47 @@ impl CoverageEligibilityResponse<'_> {
         return None;
     }
 
-    /// The status of the resource instance.
-    pub fn status(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("status") {
-            return Some(string);
+    /// Financial instruments for reimbursement for the health care products and
+    /// services.
+    pub fn insurance(&self) -> Option<Vec<CoverageEligibilityResponse_Insurance>> {
+        if let Some(Value::Array(val)) = self.value.get("insurance") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CoverageEligibilityResponse_Insurance { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// Extensions for disposition
-    pub fn _disposition(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_disposition") {
+    /// Extensions for preAuthRef
+    pub fn _pre_auth_ref(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_preAuthRef") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The provider which is responsible for the request.
+    pub fn requestor(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("requestor") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// The date this resource was created.
+    pub fn created(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("created") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for outcome
+    pub fn _outcome(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_outcome") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -79,61 +104,19 @@ impl CoverageEligibilityResponse<'_> {
         }
     }
 
-    /// The outcome of the request processing.
-    pub fn outcome(&self) -> Option<CoverageEligibilityResponseOutcome> {
-        if let Some(Value::String(val)) = self.value.get("outcome") {
-            return Some(CoverageEligibilityResponseOutcome::from_string(&val).unwrap());
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for servicedDate
-    pub fn _serviced_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_servicedDate") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A unique identifier assigned to this coverage eligiblity request.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Reference to the original request resource.
-    pub fn request(&self) -> Reference {
-        Reference {
-            value: &self.value["request"],
-        }
-    }
-
-    /// Extensions for preAuthRef
-    pub fn _pre_auth_ref(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_preAuthRef") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for outcome
-    pub fn _outcome(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
@@ -148,9 +131,9 @@ impl CoverageEligibilityResponse<'_> {
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
+    /// Extensions for servicedDate
+    pub fn _serviced_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_servicedDate") {
             return Some(Element { value: val });
         }
         return None;
@@ -162,6 +145,23 @@ impl CoverageEligibilityResponse<'_> {
         Reference {
             value: &self.value["insurer"],
         }
+    }
+
+    /// A reference from the Insurer to which these services pertain to be used on
+    /// further communication and as proof that the request occurred.
+    pub fn pre_auth_ref(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("preAuthRef") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for created
+    pub fn _created(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_created") {
+            return Some(Element { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -187,50 +187,16 @@ impl CoverageEligibilityResponse<'_> {
         return None;
     }
 
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Financial instruments for reimbursement for the health care products and
-    /// services.
-    pub fn insurance(&self) -> Option<Vec<CoverageEligibilityResponse_Insurance>> {
-        if let Some(Value::Array(val)) = self.value.get("insurance") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| CoverageEligibilityResponse_Insurance { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The date or dates when the enclosed suite of services were performed or
-    /// completed.
-    pub fn serviced_period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("servicedPeriod") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// A code for the form to be used for printing the content.
-    pub fn form(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("form") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Errors encountered during the processing of the request.
-    pub fn error(&self) -> Option<Vec<CoverageEligibilityResponse_Error>> {
-        if let Some(Value::Array(val)) = self.value.get("error") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CoverageEligibilityResponse_Error { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -250,19 +216,60 @@ impl CoverageEligibilityResponse<'_> {
         return None;
     }
 
-    /// The date this resource was created.
-    pub fn created(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("created") {
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The status of the resource instance.
+    pub fn status(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("status") {
             return Some(string);
         }
         return None;
     }
 
-    /// A reference from the Insurer to which these services pertain to be used on
-    /// further communication and as proof that the request occurred.
-    pub fn pre_auth_ref(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("preAuthRef") {
-            return Some(string);
+    /// Extensions for disposition
+    pub fn _disposition(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_disposition") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A unique identifier assigned to this coverage eligiblity request.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -271,6 +278,22 @@ impl CoverageEligibilityResponse<'_> {
     pub fn disposition(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("disposition") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// A code for the form to be used for printing the content.
+    pub fn form(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("form") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The outcome of the request processing.
+    pub fn outcome(&self) -> Option<CoverageEligibilityResponseOutcome> {
+        if let Some(Value::String(val)) = self.value.get("outcome") {
+            return Some(CoverageEligibilityResponseOutcome::from_string(&val).unwrap());
         }
         return None;
     }
@@ -287,117 +310,74 @@ impl CoverageEligibilityResponse<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// Reference to the original request resource.
+    pub fn request(&self) -> Reference {
+        Reference {
+            value: &self.value["request"],
         }
-        return None;
     }
 
-    /// The provider which is responsible for the request.
-    pub fn requestor(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("requestor") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The date or dates when the enclosed suite of services were performed or
-    /// completed.
-    pub fn serviced_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("servicedDate") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Errors encountered during the processing of the request.
+    pub fn error(&self) -> Option<Vec<CoverageEligibilityResponse_Error>> {
+        if let Some(Value::Array(val)) = self.value.get("error") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| CoverageEligibilityResponse_Error { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._created() {
+        if let Some(_val) = self.serviced_date() {}
+        if let Some(_val) = self.serviced_period() {
             _val.validate();
         }
         if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self._disposition() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.patient().validate();
-        if let Some(_val) = self.outcome() {}
-        if let Some(_val) = self._serviced_date() {
-            _val.validate();
-        }
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.request().validate();
-        if let Some(_val) = self._pre_auth_ref() {
-            _val.validate();
-        }
-        if let Some(_val) = self._outcome() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        let _ = self.insurer().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
         if let Some(_val) = self.insurance() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.serviced_period() {
+        if let Some(_val) = self._pre_auth_ref() {
             _val.validate();
         }
-        if let Some(_val) = self.form() {
+        if let Some(_val) = self.requestor() {
             _val.validate();
         }
-        if let Some(_val) = self.error() {
+        if let Some(_val) = self.created() {}
+        if let Some(_val) = self._outcome() {
+            _val.validate();
+        }
+        let _ = self.patient().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self._serviced_date() {
+            _val.validate();
+        }
+        let _ = self.insurer().validate();
+        if let Some(_val) = self.pre_auth_ref() {}
+        if let Some(_val) = self._created() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -405,24 +385,44 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(_val) = self.text() {
             _val.validate();
         }
-        if let Some(_val) = self.created() {}
-        if let Some(_val) = self.pre_auth_ref() {}
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self._disposition() {
+            _val.validate();
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.disposition() {}
+        if let Some(_val) = self.form() {
+            _val.validate();
+        }
+        if let Some(_val) = self.outcome() {}
         if let Some(_val) = self._purpose() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.requestor() {
-            _val.validate();
-        }
-        if let Some(_val) = self.serviced_date() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
+        let _ = self.request().validate();
+        if let Some(_val) = self.error() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
         }
         return true;
     }
@@ -444,6 +444,15 @@ impl CoverageEligibilityResponseOutcome {
             "error" => Some(CoverageEligibilityResponseOutcome::Error),
             "partial" => Some(CoverageEligibilityResponseOutcome::Partial),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            CoverageEligibilityResponseOutcome::Queued => "queued",
+            CoverageEligibilityResponseOutcome::Complete => "complete",
+            CoverageEligibilityResponseOutcome::Error => "error",
+            CoverageEligibilityResponseOutcome::Partial => "partial",
         }
     }
 }

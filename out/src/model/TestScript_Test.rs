@@ -14,6 +14,23 @@ pub struct TestScript_Test<'a> {
 }
 
 impl TestScript_Test<'_> {
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A short description of the test used by test engines for tracking and reporting
+    /// purposes.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -26,14 +43,6 @@ impl TestScript_Test<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -60,19 +69,10 @@ impl TestScript_Test<'_> {
         return None;
     }
 
-    /// A short description of the test used by test engines for tracking and reporting
-    /// purposes.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
+    /// The name of this test used for tracking/logging purposes by test engines.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -89,6 +89,14 @@ impl TestScript_Test<'_> {
             .collect::<Vec<_>>()
     }
 
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -98,37 +106,29 @@ impl TestScript_Test<'_> {
         return None;
     }
 
-    /// The name of this test used for tracking/logging purposes by test engines.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._name() {
-            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
+        if let Some(_val) = self.name() {}
         let _ = self.action().into_iter().for_each(|e| {
             e.validate();
         });
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.name() {}
         return true;
     }
 }

@@ -13,6 +13,28 @@ pub struct MedicinalProductIngredient_Substance<'a> {
 }
 
 impl MedicinalProductIngredient_Substance<'_> {
+    /// Quantity of the substance or specified substance present in the manufactured
+    /// item or pharmaceutical product.
+    pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
+        if let Some(Value::Array(val)) = self.value.get("strength") {
+            return Some(
+                val.into_iter()
+                    .map(|e| MedicinalProductIngredient_Strength { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The ingredient substance.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -32,28 +54,6 @@ impl MedicinalProductIngredient_Substance<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Quantity of the substance or specified substance present in the manufactured
-    /// item or pharmaceutical product.
-    pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
-        if let Some(Value::Array(val)) = self.value.get("strength") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MedicinalProductIngredient_Strength { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -81,18 +81,18 @@ impl MedicinalProductIngredient_Substance<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.code().validate();
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.strength() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        let _ = self.code().validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

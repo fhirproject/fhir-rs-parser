@@ -23,22 +23,6 @@ impl StructureDefinition_Mapping<'_> {
     }
 
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
     /// descendants. Usually modifier elements provide negation or qualification. To
@@ -60,10 +44,18 @@ impl StructureDefinition_Mapping<'_> {
         return None;
     }
 
-    /// A name for the specification that is being mapped to.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -72,23 +64,6 @@ impl StructureDefinition_Mapping<'_> {
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for uri
-    pub fn _uri(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_uri") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// An Internal id that is used to identify this mapping set when specific mappings
-    /// are made.
-    pub fn identity(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("identity") {
             return Some(string);
         }
         return None;
@@ -111,14 +86,6 @@ impl StructureDefinition_Mapping<'_> {
         return None;
     }
 
-    /// Extensions for identity
-    pub fn _identity(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_identity") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// An absolute URI that identifies the specification that this mapping is expressed
     /// to.
     pub fn uri(&self) -> Option<&str> {
@@ -128,34 +95,67 @@ impl StructureDefinition_Mapping<'_> {
         return None;
     }
 
+    /// An Internal id that is used to identify this mapping set when specific mappings
+    /// are made.
+    pub fn identity(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("identity") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for identity
+    pub fn _identity(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_identity") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for uri
+    pub fn _uri(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_uri") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A name for the specification that is being mapped to.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._comment() {
             _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._uri() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.identity() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self._name() {
             _val.validate();
         }
         if let Some(_val) = self.comment() {}
+        if let Some(_val) = self.uri() {}
+        if let Some(_val) = self.identity() {}
         if let Some(_val) = self._identity() {
             _val.validate();
         }
-        if let Some(_val) = self.uri() {}
+        if let Some(_val) = self._uri() {
+            _val.validate();
+        }
+        if let Some(_val) = self.name() {}
         return true;
     }
 }

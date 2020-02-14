@@ -15,11 +15,10 @@ pub struct BiologicallyDerivedProduct_Storage<'a> {
 }
 
 impl BiologicallyDerivedProduct_Storage<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -27,6 +26,15 @@ impl BiologicallyDerivedProduct_Storage<'_> {
     /// Description of storage.
     pub fn description(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -44,6 +52,14 @@ impl BiologicallyDerivedProduct_Storage<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Temperature scale used.
+    pub fn scale(&self) -> Option<BiologicallyDerivedProduct_StorageScale> {
+        if let Some(Value::String(val)) = self.value.get("scale") {
+            return Some(BiologicallyDerivedProduct_StorageScale::from_string(&val).unwrap());
         }
         return None;
     }
@@ -78,14 +94,6 @@ impl BiologicallyDerivedProduct_Storage<'_> {
         return None;
     }
 
-    /// Extensions for temperature
-    pub fn _temperature(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_temperature") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for scale
     pub fn _scale(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_scale") {
@@ -94,18 +102,10 @@ impl BiologicallyDerivedProduct_Storage<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
+    /// Extensions for temperature
+    pub fn _temperature(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_temperature") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Temperature scale used.
-    pub fn scale(&self) -> Option<BiologicallyDerivedProduct_StorageScale> {
-        if let Some(Value::String(val)) = self.value.get("scale") {
-            return Some(BiologicallyDerivedProduct_StorageScale::from_string(&val).unwrap());
         }
         return None;
     }
@@ -119,29 +119,29 @@ impl BiologicallyDerivedProduct_Storage<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
         if let Some(_val) = self.description() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.scale() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.temperature() {}
-        if let Some(_val) = self._temperature() {
-            _val.validate();
-        }
         if let Some(_val) = self._scale() {
             _val.validate();
         }
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self._temperature() {
             _val.validate();
         }
-        if let Some(_val) = self.scale() {}
         if let Some(_val) = self.duration() {
             _val.validate();
         }
@@ -163,6 +163,14 @@ impl BiologicallyDerivedProduct_StorageScale {
             "celsius" => Some(BiologicallyDerivedProduct_StorageScale::Celsius),
             "kelvin" => Some(BiologicallyDerivedProduct_StorageScale::Kelvin),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            BiologicallyDerivedProduct_StorageScale::Farenheit => "farenheit",
+            BiologicallyDerivedProduct_StorageScale::Celsius => "celsius",
+            BiologicallyDerivedProduct_StorageScale::Kelvin => "kelvin",
         }
     }
 }

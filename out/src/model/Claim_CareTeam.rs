@@ -16,27 +16,18 @@ pub struct Claim_CareTeam<'a> {
 }
 
 impl Claim_CareTeam<'_> {
-    /// Extensions for sequence
-    pub fn _sequence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The party who is billing and/or responsible for the claimed products or
-    /// services.
-    pub fn responsible(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("responsible") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for responsible
     pub fn _responsible(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_responsible") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The qualification of the practitioner which is applicable for this service.
+    pub fn qualification(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("qualification") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -68,6 +59,22 @@ impl Claim_CareTeam<'_> {
     }
 
     /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
     /// descendants. Usually modifier elements provide negation or qualification. To
@@ -89,18 +96,19 @@ impl Claim_CareTeam<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for sequence
+    pub fn _sequence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sequence") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The party who is billing and/or responsible for the claimed products or
+    /// services.
+    pub fn responsible(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("responsible") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -112,20 +120,11 @@ impl Claim_CareTeam<'_> {
         }
     }
 
-    /// The qualification of the practitioner which is applicable for this service.
-    pub fn qualification(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("qualification") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._sequence() {
+        if let Some(_val) = self._responsible() {
             _val.validate();
         }
-        if let Some(_val) = self.responsible() {}
-        if let Some(_val) = self._responsible() {
+        if let Some(_val) = self.qualification() {
             _val.validate();
         }
         if let Some(_val) = self.sequence() {}
@@ -133,20 +132,21 @@ impl Claim_CareTeam<'_> {
         if let Some(_val) = self.role() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.provider().validate();
-        if let Some(_val) = self.qualification() {
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._sequence() {
             _val.validate();
         }
+        if let Some(_val) = self.responsible() {}
+        let _ = self.provider().validate();
         return true;
     }
 }

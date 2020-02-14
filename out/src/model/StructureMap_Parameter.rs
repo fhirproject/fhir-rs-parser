@@ -12,10 +12,19 @@ pub struct StructureMap_Parameter<'a> {
 }
 
 impl StructureMap_Parameter<'_> {
-    /// Extensions for valueId
-    pub fn _value_id(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueId") {
-            return Some(Element { value: val });
+    /// Parameter value - variable or literal.
+    pub fn value_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("valueString") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -42,6 +51,38 @@ impl StructureMap_Parameter<'_> {
         return None;
     }
 
+    /// Extensions for valueString
+    pub fn _value_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Parameter value - variable or literal.
+    pub fn value_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("valueId") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for valueId
+    pub fn _value_id(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueId") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Parameter value - variable or literal.
+    pub fn value_boolean(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("valueBoolean") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     /// Parameter value - variable or literal.
     pub fn value_integer(&self) -> Option<f64> {
         if let Some(val) = self.value.get("valueInteger") {
@@ -50,10 +91,34 @@ impl StructureMap_Parameter<'_> {
         return None;
     }
 
+    /// Extensions for valueDecimal
+    pub fn _value_decimal(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueDecimal") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for valueBoolean
+    pub fn _value_boolean(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueBoolean") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Parameter value - variable or literal.
     pub fn value_decimal(&self) -> Option<f64> {
         if let Some(val) = self.value.get("valueDecimal") {
             return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for valueInteger
+    pub fn _value_integer(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_valueInteger") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -74,83 +139,10 @@ impl StructureMap_Parameter<'_> {
         return None;
     }
 
-    /// Extensions for valueString
-    pub fn _value_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Parameter value - variable or literal.
-    pub fn value_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("valueString") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for valueBoolean
-    pub fn _value_boolean(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Parameter value - variable or literal.
-    pub fn value_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("valueId") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for valueInteger
-    pub fn _value_integer(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueInteger") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for valueDecimal
-    pub fn _value_decimal(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_valueDecimal") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Parameter value - variable or literal.
-    pub fn value_boolean(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("valueBoolean") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._value_id() {
-            _val.validate();
-        }
+        if let Some(_val) = self.value_string() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.value_integer() {}
-        if let Some(_val) = self.value_decimal() {}
-        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -158,19 +150,27 @@ impl StructureMap_Parameter<'_> {
         if let Some(_val) = self._value_string() {
             _val.validate();
         }
-        if let Some(_val) = self.value_string() {}
-        if let Some(_val) = self._value_boolean() {
-            _val.validate();
-        }
         if let Some(_val) = self.value_id() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._value_integer() {
-            _val.validate();
-        }
-        if let Some(_val) = self._value_decimal() {
+        if let Some(_val) = self._value_id() {
             _val.validate();
         }
         if let Some(_val) = self.value_boolean() {}
+        if let Some(_val) = self.value_integer() {}
+        if let Some(_val) = self._value_decimal() {
+            _val.validate();
+        }
+        if let Some(_val) = self._value_boolean() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value_decimal() {}
+        if let Some(_val) = self._value_integer() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }

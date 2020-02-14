@@ -30,6 +30,22 @@ impl Substance_Ingredient<'_> {
         return None;
     }
 
+    /// The amount of the ingredient in the substance - a concentration ratio.
+    pub fn quantity(&self) -> Option<Ratio> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// Another substance that is a component of this substance.
+    pub fn substance_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("substanceReference") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -43,14 +59,6 @@ impl Substance_Ingredient<'_> {
     pub fn substance_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("substanceCodeableConcept") {
             return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The amount of the ingredient in the substance - a concentration ratio.
-    pub fn quantity(&self) -> Option<Ratio> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Ratio { value: val });
         }
         return None;
     }
@@ -77,34 +85,26 @@ impl Substance_Ingredient<'_> {
         return None;
     }
 
-    /// Another substance that is a component of this substance.
-    pub fn substance_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("substanceReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.substance_codeable_concept() {
+        if let Some(_val) = self.quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.quantity() {
+        if let Some(_val) = self.substance_reference() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.substance_codeable_concept() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.substance_reference() {
-            _val.validate();
         }
         return true;
     }

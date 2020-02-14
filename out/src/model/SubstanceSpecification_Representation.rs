@@ -31,6 +31,22 @@ impl SubstanceSpecification_Representation<'_> {
         return None;
     }
 
+    /// Extensions for representation
+    pub fn _representation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_representation") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The type of structure (e.g. Full, Partial, Representative).
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -62,18 +78,11 @@ impl SubstanceSpecification_Representation<'_> {
         return None;
     }
 
-    /// The type of structure (e.g. Full, Partial, Representative).
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for representation
-    pub fn _representation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_representation") {
-            return Some(Element { value: val });
+    /// The structural representation as text string in a format e.g. InChI, SMILES,
+    /// MOLFILE, CDX.
+    pub fn representation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("representation") {
+            return Some(string);
         }
         return None;
     }
@@ -86,20 +95,17 @@ impl SubstanceSpecification_Representation<'_> {
         return None;
     }
 
-    /// The structural representation as text string in a format e.g. InChI, SMILES,
-    /// MOLFILE, CDX.
-    pub fn representation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("representation") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self._representation() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
@@ -107,16 +113,10 @@ impl SubstanceSpecification_Representation<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self._representation() {
-            _val.validate();
-        }
+        if let Some(_val) = self.representation() {}
         if let Some(_val) = self.attachment() {
             _val.validate();
         }
-        if let Some(_val) = self.representation() {}
         return true;
     }
 }

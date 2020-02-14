@@ -12,9 +12,9 @@ pub struct Bundle_Search<'a> {
 }
 
 impl Bundle_Search<'_> {
-    /// Extensions for score
-    pub fn _score(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_score") {
+    /// Extensions for mode
+    pub fn _mode(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_mode") {
             return Some(Element { value: val });
         }
         return None;
@@ -42,6 +42,41 @@ impl Bundle_Search<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// When searching, the server's search ranking score for the entry.
+    pub fn score(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("score") {
+            return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for score
+    pub fn _score(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_score") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Why this entry is in the result set - whether it's included as a match or
+    /// because of an _include requirement, or to convey information or warning
+    /// information about the search process.
+    pub fn mode(&self) -> Option<Bundle_SearchMode> {
+        if let Some(Value::String(val)) = self.value.get("mode") {
+            return Some(Bundle_SearchMode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -58,43 +93,8 @@ impl Bundle_Search<'_> {
         return None;
     }
 
-    /// When searching, the server's search ranking score for the entry.
-    pub fn score(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("score") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Why this entry is in the result set - whether it's included as a match or
-    /// because of an _include requirement, or to convey information or warning
-    /// information about the search process.
-    pub fn mode(&self) -> Option<Bundle_SearchMode> {
-        if let Some(Value::String(val)) = self.value.get("mode") {
-            return Some(Bundle_SearchMode::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for mode
-    pub fn _mode(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_mode") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._score() {
+        if let Some(_val) = self._mode() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -102,16 +102,16 @@ impl Bundle_Search<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.score() {}
+        if let Some(_val) = self._score() {
+            _val.validate();
+        }
+        if let Some(_val) = self.mode() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.score() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.mode() {}
-        if let Some(_val) = self._mode() {
-            _val.validate();
         }
         return true;
     }
@@ -131,6 +131,14 @@ impl Bundle_SearchMode {
             "include" => Some(Bundle_SearchMode::Include),
             "outcome" => Some(Bundle_SearchMode::Outcome),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            Bundle_SearchMode::Match => "match",
+            Bundle_SearchMode::Include => "include",
+            Bundle_SearchMode::Outcome => "outcome",
         }
     }
 }

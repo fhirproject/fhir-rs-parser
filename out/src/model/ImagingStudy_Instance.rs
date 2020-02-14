@@ -17,37 +17,6 @@ pub struct ImagingStudy_Instance<'a> {
 }
 
 impl ImagingStudy_Instance<'_> {
-    /// The number of instance in the series.
-    pub fn number(&self) -> Option<u64> {
-        if let Some(val) = self.value.get("number") {
-            return Some(val.as_u64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for uid
-    pub fn _uid(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_uid") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for title
-    pub fn _title(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// DICOM instance  type.
-    pub fn sop_class(&self) -> Coding {
-        Coding {
-            value: &self.value["sopClass"],
-        }
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -68,6 +37,21 @@ impl ImagingStudy_Instance<'_> {
             );
         }
         return None;
+    }
+
+    /// Extensions for number
+    pub fn _number(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_number") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// DICOM instance  type.
+    pub fn sop_class(&self) -> Coding {
+        Coding {
+            value: &self.value["sopClass"],
+        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -94,14 +78,6 @@ impl ImagingStudy_Instance<'_> {
         return None;
     }
 
-    /// The description of the instance.
-    pub fn title(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("title") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -111,37 +87,61 @@ impl ImagingStudy_Instance<'_> {
         return None;
     }
 
-    /// Extensions for number
-    pub fn _number(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_number") {
+    /// The description of the instance.
+    pub fn title(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("title") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The number of instance in the series.
+    pub fn number(&self) -> Option<u64> {
+        if let Some(val) = self.value.get("number") {
+            return Some(val.as_u64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for title
+    pub fn _title(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_title") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for uid
+    pub fn _uid(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_uid") {
             return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.number() {}
-        if let Some(_val) = self._uid() {
-            _val.validate();
-        }
-        if let Some(_val) = self._title() {
-            _val.validate();
-        }
-        let _ = self.sop_class().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self._number() {
+            _val.validate();
+        }
+        let _ = self.sop_class().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.uid() {}
-        if let Some(_val) = self.title() {}
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self._number() {
+        if let Some(_val) = self.title() {}
+        if let Some(_val) = self.number() {}
+        if let Some(_val) = self._title() {
+            _val.validate();
+        }
+        if let Some(_val) = self._uid() {
             _val.validate();
         }
         return true;

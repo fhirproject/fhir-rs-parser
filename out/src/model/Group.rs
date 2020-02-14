@@ -34,10 +34,55 @@ impl Group<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// Identifies the broad classification of the kind of resources the group includes.
+    pub fn fhir_type(&self) -> Option<GroupType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(GroupType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// A label assigned to the group for human identification and communication.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// A unique business identifier for this group.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for active
+    pub fn _active(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_active") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Entity responsible for defining and maintaining Group characteristics and/or
+    /// registered members.
+    pub fn managing_entity(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("managingEntity") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -51,6 +96,96 @@ impl Group<'_> {
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
             return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for actual
+    pub fn _actual(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_actual") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A count of the number of resource instances that are part of the group.
+    pub fn quantity(&self) -> Option<u64> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(val.as_u64().unwrap());
+        }
+        return None;
+    }
+
+    /// Identifies traits whose presence r absence is shared by members of the group.
+    pub fn characteristic(&self) -> Option<Vec<Group_Characteristic>> {
+        if let Some(Value::Array(val)) = self.value.get("characteristic") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Group_Characteristic { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// If true, indicates that the resource refers to a specific group of real
+    /// individuals.  If false, the group defines a set of intended individuals.
+    pub fn actual(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("actual") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Identifies the resource instances that are members of the group.
+    pub fn member(&self) -> Option<Vec<Group_Member>> {
+        if let Some(Value::Array(val)) = self.value.get("member") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Group_Member { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates whether the record for the group is available for use or is merely
+    /// being retained for historical purposes.
+    pub fn active(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("active") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for quantity
+    pub fn _quantity(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_quantity") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -78,102 +213,19 @@ impl Group<'_> {
         return None;
     }
 
-    /// Identifies the broad classification of the kind of resources the group includes.
-    pub fn fhir_type(&self) -> Option<GroupType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(GroupType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// A unique business identifier for this group.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Provides a specific type of resource the group includes; e.g. "cow", "syringe",
-    /// etc.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A count of the number of resource instances that are part of the group.
-    pub fn quantity(&self) -> Option<u64> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(val.as_u64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for quantity
-    pub fn _quantity(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_quantity") {
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Entity responsible for defining and maintaining Group characteristics and/or
-    /// registered members.
-    pub fn managing_entity(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("managingEntity") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates whether the record for the group is available for use or is merely
-    /// being retained for historical purposes.
-    pub fn active(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("active") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Identifies traits whose presence r absence is shared by members of the group.
-    pub fn characteristic(&self) -> Option<Vec<Group_Characteristic>> {
-        if let Some(Value::Array(val)) = self.value.get("characteristic") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Group_Characteristic { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// If true, indicates that the resource refers to a specific group of real
-    /// individuals.  If false, the group defines a set of intended individuals.
-    pub fn actual(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("actual") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for active
-    pub fn _active(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -188,54 +240,9 @@ impl Group<'_> {
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A label assigned to the group for human identification and communication.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the resource instances that are members of the group.
-    pub fn member(&self) -> Option<Vec<Group_Member>> {
-        if let Some(Value::Array(val)) = self.value.get("member") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Group_Member { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for actual
-    pub fn _actual(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_actual") {
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
             return Some(Element { value: val });
         }
         return None;
@@ -255,59 +262,55 @@ impl Group<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+    /// Provides a specific type of resource the group includes; e.g. "cow", "syringe",
+    /// etc.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.code() {
+        if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.quantity() {}
-        if let Some(_val) = self._quantity() {
+        if let Some(_val) = self._active() {
             _val.validate();
         }
         if let Some(_val) = self.managing_entity() {
             _val.validate();
         }
-        if let Some(_val) = self.active() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self._actual() {
+            _val.validate();
+        }
+        if let Some(_val) = self.quantity() {}
         if let Some(_val) = self.characteristic() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.actual() {}
+        if let Some(_val) = self.member() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -315,35 +318,8 @@ impl Group<'_> {
         if let Some(_val) = self._type() {
             _val.validate();
         }
-        if let Some(_val) = self.actual() {}
-        if let Some(_val) = self._active() {
-            _val.validate();
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.member() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._actual() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self.active() {}
+        if let Some(_val) = self._quantity() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -351,6 +327,30 @@ impl Group<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.code() {
+            _val.validate();
+        }
+        if let Some(_val) = self.language() {}
         return true;
     }
 }
@@ -375,6 +375,17 @@ impl GroupType {
             "medication" => Some(GroupType::Medication),
             "substance" => Some(GroupType::Substance),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            GroupType::Person => "person",
+            GroupType::Animal => "animal",
+            GroupType::Practitioner => "practitioner",
+            GroupType::Device => "device",
+            GroupType::Medication => "medication",
+            GroupType::Substance => "substance",
         }
     }
 }

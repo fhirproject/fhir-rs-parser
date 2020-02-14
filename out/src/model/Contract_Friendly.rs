@@ -61,20 +61,20 @@ impl Contract_Friendly<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Human readable rendering of this Contract in a format and representation
     /// intended to enhance comprehension and ensure understandability.
     pub fn content_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("contentAttachment") {
             return Some(Attachment { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -93,10 +93,10 @@ impl Contract_Friendly<'_> {
         if let Some(_val) = self.content_reference() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.content_attachment() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

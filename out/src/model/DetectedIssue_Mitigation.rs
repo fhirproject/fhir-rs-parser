@@ -16,6 +16,15 @@ pub struct DetectedIssue_Mitigation<'a> {
 }
 
 impl DetectedIssue_Mitigation<'_> {
+    /// Identifies the practitioner who determined the mitigation and takes
+    /// responsibility for the mitigation step occurring.
+    pub fn author(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("author") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -87,16 +96,10 @@ impl DetectedIssue_Mitigation<'_> {
         return None;
     }
 
-    /// Identifies the practitioner who determined the mitigation and takes
-    /// responsibility for the mitigation step occurring.
-    pub fn author(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.author() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -111,9 +114,6 @@ impl DetectedIssue_Mitigation<'_> {
         let _ = self.action().validate();
         if let Some(_val) = self.date() {}
         if let Some(_val) = self._date() {
-            _val.validate();
-        }
-        if let Some(_val) = self.author() {
             _val.validate();
         }
         return true;

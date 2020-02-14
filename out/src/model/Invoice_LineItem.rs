@@ -16,6 +16,42 @@ pub struct Invoice_LineItem<'a> {
 }
 
 impl Invoice_LineItem<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The ChargeItem contains information such as the billing code, date, amount etc.
+    /// If no further details are required for the lineItem, inline billing codes can be
+    /// added using the CodeableConcept data type instead of the Reference.
+    pub fn charge_item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("chargeItemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The price for a ChargeItem may be calculated as a base price with
+    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
+    /// resource that defines the prices, factors and conditions that apply to a billing
+    /// code is currently under development. The priceComponent element can be used to
+    /// offer transparency to the recipient of the Invoice as to how the prices have
+    /// been calculated.
+    pub fn price_component(&self) -> Option<Vec<Invoice_PriceComponent>> {
+        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Invoice_PriceComponent { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -48,46 +84,10 @@ impl Invoice_LineItem<'_> {
         return None;
     }
 
-    /// The price for a ChargeItem may be calculated as a base price with
-    /// surcharges/deductions that apply in certain conditions. A ChargeItemDefinition
-    /// resource that defines the prices, factors and conditions that apply to a billing
-    /// code is currently under development. The priceComponent element can be used to
-    /// offer transparency to the recipient of the Invoice as to how the prices have
-    /// been calculated.
-    pub fn price_component(&self) -> Option<Vec<Invoice_PriceComponent>> {
-        if let Some(Value::Array(val)) = self.value.get("priceComponent") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Invoice_PriceComponent { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Sequence in which the items appear on the invoice.
     pub fn sequence(&self) -> Option<i64> {
         if let Some(val) = self.value.get("sequence") {
             return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The ChargeItem contains information such as the billing code, date, amount etc.
-    /// If no further details are required for the lineItem, inline billing codes can be
-    /// added using the CodeableConcept data type instead of the Reference.
-    pub fn charge_item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("chargeItemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -117,6 +117,15 @@ impl Invoice_LineItem<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.charge_item_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.price_component() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -125,16 +134,7 @@ impl Invoice_LineItem<'_> {
         if let Some(_val) = self.charge_item_reference() {
             _val.validate();
         }
-        if let Some(_val) = self.price_component() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.charge_item_codeable_concept() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

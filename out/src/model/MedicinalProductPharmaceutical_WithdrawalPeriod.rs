@@ -23,6 +23,21 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
         return None;
     }
 
+    /// A value for the time.
+    pub fn value(&self) -> Quantity {
+        Quantity {
+            value: &self.value["value"],
+        }
+    }
+
+    /// Coded expression for the type of tissue for which the withdrawal period applues,
+    /// e.g. meat, milk.
+    pub fn tissue(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["tissue"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -41,21 +56,6 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// A value for the time.
-    pub fn value(&self) -> Quantity {
-        Quantity {
-            value: &self.value["value"],
-        }
-    }
-
-    /// Extensions for supportingInformation
-    pub fn _supporting_information(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_supportingInformation") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -84,24 +84,22 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
         return None;
     }
 
-    /// Coded expression for the type of tissue for which the withdrawal period applues,
-    /// e.g. meat, milk.
-    pub fn tissue(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["tissue"],
+    /// Extensions for supportingInformation
+    pub fn _supporting_information(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_supportingInformation") {
+            return Some(Element { value: val });
         }
+        return None;
     }
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.id() {}
+        let _ = self.value().validate();
+        let _ = self.tissue().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        let _ = self.value().validate();
-        if let Some(_val) = self._supporting_information() {
-            _val.validate();
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -109,7 +107,9 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
             });
         }
         if let Some(_val) = self.supporting_information() {}
-        let _ = self.tissue().validate();
+        if let Some(_val) = self._supporting_information() {
+            _val.validate();
+        }
         return true;
     }
 }

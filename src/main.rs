@@ -533,15 +533,21 @@ fn generate_trait(
     enum_impl_string.push_str("impl ");
     enum_impl_string.push_str(&enum_name);
     enum_impl_string.push_str(" {\n");
-    enum_impl_string.push_str("    pub fn from_string(string: &str) -> Option<");
+    enum_impl_string.push_str("  pub fn from_string(string: &str) -> Option<");
     enum_impl_string.push_str(&enum_name);
     enum_impl_string.push_str("> {\n");
-    enum_impl_string.push_str("      match string {\n");
+    enum_impl_string.push_str("    match string {\n");
+
+    let mut enum_serialization_string = String::new();
+    enum_serialization_string.push_str("  pub fn to_string(&self) -> String {\n");
+    enum_serialization_string.push_str("    match self {\n");
+
     for value in values {
       let sanitized_name = sanitize_name(value, property_replacement_map).to_class_case();
       inner_string.push_str("  ");
       inner_string.push_str(&sanitized_name);
       inner_string.push_str(",\n");
+
       enum_impl_string.push_str("        \"");
       enum_impl_string.push_str(&value);
       enum_impl_string.push_str("\" => Some(");
@@ -549,10 +555,21 @@ fn generate_trait(
       enum_impl_string.push_str("::");
       enum_impl_string.push_str(&sanitized_name);
       enum_impl_string.push_str("),\n");
+
+      enum_serialization_string.push_str("        ");
+      enum_serialization_string.push_str(&enum_name);
+      enum_serialization_string.push_str("::");
+      enum_serialization_string.push_str(&sanitized_name);
+      enum_serialization_string.push_str(" => \"");
+      enum_serialization_string.push_str(&value);
+      enum_serialization_string.push_str("\",\n");
     }
+    enum_serialization_string.push_str("    }\n  }\n");
     inner_string.push_str("}\n\n");
     enum_impl_string.push_str("        _ => None,\n");
-    enum_impl_string.push_str("    }\n  }\n}\n\n");
+    enum_impl_string.push_str("    }\n  }\n\n");
+    enum_impl_string.push_str(&enum_serialization_string);
+    enum_impl_string.push_str("}\n\n");
 
     inner_string.push_str(&enum_impl_string);
   }

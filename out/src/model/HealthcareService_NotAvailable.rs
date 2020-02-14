@@ -13,6 +13,23 @@ pub struct HealthcareService_NotAvailable<'a> {
 }
 
 impl HealthcareService_NotAvailable<'_> {
+    /// The reason that can be presented to the user as to why this time is not
+    /// available.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Service is not available (seasonally or for a public holiday) from this date.
+    pub fn during(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("during") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -34,15 +51,6 @@ impl HealthcareService_NotAvailable<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// The reason that can be presented to the user as to why this time is not
-    /// available.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
         }
         return None;
     }
@@ -77,22 +85,17 @@ impl HealthcareService_NotAvailable<'_> {
         return None;
     }
 
-    /// Service is not available (seasonally or for a public holiday) from this date.
-    pub fn during(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("during") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.during() {
+            _val.validate();
+        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
         if let Some(_val) = self._description() {
             _val.validate();
         }
@@ -100,9 +103,6 @@ impl HealthcareService_NotAvailable<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.during() {
-            _val.validate();
         }
         return true;
     }

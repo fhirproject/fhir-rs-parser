@@ -37,24 +37,6 @@ impl MedicationKnowledge_Ingredient<'_> {
         return None;
     }
 
-    /// The actual ingredient - either a substance (simple ingredient) or another
-    /// medication.
-    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The actual ingredient - either a substance (simple ingredient) or another
-    /// medication.
-    pub fn item_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -71,11 +53,11 @@ impl MedicationKnowledge_Ingredient<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The actual ingredient - either a substance (simple ingredient) or another
+    /// medication.
+    pub fn item_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("itemReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -86,6 +68,24 @@ impl MedicationKnowledge_Ingredient<'_> {
     pub fn strength(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("strength") {
             return Some(Ratio { value: val });
+        }
+        return None;
+    }
+
+    /// The actual ingredient - either a substance (simple ingredient) or another
+    /// medication.
+    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("itemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -113,21 +113,21 @@ impl MedicationKnowledge_Ingredient<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.item_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.item_reference() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.item_reference() {
+            _val.validate();
+        }
         if let Some(_val) = self.strength() {
             _val.validate();
         }
+        if let Some(_val) = self.item_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.is_active() {}
         if let Some(_val) = self._is_active() {
             _val.validate();

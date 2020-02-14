@@ -14,6 +14,23 @@ pub struct SubstancePolymer_StructuralRepresentation<'a> {
 }
 
 impl SubstancePolymer_StructuralRepresentation<'_> {
+    /// Todo.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -34,6 +51,14 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
     pub fn attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("attachment") {
             return Some(Attachment { value: val });
+        }
+        return None;
+    }
+
+    /// Todo.
+    pub fn representation(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("representation") {
+            return Some(string);
         }
         return None;
     }
@@ -68,32 +93,11 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
         return None;
     }
 
-    /// Todo.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Todo.
-    pub fn representation(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("representation") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -102,6 +106,7 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
         if let Some(_val) = self.attachment() {
             _val.validate();
         }
+        if let Some(_val) = self.representation() {}
         if let Some(_val) = self._representation() {
             _val.validate();
         }
@@ -110,11 +115,6 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.representation() {}
         return true;
     }
 }

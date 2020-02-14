@@ -13,18 +13,6 @@ pub struct InsurancePlan_Benefit1<'a> {
 }
 
 impl InsurancePlan_Benefit1<'_> {
-    /// List of the costs associated with a specific benefit.
-    pub fn cost(&self) -> Option<Vec<InsurancePlan_Cost>> {
-        if let Some(Value::Array(val)) = self.value.get("cost") {
-            return Some(
-                val.into_iter()
-                    .map(|e| InsurancePlan_Cost { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -47,21 +35,16 @@ impl InsurancePlan_Benefit1<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// List of the costs associated with a specific benefit.
+    pub fn cost(&self) -> Option<Vec<InsurancePlan_Cost>> {
+        if let Some(Value::Array(val)) = self.value.get("cost") {
+            return Some(
+                val.into_iter()
+                    .map(|e| InsurancePlan_Cost { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
-    }
-
-    /// Type of specific benefit (preventative; primary care office visit; speciality
-    /// office visit; hospitalization; emergency room; urgent care).
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -80,24 +63,41 @@ impl InsurancePlan_Benefit1<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.cost() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// Type of specific benefit (preventative; primary care office visit; speciality
+    /// office visit; hospitalization; emergency room; urgent care).
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        let _ = self.fhir_type().validate();
+        if let Some(_val) = self.cost() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.fhir_type().validate();
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

@@ -15,17 +15,33 @@ pub struct NamingSystem_UniqueId<'a> {
 }
 
 impl NamingSystem_UniqueId<'_> {
-    /// Extensions for comment
-    pub fn _comment(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comment") {
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
+    /// Indicates whether this identifier is the "preferred" identifier of this type.
+    pub fn preferred(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("preferred") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Notes about the past or intended usage of this identifier.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for comment
+    pub fn _comment(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comment") {
             return Some(Element { value: val });
         }
         return None;
@@ -43,6 +59,49 @@ impl NamingSystem_UniqueId<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Identifies the unique identifier scheme used for this particular identifier.
+    pub fn fhir_type(&self) -> Option<NamingSystem_UniqueIdType> {
+        if let Some(Value::String(val)) = self.value.get("type") {
+            return Some(NamingSystem_UniqueIdType::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies the period of time over which this identifier is considered
+    /// appropriate to refer to the naming system.  Outside of this window, the
+    /// identifier might be non-deterministic.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for preferred
+    pub fn _preferred(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_preferred") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The string that should be sent over the wire to identify the code system or
+    /// identifier system.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
         }
         return None;
     }
@@ -69,49 +128,6 @@ impl NamingSystem_UniqueId<'_> {
         return None;
     }
 
-    /// Indicates whether this identifier is the "preferred" identifier of this type.
-    pub fn preferred(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("preferred") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for preferred
-    pub fn _preferred(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_preferred") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The string that should be sent over the wire to identify the code system or
-    /// identifier system.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Identifies the period of time over which this identifier is considered
-    /// appropriate to refer to the naming system.  Outside of this window, the
-    /// identifier might be non-deterministic.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -121,27 +137,13 @@ impl NamingSystem_UniqueId<'_> {
         return None;
     }
 
-    /// Identifies the unique identifier scheme used for this particular identifier.
-    pub fn fhir_type(&self) -> Option<NamingSystem_UniqueIdType> {
-        if let Some(Value::String(val)) = self.value.get("type") {
-            return Some(NamingSystem_UniqueIdType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Notes about the past or intended usage of this identifier.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._comment() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
-        if let Some(_val) = self._type() {
+        if let Some(_val) = self.preferred() {}
+        if let Some(_val) = self.comment() {}
+        if let Some(_val) = self._comment() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -149,25 +151,23 @@ impl NamingSystem_UniqueId<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.fhir_type() {}
+        if let Some(_val) = self._value() {
+            _val.validate();
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        if let Some(_val) = self._preferred() {
+            _val.validate();
+        }
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.preferred() {}
-        if let Some(_val) = self._preferred() {
-            _val.validate();
-        }
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.comment() {}
         return true;
     }
 }
@@ -188,6 +188,15 @@ impl NamingSystem_UniqueIdType {
             "uri" => Some(NamingSystem_UniqueIdType::Uri),
             "other" => Some(NamingSystem_UniqueIdType::Other),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            NamingSystem_UniqueIdType::Oid => "oid",
+            NamingSystem_UniqueIdType::Uuid => "uuid",
+            NamingSystem_UniqueIdType::Uri => "uri",
+            NamingSystem_UniqueIdType::Other => "other",
         }
     }
 }

@@ -14,22 +14,6 @@ pub struct Contract_Legal<'a> {
 }
 
 impl Contract_Legal<'_> {
-    /// Contract legal text in human renderable form.
-    pub fn content_attachment(&self) -> Option<Attachment> {
-        if let Some(val) = self.value.get("contentAttachment") {
-            return Some(Attachment { value: val });
-        }
-        return None;
-    }
-
-    /// Contract legal text in human renderable form.
-    pub fn content_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("contentReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -51,6 +35,14 @@ impl Contract_Legal<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Contract legal text in human renderable form.
+    pub fn content_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("contentReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -77,23 +69,31 @@ impl Contract_Legal<'_> {
         return None;
     }
 
+    /// Contract legal text in human renderable form.
+    pub fn content_attachment(&self) -> Option<Attachment> {
+        if let Some(val) = self.value.get("contentAttachment") {
+            return Some(Attachment { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.content_attachment() {
-            _val.validate();
-        }
-        if let Some(_val) = self.content_reference() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.content_reference() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.content_attachment() {
+            _val.validate();
         }
         return true;
     }

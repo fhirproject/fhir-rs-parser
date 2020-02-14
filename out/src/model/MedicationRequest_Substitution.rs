@@ -17,32 +17,6 @@ pub struct MedicationRequest_Substitution<'a> {
 }
 
 impl MedicationRequest_Substitution<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// True if the prescriber allows a different drug to be dispensed from what was
-    /// prescribed.
-    pub fn allowed_boolean(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("allowedBoolean") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for allowedBoolean
-    pub fn _allowed_boolean(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allowedBoolean") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -55,6 +29,32 @@ impl MedicationRequest_Substitution<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for allowedBoolean
+    pub fn _allowed_boolean(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allowedBoolean") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// True if the prescriber allows a different drug to be dispensed from what was
+    /// prescribed.
+    pub fn allowed_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("allowedCodeableConcept") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -83,9 +83,9 @@ impl MedicationRequest_Substitution<'_> {
 
     /// True if the prescriber allows a different drug to be dispensed from what was
     /// prescribed.
-    pub fn allowed_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("allowedCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+    pub fn allowed_boolean(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("allowedBoolean") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -100,24 +100,24 @@ impl MedicationRequest_Substitution<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.allowed_boolean() {}
-        if let Some(_val) = self._allowed_boolean() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._allowed_boolean() {
+            _val.validate();
+        }
+        if let Some(_val) = self.allowed_codeable_concept() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.allowed_codeable_concept() {
-            _val.validate();
-        }
+        if let Some(_val) = self.allowed_boolean() {}
         if let Some(_val) = self.reason() {
             _val.validate();
         }

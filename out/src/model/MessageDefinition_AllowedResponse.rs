@@ -14,12 +14,6 @@ pub struct MessageDefinition_AllowedResponse<'a> {
 }
 
 impl MessageDefinition_AllowedResponse<'_> {
-    /// A reference to the message definition that must be adhered to by this supported
-    /// response.
-    pub fn message(&self) -> &str {
-        self.value.get("message").unwrap().as_str().unwrap()
-    }
-
     /// Provides a description of the circumstances in which this response should be
     /// used (as opposed to one of the alternative responses).
     pub fn situation(&self) -> Option<&str> {
@@ -41,6 +35,15 @@ impl MessageDefinition_AllowedResponse<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -75,23 +78,20 @@ impl MessageDefinition_AllowedResponse<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
+    /// A reference to the message definition that must be adhered to by this supported
+    /// response.
+    pub fn message(&self) -> &str {
+        self.value.get("message").unwrap().as_str().unwrap()
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.message();
         if let Some(_val) = self.situation() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -100,7 +100,7 @@ impl MessageDefinition_AllowedResponse<'_> {
         if let Some(_val) = self._situation() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        let _ = self.message();
         return true;
     }
 }

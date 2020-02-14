@@ -22,19 +22,12 @@ pub struct Provenance_Entity<'a> {
 }
 
 impl Provenance_Entity<'_> {
-    /// The entity is attributed to an agent to express the agent's responsibility for
-    /// that entity, possibly along with other agents. This description can be
-    /// understood as shorthand for saying that the agent was responsible for the
-    /// activity which generated the entity.
-    pub fn agent(&self) -> Option<Vec<Provenance_Agent>> {
-        if let Some(Value::Array(val)) = self.value.get("agent") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Provenance_Agent { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Identity of the  Entity used. May be a logical or physical uri and maybe
+    /// absolute or relative.
+    pub fn what(&self) -> Reference {
+        Reference {
+            value: &self.value["what"],
         }
-        return None;
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -84,14 +77,6 @@ impl Provenance_Entity<'_> {
         return None;
     }
 
-    /// How the entity was used during the activity.
-    pub fn role(&self) -> Option<Provenance_EntityRole> {
-        if let Some(Value::String(val)) = self.value.get("role") {
-            return Some(Provenance_EntityRole::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     /// Extensions for role
     pub fn _role(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_role") {
@@ -100,20 +85,31 @@ impl Provenance_Entity<'_> {
         return None;
     }
 
-    /// Identity of the  Entity used. May be a logical or physical uri and maybe
-    /// absolute or relative.
-    pub fn what(&self) -> Reference {
-        Reference {
-            value: &self.value["what"],
+    /// How the entity was used during the activity.
+    pub fn role(&self) -> Option<Provenance_EntityRole> {
+        if let Some(Value::String(val)) = self.value.get("role") {
+            return Some(Provenance_EntityRole::from_string(&val).unwrap());
         }
+        return None;
+    }
+
+    /// The entity is attributed to an agent to express the agent's responsibility for
+    /// that entity, possibly along with other agents. This description can be
+    /// understood as shorthand for saying that the agent was responsible for the
+    /// activity which generated the entity.
+    pub fn agent(&self) -> Option<Vec<Provenance_Agent>> {
+        if let Some(Value::Array(val)) = self.value.get("agent") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Provenance_Agent { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.agent() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
+        let _ = self.what().validate();
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
@@ -125,11 +121,15 @@ impl Provenance_Entity<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.role() {}
         if let Some(_val) = self._role() {
             _val.validate();
         }
-        let _ = self.what().validate();
+        if let Some(_val) = self.role() {}
+        if let Some(_val) = self.agent() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }
@@ -152,6 +152,16 @@ impl Provenance_EntityRole {
             "source" => Some(Provenance_EntityRole::Source),
             "removal" => Some(Provenance_EntityRole::Removal),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            Provenance_EntityRole::Derivation => "derivation",
+            Provenance_EntityRole::Revision => "revision",
+            Provenance_EntityRole::Quotation => "quotation",
+            Provenance_EntityRole::Source => "source",
+            Provenance_EntityRole::Removal => "removal",
         }
     }
 }

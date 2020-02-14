@@ -16,9 +16,44 @@ pub struct Identifier<'a> {
 }
 
 impl Identifier<'_> {
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A coded type for the identifier that can be used to determine which identifier
+    /// to use for a specific purpose.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Establishes the namespace for the value - that is, a URL that describes a set
+    /// values that are unique.
+    pub fn system(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("system") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for use
+    pub fn _use(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_use") {
             return Some(Element { value: val });
         }
         return None;
@@ -40,27 +75,10 @@ impl Identifier<'_> {
         return None;
     }
 
-    /// Establishes the namespace for the value - that is, a URL that describes a set
-    /// values that are unique.
-    pub fn system(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("system") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Time period during which identifier is/was valid for use.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
             return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for use
-    pub fn _use(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -82,15 +100,6 @@ impl Identifier<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// The purpose of this identifier.
     pub fn fhir_use(&self) -> Option<IdentifierUse> {
         if let Some(Value::String(val)) = self.value.get("use") {
@@ -99,25 +108,24 @@ impl Identifier<'_> {
         return None;
     }
 
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A coded type for the identifier that can be used to determine which identifier
-    /// to use for a specific purpose.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._system() {
+        if let Some(_val) = self._value() {
+            _val.validate();
+        }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._use() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -125,23 +133,15 @@ impl Identifier<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.system() {}
         if let Some(_val) = self.period() {
-            _val.validate();
-        }
-        if let Some(_val) = self._use() {
             _val.validate();
         }
         if let Some(_val) = self.assigner() {
             _val.validate();
         }
         if let Some(_val) = self.value() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.fhir_use() {}
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {
+        if let Some(_val) = self._system() {
             _val.validate();
         }
         return true;
@@ -166,6 +166,16 @@ impl IdentifierUse {
             "secondary" => Some(IdentifierUse::Secondary),
             "old" => Some(IdentifierUse::Old),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            IdentifierUse::Usual => "usual",
+            IdentifierUse::Official => "official",
+            IdentifierUse::Temp => "temp",
+            IdentifierUse::Secondary => "secondary",
+            IdentifierUse::Old => "old",
         }
     }
 }

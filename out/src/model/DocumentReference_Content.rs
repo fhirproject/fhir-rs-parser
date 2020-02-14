@@ -17,12 +17,30 @@ pub struct DocumentReference_Content<'a> {
 }
 
 impl DocumentReference_Content<'_> {
+    /// An identifier of the document encoding, structure, and template that the
+    /// document conforms to beyond the base format indicated in the mimeType.
+    pub fn format(&self) -> Option<Coding> {
+        if let Some(val) = self.value.get("format") {
+            return Some(Coding { value: val });
+        }
+        return None;
+    }
+
     /// The document or URL of the document along with critical metadata to prove
     /// content has integrity.
     pub fn attachment(&self) -> Attachment {
         Attachment {
             value: &self.value["attachment"],
         }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -37,15 +55,6 @@ impl DocumentReference_Content<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -72,30 +81,21 @@ impl DocumentReference_Content<'_> {
         return None;
     }
 
-    /// An identifier of the document encoding, structure, and template that the
-    /// document conforms to beyond the base format indicated in the mimeType.
-    pub fn format(&self) -> Option<Coding> {
-        if let Some(val) = self.value.get("format") {
-            return Some(Coding { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.format() {
+            _val.validate();
+        }
         let _ = self.attachment().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.format() {
-            _val.validate();
         }
         return true;
     }

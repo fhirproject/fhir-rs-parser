@@ -20,26 +20,6 @@ pub struct MedicinalProductIndication<'a> {
 }
 
 impl MedicinalProductIndication<'_> {
-    /// Comorbidity (concurrent condition) or co-infection as part of the indication.
-    pub fn comorbidity(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("comorbidity") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The intended effect, aim or strategy to be achieved by the indication.
-    pub fn intended_effect(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("intendedEffect") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// A human-readable narrative that contains a summary of the resource and can be
     /// used to represent the content of the resource to a human. The narrative need not
     /// encode all the structured data, but is required to contain sufficient detail to
@@ -49,14 +29,6 @@ impl MedicinalProductIndication<'_> {
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
             return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// The disease, symptom or procedure that is the indication for treatment.
-    pub fn disease_symptom_procedure(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("diseaseSymptomProcedure") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -84,6 +56,15 @@ impl MedicinalProductIndication<'_> {
         return None;
     }
 
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
@@ -92,10 +73,18 @@ impl MedicinalProductIndication<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// The status of the disease or symptom for which the indication applies.
+    pub fn disease_status(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("diseaseStatus") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The intended effect, aim or strategy to be achieved by the indication.
+    pub fn intended_effect(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("intendedEffect") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -112,13 +101,10 @@ impl MedicinalProductIndication<'_> {
         return None;
     }
 
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
+    /// The disease, symptom or procedure that is the indication for treatment.
+    pub fn disease_symptom_procedure(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("diseaseSymptomProcedure") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -127,50 +113,6 @@ impl MedicinalProductIndication<'_> {
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Information about the use of the medicinal product in relation to other
-    /// therapies described as part of the indication.
-    pub fn other_therapy(&self) -> Option<Vec<MedicinalProductIndication_OtherTherapy>> {
-        if let Some(Value::Array(val)) = self.value.get("otherTherapy") {
-            return Some(
-                val.into_iter()
-                    .map(|e| MedicinalProductIndication_OtherTherapy { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Describe the undesirable effects of the medicinal product.
-    pub fn undesirable_effect(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("undesirableEffect") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -201,10 +143,76 @@ impl MedicinalProductIndication<'_> {
         return None;
     }
 
-    /// The status of the disease or symptom for which the indication applies.
-    pub fn disease_status(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("diseaseStatus") {
-            return Some(CodeableConcept { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
+    /// Information about the use of the medicinal product in relation to other
+    /// therapies described as part of the indication.
+    pub fn other_therapy(&self) -> Option<Vec<MedicinalProductIndication_OtherTherapy>> {
+        if let Some(Value::Array(val)) = self.value.get("otherTherapy") {
+            return Some(
+                val.into_iter()
+                    .map(|e| MedicinalProductIndication_OtherTherapy { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Describe the undesirable effects of the medicinal product.
+    pub fn undesirable_effect(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("undesirableEffect") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Comorbidity (concurrent condition) or co-infection as part of the indication.
+    pub fn comorbidity(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("comorbidity") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Timing or duration information as part of the indication.
+    pub fn duration(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("duration") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -225,27 +233,8 @@ impl MedicinalProductIndication<'_> {
         return None;
     }
 
-    /// Timing or duration information as part of the indication.
-    pub fn duration(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("duration") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.comorbidity() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.intended_effect() {
-            _val.validate();
-        }
         if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.disease_symptom_procedure() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -253,32 +242,26 @@ impl MedicinalProductIndication<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self._language() {
             _val.validate();
         }
-        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.disease_status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.intended_effect() {
+            _val.validate();
+        }
         if let Some(_val) = self.population() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.disease_symptom_procedure() {
+            _val.validate();
+        }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
-        }
-        if let Some(_val) = self.other_therapy() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.undesirable_effect() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
@@ -290,16 +273,33 @@ impl MedicinalProductIndication<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.disease_status() {
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.other_therapy() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.undesirable_effect() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.comorbidity() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.duration() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

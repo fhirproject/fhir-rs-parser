@@ -59,13 +59,15 @@ impl ProductShelfLife<'_> {
         return None;
     }
 
-    /// The shelf life time period can be specified using a numerical value for the
-    /// period of time and its unit of time measurement The unit of measurement shall be
-    /// specified in accordance with ISO 11240 and the resulting terminology The symbol
-    /// and the symbol identifier shall be used.
-    pub fn period(&self) -> Quantity {
-        Quantity {
-            value: &self.value["period"],
+    /// This describes the shelf life, taking into account various scenarios such as
+    /// shelf life of the packaged Medicinal Product itself, shelf life after
+    /// transformation where necessary and shelf life after the first opening of a
+    /// bottle, etc. The shelf life type shall be specified using an appropriate
+    /// controlled vocabulary The controlled term and the controlled term identifier
+    /// shall be specified.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
     }
 
@@ -94,15 +96,13 @@ impl ProductShelfLife<'_> {
         return None;
     }
 
-    /// This describes the shelf life, taking into account various scenarios such as
-    /// shelf life of the packaged Medicinal Product itself, shelf life after
-    /// transformation where necessary and shelf life after the first opening of a
-    /// bottle, etc. The shelf life type shall be specified using an appropriate
-    /// controlled vocabulary The controlled term and the controlled term identifier
-    /// shall be specified.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
+    /// The shelf life time period can be specified using a numerical value for the
+    /// period of time and its unit of time measurement The unit of measurement shall be
+    /// specified in accordance with ISO 11240 and the resulting terminology The symbol
+    /// and the symbol identifier shall be used.
+    pub fn period(&self) -> Quantity {
+        Quantity {
+            value: &self.value["period"],
         }
     }
 
@@ -120,14 +120,14 @@ impl ProductShelfLife<'_> {
                 e.validate();
             });
         }
-        let _ = self.period().validate();
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.fhir_type().validate();
+        let _ = self.period().validate();
         return true;
     }
 }

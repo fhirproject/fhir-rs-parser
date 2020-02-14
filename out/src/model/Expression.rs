@@ -14,67 +14,9 @@ pub struct Expression<'a> {
 }
 
 impl Expression<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A brief, natural language description of the condition that effectively
-    /// communicates the intended semantics.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for reference
-    pub fn _reference(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_reference") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The media type of the language for the expression.
-    pub fn language(&self) -> Option<ExpressionLanguage> {
-        if let Some(Value::String(val)) = self.value.get("language") {
-            return Some(ExpressionLanguage::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// An expression in the specified language that returns a value.
-    pub fn expression(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("expression") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for expression
-    pub fn _expression(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_expression") {
             return Some(Element { value: val });
         }
         return None;
@@ -89,18 +31,26 @@ impl Expression<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A URI that defines where the expression is found.
-    pub fn reference(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("reference") {
-            return Some(string);
+    /// The media type of the language for the expression.
+    pub fn language(&self) -> Option<ExpressionLanguage> {
+        if let Some(Value::String(val)) = self.value.get("language") {
+            return Some(ExpressionLanguage::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for expression
+    pub fn _expression(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_expression") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -121,32 +71,82 @@ impl Expression<'_> {
         return None;
     }
 
+    /// A brief, natural language description of the condition that effectively
+    /// communicates the intended semantics.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// An expression in the specified language that returns a value.
+    pub fn expression(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("expression") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A URI that defines where the expression is found.
+    pub fn reference(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("reference") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for reference
+    pub fn _reference(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_reference") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
         if let Some(_val) = self._name() {
             _val.validate();
         }
+        if let Some(_val) = self.name() {}
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
         if let Some(_val) = self.language() {}
-        if let Some(_val) = self.expression() {}
         if let Some(_val) = self._expression() {
             _val.validate();
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.reference() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.expression() {}
+        if let Some(_val) = self.reference() {}
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._reference() {
+            _val.validate();
         }
         return true;
     }
@@ -166,6 +166,14 @@ impl ExpressionLanguage {
             "text/fhirpath" => Some(ExpressionLanguage::TextFhirpath),
             "application/x-fhir-query" => Some(ExpressionLanguage::ApplicationXFhirQuery),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ExpressionLanguage::TextCql => "text/cql",
+            ExpressionLanguage::TextFhirpath => "text/fhirpath",
+            ExpressionLanguage::ApplicationXFhirQuery => "application/x-fhir-query",
         }
     }
 }

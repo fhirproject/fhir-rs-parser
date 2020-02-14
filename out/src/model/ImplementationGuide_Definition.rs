@@ -19,15 +19,6 @@ pub struct ImplementationGuide_Definition<'a> {
 }
 
 impl ImplementationGuide_Definition<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// A page / section in the implementation guide. The root page is the
     /// implementation guide home page.
     pub fn page(&self) -> Option<ImplementationGuide_Page> {
@@ -37,12 +28,48 @@ impl ImplementationGuide_Definition<'_> {
         return None;
     }
 
-    /// A template for building resources.
-    pub fn template(&self) -> Option<Vec<ImplementationGuide_Template>> {
-        if let Some(Value::Array(val)) = self.value.get("template") {
+    /// A logical group of resources. Logical groups can be used when building pages.
+    pub fn grouping(&self) -> Option<Vec<ImplementationGuide_Grouping>> {
+        if let Some(Value::Array(val)) = self.value.get("grouping") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Template { value: e })
+                    .map(|e| ImplementationGuide_Grouping { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A resource that is part of the implementation guide. Conformance resources
+    /// (value set, structure definition, capability statements etc.) are obvious
+    /// candidates for inclusion, but any kind of resource can be included as an example
+    /// resource.
+    pub fn resource(&self) -> Vec<ImplementationGuide_Resource> {
+        self.value
+            .get("resource")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ImplementationGuide_Resource { value: e })
+            .collect::<Vec<_>>()
+    }
+
+    /// Defines how IG is built by tools.
+    pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
+        if let Some(Value::Array(val)) = self.value.get("parameter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ImplementationGuide_Parameter { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,27 +98,12 @@ impl ImplementationGuide_Definition<'_> {
         return None;
     }
 
-    /// A resource that is part of the implementation guide. Conformance resources
-    /// (value set, structure definition, capability statements etc.) are obvious
-    /// candidates for inclusion, but any kind of resource can be included as an example
-    /// resource.
-    pub fn resource(&self) -> Vec<ImplementationGuide_Resource> {
-        self.value
-            .get("resource")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ImplementationGuide_Resource { value: e })
-            .collect::<Vec<_>>()
-    }
-
-    /// A logical group of resources. Logical groups can be used when building pages.
-    pub fn grouping(&self) -> Option<Vec<ImplementationGuide_Grouping>> {
-        if let Some(Value::Array(val)) = self.value.get("grouping") {
+    /// A template for building resources.
+    pub fn template(&self) -> Option<Vec<ImplementationGuide_Template>> {
+        if let Some(Value::Array(val)) = self.value.get("template") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Grouping { value: e })
+                    .map(|e| ImplementationGuide_Template { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,24 +126,20 @@ impl ImplementationGuide_Definition<'_> {
         return None;
     }
 
-    /// Defines how IG is built by tools.
-    pub fn parameter(&self) -> Option<Vec<ImplementationGuide_Parameter>> {
-        if let Some(Value::Array(val)) = self.value.get("parameter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ImplementationGuide_Parameter { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.page() {
             _val.validate();
         }
-        if let Some(_val) = self.template() {
+        if let Some(_val) = self.grouping() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        let _ = self.resource().into_iter().for_each(|e| {
+            e.validate();
+        });
+        if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -141,20 +149,12 @@ impl ImplementationGuide_Definition<'_> {
                 e.validate();
             });
         }
-        let _ = self.resource().into_iter().for_each(|e| {
-            e.validate();
-        });
-        if let Some(_val) = self.grouping() {
+        if let Some(_val) = self.template() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

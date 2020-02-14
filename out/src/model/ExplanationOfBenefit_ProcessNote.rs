@@ -15,6 +15,55 @@ pub struct ExplanationOfBenefit_ProcessNote<'a> {
 }
 
 impl ExplanationOfBenefit_ProcessNote<'_> {
+    /// A number to uniquely identify a note entry.
+    pub fn number(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("number") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for number
+    pub fn _number(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_number") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The explanation or description associated with the processing.
+    pub fn text(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("text") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for text
+    pub fn _text(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_text") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A code to define the language used in the text of the note.
+    pub fn language(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("language") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -33,30 +82,6 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for text
-    pub fn _text(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A number to uniquely identify a note entry.
-    pub fn number(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("number") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -85,51 +110,31 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The explanation or description associated with the processing.
-    pub fn text(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("text") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A code to define the language used in the text of the note.
-    pub fn language(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("language") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for number
-    pub fn _number(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_number") {
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
             return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.number() {}
+        if let Some(_val) = self._number() {
+            _val.validate();
+        }
+        if let Some(_val) = self.text() {}
+        if let Some(_val) = self._text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.language() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.number() {}
-        if let Some(_val) = self._type() {
-            _val.validate();
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
@@ -137,12 +142,7 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
             });
         }
         if let Some(_val) = self.fhir_type() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.text() {}
-        if let Some(_val) = self.language() {
-            _val.validate();
-        }
-        if let Some(_val) = self._number() {
+        if let Some(_val) = self._type() {
             _val.validate();
         }
         return true;
@@ -163,6 +163,14 @@ impl ExplanationOfBenefit_ProcessNoteType {
             "print" => Some(ExplanationOfBenefit_ProcessNoteType::Print),
             "printoper" => Some(ExplanationOfBenefit_ProcessNoteType::Printoper),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ExplanationOfBenefit_ProcessNoteType::Display => "display",
+            ExplanationOfBenefit_ProcessNoteType::Print => "print",
+            ExplanationOfBenefit_ProcessNoteType::Printoper => "printoper",
         }
     }
 }

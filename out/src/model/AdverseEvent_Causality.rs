@@ -17,31 +17,6 @@ pub struct AdverseEvent_Causality<'a> {
 }
 
 impl AdverseEvent_Causality<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Assessment of if the entity caused the event.
-    pub fn assessment(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("assessment") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// ProbabilityScale | Bayesian | Checklist.
-    pub fn method(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -64,10 +39,43 @@ impl AdverseEvent_Causality<'_> {
         return None;
     }
 
+    /// Assessment of if the entity caused the event.
+    pub fn assessment(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("assessment") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// AdverseEvent.suspectEntity.causalityProductRelatedness.
     pub fn product_relatedness(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("productRelatedness") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// ProbabilityScale | Bayesian | Checklist.
+    pub fn method(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("method") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for productRelatedness
+    pub fn _product_relatedness(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_productRelatedness") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -96,37 +104,29 @@ impl AdverseEvent_Causality<'_> {
         return None;
     }
 
-    /// Extensions for productRelatedness
-    pub fn _product_relatedness(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_productRelatedness") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.assessment() {
-            _val.validate();
-        }
-        if let Some(_val) = self.method() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.assessment() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.product_relatedness() {}
+        if let Some(_val) = self.method() {
+            _val.validate();
+        }
+        if let Some(_val) = self._product_relatedness() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.author() {
-            _val.validate();
-        }
-        if let Some(_val) = self._product_relatedness() {
             _val.validate();
         }
         return true;

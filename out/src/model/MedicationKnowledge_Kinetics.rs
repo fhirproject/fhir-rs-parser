@@ -13,31 +13,6 @@ pub struct MedicationKnowledge_Kinetics<'a> {
 }
 
 impl MedicationKnowledge_Kinetics<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -60,12 +35,16 @@ impl MedicationKnowledge_Kinetics<'_> {
         return None;
     }
 
-    /// The drug concentration measured at certain discrete points in time.
-    pub fn area_under_curve(&self) -> Option<Vec<Quantity>> {
-        if let Some(Value::Array(val)) = self.value.get("areaUnderCurve") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Quantity { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,6 +54,27 @@ impl MedicationKnowledge_Kinetics<'_> {
     /// The median lethal dose of a drug.
     pub fn lethal_dose_5_0(&self) -> Option<Vec<Quantity>> {
         if let Some(Value::Array(val)) = self.value.get("lethalDose50") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Quantity { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The drug concentration measured at certain discrete points in time.
+    pub fn area_under_curve(&self) -> Option<Vec<Quantity>> {
+        if let Some(Value::Array(val)) = self.value.get("areaUnderCurve") {
             return Some(
                 val.into_iter()
                     .map(|e| Quantity { value: e })
@@ -94,23 +94,23 @@ impl MedicationKnowledge_Kinetics<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.area_under_curve() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.lethal_dose_5_0() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.area_under_curve() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

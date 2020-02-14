@@ -24,6 +24,14 @@ impl Device_Version<'_> {
         return None;
     }
 
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// The version text.
     pub fn value(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("value") {
@@ -41,6 +49,14 @@ impl Device_Version<'_> {
         return None;
     }
 
+    /// The type of the device version.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -53,22 +69,6 @@ impl Device_Version<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The type of the device version.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -99,18 +99,18 @@ impl Device_Version<'_> {
         if let Some(_val) = self.component() {
             _val.validate();
         }
+        if let Some(_val) = self._value() {
+            _val.validate();
+        }
         if let Some(_val) = self.value() {}
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {

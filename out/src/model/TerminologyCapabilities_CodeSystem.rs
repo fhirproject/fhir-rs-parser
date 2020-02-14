@@ -15,18 +15,10 @@ pub struct TerminologyCapabilities_CodeSystem<'a> {
 }
 
 impl TerminologyCapabilities_CodeSystem<'_> {
-    /// True if subsumption is supported for this version of the code system.
-    pub fn subsumption(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("subsumption") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// URI for the Code System.
-    pub fn uri(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("uri") {
-            return Some(string);
+    /// Extensions for subsumption
+    pub fn _subsumption(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_subsumption") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -36,42 +28,6 @@ impl TerminologyCapabilities_CodeSystem<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for subsumption
-    pub fn _subsumption(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_subsumption") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// For the code system, a list of versions that are supported by the server.
-    pub fn version(&self) -> Option<Vec<TerminologyCapabilities_Version>> {
-        if let Some(Value::Array(val)) = self.value.get("version") {
-            return Some(
-                val.into_iter()
-                    .map(|e| TerminologyCapabilities_Version { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -98,14 +54,56 @@ impl TerminologyCapabilities_CodeSystem<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// URI for the Code System.
+    pub fn uri(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("uri") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// For the code system, a list of versions that are supported by the server.
+    pub fn version(&self) -> Option<Vec<TerminologyCapabilities_Version>> {
+        if let Some(Value::Array(val)) = self.value.get("version") {
+            return Some(
+                val.into_iter()
+                    .map(|e| TerminologyCapabilities_Version { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// True if subsumption is supported for this version of the code system.
+    pub fn subsumption(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("subsumption") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.subsumption() {}
-        if let Some(_val) = self.uri() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._subsumption() {
             _val.validate();
         }
-        if let Some(_val) = self.version() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -115,11 +113,13 @@ impl TerminologyCapabilities_CodeSystem<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.uri() {}
+        if let Some(_val) = self.version() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.subsumption() {}
         return true;
     }
 }

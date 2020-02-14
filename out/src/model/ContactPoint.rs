@@ -14,10 +14,11 @@ pub struct ContactPoint<'a> {
 }
 
 impl ContactPoint<'_> {
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+    /// The actual contact point details, in a form that is meaningful to the designated
+    /// communication system (i.e. phone number or email address).
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
         }
         return None;
     }
@@ -26,32 +27,6 @@ impl ContactPoint<'_> {
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for rank
-    pub fn _rank(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_rank") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The actual contact point details, in a form that is meaningful to the designated
-    /// communication system (i.e. phone number or email address).
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
         }
         return None;
     }
@@ -65,10 +40,18 @@ impl ContactPoint<'_> {
         return None;
     }
 
-    /// Time period when the contact point was/is in use.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -77,6 +60,32 @@ impl ContactPoint<'_> {
     pub fn fhir_use(&self) -> Option<ContactPointUse> {
         if let Some(Value::String(val)) = self.value.get("use") {
             return Some(ContactPointUse::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Time period when the contact point was/is in use.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Specifies a preferred order in which to use a set of contacts. ContactPoints
+    /// with lower rank values are more preferred than those with higher rank values.
+    pub fn rank(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("rank") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
@@ -97,47 +106,38 @@ impl ContactPoint<'_> {
         return None;
     }
 
-    /// Specifies a preferred order in which to use a set of contacts. ContactPoints
-    /// with lower rank values are more preferred than those with higher rank values.
-    pub fn rank(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("rank") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
+    /// Extensions for rank
+    pub fn _rank(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_rank") {
             return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._system() {
-            _val.validate();
-        }
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self._use() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._rank() {
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self._system() {
             _val.validate();
         }
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.system() {}
-        if let Some(_val) = self.period() {
+        if let Some(_val) = self._value() {
             _val.validate();
         }
         if let Some(_val) = self.fhir_use() {}
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.rank() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.rank() {}
-        if let Some(_val) = self._value() {
+        if let Some(_val) = self._rank() {
             _val.validate();
         }
         return true;
@@ -168,6 +168,18 @@ impl ContactPointSystem {
             _ => None,
         }
     }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ContactPointSystem::Phone => "phone",
+            ContactPointSystem::Fax => "fax",
+            ContactPointSystem::Email => "email",
+            ContactPointSystem::Pager => "pager",
+            ContactPointSystem::Url => "url",
+            ContactPointSystem::Sms => "sms",
+            ContactPointSystem::Other => "other",
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -188,6 +200,16 @@ impl ContactPointUse {
             "old" => Some(ContactPointUse::Old),
             "mobile" => Some(ContactPointUse::Mobile),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ContactPointUse::Home => "home",
+            ContactPointUse::Work => "work",
+            ContactPointUse::Temp => "temp",
+            ContactPointUse::Old => "old",
+            ContactPointUse::Mobile => "mobile",
         }
     }
 }

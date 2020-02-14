@@ -17,11 +17,28 @@ pub struct DocumentReference_RelatesTo<'a> {
 }
 
 impl DocumentReference_RelatesTo<'_> {
+    /// The type of relationship that this document has with anther document.
+    pub fn code(&self) -> Option<DocumentReference_RelatesToCode> {
+        if let Some(Value::String(val)) = self.value.get("code") {
+            return Some(DocumentReference_RelatesToCode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
     /// The target document of this relationship.
     pub fn target(&self) -> Reference {
         Reference {
             value: &self.value["target"],
         }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -46,19 +63,10 @@ impl DocumentReference_RelatesTo<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The type of relationship that this document has with anther document.
-    pub fn code(&self) -> Option<DocumentReference_RelatesToCode> {
-        if let Some(Value::String(val)) = self.value.get("code") {
-            return Some(DocumentReference_RelatesToCode::from_string(&val).unwrap());
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -79,30 +87,22 @@ impl DocumentReference_RelatesTo<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        let _ = self.target().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.code() {}
-        if let Some(_val) = self.extension() {
+        let _ = self.target().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self._code() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }
@@ -124,6 +124,15 @@ impl DocumentReference_RelatesToCode {
             "signs" => Some(DocumentReference_RelatesToCode::Signs),
             "appends" => Some(DocumentReference_RelatesToCode::Appends),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            DocumentReference_RelatesToCode::Replaces => "replaces",
+            DocumentReference_RelatesToCode::Transforms => "transforms",
+            DocumentReference_RelatesToCode::Signs => "signs",
+            DocumentReference_RelatesToCode::Appends => "appends",
         }
     }
 }

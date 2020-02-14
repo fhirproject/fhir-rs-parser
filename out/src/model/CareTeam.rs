@@ -31,6 +31,23 @@ impl CareTeam<'_> {
         return None;
     }
 
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A label for human use intended to distinguish like teams.  E.g. the "red" vs.
+    /// "green" trauma teams.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Identifies all people and organizations who are expected to be involved in the
     /// care team.
     pub fn participant(&self) -> Option<Vec<CareTeam_Participant>> {
@@ -38,6 +55,38 @@ impl CareTeam<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| CareTeam_Participant { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Condition(s) that this care team addresses.
+    pub fn reason_reference(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("reasonReference") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Identifies the patient or group whose intended care is handled by the team.
+    pub fn subject(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("subject") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// A central contact detail for the care team (that applies to all members).
+    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+        if let Some(Value::Array(val)) = self.value.get("telecom") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactPoint { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -56,10 +105,75 @@ impl CareTeam<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// Business identifiers assigned to this care team by the performer or other
+    /// systems which remain constant as the resource is updated and propagates from
+    /// server to server.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Describes why the care team exists.
+    pub fn reason_code(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("reasonCode") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -73,6 +187,68 @@ impl CareTeam<'_> {
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
             return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The organization responsible for the care team.
+    pub fn managing_organization(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("managingOrganization") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The Encounter during which this CareTeam was created or to which the creation of
+    /// this record is tightly associated.
+    pub fn encounter(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("encounter") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Identifies what kind of team.  This is to support differentiation between
+    /// multiple co-existing teams, such as care plan team, episode of care team,
+    /// longitudinal care team.
+    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("category") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Indicates when the team did (or is intended to) come into effect and end.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
         }
         return None;
     }
@@ -100,40 +276,18 @@ impl CareTeam<'_> {
         return None;
     }
 
-    /// Business identifiers assigned to this care team by the performer or other
-    /// systems which remain constant as the resource is updated and propagates from
-    /// server to server.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Indicates the current state of the care team.
+    pub fn status(&self) -> Option<CareTeamStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(CareTeamStatus::from_string(&val).unwrap());
         }
         return None;
     }
 
-    /// The organization responsible for the care team.
-    pub fn managing_organization(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("managingOrganization") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A central contact detail for the care team (that applies to all members).
-    pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-        if let Some(Value::Array(val)) = self.value.get("telecom") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ContactPoint { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -148,165 +302,26 @@ impl CareTeam<'_> {
         return None;
     }
 
-    /// The Encounter during which this CareTeam was created or to which the creation of
-    /// this record is tightly associated.
-    pub fn encounter(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A label for human use intended to distinguish like teams.  E.g. the "red" vs.
-    /// "green" trauma teams.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Identifies the patient or group whose intended care is handled by the team.
-    pub fn subject(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates the current state of the care team.
-    pub fn status(&self) -> Option<CareTeamStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(CareTeamStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Identifies what kind of team.  This is to support differentiation between
-    /// multiple co-existing teams, such as care plan team, episode of care team,
-    /// longitudinal care team.
-    pub fn category(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("category") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Indicates when the team did (or is intended to) come into effect and end.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Describes why the care team exists.
-    pub fn reason_code(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("reasonCode") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Condition(s) that this care team addresses.
-    pub fn reason_reference(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("reasonReference") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._language() {
             _val.validate();
         }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.participant() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.reason_reference() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.subject() {
+            _val.validate();
+        }
+        if let Some(_val) = self.telecom() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -316,51 +331,7 @@ impl CareTeam<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.managing_organization() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.encounter() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self.subject() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.category() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -370,25 +341,54 @@ impl CareTeam<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.period() {
-            _val.validate();
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self._name() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.reason_code() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.reason_reference() {
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.managing_organization() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self.encounter() {
+            _val.validate();
+        }
+        if let Some(_val) = self.category() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self._status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.meta() {
+            _val.validate();
         }
         return true;
     }
@@ -412,6 +412,16 @@ impl CareTeamStatus {
             "inactive" => Some(CareTeamStatus::Inactive),
             "entered-in-error" => Some(CareTeamStatus::EnteredInError),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            CareTeamStatus::Proposed => "proposed",
+            CareTeamStatus::Active => "active",
+            CareTeamStatus::Suspended => "suspended",
+            CareTeamStatus::Inactive => "inactive",
+            CareTeamStatus::EnteredInError => "entered-in-error",
         }
     }
 }

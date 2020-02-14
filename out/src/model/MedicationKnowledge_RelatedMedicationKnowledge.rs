@@ -13,6 +13,13 @@ pub struct MedicationKnowledge_RelatedMedicationKnowledge<'a> {
 }
 
 impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
+    /// The category of the associated medication knowledge reference.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -72,14 +79,8 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
         return None;
     }
 
-    /// The category of the associated medication knowledge reference.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -94,7 +95,6 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
             });
         }
         if let Some(_val) = self.id() {}
-        let _ = self.fhir_type().validate();
         return true;
     }
 }

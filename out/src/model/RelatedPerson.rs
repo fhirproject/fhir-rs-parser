@@ -26,10 +26,14 @@ pub struct RelatedPerson<'a> {
 }
 
 impl RelatedPerson<'_> {
-    /// Extensions for birthDate
-    pub fn _birth_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_birthDate") {
-            return Some(Element { value: val });
+    /// A name associated with the person.
+    pub fn name(&self) -> Option<Vec<HumanName>> {
+        if let Some(Value::Array(val)) = self.value.get("name") {
+            return Some(
+                val.into_iter()
+                    .map(|e| HumanName { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -38,6 +42,150 @@ impl RelatedPerson<'_> {
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for gender
+    pub fn _gender(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_gender") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for birthDate
+    pub fn _birth_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_birthDate") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Image of the person.
+    pub fn photo(&self) -> Option<Vec<Attachment>> {
+        if let Some(Value::Array(val)) = self.value.get("photo") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Attachment { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The period of time during which this relationship is or was active. If there are
+    /// no dates defined, then the interval is unknown.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
+    }
+
+    /// A language which may be used to communicate with about the patient's health.
+    pub fn communication(&self) -> Option<Vec<RelatedPerson_Communication>> {
+        if let Some(Value::Array(val)) = self.value.get("communication") {
+            return Some(
+                val.into_iter()
+                    .map(|e| RelatedPerson_Communication { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
+    }
+
+    /// Identifier for a person within a particular scope.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The patient this person is related to.
+    pub fn patient(&self) -> Reference {
+        Reference {
+            value: &self.value["patient"],
+        }
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Whether this related person record is in active use.
+    pub fn active(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("active") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// The nature of the relationship between a patient and the related person.
+    pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("relationship") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -54,10 +202,72 @@ impl RelatedPerson<'_> {
         return None;
     }
 
-    /// Extensions for gender
-    pub fn _gender(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_gender") {
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Address where the related person can be contacted or visited.
+    pub fn address(&self) -> Option<Vec<Address>> {
+        if let Some(Value::Array(val)) = self.value.get("address") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Address { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The date on which the related person was born.
+    pub fn birth_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("birthDate") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Administrative Gender - the gender that the person is considered to have for
+    /// administration and record keeping purposes.
+    pub fn gender(&self) -> Option<RelatedPersonGender> {
+        if let Some(Value::String(val)) = self.value.get("gender") {
+            return Some(RelatedPersonGender::from_string(&val).unwrap());
         }
         return None;
     }
@@ -85,261 +295,28 @@ impl RelatedPerson<'_> {
         return None;
     }
 
-    /// The date on which the related person was born.
-    pub fn birth_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("birthDate") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Address where the related person can be contacted or visited.
-    pub fn address(&self) -> Option<Vec<Address>> {
-        if let Some(Value::Array(val)) = self.value.get("address") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Address { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The patient this person is related to.
-    pub fn patient(&self) -> Reference {
-        Reference {
-            value: &self.value["patient"],
-        }
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Administrative Gender - the gender that the person is considered to have for
-    /// administration and record keeping purposes.
-    pub fn gender(&self) -> Option<RelatedPersonGender> {
-        if let Some(Value::String(val)) = self.value.get("gender") {
-            return Some(RelatedPersonGender::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Image of the person.
-    pub fn photo(&self) -> Option<Vec<Attachment>> {
-        if let Some(Value::Array(val)) = self.value.get("photo") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Attachment { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The period of time during which this relationship is or was active. If there are
-    /// no dates defined, then the interval is unknown.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// A language which may be used to communicate with about the patient's health.
-    pub fn communication(&self) -> Option<Vec<RelatedPerson_Communication>> {
-        if let Some(Value::Array(val)) = self.value.get("communication") {
-            return Some(
-                val.into_iter()
-                    .map(|e| RelatedPerson_Communication { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Whether this related person record is in active use.
-    pub fn active(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("active") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The nature of the relationship between a patient and the related person.
-    pub fn relationship(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("relationship") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Identifier for a person within a particular scope.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// A name associated with the person.
-    pub fn name(&self) -> Option<Vec<HumanName>> {
-        if let Some(Value::Array(val)) = self.value.get("name") {
-            return Some(
-                val.into_iter()
-                    .map(|e| HumanName { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._birth_date() {
-            _val.validate();
+        if let Some(_val) = self.name() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self._active() {
             _val.validate();
         }
-        if let Some(_val) = self.telecom() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._language() {
+            _val.validate();
         }
         if let Some(_val) = self._gender() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.birth_date() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.address() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.patient().validate();
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self._birth_date() {
             _val.validate();
         }
-        if let Some(_val) = self.gender() {}
         if let Some(_val) = self.photo() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
         }
         if let Some(_val) = self.period() {
             _val.validate();
@@ -349,33 +326,56 @@ impl RelatedPerson<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.active() {}
-        if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
         }
-        if let Some(_val) = self.relationship() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.text() {
+        let _ = self.patient().validate();
+        if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.name() {
+        if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.meta() {
+        if let Some(_val) = self.active() {}
+        if let Some(_val) = self.relationship() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.telecom() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self._implicit_rules() {
             _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.address() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.birth_date() {}
+        if let Some(_val) = self.gender() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }
@@ -397,6 +397,15 @@ impl RelatedPersonGender {
             "other" => Some(RelatedPersonGender::Other),
             "unknown" => Some(RelatedPersonGender::Unknown),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            RelatedPersonGender::Male => "male",
+            RelatedPersonGender::Female => "female",
+            RelatedPersonGender::Other => "other",
+            RelatedPersonGender::Unknown => "unknown",
         }
     }
 }

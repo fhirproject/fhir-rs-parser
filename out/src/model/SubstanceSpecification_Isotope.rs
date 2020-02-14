@@ -54,10 +54,27 @@ impl SubstanceSpecification_Isotope<'_> {
         return None;
     }
 
-    /// Substance name for each non-natural or radioisotope.
-    pub fn name(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("name") {
-            return Some(CodeableConcept { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Half life - for a non-natural nuclide.
+    pub fn half_life(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("halfLife") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// The molecular weight or weight range (for proteins, polymers or nucleic acids).
+    pub fn molecular_weight(&self) -> Option<SubstanceSpecification_MolecularWeight> {
+        if let Some(val) = self.value.get("molecularWeight") {
+            return Some(SubstanceSpecification_MolecularWeight { value: val });
         }
         return None;
     }
@@ -78,27 +95,10 @@ impl SubstanceSpecification_Isotope<'_> {
         return None;
     }
 
-    /// Half life - for a non-natural nuclide.
-    pub fn half_life(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("halfLife") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The molecular weight or weight range (for proteins, polymers or nucleic acids).
-    pub fn molecular_weight(&self) -> Option<SubstanceSpecification_MolecularWeight> {
-        if let Some(val) = self.value.get("molecularWeight") {
-            return Some(SubstanceSpecification_MolecularWeight { value: val });
+    /// Substance name for each non-natural or radioisotope.
+    pub fn name(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("name") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -114,7 +114,11 @@ impl SubstanceSpecification_Isotope<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.name() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.half_life() {
+            _val.validate();
+        }
+        if let Some(_val) = self.molecular_weight() {
             _val.validate();
         }
         if let Some(_val) = self.identifier() {
@@ -123,11 +127,7 @@ impl SubstanceSpecification_Isotope<'_> {
         if let Some(_val) = self.substitution() {
             _val.validate();
         }
-        if let Some(_val) = self.half_life() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.molecular_weight() {
+        if let Some(_val) = self.name() {
             _val.validate();
         }
         return true;

@@ -31,15 +31,6 @@ impl Timing<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -50,18 +41,6 @@ impl Timing<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Identifies specific times when the event occurs.
-    pub fn event(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("event") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,6 +69,14 @@ impl Timing<'_> {
         return None;
     }
 
+    /// A set of rules that describe when the event is scheduled.
+    pub fn repeat(&self) -> Option<Timing_Repeat> {
+        if let Some(val) = self.value.get("repeat") {
+            return Some(Timing_Repeat { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for event
     pub fn _event(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_event") {
@@ -102,10 +89,23 @@ impl Timing<'_> {
         return None;
     }
 
-    /// A set of rules that describe when the event is scheduled.
-    pub fn repeat(&self) -> Option<Timing_Repeat> {
-        if let Some(val) = self.value.get("repeat") {
-            return Some(Timing_Repeat { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Identifies specific times when the event occurs.
+    pub fn event(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("event") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -114,27 +114,27 @@ impl Timing<'_> {
         if let Some(_val) = self.code() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.event() {
-            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.repeat() {
+            _val.validate();
+        }
         if let Some(_val) = self._event() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.repeat() {
-            _val.validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.event() {
+            _val.into_iter().for_each(|_e| {});
         }
         return true;
     }

@@ -12,6 +12,15 @@ pub struct ExampleScenario_ContainedInstance<'a> {
 }
 
 impl ExampleScenario_ContainedInstance<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -30,23 +39,6 @@ impl ExampleScenario_ContainedInstance<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Each resource contained in the instance.
-    pub fn resource_id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("resourceId") {
-            return Some(string);
         }
         return None;
     }
@@ -91,14 +83,21 @@ impl ExampleScenario_ContainedInstance<'_> {
         return None;
     }
 
+    /// Each resource contained in the instance.
+    pub fn resource_id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("resourceId") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.resource_id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -111,6 +110,7 @@ impl ExampleScenario_ContainedInstance<'_> {
         if let Some(_val) = self._version_id() {
             _val.validate();
         }
+        if let Some(_val) = self.resource_id() {}
         return true;
     }
 }

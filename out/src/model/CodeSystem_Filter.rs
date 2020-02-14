@@ -14,6 +14,31 @@ pub struct CodeSystem_Filter<'a> {
 }
 
 impl CodeSystem_Filter<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A description of how or why the filter is used.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -30,10 +55,18 @@ impl CodeSystem_Filter<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The code that identifies this filter when it is used as a filter in
+    /// [[[ValueSet]]].compose.include.filter.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A description of what the value for the filter should be.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
             return Some(string);
         }
         return None;
@@ -51,22 +84,18 @@ impl CodeSystem_Filter<'_> {
         return None;
     }
 
-    /// A list of operators that can be used with the filter.
-    pub fn operator(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("operator") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// A description of what the value for the filter should be.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -93,55 +122,43 @@ impl CodeSystem_Filter<'_> {
         return None;
     }
 
-    /// A description of how or why the filter is used.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The code that identifies this filter when it is used as a filter in
-    /// [[[ValueSet]]].compose.include.filter.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
+    /// A list of operators that can be used with the filter.
+    pub fn operator(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("operator") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self._operator() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
+        if let Some(_val) = self._value() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -149,23 +166,6 @@ impl CodeSystem_Filter<'_> {
         if let Some(_val) = self.operator() {
             _val.into_iter().for_each(|_e| {});
         }
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {}
         return true;
     }
 }

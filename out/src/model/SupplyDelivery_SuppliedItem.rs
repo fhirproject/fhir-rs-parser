@@ -14,23 +14,6 @@ pub struct SupplyDelivery_SuppliedItem<'a> {
 }
 
 impl SupplyDelivery_SuppliedItem<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The amount of supply that has been dispensed. Includes unit of measure.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     /// Identifies the medication, substance or device being dispensed. This is either a
     /// link to a resource representing the details of the item or a code that
     /// identifies the item from a known list.
@@ -41,12 +24,11 @@ impl SupplyDelivery_SuppliedItem<'_> {
         return None;
     }
 
-    /// Identifies the medication, substance or device being dispensed. This is either a
-    /// link to a resource representing the details of the item or a code that
-    /// identifies the item from a known list.
-    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -89,17 +71,29 @@ impl SupplyDelivery_SuppliedItem<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.quantity() {
-            _val.validate();
+    /// Identifies the medication, substance or device being dispensed. This is either a
+    /// link to a resource representing the details of the item or a code that
+    /// identifies the item from a known list.
+    pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("itemCodeableConcept") {
+            return Some(CodeableConcept { value: val });
         }
+        return None;
+    }
+
+    /// The amount of supply that has been dispensed. Includes unit of measure.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self.item_reference() {
             _val.validate();
         }
-        if let Some(_val) = self.item_codeable_concept() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -109,6 +103,12 @@ impl SupplyDelivery_SuppliedItem<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.item_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.quantity() {
+            _val.validate();
         }
         return true;
     }

@@ -13,11 +13,19 @@ pub struct MedicinalProductIndication_OtherTherapy<'a> {
 }
 
 impl MedicinalProductIndication_OtherTherapy<'_> {
-    /// Reference to a specific medication (active substance, medicinal product or class
-    /// of products) as part of an indication or contraindication.
-    pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("medicationCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+    /// The type of relationship between the medicinal product indication or
+    /// contraindication and another therapy.
+    pub fn therapy_relationship_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["therapyRelationshipType"],
+        }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -53,6 +61,15 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
         return None;
     }
 
+    /// Reference to a specific medication (active substance, medicinal product or class
+    /// of products) as part of an indication or contraindication.
+    pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("medicationCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -69,27 +86,9 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
         return None;
     }
 
-    /// The type of relationship between the medicinal product indication or
-    /// contraindication and another therapy.
-    pub fn therapy_relationship_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["therapyRelationshipType"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.medication_codeable_concept() {
-            _val.validate();
-        }
+        let _ = self.therapy_relationship_type().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.medication_reference() {
             _val.validate();
         }
@@ -98,13 +97,14 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.medication_codeable_concept() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.therapy_relationship_type().validate();
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

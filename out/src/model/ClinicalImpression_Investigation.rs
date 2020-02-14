@@ -31,6 +31,15 @@ impl ClinicalImpression_Investigation<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -69,15 +78,6 @@ impl ClinicalImpression_Investigation<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// A name/code for the group ("set") of investigations. Typically, this will be
     /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
     /// not constrained, and others such groups such as
@@ -94,6 +94,7 @@ impl ClinicalImpression_Investigation<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -104,7 +105,6 @@ impl ClinicalImpression_Investigation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         let _ = self.code().validate();
         return true;
     }

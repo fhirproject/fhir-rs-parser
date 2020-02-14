@@ -15,27 +15,22 @@ pub struct SubstanceSpecification_Code<'a> {
 }
 
 impl SubstanceSpecification_Code<'_> {
-    /// Status of the code assignment.
-    pub fn status(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("status") {
+    /// The specific code.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
             return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// Any comment can be provided in this field, if necessary.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The date at which the code status is changed as part of the terminology
-    /// maintenance.
-    pub fn status_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("statusDate") {
-            return Some(string);
+    /// Supporting literature.
+    pub fn source(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("source") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -62,11 +57,43 @@ impl SubstanceSpecification_Code<'_> {
         return None;
     }
 
+    /// Any comment can be provided in this field, if necessary.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for comment
+    pub fn _comment(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comment") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for statusDate
+    pub fn _status_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_statusDate") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Status of the code assignment.
+    pub fn status(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("status") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -87,62 +114,16 @@ impl SubstanceSpecification_Code<'_> {
         return None;
     }
 
-    /// Extensions for statusDate
-    pub fn _status_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_statusDate") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The specific code.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Supporting literature.
-    pub fn source(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("source") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for comment
-    pub fn _comment(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+    /// The date at which the code status is changed as part of the terminology
+    /// maintenance.
+    pub fn status_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("statusDate") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.status() {
-            _val.validate();
-        }
-        if let Some(_val) = self.comment() {}
-        if let Some(_val) = self.status_date() {}
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._status_date() {
-            _val.validate();
-        }
         if let Some(_val) = self.code() {
             _val.validate();
         }
@@ -151,9 +132,28 @@ impl SubstanceSpecification_Code<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.comment() {}
         if let Some(_val) = self._comment() {
             _val.validate();
         }
+        if let Some(_val) = self._status_date() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.status() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.status_date() {}
         return true;
     }
 }

@@ -16,15 +16,6 @@ pub struct CommunicationRequest_Payload<'a> {
 }
 
 impl CommunicationRequest_Payload<'_> {
-    /// The communicated content (or for multi-part communications, one portion of the
-    /// communication).
-    pub fn content_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("contentString") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -43,6 +34,15 @@ impl CommunicationRequest_Payload<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The communicated content (or for multi-part communications, one portion of the
+    /// communication).
+    pub fn content_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("contentString") {
+            return Some(string);
         }
         return None;
     }
@@ -73,6 +73,15 @@ impl CommunicationRequest_Payload<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -89,22 +98,13 @@ impl CommunicationRequest_Payload<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.content_string() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.content_string() {}
         if let Some(_val) = self._content_string() {
             _val.validate();
         }
@@ -114,12 +114,12 @@ impl CommunicationRequest_Payload<'_> {
         if let Some(_val) = self.content_reference() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         return true;
     }
 }

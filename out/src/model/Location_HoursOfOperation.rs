@@ -14,53 +14,9 @@ pub struct Location_HoursOfOperation<'a> {
 }
 
 impl Location_HoursOfOperation<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The Location is open all day.
-    pub fn all_day(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("allDay") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Indicates which days of the week are available between the start and end Times.
-    pub fn days_of_week(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for openingTime
-    pub fn _opening_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_openingTime") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for allDay
-    pub fn _all_day(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allDay") {
+    /// Extensions for closingTime
+    pub fn _closing_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_closingTime") {
             return Some(Element { value: val });
         }
         return None;
@@ -78,14 +34,6 @@ impl Location_HoursOfOperation<'_> {
         return None;
     }
 
-    /// Time that the Location opens.
-    pub fn opening_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("openingTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Time that the Location closes.
     pub fn closing_time(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("closingTime") {
@@ -94,10 +42,30 @@ impl Location_HoursOfOperation<'_> {
         return None;
     }
 
-    /// Extensions for closingTime
-    pub fn _closing_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_closingTime") {
-            return Some(Element { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Indicates which days of the week are available between the start and end Times.
+    pub fn days_of_week(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -107,6 +75,22 @@ impl Location_HoursOfOperation<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for openingTime
+    pub fn _opening_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_openingTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for allDay
+    pub fn _all_day(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allDay") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -133,20 +117,24 @@ impl Location_HoursOfOperation<'_> {
         return None;
     }
 
+    /// The Location is open all day.
+    pub fn all_day(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("allDay") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Time that the Location opens.
+    pub fn opening_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("openingTime") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.all_day() {}
-        if let Some(_val) = self.days_of_week() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self._opening_time() {
-            _val.validate();
-        }
-        if let Some(_val) = self._all_day() {
+        if let Some(_val) = self._closing_time() {
             _val.validate();
         }
         if let Some(_val) = self._days_of_week() {
@@ -154,17 +142,29 @@ impl Location_HoursOfOperation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.opening_time() {}
         if let Some(_val) = self.closing_time() {}
-        if let Some(_val) = self._closing_time() {
-            _val.validate();
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.days_of_week() {
+            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self._opening_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self._all_day() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.all_day() {}
+        if let Some(_val) = self.opening_time() {}
         return true;
     }
 }

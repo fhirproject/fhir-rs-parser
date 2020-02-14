@@ -20,10 +20,44 @@ pub struct MedicinalProductIngredient<'a> {
 }
 
 impl MedicinalProductIngredient<'_> {
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// The identifier(s) of this Ingredient that are assigned by business processes
+    /// and/or used to refer to it when a direct URL reference to the resource itself is
+    /// not appropriate.
+    pub fn identifier(&self) -> Option<Identifier> {
+        if let Some(val) = self.value.get("identifier") {
+            return Some(Identifier { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for allergenicIndicator
+    pub fn _allergenic_indicator(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_allergenicIndicator") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// If the ingredient is a known or suspected allergen.
+    pub fn allergenic_indicator(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("allergenicIndicator") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -36,6 +70,16 @@ impl MedicinalProductIngredient<'_> {
         return None;
     }
 
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -44,11 +88,26 @@ impl MedicinalProductIngredient<'_> {
         return None;
     }
 
-    /// Ingredient role e.g. Active ingredient, excipient.
-    pub fn role(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["role"],
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
+        return None;
+    }
+
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -74,44 +133,16 @@ impl MedicinalProductIngredient<'_> {
         return None;
     }
 
-    /// The identifier(s) of this Ingredient that are assigned by business processes
-    /// and/or used to refer to it when a direct URL reference to the resource itself is
-    /// not appropriate.
-    pub fn identifier(&self) -> Option<Identifier> {
-        if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| ResourceList { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for allergenicIndicator
-    pub fn _allergenic_indicator(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_allergenicIndicator") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -123,6 +154,14 @@ impl MedicinalProductIngredient<'_> {
     pub fn implicit_rules(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -141,23 +180,19 @@ impl MedicinalProductIngredient<'_> {
         return None;
     }
 
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Ingredient role e.g. Active ingredient, excipient.
+    pub fn role(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["role"],
         }
-        return None;
     }
 
     /// Manufacturer of this Ingredient.
@@ -172,89 +207,54 @@ impl MedicinalProductIngredient<'_> {
         return None;
     }
 
-    /// If the ingredient is a known or suspected allergen.
-    pub fn allergenic_indicator(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("allergenicIndicator") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.substance() {
-            _val.validate();
-        }
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        let _ = self.role().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.identifier() {
             _val.validate();
         }
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self._allergenic_indicator() {
             _val.validate();
         }
+        if let Some(_val) = self.allergenic_indicator() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._allergenic_indicator() {
+        if let Some(_val) = self.substance() {
             _val.validate();
         }
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
         if let Some(_val) = self.specified_substance() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.language() {}
+        let _ = self.role().validate();
         if let Some(_val) = self.manufacturer() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.allergenic_indicator() {}
-        if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

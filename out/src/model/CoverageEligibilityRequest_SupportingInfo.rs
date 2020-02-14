@@ -17,34 +17,19 @@ pub struct CoverageEligibilityRequest_SupportingInfo<'a> {
 }
 
 impl CoverageEligibilityRequest_SupportingInfo<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for appliesToAll
-    pub fn _applies_to_all(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_appliesToAll") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// A number to uniquely identify supporting information entries.
     pub fn sequence(&self) -> Option<i64> {
         if let Some(val) = self.value.get("sequence") {
             return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// The supporting materials are applicable for all detail items, product/servce
+    /// categories and specific billing codes.
+    pub fn applies_to_all(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("appliesToAll") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -79,6 +64,22 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Additional data or information such as resources, documents, images etc.
     /// including references to the data or the actual inclusion of the data.
     pub fn information(&self) -> Reference {
@@ -96,25 +97,17 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         return None;
     }
 
-    /// The supporting materials are applicable for all detail items, product/servce
-    /// categories and specific billing codes.
-    pub fn applies_to_all(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("appliesToAll") {
-            return Some(val.as_bool().unwrap());
+    /// Extensions for appliesToAll
+    pub fn _applies_to_all(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_appliesToAll") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._applies_to_all() {
-            _val.validate();
-        }
         if let Some(_val) = self.sequence() {}
+        if let Some(_val) = self.applies_to_all() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -123,9 +116,16 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         if let Some(_val) = self._sequence() {
             _val.validate();
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         let _ = self.information().validate();
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.applies_to_all() {}
+        if let Some(_val) = self._applies_to_all() {
+            _val.validate();
+        }
         return true;
     }
 }

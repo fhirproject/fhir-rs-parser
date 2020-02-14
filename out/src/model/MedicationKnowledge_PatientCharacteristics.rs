@@ -14,6 +14,18 @@ pub struct MedicationKnowledge_PatientCharacteristics<'a> {
 }
 
 impl MedicationKnowledge_PatientCharacteristics<'_> {
+    /// The specific characteristic (e.g. height, weight, gender, etc.).
+    pub fn value(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("value") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -35,15 +47,6 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Specific characteristic that is relevant to the administration guideline (e.g.
-    /// height, weight, gender).
-    pub fn characteristic_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("characteristicQuantity") {
-            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -70,6 +73,15 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
         return None;
     }
 
+    /// Specific characteristic that is relevant to the administration guideline (e.g.
+    /// height, weight, gender).
+    pub fn characteristic_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("characteristicCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// Extensions for value
     pub fn _value(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_value") {
@@ -84,41 +96,24 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
 
     /// Specific characteristic that is relevant to the administration guideline (e.g.
     /// height, weight, gender).
-    pub fn characteristic_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("characteristicCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The specific characteristic (e.g. height, weight, gender, etc.).
-    pub fn value(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("value") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
+    pub fn characteristic_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("characteristicQuantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.value() {
+            _val.into_iter().for_each(|_e| {});
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.characteristic_quantity() {
-            _val.validate();
-        }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._value() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -126,8 +121,13 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
         if let Some(_val) = self.characteristic_codeable_concept() {
             _val.validate();
         }
-        if let Some(_val) = self.value() {
-            _val.into_iter().for_each(|_e| {});
+        if let Some(_val) = self._value() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.characteristic_quantity() {
+            _val.validate();
         }
         return true;
     }

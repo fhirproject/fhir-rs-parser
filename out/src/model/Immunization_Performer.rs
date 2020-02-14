@@ -14,11 +14,13 @@ pub struct Immunization_Performer<'a> {
 }
 
 impl Immunization_Performer<'_> {
-    /// The practitioner or organization who performed the action.
-    pub fn actor(&self) -> Reference {
-        Reference {
-            value: &self.value["actor"],
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -43,13 +45,11 @@ impl Immunization_Performer<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The practitioner or organization who performed the action.
+    pub fn actor(&self) -> Reference {
+        Reference {
+            value: &self.value["actor"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -78,13 +78,13 @@ impl Immunization_Performer<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.actor().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        let _ = self.actor().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

@@ -14,19 +14,28 @@ pub struct Account_Coverage<'a> {
 }
 
 impl Account_Coverage<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The party(s) that contribute to payment (or part of) of the charges applied to
+    /// this account (including self-pay).    A coverage may only be responsible for
+    /// specific types of charges, and the sequence of the coverages in the account
+    /// could be important when processing billing.
+    pub fn coverage(&self) -> Reference {
+        Reference {
+            value: &self.value["coverage"],
         }
-        return None;
     }
 
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The priority of the coverage in the context of this account.
+    pub fn priority(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("priority") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
@@ -69,29 +78,21 @@ impl Account_Coverage<'_> {
         return None;
     }
 
-    /// The party(s) that contribute to payment (or part of) of the charges applied to
-    /// this account (including self-pay).    A coverage may only be responsible for
-    /// specific types of charges, and the sequence of the coverages in the account
-    /// could be important when processing billing.
-    pub fn coverage(&self) -> Reference {
-        Reference {
-            value: &self.value["coverage"],
-        }
-    }
-
-    /// The priority of the coverage in the context of this account.
-    pub fn priority(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("priority") {
-            return Some(val.as_i64().unwrap());
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.coverage().validate();
         if let Some(_val) = self._priority() {
             _val.validate();
         }
+        if let Some(_val) = self.priority() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -102,8 +103,7 @@ impl Account_Coverage<'_> {
                 e.validate();
             });
         }
-        let _ = self.coverage().validate();
-        if let Some(_val) = self.priority() {}
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

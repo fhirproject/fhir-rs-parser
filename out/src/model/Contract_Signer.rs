@@ -15,25 +15,6 @@ pub struct Contract_Signer<'a> {
 }
 
 impl Contract_Signer<'_> {
-    /// Party which is a signator to this Contract.
-    pub fn party(&self) -> Reference {
-        Reference {
-            value: &self.value["party"],
-        }
-    }
-
-    /// Legally binding Contract DSIG signature contents in Base64.
-    pub fn signature(&self) -> Vec<Signature> {
-        self.value
-            .get("signature")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| Signature { value: e })
-            .collect::<Vec<_>>()
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -56,6 +37,22 @@ impl Contract_Signer<'_> {
         return None;
     }
 
+    /// Party which is a signator to this Contract.
+    pub fn party(&self) -> Reference {
+        Reference {
+            value: &self.value["party"],
+        }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -72,13 +69,16 @@ impl Contract_Signer<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
+    /// Legally binding Contract DSIG signature contents in Base64.
+    pub fn signature(&self) -> Vec<Signature> {
+        self.value
+            .get("signature")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| Signature { value: e })
+            .collect::<Vec<_>>()
     }
 
     /// Role of this Contract signer, e.g. notary, grantee.
@@ -89,21 +89,21 @@ impl Contract_Signer<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.party().validate();
-        let _ = self.signature().into_iter().for_each(|e| {
-            e.validate();
-        });
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.party().validate();
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        let _ = self.signature().into_iter().for_each(|e| {
+            e.validate();
+        });
         let _ = self.fhir_type().validate();
         return true;
     }

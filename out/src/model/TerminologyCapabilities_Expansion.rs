@@ -15,9 +15,9 @@ pub struct TerminologyCapabilities_Expansion<'a> {
 }
 
 impl TerminologyCapabilities_Expansion<'_> {
-    /// Whether the server can return nested value sets.
-    pub fn hierarchical(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("hierarchical") {
+    /// Whether the server supports paging on expansion.
+    pub fn paging(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("paging") {
             return Some(val.as_bool().unwrap());
         }
         return None;
@@ -31,10 +31,10 @@ impl TerminologyCapabilities_Expansion<'_> {
         return None;
     }
 
-    /// Whether the server supports paging on expansion.
-    pub fn paging(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("paging") {
-            return Some(val.as_bool().unwrap());
+    /// Documentation about text searching works.
+    pub fn text_filter(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("textFilter") {
+            return Some(string);
         }
         return None;
     }
@@ -77,47 +77,11 @@ impl TerminologyCapabilities_Expansion<'_> {
         return None;
     }
 
-    /// Supported expansion parameter.
-    pub fn parameter(&self) -> Option<Vec<TerminologyCapabilities_Parameter>> {
-        if let Some(Value::Array(val)) = self.value.get("parameter") {
-            return Some(
-                val.into_iter()
-                    .map(|e| TerminologyCapabilities_Parameter { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for hierarchical
-    pub fn _hierarchical(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_hierarchical") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Documentation about text searching works.
-    pub fn text_filter(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("textFilter") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Allow request for incomplete expansions?
-    pub fn incomplete(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("incomplete") {
-            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -130,6 +94,22 @@ impl TerminologyCapabilities_Expansion<'_> {
         return None;
     }
 
+    /// Extensions for hierarchical
+    pub fn _hierarchical(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_hierarchical") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Allow request for incomplete expansions?
+    pub fn incomplete(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("incomplete") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     /// Extensions for textFilter
     pub fn _text_filter(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_textFilter") {
@@ -138,12 +118,32 @@ impl TerminologyCapabilities_Expansion<'_> {
         return None;
     }
 
+    /// Supported expansion parameter.
+    pub fn parameter(&self) -> Option<Vec<TerminologyCapabilities_Parameter>> {
+        if let Some(Value::Array(val)) = self.value.get("parameter") {
+            return Some(
+                val.into_iter()
+                    .map(|e| TerminologyCapabilities_Parameter { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Whether the server can return nested value sets.
+    pub fn hierarchical(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("hierarchical") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.hierarchical() {}
+        if let Some(_val) = self.paging() {}
         if let Some(_val) = self._incomplete() {
             _val.validate();
         }
-        if let Some(_val) = self.paging() {}
+        if let Some(_val) = self.text_filter() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -154,23 +154,23 @@ impl TerminologyCapabilities_Expansion<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._paging() {
+            _val.validate();
+        }
+        if let Some(_val) = self._hierarchical() {
+            _val.validate();
+        }
+        if let Some(_val) = self.incomplete() {}
+        if let Some(_val) = self._text_filter() {
+            _val.validate();
+        }
         if let Some(_val) = self.parameter() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._hierarchical() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.text_filter() {}
-        if let Some(_val) = self.incomplete() {}
-        if let Some(_val) = self._paging() {
-            _val.validate();
-        }
-        if let Some(_val) = self._text_filter() {
-            _val.validate();
-        }
+        if let Some(_val) = self.hierarchical() {}
         return true;
     }
 }

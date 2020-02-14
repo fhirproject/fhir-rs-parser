@@ -16,16 +16,38 @@ pub struct CapabilityStatement_Security<'a> {
 }
 
 impl CapabilityStatement_Security<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Server adds CORS headers when responding to requests - this enables Javascript
+    /// applications to use the server.
+    pub fn cors(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("cors") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for cors
+    pub fn _cors(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_cors") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Types of security services that are supported/required by the system.
+    pub fn service(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("service") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| CodeableConcept { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -40,29 +62,24 @@ impl CapabilityStatement_Security<'_> {
         return None;
     }
 
-    /// Extensions for cors
-    pub fn _cors(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_cors") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// General description of how security works.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
             return Some(string);
         }
         return None;
     }
 
-    /// Types of security services that are supported/required by the system.
-    pub fn service(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("service") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,25 +108,13 @@ impl CapabilityStatement_Security<'_> {
         return None;
     }
 
-    /// General description of how security works.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Server adds CORS headers when responding to requests - this enables Javascript
-    /// applications to use the server.
-    pub fn cors(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("cors") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.cors() {}
+        if let Some(_val) = self._cors() {
+            _val.validate();
+        }
+        if let Some(_val) = self.service() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -117,11 +122,8 @@ impl CapabilityStatement_Security<'_> {
         if let Some(_val) = self._description() {
             _val.validate();
         }
-        if let Some(_val) = self._cors() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.service() {
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -131,8 +133,6 @@ impl CapabilityStatement_Security<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self.cors() {}
         return true;
     }
 }

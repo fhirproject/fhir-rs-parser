@@ -15,13 +15,11 @@ pub struct Claim_Payee<'a> {
 }
 
 impl Claim_Payee<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Type of Party to be reimbursed: subscriber, provider, other.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -44,13 +42,6 @@ impl Claim_Payee<'_> {
             );
         }
         return None;
-    }
-
-    /// Type of Party to be reimbursed: subscriber, provider, other.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -77,14 +68,22 @@ impl Claim_Payee<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.fhir_type().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -93,6 +92,7 @@ impl Claim_Payee<'_> {
         if let Some(_val) = self.party() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

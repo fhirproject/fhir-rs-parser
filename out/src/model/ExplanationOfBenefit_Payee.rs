@@ -15,10 +15,18 @@ pub struct ExplanationOfBenefit_Payee<'a> {
 }
 
 impl ExplanationOfBenefit_Payee<'_> {
-    /// Type of Party to be reimbursed: Subscriber, provider, other.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -32,26 +40,18 @@ impl ExplanationOfBenefit_Payee<'_> {
         return None;
     }
 
-    /// Reference to the individual or organization to whom any payment will be made.
-    pub fn party(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("party") {
-            return Some(Reference { value: val });
+    /// Type of Party to be reimbursed: Subscriber, provider, other.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Reference to the individual or organization to whom any payment will be made.
+    pub fn party(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("party") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -79,17 +79,17 @@ impl ExplanationOfBenefit_Payee<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.party() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.party() {
+            _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {

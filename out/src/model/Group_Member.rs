@@ -17,12 +17,29 @@ pub struct Group_Member<'a> {
 }
 
 impl Group_Member<'_> {
-    /// A reference to the entity that is a member of the group. Must be consistent with
-    /// Group.type. If the entity is another group, then the type must be the same.
-    pub fn entity(&self) -> Reference {
-        Reference {
-            value: &self.value["entity"],
+    /// A flag to indicate that the member is no longer in the group, but previously may
+    /// have been a member.
+    pub fn inactive(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("inactive") {
+            return Some(val.as_bool().unwrap());
         }
+        return None;
+    }
+
+    /// Extensions for inactive
+    pub fn _inactive(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_inactive") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The period that the member was in the group, if known.
+    pub fn period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("period") {
+            return Some(Period { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -56,15 +73,6 @@ impl Group_Member<'_> {
         return None;
     }
 
-    /// A flag to indicate that the member is no longer in the group, but previously may
-    /// have been a member.
-    pub fn inactive(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("inactive") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -81,42 +89,34 @@ impl Group_Member<'_> {
         return None;
     }
 
-    /// The period that the member was in the group, if known.
-    pub fn period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+    /// A reference to the entity that is a member of the group. Must be consistent with
+    /// Group.type. If the entity is another group, then the type must be the same.
+    pub fn entity(&self) -> Reference {
+        Reference {
+            value: &self.value["entity"],
         }
-        return None;
-    }
-
-    /// Extensions for inactive
-    pub fn _inactive(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_inactive") {
-            return Some(Element { value: val });
-        }
-        return None;
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.entity().validate();
+        if let Some(_val) = self.inactive() {}
+        if let Some(_val) = self._inactive() {
+            _val.validate();
+        }
+        if let Some(_val) = self.period() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.inactive() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.period() {
-            _val.validate();
-        }
-        if let Some(_val) = self._inactive() {
-            _val.validate();
-        }
+        let _ = self.entity().validate();
         return true;
     }
 }

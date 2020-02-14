@@ -15,11 +15,21 @@ pub struct Device_Property<'a> {
 }
 
 impl Device_Property<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
+        }
+    }
+
+    /// Property value as a quantity.
+    pub fn value_quantity(&self) -> Option<Vec<Quantity>> {
+        if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Quantity { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -36,6 +46,15 @@ impl Device_Property<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -62,25 +81,6 @@ impl Device_Property<'_> {
         return None;
     }
 
-    /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
-        }
-    }
-
-    /// Property value as a quantity.
-    pub fn value_quantity(&self) -> Option<Vec<Quantity>> {
-        if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Quantity { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Property value as a code, e.g., NTP4 (synced to NTP).
     pub fn value_code(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("valueCode") {
@@ -94,19 +94,19 @@ impl Device_Property<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        let _ = self.fhir_type().validate();
+        if let Some(_val) = self.value_quantity() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.value_quantity() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

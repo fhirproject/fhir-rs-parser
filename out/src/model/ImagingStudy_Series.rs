@@ -20,49 +20,6 @@ pub struct ImagingStudy_Series<'a> {
 }
 
 impl ImagingStudy_Series<'_> {
-    /// A single SOP instance within the series, e.g. an image, or presentation state.
-    pub fn instance(&self) -> Option<Vec<ImagingStudy_Instance>> {
-        if let Some(Value::Array(val)) = self.value.get("instance") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ImagingStudy_Instance { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The specimen imaged, e.g., for whole slide imaging of a biopsy.
-    pub fn specimen(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("specimen") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Indicates who or what performed the series and how they were involved.
-    pub fn performer(&self) -> Option<Vec<ImagingStudy_Performer>> {
-        if let Some(Value::Array(val)) = self.value.get("performer") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ImagingStudy_Performer { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The modality of this series sequence.
-    pub fn modality(&self) -> Coding {
-        Coding {
-            value: &self.value["modality"],
-        }
-    }
-
     /// The network service providing access (e.g., query, view, or retrieval) for this
     /// series. See implementation notes for information about using DICOM endpoints. A
     /// series-level endpoint, if present, has precedence over a study-level endpoint
@@ -78,22 +35,6 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// A description of the series.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for number
-    pub fn _number(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_number") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// The numeric identifier of this series in the study.
     pub fn number(&self) -> Option<u64> {
         if let Some(val) = self.value.get("number") {
@@ -102,19 +43,17 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// The laterality of the (possibly paired) anatomic structures examined. E.g., the
-    /// left knee, both lungs, or unpaired abdomen. If present, shall be consistent with
-    /// any laterality information indicated in ImagingStudy.series.bodySite.
-    pub fn laterality(&self) -> Option<Coding> {
-        if let Some(val) = self.value.get("laterality") {
-            return Some(Coding { value: val });
+    /// The modality of this series sequence.
+    pub fn modality(&self) -> Coding {
+        Coding {
+            value: &self.value["modality"],
         }
-        return None;
     }
 
-    /// The DICOM Series Instance UID for the series.
-    pub fn uid(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("uid") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -142,10 +81,22 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
+    /// Extensions for uid
+    pub fn _uid(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_uid") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates who or what performed the series and how they were involved.
+    pub fn performer(&self) -> Option<Vec<ImagingStudy_Performer>> {
+        if let Some(Value::Array(val)) = self.value.get("performer") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ImagingStudy_Performer { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -158,29 +109,36 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// Number of SOP Instances in the Study. The value given may be larger than the
-    /// number of instance elements this resource contains due to resource availability,
-    /// security, or other factors. This element should be present if any instance
-    /// elements are present.
-    pub fn number_of_instances(&self) -> Option<u64> {
-        if let Some(val) = self.value.get("numberOfInstances") {
-            return Some(val.as_u64().unwrap());
+    /// The DICOM Series Instance UID for the series.
+    pub fn uid(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("uid") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for uid
-    pub fn _uid(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_uid") {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The date and time the series was started.
-    pub fn started(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("started") {
-            return Some(string);
+    /// Extensions for number
+    pub fn _number(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_number") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The laterality of the (possibly paired) anatomic structures examined. E.g., the
+    /// left knee, both lungs, or unpaired abdomen. If present, shall be consistent with
+    /// any laterality information indicated in ImagingStudy.series.bodySite.
+    pub fn laterality(&self) -> Option<Coding> {
+        if let Some(val) = self.value.get("laterality") {
+            return Some(Coding { value: val });
         }
         return None;
     }
@@ -197,11 +155,53 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Extensions for started
+    pub fn _started(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_started") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A single SOP instance within the series, e.g. an image, or presentation state.
+    pub fn instance(&self) -> Option<Vec<ImagingStudy_Instance>> {
+        if let Some(Value::Array(val)) = self.value.get("instance") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ImagingStudy_Instance { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// A description of the series.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Number of SOP Instances in the Study. The value given may be larger than the
+    /// number of instance elements this resource contains due to resource availability,
+    /// security, or other factors. This element should be present if any instance
+    /// elements are present.
+    pub fn number_of_instances(&self) -> Option<u64> {
+        if let Some(val) = self.value.get("numberOfInstances") {
+            return Some(val.as_u64().unwrap());
+        }
+        return None;
+    }
+
+    /// The specimen imaged, e.g., for whole slide imaging of a biopsy.
+    pub fn specimen(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("specimen") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -222,73 +222,73 @@ impl ImagingStudy_Series<'_> {
         return None;
     }
 
-    /// Extensions for started
-    pub fn _started(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_started") {
-            return Some(Element { value: val });
+    /// The date and time the series was started.
+    pub fn started(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("started") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.instance() {
+        if let Some(_val) = self.endpoint() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.specimen() {
+        if let Some(_val) = self.number() {}
+        let _ = self.modality().validate();
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self._uid() {
+            _val.validate();
         }
         if let Some(_val) = self.performer() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.modality().validate();
-        if let Some(_val) = self.endpoint() {
+        if let Some(_val) = self._number_of_instances() {
+            _val.validate();
+        }
+        if let Some(_val) = self.uid() {}
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self._number() {
+            _val.validate();
+        }
+        if let Some(_val) = self.laterality() {
+            _val.validate();
+        }
+        if let Some(_val) = self.body_site() {
+            _val.validate();
+        }
+        if let Some(_val) = self._started() {
+            _val.validate();
+        }
+        if let Some(_val) = self.instance() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.description() {}
-        if let Some(_val) = self._number() {
-            _val.validate();
-        }
-        if let Some(_val) = self.number() {}
-        if let Some(_val) = self.laterality() {
-            _val.validate();
-        }
-        if let Some(_val) = self.uid() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.number_of_instances() {}
+        if let Some(_val) = self.specimen() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
-        if let Some(_val) = self._number_of_instances() {
-            _val.validate();
-        }
-        if let Some(_val) = self.number_of_instances() {}
-        if let Some(_val) = self._uid() {
-            _val.validate();
-        }
-        if let Some(_val) = self.started() {}
-        if let Some(_val) = self.body_site() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._started() {
-            _val.validate();
-        }
+        if let Some(_val) = self.started() {}
         return true;
     }
 }

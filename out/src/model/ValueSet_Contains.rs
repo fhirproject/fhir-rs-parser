@@ -32,18 +32,31 @@ impl ValueSet_Contains<'_> {
         return None;
     }
 
-    /// Extensions for abstract
-    pub fn _abstract(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_abstract") {
-            return Some(Element { value: val });
+    /// If true, this entry is included in the expansion for navigational purposes, and
+    /// the user cannot select the code directly as a proper value.
+    pub fn fhir_abstract(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("abstract") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
 
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+    /// If the concept is inactive in the code system that defines it. Inactive codes
+    /// are those that are no longer to be used, but are maintained by the code system
+    /// for understanding legacy data. It might not be known or specified whether an
+    /// concept is inactive (and it may depend on the context of use).
+    pub fn inactive(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("inactive") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -57,27 +70,9 @@ impl ValueSet_Contains<'_> {
         return None;
     }
 
-    /// Extensions for inactive
-    pub fn _inactive(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_inactive") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The code for this item in the expansion hierarchy. If this code is missing the
-    /// entry in the hierarchy is a place holder (abstract) and does not represent a
-    /// valid code in the value set.
-    pub fn code(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("code") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
             return Some(Element { value: val });
         }
         return None;
@@ -91,10 +86,17 @@ impl ValueSet_Contains<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Extensions for abstract
+    pub fn _abstract(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_abstract") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The recommended display for this item in the expansion.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
             return Some(string);
         }
         return None;
@@ -122,42 +124,18 @@ impl ValueSet_Contains<'_> {
         return None;
     }
 
-    /// The version of the code system from this code was taken. Note that a well-
-    /// maintained code system does not need the version reported, because the
-    /// meaning of codes is consistent across versions. However this cannot consistently
-    /// be assured, and when the meaning is not guaranteed to be consistent, the version
-    /// SHOULD be exchanged.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
+    /// Extensions for inactive
+    pub fn _inactive(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_inactive") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// If true, this entry is included in the expansion for navigational purposes, and
-    /// the user cannot select the code directly as a proper value.
-    pub fn fhir_abstract(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("abstract") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// If the concept is inactive in the code system that defines it. Inactive codes
-    /// are those that are no longer to be used, but are maintained by the code system
-    /// for understanding legacy data. It might not be known or specified whether an
-    /// concept is inactive (and it may depend on the context of use).
-    pub fn inactive(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("inactive") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// The recommended display for this item in the expansion.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
-            return Some(string);
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -184,6 +162,28 @@ impl ValueSet_Contains<'_> {
         return None;
     }
 
+    /// The code for this item in the expansion hierarchy. If this code is missing the
+    /// entry in the hierarchy is a place holder (abstract) and does not represent a
+    /// valid code in the value set.
+    pub fn code(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("code") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The version of the code system from this code was taken. Note that a well-
+    /// maintained code system does not need the version reported, because the
+    /// meaning of codes is consistent across versions. However this cannot consistently
+    /// be assured, and when the meaning is not guaranteed to be consistent, the version
+    /// SHOULD be exchanged.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Other codes and entries contained under this entry in the hierarchy.
     pub fn contains(&self) -> Option<Vec<ValueSet_Contains>> {
         if let Some(Value::Array(val)) = self.value.get("contains") {
@@ -202,24 +202,20 @@ impl ValueSet_Contains<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._abstract() {
-            _val.validate();
-        }
-        if let Some(_val) = self._version() {
-            _val.validate();
-        }
+        if let Some(_val) = self.fhir_abstract() {}
+        if let Some(_val) = self.inactive() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.system() {}
-        if let Some(_val) = self._inactive() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self._system() {
+        if let Some(_val) = self._version() {
             _val.validate();
         }
         if let Some(_val) = self._display() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._abstract() {
+            _val.validate();
+        }
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self._code() {
             _val.validate();
         }
@@ -228,15 +224,19 @@ impl ValueSet_Contains<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self.fhir_abstract() {}
-        if let Some(_val) = self.inactive() {}
-        if let Some(_val) = self.display() {}
+        if let Some(_val) = self._inactive() {
+            _val.validate();
+        }
+        if let Some(_val) = self._system() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.version() {}
         if let Some(_val) = self.contains() {
             _val.into_iter().for_each(|e| {
                 e.validate();

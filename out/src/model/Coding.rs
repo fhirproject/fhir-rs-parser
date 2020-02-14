@@ -24,6 +24,39 @@ impl Coding<'_> {
         return None;
     }
 
+    /// Extensions for userSelected
+    pub fn _user_selected(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_userSelected") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for system
+    pub fn _system(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_system") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A representation of the meaning of the code in the system, following the rules
+    /// of the system.
+    pub fn display(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("display") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for display
+    pub fn _display(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_display") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// The identification of the code system that defines the meaning of the symbol in
     /// the code.
     pub fn system(&self) -> Option<&str> {
@@ -33,9 +66,9 @@ impl Coding<'_> {
         return None;
     }
 
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
             return Some(Element { value: val });
         }
         return None;
@@ -50,34 +83,18 @@ impl Coding<'_> {
         return None;
     }
 
-    /// Extensions for system
-    pub fn _system(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+    /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
+    /// of available items (codes or displays).
+    pub fn user_selected(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("userSelected") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for userSelected
-    pub fn _user_selected(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_userSelected") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for display
-    pub fn _display(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_display") {
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
             return Some(Element { value: val });
         }
         return None;
@@ -99,47 +116,34 @@ impl Coding<'_> {
         return None;
     }
 
-    /// A representation of the meaning of the code in the system, following the rules
-    /// of the system.
-    pub fn display(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("display") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Indicates that this coding was chosen by a user directly - e.g. off a pick list
-    /// of available items (codes or displays).
-    pub fn user_selected(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("userSelected") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.version() {}
-        if let Some(_val) = self.system() {}
-        if let Some(_val) = self._version() {
-            _val.validate();
-        }
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self._system() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._user_selected() {
             _val.validate();
         }
+        if let Some(_val) = self._system() {
+            _val.validate();
+        }
+        if let Some(_val) = self.display() {}
         if let Some(_val) = self._display() {
+            _val.validate();
+        }
+        if let Some(_val) = self.system() {}
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.user_selected() {}
+        if let Some(_val) = self._version() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -147,11 +151,7 @@ impl Coding<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.display() {}
-        if let Some(_val) = self.user_selected() {}
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

@@ -13,10 +13,11 @@ pub struct DataRequirement_Sort<'a> {
 }
 
 impl DataRequirement_Sort<'_> {
-    /// Extensions for direction
-    pub fn _direction(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_direction") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -43,26 +44,12 @@ impl DataRequirement_Sort<'_> {
         return None;
     }
 
-    /// Extensions for path
-    pub fn _path(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The direction of the sort, ascending or descending.
-    pub fn direction(&self) -> Option<DataRequirement_SortDirection> {
-        if let Some(Value::String(val)) = self.value.get("direction") {
-            return Some(DataRequirement_SortDirection::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// The attribute of the sort. The specified path must be resolvable from the type
+    /// of the required data. The path is allowed to contain qualifiers (.) to traverse
+    /// sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-
+    /// elements. Note that the index must be an integer constant.
+    pub fn path(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("path") {
             return Some(string);
         }
         return None;
@@ -84,22 +71,39 @@ impl DataRequirement_Sort<'_> {
         return None;
     }
 
-    /// The attribute of the sort. The specified path must be resolvable from the type
-    /// of the required data. The path is allowed to contain qualifiers (.) to traverse
-    /// sub-elements, as well as indexers ([x]) to traverse multiple-cardinality sub-
-    /// elements. Note that the index must be an integer constant.
-    pub fn path(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("path") {
-            return Some(string);
+    /// Extensions for path
+    pub fn _path(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_path") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The direction of the sort, ascending or descending.
+    pub fn direction(&self) -> Option<DataRequirement_SortDirection> {
+        if let Some(Value::String(val)) = self.value.get("direction") {
+            return Some(DataRequirement_SortDirection::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for direction
+    pub fn _direction(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_direction") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._direction() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.path() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -108,13 +112,9 @@ impl DataRequirement_Sort<'_> {
             _val.validate();
         }
         if let Some(_val) = self.direction() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self._direction() {
+            _val.validate();
         }
-        if let Some(_val) = self.path() {}
         return true;
     }
 }
@@ -131,6 +131,13 @@ impl DataRequirement_SortDirection {
             "ascending" => Some(DataRequirement_SortDirection::Ascending),
             "descending" => Some(DataRequirement_SortDirection::Descending),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            DataRequirement_SortDirection::Ascending => "ascending",
+            DataRequirement_SortDirection::Descending => "descending",
         }
     }
 }

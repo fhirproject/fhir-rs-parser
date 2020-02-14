@@ -13,6 +13,14 @@ pub struct Ratio<'a> {
 }
 
 impl Ratio<'_> {
+    /// The value of the denominator.
+    pub fn denominator(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("denominator") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
     /// The value of the numerator.
     pub fn numerator(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("numerator") {
@@ -26,14 +34,6 @@ impl Ratio<'_> {
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The value of the denominator.
-    pub fn denominator(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("denominator") {
-            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -55,13 +55,13 @@ impl Ratio<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.denominator() {
+            _val.validate();
+        }
         if let Some(_val) = self.numerator() {
             _val.validate();
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.denominator() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

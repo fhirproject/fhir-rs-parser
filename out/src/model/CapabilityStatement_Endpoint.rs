@@ -16,19 +16,10 @@ pub struct CapabilityStatement_Endpoint<'a> {
 }
 
 impl CapabilityStatement_Endpoint<'_> {
-    /// A list of the messaging transport protocol(s) identifiers, supported by this
-    /// endpoint.
-    pub fn protocol(&self) -> Coding {
-        Coding {
-            value: &self.value["protocol"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Extensions for address
+    pub fn _address(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_address") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -47,6 +38,23 @@ impl CapabilityStatement_Endpoint<'_> {
             );
         }
         return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// A list of the messaging transport protocol(s) identifiers, supported by this
+    /// endpoint.
+    pub fn protocol(&self) -> Coding {
+        Coding {
+            value: &self.value["protocol"],
+        }
     }
 
     /// The network address of the endpoint. For solutions that do not use network
@@ -80,30 +88,22 @@ impl CapabilityStatement_Endpoint<'_> {
         return None;
     }
 
-    /// Extensions for address
-    pub fn _address(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_address") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        let _ = self.protocol().validate();
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._address() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
+        let _ = self.protocol().validate();
         if let Some(_val) = self.address() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._address() {
-            _val.validate();
         }
         return true;
     }

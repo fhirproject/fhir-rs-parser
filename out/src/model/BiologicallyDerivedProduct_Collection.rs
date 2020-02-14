@@ -16,15 +16,6 @@ pub struct BiologicallyDerivedProduct_Collection<'a> {
 }
 
 impl BiologicallyDerivedProduct_Collection<'_> {
-    /// The patient or entity, such as a hospital or vendor in the case of a
-    /// processed/manipulated/manufactured product, providing the product.
-    pub fn source(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("source") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Time of product collection.
     pub fn collected_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("collectedPeriod") {
@@ -49,10 +40,35 @@ impl BiologicallyDerivedProduct_Collection<'_> {
         return None;
     }
 
+    /// The patient or entity, such as a hospital or vendor in the case of a
+    /// processed/manipulated/manufactured product, providing the product.
+    pub fn source(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("source") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Healthcare professional who is performing the collection.
+    pub fn collector(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("collector") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Time of product collection.
+    pub fn collected_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("collectedDateTime") {
             return Some(string);
         }
         return None;
@@ -88,26 +104,7 @@ impl BiologicallyDerivedProduct_Collection<'_> {
         return None;
     }
 
-    /// Healthcare professional who is performing the collection.
-    pub fn collector(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("collector") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Time of product collection.
-    pub fn collected_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("collectedDateTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.source() {
-            _val.validate();
-        }
         if let Some(_val) = self.collected_period() {
             _val.validate();
         }
@@ -116,7 +113,14 @@ impl BiologicallyDerivedProduct_Collection<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.source() {
+            _val.validate();
+        }
+        if let Some(_val) = self.collector() {
+            _val.validate();
+        }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.collected_date_time() {}
         if let Some(_val) = self._collected_date_time() {
             _val.validate();
         }
@@ -125,10 +129,6 @@ impl BiologicallyDerivedProduct_Collection<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.collector() {
-            _val.validate();
-        }
-        if let Some(_val) = self.collected_date_time() {}
         return true;
     }
 }

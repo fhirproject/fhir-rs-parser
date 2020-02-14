@@ -20,41 +20,9 @@ pub struct ImmunizationEvaluation<'a> {
 }
 
 impl ImmunizationEvaluation<'_> {
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// One possible path to achieve presumed immunity against a disease - within the
-    /// context of an authority.
-    pub fn series(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("series") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// A unique identifier assigned to this immunization evaluation record.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The recommended number of doses to achieve immunity.
-    pub fn series_doses_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("seriesDosesString") {
+    /// Additional information about the evaluation.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
             return Some(string);
         }
         return None;
@@ -68,71 +36,18 @@ impl ImmunizationEvaluation<'_> {
         return None;
     }
 
-    /// The vaccine administration event being evaluated.
-    pub fn immunization_event(&self) -> Reference {
-        Reference {
-            value: &self.value["immunizationEvent"],
-        }
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Provides an explanation as to why the vaccine administration event is valid or
-    /// not relative to the published recommendations.
-    pub fn dose_status_reason(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("doseStatusReason") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for seriesDosesString
-    pub fn _series_doses_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_seriesDosesString") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates the current status of the evaluation of the vaccination administration
-    /// event.
-    pub fn status(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("status") {
+    /// Nominal position in a series.
+    pub fn dose_number_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("doseNumberString") {
             return Some(string);
         }
         return None;
     }
 
-    /// The vaccine preventable disease the dose is being evaluated against.
-    pub fn target_disease(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["targetDisease"],
-        }
-    }
-
-    /// Additional information about the evaluation.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -153,42 +68,101 @@ impl ImmunizationEvaluation<'_> {
         }
     }
 
-    /// Nominal position in a series.
-    pub fn dose_number_string(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("doseNumberString") {
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for doseNumberPositiveInt
-    pub fn _dose_number_positive_int(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_doseNumberPositiveInt") {
-            return Some(Element { value: val });
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
         }
         return None;
     }
 
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Indicates if the dose is valid or not valid with respect to the published
-    /// recommendations.
-    pub fn dose_status(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["doseStatus"],
+    /// Provides an explanation as to why the vaccine administration event is valid or
+    /// not relative to the published recommendations.
+    pub fn dose_status_reason(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("doseStatusReason") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
+        return None;
+    }
+
+    /// Nominal position in a series.
+    pub fn dose_number_positive_int(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("doseNumberPositiveInt") {
+            return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
+    /// The date the evaluation of the vaccine administration event was performed.
+    pub fn date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Indicates the authority who published the protocol (e.g. ACIP).
+    pub fn authority(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("authority") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for doseNumberString
+    pub fn _dose_number_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_doseNumberString") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The vaccine administration event being evaluated.
+    pub fn immunization_event(&self) -> Reference {
+        Reference {
+            value: &self.value["immunizationEvent"],
+        }
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -214,10 +188,34 @@ impl ImmunizationEvaluation<'_> {
         return None;
     }
 
+    /// Indicates if the dose is valid or not valid with respect to the published
+    /// recommendations.
+    pub fn dose_status(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["doseStatus"],
+        }
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The recommended number of doses to achieve immunity.
+    pub fn series_doses_string(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("seriesDosesString") {
+            return Some(string);
         }
         return None;
     }
@@ -238,35 +236,56 @@ impl ImmunizationEvaluation<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
+    /// Indicates the current status of the evaluation of the vaccination administration
+    /// event.
+    pub fn status(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("status") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for doseNumberPositiveInt
+    pub fn _dose_number_positive_int(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_doseNumberPositiveInt") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The date the evaluation of the vaccine administration event was performed.
-    pub fn date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("date") {
-            return Some(string);
+    /// Extensions for seriesDosesString
+    pub fn _series_doses_string(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_seriesDosesString") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The vaccine preventable disease the dose is being evaluated against.
+    pub fn target_disease(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["targetDisease"],
+        }
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -284,42 +303,11 @@ impl ImmunizationEvaluation<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Nominal position in a series.
-    pub fn dose_number_positive_int(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("doseNumberPositiveInt") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Indicates the authority who published the protocol (e.g. ACIP).
-    pub fn authority(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("authority") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for doseNumberString
-    pub fn _dose_number_string(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_doseNumberString") {
-            return Some(Element { value: val });
+    /// One possible path to achieve presumed immunity against a disease - within the
+    /// context of an authority.
+    pub fn series(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("series") {
+            return Some(string);
         }
         return None;
     }
@@ -332,42 +320,77 @@ impl ImmunizationEvaluation<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.series() {}
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// A unique identifier assigned to this immunization evaluation record.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Identifier { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
-        if let Some(_val) = self.series_doses_string() {}
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self.description() {}
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        let _ = self.immunization_event().validate();
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self.dose_number_string() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._series_doses_positive_int() {
             _val.validate();
         }
-        if let Some(_val) = self.meta() {
-            _val.validate();
+        let _ = self.patient().validate();
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.dose_status_reason() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._series_doses_string() {
+        if let Some(_val) = self.dose_number_positive_int() {}
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self.authority() {
+            _val.validate();
+        }
+        if let Some(_val) = self._dose_number_string() {
+            _val.validate();
+        }
+        let _ = self.immunization_event().validate();
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        let _ = self.dose_status().validate();
+        if let Some(_val) = self._date() {
+            _val.validate();
+        }
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self.series_doses_string() {}
+        if let Some(_val) = self._series() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
             _val.validate();
         }
         if let Some(_val) = self.status() {}
-        let _ = self.target_disease().validate();
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._series_doses_positive_int() {
+        if let Some(_val) = self._dose_number_positive_int() {
             _val.validate();
         }
-        let _ = self.patient().validate();
-        if let Some(_val) = self.dose_number_string() {}
-        if let Some(_val) = self._dose_number_positive_int() {
+        if let Some(_val) = self._series_doses_string() {
             _val.validate();
         }
         if let Some(_val) = self.contained() {
@@ -375,43 +398,20 @@ impl ImmunizationEvaluation<'_> {
                 e.validate();
             });
         }
-        let _ = self.dose_status().validate();
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._date() {
-            _val.validate();
-        }
-        if let Some(_val) = self._series() {
-            _val.validate();
-        }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
+        let _ = self.target_disease().validate();
         if let Some(_val) = self._language() {
             _val.validate();
         }
-        if let Some(_val) = self.date() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.text() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.series() {}
+        if let Some(_val) = self.series_doses_positive_int() {}
+        if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.dose_number_positive_int() {}
-        if let Some(_val) = self.authority() {
-            _val.validate();
-        }
-        if let Some(_val) = self._dose_number_string() {
-            _val.validate();
-        }
-        if let Some(_val) = self.series_doses_positive_int() {}
         return true;
     }
 }

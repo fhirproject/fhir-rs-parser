@@ -16,6 +16,16 @@ pub struct MeasureReport_Group<'a> {
 }
 
 impl MeasureReport_Group<'_> {
+    /// The measure score for this population group, calculated as appropriate for the
+    /// measure type and scoring method, and based on the contents of the populations
+    /// defined in the group.
+    pub fn measure_score(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("measureScore") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
     /// When a measure includes multiple stratifiers, there will be a stratifier group
     /// for each stratifier defined by the measure.
     pub fn stratifier(&self) -> Option<Vec<MeasureReport_Stratifier>> {
@@ -23,28 +33,6 @@ impl MeasureReport_Group<'_> {
             return Some(
                 val.into_iter()
                     .map(|e| MeasureReport_Stratifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,20 +64,32 @@ impl MeasureReport_Group<'_> {
         return None;
     }
 
-    /// The measure score for this population group, calculated as appropriate for the
-    /// measure type and scoring method, and based on the contents of the populations
-    /// defined in the group.
-    pub fn measure_score(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("measureScore") {
-            return Some(Quantity { value: val });
-        }
-        return None;
-    }
-
     /// The meaning of the population group as defined in the measure definition.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
             return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -108,12 +108,10 @@ impl MeasureReport_Group<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.stratifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.measure_score() {
+            _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.stratifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -124,11 +122,13 @@ impl MeasureReport_Group<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.measure_score() {
-            _val.validate();
-        }
         if let Some(_val) = self.code() {
             _val.validate();
+        }
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.population() {
             _val.into_iter().for_each(|e| {

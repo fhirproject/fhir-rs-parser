@@ -23,26 +23,9 @@ impl Consent_Policy<'_> {
         return None;
     }
 
-    /// Entity or Organization having regulatory jurisdiction or accountability for
-    /// enforcing policies pertaining to Consent Directives.
-    pub fn authority(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("authority") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Extensions for uri
     pub fn _uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_uri") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for authority
-    pub fn _authority(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_authority") {
             return Some(Element { value: val });
         }
         return None;
@@ -60,6 +43,14 @@ impl Consent_Policy<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Extensions for authority
+    pub fn _authority(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_authority") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -95,13 +86,18 @@ impl Consent_Policy<'_> {
         return None;
     }
 
+    /// Entity or Organization having regulatory jurisdiction or accountability for
+    /// enforcing policies pertaining to Consent Directives.
+    pub fn authority(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("authority") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.uri() {}
-        if let Some(_val) = self.authority() {}
         if let Some(_val) = self._uri() {
-            _val.validate();
-        }
-        if let Some(_val) = self._authority() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -109,12 +105,16 @@ impl Consent_Policy<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self._authority() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.authority() {}
         return true;
     }
 }

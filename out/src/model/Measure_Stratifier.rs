@@ -15,6 +15,16 @@ pub struct Measure_Stratifier<'a> {
 }
 
 impl Measure_Stratifier<'_> {
+    /// An expression that specifies the criteria for the stratifier. This is typically
+    /// the name of an expression defined within a referenced library, but it may also
+    /// be a path to a stratifier element.
+    pub fn criteria(&self) -> Option<Expression> {
+        if let Some(val) = self.value.get("criteria") {
+            return Some(Expression { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -37,6 +47,16 @@ impl Measure_Stratifier<'_> {
         return None;
     }
 
+    /// Indicates a meaning for the stratifier. This can be as simple as a unique
+    /// identifier, or it can establish meaning in a broader context by drawing from a
+    /// terminology, allowing stratifiers to be correlated across measures.
+    pub fn code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("code") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// A component of the stratifier criteria for the measure report, specified as
     /// either the name of a valid CQL expression defined within a referenced library or
     /// a valid FHIR Resource Path.
@@ -47,6 +67,14 @@ impl Measure_Stratifier<'_> {
                     .map(|e| Measure_Component { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -67,38 +95,10 @@ impl Measure_Stratifier<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// The human readable description of this stratifier criteria.
     pub fn description(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("description") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Indicates a meaning for the stratifier. This can be as simple as a unique
-    /// identifier, or it can establish meaning in a broader context by drawing from a
-    /// terminology, allowing stratifiers to be correlated across measures.
-    pub fn code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// An expression that specifies the criteria for the stratifier. This is typically
-    /// the name of an expression defined within a referenced library, but it may also
-    /// be a path to a stratifier element.
-    pub fn criteria(&self) -> Option<Expression> {
-        if let Some(val) = self.value.get("criteria") {
-            return Some(Expression { value: val });
         }
         return None;
     }
@@ -113,17 +113,18 @@ impl Measure_Stratifier<'_> {
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.criteria() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.component() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.code() {
+            _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.component() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -131,13 +132,12 @@ impl Measure_Stratifier<'_> {
         if let Some(_val) = self._description() {
             _val.validate();
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.description() {}
-        if let Some(_val) = self.code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.criteria() {
-            _val.validate();
-        }
         if let Some(_val) = self.id() {}
         return true;
     }

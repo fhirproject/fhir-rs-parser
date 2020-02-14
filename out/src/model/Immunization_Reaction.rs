@@ -14,10 +14,26 @@ pub struct Immunization_Reaction<'a> {
 }
 
 impl Immunization_Reaction<'_> {
-    /// Self-reported indicator.
-    pub fn reported(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("reported") {
-            return Some(val.as_bool().unwrap());
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -44,26 +60,26 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
+    /// Extensions for reported
+    pub fn _reported(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_reported") {
             return Some(Element { value: val });
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Details of the reaction.
+    pub fn detail(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("detail") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Self-reported indicator.
+    pub fn reported(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("reported") {
+            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -77,14 +93,6 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Details of the reaction.
-    pub fn detail(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("detail") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
     /// Date of reaction to the immunization.
     pub fn date(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("date") {
@@ -93,17 +101,8 @@ impl Immunization_Reaction<'_> {
         return None;
     }
 
-    /// Extensions for reported
-    pub fn _reported(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_reported") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.reported() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -111,19 +110,20 @@ impl Immunization_Reaction<'_> {
         if let Some(_val) = self._date() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.detail() {
-            _val.validate();
-        }
-        if let Some(_val) = self.date() {}
         if let Some(_val) = self._reported() {
             _val.validate();
         }
+        if let Some(_val) = self.detail() {
+            _val.validate();
+        }
+        if let Some(_val) = self.reported() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.date() {}
         return true;
     }
 }

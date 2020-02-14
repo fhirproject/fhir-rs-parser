@@ -14,19 +14,11 @@ pub struct List_Entry<'a> {
 }
 
 impl List_Entry<'_> {
-    /// The flag allows the system constructing the list to indicate the role and
-    /// significance of the item in the list.
-    pub fn flag(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("flag") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for deleted
-    pub fn _deleted(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_deleted") {
-            return Some(Element { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -53,6 +45,22 @@ impl List_Entry<'_> {
         return None;
     }
 
+    /// True if this item is marked as deleted in the list.
+    pub fn deleted(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("deleted") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -69,10 +77,18 @@ impl List_Entry<'_> {
         return None;
     }
 
-    /// True if this item is marked as deleted in the list.
-    pub fn deleted(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("deleted") {
-            return Some(val.as_bool().unwrap());
+    /// A reference to the actual resource from which data was derived.
+    pub fn item(&self) -> Reference {
+        Reference {
+            value: &self.value["item"],
+        }
+    }
+
+    /// The flag allows the system constructing the list to indicate the role and
+    /// significance of the item in the list.
+    pub fn flag(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("flag") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -85,52 +101,36 @@ impl List_Entry<'_> {
         return None;
     }
 
-    /// A reference to the actual resource from which data was derived.
-    pub fn item(&self) -> Reference {
-        Reference {
-            value: &self.value["item"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
+    /// Extensions for deleted
+    pub fn _deleted(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_deleted") {
             return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.flag() {
-            _val.validate();
-        }
-        if let Some(_val) = self._deleted() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.deleted() {}
+        if let Some(_val) = self._date() {
+            _val.validate();
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.deleted() {}
-        if let Some(_val) = self.date() {}
         let _ = self.item().validate();
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._date() {
+        if let Some(_val) = self.flag() {
+            _val.validate();
+        }
+        if let Some(_val) = self.date() {}
+        if let Some(_val) = self._deleted() {
             _val.validate();
         }
         return true;

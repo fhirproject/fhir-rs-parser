@@ -14,30 +14,6 @@ pub struct TestScript_Origin<'a> {
 }
 
 impl TestScript_Origin<'_> {
-    /// Extensions for index
-    pub fn _index(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_index") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The type of origin profile the test system supports.
-    pub fn profile(&self) -> Coding {
-        Coding {
-            value: &self.value["profile"],
-        }
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -76,6 +52,15 @@ impl TestScript_Origin<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Abstract name given to an origin server in this test script.  The name is
     /// provided as a number starting at 1.
     pub fn index(&self) -> Option<i64> {
@@ -85,12 +70,22 @@ impl TestScript_Origin<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self._index() {
-            _val.validate();
+    /// The type of origin profile the test system supports.
+    pub fn profile(&self) -> Coding {
+        Coding {
+            value: &self.value["profile"],
         }
-        let _ = self.profile().validate();
-        if let Some(_val) = self.id() {}
+    }
+
+    /// Extensions for index
+    pub fn _index(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_index") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -101,7 +96,12 @@ impl TestScript_Origin<'_> {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.index() {}
+        let _ = self.profile().validate();
+        if let Some(_val) = self._index() {
+            _val.validate();
+        }
         return true;
     }
 }

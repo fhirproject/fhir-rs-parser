@@ -30,17 +30,6 @@ impl ClaimResponse_Total<'_> {
         return None;
     }
 
-    /// A code to indicate the information type of this adjudication record. Information
-    /// types may include: the value submitted, maximum values or percentages allowed or
-    /// payable under the plan, amounts that the patient is responsible for in aggregate
-    /// or pertaining to this item, amounts paid by other coverages, and the benefit
-    /// payable for this item.
-    pub fn category(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["category"],
-        }
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -61,6 +50,17 @@ impl ClaimResponse_Total<'_> {
             );
         }
         return None;
+    }
+
+    /// A code to indicate the information type of this adjudication record. Information
+    /// types may include: the value submitted, maximum values or percentages allowed or
+    /// payable under the plan, amounts that the patient is responsible for in aggregate
+    /// or pertaining to this item, amounts paid by other coverages, and the benefit
+    /// payable for this item.
+    pub fn category(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["category"],
+        }
     }
 
     /// Unique id for the element within a resource (for internal references). This may
@@ -85,12 +85,12 @@ impl ClaimResponse_Total<'_> {
                 e.validate();
             });
         }
-        let _ = self.category().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.category().validate();
         if let Some(_val) = self.id() {}
         let _ = self.amount().validate();
         return true;

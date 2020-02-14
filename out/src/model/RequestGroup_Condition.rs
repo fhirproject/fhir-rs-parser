@@ -14,11 +14,18 @@ pub struct RequestGroup_Condition<'a> {
 }
 
 impl RequestGroup_Condition<'_> {
-    /// An expression that returns true or false, indicating whether or not the
-    /// condition is satisfied.
-    pub fn expression(&self) -> Option<Expression> {
-        if let Some(val) = self.value.get("expression") {
-            return Some(Expression { value: val });
+    /// The kind of condition.
+    pub fn kind(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("kind") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for kind
+    pub fn _kind(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_kind") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -39,18 +46,11 @@ impl RequestGroup_Condition<'_> {
         return None;
     }
 
-    /// The kind of condition.
-    pub fn kind(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("kind") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for kind
-    pub fn _kind(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
+    /// An expression that returns true or false, indicating whether or not the
+    /// condition is satisfied.
+    pub fn expression(&self) -> Option<Expression> {
+        if let Some(val) = self.value.get("expression") {
+            return Some(Expression { value: val });
         }
         return None;
     }
@@ -87,7 +87,8 @@ impl RequestGroup_Condition<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.expression() {
+        if let Some(_val) = self.kind() {}
+        if let Some(_val) = self._kind() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -95,8 +96,7 @@ impl RequestGroup_Condition<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.kind() {}
-        if let Some(_val) = self._kind() {
+        if let Some(_val) = self.expression() {
             _val.validate();
         }
         if let Some(_val) = self.id() {}

@@ -16,54 +16,6 @@ pub struct CapabilityStatement_Software<'a> {
 
 impl CapabilityStatement_Software<'_> {
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The version identifier for the software covered by this statement.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Name the software is known by.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
     /// descendants. Usually modifier elements provide negation or qualification. To
@@ -85,9 +37,17 @@ impl CapabilityStatement_Software<'_> {
         return None;
     }
 
-    /// Date this version of the software was released.
-    pub fn release_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("releaseDate") {
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Name the software is known by.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
         }
         return None;
@@ -102,6 +62,38 @@ impl CapabilityStatement_Software<'_> {
         return None;
     }
 
+    /// The version identifier for the software covered by this statement.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Date this version of the software was released.
+    pub fn release_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("releaseDate") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// Extensions for releaseDate
     pub fn _release_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_releaseDate") {
@@ -110,8 +102,16 @@ impl CapabilityStatement_Software<'_> {
         return None;
     }
 
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -119,19 +119,19 @@ impl CapabilityStatement_Software<'_> {
         if let Some(_val) = self._name() {
             _val.validate();
         }
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self._version() {
-            _val.validate();
-        }
         if let Some(_val) = self.name() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.version() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.release_date() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self._release_date() {
+            _val.validate();
+        }
+        if let Some(_val) = self._version() {
             _val.validate();
         }
         return true;

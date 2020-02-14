@@ -15,34 +15,10 @@ pub struct BiologicallyDerivedProduct_Manipulation<'a> {
 }
 
 impl BiologicallyDerivedProduct_Manipulation<'_> {
-    /// Time of manipulation.
-    pub fn time_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("timeDateTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for timeDateTime
-    pub fn _time_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_timeDateTime") {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
         }
         return None;
     }
@@ -78,22 +54,6 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
         return None;
     }
 
-    /// Description of manipulation.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Time of manipulation.
     pub fn time_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("timePeriod") {
@@ -102,15 +62,49 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.time_date_time() {}
-        if let Some(_val) = self._time_date_time() {
-            _val.validate();
+    /// Description of manipulation.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for timeDateTime
+    pub fn _time_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_timeDateTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Time of manipulation.
+    pub fn time_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("timeDateTime") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self._description() {
+            _val.validate();
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
@@ -118,13 +112,19 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
-        }
         if let Some(_val) = self.time_period() {
             _val.validate();
         }
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._time_date_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self.time_date_time() {}
         return true;
     }
 }

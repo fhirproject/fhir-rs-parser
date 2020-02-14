@@ -14,15 +14,6 @@ pub struct StructureDefinition_Differential<'a> {
 }
 
 impl StructureDefinition_Differential<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -35,6 +26,27 @@ impl StructureDefinition_Differential<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Captures constraints on each element within the resource.
+    pub fn element(&self) -> Vec<ElementDefinition> {
+        self.value
+            .get("element")
+            .unwrap()
+            .as_array()
+            .unwrap()
+            .into_iter()
+            .map(|e| ElementDefinition { value: e })
+            .collect::<Vec<_>>()
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -61,26 +73,8 @@ impl StructureDefinition_Differential<'_> {
         return None;
     }
 
-    /// Captures constraints on each element within the resource.
-    pub fn element(&self) -> Vec<ElementDefinition> {
-        self.value
-            .get("element")
-            .unwrap()
-            .as_array()
-            .unwrap()
-            .into_iter()
-            .map(|e| ElementDefinition { value: e })
-            .collect::<Vec<_>>()
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -88,6 +82,12 @@ impl StructureDefinition_Differential<'_> {
         let _ = self.element().into_iter().for_each(|e| {
             e.validate();
         });
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }

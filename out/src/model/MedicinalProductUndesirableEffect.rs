@@ -18,32 +18,6 @@ pub struct MedicinalProductUndesirableEffect<'a> {
 }
 
 impl MedicinalProductUndesirableEffect<'_> {
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the resource. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
     /// A reference to a set of rules that were followed when the resource was
     /// constructed, and which must be understood when processing the content. Often,
     /// this is a reference to an implementation guide that defines the special rules
@@ -51,56 +25,6 @@ impl MedicinalProductUndesirableEffect<'_> {
     pub fn implicit_rules(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// These resources do not have an independent existence apart from the resource
-    /// that contains them - they cannot be identified independently, and nor can they
-    /// have their own independent transaction scope.
-    pub fn contained(&self) -> Option<Vec<ResourceList>> {
-        if let Some(Value::Array(val)) = self.value.get("contained") {
-            return Some(
-                val.into_iter()
-                    .map(|e| ResourceList { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The frequency of occurrence of the effect.
-    pub fn frequency_of_occurrence(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("frequencyOfOccurrence") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The population group to which this applies.
-    pub fn population(&self) -> Option<Vec<Population>> {
-        if let Some(Value::Array(val)) = self.value.get("population") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Population { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -118,11 +42,55 @@ impl MedicinalProductUndesirableEffect<'_> {
         return None;
     }
 
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The population group to which this applies.
+    pub fn population(&self) -> Option<Vec<Population>> {
+        if let Some(Value::Array(val)) = self.value.get("population") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Population { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// The logical id of the resource, as used in the URL for the resource. Once
     /// assigned, this value never changes.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
+    /// These resources do not have an independent existence apart from the resource
+    /// that contains them - they cannot be identified independently, and nor can they
+    /// have their own independent transaction scope.
+    pub fn contained(&self) -> Option<Vec<ResourceList>> {
+        if let Some(Value::Array(val)) = self.value.get("contained") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ResourceList { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -143,14 +111,42 @@ impl MedicinalProductUndesirableEffect<'_> {
         return None;
     }
 
-    /// The medication for which this is an indication.
-    pub fn subject(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("subject") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the resource. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The frequency of occurrence of the effect.
+    pub fn frequency_of_occurrence(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("frequencyOfOccurrence") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -178,26 +174,45 @@ impl MedicinalProductUndesirableEffect<'_> {
         return None;
     }
 
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+    /// The medication for which this is an indication.
+    pub fn subject(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("subject") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.text() {
+            _val.validate();
+        }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.population() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.language() {}
         if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.symptom_condition_effect() {
+            _val.validate();
+        }
+        if let Some(_val) = self.classification() {
+            _val.validate();
+        }
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -205,36 +220,21 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(_val) = self.frequency_of_occurrence() {
             _val.validate();
         }
-        if let Some(_val) = self.population() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self._language() {
             _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.symptom_condition_effect() {
-            _val.validate();
-        }
-        if let Some(_val) = self.classification() {
-            _val.validate();
-        }
-        if let Some(_val) = self.subject() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
         }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._language() {
-            _val.validate();
+        if let Some(_val) = self.subject() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

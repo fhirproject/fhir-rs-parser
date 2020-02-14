@@ -12,42 +12,18 @@ pub struct Age<'a> {
 }
 
 impl Age<'_> {
-    /// The value of the measured amount. The value includes an implicit precision in
-    /// the presentation of the value.
-    pub fn value(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("value") {
-            return Some(val.as_f64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for value
-    pub fn _value(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A human-readable form of the unit.
-    pub fn unit(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("unit") {
+    /// The identification of the system that provides the coded form of the unit.
+    pub fn system(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("system") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for unit
-    pub fn _unit(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_unit") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The identification of the system that provides the coded form of the unit.
-    pub fn system(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("system") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -61,10 +37,19 @@ impl Age<'_> {
         return None;
     }
 
-    /// Extensions for comparator
-    pub fn _comparator(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_comparator") {
+    /// Extensions for unit
+    pub fn _unit(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_unit") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The value of the measured amount. The value includes an implicit precision in
+    /// the presentation of the value.
+    pub fn value(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("value") {
+            return Some(val.as_f64().unwrap());
         }
         return None;
     }
@@ -77,19 +62,10 @@ impl Age<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
+    /// Extensions for value
+    pub fn _value(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_value") {
             return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
         }
         return None;
     }
@@ -120,33 +96,57 @@ impl Age<'_> {
         return None;
     }
 
+    /// Extensions for comparator
+    pub fn _comparator(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_comparator") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A human-readable form of the unit.
+    pub fn unit(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("unit") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.value() {}
-        if let Some(_val) = self._value() {
-            _val.validate();
-        }
-        if let Some(_val) = self.unit() {}
-        if let Some(_val) = self._unit() {
-            _val.validate();
-        }
         if let Some(_val) = self.system() {}
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self._system() {
             _val.validate();
         }
-        if let Some(_val) = self._comparator() {
+        if let Some(_val) = self._unit() {
             _val.validate();
         }
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self.code() {}
-        if let Some(_val) = self._code() {
+        if let Some(_val) = self._value() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.comparator() {}
+        if let Some(_val) = self._comparator() {
+            _val.validate();
+        }
+        if let Some(_val) = self._code() {
+            _val.validate();
+        }
+        if let Some(_val) = self.unit() {}
         return true;
     }
 }
@@ -167,6 +167,15 @@ impl AgeComparator {
             ">=" => Some(AgeComparator::GreaterThanOrEqual),
             ">" => Some(AgeComparator::GreaterThan),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            AgeComparator::LessThan => "<",
+            AgeComparator::LessThanOrEqual => "<=",
+            AgeComparator::GreaterThanOrEqual => ">=",
+            AgeComparator::GreaterThan => ">",
         }
     }
 }

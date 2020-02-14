@@ -23,6 +23,14 @@ impl NutritionOrder_Nutrient<'_> {
         return None;
     }
 
+    /// The nutrient that is being modified such as carbohydrate or sodium.
+    pub fn modifier(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("modifier") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -61,14 +69,6 @@ impl NutritionOrder_Nutrient<'_> {
         return None;
     }
 
-    /// The nutrient that is being modified such as carbohydrate or sodium.
-    pub fn modifier(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("modifier") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
     /// The quantity of the specified nutrient to include in diet.
     pub fn amount(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amount") {
@@ -79,6 +79,9 @@ impl NutritionOrder_Nutrient<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self.modifier() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -88,9 +91,6 @@ impl NutritionOrder_Nutrient<'_> {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.modifier() {
-            _val.validate();
         }
         if let Some(_val) = self.amount() {
             _val.validate();

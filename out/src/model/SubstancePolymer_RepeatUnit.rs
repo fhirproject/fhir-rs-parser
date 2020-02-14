@@ -16,6 +16,14 @@ pub struct SubstancePolymer_RepeatUnit<'a> {
 }
 
 impl SubstancePolymer_RepeatUnit<'_> {
+    /// Extensions for repeatUnit
+    pub fn _repeat_unit(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_repeatUnit") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Todo.
     pub fn amount(&self) -> Option<SubstanceAmount> {
         if let Some(val) = self.value.get("amount") {
@@ -48,34 +56,6 @@ impl SubstancePolymer_RepeatUnit<'_> {
     }
 
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Todo.
-    pub fn degree_of_polymerisation(&self) -> Option<Vec<SubstancePolymer_DegreeOfPolymerisation>> {
-        if let Some(Value::Array(val)) = self.value.get("degreeOfPolymerisation") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstancePolymer_DegreeOfPolymerisation { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
     /// descendants. Usually modifier elements provide negation or qualification. To
@@ -97,18 +77,26 @@ impl SubstancePolymer_RepeatUnit<'_> {
         return None;
     }
 
-    /// Extensions for repeatUnit
-    pub fn _repeat_unit(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_repeatUnit") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Todo.
     pub fn repeat_unit(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("repeatUnit") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -121,7 +109,22 @@ impl SubstancePolymer_RepeatUnit<'_> {
         return None;
     }
 
+    /// Todo.
+    pub fn degree_of_polymerisation(&self) -> Option<Vec<SubstancePolymer_DegreeOfPolymerisation>> {
+        if let Some(Value::Array(val)) = self.value.get("degreeOfPolymerisation") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstancePolymer_DegreeOfPolymerisation { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self._repeat_unit() {
+            _val.validate();
+        }
         if let Some(_val) = self.amount() {
             _val.validate();
         }
@@ -131,27 +134,24 @@ impl SubstancePolymer_RepeatUnit<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.degree_of_polymerisation() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._repeat_unit() {
-            _val.validate();
-        }
         if let Some(_val) = self.repeat_unit() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.orientation_of_polymerisation() {
             _val.validate();
+        }
+        if let Some(_val) = self.degree_of_polymerisation() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

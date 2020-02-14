@@ -25,31 +25,6 @@ impl PlanDefinition_Condition<'_> {
         return None;
     }
 
-    /// The kind of condition.
-    pub fn kind(&self) -> Option<PlanDefinition_ConditionKind> {
-        if let Some(Value::String(val)) = self.value.get("kind") {
-            return Some(PlanDefinition_ConditionKind::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// An expression that returns true or false, indicating whether the condition is
-    /// satisfied.
-    pub fn expression(&self) -> Option<Expression> {
-        if let Some(val) = self.value.get("expression") {
-            return Some(Expression { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for kind
-    pub fn _kind(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -62,6 +37,14 @@ impl PlanDefinition_Condition<'_> {
                     .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// The kind of condition.
+    pub fn kind(&self) -> Option<PlanDefinition_ConditionKind> {
+        if let Some(Value::String(val)) = self.value.get("kind") {
+            return Some(PlanDefinition_ConditionKind::from_string(&val).unwrap());
         }
         return None;
     }
@@ -88,24 +71,41 @@ impl PlanDefinition_Condition<'_> {
         return None;
     }
 
+    /// Extensions for kind
+    pub fn _kind(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_kind") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// An expression that returns true or false, indicating whether the condition is
+    /// satisfied.
+    pub fn expression(&self) -> Option<Expression> {
+        if let Some(val) = self.value.get("expression") {
+            return Some(Expression { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.kind() {}
-        if let Some(_val) = self.expression() {
-            _val.validate();
-        }
-        if let Some(_val) = self._kind() {
-            _val.validate();
-        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.kind() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self._kind() {
+            _val.validate();
+        }
+        if let Some(_val) = self.expression() {
+            _val.validate();
         }
         return true;
     }
@@ -125,6 +125,14 @@ impl PlanDefinition_ConditionKind {
             "start" => Some(PlanDefinition_ConditionKind::Start),
             "stop" => Some(PlanDefinition_ConditionKind::Stop),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            PlanDefinition_ConditionKind::Applicability => "applicability",
+            PlanDefinition_ConditionKind::Start => "start",
+            PlanDefinition_ConditionKind::Stop => "stop",
         }
     }
 }

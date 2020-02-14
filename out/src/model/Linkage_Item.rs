@@ -14,6 +14,15 @@ pub struct Linkage_Item<'a> {
 }
 
 impl Linkage_Item<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -30,11 +39,17 @@ impl Linkage_Item<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// The resource instance being linked as part of the group.
+    pub fn resource(&self) -> Reference {
+        Reference {
+            value: &self.value["resource"],
+        }
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -44,14 +59,6 @@ impl Linkage_Item<'_> {
     pub fn fhir_type(&self) -> Option<Linkage_ItemType> {
         if let Some(Value::String(val)) = self.value.get("type") {
             return Some(Linkage_ItemType::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -78,30 +85,23 @@ impl Linkage_Item<'_> {
         return None;
     }
 
-    /// The resource instance being linked as part of the group.
-    pub fn resource(&self) -> Reference {
-        Reference {
-            value: &self.value["resource"],
-        }
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {}
+        let _ = self.resource().validate();
         if let Some(_val) = self._type() {
             _val.validate();
         }
+        if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.resource().validate();
         return true;
     }
 }
@@ -120,6 +120,14 @@ impl Linkage_ItemType {
             "alternate" => Some(Linkage_ItemType::Alternate),
             "historical" => Some(Linkage_ItemType::Historical),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            Linkage_ItemType::Source => "source",
+            Linkage_ItemType::Alternate => "alternate",
+            Linkage_ItemType::Historical => "historical",
         }
     }
 }

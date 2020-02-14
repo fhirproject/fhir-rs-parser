@@ -16,19 +16,12 @@ pub struct EffectEvidenceSynthesis_ResultsByExposure<'a> {
 }
 
 impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
-    /// Human-readable summary of results by exposure state.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
+    /// Extensions for exposureState
+    pub fn _exposure_state(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_exposureState") {
+            return Some(Element { value: val });
         }
         return None;
-    }
-
-    /// Reference to a RiskEvidenceSynthesis resource.
-    pub fn risk_evidence_synthesis(&self) -> Reference {
-        Reference {
-            value: &self.value["riskEvidenceSynthesis"],
-        }
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -53,6 +46,14 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
         return None;
     }
 
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -62,18 +63,20 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
         return None;
     }
 
-    /// Extensions for exposureState
-    pub fn _exposure_state(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_exposureState") {
-            return Some(Element { value: val });
+    /// Used to define variant exposure states such as low-risk state.
+    pub fn variant_state(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("variantState") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+    /// Whether these results are for the exposure state or alternative exposure state.
+    pub fn exposure_state(&self) -> Option<EffectEvidenceSynthesis_ResultsByExposureExposureState> {
+        if let Some(Value::String(val)) = self.value.get("exposureState") {
+            return Some(
+                EffectEvidenceSynthesis_ResultsByExposureExposureState::from_string(&val).unwrap(),
+            );
         }
         return None;
     }
@@ -94,48 +97,45 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
         return None;
     }
 
-    /// Whether these results are for the exposure state or alternative exposure state.
-    pub fn exposure_state(&self) -> Option<EffectEvidenceSynthesis_ResultsByExposureExposureState> {
-        if let Some(Value::String(val)) = self.value.get("exposureState") {
-            return Some(
-                EffectEvidenceSynthesis_ResultsByExposureExposureState::from_string(&val).unwrap(),
-            );
+    /// Reference to a RiskEvidenceSynthesis resource.
+    pub fn risk_evidence_synthesis(&self) -> Reference {
+        Reference {
+            value: &self.value["riskEvidenceSynthesis"],
         }
-        return None;
     }
 
-    /// Used to define variant exposure states such as low-risk state.
-    pub fn variant_state(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("variantState") {
-            return Some(CodeableConcept { value: val });
+    /// Human-readable summary of results by exposure state.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.description() {}
-        let _ = self.risk_evidence_synthesis().validate();
+        if let Some(_val) = self._exposure_state() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._exposure_state() {
-            _val.validate();
-        }
         if let Some(_val) = self._description() {
             _val.validate();
         }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.variant_state() {
+            _val.validate();
+        }
+        if let Some(_val) = self.exposure_state() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.exposure_state() {}
-        if let Some(_val) = self.variant_state() {
-            _val.validate();
-        }
+        let _ = self.risk_evidence_synthesis().validate();
+        if let Some(_val) = self.description() {}
         return true;
     }
 }
@@ -156,6 +156,15 @@ impl EffectEvidenceSynthesis_ResultsByExposureExposureState {
                 Some(EffectEvidenceSynthesis_ResultsByExposureExposureState::ExposureAlternative)
             }
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            EffectEvidenceSynthesis_ResultsByExposureExposureState::Exposure => "exposure",
+            EffectEvidenceSynthesis_ResultsByExposureExposureState::ExposureAlternative => {
+                "exposure-alternative"
+            }
         }
     }
 }

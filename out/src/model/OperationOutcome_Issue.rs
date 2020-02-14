@@ -15,12 +15,18 @@ pub struct OperationOutcome_Issue<'a> {
 
 impl OperationOutcome_Issue<'_> {
     /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
                     .map(|e| Extension { value: e })
@@ -30,40 +36,11 @@ impl OperationOutcome_Issue<'_> {
         return None;
     }
 
-    /// Indicates whether the issue indicates a variation from successful processing.
-    pub fn severity(&self) -> Option<OperationOutcome_IssueSeverity> {
-        if let Some(Value::String(val)) = self.value.get("severity") {
-            return Some(OperationOutcome_IssueSeverity::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Describes the type of the issue. The system that creates an OperationOutcome
-    /// SHALL choose the most applicable code from the IssueType value set, and may
-    /// additional provide its own code for the error in the details element.
-    pub fn code(&self) -> Option<OperationOutcome_IssueCode> {
-        if let Some(Value::String(val)) = self.value.get("code") {
-            return Some(OperationOutcome_IssueCode::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Additional diagnostic information about the issue.
-    pub fn diagnostics(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("diagnostics") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for location
-    pub fn _location(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_location") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Additional details about the error. This may be a text description of the error
+    /// or a system code that identifies the error.
+    pub fn details(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("details") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -94,45 +71,6 @@ impl OperationOutcome_Issue<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for diagnostics
-    pub fn _diagnostics(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_diagnostics") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// This element is deprecated because it is XML specific. It is replaced by
     /// issue.expression, which is format independent, and simpler to parse.     For
     /// resource issues, this will be a simple XPath limited to element names,
@@ -150,11 +88,41 @@ impl OperationOutcome_Issue<'_> {
         return None;
     }
 
-    /// Additional details about the error. This may be a text description of the error
-    /// or a system code that identifies the error.
-    pub fn details(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("details") {
-            return Some(CodeableConcept { value: val });
+    /// Describes the type of the issue. The system that creates an OperationOutcome
+    /// SHALL choose the most applicable code from the IssueType value set, and may
+    /// additional provide its own code for the error in the details element.
+    pub fn code(&self) -> Option<OperationOutcome_IssueCode> {
+        if let Some(Value::String(val)) = self.value.get("code") {
+            return Some(OperationOutcome_IssueCode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for location
+    pub fn _location(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_location") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Indicates whether the issue indicates a variation from successful processing.
+    pub fn severity(&self) -> Option<OperationOutcome_IssueSeverity> {
+        if let Some(Value::String(val)) = self.value.get("severity") {
+            return Some(OperationOutcome_IssueSeverity::from_string(&val).unwrap());
         }
         return None;
     }
@@ -175,19 +143,46 @@ impl OperationOutcome_Issue<'_> {
         return None;
     }
 
+    /// Additional diagnostic information about the issue.
+    pub fn diagnostics(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("diagnostics") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for diagnostics
+    pub fn _diagnostics(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_diagnostics") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.severity() {}
-        if let Some(_val) = self.code() {}
-        if let Some(_val) = self.diagnostics() {}
-        if let Some(_val) = self._location() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.details() {
+            _val.validate();
         }
         if let Some(_val) = self.expression() {
             _val.into_iter().for_each(|_e| {});
@@ -197,48 +192,33 @@ impl OperationOutcome_Issue<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.location() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self._location() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._diagnostics() {
-            _val.validate();
-        }
-        if let Some(_val) = self.location() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.details() {
-            _val.validate();
-        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.severity() {}
         if let Some(_val) = self._code() {
             _val.validate();
         }
         if let Some(_val) = self._severity() {
             _val.validate();
         }
-        return true;
-    }
-}
-
-#[derive(Debug)]
-pub enum OperationOutcome_IssueSeverity {
-    Fatal,
-    Error,
-    Warning,
-    Information,
-}
-
-impl OperationOutcome_IssueSeverity {
-    pub fn from_string(string: &str) -> Option<OperationOutcome_IssueSeverity> {
-        match string {
-            "fatal" => Some(OperationOutcome_IssueSeverity::Fatal),
-            "error" => Some(OperationOutcome_IssueSeverity::Error),
-            "warning" => Some(OperationOutcome_IssueSeverity::Warning),
-            "information" => Some(OperationOutcome_IssueSeverity::Information),
-            _ => None,
+        if let Some(_val) = self.diagnostics() {}
+        if let Some(_val) = self._diagnostics() {
+            _val.validate();
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        return true;
     }
 }
 
@@ -312,6 +292,71 @@ impl OperationOutcome_IssueCode {
             "throttled" => Some(OperationOutcome_IssueCode::Throttled),
             "informational" => Some(OperationOutcome_IssueCode::Informational),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            OperationOutcome_IssueCode::Invalid => "invalid",
+            OperationOutcome_IssueCode::Structure => "structure",
+            OperationOutcome_IssueCode::Required => "required",
+            OperationOutcome_IssueCode::Value => "value",
+            OperationOutcome_IssueCode::Invariant => "invariant",
+            OperationOutcome_IssueCode::Security => "security",
+            OperationOutcome_IssueCode::Login => "login",
+            OperationOutcome_IssueCode::Unknown => "unknown",
+            OperationOutcome_IssueCode::Expired => "expired",
+            OperationOutcome_IssueCode::Forbidden => "forbidden",
+            OperationOutcome_IssueCode::Suppressed => "suppressed",
+            OperationOutcome_IssueCode::Processing => "processing",
+            OperationOutcome_IssueCode::NotSupported => "not-supported",
+            OperationOutcome_IssueCode::Duplicate => "duplicate",
+            OperationOutcome_IssueCode::MultipleMatches => "multiple-matches",
+            OperationOutcome_IssueCode::NotFound => "not-found",
+            OperationOutcome_IssueCode::Deleted => "deleted",
+            OperationOutcome_IssueCode::TooLong => "too-long",
+            OperationOutcome_IssueCode::CodeInvalid => "code-invalid",
+            OperationOutcome_IssueCode::Extension => "extension",
+            OperationOutcome_IssueCode::TooCostly => "too-costly",
+            OperationOutcome_IssueCode::BusinessRule => "business-rule",
+            OperationOutcome_IssueCode::Conflict => "conflict",
+            OperationOutcome_IssueCode::Transient => "transient",
+            OperationOutcome_IssueCode::LockError => "lock-error",
+            OperationOutcome_IssueCode::NoStore => "no-store",
+            OperationOutcome_IssueCode::Exception => "exception",
+            OperationOutcome_IssueCode::Timeout => "timeout",
+            OperationOutcome_IssueCode::Incomplete => "incomplete",
+            OperationOutcome_IssueCode::Throttled => "throttled",
+            OperationOutcome_IssueCode::Informational => "informational",
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum OperationOutcome_IssueSeverity {
+    Fatal,
+    Error,
+    Warning,
+    Information,
+}
+
+impl OperationOutcome_IssueSeverity {
+    pub fn from_string(string: &str) -> Option<OperationOutcome_IssueSeverity> {
+        match string {
+            "fatal" => Some(OperationOutcome_IssueSeverity::Fatal),
+            "error" => Some(OperationOutcome_IssueSeverity::Error),
+            "warning" => Some(OperationOutcome_IssueSeverity::Warning),
+            "information" => Some(OperationOutcome_IssueSeverity::Information),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            OperationOutcome_IssueSeverity::Fatal => "fatal",
+            OperationOutcome_IssueSeverity::Error => "error",
+            OperationOutcome_IssueSeverity::Warning => "warning",
+            OperationOutcome_IssueSeverity::Information => "information",
         }
     }
 }

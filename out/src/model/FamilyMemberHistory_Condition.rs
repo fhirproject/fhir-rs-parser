@@ -18,12 +18,39 @@ pub struct FamilyMemberHistory_Condition<'a> {
 }
 
 impl FamilyMemberHistory_Condition<'_> {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// The actual condition specified. Could be a coded condition (like MI or Diabetes)
+    /// or a less specific string like 'cancer' depending on how much is known about the
+    /// condition and the capabilities of the creating system.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// This condition contributed to the cause of death of the related person. If
+    /// contributedToDeath is not populated, then it is unknown.
+    pub fn contributed_to_death(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("contributedToDeath") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
     /// Either the age of onset, range of approximate age or descriptive string can be
     /// recorded.  For conditions with multiple occurrences, this describes the first
     /// known occurrence.
-    pub fn onset_age(&self) -> Option<Age> {
-        if let Some(val) = self.value.get("onsetAge") {
-            return Some(Age { value: val });
+    pub fn onset_range(&self) -> Option<Range> {
+        if let Some(val) = self.value.get("onsetRange") {
+            return Some(Range { value: val });
         }
         return None;
     }
@@ -60,15 +87,6 @@ impl FamilyMemberHistory_Condition<'_> {
         return None;
     }
 
-    /// The actual condition specified. Could be a coded condition (like MI or Diabetes)
-    /// or a less specific string like 'cancer' depending on how much is known about the
-    /// condition and the capabilities of the creating system.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     /// Indicates what happened following the condition.  If the condition resulted in
     /// death, deceased date is captured on the relation.
     pub fn outcome(&self) -> Option<CodeableConcept> {
@@ -78,28 +96,12 @@ impl FamilyMemberHistory_Condition<'_> {
         return None;
     }
 
-    /// Extensions for contributedToDeath
-    pub fn _contributed_to_death(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_contributedToDeath") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// This condition contributed to the cause of death of the related person. If
-    /// contributedToDeath is not populated, then it is unknown.
-    pub fn contributed_to_death(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("contributedToDeath") {
-            return Some(val.as_bool().unwrap());
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Either the age of onset, range of approximate age or descriptive string can be
+    /// recorded.  For conditions with multiple occurrences, this describes the first
+    /// known occurrence.
+    pub fn onset_age(&self) -> Option<Age> {
+        if let Some(val) = self.value.get("onsetAge") {
+            return Some(Age { value: val });
         }
         return None;
     }
@@ -122,6 +124,14 @@ impl FamilyMemberHistory_Condition<'_> {
         return None;
     }
 
+    /// Extensions for contributedToDeath
+    pub fn _contributed_to_death(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_contributedToDeath") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// An area where general notes can be placed about this specific condition.
     pub fn note(&self) -> Option<Vec<Annotation>> {
         if let Some(Value::Array(val)) = self.value.get("note") {
@@ -130,16 +140,6 @@ impl FamilyMemberHistory_Condition<'_> {
                     .map(|e| Annotation { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Either the age of onset, range of approximate age or descriptive string can be
-    /// recorded.  For conditions with multiple occurrences, this describes the first
-    /// known occurrence.
-    pub fn onset_range(&self) -> Option<Range> {
-        if let Some(val) = self.value.get("onsetRange") {
-            return Some(Range { value: val });
         }
         return None;
     }
@@ -161,7 +161,10 @@ impl FamilyMemberHistory_Condition<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.onset_age() {
+        if let Some(_val) = self.id() {}
+        let _ = self.code().validate();
+        if let Some(_val) = self.contributed_to_death() {}
+        if let Some(_val) = self.onset_range() {
             _val.validate();
         }
         if let Some(_val) = self.onset_period() {
@@ -172,26 +175,23 @@ impl FamilyMemberHistory_Condition<'_> {
                 e.validate();
             });
         }
-        let _ = self.code().validate();
         if let Some(_val) = self.outcome() {
             _val.validate();
         }
-        if let Some(_val) = self._contributed_to_death() {
+        if let Some(_val) = self.onset_age() {
             _val.validate();
         }
-        if let Some(_val) = self.contributed_to_death() {}
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.onset_string() {}
         if let Some(_val) = self._onset_string() {
+            _val.validate();
+        }
+        if let Some(_val) = self._contributed_to_death() {
             _val.validate();
         }
         if let Some(_val) = self.note() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self.onset_range() {
-            _val.validate();
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {

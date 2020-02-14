@@ -20,82 +20,6 @@ pub struct ExplanationOfBenefit_Detail<'a> {
 }
 
 impl ExplanationOfBenefit_Detail<'_> {
-    /// Code to identify the general type of benefits under which products and services
-    /// are provided.
-    pub fn category(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// If the item is not a group then this is the fee for the product or service,
-    /// otherwise this is the total of the fees for the details of the group.
-    pub fn unit_price(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("unitPrice") {
-            return Some(Money { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for factor
-    pub fn _factor(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The type of revenue or cost center providing the product and/or service.
-    pub fn revenue(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("revenue") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for sequence
-    pub fn _sequence(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Item typification or modifiers codes to convey additional context for the
-    /// product or service.
-    pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("modifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Identifies the program under which this may be recovered.
-    pub fn program_code(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("programCode") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     /// Unique Device Identifiers associated with this line item.
     pub fn udi(&self) -> Option<Vec<Reference>> {
         if let Some(Value::Array(val)) = self.value.get("udi") {
@@ -117,14 +41,78 @@ impl ExplanationOfBenefit_Detail<'_> {
         return None;
     }
 
-    /// The adjudication results.
-    pub fn adjudication(&self) -> Option<Vec<ExplanationOfBenefit_Adjudication>> {
-        if let Some(Value::Array(val)) = self.value.get("adjudication") {
+    /// Code to identify the general type of benefits under which products and services
+    /// are provided.
+    pub fn category(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("category") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The number of repetitions of a service or product.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Third-tier of goods and services.
+    pub fn sub_detail(&self) -> Option<Vec<ExplanationOfBenefit_SubDetail>> {
+        if let Some(Value::Array(val)) = self.value.get("subDetail") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Adjudication { value: e })
+                    .map(|e| ExplanationOfBenefit_SubDetail { value: e })
                     .collect::<Vec<_>>(),
             );
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// When the value is a group code then this item collects a set of related claim
+    /// details, otherwise this contains the product, service, drug or other billing
+    /// code for the item.
+    pub fn product_or_service(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["productOrService"],
+        }
+    }
+
+    /// Identifies the program under which this may be recovered.
+    pub fn program_code(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("programCode") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for sequence
+    pub fn _sequence(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sequence") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// If the item is not a group then this is the fee for the product or service,
+    /// otherwise this is the total of the fees for the details of the group.
+    pub fn unit_price(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("unitPrice") {
+            return Some(Money { value: val });
         }
         return None;
     }
@@ -142,23 +130,10 @@ impl ExplanationOfBenefit_Detail<'_> {
         return None;
     }
 
-    /// Extensions for noteNumber
-    pub fn _note_number(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_noteNumber") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The quantity times the unit price for an additional service or product or
-    /// charge.
-    pub fn net(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("net") {
-            return Some(Money { value: val });
+    /// The type of revenue or cost center providing the product and/or service.
+    pub fn revenue(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("revenue") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
@@ -185,10 +160,24 @@ impl ExplanationOfBenefit_Detail<'_> {
         return None;
     }
 
-    /// The number of repetitions of a service or product.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+    /// Item typification or modifiers codes to convey additional context for the
+    /// product or service.
+    pub fn modifier(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("modifier") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The quantity times the unit price for an additional service or product or
+    /// charge.
+    pub fn net(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("net") {
+            return Some(Money { value: val });
         }
         return None;
     }
@@ -209,25 +198,16 @@ impl ExplanationOfBenefit_Detail<'_> {
         return None;
     }
 
-    /// Third-tier of goods and services.
-    pub fn sub_detail(&self) -> Option<Vec<ExplanationOfBenefit_SubDetail>> {
-        if let Some(Value::Array(val)) = self.value.get("subDetail") {
+    /// The adjudication results.
+    pub fn adjudication(&self) -> Option<Vec<ExplanationOfBenefit_Adjudication>> {
+        if let Some(Value::Array(val)) = self.value.get("adjudication") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_SubDetail { value: e })
+                    .map(|e| ExplanationOfBenefit_Adjudication { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
-    }
-
-    /// When the value is a group code then this item collects a set of related claim
-    /// details, otherwise this contains the product, service, drug or other billing
-    /// code for the item.
-    pub fn product_or_service(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["productOrService"],
-        }
     }
 
     /// A real number that represents a multiplier used in determining the overall value
@@ -240,53 +220,61 @@ impl ExplanationOfBenefit_Detail<'_> {
         return None;
     }
 
+    /// Extensions for factor
+    pub fn _factor(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_factor") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for noteNumber
+    pub fn _note_number(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_noteNumber") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.category() {
-            _val.validate();
-        }
-        if let Some(_val) = self.unit_price() {
-            _val.validate();
-        }
-        if let Some(_val) = self._factor() {
-            _val.validate();
-        }
-        if let Some(_val) = self.revenue() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._sequence() {
-            _val.validate();
-        }
-        if let Some(_val) = self.modifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.program_code() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.udi() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.sequence() {}
-        if let Some(_val) = self.adjudication() {
+        if let Some(_val) = self.category() {
+            _val.validate();
+        }
+        if let Some(_val) = self.quantity() {
+            _val.validate();
+        }
+        if let Some(_val) = self.sub_detail() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.id() {}
+        let _ = self.product_or_service().validate();
+        if let Some(_val) = self.program_code() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._sequence() {
+            _val.validate();
+        }
+        if let Some(_val) = self.unit_price() {
+            _val.validate();
         }
         if let Some(_val) = self.note_number() {
             _val.into_iter().for_each(|_e| {});
         }
-        if let Some(_val) = self._note_number() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.net() {
+        if let Some(_val) = self.revenue() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -294,7 +282,12 @@ impl ExplanationOfBenefit_Detail<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.quantity() {
+        if let Some(_val) = self.modifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.net() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -302,13 +295,20 @@ impl ExplanationOfBenefit_Detail<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.sub_detail() {
+        if let Some(_val) = self.adjudication() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.product_or_service().validate();
         if let Some(_val) = self.factor() {}
+        if let Some(_val) = self._factor() {
+            _val.validate();
+        }
+        if let Some(_val) = self._note_number() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }

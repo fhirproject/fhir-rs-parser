@@ -15,9 +15,31 @@ pub struct CapabilityStatement_SearchParam<'a> {
 }
 
 impl CapabilityStatement_SearchParam<'_> {
-    /// Extensions for type
-    pub fn _type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_type") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element and that modifies the understanding of the element in
+    /// which it is contained and/or the understanding of the containing element's
+    /// descendants. Usually modifier elements provide negation or qualification. To
+    /// make the use of extensions safe and manageable, there is a strict set of
+    /// governance applied to the definition and use of extensions. Though any
+    /// implementer can define an extension, there is a set of requirements that SHALL
+    /// be met as part of the definition of the extension. Applications processing a
+    /// resource are required to check for modifier extensions.    Modifier extensions
+    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
+    /// (including cannot change the meaning of modifierExtension itself).
+    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for documentation
+    pub fn _documentation(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_documentation") {
             return Some(Element { value: val });
         }
         return None;
@@ -28,6 +50,22 @@ impl CapabilityStatement_SearchParam<'_> {
     pub fn documentation(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("documentation") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for type
+    pub fn _type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_type") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -51,36 +89,6 @@ impl CapabilityStatement_SearchParam<'_> {
     /// requirements that SHALL be met as part of the definition of the extension.
     pub fn extension(&self) -> Option<Vec<Extension>> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for documentation
-    pub fn _documentation(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element and that modifies the understanding of the element in
-    /// which it is contained and/or the understanding of the containing element's
-    /// descendants. Usually modifier elements provide negation or qualification. To
-    /// make the use of extensions safe and manageable, there is a strict set of
-    /// governance applied to the definition and use of extensions. Though any
-    /// implementer can define an extension, there is a set of requirements that SHALL
-    /// be met as part of the definition of the extension. Applications processing a
-    /// resource are required to check for modifier extensions.    Modifier extensions
-    /// SHALL NOT change the meaning of any elements on Resource or DomainResource
-    /// (including cannot change the meaning of modifierExtension itself).
-    pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
                     .map(|e| Extension { value: e })
@@ -116,21 +124,8 @@ impl CapabilityStatement_SearchParam<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self._type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.documentation() {}
-        if let Some(_val) = self.definition() {}
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -138,7 +133,15 @@ impl CapabilityStatement_SearchParam<'_> {
         if let Some(_val) = self._documentation() {
             _val.validate();
         }
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.documentation() {}
+        if let Some(_val) = self._type() {
+            _val.validate();
+        }
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self.definition() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -146,9 +149,6 @@ impl CapabilityStatement_SearchParam<'_> {
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.name() {}
-        if let Some(_val) = self._name() {
-            _val.validate();
-        }
         return true;
     }
 }
@@ -179,6 +179,20 @@ impl CapabilityStatement_SearchParamType {
             "uri" => Some(CapabilityStatement_SearchParamType::Uri),
             "special" => Some(CapabilityStatement_SearchParamType::Special),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            CapabilityStatement_SearchParamType::Number => "number",
+            CapabilityStatement_SearchParamType::Date => "date",
+            CapabilityStatement_SearchParamType::String => "string",
+            CapabilityStatement_SearchParamType::Token => "token",
+            CapabilityStatement_SearchParamType::Reference => "reference",
+            CapabilityStatement_SearchParamType::Composite => "composite",
+            CapabilityStatement_SearchParamType::Quantity => "quantity",
+            CapabilityStatement_SearchParamType::Uri => "uri",
+            CapabilityStatement_SearchParamType::Special => "special",
         }
     }
 }

@@ -15,12 +15,10 @@ pub struct ImplementationGuide_Parameter<'a> {
 }
 
 impl ImplementationGuide_Parameter<'_> {
-    /// apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-
-    /// broken-links | generate-xml | generate-json | generate-turtle | html-
-    /// template.
-    pub fn code(&self) -> Option<ImplementationGuide_ParameterCode> {
-        if let Some(Value::String(val)) = self.value.get("code") {
-            return Some(ImplementationGuide_ParameterCode::from_string(&val).unwrap());
+    /// Value for named type.
+    pub fn value(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("value") {
+            return Some(string);
         }
         return None;
     }
@@ -55,22 +53,6 @@ impl ImplementationGuide_Parameter<'_> {
         return None;
     }
 
-    /// Extensions for code
-    pub fn _code(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Value for named type.
-    pub fn value(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("value") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -96,8 +78,26 @@ impl ImplementationGuide_Parameter<'_> {
         return None;
     }
 
+    /// apply | path-resource | path-pages | path-tx-cache | expansion-parameter | rule-
+    /// broken-links | generate-xml | generate-json | generate-turtle | html-
+    /// template.
+    pub fn code(&self) -> Option<ImplementationGuide_ParameterCode> {
+        if let Some(Value::String(val)) = self.value.get("code") {
+            return Some(ImplementationGuide_ParameterCode::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for code
+    pub fn _code(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_code") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.code() {}
+        if let Some(_val) = self.value() {}
         if let Some(_val) = self._value() {
             _val.validate();
         }
@@ -106,15 +106,15 @@ impl ImplementationGuide_Parameter<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._code() {
-            _val.validate();
-        }
-        if let Some(_val) = self.value() {}
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
+        }
+        if let Some(_val) = self.code() {}
+        if let Some(_val) = self._code() {
+            _val.validate();
         }
         return true;
     }
@@ -148,6 +148,21 @@ impl ImplementationGuide_ParameterCode {
             "generate-turtle" => Some(ImplementationGuide_ParameterCode::GenerateTurtle),
             "html-template" => Some(ImplementationGuide_ParameterCode::HtmlTemplate),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ImplementationGuide_ParameterCode::Apply => "apply",
+            ImplementationGuide_ParameterCode::PathResource => "path-resource",
+            ImplementationGuide_ParameterCode::PathPages => "path-pages",
+            ImplementationGuide_ParameterCode::PathTxCache => "path-tx-cache",
+            ImplementationGuide_ParameterCode::ExpansionParameter => "expansion-parameter",
+            ImplementationGuide_ParameterCode::RuleBrokenLinks => "rule-broken-links",
+            ImplementationGuide_ParameterCode::GenerateXml => "generate-xml",
+            ImplementationGuide_ParameterCode::GenerateJson => "generate-json",
+            ImplementationGuide_ParameterCode::GenerateTurtle => "generate-turtle",
+            ImplementationGuide_ParameterCode::HtmlTemplate => "html-template",
         }
     }
 }

@@ -17,10 +17,44 @@ pub struct Claim_Accident<'a> {
 }
 
 impl Claim_Accident<'_> {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
             return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The type or context of the accident event for the purposes of selection of
+    /// potential insurance coverages and determination of coordination between
+    /// insurers.
+    pub fn fhir_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("type") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// The physical location of the accident event.
+    pub fn location_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("locationReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -30,6 +64,14 @@ impl Claim_Accident<'_> {
     pub fn date(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("date") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// The physical location of the accident event.
+    pub fn location_address(&self) -> Option<Address> {
+        if let Some(val) = self.value.get("locationAddress") {
+            return Some(Address { value: val });
         }
         return None;
     }
@@ -65,73 +107,31 @@ impl Claim_Accident<'_> {
         return None;
     }
 
-    /// The type or context of the accident event for the purposes of selection of
-    /// potential insurance coverages and determination of coordination between
-    /// insurers.
-    pub fn fhir_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// The physical location of the accident event.
-    pub fn location_address(&self) -> Option<Address> {
-        if let Some(val) = self.value.get("locationAddress") {
-            return Some(Address { value: val });
-        }
-        return None;
-    }
-
-    /// The physical location of the accident event.
-    pub fn location_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("locationReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self._date() {
             _val.validate();
         }
+        if let Some(_val) = self.fhir_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.location_reference() {
+            _val.validate();
+        }
         if let Some(_val) = self.date() {}
+        if let Some(_val) = self.location_address() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
         if let Some(_val) = self.id() {}
-        if let Some(_val) = self.fhir_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.location_address() {
-            _val.validate();
-        }
-        if let Some(_val) = self.location_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         return true;
     }
 }

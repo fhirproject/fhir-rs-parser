@@ -14,35 +14,10 @@ pub struct ExampleScenario_Instance<'a> {
 }
 
 impl ExampleScenario_Instance<'_> {
-    /// The type of the resource.
-    pub fn resource_type(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("resourceType") {
+    /// A short name for the resource instance.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Human-friendly description of the resource instance.
-    pub fn description(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("description") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -60,10 +35,27 @@ impl ExampleScenario_Instance<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     /// The id of the resource for referencing.
     pub fn resource_id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("resourceId") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -76,22 +68,6 @@ impl ExampleScenario_Instance<'_> {
                     .map(|e| ExampleScenario_Version { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for resourceType
-    pub fn _resource_type(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_resourceType") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A short name for the resource instance.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
-            return Some(string);
         }
         return None;
     }
@@ -134,14 +110,6 @@ impl ExampleScenario_Instance<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for resourceId
     pub fn _resource_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_resourceId") {
@@ -150,28 +118,55 @@ impl ExampleScenario_Instance<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self.resource_type() {}
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.description() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
+    /// The type of the resource.
+    pub fn resource_type(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("resourceType") {
+            return Some(string);
         }
+        return None;
+    }
+
+    /// Extensions for resourceType
+    pub fn _resource_type(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_resourceType") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Human-friendly description of the resource instance.
+    pub fn description(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("description") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.contained_instance() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.resource_id() {}
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
         if let Some(_val) = self.version() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._resource_type() {
-            _val.validate();
-        }
-        if let Some(_val) = self.name() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
@@ -182,10 +177,15 @@ impl ExampleScenario_Instance<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._name() {
+        if let Some(_val) = self._resource_id() {
             _val.validate();
         }
-        if let Some(_val) = self._resource_id() {
+        if let Some(_val) = self.resource_type() {}
+        if let Some(_val) = self._resource_type() {
+            _val.validate();
+        }
+        if let Some(_val) = self.description() {}
+        if let Some(_val) = self._description() {
             _val.validate();
         }
         return true;

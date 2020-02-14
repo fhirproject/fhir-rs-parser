@@ -21,6 +21,30 @@ pub struct MedicationRequest_DispenseRequest<'a> {
 }
 
 impl MedicationRequest_DispenseRequest<'_> {
+    /// Extensions for numberOfRepeatsAllowed
+    pub fn _number_of_repeats_allowed(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_numberOfRepeatsAllowed") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The amount that is to be dispensed for one fill.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
+        }
+        return None;
+    }
+
+    /// Indicates the quantity or duration for the first dispense of the medication.
+    pub fn initial_fill(&self) -> Option<MedicationRequest_InitialFill> {
+        if let Some(val) = self.value.get("initialFill") {
+            return Some(MedicationRequest_InitialFill { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -43,19 +67,25 @@ impl MedicationRequest_DispenseRequest<'_> {
         return None;
     }
 
+    /// An integer indicating the number of times, in addition to the original dispense,
+    /// (aka refills or repeats) that the patient can receive the prescribed medication.
+    /// Usage Notes: This integer does not include the original order dispense. This
+    /// means that if an order indicates dispense 30 tablets plus "3 repeats", then the
+    /// order can be dispensed a total of 4 times and the patient can receive a total of
+    /// 120 tablets.  A prescriber may explicitly say that zero refills are permitted
+    /// after the initial dispense.
+    pub fn number_of_repeats_allowed(&self) -> Option<u64> {
+        if let Some(val) = self.value.get("numberOfRepeatsAllowed") {
+            return Some(val.as_u64().unwrap());
+        }
+        return None;
+    }
+
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// The amount that is to be dispensed for one fill.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -69,10 +99,10 @@ impl MedicationRequest_DispenseRequest<'_> {
         return None;
     }
 
-    /// Extensions for numberOfRepeatsAllowed
-    pub fn _number_of_repeats_allowed(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_numberOfRepeatsAllowed") {
-            return Some(Element { value: val });
+    /// Indicates the intended dispensing Organization specified by the prescriber.
+    pub fn performer(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("performer") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -82,22 +112,6 @@ impl MedicationRequest_DispenseRequest<'_> {
     pub fn validity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("validityPeriod") {
             return Some(Period { value: val });
-        }
-        return None;
-    }
-
-    /// Indicates the quantity or duration for the first dispense of the medication.
-    pub fn initial_fill(&self) -> Option<MedicationRequest_InitialFill> {
-        if let Some(val) = self.value.get("initialFill") {
-            return Some(MedicationRequest_InitialFill { value: val });
-        }
-        return None;
-    }
-
-    /// The minimum period of time that must occur between dispenses of the medication.
-    pub fn dispense_interval(&self) -> Option<Duration> {
-        if let Some(val) = self.value.get("dispenseInterval") {
-            return Some(Duration { value: val });
         }
         return None;
     }
@@ -118,51 +132,38 @@ impl MedicationRequest_DispenseRequest<'_> {
         return None;
     }
 
-    /// Indicates the intended dispensing Organization specified by the prescriber.
-    pub fn performer(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("performer") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// An integer indicating the number of times, in addition to the original dispense,
-    /// (aka refills or repeats) that the patient can receive the prescribed medication.
-    /// Usage Notes: This integer does not include the original order dispense. This
-    /// means that if an order indicates dispense 30 tablets plus "3 repeats", then the
-    /// order can be dispensed a total of 4 times and the patient can receive a total of
-    /// 120 tablets.  A prescriber may explicitly say that zero refills are permitted
-    /// after the initial dispense.
-    pub fn number_of_repeats_allowed(&self) -> Option<u64> {
-        if let Some(val) = self.value.get("numberOfRepeatsAllowed") {
-            return Some(val.as_u64().unwrap());
+    /// The minimum period of time that must occur between dispenses of the medication.
+    pub fn dispense_interval(&self) -> Option<Duration> {
+        if let Some(val) = self.value.get("dispenseInterval") {
+            return Some(Duration { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.quantity() {
-            _val.validate();
-        }
-        if let Some(_val) = self.expected_supply_duration() {
-            _val.validate();
-        }
         if let Some(_val) = self._number_of_repeats_allowed() {
             _val.validate();
         }
-        if let Some(_val) = self.validity_period() {
+        if let Some(_val) = self.quantity() {
             _val.validate();
         }
         if let Some(_val) = self.initial_fill() {
             _val.validate();
         }
-        if let Some(_val) = self.dispense_interval() {
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.number_of_repeats_allowed() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.expected_supply_duration() {
+            _val.validate();
+        }
+        if let Some(_val) = self.performer() {
+            _val.validate();
+        }
+        if let Some(_val) = self.validity_period() {
             _val.validate();
         }
         if let Some(_val) = self.extension() {
@@ -170,10 +171,9 @@ impl MedicationRequest_DispenseRequest<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.performer() {
+        if let Some(_val) = self.dispense_interval() {
             _val.validate();
         }
-        if let Some(_val) = self.number_of_repeats_allowed() {}
         return true;
     }
 }

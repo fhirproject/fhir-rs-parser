@@ -23,39 +23,6 @@ impl Consent_Data<'_> {
         return None;
     }
 
-    /// A reference to a specific resource that defines which resources are covered by
-    /// this consent.
-    pub fn reference(&self) -> Reference {
-        Reference {
-            value: &self.value["reference"],
-        }
-    }
-
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Extension { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -78,6 +45,22 @@ impl Consent_Data<'_> {
         return None;
     }
 
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// How the resource reference is interpreted when testing consent restrictions.
     pub fn meaning(&self) -> Option<Consent_DataMeaning> {
         if let Some(Value::String(val)) = self.value.get("meaning") {
@@ -86,23 +69,40 @@ impl Consent_Data<'_> {
         return None;
     }
 
+    /// A reference to a specific resource that defines which resources are covered by
+    /// this consent.
+    pub fn reference(&self) -> Reference {
+        Reference {
+            value: &self.value["reference"],
+        }
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._meaning() {
             _val.validate();
         }
-        let _ = self.reference().validate();
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.meaning() {}
+        let _ = self.reference().validate();
+        if let Some(_val) = self.id() {}
         return true;
     }
 }
@@ -123,6 +123,15 @@ impl Consent_DataMeaning {
             "dependents" => Some(Consent_DataMeaning::Dependents),
             "authoredby" => Some(Consent_DataMeaning::Authoredby),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            Consent_DataMeaning::Instance => "instance",
+            Consent_DataMeaning::Related => "related",
+            Consent_DataMeaning::Dependents => "dependents",
+            Consent_DataMeaning::Authoredby => "authoredby",
         }
     }
 }

@@ -43,18 +43,21 @@ impl Contract_ContentDefinition<'_> {
         return None;
     }
 
-    /// The  individual or organization that published the Contract precursor content.
-    pub fn publisher(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("publisher") {
-            return Some(Reference { value: val });
+    /// The date (and optionally time) when the contract was published. The date must
+    /// change when the business version changes and it must change if the status code
+    /// changes. In addition, it should change when the substantive content of the
+    /// contract changes.
+    pub fn publication_date(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("publicationDate") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Extensions for copyright
-    pub fn _copyright(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
+    /// The  individual or organization that published the Contract precursor content.
+    pub fn publisher(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("publisher") {
+            return Some(Reference { value: val });
         }
         return None;
     }
@@ -81,13 +84,13 @@ impl Contract_ContentDefinition<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
+    /// Precusory content structure and use, i.e., a boilerplate, template, application
+    /// for a contract such as an insurance policy or benefits under a program, e.g.,
+    /// workers compensation.
+    pub fn fhir_type(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["type"],
         }
-        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -106,21 +109,18 @@ impl Contract_ContentDefinition<'_> {
         return None;
     }
 
-    /// Precusory content structure and use, i.e., a boilerplate, template, application
-    /// for a contract such as an insurance policy or benefits under a program, e.g.,
-    /// workers compensation.
-    pub fn fhir_type(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["type"],
+    /// Extensions for copyright
+    pub fn _copyright(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_copyright") {
+            return Some(Element { value: val });
         }
+        return None;
     }
 
-    /// The date (and optionally time) when the contract was published. The date must
-    /// change when the business version changes and it must change if the status code
-    /// changes. In addition, it should change when the substantive content of the
-    /// contract changes.
-    pub fn publication_date(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("publicationDate") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
@@ -148,10 +148,8 @@ impl Contract_ContentDefinition<'_> {
         if let Some(_val) = self._publication_status() {
             _val.validate();
         }
+        if let Some(_val) = self.publication_date() {}
         if let Some(_val) = self.publisher() {
-            _val.validate();
-        }
-        if let Some(_val) = self._copyright() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -159,14 +157,16 @@ impl Contract_ContentDefinition<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
+        let _ = self.fhir_type().validate();
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        let _ = self.fhir_type().validate();
-        if let Some(_val) = self.publication_date() {}
+        if let Some(_val) = self._copyright() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.sub_type() {
             _val.validate();
         }

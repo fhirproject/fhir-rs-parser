@@ -14,13 +14,18 @@ pub struct SubstancePolymer_MonomerSet<'a> {
 
 impl SubstancePolymer_MonomerSet<'_> {
     /// Todo.
-    pub fn starting_material(&self) -> Option<Vec<SubstancePolymer_StartingMaterial>> {
-        if let Some(Value::Array(val)) = self.value.get("startingMaterial") {
-            return Some(
-                val.into_iter()
-                    .map(|e| SubstancePolymer_StartingMaterial { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    pub fn ratio_type(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("ratioType") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -47,15 +52,6 @@ impl SubstancePolymer_MonomerSet<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -73,32 +69,36 @@ impl SubstancePolymer_MonomerSet<'_> {
     }
 
     /// Todo.
-    pub fn ratio_type(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("ratioType") {
-            return Some(CodeableConcept { value: val });
+    pub fn starting_material(&self) -> Option<Vec<SubstancePolymer_StartingMaterial>> {
+        if let Some(Value::Array(val)) = self.value.get("startingMaterial") {
+            return Some(
+                val.into_iter()
+                    .map(|e| SubstancePolymer_StartingMaterial { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.starting_material() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.ratio_type() {
+            _val.validate();
         }
+        if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.ratio_type() {
-            _val.validate();
+        if let Some(_val) = self.starting_material() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         return true;
     }

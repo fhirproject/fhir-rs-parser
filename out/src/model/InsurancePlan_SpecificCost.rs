@@ -13,14 +13,6 @@ pub struct InsurancePlan_SpecificCost<'a> {
 }
 
 impl InsurancePlan_SpecificCost<'_> {
-    /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
-    /// Substance Abuse; Hospice, Home Health).
-    pub fn category(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["category"],
-        }
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -58,6 +50,14 @@ impl InsurancePlan_SpecificCost<'_> {
         return None;
     }
 
+    /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
+    /// Substance Abuse; Hospice, Home Health).
+    pub fn category(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["category"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -81,7 +81,6 @@ impl InsurancePlan_SpecificCost<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.category().validate();
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.benefit() {
             _val.into_iter().for_each(|e| {
@@ -93,6 +92,7 @@ impl InsurancePlan_SpecificCost<'_> {
                 e.validate();
             });
         }
+        let _ = self.category().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

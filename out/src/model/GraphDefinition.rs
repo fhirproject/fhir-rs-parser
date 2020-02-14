@@ -21,6 +21,16 @@ pub struct GraphDefinition<'a> {
 }
 
 impl GraphDefinition<'_> {
+    /// The metadata about the resource. This is content that is maintained by the
+    /// infrastructure. Changes to the content might not always be associated with
+    /// version changes to the resource.
+    pub fn meta(&self) -> Option<Meta> {
+        if let Some(val) = self.value.get("meta") {
+            return Some(Meta { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the resource. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -37,78 +47,15 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// A natural language name identifying the graph definition. This name should be
-    /// usable as an identifier for the module by machine processing applications such
-    /// as code generation.
-    pub fn name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("name") {
+    /// An absolute URI that is used to identify this graph definition when it is
+    /// referenced in a specification, model, design or an instance; also called its
+    /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
+    /// address at which at which an authoritative instance of this graph definition is
+    /// (or will be) published. This URL can be the target of a canonical reference. It
+    /// SHALL remain the same when the graph definition is stored on different servers.
+    pub fn url(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("url") {
             return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for version
-    pub fn _version(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The name of the organization or individual that published the graph definition.
-    pub fn publisher(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("publisher") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for date
-    pub fn _date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for purpose
-    pub fn _purpose(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for experimental
-    pub fn _experimental(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The content was developed with a focus and intent of supporting the contexts
-    /// that are listed. These contexts may be general categories (gender, age, ...) or
-    /// may be references to specific programs (insurance plans, studies, ...) and may
-    /// be used to assist with indexing and searching for appropriate graph definition
-    /// instances.
-    pub fn use_context(&self) -> Option<Vec<UsageContext>> {
-        if let Some(Value::Array(val)) = self.value.get("useContext") {
-            return Some(
-                val.into_iter()
-                    .map(|e| UsageContext { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A Boolean value to indicate that this graph definition is authored for testing
-    /// purposes (or education/evaluation/marketing) and is not intended to be used for
-    /// genuine usage.
-    pub fn experimental(&self) -> Option<bool> {
-        if let Some(val) = self.value.get("experimental") {
-            return Some(val.as_bool().unwrap());
         }
         return None;
     }
@@ -119,6 +66,22 @@ impl GraphDefinition<'_> {
     /// of the graph definition changes.
     pub fn date(&self) -> Option<&str> {
         if let Some(Value::String(string)) = self.value.get("date") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for start
+    pub fn _start(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_start") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The profile that describes the use of the base resource.
+    pub fn profile(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("profile") {
             return Some(string);
         }
         return None;
@@ -146,14 +109,6 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// Extensions for name
-    pub fn _name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
@@ -162,26 +117,11 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for url
-    pub fn _url(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
+    /// A natural language name identifying the graph definition. This name should be
+    /// usable as an identifier for the module by machine processing applications such
+    /// as code generation.
+    pub fn name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("name") {
             return Some(string);
         }
         return None;
@@ -210,6 +150,19 @@ impl GraphDefinition<'_> {
         return None;
     }
 
+    /// Contact details to assist a user in finding and communicating with the
+    /// publisher.
+    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
+        if let Some(Value::Array(val)) = self.value.get("contact") {
+            return Some(
+                val.into_iter()
+                    .map(|e| ContactDetail { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
     /// A reference to a set of rules that were followed when the resource was
     /// constructed, and which must be understood when processing the content. Often,
     /// this is a reference to an implementation guide that defines the special rules
@@ -221,9 +174,54 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
+    /// Extensions for publisher
+    pub fn _publisher(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_publisher") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for version
+    pub fn _version(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_version") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for url
+    pub fn _url(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_url") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The identifier that is used to identify this version of the graph definition
+    /// when it is referenced in a specification, model, design or instance. This is an
+    /// arbitrary value managed by the graph definition author and is not expected to be
+    /// globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
+    /// managed version is not available. There is also no expectation that versions can
+    /// be placed in a lexicographical sequence.
+    pub fn version(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("version") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for date
+    pub fn _date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_date") {
             return Some(Element { value: val });
         }
         return None;
@@ -246,22 +244,18 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// Links this graph makes rules about.
-    pub fn link(&self) -> Option<Vec<GraphDefinition_Link>> {
-        if let Some(Value::Array(val)) = self.value.get("link") {
+    /// The content was developed with a focus and intent of supporting the contexts
+    /// that are listed. These contexts may be general categories (gender, age, ...) or
+    /// may be references to specific programs (insurance plans, studies, ...) and may
+    /// be used to assist with indexing and searching for appropriate graph definition
+    /// instances.
+    pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+        if let Some(Value::Array(val)) = self.value.get("useContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| GraphDefinition_Link { value: e })
+                    .map(|e| UsageContext { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// Extensions for publisher
-    pub fn _publisher(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
         }
         return None;
     }
@@ -279,27 +273,9 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// The identifier that is used to identify this version of the graph definition
-    /// when it is referenced in a specification, model, design or instance. This is an
-    /// arbitrary value managed by the graph definition author and is not expected to be
-    /// globally unique. For example, it might be a timestamp (e.g. yyyymmdd) if a
-    /// managed version is not available. There is also no expectation that versions can
-    /// be placed in a lexicographical sequence.
-    pub fn version(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("version") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// An absolute URI that is used to identify this graph definition when it is
-    /// referenced in a specification, model, design or an instance; also called its
-    /// canonical identifier. This SHOULD be globally unique and SHOULD be a literal
-    /// address at which at which an authoritative instance of this graph definition is
-    /// (or will be) published. This URL can be the target of a canonical reference. It
-    /// SHALL remain the same when the graph definition is stored on different servers.
-    pub fn url(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("url") {
+    /// The name of the organization or individual that published the graph definition.
+    pub fn publisher(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("publisher") {
             return Some(string);
         }
         return None;
@@ -319,27 +295,9 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// The type of FHIR resource at which instances of this graph start.
-    pub fn start(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("start") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The metadata about the resource. This is content that is maintained by the
-    /// infrastructure. Changes to the content might not always be associated with
-    /// version changes to the resource.
-    pub fn meta(&self) -> Option<Meta> {
-        if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for start
-    pub fn _start(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_start") {
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
             return Some(Element { value: val });
         }
         return None;
@@ -354,125 +312,167 @@ impl GraphDefinition<'_> {
         return None;
     }
 
-    /// Contact details to assist a user in finding and communicating with the
-    /// publisher.
-    pub fn contact(&self) -> Option<Vec<ContactDetail>> {
-        if let Some(Value::Array(val)) = self.value.get("contact") {
+    /// Extensions for purpose
+    pub fn _purpose(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_purpose") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The type of FHIR resource at which instances of this graph start.
+    pub fn start(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("start") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for name
+    pub fn _name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_name") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A Boolean value to indicate that this graph definition is authored for testing
+    /// purposes (or education/evaluation/marketing) and is not intended to be used for
+    /// genuine usage.
+    pub fn experimental(&self) -> Option<bool> {
+        if let Some(val) = self.value.get("experimental") {
+            return Some(val.as_bool().unwrap());
+        }
+        return None;
+    }
+
+    /// Links this graph makes rules about.
+    pub fn link(&self) -> Option<Vec<GraphDefinition_Link>> {
+        if let Some(Value::Array(val)) = self.value.get("link") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| GraphDefinition_Link { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// The profile that describes the use of the base resource.
-    pub fn profile(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("profile") {
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for experimental
+    pub fn _experimental(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_experimental") {
             return Some(Element { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
+        if let Some(_val) = self.meta() {
+            _val.validate();
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.name() {}
-        if let Some(_val) = self._version() {
-            _val.validate();
-        }
-        if let Some(_val) = self.publisher() {}
-        if let Some(_val) = self._date() {
-            _val.validate();
-        }
-        if let Some(_val) = self._purpose() {
-            _val.validate();
-        }
-        if let Some(_val) = self._experimental() {
-            _val.validate();
-        }
-        if let Some(_val) = self.use_context() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.experimental() {}
+        if let Some(_val) = self.url() {}
         if let Some(_val) = self.date() {}
+        if let Some(_val) = self._start() {
+            _val.validate();
+        }
+        if let Some(_val) = self.profile() {}
         if let Some(_val) = self.purpose() {}
         if let Some(_val) = self.text() {
-            _val.validate();
-        }
-        if let Some(_val) = self._name() {
             _val.validate();
         }
         if let Some(_val) = self._status() {
             _val.validate();
         }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self._url() {
-            _val.validate();
-        }
-        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.name() {}
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.contact() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self._description() {
+        if let Some(_val) = self._publisher() {
+            _val.validate();
+        }
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self._version() {
+            _val.validate();
+        }
+        if let Some(_val) = self._url() {
+            _val.validate();
+        }
+        if let Some(_val) = self.version() {}
+        if let Some(_val) = self._date() {
             _val.validate();
         }
         if let Some(_val) = self._language() {
             _val.validate();
         }
         if let Some(_val) = self.status() {}
-        if let Some(_val) = self.link() {
+        if let Some(_val) = self.use_context() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._publisher() {
-            _val.validate();
         }
         if let Some(_val) = self.jurisdiction() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.version() {}
-        if let Some(_val) = self.url() {}
+        if let Some(_val) = self.publisher() {}
         if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.start() {}
-        if let Some(_val) = self.meta() {
-            _val.validate();
-        }
-        if let Some(_val) = self._start() {
+        if let Some(_val) = self._description() {
             _val.validate();
         }
         if let Some(_val) = self.description() {}
-        if let Some(_val) = self.contact() {
+        if let Some(_val) = self._purpose() {
+            _val.validate();
+        }
+        if let Some(_val) = self.start() {}
+        if let Some(_val) = self._name() {
+            _val.validate();
+        }
+        if let Some(_val) = self.experimental() {}
+        if let Some(_val) = self.link() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.profile() {}
-        if let Some(_val) = self._implicit_rules() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self._experimental() {
             _val.validate();
         }
         return true;
@@ -495,6 +495,15 @@ impl GraphDefinitionStatus {
             "retired" => Some(GraphDefinitionStatus::Retired),
             "unknown" => Some(GraphDefinitionStatus::Unknown),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            GraphDefinitionStatus::Draft => "draft",
+            GraphDefinitionStatus::Active => "active",
+            GraphDefinitionStatus::Retired => "retired",
+            GraphDefinitionStatus::Unknown => "unknown",
         }
     }
 }

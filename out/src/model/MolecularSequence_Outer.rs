@@ -30,12 +30,18 @@ impl MolecularSequence_Outer<'_> {
         return None;
     }
 
-    /// Structural variant outer end. If the coordinate system is 0-based then end is
-    /// exclusive and does not include the last position. If the coordinate system is 1-
-    /// base, then end is inclusive and includes the last position.
-    pub fn end(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("end") {
-            return Some(val.as_i64().unwrap());
+    /// Extensions for start
+    pub fn _start(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_start") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for end
+    pub fn _end(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_end") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -62,10 +68,12 @@ impl MolecularSequence_Outer<'_> {
         return None;
     }
 
-    /// Extensions for end
-    pub fn _end(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_end") {
-            return Some(Element { value: val });
+    /// Structural variant outer end. If the coordinate system is 0-based then end is
+    /// exclusive and does not include the last position. If the coordinate system is 1-
+    /// base, then end is inclusive and includes the last position.
+    pub fn end(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("end") {
+            return Some(val.as_i64().unwrap());
         }
         return None;
     }
@@ -86,33 +94,25 @@ impl MolecularSequence_Outer<'_> {
         return None;
     }
 
-    /// Extensions for start
-    pub fn _start(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_start") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.start() {}
-        if let Some(_val) = self.end() {}
+        if let Some(_val) = self._start() {
+            _val.validate();
+        }
+        if let Some(_val) = self._end() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._end() {
-            _val.validate();
-        }
+        if let Some(_val) = self.end() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
-        }
-        if let Some(_val) = self._start() {
-            _val.validate();
         }
         return true;
     }

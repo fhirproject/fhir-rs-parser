@@ -28,11 +28,41 @@ pub struct ChargeItem<'a> {
 }
 
 impl ChargeItem<'_> {
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
             return Some(string);
+        }
+        return None;
+    }
+
+    /// Account into which this ChargeItems belongs.
+    pub fn account(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("account") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
         }
         return None;
     }
@@ -60,10 +90,18 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// References the source of pricing information, rules of application for the code
-    /// this ChargeItem uses.
-    pub fn definition_canonical(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("definitionCanonical") {
+    /// Date/time(s) or duration when the charged service was applied.
+    pub fn occurrence_timing(&self) -> Option<Timing> {
+        if let Some(val) = self.value.get("occurrenceTiming") {
+            return Some(Timing { value: val });
+        }
+        return None;
+    }
+
+    /// References the (external) source of pricing information, rules of application
+    /// for the code this ChargeItem uses.
+    pub fn definition_uri(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("definitionUri") {
             return Some(
                 val.into_iter()
                     .map(|e| e.as_str().unwrap())
@@ -73,9 +111,19 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// ChargeItems can be grouped to larger ChargeItems covering the whole set.
-    pub fn part_of(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("partOf") {
+    /// If the list price or the rule-based factor associated with the code is
+    /// overridden, this attribute can capture a text to indicate the  reason for this
+    /// action.
+    pub fn override_reason(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("overrideReason") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Indicated the rendered service that caused this charge.
+    pub fn service(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("service") {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
@@ -85,26 +133,39 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Extensions for occurrenceDateTime
-    pub fn _occurrence_date_time(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Quantity of which the charge item has been serviced.
-    pub fn quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+    /// Date/time(s) or duration when the charged service was applied.
+    pub fn occurrence_period(&self) -> Option<Period> {
+        if let Some(val) = self.value.get("occurrencePeriod") {
+            return Some(Period { value: val });
         }
         return None;
     }
 
-    /// Factor overriding the factor determined by the rules associated with the code.
-    pub fn factor_override(&self) -> Option<f64> {
-        if let Some(val) = self.value.get("factorOverride") {
-            return Some(val.as_f64().unwrap());
+    /// The financial cost center permits the tracking of charge attribution.
+    pub fn cost_center(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("costCenter") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// Comments made about the event by the performer, subject or other participants.
+    pub fn note(&self) -> Option<Vec<Annotation>> {
+        if let Some(Value::Array(val)) = self.value.get("note") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Annotation { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -117,40 +178,24 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// The device, practitioner, etc. who entered the charge item.
-    pub fn enterer(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("enterer") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the device, food, drug or other product being charged either by type
-    /// code or reference to an instance.
-    pub fn product_codeable_concept(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("productCodeableConcept") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// The anatomical location where the related service has been applied.
-    pub fn bodysite(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("bodysite") {
+    /// Further information supporting this charge.
+    pub fn supporting_information(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("supportingInformation") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for definitionUri
+    pub fn _definition_uri(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_definitionUri") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -169,44 +214,29 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Identifiers assigned to this event performer or other systems.
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// Further information supporting this charge.
-    pub fn supporting_information(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("supportingInformation") {
+    /// Identifies the device, food, drug or other product being charged either by type
+    /// code or reference to an instance.
+    pub fn product_codeable_concept(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("productCodeableConcept") {
+            return Some(CodeableConcept { value: val });
+        }
+        return None;
+    }
+
+    /// ChargeItems can be grouped to larger ChargeItems covering the whole set.
+    pub fn part_of(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
                     .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// The organization performing the service.
-    pub fn requesting_organization(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("requestingOrganization") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for definitionUri
-    pub fn _definition_uri(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_definitionUri") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -228,54 +258,6 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Total price of the charge overriding the list price associated with the code.
-    pub fn price_override(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("priceOverride") {
-            return Some(Money { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Identifies the device, food, drug or other product being charged either by type
-    /// code or reference to an instance.
-    pub fn product_reference(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("productReference") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// The financial cost center permits the tracking of charge attribution.
-    pub fn cost_center(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("costCenter") {
-            return Some(Reference { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A code that identifies the charge, like a billing code.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -284,20 +266,18 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// If the list price or the rule-based factor associated with the code is
-    /// overridden, this attribute can capture a text to indicate the  reason for this
-    /// action.
-    pub fn override_reason(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("overrideReason") {
-            return Some(string);
+    /// Total price of the charge overriding the list price associated with the code.
+    pub fn price_override(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("priceOverride") {
+            return Some(Money { value: val });
         }
         return None;
     }
 
-    /// Extensions for overrideReason
-    pub fn _override_reason(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_overrideReason") {
-            return Some(Element { value: val });
+    /// Quantity of which the charge item has been serviced.
+    pub fn quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -312,39 +292,50 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Account into which this ChargeItems belongs.
-    pub fn account(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("account") {
+    /// The encounter or episode of care that establishes the context for this event.
+    pub fn context(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("context") {
+            return Some(Reference { value: val });
+        }
+        return None;
+    }
+
+    /// A code that identifies the charge, like a billing code.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
+    /// Identifiers assigned to this event performer or other systems.
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Identifier { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Comments made about the event by the performer, subject or other participants.
-    pub fn note(&self) -> Option<Vec<Annotation>> {
-        if let Some(Value::Array(val)) = self.value.get("note") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Annotation { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Extensions for enteredDate
+    pub fn _entered_date(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_enteredDate") {
+            return Some(Element { value: val });
         }
         return None;
     }
 
-    /// References the (external) source of pricing information, rules of application
-    /// for the code this ChargeItem uses.
-    pub fn definition_uri(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("definitionUri") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
+    /// A human-readable narrative that contains a summary of the resource and can be
+    /// used to represent the content of the resource to a human. The narrative need not
+    /// encode all the structured data, but is required to contain sufficient detail to
+    /// make it "clinically safe" for a human to just read the narrative. Resource
+    /// definitions may define what content should be represented in the narrative to
+    /// ensure clinical safety.
+    pub fn text(&self) -> Option<Narrative> {
+        if let Some(val) = self.value.get("text") {
+            return Some(Narrative { value: val });
         }
         return None;
     }
@@ -365,14 +356,6 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Date/time(s) or duration when the charged service was applied.
-    pub fn occurrence_date_time(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("occurrenceDateTime") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Describes why the event occurred in coded or textual form.
     pub fn reason(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("reason") {
@@ -385,18 +368,23 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Extensions for enteredDate
-    pub fn _entered_date(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_enteredDate") {
-            return Some(Element { value: val });
+    /// The device, practitioner, etc. who entered the charge item.
+    pub fn enterer(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("enterer") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
-    /// The encounter or episode of care that establishes the context for this event.
-    pub fn context(&self) -> Option<Reference> {
-        if let Some(val) = self.value.get("context") {
-            return Some(Reference { value: val });
+    /// References the source of pricing information, rules of application for the code
+    /// this ChargeItem uses.
+    pub fn definition_canonical(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("definitionCanonical") {
+            return Some(
+                val.into_iter()
+                    .map(|e| e.as_str().unwrap())
+                    .collect::<Vec<_>>(),
+            );
         }
         return None;
     }
@@ -415,51 +403,18 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// Date/time(s) or duration when the charged service was applied.
-    pub fn occurrence_timing(&self) -> Option<Timing> {
-        if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
-        }
-        return None;
-    }
-
-    /// Indicated the rendered service that caused this charge.
-    pub fn service(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("service") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// A human-readable narrative that contains a summary of the resource and can be
-    /// used to represent the content of the resource to a human. The narrative need not
-    /// encode all the structured data, but is required to contain sufficient detail to
-    /// make it "clinically safe" for a human to just read the narrative. Resource
-    /// definitions may define what content should be represented in the narrative to
-    /// ensure clinical safety.
-    pub fn text(&self) -> Option<Narrative> {
-        if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
-        }
-        return None;
-    }
-
-    /// The current state of the ChargeItem.
-    pub fn status(&self) -> Option<ChargeItemStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(ChargeItemStatus::from_string(&val).unwrap());
+    /// The organization performing the service.
+    pub fn requesting_organization(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("requestingOrganization") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
     /// Date/time(s) or duration when the charged service was applied.
-    pub fn occurrence_period(&self) -> Option<Period> {
-        if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+    pub fn occurrence_date_time(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("occurrenceDateTime") {
+            return Some(string);
         }
         return None;
     }
@@ -472,47 +427,108 @@ impl ChargeItem<'_> {
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
+    /// Extensions for occurrenceDateTime
+    pub fn _occurrence_date_time(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_occurrenceDateTime") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The anatomical location where the related service has been applied.
+    pub fn bodysite(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("bodysite") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Factor overriding the factor determined by the rules associated with the code.
+    pub fn factor_override(&self) -> Option<f64> {
+        if let Some(val) = self.value.get("factorOverride") {
+            return Some(val.as_f64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for overrideReason
+    pub fn _override_reason(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_overrideReason") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// The current state of the ChargeItem.
+    pub fn status(&self) -> Option<ChargeItemStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(ChargeItemStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Identifies the device, food, drug or other product being charged either by type
+    /// code or reference to an instance.
+    pub fn product_reference(&self) -> Option<Reference> {
+        if let Some(val) = self.value.get("productReference") {
+            return Some(Reference { value: val });
         }
         return None;
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.account() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.definition_canonical() {
+        if let Some(_val) = self.occurrence_timing() {
+            _val.validate();
+        }
+        if let Some(_val) = self.definition_uri() {
             _val.into_iter().for_each(|_e| {});
         }
-        if let Some(_val) = self.part_of() {
+        if let Some(_val) = self.override_reason() {}
+        if let Some(_val) = self.service() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self._occurrence_date_time() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.occurrence_period() {
             _val.validate();
         }
-        if let Some(_val) = self.quantity() {
+        if let Some(_val) = self.cost_center() {
             _val.validate();
         }
-        if let Some(_val) = self.factor_override() {}
+        if let Some(_val) = self.note() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.performing_organization() {
             _val.validate();
         }
-        if let Some(_val) = self.enterer() {
-            _val.validate();
+        if let Some(_val) = self.supporting_information() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
-        if let Some(_val) = self.product_codeable_concept() {
-            _val.validate();
-        }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.bodysite() {
+        if let Some(_val) = self._definition_uri() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -522,20 +538,13 @@ impl ChargeItem<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.supporting_information() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.requesting_organization() {
+        if let Some(_val) = self._status() {
             _val.validate();
         }
-        if let Some(_val) = self._definition_uri() {
+        if let Some(_val) = self.product_codeable_concept() {
+            _val.validate();
+        }
+        if let Some(_val) = self.part_of() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -544,52 +553,23 @@ impl ChargeItem<'_> {
         if let Some(_val) = self._factor_override() {
             _val.validate();
         }
-        if let Some(_val) = self.price_override() {
-            _val.validate();
-        }
-        if let Some(_val) = self._language() {
-            _val.validate();
-        }
-        if let Some(_val) = self.product_reference() {
-            _val.validate();
-        }
-        if let Some(_val) = self.cost_center() {
-            _val.validate();
-        }
-        if let Some(_val) = self._status() {
-            _val.validate();
-        }
-        let _ = self.code().validate();
         if let Some(_val) = self._implicit_rules() {
             _val.validate();
         }
-        if let Some(_val) = self.override_reason() {}
-        if let Some(_val) = self._override_reason() {
+        if let Some(_val) = self.price_override() {
+            _val.validate();
+        }
+        if let Some(_val) = self.quantity() {
             _val.validate();
         }
         if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.account() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.context() {
+            _val.validate();
         }
-        if let Some(_val) = self.note() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.definition_uri() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.occurrence_date_time() {}
-        if let Some(_val) = self.reason() {
+        let _ = self.code().validate();
+        if let Some(_val) = self.identifier() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -597,31 +577,51 @@ impl ChargeItem<'_> {
         if let Some(_val) = self._entered_date() {
             _val.validate();
         }
-        if let Some(_val) = self.context() {
+        if let Some(_val) = self.text() {
             _val.validate();
+        }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.reason() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.enterer() {
+            _val.validate();
+        }
+        if let Some(_val) = self.definition_canonical() {
+            _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.contained() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.occurrence_timing() {
+        if let Some(_val) = self.requesting_organization() {
             _val.validate();
         }
-        if let Some(_val) = self.service() {
+        if let Some(_val) = self.occurrence_date_time() {}
+        if let Some(_val) = self.entered_date() {}
+        if let Some(_val) = self._occurrence_date_time() {
+            _val.validate();
+        }
+        if let Some(_val) = self.bodysite() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self.factor_override() {}
+        if let Some(_val) = self._override_reason() {
             _val.validate();
         }
         if let Some(_val) = self.status() {}
-        if let Some(_val) = self.occurrence_period() {
+        if let Some(_val) = self.product_reference() {
             _val.validate();
         }
-        if let Some(_val) = self.entered_date() {}
-        if let Some(_val) = self.language() {}
         return true;
     }
 }
@@ -648,6 +648,18 @@ impl ChargeItemStatus {
             "entered-in-error" => Some(ChargeItemStatus::EnteredInError),
             "unknown" => Some(ChargeItemStatus::Unknown),
             _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            ChargeItemStatus::Planned => "planned",
+            ChargeItemStatus::Billable => "billable",
+            ChargeItemStatus::NotBillable => "not-billable",
+            ChargeItemStatus::Aborted => "aborted",
+            ChargeItemStatus::Billed => "billed",
+            ChargeItemStatus::EnteredInError => "entered-in-error",
+            ChargeItemStatus::Unknown => "unknown",
         }
     }
 }

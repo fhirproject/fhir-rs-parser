@@ -15,6 +15,58 @@ pub struct GraphDefinition_Link<'a> {
 }
 
 impl GraphDefinition_Link<'_> {
+    /// Minimum occurrences for this link.
+    pub fn min(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("min") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for description
+    pub fn _description(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_description") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Potential target for the link.
+    pub fn target(&self) -> Option<Vec<GraphDefinition_Target>> {
+        if let Some(Value::Array(val)) = self.value.get("target") {
+            return Some(
+                val.into_iter()
+                    .map(|e| GraphDefinition_Target { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for path
+    pub fn _path(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_path") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Which slice (if profiled).
+    pub fn slice_name(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("sliceName") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for min
+    pub fn _min(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_min") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -37,78 +89,6 @@ impl GraphDefinition_Link<'_> {
         return None;
     }
 
-    /// Extensions for path
-    pub fn _path(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Minimum occurrences for this link.
-    pub fn min(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("min") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Which slice (if profiled).
-    pub fn slice_name(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("sliceName") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for min
-    pub fn _min(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A FHIR expression that identifies one of FHIR References to other resources.
-    pub fn path(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("path") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for max
-    pub fn _max(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for sliceName
-    pub fn _slice_name(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_sliceName") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// Maximum occurrences for this link.
-    pub fn max(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("max") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for description
-    pub fn _description(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -125,22 +105,33 @@ impl GraphDefinition_Link<'_> {
         return None;
     }
 
-    /// Potential target for the link.
-    pub fn target(&self) -> Option<Vec<GraphDefinition_Target>> {
-        if let Some(Value::Array(val)) = self.value.get("target") {
-            return Some(
-                val.into_iter()
-                    .map(|e| GraphDefinition_Target { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Maximum occurrences for this link.
+    pub fn max(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("max") {
+            return Some(string);
         }
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Extensions for sliceName
+    pub fn _slice_name(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_sliceName") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Extensions for max
+    pub fn _max(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_max") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// A FHIR expression that identifies one of FHIR References to other resources.
+    pub fn path(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("path") {
             return Some(string);
         }
         return None;
@@ -154,8 +145,21 @@ impl GraphDefinition_Link<'_> {
         return None;
     }
 
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.modifier_extension() {
+        if let Some(_val) = self.min() {}
+        if let Some(_val) = self._description() {
+            _val.validate();
+        }
+        if let Some(_val) = self.target() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -163,34 +167,30 @@ impl GraphDefinition_Link<'_> {
         if let Some(_val) = self._path() {
             _val.validate();
         }
-        if let Some(_val) = self.min() {}
         if let Some(_val) = self.slice_name() {}
         if let Some(_val) = self._min() {
             _val.validate();
         }
-        if let Some(_val) = self.path() {}
-        if let Some(_val) = self._max() {
-            _val.validate();
-        }
-        if let Some(_val) = self._slice_name() {
-            _val.validate();
-        }
-        if let Some(_val) = self.max() {}
-        if let Some(_val) = self._description() {
-            _val.validate();
+        if let Some(_val) = self.modifier_extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
         }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.target() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+        if let Some(_val) = self.max() {}
+        if let Some(_val) = self._slice_name() {
+            _val.validate();
         }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._max() {
+            _val.validate();
+        }
+        if let Some(_val) = self.path() {}
         if let Some(_val) = self.description() {}
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

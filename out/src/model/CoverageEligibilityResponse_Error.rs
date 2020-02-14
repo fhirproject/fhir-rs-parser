@@ -13,14 +13,6 @@ pub struct CoverageEligibilityResponse_Error<'a> {
 }
 
 impl CoverageEligibilityResponse_Error<'_> {
-    /// An error code,from a specified code system, which details why the eligibility
-    /// check could not be performed.
-    pub fn code(&self) -> CodeableConcept {
-        CodeableConcept {
-            value: &self.value["code"],
-        }
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -46,6 +38,14 @@ impl CoverageEligibilityResponse_Error<'_> {
         return None;
     }
 
+    /// An error code,from a specified code system, which details why the eligibility
+    /// check could not be performed.
+    pub fn code(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: &self.value["code"],
+        }
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element and that modifies the understanding of the element in
     /// which it is contained and/or the understanding of the containing element's
@@ -69,13 +69,13 @@ impl CoverageEligibilityResponse_Error<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.code().validate();
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        let _ = self.code().validate();
         if let Some(_val) = self.modifier_extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();

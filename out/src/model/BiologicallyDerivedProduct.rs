@@ -24,28 +24,60 @@ pub struct BiologicallyDerivedProduct<'a> {
 }
 
 impl BiologicallyDerivedProduct<'_> {
-    /// Parent product (if any).
-    pub fn parent(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("parent") {
+    /// Extensions for productCategory
+    pub fn _product_category(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_productCategory") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Whether the product is currently available.
+    pub fn status(&self) -> Option<BiologicallyDerivedProductStatus> {
+        if let Some(Value::String(val)) = self.value.get("status") {
+            return Some(BiologicallyDerivedProductStatus::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// Extensions for language
+    pub fn _language(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_language") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// This records identifiers associated with this biologically derived product
+    /// instance that are defined by business processes and/or used to refer to it when
+    /// a direct URL reference to the resource itself is not appropriate (e.g. in CDA
+    /// documents, or in written / printed documentation).
+    pub fn identifier(&self) -> Option<Vec<Identifier>> {
+        if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Identifier { value: e })
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// Any processing of the product during collection that does not change the
-    /// fundamental nature of the product. For example adding anti-coagulants during the
-    /// collection of Peripheral Blood Stem Cells.
-    pub fn processing(&self) -> Option<Vec<BiologicallyDerivedProduct_Processing>> {
-        if let Some(Value::Array(val)) = self.value.get("processing") {
-            return Some(
-                val.into_iter()
-                    .map(|e| BiologicallyDerivedProduct_Processing { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Number of discrete units within this product.
+    pub fn quantity(&self) -> Option<i64> {
+        if let Some(val) = self.value.get("quantity") {
+            return Some(val.as_i64().unwrap());
+        }
+        return None;
+    }
+
+    /// A reference to a set of rules that were followed when the resource was
+    /// constructed, and which must be understood when processing the content. Often,
+    /// this is a reference to an implementation guide that defines the special rules
+    /// along with other profiles etc.
+    pub fn implicit_rules(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("implicitRules") {
+            return Some(string);
         }
         return None;
     }
@@ -63,16 +95,6 @@ impl BiologicallyDerivedProduct<'_> {
         return None;
     }
 
-    /// Any manipulation of product post-collection that is intended to alter the
-    /// product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral
-    /// Blood Stem Cells to make it more suitable for infusion.
-    pub fn manipulation(&self) -> Option<BiologicallyDerivedProduct_Manipulation> {
-        if let Some(val) = self.value.get("manipulation") {
-            return Some(BiologicallyDerivedProduct_Manipulation { value: val });
-        }
-        return None;
-    }
-
     /// Product storage.
     pub fn storage(&self) -> Option<Vec<BiologicallyDerivedProduct_Storage>> {
         if let Some(Value::Array(val)) = self.value.get("storage") {
@@ -85,28 +107,18 @@ impl BiologicallyDerivedProduct<'_> {
         return None;
     }
 
-    /// A reference to a set of rules that were followed when the resource was
-    /// constructed, and which must be understood when processing the content. Often,
-    /// this is a reference to an implementation guide that defines the special rules
-    /// along with other profiles etc.
-    pub fn implicit_rules(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("implicitRules") {
-            return Some(string);
+    /// A code that identifies the kind of this biologically derived product (SNOMED
+    /// Ctcode).
+    pub fn product_code(&self) -> Option<CodeableConcept> {
+        if let Some(val) = self.value.get("productCode") {
+            return Some(CodeableConcept { value: val });
         }
         return None;
     }
 
-    /// The base language in which the resource is written.
-    pub fn language(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("language") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Extensions for language
-    pub fn _language(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_language") {
+    /// Extensions for status
+    pub fn _status(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_status") {
             return Some(Element { value: val });
         }
         return None;
@@ -135,9 +147,98 @@ impl BiologicallyDerivedProduct<'_> {
         return None;
     }
 
-    /// Extensions for status
-    pub fn _status(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_status") {
+    /// Broad category of this product.
+    pub fn product_category(&self) -> Option<BiologicallyDerivedProductProductCategory> {
+        if let Some(Value::String(val)) = self.value.get("productCategory") {
+            return Some(BiologicallyDerivedProductProductCategory::from_string(&val).unwrap());
+        }
+        return None;
+    }
+
+    /// The base language in which the resource is written.
+    pub fn language(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("language") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Procedure request to obtain this biologically derived product.
+    pub fn request(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("request") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Extensions for quantity
+    pub fn _quantity(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_quantity") {
+            return Some(Element { value: val });
+        }
+        return None;
+    }
+
+    /// Parent product (if any).
+    pub fn parent(&self) -> Option<Vec<Reference>> {
+        if let Some(Value::Array(val)) = self.value.get("parent") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Reference { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// How this product was collected.
+    pub fn collection(&self) -> Option<BiologicallyDerivedProduct_Collection> {
+        if let Some(val) = self.value.get("collection") {
+            return Some(BiologicallyDerivedProduct_Collection { value: val });
+        }
+        return None;
+    }
+
+    /// Any processing of the product during collection that does not change the
+    /// fundamental nature of the product. For example adding anti-coagulants during the
+    /// collection of Peripheral Blood Stem Cells.
+    pub fn processing(&self) -> Option<Vec<BiologicallyDerivedProduct_Processing>> {
+        if let Some(Value::Array(val)) = self.value.get("processing") {
+            return Some(
+                val.into_iter()
+                    .map(|e| BiologicallyDerivedProduct_Processing { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
+    }
+
+    /// Any manipulation of product post-collection that is intended to alter the
+    /// product.  For example a buffy-coat enrichment or CD8 reduction of Peripheral
+    /// Blood Stem Cells to make it more suitable for infusion.
+    pub fn manipulation(&self) -> Option<BiologicallyDerivedProduct_Manipulation> {
+        if let Some(val) = self.value.get("manipulation") {
+            return Some(BiologicallyDerivedProduct_Manipulation { value: val });
+        }
+        return None;
+    }
+
+    /// The logical id of the resource, as used in the URL for the resource. Once
+    /// assigned, this value never changes.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
+        }
+        return None;
+    }
+
+    /// Extensions for implicitRules
+    pub fn _implicit_rules(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_implicitRules") {
             return Some(Element { value: val });
         }
         return None;
@@ -153,14 +254,6 @@ impl BiologicallyDerivedProduct<'_> {
                     .map(|e| ResourceList { value: e })
                     .collect::<Vec<_>>(),
             );
-        }
-        return None;
-    }
-
-    /// How this product was collected.
-    pub fn collection(&self) -> Option<BiologicallyDerivedProduct_Collection> {
-        if let Some(val) = self.value.get("collection") {
-            return Some(BiologicallyDerivedProduct_Collection { value: val });
         }
         return None;
     }
@@ -181,46 +274,6 @@ impl BiologicallyDerivedProduct<'_> {
         return None;
     }
 
-    /// This records identifiers associated with this biologically derived product
-    /// instance that are defined by business processes and/or used to refer to it when
-    /// a direct URL reference to the resource itself is not appropriate (e.g. in CDA
-    /// documents, or in written / printed documentation).
-    pub fn identifier(&self) -> Option<Vec<Identifier>> {
-        if let Some(Value::Array(val)) = self.value.get("identifier") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Identifier { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Extensions for productCategory
-    pub fn _product_category(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_productCategory") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// The logical id of the resource, as used in the URL for the resource. Once
-    /// assigned, this value never changes.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
-    /// Broad category of this product.
-    pub fn product_category(&self) -> Option<BiologicallyDerivedProductProductCategory> {
-        if let Some(Value::String(val)) = self.value.get("productCategory") {
-            return Some(BiologicallyDerivedProductProductCategory::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
     /// The metadata about the resource. This is content that is maintained by the
     /// infrastructure. Changes to the content might not always be associated with
     /// version changes to the resource.
@@ -231,74 +284,22 @@ impl BiologicallyDerivedProduct<'_> {
         return None;
     }
 
-    /// Whether the product is currently available.
-    pub fn status(&self) -> Option<BiologicallyDerivedProductStatus> {
-        if let Some(Value::String(val)) = self.value.get("status") {
-            return Some(BiologicallyDerivedProductStatus::from_string(&val).unwrap());
-        }
-        return None;
-    }
-
-    /// Procedure request to obtain this biologically derived product.
-    pub fn request(&self) -> Option<Vec<Reference>> {
-        if let Some(Value::Array(val)) = self.value.get("request") {
-            return Some(
-                val.into_iter()
-                    .map(|e| Reference { value: e })
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Number of discrete units within this product.
-    pub fn quantity(&self) -> Option<i64> {
-        if let Some(val) = self.value.get("quantity") {
-            return Some(val.as_i64().unwrap());
-        }
-        return None;
-    }
-
-    /// Extensions for implicitRules
-    pub fn _implicit_rules(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
-    /// A code that identifies the kind of this biologically derived product (SNOMED
-    /// Ctcode).
-    pub fn product_code(&self) -> Option<CodeableConcept> {
-        if let Some(val) = self.value.get("productCode") {
-            return Some(CodeableConcept { value: val });
-        }
-        return None;
-    }
-
-    /// Extensions for quantity
-    pub fn _quantity(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_quantity") {
-            return Some(Element { value: val });
-        }
-        return None;
-    }
-
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.parent() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.processing() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.text() {
+        if let Some(_val) = self._product_category() {
             _val.validate();
         }
-        if let Some(_val) = self.manipulation() {
+        if let Some(_val) = self.status() {}
+        if let Some(_val) = self._language() {
+            _val.validate();
+        }
+        if let Some(_val) = self.identifier() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.quantity() {}
+        if let Some(_val) = self.implicit_rules() {}
+        if let Some(_val) = self.text() {
             _val.validate();
         }
         if let Some(_val) = self.storage() {
@@ -306,9 +307,10 @@ impl BiologicallyDerivedProduct<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.implicit_rules() {}
-        if let Some(_val) = self.language() {}
-        if let Some(_val) = self._language() {
+        if let Some(_val) = self.product_code() {
+            _val.validate();
+        }
+        if let Some(_val) = self._status() {
             _val.validate();
         }
         if let Some(_val) = self.modifier_extension() {
@@ -316,10 +318,17 @@ impl BiologicallyDerivedProduct<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self._status() {
+        if let Some(_val) = self.product_category() {}
+        if let Some(_val) = self.language() {}
+        if let Some(_val) = self.request() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self._quantity() {
             _val.validate();
         }
-        if let Some(_val) = self.contained() {
+        if let Some(_val) = self.parent() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -327,41 +336,55 @@ impl BiologicallyDerivedProduct<'_> {
         if let Some(_val) = self.collection() {
             _val.validate();
         }
+        if let Some(_val) = self.processing() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.manipulation() {
+            _val.validate();
+        }
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self._implicit_rules() {
+            _val.validate();
+        }
+        if let Some(_val) = self.contained() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
-        if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self._product_category() {
-            _val.validate();
-        }
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.product_category() {}
         if let Some(_val) = self.meta() {
             _val.validate();
         }
-        if let Some(_val) = self.status() {}
-        if let Some(_val) = self.request() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
-        if let Some(_val) = self.quantity() {}
-        if let Some(_val) = self._implicit_rules() {
-            _val.validate();
-        }
-        if let Some(_val) = self.product_code() {
-            _val.validate();
-        }
-        if let Some(_val) = self._quantity() {
-            _val.validate();
-        }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub enum BiologicallyDerivedProductStatus {
+    Available,
+    Unavailable,
+}
+
+impl BiologicallyDerivedProductStatus {
+    pub fn from_string(string: &str) -> Option<BiologicallyDerivedProductStatus> {
+        match string {
+            "available" => Some(BiologicallyDerivedProductStatus::Available),
+            "unavailable" => Some(BiologicallyDerivedProductStatus::Unavailable),
+            _ => None,
+        }
+    }
+
+    pub fn to_string(&self) -> String {
+        match self {
+            BiologicallyDerivedProductStatus::Available => "available",
+            BiologicallyDerivedProductStatus::Unavailable => "unavailable",
+        }
     }
 }
 
@@ -385,20 +408,14 @@ impl BiologicallyDerivedProductProductCategory {
             _ => None,
         }
     }
-}
 
-#[derive(Debug)]
-pub enum BiologicallyDerivedProductStatus {
-    Available,
-    Unavailable,
-}
-
-impl BiologicallyDerivedProductStatus {
-    pub fn from_string(string: &str) -> Option<BiologicallyDerivedProductStatus> {
-        match string {
-            "available" => Some(BiologicallyDerivedProductStatus::Available),
-            "unavailable" => Some(BiologicallyDerivedProductStatus::Unavailable),
-            _ => None,
+    pub fn to_string(&self) -> String {
+        match self {
+            BiologicallyDerivedProductProductCategory::Organ => "organ",
+            BiologicallyDerivedProductProductCategory::Tissue => "tissue",
+            BiologicallyDerivedProductProductCategory::Fluid => "fluid",
+            BiologicallyDerivedProductProductCategory::Cells => "cells",
+            BiologicallyDerivedProductProductCategory::BiologicalAgent => "biologicalAgent",
         }
     }
 }

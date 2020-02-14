@@ -16,19 +16,10 @@ pub struct Coverage_CostToBeneficiary<'a> {
 }
 
 impl Coverage_CostToBeneficiary<'_> {
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// The amount due from the patient for the cost category.
-    pub fn value_money(&self) -> Option<Money> {
-        if let Some(val) = self.value.get("valueMoney") {
-            return Some(Money { value: val });
+    pub fn value_quantity(&self) -> Option<Quantity> {
+        if let Some(val) = self.value.get("valueQuantity") {
+            return Some(Quantity { value: val });
         }
         return None;
     }
@@ -41,16 +32,21 @@ impl Coverage_CostToBeneficiary<'_> {
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// The amount due from the patient for the cost category.
+    pub fn value_money(&self) -> Option<Money> {
+        if let Some(val) = self.value.get("valueMoney") {
+            return Some(Money { value: val });
+        }
+        return None;
+    }
+
+    /// A suite of codes indicating exceptions or reductions to patient costs and their
+    /// effective periods.
+    pub fn exception(&self) -> Option<Vec<Coverage_Exception>> {
+        if let Some(Value::Array(val)) = self.value.get("exception") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Coverage_Exception { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,21 +75,25 @@ impl Coverage_CostToBeneficiary<'_> {
         return None;
     }
 
-    /// The amount due from the patient for the cost category.
-    pub fn value_quantity(&self) -> Option<Quantity> {
-        if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
 
-    /// A suite of codes indicating exceptions or reductions to patient costs and their
-    /// effective periods.
-    pub fn exception(&self) -> Option<Vec<Coverage_Exception>> {
-        if let Some(Value::Array(val)) = self.value.get("exception") {
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coverage_Exception { value: e })
+                    .map(|e| Extension { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,14 +101,16 @@ impl Coverage_CostToBeneficiary<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        if let Some(_val) = self.id() {}
-        if let Some(_val) = self.value_money() {
+        if let Some(_val) = self.value_quantity() {
             _val.validate();
         }
         if let Some(_val) = self.fhir_type() {
             _val.validate();
         }
-        if let Some(_val) = self.extension() {
+        if let Some(_val) = self.value_money() {
+            _val.validate();
+        }
+        if let Some(_val) = self.exception() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -118,10 +120,8 @@ impl Coverage_CostToBeneficiary<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.value_quantity() {
-            _val.validate();
-        }
-        if let Some(_val) = self.exception() {
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.extension() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });

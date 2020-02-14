@@ -12,10 +12,10 @@ pub struct Money<'a> {
 }
 
 impl Money<'_> {
-    /// Extensions for currency
-    pub fn _currency(&self) -> Option<Element> {
-        if let Some(val) = self.value.get("_currency") {
-            return Some(Element { value: val });
+    /// ISO 4217 Currency Code.
+    pub fn currency(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("currency") {
+            return Some(string);
         }
         return None;
     }
@@ -52,14 +52,6 @@ impl Money<'_> {
         return None;
     }
 
-    /// ISO 4217 Currency Code.
-    pub fn currency(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("currency") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// Unique id for the element within a resource (for internal references). This may
     /// be any string value that does not contain spaces.
     pub fn id(&self) -> Option<&str> {
@@ -69,10 +61,16 @@ impl Money<'_> {
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self._currency() {
-            _val.validate();
+    /// Extensions for currency
+    pub fn _currency(&self) -> Option<Element> {
+        if let Some(val) = self.value.get("_currency") {
+            return Some(Element { value: val });
         }
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self.currency() {}
         if let Some(_val) = self._value() {
             _val.validate();
         }
@@ -82,8 +80,10 @@ impl Money<'_> {
             });
         }
         if let Some(_val) = self.value() {}
-        if let Some(_val) = self.currency() {}
         if let Some(_val) = self.id() {}
+        if let Some(_val) = self._currency() {
+            _val.validate();
+        }
         return true;
     }
 }

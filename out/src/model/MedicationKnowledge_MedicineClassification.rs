@@ -34,21 +34,25 @@ impl MedicationKnowledge_MedicineClassification<'_> {
         return None;
     }
 
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
-            return Some(string);
-        }
-        return None;
-    }
-
     /// The type of category for the medication (for example, therapeutic
     /// classification, therapeutic sub-classification).
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
             value: &self.value["type"],
         }
+    }
+
+    /// Specific category assigned to the medication (e.g. anti-infective, anti-
+    /// hypertensive, antibiotic, etc.).
+    pub fn classification(&self) -> Option<Vec<CodeableConcept>> {
+        if let Some(Value::Array(val)) = self.value.get("classification") {
+            return Some(
+                val.into_iter()
+                    .map(|e| CodeableConcept { value: e })
+                    .collect::<Vec<_>>(),
+            );
+        }
+        return None;
     }
 
     /// May be used to represent additional information that is not part of the basic
@@ -67,15 +71,11 @@ impl MedicationKnowledge_MedicineClassification<'_> {
         return None;
     }
 
-    /// Specific category assigned to the medication (e.g. anti-infective, anti-
-    /// hypertensive, antibiotic, etc.).
-    pub fn classification(&self) -> Option<Vec<CodeableConcept>> {
-        if let Some(Value::Array(val)) = self.value.get("classification") {
-            return Some(
-                val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
-                    .collect::<Vec<_>>(),
-            );
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
+            return Some(string);
         }
         return None;
     }
@@ -86,18 +86,18 @@ impl MedicationKnowledge_MedicineClassification<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.id() {}
         let _ = self.fhir_type().validate();
-        if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
-        }
         if let Some(_val) = self.classification() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
         }
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
+        if let Some(_val) = self.id() {}
         return true;
     }
 }

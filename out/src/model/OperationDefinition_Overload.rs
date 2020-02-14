@@ -13,28 +13,24 @@ pub struct OperationDefinition_Overload<'a> {
 }
 
 impl OperationDefinition_Overload<'_> {
-    /// Extensions for parameterName
-    pub fn _parameter_name(&self) -> Option<Vec<Element>> {
-        if let Some(Value::Array(val)) = self.value.get("_parameterName") {
+    /// Name of parameter to include in overload.
+    pub fn parameter_name(&self) -> Option<Vec<&str>> {
+        if let Some(Value::Array(val)) = self.value.get("parameterName") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| e.as_str().unwrap())
                     .collect::<Vec<_>>(),
             );
         }
         return None;
     }
 
-    /// May be used to represent additional information that is not part of the basic
-    /// definition of the element. To make the use of extensions safe and manageable,
-    /// there is a strict set of governance  applied to the definition and use of
-    /// extensions. Though any implementer can define an extension, there is a set of
-    /// requirements that SHALL be met as part of the definition of the extension.
-    pub fn extension(&self) -> Option<Vec<Extension>> {
-        if let Some(Value::Array(val)) = self.value.get("extension") {
+    /// Extensions for parameterName
+    pub fn _parameter_name(&self) -> Option<Vec<Element>> {
+        if let Some(Value::Array(val)) = self.value.get("_parameterName") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Element { value: e })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,22 +59,9 @@ impl OperationDefinition_Overload<'_> {
         return None;
     }
 
-    /// Name of parameter to include in overload.
-    pub fn parameter_name(&self) -> Option<Vec<&str>> {
-        if let Some(Value::Array(val)) = self.value.get("parameterName") {
-            return Some(
-                val.into_iter()
-                    .map(|e| e.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            );
-        }
-        return None;
-    }
-
-    /// Unique id for the element within a resource (for internal references). This may
-    /// be any string value that does not contain spaces.
-    pub fn id(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("id") {
+    /// Comments to go on overload.
+    pub fn comment(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("comment") {
             return Some(string);
         }
         return None;
@@ -92,21 +75,36 @@ impl OperationDefinition_Overload<'_> {
         return None;
     }
 
-    /// Comments to go on overload.
-    pub fn comment(&self) -> Option<&str> {
-        if let Some(Value::String(string)) = self.value.get("comment") {
+    /// Unique id for the element within a resource (for internal references). This may
+    /// be any string value that does not contain spaces.
+    pub fn id(&self) -> Option<&str> {
+        if let Some(Value::String(string)) = self.value.get("id") {
             return Some(string);
         }
         return None;
     }
 
-    pub fn validate(&self) -> bool {
-        if let Some(_val) = self._parameter_name() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+    /// May be used to represent additional information that is not part of the basic
+    /// definition of the element. To make the use of extensions safe and manageable,
+    /// there is a strict set of governance  applied to the definition and use of
+    /// extensions. Though any implementer can define an extension, there is a set of
+    /// requirements that SHALL be met as part of the definition of the extension.
+    pub fn extension(&self) -> Option<Vec<Extension>> {
+        if let Some(Value::Array(val)) = self.value.get("extension") {
+            return Some(
+                val.into_iter()
+                    .map(|e| Extension { value: e })
+                    .collect::<Vec<_>>(),
+            );
         }
-        if let Some(_val) = self.extension() {
+        return None;
+    }
+
+    pub fn validate(&self) -> bool {
+        if let Some(_val) = self.parameter_name() {
+            _val.into_iter().for_each(|_e| {});
+        }
+        if let Some(_val) = self._parameter_name() {
             _val.into_iter().for_each(|e| {
                 e.validate();
             });
@@ -116,14 +114,16 @@ impl OperationDefinition_Overload<'_> {
                 e.validate();
             });
         }
-        if let Some(_val) = self.parameter_name() {
-            _val.into_iter().for_each(|_e| {});
-        }
-        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.comment() {}
         if let Some(_val) = self._comment() {
             _val.validate();
         }
-        if let Some(_val) = self.comment() {}
+        if let Some(_val) = self.id() {}
+        if let Some(_val) = self.extension() {
+            _val.into_iter().for_each(|e| {
+                e.validate();
+            });
+        }
         return true;
     }
 }
