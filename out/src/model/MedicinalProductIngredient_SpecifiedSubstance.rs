@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,9 +17,9 @@ pub struct MedicinalProductIngredient_SpecifiedSubstance<'a> {
 impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -32,21 +32,6 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The group of specified substance, e.g. group 1 to 4.
-  pub fn group(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["group"],
-    }
-  }
-
-  /// Confidentiality level of the specified substance as the ingredient.
-  pub fn confidentiality(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("confidentiality") {
-      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -76,6 +61,21 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
     }
   }
 
+  /// The group of specified substance, e.g. group 1 to 4.
+  pub fn group(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["group"],
+    }
+  }
+
+  /// Confidentiality level of the specified substance as the ingredient.
+  pub fn confidentiality(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("confidentiality") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// Quantity of the substance or specified substance present in the manufactured
   /// item or pharmaceutical product.
   pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
@@ -91,14 +91,14 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.group().validate();
-    if let Some(_val) = self.confidentiality() {
-      _val.validate();
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     let _ = self.code().validate();
+    let _ = self.group().validate();
+    if let Some(_val) = self.confidentiality() {
+      _val.validate();
+    }
     if let Some(_val) = self.strength() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }

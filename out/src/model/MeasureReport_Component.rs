@@ -33,13 +33,27 @@ impl MeasureReport_Component<'_> {
     return None;
   }
 
+  /// The code for the stratum component value.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
+  }
+
+  /// The stratum component value.
+  pub fn value(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["value"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -54,31 +68,17 @@ impl MeasureReport_Component<'_> {
     return None;
   }
 
-  /// The code for the stratum component value.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
-  /// The stratum component value.
-  pub fn value(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["value"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    let _ = self.code().validate();
     if let Some(_val) = self.id() {
     }
+    let _ = self.value().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.code().validate();
-    let _ = self.value().validate();
     return true;
   }
 

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::InsurancePlan_Benefit1::InsurancePlan_Benefit1;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,12 +15,12 @@ pub struct InsurancePlan_SpecificCost<'a> {
 }
 
 impl InsurancePlan_SpecificCost<'_> {
-  /// List of the specific benefits under this category of benefit.
-  pub fn benefit(&self) -> Option<Vec<InsurancePlan_Benefit1>> {
-    if let Some(Value::Array(val)) = self.value.get("benefit") {
-      return Some(val.into_iter().map(|e| InsurancePlan_Benefit1 { value: e }).collect::<Vec<_>>());
+  /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
+  /// Substance Abuse; Hospice, Home Health).
+  pub fn category(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["category"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -41,19 +41,19 @@ impl InsurancePlan_SpecificCost<'_> {
     return None;
   }
 
-  /// General category of benefit (Medical; Dental; Vision; Drug; Mental Health;
-  /// Substance Abuse; Hospice, Home Health).
-  pub fn category(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["category"],
+  /// List of the specific benefits under this category of benefit.
+  pub fn benefit(&self) -> Option<Vec<InsurancePlan_Benefit1>> {
+    if let Some(Value::Array(val)) = self.value.get("benefit") {
+      return Some(val.into_iter().map(|e| InsurancePlan_Benefit1 { value: e }).collect::<Vec<_>>());
     }
+    return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -71,13 +71,13 @@ impl InsurancePlan_SpecificCost<'_> {
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.benefit() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
+    let _ = self.category().validate();
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.category().validate();
+    if let Some(_val) = self.benefit() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {

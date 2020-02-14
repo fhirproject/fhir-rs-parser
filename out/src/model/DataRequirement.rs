@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
-use crate::model::DataRequirement_Sort::DataRequirement_Sort;
-use crate::model::DataRequirement_DateFilter::DataRequirement_DateFilter;
 use crate::model::Element::Element;
-use crate::model::DataRequirement_CodeFilter::DataRequirement_CodeFilter;
+use crate::model::Extension::Extension;
+use crate::model::DataRequirement_DateFilter::DataRequirement_DateFilter;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::DataRequirement_Sort::DataRequirement_Sort;
+use crate::model::DataRequirement_CodeFilter::DataRequirement_CodeFilter;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -20,28 +20,25 @@ pub struct DataRequirement<'a> {
 }
 
 impl DataRequirement<'_> {
-  /// Extensions for limit
-  pub fn _limit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_limit") {
-      return Some(Element { value: val });
+  /// Indicates that specific elements of the type are referenced by the knowledge
+  /// module and must be supported by the consumer in order to obtain an effective
+  /// evaluation. This does not mean that a value is required for this element, only
+  /// that the consuming system must understand the element and be able to provide
+  /// values for it if they are available.     The value of mustSupport SHALL be a
+  /// FHIRPath resolveable on the type of the DataRequirement. The path SHALL consist
+  /// only of identifiers, constant indexers, and .resolve() (see the [Simple FHIRPath
+  /// Profile](fhirpath.html#simple) for full details).
+  pub fn must_support(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("mustSupport") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Specifies the order of the results to be returned.
-  pub fn sort(&self) -> Option<Vec<DataRequirement_Sort>> {
-    if let Some(Value::Array(val)) = self.value.get("sort") {
-      return Some(val.into_iter().map(|e| DataRequirement_Sort { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Date filters specify additional constraints on the data in terms of the
-  /// applicable date range for specific elements. Each date filter specifies an
-  /// additional constraint on the data, i.e. date filters are AND'ed, not OR'ed.
-  pub fn date_filter(&self) -> Option<Vec<DataRequirement_DateFilter>> {
-    if let Some(Value::Array(val)) = self.value.get("dateFilter") {
-      return Some(val.into_iter().map(|e| DataRequirement_DateFilter { value: e }).collect::<Vec<_>>());
+  /// Extensions for mustSupport
+  pub fn _must_support(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_mustSupport") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -55,20 +52,20 @@ impl DataRequirement<'_> {
     return None;
   }
 
-  /// Code filters specify additional constraints on the data, specifying the value
-  /// set of interest for a particular element of the data. Each code filter defines
-  /// an additional constraint on the data, i.e. code filters are AND'ed, not OR'ed.
-  pub fn code_filter(&self) -> Option<Vec<DataRequirement_CodeFilter>> {
-    if let Some(Value::Array(val)) = self.value.get("codeFilter") {
-      return Some(val.into_iter().map(|e| DataRequirement_CodeFilter { value: e }).collect::<Vec<_>>());
+  /// The type of the required data, specified as the type name of a resource. For
+  /// profiles, this value is set to the type of the base resource of the profile.
+  pub fn fhir_type(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("type") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -85,35 +82,45 @@ impl DataRequirement<'_> {
     return None;
   }
 
-  /// Indicates that specific elements of the type are referenced by the knowledge
-  /// module and must be supported by the consumer in order to obtain an effective
-  /// evaluation. This does not mean that a value is required for this element, only
-  /// that the consuming system must understand the element and be able to provide
-  /// values for it if they are available.     The value of mustSupport SHALL be a
-  /// FHIRPath resolveable on the type of the DataRequirement. The path SHALL consist
-  /// only of identifiers, constant indexers, and .resolve() (see the [Simple FHIRPath
-  /// Profile](fhirpath.html#simple) for full details).
-  pub fn must_support(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("mustSupport") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// Extensions for limit
+  pub fn _limit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_limit") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Date filters specify additional constraints on the data in terms of the
+  /// applicable date range for specific elements. Each date filter specifies an
+  /// additional constraint on the data, i.e. date filters are AND'ed, not OR'ed.
+  pub fn date_filter(&self) -> Option<Vec<DataRequirement_DateFilter>> {
+    if let Some(Value::Array(val)) = self.value.get("dateFilter") {
+      return Some(val.into_iter().map(|e| DataRequirement_DateFilter { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   /// The profile of the required data, specified as the uri of the profile
   /// definition.
-  pub fn profile(&self) -> Option<Vec<String>> {
+  pub fn profile(&self) -> Option<Vec<&str>> {
     if let Some(Value::Array(val)) = self.value.get("profile") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Specifies the order of the results to be returned.
+  pub fn sort(&self) -> Option<Vec<DataRequirement_Sort>> {
+    if let Some(Value::Array(val)) = self.value.get("sort") {
+      return Some(val.into_iter().map(|e| DataRequirement_Sort { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -127,11 +134,12 @@ impl DataRequirement<'_> {
     return None;
   }
 
-  /// The type of the required data, specified as the type name of a resource. For
-  /// profiles, this value is set to the type of the base resource of the profile.
-  pub fn fhir_type(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("type") {
-      return Some(string.to_string());
+  /// Code filters specify additional constraints on the data, specifying the value
+  /// set of interest for a particular element of the data. Each code filter defines
+  /// an additional constraint on the data, i.e. code filters are AND'ed, not OR'ed.
+  pub fn code_filter(&self) -> Option<Vec<DataRequirement_CodeFilter>> {
+    if let Some(Value::Array(val)) = self.value.get("codeFilter") {
+      return Some(val.into_iter().map(|e| DataRequirement_CodeFilter { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -145,53 +153,45 @@ impl DataRequirement<'_> {
     return None;
   }
 
-  /// Extensions for mustSupport
-  pub fn _must_support(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_mustSupport") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.must_support() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self._must_support() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.limit() {
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self._limit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date_filter() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.profile() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self._type() {
       _val.validate();
     }
     if let Some(_val) = self.sort() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.date_filter() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.limit() {
+    if let Some(_val) = self.subject_codeable_concept() {
+      _val.validate();
     }
     if let Some(_val) = self.code_filter() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._type() {
-      _val.validate();
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.must_support() {
-      _val.into_iter().for_each(|_e| {});
-    }
-    if let Some(_val) = self.profile() {
-      _val.into_iter().for_each(|_e| {});
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.subject_codeable_concept() {
-      _val.validate();
-    }
-    if let Some(_val) = self.fhir_type() {
-    }
     if let Some(_val) = self.subject_reference() {
       _val.validate();
-    }
-    if let Some(_val) = self._must_support() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,17 +14,42 @@ pub struct StructureMap_Input<'a> {
 }
 
 impl StructureMap_Input<'_> {
-  /// Documentation for this instance of data.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
+  /// Name for this instance of data.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
+  /// Mode for this instance of data.
+  pub fn mode(&self) -> Option<StructureMap_InputMode> {
+    if let Some(Value::String(val)) = self.value.get("mode") {
+      return Some(StructureMap_InputMode::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
       return Some(Element { value: val });
     }
     return None;
@@ -49,34 +74,25 @@ impl StructureMap_Input<'_> {
   }
 
   /// Type for this instance of data.
-  pub fn fhir_type(&self) -> Option<String> {
+  pub fn fhir_type(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("type") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// Name for this instance of data.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+  /// Documentation for this instance of data.
+  pub fn documentation(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Mode for this instance of data.
-  pub fn mode(&self) -> Option<StructureMap_InputMode> {
-    if let Some(Value::String(val)) = self.value.get("mode") {
-      return Some(StructureMap_InputMode::from_string(&val).unwrap());
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -84,14 +100,6 @@ impl StructureMap_Input<'_> {
   /// Extensions for mode
   pub fn _mode(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_mode") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
       return Some(Element { value: val });
     }
     return None;
@@ -109,18 +117,17 @@ impl StructureMap_Input<'_> {
     return None;
   }
 
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.documentation() {
+    if let Some(_val) = self.name() {
     }
-    if let Some(_val) = self._name() {
+    if let Some(_val) = self.mode() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._documentation() {
       _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
@@ -128,23 +135,16 @@ impl StructureMap_Input<'_> {
     }
     if let Some(_val) = self.fhir_type() {
     }
-    if let Some(_val) = self.name() {
+    if let Some(_val) = self.documentation() {
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.mode() {
+    if let Some(_val) = self._name() {
+      _val.validate();
     }
     if let Some(_val) = self._mode() {
       _val.validate();
     }
-    if let Some(_val) = self._type() {
-      _val.validate();
-    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._documentation() {
-      _val.validate();
     }
     return true;
   }

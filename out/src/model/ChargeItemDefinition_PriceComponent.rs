@@ -2,8 +2,8 @@
 
 use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Money::Money;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -19,14 +19,19 @@ pub struct ChargeItemDefinition_PriceComponent<'a> {
 }
 
 impl ChargeItemDefinition_PriceComponent<'_> {
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// The amount calculated for this component.
+  pub fn amount(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -40,52 +45,21 @@ impl ChargeItemDefinition_PriceComponent<'_> {
   }
 
   /// This code identifies the type of the component.
-  pub fn fhir_type(&self) -> Option<String> {
+  pub fn fhir_type(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("type") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// A code that identifies the component. Codes may be used to differentiate between
-  /// kinds of taxes, surcharges, discounts etc.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for type
-  pub fn _type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_type") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The factor that has been applied on the base price for calculating this
-  /// component.
-  pub fn factor(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("factor") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// The amount calculated for this component.
-  pub fn amount(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("amount") {
-      return Some(Money { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -108,30 +82,56 @@ impl ChargeItemDefinition_PriceComponent<'_> {
     return None;
   }
 
+  /// Extensions for type
+  pub fn _type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The factor that has been applied on the base price for calculating this
+  /// component.
+  pub fn factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("factor") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// A code that identifies the component. Codes may be used to differentiate between
+  /// kinds of taxes, surcharges, discounts etc.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.amount() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self._factor() {
       _val.validate();
     }
     if let Some(_val) = self.fhir_type() {
     }
-    if let Some(_val) = self.code() {
-      _val.validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._type() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self.factor() {
     }
-    if let Some(_val) = self.amount() {
+    if let Some(_val) = self.code() {
       _val.validate();
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

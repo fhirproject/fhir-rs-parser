@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use serde_json::value::Value;
 
@@ -21,17 +21,36 @@ pub struct CoverageEligibilityRequest_Insurance<'a> {
 impl CoverageEligibilityRequest_Insurance<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for businessArrangement
-  pub fn _business_arrangement(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_businessArrangement") {
-      return Some(Element { value: val });
+  /// Reference to the insurance card level information contained in the Coverage
+  /// resource. The coverage issuing insurer will use these details to locate the
+  /// patient's actual coverage within the insurer's information system.
+  pub fn coverage(&self) -> Reference {
+    Reference {
+      value: &self.value["coverage"],
+    }
+  }
+
+  /// A business agreement number established between the provider and the insurer for
+  /// special business processing purposes.
+  pub fn business_arrangement(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("businessArrangement") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A flag to indicate that this Coverage is to be used for evaluation of this
+  /// request when set to true.
+  pub fn focal(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("focal") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -48,39 +67,12 @@ impl CoverageEligibilityRequest_Insurance<'_> {
     return None;
   }
 
-  /// A business agreement number established between the provider and the insurer for
-  /// special business processing purposes.
-  pub fn business_arrangement(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("businessArrangement") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for focal
-  pub fn _focal(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_focal") {
+  /// Extensions for businessArrangement
+  pub fn _business_arrangement(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_businessArrangement") {
       return Some(Element { value: val });
     }
     return None;
-  }
-
-  /// A flag to indicate that this Coverage is to be used for evaluation of this
-  /// request when set to true.
-  pub fn focal(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("focal") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Reference to the insurance card level information contained in the Coverage
-  /// resource. The coverage issuing insurer will use these details to locate the
-  /// patient's actual coverage within the insurer's information system.
-  pub fn coverage(&self) -> Reference {
-    Reference {
-      value: &self.value["coverage"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -101,25 +93,33 @@ impl CoverageEligibilityRequest_Insurance<'_> {
     return None;
   }
 
+  /// Extensions for focal
+  pub fn _focal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_focal") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self._business_arrangement() {
-      _val.validate();
+    let _ = self.coverage().validate();
+    if let Some(_val) = self.business_arrangement() {
+    }
+    if let Some(_val) = self.focal() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.business_arrangement() {
+    if let Some(_val) = self._business_arrangement() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._focal() {
       _val.validate();
-    }
-    if let Some(_val) = self.focal() {
-    }
-    let _ = self.coverage().validate();
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

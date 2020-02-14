@@ -1,18 +1,18 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Identifier::Identifier;
-use crate::model::Element::Element;
-use crate::model::Range::Range;
-use crate::model::Annotation::Annotation;
-use crate::model::Ratio::Ratio;
-use crate::model::ResourceList::ResourceList;
 use crate::model::Timing::Timing;
+use crate::model::Annotation::Annotation;
 use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
-use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Quantity::Quantity;
+use crate::model::Identifier::Identifier;
+use crate::model::Extension::Extension;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Element::Element;
+use crate::model::Range::Range;
 use crate::model::Reference::Reference;
+use crate::model::Narrative::Narrative;
+use crate::model::Ratio::Ratio;
 use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
@@ -27,79 +27,96 @@ pub struct ServiceRequest<'a> {
 }
 
 impl ServiceRequest<'_> {
-  /// Extensions for intent
-  pub fn _intent(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_intent") {
-      return Some(Element { value: val });
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for asNeededBoolean
-  pub fn _as_needed_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_asNeededBoolean") {
-      return Some(Element { value: val });
+  /// An encounter that provides additional information about the healthcare context
+  /// in which this request is made.
+  pub fn encounter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("encounter") {
+      return Some(Reference { value: val });
     }
     return None;
   }
 
-  /// The status of the order.
-  pub fn status(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("status") {
-      return Some(string.to_string());
+  /// A code that identifies a particular service (i.e., procedure, diagnostic
+  /// investigation, or panel of investigations) that have been requested.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// Extensions for occurrenceDateTime
-  pub fn _occurrence_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_occurrenceDateTime") {
-      return Some(Element { value: val });
+  /// If a CodeableConcept is present, it indicates the pre-condition for performing
+  /// the service.  For example "pain", "on flare-up", etc.
+  pub fn as_needed_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("asNeededBoolean") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
 
-  /// Additional details and instructions about the how the services are to be
-  /// delivered.   For example, and order for a urinary catheter may have an order
-  /// detail for an external or indwelling catheter, or an order for a bandage may
-  /// require additional instructions specifying how the bandage should be applied.
-  pub fn order_detail(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("orderDetail") {
+  /// The desired performer for doing the requested service.  For example, the
+  /// surgeon, dermatopathologist, endoscopist, etc.
+  pub fn performer(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("performer") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates another resource that provides a justification for why this service is
+  /// being requested.   May relate to the resources referred to in `supportingInfo`.
+  pub fn reason_reference(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("reasonReference") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// An explanation or justification for why this service is being requested in coded
+  /// or textual form.   This is often for billing purposes.  May relate to the
+  /// resources referred to in `supportingInfo`.
+  pub fn reason_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("reasonCode") {
       return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Key events in the history of the request.
-  pub fn relevant_history(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("relevantHistory") {
+  /// Insurance plans, coverage extensions, pre-authorizations and/or pre-
+  /// determinations that may be needed for delivering the requested service.
+  pub fn insurance(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("insurance") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for instantiatesUri
-  pub fn _instantiates_uri(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_instantiatesUri") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// If a CodeableConcept is present, it indicates the pre-condition for performing
+  /// the service.  For example "pain", "on flare-up", etc.
+  pub fn as_needed_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("asNeededCodeableConcept") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// The request takes the place of the referenced completed or terminated
-  /// request(s).
-  pub fn replaces(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("replaces") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Identifiers assigned to this order instance by the orderer and/or the receiver
-  /// and/or order fulfiller.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+  /// Indicates how quickly the ServiceRequest should be addressed with respect to
+  /// other requests.
+  pub fn priority(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("priority") {
+      return Some(string);
     }
     return None;
   }
@@ -114,139 +131,9 @@ impl ServiceRequest<'_> {
   }
 
   /// The date/time at which the requested service should occur.
-  pub fn occurrence_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("occurrencePeriod") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Additional clinical information about the patient or specimen that may influence
-  /// the services or their interpretations.     This information includes diagnosis,
-  /// clinical findings and other observations.  In laboratory ordering these are
-  /// typically referred to as "ask at order entry questions (AOEs)".  This includes
-  /// observations explicitly requested by the producer (filler) to provide context or
-  /// supporting information needed to complete the order. For example,  reporting the
-  /// amount of inspired oxygen for blood gas measurements.
-  pub fn supporting_info(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The date/time at which the requested service should occur.
-  pub fn occurrence_date_time(&self) -> Option<String> {
+  pub fn occurrence_date_time(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("occurrenceDateTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An amount of service being requested which can be a quantity ( for example
-  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
-  /// or a range (2.0 to 1.8 Gy per fraction).
-  pub fn quantity_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("quantityRange") {
-      return Some(Range { value: val });
-    }
-    return None;
-  }
-
-  /// An amount of service being requested which can be a quantity ( for example
-  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
-  /// or a range (2.0 to 1.8 Gy per fraction).
-  pub fn quantity_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("quantityQuantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// If a CodeableConcept is present, it indicates the pre-condition for performing
-  /// the service.  For example "pain", "on flare-up", etc.
-  pub fn as_needed_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("asNeededCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Desired type of performer for doing the requested service.
-  pub fn performer_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("performerType") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The URL pointing to an externally maintained protocol, guideline, orderset or
-  /// other definition that is adhered to in whole or in part by this ServiceRequest.
-  pub fn instantiates_uri(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("instantiatesUri") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Any other notes and comments made about the service request. For example,
-  /// internal billing notes.
-  pub fn note(&self) -> Option<Vec<Annotation>> {
-    if let Some(Value::Array(val)) = self.value.get("note") {
-      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Indicates how quickly the ServiceRequest should be addressed with respect to
-  /// other requests.
-  pub fn priority(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("priority") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An amount of service being requested which can be a quantity ( for example
-  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
-  /// or a range (2.0 to 1.8 Gy per fraction).
-  pub fn quantity_ratio(&self) -> Option<Ratio> {
-    if let Some(val) = self.value.get("quantityRatio") {
-      return Some(Ratio { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates another resource that provides a justification for why this service is
-  /// being requested.   May relate to the resources referred to in `supportingInfo`.
-  pub fn reason_reference(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("reasonReference") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Instructions in terms that are understood by the patient or consumer.
-  pub fn patient_instruction(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("patientInstruction") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -261,29 +148,20 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+  /// An amount of service being requested which can be a quantity ( for example
+  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
+  /// or a range (2.0 to 1.8 Gy per fraction).
+  pub fn quantity_ratio(&self) -> Option<Ratio> {
+    if let Some(val) = self.value.get("quantityRatio") {
+      return Some(Ratio { value: val });
     }
     return None;
   }
 
-  /// Extensions for priority
-  pub fn _priority(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_priority") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+  /// The date/time at which the requested service should occur.
+  pub fn occurrence_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("occurrencePeriod") {
+      return Some(Period { value: val });
     }
     return None;
   }
@@ -294,44 +172,6 @@ impl ServiceRequest<'_> {
       return Some(Timing { value: val });
     }
     return None;
-  }
-
-  /// The preferred location(s) where the procedure should actually happen in coded or
-  /// free text form. E.g. at home or nursing day care center.
-  pub fn location_code(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("locationCode") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// One or more specimens that the laboratory procedure will use.
-  pub fn specimen(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("specimen") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// On whom or what the service is to be performed. This is usually a human patient,
-  /// but can also be requested on animals, groups of humans or animals, devices such
-  /// as dialysis machines, or even locations (typically for environmental scans).
-  pub fn subject(&self) -> Reference {
-    Reference {
-      value: &self.value["subject"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -353,36 +193,166 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// The URL pointing to a FHIR-defined protocol, guideline, orderset or other
-  /// definition that is adhered to in whole or in part by this ServiceRequest.
-  pub fn instantiates_canonical(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("instantiatesCanonical") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+  /// Extensions for occurrenceDateTime
+  pub fn _occurrence_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_occurrenceDateTime") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Whether the request is a proposal, plan, an original order or a reflex order.
-  pub fn intent(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("intent") {
-      return Some(string.to_string());
+  /// The status of the order.
+  pub fn status(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string);
     }
     return None;
   }
 
-  /// A code that identifies a particular service (i.e., procedure, diagnostic
-  /// investigation, or panel of investigations) that have been requested.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for intent
+  pub fn _intent(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_intent") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Additional clinical information about the patient or specimen that may influence
+  /// the services or their interpretations.     This information includes diagnosis,
+  /// clinical findings and other observations.  In laboratory ordering these are
+  /// typically referred to as "ask at order entry questions (AOEs)".  This includes
+  /// observations explicitly requested by the producer (filler) to provide context or
+  /// supporting information needed to complete the order. For example,  reporting the
+  /// amount of inspired oxygen for blood gas measurements.
+  pub fn supporting_info(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Identifiers assigned to this order instance by the orderer and/or the receiver
+  /// and/or order fulfiller.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for asNeededBoolean
+  pub fn _as_needed_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_asNeededBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Instructions in terms that are understood by the patient or consumer.
+  pub fn patient_instruction(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("patientInstruction") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Any other notes and comments made about the service request. For example,
+  /// internal billing notes.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Set this to true if the record is saying that the service/procedure should NOT
+  /// be performed.
+  pub fn do_not_perform(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("doNotPerform") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Desired type of performer for doing the requested service.
+  pub fn performer_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("performerType") {
       return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// Plan/proposal/order fulfilled by this request.
-  pub fn based_on(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("basedOn") {
+  /// Extensions for patientInstruction
+  pub fn _patient_instruction(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_patientInstruction") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// One or more specimens that the laboratory procedure will use.
+  pub fn specimen(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("specimen") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// On whom or what the service is to be performed. This is usually a human patient,
+  /// but can also be requested on animals, groups of humans or animals, devices such
+  /// as dialysis machines, or even locations (typically for environmental scans).
+  pub fn subject(&self) -> Reference {
+    Reference {
+      value: &self.value["subject"],
+    }
+  }
+
+  /// The preferred location(s) where the procedure should actually happen in coded or
+  /// free text form. E.g. at home or nursing day care center.
+  pub fn location_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("locationCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Key events in the history of the request.
+  pub fn relevant_history(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("relevantHistory") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The request takes the place of the referenced completed or terminated
+  /// request(s).
+  pub fn replaces(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("replaces") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for instantiatesUri
+  pub fn _instantiates_uri(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_instantiatesUri") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -400,11 +370,11 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// Set this to true if the record is saying that the service/procedure should NOT
-  /// be performed.
-  pub fn do_not_perform(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("doNotPerform") {
-      return Some(val.as_bool().unwrap());
+  /// The URL pointing to an externally maintained protocol, guideline, orderset or
+  /// other definition that is adhered to in whole or in part by this ServiceRequest.
+  pub fn instantiates_uri(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("instantiatesUri") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -417,44 +387,49 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// When the request transitioned to being actionable.
-  pub fn authored_on(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("authoredOn") {
-      return Some(string.to_string());
+  /// An amount of service being requested which can be a quantity ( for example
+  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
+  /// or a range (2.0 to 1.8 Gy per fraction).
+  pub fn quantity_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("quantityRange") {
+      return Some(Range { value: val });
     }
     return None;
   }
 
-  /// Insurance plans, coverage extensions, pre-authorizations and/or pre-
-  /// determinations that may be needed for delivering the requested service.
-  pub fn insurance(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("insurance") {
+  /// Plan/proposal/order fulfilled by this request.
+  pub fn based_on(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("basedOn") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Extensions for doNotPerform
-  pub fn _do_not_perform(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_doNotPerform") {
-      return Some(Element { value: val });
+  /// Additional details and instructions about the how the services are to be
+  /// delivered.   For example, and order for a urinary catheter may have an order
+  /// detail for an external or indwelling catheter, or an order for a bandage may
+  /// require additional instructions specifying how the bandage should be applied.
+  pub fn order_detail(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("orderDetail") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// If a CodeableConcept is present, it indicates the pre-condition for performing
-  /// the service.  For example "pain", "on flare-up", etc.
-  pub fn as_needed_boolean(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("asNeededBoolean") {
-      return Some(val.as_bool().unwrap());
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for authoredOn
-  pub fn _authored_on(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_authoredOn") {
-      return Some(Element { value: val });
+  /// A code that classifies the service for searching, sorting and display purposes
+  /// (e.g. "Surgical Procedure").
+  pub fn category(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("category") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -462,32 +437,6 @@ impl ServiceRequest<'_> {
   /// Extensions for implicitRules
   pub fn _implicit_rules(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to the the preferred location(s) where the procedure should actually
-  /// happen. E.g. at home or nursing day care center.
-  pub fn location_reference(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("locationReference") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The desired performer for doing the requested service.  For example, the
-  /// surgeon, dermatopathologist, endoscopist, etc.
-  pub fn performer(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("performer") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for patientInstruction
-  pub fn _patient_instruction(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_patientInstruction") {
       return Some(Element { value: val });
     }
     return None;
@@ -503,11 +452,65 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// A code that classifies the service for searching, sorting and display purposes
-  /// (e.g. "Surgical Procedure").
-  pub fn category(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("category") {
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// When the request transitioned to being actionable.
+  pub fn authored_on(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("authoredOn") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A reference to the the preferred location(s) where the procedure should actually
+  /// happen. E.g. at home or nursing day care center.
+  pub fn location_reference(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("locationReference") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Anatomic location where the procedure should be performed. This is the target
+  /// site.
+  pub fn body_site(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("bodySite") {
       return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// An amount of service being requested which can be a quantity ( for example
+  /// $1,500 home modification), a ratio ( for example, 20 half day visits per month),
+  /// or a range (2.0 to 1.8 Gy per fraction).
+  pub fn quantity_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantityQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for priority
+  pub fn _priority(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_priority") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for doNotPerform
+  pub fn _do_not_perform(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_doNotPerform") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -522,191 +525,188 @@ impl ServiceRequest<'_> {
     return None;
   }
 
-  /// An explanation or justification for why this service is being requested in coded
-  /// or textual form.   This is often for billing purposes.  May relate to the
-  /// resources referred to in `supportingInfo`.
-  pub fn reason_code(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("reasonCode") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Whether the request is a proposal, plan, an original order or a reflex order.
+  pub fn intent(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("intent") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Anatomic location where the procedure should be performed. This is the target
-  /// site.
-  pub fn body_site(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("bodySite") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// The URL pointing to a FHIR-defined protocol, guideline, orderset or other
+  /// definition that is adhered to in whole or in part by this ServiceRequest.
+  pub fn instantiates_canonical(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("instantiatesCanonical") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// An encounter that provides additional information about the healthcare context
-  /// in which this request is made.
-  pub fn encounter(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("encounter") {
-      return Some(Reference { value: val });
+  /// Extensions for authoredOn
+  pub fn _authored_on(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_authoredOn") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._intent() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.encounter() {
       _val.validate();
     }
-    if let Some(_val) = self._as_needed_boolean() {
+    if let Some(_val) = self.code() {
       _val.validate();
     }
-    if let Some(_val) = self.status() {
+    if let Some(_val) = self.as_needed_boolean() {
     }
-    if let Some(_val) = self._occurrence_date_time() {
+    if let Some(_val) = self.performer() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.reason_reference() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.reason_code() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.insurance() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.as_needed_codeable_concept() {
       _val.validate();
     }
-    if let Some(_val) = self.order_detail() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.relevant_history() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._instantiates_uri() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.replaces() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.identifier() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.priority() {
     }
     if let Some(_val) = self.requester() {
+      _val.validate();
+    }
+    if let Some(_val) = self.occurrence_date_time() {
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.quantity_ratio() {
       _val.validate();
     }
     if let Some(_val) = self.occurrence_period() {
       _val.validate();
     }
-    if let Some(_val) = self.supporting_info() {
+    if let Some(_val) = self.occurrence_timing() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.occurrence_date_time() {
-    }
-    if let Some(_val) = self.quantity_range() {
+    if let Some(_val) = self._occurrence_date_time() {
       _val.validate();
     }
-    if let Some(_val) = self.quantity_quantity() {
-      _val.validate();
-    }
-    if let Some(_val) = self.as_needed_codeable_concept() {
-      _val.validate();
-    }
-    if let Some(_val) = self.performer_type() {
-      _val.validate();
+    if let Some(_val) = self.status() {
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    if let Some(_val) = self.instantiates_uri() {
-      _val.into_iter().for_each(|_e| {});
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self._intent() {
+      _val.validate();
+    }
+    if let Some(_val) = self.supporting_info() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._as_needed_boolean() {
+      _val.validate();
+    }
+    if let Some(_val) = self.patient_instruction() {
     }
     if let Some(_val) = self.note() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.priority() {
+    if let Some(_val) = self.do_not_perform() {
     }
-    if let Some(_val) = self.quantity_ratio() {
+    if let Some(_val) = self.performer_type() {
       _val.validate();
     }
-    if let Some(_val) = self.reason_reference() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.patient_instruction() {
-    }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self._priority() {
+    if let Some(_val) = self._patient_instruction() {
       _val.validate();
-    }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.occurrence_timing() {
-      _val.validate();
-    }
-    if let Some(_val) = self.location_code() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.specimen() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     let _ = self.subject().validate();
-    if let Some(_val) = self.modifier_extension() {
+    if let Some(_val) = self.location_code() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.instantiates_canonical() {
-      _val.into_iter().for_each(|_e| {});
+    if let Some(_val) = self.relevant_history() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.intent() {
+    if let Some(_val) = self.replaces() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.code() {
-      _val.validate();
-    }
-    if let Some(_val) = self.based_on() {
+    if let Some(_val) = self._instantiates_uri() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.text() {
       _val.validate();
     }
-    if let Some(_val) = self.do_not_perform() {
+    if let Some(_val) = self.instantiates_uri() {
+      _val.into_iter().for_each(|_e| {});
     }
     if let Some(_val) = self._status() {
       _val.validate();
     }
-    if let Some(_val) = self.authored_on() {
+    if let Some(_val) = self.quantity_range() {
+      _val.validate();
     }
-    if let Some(_val) = self.insurance() {
+    if let Some(_val) = self.based_on() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._do_not_perform() {
-      _val.validate();
+    if let Some(_val) = self.order_detail() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.as_needed_boolean() {
+    if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self._authored_on() {
-      _val.validate();
+    if let Some(_val) = self.category() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._implicit_rules() {
-      _val.validate();
-    }
-    if let Some(_val) = self.location_reference() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.performer() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._patient_instruction() {
       _val.validate();
     }
     if let Some(_val) = self.meta() {
       _val.validate();
     }
-    if let Some(_val) = self.category() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.implicit_rules() {
     }
-    if let Some(_val) = self.requisition() {
-      _val.validate();
+    if let Some(_val) = self.authored_on() {
     }
-    if let Some(_val) = self.reason_code() {
+    if let Some(_val) = self.location_reference() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.body_site() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.encounter() {
+    if let Some(_val) = self.quantity_quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self._priority() {
+      _val.validate();
+    }
+    if let Some(_val) = self._do_not_perform() {
+      _val.validate();
+    }
+    if let Some(_val) = self.requisition() {
+      _val.validate();
+    }
+    if let Some(_val) = self.intent() {
+    }
+    if let Some(_val) = self.instantiates_canonical() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self._authored_on() {
       _val.validate();
     }
     return true;

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,10 +15,19 @@ pub struct HealthcareService_Eligibility<'a> {
 }
 
 impl HealthcareService_Eligibility<'_> {
-  /// Extensions for comment
-  pub fn _comment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_comment") {
-      return Some(Element { value: val });
+  /// Coded value for the eligibility.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -35,18 +44,18 @@ impl HealthcareService_Eligibility<'_> {
     return None;
   }
 
-  /// Coded value for the eligibility.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
-      return Some(CodeableConcept { value: val });
+  /// Describes the eligibility conditions for the service.
+  pub fn comment(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("comment") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Describes the eligibility conditions for the service.
-  pub fn comment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("comment") {
-      return Some(string.to_string());
+  /// Extensions for comment
+  pub fn _comment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_comment") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -69,31 +78,22 @@ impl HealthcareService_Eligibility<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._comment() {
+    if let Some(_val) = self.code() {
       _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.code() {
-      _val.validate();
-    }
     if let Some(_val) = self.comment() {
+    }
+    if let Some(_val) = self._comment() {
+      _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.id() {
     }
     return true;
   }

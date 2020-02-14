@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
-use crate::model::Attachment::Attachment;
 use crate::model::Reference::Reference;
+use crate::model::Attachment::Attachment;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,11 +18,28 @@ pub struct Communication_Payload<'a> {
 }
 
 impl Communication_Payload<'_> {
+  /// A communicated content (or for multi-part communications, one portion of the
+  /// communication).
+  pub fn content_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("contentReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for contentString
+  pub fn _content_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentString") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -35,6 +52,15 @@ impl Communication_Payload<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A communicated content (or for multi-part communications, one portion of the
+  /// communication).
+  pub fn content_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("contentString") {
+      return Some(string);
     }
     return None;
   }
@@ -59,32 +85,6 @@ impl Communication_Payload<'_> {
 
   /// A communicated content (or for multi-part communications, one portion of the
   /// communication).
-  pub fn content_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("contentString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for contentString
-  pub fn _content_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contentString") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A communicated content (or for multi-part communications, one portion of the
-  /// communication).
-  pub fn content_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("contentReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// A communicated content (or for multi-part communications, one portion of the
-  /// communication).
   pub fn content_attachment(&self) -> Option<Attachment> {
     if let Some(val) = self.value.get("contentAttachment") {
       return Some(Attachment { value: val });
@@ -93,21 +93,21 @@ impl Communication_Payload<'_> {
   }
 
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.content_reference() {
+      _val.validate();
+    }
     if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.content_string() {
     }
     if let Some(_val) = self._content_string() {
       _val.validate();
     }
-    if let Some(_val) = self.content_reference() {
-      _val.validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.content_string() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.content_attachment() {
       _val.validate();

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,6 +15,30 @@ pub struct CatalogEntry_RelatedEntry<'a> {
 }
 
 impl CatalogEntry_RelatedEntry<'_> {
+  /// Extensions for relationtype
+  pub fn _relationtype(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_relationtype") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The reference to the related item.
+  pub fn item(&self) -> Reference {
+    Reference {
+      value: &self.value["item"],
+    }
+  }
+
+  /// The type of relation to the related item: child, parent, packageContent,
+  /// containerPackage, usedIn, uses, requires, etc.
+  pub fn relationtype(&self) -> Option<CatalogEntry_RelatedEntryRelationtype> {
+    if let Some(Value::String(val)) = self.value.get("relationtype") {
+      return Some(CatalogEntry_RelatedEntryRelationtype::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -23,6 +47,15 @@ impl CatalogEntry_RelatedEntry<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -45,53 +78,20 @@ impl CatalogEntry_RelatedEntry<'_> {
     return None;
   }
 
-  /// The reference to the related item.
-  pub fn item(&self) -> Reference {
-    Reference {
-      value: &self.value["item"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The type of relation to the related item: child, parent, packageContent,
-  /// containerPackage, usedIn, uses, requires, etc.
-  pub fn relationtype(&self) -> Option<CatalogEntry_RelatedEntryRelationtype> {
-    if let Some(Value::String(val)) = self.value.get("relationtype") {
-      return Some(CatalogEntry_RelatedEntryRelationtype::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for relationtype
-  pub fn _relationtype(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_relationtype") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self._relationtype() {
+      _val.validate();
+    }
+    let _ = self.item().validate();
+    if let Some(_val) = self.relationtype() {
+    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.item().validate();
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.relationtype() {
-    }
-    if let Some(_val) = self._relationtype() {
-      _val.validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

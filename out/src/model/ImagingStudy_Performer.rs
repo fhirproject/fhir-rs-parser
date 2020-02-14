@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -19,6 +19,30 @@ pub struct ImagingStudy_Performer<'a> {
 }
 
 impl ImagingStudy_Performer<'_> {
+  /// Distinguishes the type of involvement of the performer in the series.
+  pub fn function(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("function") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates who or what performed the series.
+  pub fn actor(&self) -> Reference {
+    Reference {
+      value: &self.value["actor"],
+    }
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -49,42 +73,18 @@ impl ImagingStudy_Performer<'_> {
     return None;
   }
 
-  /// Indicates who or what performed the series.
-  pub fn actor(&self) -> Reference {
-    Reference {
-      value: &self.value["actor"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Distinguishes the type of involvement of the performer in the series.
-  pub fn function(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("function") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.function() {
+      _val.validate();
+    }
+    let _ = self.actor().validate();
+    if let Some(_val) = self.id() {
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.actor().validate();
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.function() {
-      _val.validate();
     }
     return true;
   }

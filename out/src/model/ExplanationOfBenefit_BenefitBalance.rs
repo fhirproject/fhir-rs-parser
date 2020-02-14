@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::ExplanationOfBenefit_Financial::ExplanationOfBenefit_Financial;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ExplanationOfBenefit_Financial::ExplanationOfBenefit_Financial;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -18,73 +18,6 @@ pub struct ExplanationOfBenefit_BenefitBalance<'a> {
 }
 
 impl ExplanationOfBenefit_BenefitBalance<'_> {
-  /// Benefits Used to date.
-  pub fn financial(&self) -> Option<Vec<ExplanationOfBenefit_Financial>> {
-    if let Some(Value::Array(val)) = self.value.get("financial") {
-      return Some(val.into_iter().map(|e| ExplanationOfBenefit_Financial { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A richer description of the benefit or services covered.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Code to identify the general type of benefits under which products and services
-  /// are provided.
-  pub fn category(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["category"],
-    }
-  }
-
-  /// Is a flag to indicate whether the benefits refer to in-network providers or out-
-  /// of-network providers.
-  pub fn network(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("network") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates if the benefits apply to an individual or to the family.
-  pub fn unit(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("unit") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The term or period of the values such as 'maximum lifetime benefit' or 'maximum
-  /// annual visits'.
-  pub fn term(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("term") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for excluded
-  pub fn _excluded(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_excluded") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -106,6 +39,31 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     return None;
   }
 
+  /// Code to identify the general type of benefits under which products and services
+  /// are provided.
+  pub fn category(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["category"],
+    }
+  }
+
+  /// Extensions for excluded
+  pub fn _excluded(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_excluded") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Is a flag to indicate whether the benefits refer to in-network providers or out-
+  /// of-network providers.
+  pub fn network(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("network") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for name
   pub fn _name(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_name") {
@@ -114,10 +72,19 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
+  /// The term or period of the values such as 'maximum lifetime benefit' or 'maximum
+  /// annual visits'.
+  pub fn term(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("term") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A richer description of the benefit or services covered.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
     }
     return None;
   }
@@ -141,49 +108,82 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
   }
 
   /// A short name or tag for the benefit.
-  pub fn name(&self) -> Option<String> {
+  pub fn name(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Benefits Used to date.
+  pub fn financial(&self) -> Option<Vec<ExplanationOfBenefit_Financial>> {
+    if let Some(Value::Array(val)) = self.value.get("financial") {
+      return Some(val.into_iter().map(|e| ExplanationOfBenefit_Financial { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates if the benefits apply to an individual or to the family.
+  pub fn unit(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("unit") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.financial() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.description() {
-    }
-    if let Some(_val) = self.id() {
-    }
-    let _ = self.category().validate();
-    if let Some(_val) = self.network() {
-      _val.validate();
-    }
-    if let Some(_val) = self.unit() {
-      _val.validate();
-    }
-    if let Some(_val) = self.term() {
-      _val.validate();
-    }
-    if let Some(_val) = self._excluded() {
-      _val.validate();
-    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.excluded() {
     }
+    let _ = self.category().validate();
+    if let Some(_val) = self._excluded() {
+      _val.validate();
+    }
+    if let Some(_val) = self.network() {
+      _val.validate();
+    }
     if let Some(_val) = self._name() {
       _val.validate();
     }
-    if let Some(_val) = self._description() {
+    if let Some(_val) = self.term() {
       _val.validate();
+    }
+    if let Some(_val) = self.description() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.financial() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.unit() {
+      _val.validate();
     }
     return true;
   }

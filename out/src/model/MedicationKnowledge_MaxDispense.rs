@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Duration::Duration;
+use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
@@ -15,23 +15,6 @@ pub struct MedicationKnowledge_MaxDispense<'a> {
 }
 
 impl MedicationKnowledge_MaxDispense<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The period that applies to the maximum number of units.
-  pub fn period(&self) -> Option<Duration> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Duration { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -44,11 +27,28 @@ impl MedicationKnowledge_MaxDispense<'_> {
     return None;
   }
 
+  /// The period that applies to the maximum number of units.
+  pub fn period(&self) -> Option<Duration> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Duration { value: val });
+    }
+    return None;
+  }
+
   /// The maximum number of units of the medication that can be dispensed.
   pub fn quantity(&self) -> Quantity {
     Quantity {
       value: &self.value["quantity"],
     }
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -70,15 +70,15 @@ impl MedicationKnowledge_MaxDispense<'_> {
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.period() {
       _val.validate();
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     let _ = self.quantity().validate();
+    if let Some(_val) = self.id() {
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }

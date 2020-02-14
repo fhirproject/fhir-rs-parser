@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Reference::Reference;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::CarePlan_Detail::CarePlan_Detail;
 use crate::model::Extension::Extension;
 use crate::model::Annotation::Annotation;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::CarePlan_Detail::CarePlan_Detail;
 use serde_json::value::Value;
 
 
@@ -19,16 +19,6 @@ pub struct CarePlan_Activity<'a> {
 }
 
 impl CarePlan_Activity<'_> {
-  /// Identifies the outcome at the point when the status of the activity is assessed.
-  /// For example, the outcome of an education activity could be patient understands
-  /// (or not).
-  pub fn outcome_codeable_concept(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("outcomeCodeableConcept") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Notes about the adherence/status/progress of the activity.
   pub fn progress(&self) -> Option<Vec<Annotation>> {
     if let Some(Value::Array(val)) = self.value.get("progress") {
@@ -37,10 +27,41 @@ impl CarePlan_Activity<'_> {
     return None;
   }
 
+  /// Details of the outcome or action resulting from the activity.  The reference to
+  /// an "event" resource, such as Procedure or Encounter or Observation, is the
+  /// result/outcome of the activity itself.  The activity can be conveyed using
+  /// CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference
+  /// to a “request” resource).
+  pub fn outcome_reference(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("outcomeReference") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A simple summary of a planned activity suitable for a general care plan system
+  /// (e.g. form driven) that doesn't know about specific resources such as procedure
+  /// etc.
+  pub fn detail(&self) -> Option<CarePlan_Detail> {
+    if let Some(val) = self.value.get("detail") {
+      return Some(CarePlan_Detail { value: val });
+    }
+    return None;
+  }
+
   /// The details of the proposed activity represented in a specific resource.
   pub fn reference(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("reference") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -75,46 +96,30 @@ impl CarePlan_Activity<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A simple summary of a planned activity suitable for a general care plan system
-  /// (e.g. form driven) that doesn't know about specific resources such as procedure
-  /// etc.
-  pub fn detail(&self) -> Option<CarePlan_Detail> {
-    if let Some(val) = self.value.get("detail") {
-      return Some(CarePlan_Detail { value: val });
-    }
-    return None;
-  }
-
-  /// Details of the outcome or action resulting from the activity.  The reference to
-  /// an "event" resource, such as Procedure or Encounter or Observation, is the
-  /// result/outcome of the activity itself.  The activity can be conveyed using
-  /// CarePlan.activity.detail OR using the CarePlan.activity.reference (a reference
-  /// to a “request” resource).
-  pub fn outcome_reference(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("outcomeReference") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+  /// Identifies the outcome at the point when the status of the activity is assessed.
+  /// For example, the outcome of an education activity could be patient understands
+  /// (or not).
+  pub fn outcome_codeable_concept(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("outcomeCodeableConcept") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.outcome_codeable_concept() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.progress() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.outcome_reference() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.detail() {
+      _val.validate();
+    }
     if let Some(_val) = self.reference() {
       _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -122,12 +127,7 @@ impl CarePlan_Activity<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.detail() {
-      _val.validate();
-    }
-    if let Some(_val) = self.outcome_reference() {
+    if let Some(_val) = self.outcome_codeable_concept() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

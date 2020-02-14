@@ -28,15 +28,6 @@ impl AuditEvent_Network<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for address
   pub fn _address(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_address") {
@@ -63,6 +54,24 @@ impl AuditEvent_Network<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// An identifier for the network access point of the user device for the audit
+  /// event.
+  pub fn address(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("address") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// An identifier for the type of network access point that originated the audit
   /// event.
   pub fn fhir_type(&self) -> Option<AuditEvent_NetworkType> {
@@ -80,20 +89,9 @@ impl AuditEvent_Network<'_> {
     return None;
   }
 
-  /// An identifier for the network access point of the user device for the audit
-  /// event.
-  pub fn address(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("address") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self._address() {
       _val.validate();
@@ -101,12 +99,14 @@ impl AuditEvent_Network<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.address() {
+    }
     if let Some(_val) = self.fhir_type() {
     }
     if let Some(_val) = self._type() {
       _val.validate();
-    }
-    if let Some(_val) = self.address() {
     }
     return true;
   }

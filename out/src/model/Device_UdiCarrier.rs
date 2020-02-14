@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,14 +16,10 @@ pub struct Device_UdiCarrier<'a> {
 }
 
 impl Device_UdiCarrier<'_> {
-  /// Organization that is charged with issuing UDIs for devices.  For example, the US
-  /// FDA issuers include :  1) GS1:   http://hl7.org/fhir/NamingSystem/gs1-di,   2)
-  /// HIBCC:  http://hl7.org/fhir/NamingSystem/hibcc-dI,   3) ICCBBA for blood
-  /// containers:  http://hl7.org/fhir/NamingSystem/iccbba-blood-di,   4) ICCBA for
-  /// other devices:  http://hl7.org/fhir/NamingSystem/iccbba-other-di.
-  pub fn issuer(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("issuer") {
-      return Some(string.to_string());
+  /// Extensions for issuer
+  pub fn _issuer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_issuer") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -40,18 +36,17 @@ impl Device_UdiCarrier<'_> {
     return None;
   }
 
-  /// The full UDI carrier as the human readable form (HRF) representation of the
-  /// barcode string as printed on the packaging of the device.
-  pub fn carrier_h_r_f(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("carrierHRF") {
-      return Some(string.to_string());
+  /// Extensions for deviceIdentifier
+  pub fn _device_identifier(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_deviceIdentifier") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for issuer
-  pub fn _issuer(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_issuer") {
+  /// Extensions for entryType
+  pub fn _entry_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_entryType") {
       return Some(Element { value: val });
     }
     return None;
@@ -61,15 +56,6 @@ impl Device_UdiCarrier<'_> {
   pub fn _carrier_h_r_f(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_carrierHRF") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -92,26 +78,6 @@ impl Device_UdiCarrier<'_> {
     return None;
   }
 
-  /// The full UDI carrier of the Automatic Identification and Data Capture (AIDC)
-  /// technology representation of the barcode string as printed on the packaging of
-  /// the device - e.g., a barcode or RFID.   Because of limitations on character sets
-  /// in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be
-  /// base64 encoded.
-  pub fn carrier_a_i_d_c(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("carrierAIDC") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for entryType
-  pub fn _entry_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_entryType") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A coded entry to indicate how the data was entered.
   pub fn entry_type(&self) -> Option<Device_UdiCarrierEntryType> {
     if let Some(Value::String(val)) = self.value.get("entryType") {
@@ -120,21 +86,14 @@ impl Device_UdiCarrier<'_> {
     return None;
   }
 
-  /// Extensions for deviceIdentifier
-  pub fn _device_identifier(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_deviceIdentifier") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The identity of the authoritative source for UDI generation within a
-  /// jurisdiction.  All UDIs are globally unique within a single namespace with the
-  /// appropriate repository uri as the system.  For example,  UDIs of devices managed
-  /// in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
-  pub fn jurisdiction(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("jurisdiction") {
-      return Some(string.to_string());
+  /// Organization that is charged with issuing UDIs for devices.  For example, the US
+  /// FDA issuers include :  1) GS1:   http://hl7.org/fhir/NamingSystem/gs1-di,   2)
+  /// HIBCC:  http://hl7.org/fhir/NamingSystem/hibcc-dI,   3) ICCBBA for blood
+  /// containers:  http://hl7.org/fhir/NamingSystem/iccbba-blood-di,   4) ICCBA for
+  /// other devices:  http://hl7.org/fhir/NamingSystem/iccbba-other-di.
+  pub fn issuer(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("issuer") {
+      return Some(string);
     }
     return None;
   }
@@ -147,6 +106,56 @@ impl Device_UdiCarrier<'_> {
     return None;
   }
 
+  /// The full UDI carrier as the human readable form (HRF) representation of the
+  /// barcode string as printed on the packaging of the device.
+  pub fn carrier_h_r_f(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("carrierHRF") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The device identifier (DI) is a mandatory, fixed portion of a UDI that
+  /// identifies the labeler and the specific version or model of a device.
+  pub fn device_identifier(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("deviceIdentifier") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The full UDI carrier of the Automatic Identification and Data Capture (AIDC)
+  /// technology representation of the barcode string as printed on the packaging of
+  /// the device - e.g., a barcode or RFID.   Because of limitations on character sets
+  /// in XML and the need to round-trip JSON data through XML, AIDC Formats *SHALL* be
+  /// base64 encoded.
+  pub fn carrier_a_i_d_c(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("carrierAIDC") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The identity of the authoritative source for UDI generation within a
+  /// jurisdiction.  All UDIs are globally unique within a single namespace with the
+  /// appropriate repository uri as the system.  For example,  UDIs of devices managed
+  /// in the U.S. by the FDA, the value is  http://hl7.org/fhir/NamingSystem/fda-udi.
+  pub fn jurisdiction(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("jurisdiction") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// Extensions for jurisdiction
   pub fn _jurisdiction(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_jurisdiction") {
@@ -155,53 +164,44 @@ impl Device_UdiCarrier<'_> {
     return None;
   }
 
-  /// The device identifier (DI) is a mandatory, fixed portion of a UDI that
-  /// identifies the labeler and the specific version or model of a device.
-  pub fn device_identifier(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("deviceIdentifier") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.issuer() {
+    if let Some(_val) = self._issuer() {
+      _val.validate();
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.carrier_h_r_f() {
+    if let Some(_val) = self._device_identifier() {
+      _val.validate();
     }
-    if let Some(_val) = self._issuer() {
+    if let Some(_val) = self._entry_type() {
       _val.validate();
     }
     if let Some(_val) = self._carrier_h_r_f() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.carrier_a_i_d_c() {
-    }
-    if let Some(_val) = self._entry_type() {
-      _val.validate();
-    }
     if let Some(_val) = self.entry_type() {
     }
-    if let Some(_val) = self._device_identifier() {
-      _val.validate();
-    }
-    if let Some(_val) = self.jurisdiction() {
+    if let Some(_val) = self.issuer() {
     }
     if let Some(_val) = self._carrier_a_i_d_c() {
       _val.validate();
     }
-    if let Some(_val) = self._jurisdiction() {
-      _val.validate();
+    if let Some(_val) = self.carrier_h_r_f() {
     }
     if let Some(_val) = self.device_identifier() {
+    }
+    if let Some(_val) = self.carrier_a_i_d_c() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.jurisdiction() {
+    }
+    if let Some(_val) = self._jurisdiction() {
+      _val.validate();
     }
     return true;
   }

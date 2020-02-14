@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::CapabilityStatement_SearchParam::CapabilityStatement_SearchParam;
-use crate::model::CapabilityStatement_Resource::CapabilityStatement_Resource;
 use crate::model::Extension::Extension;
 use crate::model::CapabilityStatement_Interaction1::CapabilityStatement_Interaction1;
-use crate::model::CapabilityStatement_Security::CapabilityStatement_Security;
-use crate::model::Element::Element;
+use crate::model::CapabilityStatement_Resource::CapabilityStatement_Resource;
 use crate::model::CapabilityStatement_Operation::CapabilityStatement_Operation;
+use crate::model::Element::Element;
+use crate::model::CapabilityStatement_Security::CapabilityStatement_Security;
 use serde_json::value::Value;
 
 
@@ -22,11 +22,28 @@ pub struct CapabilityStatement_Rest<'a> {
 }
 
 impl CapabilityStatement_Rest<'_> {
+  /// Information about security implementation from an interface perspective - what a
+  /// client needs to know.
+  pub fn security(&self) -> Option<CapabilityStatement_Security> {
+    if let Some(val) = self.value.get("security") {
+      return Some(CapabilityStatement_Security { value: val });
+    }
+    return None;
+  }
+
   /// A specification of the restful capabilities of the solution for a specific
   /// resource type.
   pub fn resource(&self) -> Option<Vec<CapabilityStatement_Resource>> {
     if let Some(Value::Array(val)) = self.value.get("resource") {
       return Some(val.into_iter().map(|e| CapabilityStatement_Resource { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A specification of restful operations supported by the system.
+  pub fn interaction(&self) -> Option<Vec<CapabilityStatement_Interaction1>> {
+    if let Some(Value::Array(val)) = self.value.get("interaction") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_Interaction1 { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -38,6 +55,23 @@ impl CapabilityStatement_Rest<'_> {
   pub fn search_param(&self) -> Option<Vec<CapabilityStatement_SearchParam>> {
     if let Some(Value::Array(val)) = self.value.get("searchParam") {
       return Some(val.into_iter().map(|e| CapabilityStatement_SearchParam { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Definition of an operation or a named query together with its parameters and
+  /// their meaning and type.
+  pub fn operation(&self) -> Option<Vec<CapabilityStatement_Operation>> {
+    if let Some(Value::Array(val)) = self.value.get("operation") {
+      return Some(val.into_iter().map(|e| CapabilityStatement_Operation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for documentation
+  pub fn _documentation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_documentation") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -54,37 +88,11 @@ impl CapabilityStatement_Rest<'_> {
     return None;
   }
 
-  /// A specification of restful operations supported by the system.
-  pub fn interaction(&self) -> Option<Vec<CapabilityStatement_Interaction1>> {
-    if let Some(Value::Array(val)) = self.value.get("interaction") {
-      return Some(val.into_iter().map(|e| CapabilityStatement_Interaction1 { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// An absolute URI which is a reference to the definition of a compartment that the
-  /// system supports. The reference is to a CompartmentDefinition resource by its
-  /// canonical URL .
-  pub fn compartment(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("compartment") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for documentation
-  pub fn _documentation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_documentation") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Information about security implementation from an interface perspective - what a
-  /// client needs to know.
-  pub fn security(&self) -> Option<CapabilityStatement_Security> {
-    if let Some(val) = self.value.get("security") {
-      return Some(CapabilityStatement_Security { value: val });
+  /// Identifies whether this portion of the statement is describing the ability to
+  /// initiate or receive restful operations.
+  pub fn mode(&self) -> Option<CapabilityStatement_RestMode> {
+    if let Some(Value::String(val)) = self.value.get("mode") {
+      return Some(CapabilityStatement_RestMode::from_string(&val).unwrap());
     }
     return None;
   }
@@ -97,29 +105,30 @@ impl CapabilityStatement_Rest<'_> {
     return None;
   }
 
+  /// An absolute URI which is a reference to the definition of a compartment that the
+  /// system supports. The reference is to a CompartmentDefinition resource by its
+  /// canonical URL .
+  pub fn compartment(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("compartment") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Information about the system's restful capabilities that apply across all
   /// applications, such as security.
-  pub fn documentation(&self) -> Option<String> {
+  pub fn documentation(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Definition of an operation or a named query together with its parameters and
-  /// their meaning and type.
-  pub fn operation(&self) -> Option<Vec<CapabilityStatement_Operation>> {
-    if let Some(Value::Array(val)) = self.value.get("operation") {
-      return Some(val.into_iter().map(|e| CapabilityStatement_Operation { value: e }).collect::<Vec<_>>());
+      return Some(string);
     }
     return None;
   }
@@ -142,51 +151,42 @@ impl CapabilityStatement_Rest<'_> {
     return None;
   }
 
-  /// Identifies whether this portion of the statement is describing the ability to
-  /// initiate or receive restful operations.
-  pub fn mode(&self) -> Option<CapabilityStatement_RestMode> {
-    if let Some(Value::String(val)) = self.value.get("mode") {
-      return Some(CapabilityStatement_RestMode::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.security() {
+      _val.validate();
+    }
     if let Some(_val) = self.resource() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.search_param() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.interaction() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.compartment() {
-      _val.into_iter().for_each(|_e| {});
+    if let Some(_val) = self.search_param() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.operation() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._documentation() {
       _val.validate();
     }
-    if let Some(_val) = self.security() {
-      _val.validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.mode() {
     }
     if let Some(_val) = self._mode() {
       _val.validate();
+    }
+    if let Some(_val) = self.compartment() {
+      _val.into_iter().for_each(|_e| {});
     }
     if let Some(_val) = self.documentation() {
     }
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.operation() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.mode() {
     }
     return true;
   }

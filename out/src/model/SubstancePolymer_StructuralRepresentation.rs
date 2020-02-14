@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Attachment::Attachment;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::Attachment::Attachment;
 use serde_json::value::Value;
 
 
@@ -18,9 +18,25 @@ pub struct SubstancePolymer_StructuralRepresentation<'a> {
 impl SubstancePolymer_StructuralRepresentation<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for representation
+  pub fn _representation(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_representation") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Todo.
+  pub fn attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("attachment") {
+      return Some(Attachment { value: val });
     }
     return None;
   }
@@ -34,17 +50,9 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
   }
 
   /// Todo.
-  pub fn representation(&self) -> Option<String> {
+  pub fn representation(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("representation") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for representation
-  pub fn _representation(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_representation") {
-      return Some(Element { value: val });
+      return Some(string);
     }
     return None;
   }
@@ -57,14 +65,6 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Todo.
-  pub fn attachment(&self) -> Option<Attachment> {
-    if let Some(val) = self.value.get("attachment") {
-      return Some(Attachment { value: val });
     }
     return None;
   }
@@ -90,19 +90,19 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.id() {
     }
+    if let Some(_val) = self._representation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.attachment() {
+      _val.validate();
+    }
     if let Some(_val) = self.fhir_type() {
       _val.validate();
     }
     if let Some(_val) = self.representation() {
     }
-    if let Some(_val) = self._representation() {
-      _val.validate();
-    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.attachment() {
-      _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });

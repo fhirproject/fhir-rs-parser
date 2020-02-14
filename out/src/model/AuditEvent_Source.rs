@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
 use crate::model::Coding::Coding;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -40,27 +40,20 @@ impl AuditEvent_Source<'_> {
 
   /// Logical source location within the healthcare enterprise network.  For example,
   /// a hospital or other provider location within a multi-entity provider group.
-  pub fn site(&self) -> Option<String> {
+  pub fn site(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("site") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
-  }
-
-  /// Identifier of the source where the event was detected.
-  pub fn observer(&self) -> Reference {
-    Reference {
-      value: &self.value["observer"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -89,6 +82,13 @@ impl AuditEvent_Source<'_> {
     return None;
   }
 
+  /// Identifier of the source where the event was detected.
+  pub fn observer(&self) -> Reference {
+    Reference {
+      value: &self.value["observer"],
+    }
+  }
+
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -100,13 +100,13 @@ impl AuditEvent_Source<'_> {
     }
     if let Some(_val) = self.id() {
     }
-    let _ = self.observer().validate();
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._site() {
       _val.validate();
     }
+    let _ = self.observer().validate();
     return true;
   }
 

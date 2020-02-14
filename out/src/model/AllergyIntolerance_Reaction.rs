@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Annotation::Annotation;
 use crate::model::Element::Element;
-use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -17,22 +17,35 @@ pub struct AllergyIntolerance_Reaction<'a> {
 }
 
 impl AllergyIntolerance_Reaction<'_> {
-  /// Identification of the route by which the subject was exposed to the substance.
-  pub fn exposure_route(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("exposureRoute") {
-      return Some(CodeableConcept { value: val });
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// Extensions for onset
+  pub fn _onset(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_onset") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Record of the date and/or time of the onset of the Reaction.
+  pub fn onset(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("onset") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -55,10 +68,20 @@ impl AllergyIntolerance_Reaction<'_> {
     return None;
   }
 
-  /// Extensions for onset
-  pub fn _onset(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_onset") {
-      return Some(Element { value: val });
+  /// Text description about the reaction as a whole, including details of the
+  /// manifestation if required.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Clinical assessment of the severity of the reaction event as a whole,
+  /// potentially considering multiple different manifestations.
+  pub fn severity(&self) -> Option<AllergyIntolerance_ReactionSeverity> {
+    if let Some(Value::String(val)) = self.value.get("severity") {
+      return Some(AllergyIntolerance_ReactionSeverity::from_string(&val).unwrap());
     }
     return None;
   }
@@ -80,19 +103,18 @@ impl AllergyIntolerance_Reaction<'_> {
     return None;
   }
 
-  /// Text description about the reaction as a whole, including details of the
-  /// manifestation if required.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for severity
   pub fn _severity(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_severity") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Identification of the route by which the subject was exposed to the substance.
+  pub fn exposure_route(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("exposureRoute") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -105,79 +127,57 @@ impl AllergyIntolerance_Reaction<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Clinical symptoms and/or signs that are observed or associated with the adverse
   /// reaction event.
   pub fn manifestation(&self) -> Vec<CodeableConcept> {
     self.value.get("manifestation").unwrap().as_array().unwrap().into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>()
   }
 
-  /// Record of the date and/or time of the onset of the Reaction.
-  pub fn onset(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("onset") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Clinical assessment of the severity of the reaction event as a whole,
-  /// potentially considering multiple different manifestations.
-  pub fn severity(&self) -> Option<AllergyIntolerance_ReactionSeverity> {
-    if let Some(Value::String(val)) = self.value.get("severity") {
-      return Some(AllergyIntolerance_ReactionSeverity::from_string(&val).unwrap());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.exposure_route() {
+    if let Some(_val) = self._description() {
       _val.validate();
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._onset() {
       _val.validate();
     }
-    if let Some(_val) = self.substance() {
-      _val.validate();
+    if let Some(_val) = self.onset() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.description() {
     }
+    if let Some(_val) = self.severity() {
+    }
+    if let Some(_val) = self.substance() {
+      _val.validate();
+    }
     if let Some(_val) = self._severity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.exposure_route() {
       _val.validate();
     }
     if let Some(_val) = self.note() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self._description() {
-      _val.validate();
-    }
     let _ = self.manifestation().into_iter().for_each(|e| { e.validate(); });
-    if let Some(_val) = self.onset() {
-    }
-    if let Some(_val) = self.severity() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

@@ -1,18 +1,18 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Annotation::Annotation;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Meta::Meta;
-use crate::model::Identifier::Identifier;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Narrative::Narrative;
-use crate::model::MedicationDispense_Performer::MedicationDispense_Performer;
-use crate::model::MedicationDispense_Substitution::MedicationDispense_Substitution;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Dosage::Dosage;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use crate::model::Quantity::Quantity;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::MedicationDispense_Performer::MedicationDispense_Performer;
+use crate::model::Meta::Meta;
+use crate::model::Element::Element;
+use crate::model::Narrative::Narrative;
+use crate::model::Identifier::Identifier;
+use crate::model::MedicationDispense_Substitution::MedicationDispense_Substitution;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Annotation::Annotation;
 use serde_json::value::Value;
 
 
@@ -28,87 +28,10 @@ pub struct MedicationDispense<'a> {
 }
 
 impl MedicationDispense<'_> {
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A link to a resource representing the person or the group to whom the medication
-  /// will be given.
-  pub fn subject(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("subject") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates the medication order that is being dispensed against.
-  pub fn authorizing_prescription(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("authorizingPrescription") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
+  /// Extensions for whenHandedOver
+  pub fn _when_handed_over(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_whenHandedOver") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A code specifying the state of the set of dispense events.
-  pub fn status(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("status") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Indicates the reason why a dispense was not performed.
-  pub fn status_reason_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("statusReasonCodeableConcept") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates the type of dispensing event that is performed. For example, Trial
-  /// Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for whenPrepared
-  pub fn _when_prepared(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_whenPrepared") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The procedure that trigger the dispense.
-  pub fn part_of(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("partOf") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -144,20 +67,74 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Extensions for whenHandedOver
-  pub fn _when_handed_over(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_whenHandedOver") {
+  /// A code specifying the state of the set of dispense events.
+  pub fn status(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("status") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The amount of medication that has been dispensed. Includes unit of measure.
+  pub fn quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// A link to a resource representing the person or the group to whom the medication
+  /// will be given.
+  pub fn subject(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("subject") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Indicates an actual or potential clinical issue with or between one or more
-  /// active or proposed clinical actions for a patient; e.g. drug-drug interaction,
-  /// duplicate therapy, dosage alert etc.
-  pub fn detected_issue(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("detectedIssue") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+  /// Indicates the reason why a dispense was not performed.
+  pub fn status_reason_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("statusReasonCodeableConcept") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates who or what performed the event.
+  pub fn performer(&self) -> Option<Vec<MedicationDispense_Performer>> {
+    if let Some(Value::Array(val)) = self.value.get("performer") {
+      return Some(val.into_iter().map(|e| MedicationDispense_Performer { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates whether or not substitution was made as part of the dispense.  In some
+  /// cases, substitution will be expected but does not happen, in other cases
+  /// substitution is not expected but does happen.  This block explains what
+  /// substitution did or did not happen and why.  If nothing is specified,
+  /// substitution was not done.
+  pub fn substitution(&self) -> Option<MedicationDispense_Substitution> {
+    if let Some(val) = self.value.get("substitution") {
+      return Some(MedicationDispense_Substitution { value: val });
     }
     return None;
   }
@@ -172,6 +149,16 @@ impl MedicationDispense<'_> {
     return None;
   }
 
+  /// Indicates an actual or potential clinical issue with or between one or more
+  /// active or proposed clinical actions for a patient; e.g. drug-drug interaction,
+  /// duplicate therapy, dosage alert etc.
+  pub fn detected_issue(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("detectedIssue") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Extensions for implicitRules
   pub fn _implicit_rules(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_implicitRules") {
@@ -180,10 +167,10 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// The amount of medication that has been dispensed. Includes unit of measure.
-  pub fn quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("quantity") {
-      return Some(Quantity { value: val });
+  /// Indicates the reason why a dispense was not performed.
+  pub fn status_reason_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("statusReasonReference") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -198,10 +185,52 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Indicates how the medication is to be used by the patient.
-  pub fn dosage_instruction(&self) -> Option<Vec<Dosage>> {
-    if let Some(Value::Array(val)) = self.value.get("dosageInstruction") {
-      return Some(val.into_iter().map(|e| Dosage { value: e }).collect::<Vec<_>>());
+  /// The time the dispensed product was provided to the patient or their
+  /// representative.
+  pub fn when_handed_over(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("whenHandedOver") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the medication order that is being dispensed against.
+  pub fn authorizing_prescription(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("authorizingPrescription") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The principal physical location where the dispense was performed.
+  pub fn location(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("location") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Identification of the facility/location where the medication was shipped to, as
+  /// part of the dispense event.
+  pub fn destination(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("destination") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -219,11 +248,35 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The time when the dispensed product was packaged and reviewed.
+  pub fn when_prepared(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("whenPrepared") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The procedure that trigger the dispense.
+  pub fn part_of(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("partOf") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extra information about the dispense that could not be conveyed in the other
+  /// attributes.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicates how the medication is to be used by the patient.
+  pub fn dosage_instruction(&self) -> Option<Vec<Dosage>> {
+    if let Some(Value::Array(val)) = self.value.get("dosageInstruction") {
+      return Some(val.into_iter().map(|e| Dosage { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -238,10 +291,11 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -264,28 +318,11 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Identification of the facility/location where the medication was shipped to, as
-  /// part of the dispense event.
-  pub fn destination(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("destination") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The amount of medication expressed as a timing amount.
-  pub fn days_supply(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("daysSupply") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// Extra information about the dispense that could not be conveyed in the other
-  /// attributes.
-  pub fn note(&self) -> Option<Vec<Annotation>> {
-    if let Some(Value::Array(val)) = self.value.get("note") {
-      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+  /// A summary of the events of interest that have occurred, such as when the
+  /// dispense was verified.
+  pub fn event_history(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("eventHistory") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -302,11 +339,34 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Identifies the medication being administered. This is either a link to a
-  /// resource representing the details of the medication or a simple attribute
-  /// carrying a code that identifies the medication from a known list of medications.
-  pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("medicationCodeableConcept") {
+  /// The encounter or episode of care that establishes the context for this event.
+  pub fn context(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("context") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for whenPrepared
+  pub fn _when_prepared(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_whenPrepared") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The amount of medication expressed as a timing amount.
+  pub fn days_supply(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("daysSupply") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// Indicates the type of dispensing event that is performed. For example, Trial
+  /// Fill, Completion of Trial, Partial Fill, Emergency Fill, Samples, etc.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
       return Some(CodeableConcept { value: val });
     }
     return None;
@@ -321,103 +381,19 @@ impl MedicationDispense<'_> {
     return None;
   }
 
-  /// Indicates who or what performed the event.
-  pub fn performer(&self) -> Option<Vec<MedicationDispense_Performer>> {
-    if let Some(Value::Array(val)) = self.value.get("performer") {
-      return Some(val.into_iter().map(|e| MedicationDispense_Performer { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The principal physical location where the dispense was performed.
-  pub fn location(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("location") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The time the dispensed product was provided to the patient or their
-  /// representative.
-  pub fn when_handed_over(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("whenHandedOver") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Indicates whether or not substitution was made as part of the dispense.  In some
-  /// cases, substitution will be expected but does not happen, in other cases
-  /// substitution is not expected but does happen.  This block explains what
-  /// substitution did or did not happen and why.  If nothing is specified,
-  /// substitution was not done.
-  pub fn substitution(&self) -> Option<MedicationDispense_Substitution> {
-    if let Some(val) = self.value.get("substitution") {
-      return Some(MedicationDispense_Substitution { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates the reason why a dispense was not performed.
-  pub fn status_reason_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("statusReasonReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The encounter or episode of care that establishes the context for this event.
-  pub fn context(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("context") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The time when the dispensed product was packaged and reviewed.
-  pub fn when_prepared(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("whenPrepared") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A summary of the events of interest that have occurred, such as when the
-  /// dispense was verified.
-  pub fn event_history(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("eventHistory") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+  /// Identifies the medication being administered. This is either a link to a
+  /// resource representing the details of the medication or a simple attribute
+  /// carrying a code that identifies the medication from a known list of medications.
+  pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("medicationCodeableConcept") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self.subject() {
+    if let Some(_val) = self._when_handed_over() {
       _val.validate();
-    }
-    if let Some(_val) = self.authorizing_prescription() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._status() {
-      _val.validate();
-    }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.status() {
-    }
-    if let Some(_val) = self.status_reason_codeable_concept() {
-      _val.validate();
-    }
-    if let Some(_val) = self.fhir_type() {
-      _val.validate();
-    }
-    if let Some(_val) = self._when_prepared() {
-      _val.validate();
-    }
-    if let Some(_val) = self.part_of() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -425,37 +401,77 @@ impl MedicationDispense<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._when_handed_over() {
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.subject() {
+      _val.validate();
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.status_reason_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.performer() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.substitution() {
+      _val.validate();
+    }
+    if let Some(_val) = self.medication_reference() {
       _val.validate();
     }
     if let Some(_val) = self.detected_issue() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.medication_reference() {
-      _val.validate();
-    }
     if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
-    if let Some(_val) = self.quantity() {
+    if let Some(_val) = self.status_reason_reference() {
       _val.validate();
     }
     if let Some(_val) = self.contained() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.dosage_instruction() {
+    if let Some(_val) = self.when_handed_over() {
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
+    }
+    if let Some(_val) = self.authorizing_prescription() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.location() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.destination() {
+      _val.validate();
     }
     if let Some(_val) = self.text() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.when_prepared() {
+    }
+    if let Some(_val) = self.part_of() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.note() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.dosage_instruction() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.meta() {
       _val.validate();
     }
-    if let Some(_val) = self._language() {
-      _val.validate();
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.supporting_information() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -463,45 +479,29 @@ impl MedicationDispense<'_> {
     if let Some(_val) = self.receiver() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.destination() {
-      _val.validate();
-    }
-    if let Some(_val) = self.days_supply() {
-      _val.validate();
-    }
-    if let Some(_val) = self.note() {
+    if let Some(_val) = self.event_history() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.identifier() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.medication_codeable_concept() {
+    if let Some(_val) = self.context() {
+      _val.validate();
+    }
+    if let Some(_val) = self._when_prepared() {
+      _val.validate();
+    }
+    if let Some(_val) = self.days_supply() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
       _val.validate();
     }
     if let Some(_val) = self.category() {
       _val.validate();
     }
-    if let Some(_val) = self.performer() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.location() {
+    if let Some(_val) = self.medication_codeable_concept() {
       _val.validate();
-    }
-    if let Some(_val) = self.when_handed_over() {
-    }
-    if let Some(_val) = self.substitution() {
-      _val.validate();
-    }
-    if let Some(_val) = self.status_reason_reference() {
-      _val.validate();
-    }
-    if let Some(_val) = self.context() {
-      _val.validate();
-    }
-    if let Some(_val) = self.when_prepared() {
-    }
-    if let Some(_val) = self.event_history() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

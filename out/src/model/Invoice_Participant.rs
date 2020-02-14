@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,12 +16,11 @@ pub struct Invoice_Participant<'a> {
 }
 
 impl Invoice_Participant<'_> {
-  /// Describes the type of involvement (e.g. transcriptionist, creator etc.). If the
-  /// invoice has been created automatically, the Participant may be a billing engine
-  /// or another kind of device.
-  pub fn role(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("role") {
-      return Some(CodeableConcept { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -45,15 +44,6 @@ impl Invoice_Participant<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -72,18 +62,28 @@ impl Invoice_Participant<'_> {
     return None;
   }
 
+  /// Describes the type of involvement (e.g. transcriptionist, creator etc.). If the
+  /// invoice has been created automatically, the Participant may be a billing engine
+  /// or another kind of device.
+  pub fn role(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("role") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.role() {
-      _val.validate();
+    if let Some(_val) = self.id() {
     }
     let _ = self.actor().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.role() {
+      _val.validate();
     }
     return true;
   }

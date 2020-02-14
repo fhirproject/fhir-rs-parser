@@ -15,11 +15,54 @@ pub struct Bundle_Response<'a> {
 }
 
 impl Bundle_Response<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The Etag for the resource, if the operation for the entry produced a versioned
+  /// resource (see [Resource Metadata and Versioning](http.html#versioning) and
+  /// [Managing Resource Contention](http.html#concurrency)).
+  pub fn etag(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("etag") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for etag
+  pub fn _etag(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_etag") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date/time that the resource was modified on the server.
+  pub fn last_modified(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("lastModified") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// An OperationOutcome containing hints and warnings produced as part of processing
+  /// this entry in a batch or transaction.
+  pub fn outcome(&self) -> Option<ResourceList> {
+    if let Some(val) = self.value.get("outcome") {
+      return Some(ResourceList { value: val });
+    }
+    return None;
+  }
+
+  /// The location header created by processing this operation, populated if the
+  /// operation returns a location.
+  pub fn location(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("location") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for lastModified
+  pub fn _last_modified(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastModified") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -44,27 +87,19 @@ impl Bundle_Response<'_> {
     return None;
   }
 
-  /// The location header created by processing this operation, populated if the
-  /// operation returns a location.
-  pub fn location(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("location") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The date/time that the resource was modified on the server.
-  pub fn last_modified(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("lastModified") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for etag
-  pub fn _etag(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_etag") {
+  /// Extensions for location
+  pub fn _location(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_location") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -87,53 +122,31 @@ impl Bundle_Response<'_> {
     return None;
   }
 
-  /// Extensions for lastModified
-  pub fn _last_modified(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lastModified") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// An OperationOutcome containing hints and warnings produced as part of processing
-  /// this entry in a batch or transaction.
-  pub fn outcome(&self) -> Option<ResourceList> {
-    if let Some(val) = self.value.get("outcome") {
-      return Some(ResourceList { value: val });
-    }
-    return None;
-  }
-
-  /// The Etag for the resource, if the operation for the entry produced a versioned
-  /// resource (see [Resource Metadata and Versioning](http.html#versioning) and
-  /// [Managing Resource Contention](http.html#concurrency)).
-  pub fn etag(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("etag") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for location
-  pub fn _location(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_location") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// The status code returned by processing this entry. The status SHALL start with a
   /// 3 digit HTTP code (e.g. 404) and may contain the standard HTTP description
   /// associated with the status code.
-  pub fn status(&self) -> Option<String> {
+  pub fn status(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("status") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.etag() {
+    }
+    if let Some(_val) = self._etag() {
+      _val.validate();
+    }
+    if let Some(_val) = self.last_modified() {
+    }
+    if let Some(_val) = self.outcome() {
+      _val.validate();
+    }
+    if let Some(_val) = self.location() {
+    }
+    if let Some(_val) = self._last_modified() {
+      _val.validate();
     }
     if let Some(_val) = self._status() {
       _val.validate();
@@ -141,26 +154,13 @@ impl Bundle_Response<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.location() {
-    }
-    if let Some(_val) = self.last_modified() {
-    }
-    if let Some(_val) = self._etag() {
+    if let Some(_val) = self._location() {
       _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._last_modified() {
-      _val.validate();
-    }
-    if let Some(_val) = self.outcome() {
-      _val.validate();
-    }
-    if let Some(_val) = self.etag() {
-    }
-    if let Some(_val) = self._location() {
-      _val.validate();
     }
     if let Some(_val) = self.status() {
     }

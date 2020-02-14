@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -19,9 +19,9 @@ pub struct RelatedPerson_Communication<'a> {
 impl RelatedPerson_Communication<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -34,6 +34,14 @@ impl RelatedPerson_Communication<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for preferred
+  pub fn _preferred(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_preferred") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -53,14 +61,6 @@ impl RelatedPerson_Communication<'_> {
   pub fn preferred(&self) -> Option<bool> {
     if let Some(val) = self.value.get("preferred") {
       return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for preferred
-  pub fn _preferred(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_preferred") {
-      return Some(Element { value: val });
     }
     return None;
   }
@@ -89,11 +89,11 @@ impl RelatedPerson_Communication<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.language().validate();
-    if let Some(_val) = self.preferred() {
-    }
     if let Some(_val) = self._preferred() {
       _val.validate();
+    }
+    let _ = self.language().validate();
+    if let Some(_val) = self.preferred() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });

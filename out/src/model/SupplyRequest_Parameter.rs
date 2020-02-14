@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Range::Range;
-use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -27,25 +27,9 @@ impl SupplyRequest_Parameter<'_> {
   }
 
   /// The value of the device detail.
-  pub fn value_range(&self) -> Option<Range> {
-    if let Some(val) = self.value.get("valueRange") {
-      return Some(Range { value: val });
-    }
-    return None;
-  }
-
-  /// A code or string that identifies the device detail being asserted.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
+  pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("valueCodeableConcept") {
       return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The value of the device detail.
-  pub fn value_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("valueQuantity") {
-      return Some(Quantity { value: val });
     }
     return None;
   }
@@ -63,18 +47,18 @@ impl SupplyRequest_Parameter<'_> {
   }
 
   /// The value of the device detail.
-  pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("valueCodeableConcept") {
-      return Some(CodeableConcept { value: val });
+  pub fn value_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("valueQuantity") {
+      return Some(Quantity { value: val });
     }
     return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -97,6 +81,22 @@ impl SupplyRequest_Parameter<'_> {
     return None;
   }
 
+  /// A code or string that identifies the device detail being asserted.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The value of the device detail.
+  pub fn value_range(&self) -> Option<Range> {
+    if let Some(val) = self.value.get("valueRange") {
+      return Some(Range { value: val });
+    }
+    return None;
+  }
+
   /// The value of the device detail.
   pub fn value_boolean(&self) -> Option<bool> {
     if let Some(val) = self.value.get("valueBoolean") {
@@ -109,25 +109,25 @@ impl SupplyRequest_Parameter<'_> {
     if let Some(_val) = self._value_boolean() {
       _val.validate();
     }
-    if let Some(_val) = self.value_range() {
-      _val.validate();
-    }
-    if let Some(_val) = self.code() {
-      _val.validate();
-    }
-    if let Some(_val) = self.value_quantity() {
+    if let Some(_val) = self.value_codeable_concept() {
       _val.validate();
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.value_codeable_concept() {
+    if let Some(_val) = self.value_quantity() {
       _val.validate();
     }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_range() {
+      _val.validate();
     }
     if let Some(_val) = self.value_boolean() {
     }

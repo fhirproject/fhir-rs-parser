@@ -2,8 +2,8 @@
 
 use crate::model::Extension::Extension;
 use crate::model::Element::Element;
-use crate::model::Money::Money;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Money::Money;
 use serde_json::value::Value;
 
 
@@ -18,23 +18,6 @@ pub struct ExplanationOfBenefit_Adjudication<'a> {
 }
 
 impl ExplanationOfBenefit_Adjudication<'_> {
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A non-monetary value associated with the category. Mutually exclusive to the
-  /// amount element above.
-  pub fn value(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("value") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
   /// A code to indicate the information type of this adjudication record. Information
   /// types may include: the value submitted, maximum values or percentages allowed or
   /// payable under the plan, amounts that the patient is responsible for in-aggregate
@@ -44,6 +27,14 @@ impl ExplanationOfBenefit_Adjudication<'_> {
     CodeableConcept {
       value: &self.value["category"],
     }
+  }
+
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
+    }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -69,9 +60,26 @@ impl ExplanationOfBenefit_Adjudication<'_> {
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Monetary amount associated with the category.
+  pub fn amount(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(Money { value: val });
+    }
+    return None;
+  }
+
+  /// A non-monetary value associated with the category. Mutually exclusive to the
+  /// amount element above.
+  pub fn value(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("value") {
+      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -94,21 +102,11 @@ impl ExplanationOfBenefit_Adjudication<'_> {
     return None;
   }
 
-  /// Monetary amount associated with the category.
-  pub fn amount(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("amount") {
-      return Some(Money { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    let _ = self.category().validate();
     if let Some(_val) = self._value() {
       _val.validate();
     }
-    if let Some(_val) = self.value() {
-    }
-    let _ = self.category().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
@@ -117,11 +115,13 @@ impl ExplanationOfBenefit_Adjudication<'_> {
     }
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.amount() {
       _val.validate();
+    }
+    if let Some(_val) = self.value() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

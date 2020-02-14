@@ -14,15 +14,6 @@ pub struct MedicinalProductPharmaceutical_Characteristics<'a> {
 }
 
 impl MedicinalProductPharmaceutical_Characteristics<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// A coded characteristic.
   pub fn code(&self) -> CodeableConcept {
     CodeableConcept {
@@ -68,9 +59,16 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
     let _ = self.code().validate();
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -80,6 +78,8 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
     }
     if let Some(_val) = self.status() {
       _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

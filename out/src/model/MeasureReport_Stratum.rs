@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::MeasureReport_Population1::MeasureReport_Population1;
-use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Quantity::Quantity;
+use crate::model::Extension::Extension;
+use crate::model::MeasureReport_Population1::MeasureReport_Population1;
 use crate::model::MeasureReport_Component::MeasureReport_Component;
 use serde_json::value::Value;
 
@@ -18,20 +18,28 @@ pub struct MeasureReport_Stratum<'a> {
 }
 
 impl MeasureReport_Stratum<'_> {
-  /// The populations that make up the stratum, one for each type of population
-  /// appropriate to the measure.
-  pub fn population(&self) -> Option<Vec<MeasureReport_Population1>> {
-    if let Some(Value::Array(val)) = self.value.get("population") {
-      return Some(val.into_iter().map(|e| MeasureReport_Population1 { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// The measure score for this stratum, calculated as appropriate for the measure
   /// type and scoring method, and based on only the members of this stratum.
   pub fn measure_score(&self) -> Option<Quantity> {
     if let Some(val) = self.value.get("measureScore") {
       return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// A stratifier component value.
+  pub fn component(&self) -> Option<Vec<MeasureReport_Component>> {
+    if let Some(Value::Array(val)) = self.value.get("component") {
+      return Some(val.into_iter().map(|e| MeasureReport_Component { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -46,15 +54,6 @@ impl MeasureReport_Stratum<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -63,14 +62,6 @@ impl MeasureReport_Stratum<'_> {
   pub fn extension(&self) -> Option<Vec<Extension>> {
     if let Some(Value::Array(val)) = self.value.get("extension") {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A stratifier component value.
-  pub fn component(&self) -> Option<Vec<MeasureReport_Component>> {
-    if let Some(Value::Array(val)) = self.value.get("component") {
-      return Some(val.into_iter().map(|e| MeasureReport_Component { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -93,25 +84,34 @@ impl MeasureReport_Stratum<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.population() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+  /// The populations that make up the stratum, one for each type of population
+  /// appropriate to the measure.
+  pub fn population(&self) -> Option<Vec<MeasureReport_Population1>> {
+    if let Some(Value::Array(val)) = self.value.get("population") {
+      return Some(val.into_iter().map(|e| MeasureReport_Population1 { value: e }).collect::<Vec<_>>());
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
     if let Some(_val) = self.measure_score() {
       _val.validate();
-    }
-    if let Some(_val) = self.value() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.component() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.value() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.population() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

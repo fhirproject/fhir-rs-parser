@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -34,10 +34,34 @@ impl Person_Link<'_> {
     return None;
   }
 
+  /// The resource to which this actual person is associated.
+  pub fn target(&self) -> Reference {
+    Reference {
+      value: &self.value["target"],
+    }
+  }
+
   /// Level of assurance that this link is associated with the target resource.
   pub fn assurance(&self) -> Option<Person_LinkAssurance> {
     if let Some(Value::String(val)) = self.value.get("assurance") {
       return Some(Person_LinkAssurance::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for assurance
+  pub fn _assurance(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_assurance") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -54,44 +78,20 @@ impl Person_Link<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The resource to which this actual person is associated.
-  pub fn target(&self) -> Reference {
-    Reference {
-      value: &self.value["target"],
-    }
-  }
-
-  /// Extensions for assurance
-  pub fn _assurance(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_assurance") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    let _ = self.target().validate();
     if let Some(_val) = self.assurance() {
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self._assurance() {
+      _val.validate();
     }
     if let Some(_val) = self.id() {
     }
-    let _ = self.target().validate();
-    if let Some(_val) = self._assurance() {
-      _val.validate();
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

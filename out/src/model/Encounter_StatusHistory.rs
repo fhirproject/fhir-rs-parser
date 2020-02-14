@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Period::Period;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,15 +16,6 @@ pub struct Encounter_StatusHistory<'a> {
 }
 
 impl Encounter_StatusHistory<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for status
   pub fn _status(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_status") {
@@ -33,17 +24,11 @@ impl Encounter_StatusHistory<'_> {
     return None;
   }
 
-  /// The time that the episode was in the specified status.
-  pub fn period(&self) -> Period {
-    Period {
-      value: &self.value["period"],
-    }
-  }
-
-  /// planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
-  pub fn status(&self) -> Option<Encounter_StatusHistoryStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(Encounter_StatusHistoryStatus::from_string(&val).unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -78,14 +63,26 @@ impl Encounter_StatusHistory<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+  /// planned | arrived | triaged | in-progress | onleave | finished | cancelled +.
+  pub fn status(&self) -> Option<Encounter_StatusHistoryStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(Encounter_StatusHistoryStatus::from_string(&val).unwrap());
     }
+    return None;
+  }
+
+  /// The time that the episode was in the specified status.
+  pub fn period(&self) -> Period {
+    Period {
+      value: &self.value["period"],
+    }
+  }
+
+  pub fn validate(&self) -> bool {
     if let Some(_val) = self._status() {
       _val.validate();
     }
-    let _ = self.period().validate();
-    if let Some(_val) = self.status() {
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -93,6 +90,9 @@ impl Encounter_StatusHistory<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.status() {
+    }
+    let _ = self.period().validate();
     return true;
   }
 

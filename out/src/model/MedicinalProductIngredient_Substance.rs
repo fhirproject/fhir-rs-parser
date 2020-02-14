@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -33,13 +33,6 @@ impl MedicinalProductIngredient_Substance<'_> {
     return None;
   }
 
-  /// The ingredient substance.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
   /// Quantity of the substance or specified substance present in the manufactured
   /// item or pharmaceutical product.
   pub fn strength(&self) -> Option<Vec<MedicinalProductIngredient_Strength>> {
@@ -49,13 +42,11 @@ impl MedicinalProductIngredient_Substance<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The ingredient substance.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -70,18 +61,27 @@ impl MedicinalProductIngredient_Substance<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.code().validate();
     if let Some(_val) = self.strength() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
+    let _ = self.code().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::Money::Money;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::Money::Money;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,11 +17,31 @@ pub struct ClaimResponse_Adjudication<'a> {
 }
 
 impl ClaimResponse_Adjudication<'_> {
+  /// A code to indicate the information type of this adjudication record. Information
+  /// types may include the value submitted, maximum values or percentages allowed or
+  /// payable under the plan, amounts that: the patient is responsible for in
+  /// aggregate or pertaining to this item; amounts paid by other coverages; and, the
+  /// benefit payable for this item.
+  pub fn category(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["category"],
+    }
+  }
+
+  /// A non-monetary value associated with the category. Mutually exclusive to the
+  /// amount element above.
+  pub fn value(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("value") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -44,23 +64,6 @@ impl ClaimResponse_Adjudication<'_> {
     return None;
   }
 
-  /// A code supporting the understanding of the adjudication result and explaining
-  /// variance from expected amount.
-  pub fn reason(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("reason") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Monetary amount associated with the category.
-  pub fn amount(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("amount") {
-      return Some(Money { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -73,6 +76,15 @@ impl ClaimResponse_Adjudication<'_> {
     return None;
   }
 
+  /// A code supporting the understanding of the adjudication result and explaining
+  /// variance from expected amount.
+  pub fn reason(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("reason") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for value
   pub fn _value(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_value") {
@@ -81,47 +93,35 @@ impl ClaimResponse_Adjudication<'_> {
     return None;
   }
 
-  /// A non-monetary value associated with the category. Mutually exclusive to the
-  /// amount element above.
-  pub fn value(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("value") {
-      return Some(val.as_f64().unwrap());
+  /// Monetary amount associated with the category.
+  pub fn amount(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("amount") {
+      return Some(Money { value: val });
     }
     return None;
   }
 
-  /// A code to indicate the information type of this adjudication record. Information
-  /// types may include the value submitted, maximum values or percentages allowed or
-  /// payable under the plan, amounts that: the patient is responsible for in
-  /// aggregate or pertaining to this item; amounts paid by other coverages; and, the
-  /// benefit payable for this item.
-  pub fn category(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["category"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
+    let _ = self.category().validate();
+    if let Some(_val) = self.value() {
+    }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.reason() {
+      _val.validate();
+    }
+    if let Some(_val) = self._value() {
       _val.validate();
     }
     if let Some(_val) = self.amount() {
       _val.validate();
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._value() {
-      _val.validate();
-    }
-    if let Some(_val) = self.value() {
-    }
-    let _ = self.category().validate();
     return true;
   }
 

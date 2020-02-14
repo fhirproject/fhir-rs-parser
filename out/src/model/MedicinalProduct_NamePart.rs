@@ -16,11 +16,26 @@ pub struct MedicinalProduct_NamePart<'a> {
 }
 
 impl MedicinalProduct_NamePart<'_> {
+  /// Idenifying type for this part of the name (e.g. strength part).
+  pub fn fhir_type(&self) -> Coding {
+    Coding {
+      value: &self.value["type"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A fragment of a product name.
+  pub fn part(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("part") {
+      return Some(string);
     }
     return None;
   }
@@ -29,21 +44,6 @@ impl MedicinalProduct_NamePart<'_> {
   pub fn _part(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_part") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Idenifying type for this part of the name (e.g. strength part).
-  pub fn fhir_type(&self) -> Coding {
-    Coding {
-      value: &self.value["type"],
-    }
-  }
-
-  /// A fragment of a product name.
-  pub fn part(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("part") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -79,13 +79,13 @@ impl MedicinalProduct_NamePart<'_> {
   }
 
   pub fn validate(&self) -> bool {
+    let _ = self.fhir_type().validate();
     if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.part() {
     }
     if let Some(_val) = self._part() {
       _val.validate();
-    }
-    let _ = self.fhir_type().validate();
-    if let Some(_val) = self.part() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Element::Element;
-use crate::model::Extension::Extension;
 use crate::model::Coding::Coding;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,18 +17,10 @@ pub struct CodeSystem_Property1<'a> {
 }
 
 impl CodeSystem_Property1<'_> {
-  /// Extensions for valueBoolean
-  pub fn _value_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueBoolean") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for valueDecimal
-  pub fn _value_decimal(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueDecimal") {
-      return Some(Element { value: val });
+  /// The value of this property.
+  pub fn value_date_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("valueDateTime") {
+      return Some(string);
     }
     return None;
   }
@@ -45,25 +37,17 @@ impl CodeSystem_Property1<'_> {
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
+  /// Extensions for valueInteger
+  pub fn _value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInteger") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for valueString
-  pub fn _value_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueString") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for valueCode
-  pub fn _value_code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueCode") {
+  /// Extensions for valueDateTime
+  pub fn _value_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDateTime") {
       return Some(Element { value: val });
     }
     return None;
@@ -88,17 +72,17 @@ impl CodeSystem_Property1<'_> {
   }
 
   /// The value of this property.
-  pub fn value_code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueCode") {
-      return Some(string.to_string());
+  pub fn value_integer(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("valueInteger") {
+      return Some(val.as_f64().unwrap());
     }
     return None;
   }
 
-  /// The value of this property.
-  pub fn value_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueString") {
-      return Some(string.to_string());
+  /// A code that is a reference to CodeSystem.property.code.
+  pub fn code(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string);
     }
     return None;
   }
@@ -111,19 +95,42 @@ impl CodeSystem_Property1<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for valueDecimal
+  pub fn _value_decimal(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueDecimal") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A code that is a reference to CodeSystem.property.code.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
+  /// Extensions for valueBoolean
+  pub fn _value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The value of this property.
+  pub fn value_code(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("valueCode") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for valueCode
+  pub fn _value_code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueCode") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -136,26 +143,18 @@ impl CodeSystem_Property1<'_> {
     return None;
   }
 
-  /// Extensions for valueDateTime
-  pub fn _value_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueDateTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for valueInteger
-  pub fn _value_integer(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueInteger") {
+  /// Extensions for valueString
+  pub fn _value_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueString") {
       return Some(Element { value: val });
     }
     return None;
   }
 
   /// The value of this property.
-  pub fn value_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueDateTime") {
-      return Some(string.to_string());
+  pub fn value_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("valueString") {
+      return Some(string);
     }
     return None;
   }
@@ -168,60 +167,61 @@ impl CodeSystem_Property1<'_> {
     return None;
   }
 
-  /// The value of this property.
-  pub fn value_integer(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("valueInteger") {
-      return Some(val.as_f64().unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._value_boolean() {
-      _val.validate();
-    }
-    if let Some(_val) = self._value_decimal() {
-      _val.validate();
+    if let Some(_val) = self.value_date_time() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._code() {
-      _val.validate();
-    }
-    if let Some(_val) = self._value_string() {
-      _val.validate();
-    }
-    if let Some(_val) = self._value_code() {
-      _val.validate();
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.value_code() {
-    }
-    if let Some(_val) = self.value_string() {
-    }
-    if let Some(_val) = self.value_decimal() {
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.code() {
-    }
-    if let Some(_val) = self.value_coding() {
+    if let Some(_val) = self._value_integer() {
       _val.validate();
     }
     if let Some(_val) = self._value_date_time() {
       _val.validate();
     }
-    if let Some(_val) = self._value_integer() {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.value_integer() {
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self.value_decimal() {
+    }
+    if let Some(_val) = self._value_decimal() {
       _val.validate();
     }
-    if let Some(_val) = self.value_date_time() {
+    if let Some(_val) = self._value_boolean() {
+      _val.validate();
+    }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_code() {
+    }
+    if let Some(_val) = self._value_code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_coding() {
+      _val.validate();
+    }
+    if let Some(_val) = self._value_string() {
+      _val.validate();
+    }
+    if let Some(_val) = self.value_string() {
     }
     if let Some(_val) = self.value_boolean() {
     }
-    if let Some(_val) = self.value_integer() {
+    if let Some(_val) = self.id() {
     }
     return true;
   }

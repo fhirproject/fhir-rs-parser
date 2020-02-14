@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Money::Money;
-use crate::model::Element::Element;
-use crate::model::Extension::Extension;
-use crate::model::Quantity::Quantity;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
 use crate::model::Identifier::Identifier;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -20,29 +20,64 @@ pub struct Contract_ValuedItem<'a> {
 }
 
 impl Contract_ValuedItem<'_> {
-  /// An amount that expresses the weighting (based on difficulty, cost and/or
-  /// resource intensiveness) associated with the Contract Valued Item delivered. The
-  /// concept of Points allows for assignment of point values for a Contract Valued
-  /// Item, such that a monetary amount can be assigned to each point.
-  pub fn points(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("points") {
-      return Some(val.as_f64().unwrap());
+  /// A Contract Valued Item unit valuation measure.
+  pub fn unit_price(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("unitPrice") {
+      return Some(Money { value: val });
     }
     return None;
   }
 
-  /// Extensions for paymentDate
-  pub fn _payment_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_paymentDate") {
+  /// Indicates the time during which this Contract ValuedItem information is
+  /// effective.
+  pub fn effective_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("effectiveTime") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for points
+  pub fn _points(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_points") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for effectiveTime
-  pub fn _effective_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_effectiveTime") {
-      return Some(Element { value: val });
+  /// Terms of valuation.
+  pub fn payment(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("payment") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// When payment is due.
+  pub fn payment_date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("paymentDate") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -55,45 +90,35 @@ impl Contract_ValuedItem<'_> {
     return None;
   }
 
-  /// Specific type of Contract Valued Item that may be priced.
-  pub fn entity_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("entityReference") {
+  /// Specifies the units by which the Contract Valued Item is measured or counted,
+  /// and quantifies the countable or measurable Contract Valued Item instances.
+  pub fn quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("quantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// Id  of the clause or question text related to the context of this valuedItem in
+  /// the referenced form or QuestionnaireResponse.
+  pub fn link_id(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("linkId") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Who will receive payment.
+  pub fn recipient(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("recipient") {
       return Some(Reference { value: val });
     }
     return None;
   }
 
-  /// Expresses the product of the Contract Valued Item unitQuantity and the
-  /// unitPriceAmt. For example, the formula: unit Quantity * unit Price (Cost per
-  /// Point) * factor Number  * points = net Amount. Quantity, factor and points are
-  /// assumed to be 1 if not supplied.
-  pub fn net(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("net") {
-      return Some(Money { value: val });
-    }
-    return None;
-  }
-
-  /// Indicates the time during which this Contract ValuedItem information is
-  /// effective.
-  pub fn effective_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("effectiveTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Who will make payment.
-  pub fn responsible(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("responsible") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for payment
-  pub fn _payment(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_payment") {
+  /// Extensions for paymentDate
+  pub fn _payment_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_paymentDate") {
       return Some(Element { value: val });
     }
     return None;
@@ -107,28 +132,20 @@ impl Contract_ValuedItem<'_> {
     return None;
   }
 
-  /// When payment is due.
-  pub fn payment_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("paymentDate") {
-      return Some(string.to_string());
+  /// Extensions for effectiveTime
+  pub fn _effective_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_effectiveTime") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Id  of the clause or question text related to the context of this valuedItem in
-  /// the referenced form or QuestionnaireResponse.
-  pub fn link_id(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("linkId") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A set of security labels that define which terms are controlled by this
-  /// condition.
-  pub fn security_label_number(&self) -> Option<Vec<u64>> {
-    if let Some(Value::Array(val)) = self.value.get("securityLabelNumber") {
-      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
+  /// A real number that represents a multiplier used in determining the overall value
+  /// of the Contract Valued Item delivered. The concept of a Factor allows for a
+  /// discount or surcharge multiplier to be applied to a monetary amount.
+  pub fn factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("factor") {
+      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -137,6 +154,28 @@ impl Contract_ValuedItem<'_> {
   pub fn entity_codeable_concept(&self) -> Option<CodeableConcept> {
     if let Some(val) = self.value.get("entityCodeableConcept") {
       return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// An amount that expresses the weighting (based on difficulty, cost and/or
+  /// resource intensiveness) associated with the Contract Valued Item delivered. The
+  /// concept of Points allows for assignment of point values for a Contract Valued
+  /// Item, such that a monetary amount can be assigned to each point.
+  pub fn points(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("points") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// Expresses the product of the Contract Valued Item unitQuantity and the
+  /// unitPriceAmt. For example, the formula: unit Quantity * unit Price (Cost per
+  /// Point) * factor Number  * points = net Amount. Quantity, factor and points are
+  /// assumed to be 1 if not supplied.
+  pub fn net(&self) -> Option<Money> {
+    if let Some(val) = self.value.get("net") {
+      return Some(Money { value: val });
     }
     return None;
   }
@@ -159,36 +198,10 @@ impl Contract_ValuedItem<'_> {
     return None;
   }
 
-  /// Extensions for securityLabelNumber
-  pub fn _security_label_number(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Specifies the units by which the Contract Valued Item is measured or counted,
-  /// and quantifies the countable or measurable Contract Valued Item instances.
-  pub fn quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("quantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// Terms of valuation.
-  pub fn payment(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("payment") {
-      return Some(string.to_string());
+  /// Who will make payment.
+  pub fn responsible(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("responsible") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -201,121 +214,108 @@ impl Contract_ValuedItem<'_> {
     return None;
   }
 
-  /// Who will receive payment.
-  pub fn recipient(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("recipient") {
+  /// Specific type of Contract Valued Item that may be priced.
+  pub fn entity_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("entityReference") {
       return Some(Reference { value: val });
     }
     return None;
   }
 
-  /// A Contract Valued Item unit valuation measure.
-  pub fn unit_price(&self) -> Option<Money> {
-    if let Some(val) = self.value.get("unitPrice") {
-      return Some(Money { value: val });
-    }
-    return None;
-  }
-
-  /// A real number that represents a multiplier used in determining the overall value
-  /// of the Contract Valued Item delivered. The concept of a Factor allows for a
-  /// discount or surcharge multiplier to be applied to a monetary amount.
-  pub fn factor(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("factor") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for points
-  pub fn _points(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_points") {
+  /// Extensions for payment
+  pub fn _payment(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_payment") {
       return Some(Element { value: val });
     }
     return None;
   }
 
+  /// A set of security labels that define which terms are controlled by this
+  /// condition.
+  pub fn security_label_number(&self) -> Option<Vec<u64>> {
+    if let Some(Value::Array(val)) = self.value.get("securityLabelNumber") {
+      return Some(val.into_iter().map(|e| e.as_u64().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for securityLabelNumber
+  pub fn _security_label_number(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.points() {
-    }
-    if let Some(_val) = self._payment_date() {
-      _val.validate();
-    }
-    if let Some(_val) = self._effective_time() {
-      _val.validate();
-    }
-    if let Some(_val) = self._factor() {
-      _val.validate();
-    }
-    if let Some(_val) = self.entity_reference() {
-      _val.validate();
-    }
-    if let Some(_val) = self.net() {
+    if let Some(_val) = self.unit_price() {
       _val.validate();
     }
     if let Some(_val) = self.effective_time() {
     }
-    if let Some(_val) = self.responsible() {
+    if let Some(_val) = self._points() {
       _val.validate();
     }
-    if let Some(_val) = self._payment() {
+    if let Some(_val) = self.payment() {
+    }
+    if let Some(_val) = self.payment_date() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._factor() {
+      _val.validate();
+    }
+    if let Some(_val) = self.quantity() {
+      _val.validate();
+    }
+    if let Some(_val) = self.link_id() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.recipient() {
+      _val.validate();
+    }
+    if let Some(_val) = self._payment_date() {
       _val.validate();
     }
     if let Some(_val) = self.identifier() {
       _val.validate();
     }
-    if let Some(_val) = self.payment_date() {
+    if let Some(_val) = self._effective_time() {
+      _val.validate();
     }
-    if let Some(_val) = self.link_id() {
-      _val.into_iter().for_each(|_e| {});
-    }
-    if let Some(_val) = self.security_label_number() {
-      _val.into_iter().for_each(|_e| {});
+    if let Some(_val) = self.factor() {
     }
     if let Some(_val) = self.entity_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.points() {
+    }
+    if let Some(_val) = self.net() {
       _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._security_label_number() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.quantity() {
+    if let Some(_val) = self.responsible() {
       _val.validate();
-    }
-    if let Some(_val) = self.payment() {
     }
     if let Some(_val) = self._link_id() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.recipient() {
+    if let Some(_val) = self.entity_reference() {
       _val.validate();
     }
-    if let Some(_val) = self.unit_price() {
+    if let Some(_val) = self._payment() {
       _val.validate();
     }
-    if let Some(_val) = self.factor() {
+    if let Some(_val) = self.security_label_number() {
+      _val.into_iter().for_each(|_e| {});
     }
-    if let Some(_val) = self.extension() {
+    if let Some(_val) = self._security_label_number() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._points() {
-      _val.validate();
     }
     return true;
   }

@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::InsurancePlan_Cost::InsurancePlan_Cost;
 use serde_json::value::Value;
 
@@ -33,19 +33,11 @@ impl InsurancePlan_Benefit1<'_> {
     return None;
   }
 
-  /// List of the costs associated with a specific benefit.
-  pub fn cost(&self) -> Option<Vec<InsurancePlan_Cost>> {
-    if let Some(Value::Array(val)) = self.value.get("cost") {
-      return Some(val.into_iter().map(|e| InsurancePlan_Cost { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -56,6 +48,14 @@ impl InsurancePlan_Benefit1<'_> {
     CodeableConcept {
       value: &self.value["type"],
     }
+  }
+
+  /// List of the costs associated with a specific benefit.
+  pub fn cost(&self) -> Option<Vec<InsurancePlan_Cost>> {
+    if let Some(Value::Array(val)) = self.value.get("cost") {
+      return Some(val.into_iter().map(|e| InsurancePlan_Cost { value: e }).collect::<Vec<_>>());
+    }
+    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -74,12 +74,12 @@ impl InsurancePlan_Benefit1<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.cost() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.id() {
     }
     let _ = self.fhir_type().validate();
+    if let Some(_val) = self.cost() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }

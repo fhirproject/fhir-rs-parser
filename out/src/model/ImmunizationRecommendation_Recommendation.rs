@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Element::Element;
 use crate::model::ImmunizationRecommendation_DateCriterion::ImmunizationRecommendation_DateCriterion;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
@@ -18,6 +18,23 @@ pub struct ImmunizationRecommendation_Recommendation<'a> {
 }
 
 impl ImmunizationRecommendation_Recommendation<'_> {
+  /// Extensions for seriesDosesString
+  pub fn _series_doses_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_seriesDosesString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Nominal position of the recommended dose in a series (e.g. dose 2 is the next
+  /// recommended dose).
+  pub fn dose_number_positive_int(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("doseNumberPositiveInt") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   /// Extensions for series
   pub fn _series(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_series") {
@@ -26,29 +43,56 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Nominal position of the recommended dose in a series (e.g. dose 2 is the next
-  /// recommended dose).
-  pub fn dose_number_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("doseNumberString") {
-      return Some(string.to_string());
+  /// The targeted disease for the recommendation.
+  pub fn target_disease(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("targetDisease") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
   /// One possible path to achieve presumed immunity against a disease - within the
   /// context of an authority.
-  pub fn series(&self) -> Option<String> {
+  pub fn series(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("series") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Nominal position of the recommended dose in a series (e.g. dose 2 is the next
+  /// recommended dose).
+  pub fn dose_number_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("doseNumberString") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for doseNumberString
+  pub fn _dose_number_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_doseNumberString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -71,26 +115,11 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Vaccine(s) which should not be used to fulfill the recommendation.
-  pub fn contraindicated_vaccine_code(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("contraindicatedVaccineCode") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for doseNumberPositiveInt
-  pub fn _dose_number_positive_int(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_doseNumberPositiveInt") {
-      return Some(Element { value: val });
+  /// Patient Information that supports the status and recommendation.  This includes
+  /// patient observations, adverse reactions and allergy/intolerance information.
+  pub fn supporting_patient_information(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("supportingPatientInformation") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -103,50 +132,6 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Extensions for doseNumberString
-  pub fn _dose_number_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_doseNumberString") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The recommended number of doses to achieve immunity.
-  pub fn series_doses_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("seriesDosesString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Vaccine(s) or vaccine group that pertain to the recommendation.
-  pub fn vaccine_code(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("vaccineCode") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Indicates the patient status with respect to the path to immunity for the target
-  /// disease.
-  pub fn forecast_status(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["forecastStatus"],
-    }
-  }
-
   /// Vaccine date recommendations.  For example, earliest date to administer, latest
   /// date to administer, etc.
   pub fn date_criterion(&self) -> Option<Vec<ImmunizationRecommendation_DateCriterion>> {
@@ -156,27 +141,27 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Extensions for seriesDosesPositiveInt
-  pub fn _series_doses_positive_int(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_seriesDosesPositiveInt") {
+  /// Extensions for doseNumberPositiveInt
+  pub fn _dose_number_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_doseNumberPositiveInt") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for seriesDosesString
-  pub fn _series_doses_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_seriesDosesString") {
-      return Some(Element { value: val });
+  /// Vaccine(s) which should not be used to fulfill the recommendation.
+  pub fn contraindicated_vaccine_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("contraindicatedVaccineCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Patient Information that supports the status and recommendation.  This includes
-  /// patient observations, adverse reactions and allergy/intolerance information.
-  pub fn supporting_patient_information(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("supportingPatientInformation") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+  /// Contains the description about the protocol under which the vaccine was
+  /// administered.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
     }
     return None;
   }
@@ -189,19 +174,43 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Contains the description about the protocol under which the vaccine was
-  /// administered.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Extensions for seriesDosesPositiveInt
+  pub fn _series_doses_positive_int(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_seriesDosesPositiveInt") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The targeted disease for the recommendation.
-  pub fn target_disease(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("targetDisease") {
-      return Some(CodeableConcept { value: val });
+  /// Indicates the patient status with respect to the path to immunity for the target
+  /// disease.
+  pub fn forecast_status(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["forecastStatus"],
+    }
+  }
+
+  /// The recommended number of doses to achieve immunity.
+  pub fn series_doses_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("seriesDosesString") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Vaccine(s) or vaccine group that pertain to the recommendation.
+  pub fn vaccine_code(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("vaccineCode") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -215,75 +224,66 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     return None;
   }
 
-  /// Nominal position of the recommended dose in a series (e.g. dose 2 is the next
-  /// recommended dose).
-  pub fn dose_number_positive_int(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("doseNumberPositiveInt") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._series() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.dose_number_string() {
-    }
-    if let Some(_val) = self.series() {
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.contraindicated_vaccine_code() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._description() {
-      _val.validate();
-    }
-    if let Some(_val) = self._dose_number_positive_int() {
-      _val.validate();
-    }
-    if let Some(_val) = self.forecast_reason() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._dose_number_string() {
-      _val.validate();
-    }
-    if let Some(_val) = self.series_doses_string() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.vaccine_code() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.forecast_status().validate();
-    if let Some(_val) = self.date_criterion() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._series_doses_positive_int() {
-      _val.validate();
-    }
     if let Some(_val) = self._series_doses_string() {
       _val.validate();
     }
-    if let Some(_val) = self.supporting_patient_information() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.dose_number_positive_int() {
     }
-    if let Some(_val) = self.series_doses_positive_int() {
-    }
-    if let Some(_val) = self.description() {
+    if let Some(_val) = self._series() {
+      _val.validate();
     }
     if let Some(_val) = self.target_disease() {
       _val.validate();
     }
-    if let Some(_val) = self.supporting_immunization() {
+    if let Some(_val) = self.series() {
+    }
+    if let Some(_val) = self.dose_number_string() {
+    }
+    if let Some(_val) = self._dose_number_string() {
+      _val.validate();
+    }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.dose_number_positive_int() {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.supporting_patient_information() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.forecast_reason() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.date_criterion() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._dose_number_positive_int() {
+      _val.validate();
+    }
+    if let Some(_val) = self.contraindicated_vaccine_code() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.series_doses_positive_int() {
+    }
+    if let Some(_val) = self._series_doses_positive_int() {
+      _val.validate();
+    }
+    let _ = self.forecast_status().validate();
+    if let Some(_val) = self.series_doses_string() {
+    }
+    if let Some(_val) = self.vaccine_code() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.supporting_immunization() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

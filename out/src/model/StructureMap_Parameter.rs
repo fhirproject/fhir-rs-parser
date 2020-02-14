@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -14,18 +14,10 @@ pub struct StructureMap_Parameter<'a> {
 }
 
 impl StructureMap_Parameter<'_> {
-  /// Extensions for valueBoolean
-  pub fn _value_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueBoolean") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for valueInteger
-  pub fn _value_integer(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueInteger") {
-      return Some(Element { value: val });
+  /// Parameter value - variable or literal.
+  pub fn value_integer(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("valueInteger") {
+      return Some(val.as_f64().unwrap());
     }
     return None;
   }
@@ -34,18 +26,6 @@ impl StructureMap_Parameter<'_> {
   pub fn value_decimal(&self) -> Option<f64> {
     if let Some(val) = self.value.get("valueDecimal") {
       return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -62,6 +42,67 @@ impl StructureMap_Parameter<'_> {
   pub fn _value_string(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_valueString") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for valueInteger
+  pub fn _value_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_boolean(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("valueBoolean") {
+      return Some(val.as_bool().unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for valueId
+  pub fn _value_id(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueId") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("valueId") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Parameter value - variable or literal.
+  pub fn value_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("valueString") {
+      return Some(string);
     }
     return None;
   }
@@ -84,66 +125,18 @@ impl StructureMap_Parameter<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Parameter value - variable or literal.
-  pub fn value_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Parameter value - variable or literal.
-  pub fn value_boolean(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("valueBoolean") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Parameter value - variable or literal.
-  pub fn value_integer(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("valueInteger") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for valueId
-  pub fn _value_id(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_valueId") {
+  /// Extensions for valueBoolean
+  pub fn _value_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_valueBoolean") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Parameter value - variable or literal.
-  pub fn value_id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("valueId") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._value_boolean() {
-      _val.validate();
-    }
-    if let Some(_val) = self._value_integer() {
-      _val.validate();
+    if let Some(_val) = self.value_integer() {
     }
     if let Some(_val) = self.value_decimal() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._value_decimal() {
       _val.validate();
@@ -151,21 +144,28 @@ impl StructureMap_Parameter<'_> {
     if let Some(_val) = self._value_string() {
       _val.validate();
     }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.value_string() {
+    if let Some(_val) = self._value_integer() {
+      _val.validate();
     }
     if let Some(_val) = self.value_boolean() {
-    }
-    if let Some(_val) = self.value_integer() {
     }
     if let Some(_val) = self._value_id() {
       _val.validate();
     }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.value_id() {
+    }
+    if let Some(_val) = self.value_string() {
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._value_boolean() {
+      _val.validate();
     }
     return true;
   }

@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::TestScript_Action1::TestScript_Action1;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -16,48 +16,6 @@ pub struct TestScript_Test<'a> {
 }
 
 impl TestScript_Test<'_> {
-  /// Action would contain either an operation or an assertion.
-  pub fn action(&self) -> Vec<TestScript_Action1> {
-    self.value.get("action").unwrap().as_array().unwrap().into_iter().map(|e| TestScript_Action1 { value: e }).collect::<Vec<_>>()
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The name of this test used for tracking/logging purposes by test engines.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -78,9 +36,42 @@ impl TestScript_Test<'_> {
 
   /// A short description of the test used by test engines for tracking and reporting
   /// purposes.
-  pub fn description(&self) -> Option<String> {
+  pub fn description(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Action would contain either an operation or an assertion.
+  pub fn action(&self) -> Vec<TestScript_Action1> {
+    self.value.get("action").unwrap().as_array().unwrap().into_iter().map(|e| TestScript_Action1 { value: e }).collect::<Vec<_>>()
+  }
+
+  /// The name of this test used for tracking/logging purposes by test engines.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -93,25 +84,34 @@ impl TestScript_Test<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    let _ = self.action().into_iter().for_each(|e| { e.validate(); });
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.name() {
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self._description() {
-      _val.validate();
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.description() {
     }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
+    let _ = self.action().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self._name() {
       _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

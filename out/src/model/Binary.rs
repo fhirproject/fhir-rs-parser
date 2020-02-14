@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Element::Element;
 use crate::model::Meta::Meta;
+use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,25 @@ pub struct Binary<'a> {
 }
 
 impl Binary<'_> {
+  /// The actual content, base64 encoded.
+  pub fn data(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("data") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// This element identifies another resource that can be used as a proxy of the
   /// security sensitivity to use when deciding and enforcing access control rules for
   /// the Binary resource. Given that the Binary resource contains very few elements
@@ -33,19 +52,18 @@ impl Binary<'_> {
     return None;
   }
 
-  /// Extensions for data
-  pub fn _data(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_data") {
-      return Some(Element { value: val });
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
     }
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for contentType
+  pub fn _content_type(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contentType") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -58,10 +76,35 @@ impl Binary<'_> {
     return None;
   }
 
-  /// The actual content, base64 encoded.
-  pub fn data(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("data") {
-      return Some(string.to_string());
+  /// Extensions for data
+  pub fn _data(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_data") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// MimeType of the binary content represented as a standard MimeType (BCP 13).
+  pub fn content_type(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("contentType") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -76,51 +119,20 @@ impl Binary<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// MimeType of the binary content represented as a standard MimeType (BCP 13).
-  pub fn content_type(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("contentType") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for contentType
-  pub fn _content_type(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contentType") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.data() {
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
     if let Some(_val) = self.security_context() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self._content_type() {
+      _val.validate();
+    }
+    if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
     if let Some(_val) = self._data() {
@@ -128,24 +140,12 @@ impl Binary<'_> {
     }
     if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self._implicit_rules() {
-      _val.validate();
-    }
-    if let Some(_val) = self.data() {
-    }
-    if let Some(_val) = self.meta() {
-      _val.validate();
+    if let Some(_val) = self.content_type() {
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.content_type() {
-    }
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self._content_type() {
+    if let Some(_val) = self.meta() {
       _val.validate();
     }
     return true;

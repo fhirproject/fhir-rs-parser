@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Money::Money;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Money::Money;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -16,13 +16,6 @@ pub struct ClaimResponse_Total<'a> {
 }
 
 impl ClaimResponse_Total<'_> {
-  /// Monetary total amount associated with the category.
-  pub fn amount(&self) -> Money {
-    Money {
-      value: &self.value["amount"],
-    }
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -41,11 +34,29 @@ impl ClaimResponse_Total<'_> {
     return None;
   }
 
+  /// A code to indicate the information type of this adjudication record. Information
+  /// types may include: the value submitted, maximum values or percentages allowed or
+  /// payable under the plan, amounts that the patient is responsible for in aggregate
+  /// or pertaining to this item, amounts paid by other coverages, and the benefit
+  /// payable for this item.
+  pub fn category(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["category"],
+    }
+  }
+
+  /// Monetary total amount associated with the category.
+  pub fn amount(&self) -> Money {
+    Money {
+      value: &self.value["amount"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -62,28 +73,17 @@ impl ClaimResponse_Total<'_> {
     return None;
   }
 
-  /// A code to indicate the information type of this adjudication record. Information
-  /// types may include: the value submitted, maximum values or percentages allowed or
-  /// payable under the plan, amounts that the patient is responsible for in aggregate
-  /// or pertaining to this item, amounts paid by other coverages, and the benefit
-  /// payable for this item.
-  pub fn category(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["category"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
-    let _ = self.amount().validate();
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    let _ = self.category().validate();
+    let _ = self.amount().validate();
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.category().validate();
     return true;
   }
 

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -26,19 +26,19 @@ impl ImplementationGuide_Page<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// A short title used to represent this page in navigational structures such as
+  /// table of contents, bread crumbs, etc.
+  pub fn title(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("title") {
+      return Some(string);
     }
     return None;
   }
 
-  /// The source address for the page.
-  pub fn name_url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("nameUrl") {
-      return Some(string.to_string());
+  /// A code that indicates how the page is generated.
+  pub fn generation(&self) -> Option<ImplementationGuide_PageGeneration> {
+    if let Some(Value::String(val)) = self.value.get("generation") {
+      return Some(ImplementationGuide_PageGeneration::from_string(&val).unwrap());
     }
     return None;
   }
@@ -55,22 +55,6 @@ impl ImplementationGuide_Page<'_> {
     return None;
   }
 
-  /// Extensions for nameUrl
-  pub fn _name_url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_nameUrl") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// Extensions for generation
   pub fn _generation(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_generation") {
@@ -83,6 +67,22 @@ impl ImplementationGuide_Page<'_> {
   pub fn page(&self) -> Option<Vec<ImplementationGuide_Page>> {
     if let Some(Value::Array(val)) = self.value.get("page") {
       return Some(val.into_iter().map(|e| ImplementationGuide_Page { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for nameUrl
+  pub fn _name_url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_nameUrl") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -105,19 +105,19 @@ impl ImplementationGuide_Page<'_> {
     return None;
   }
 
-  /// A short title used to represent this page in navigational structures such as
-  /// table of contents, bread crumbs, etc.
-  pub fn title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("title") {
-      return Some(string.to_string());
+  /// The source address for the page.
+  pub fn name_url(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("nameUrl") {
+      return Some(string);
     }
     return None;
   }
 
-  /// A code that indicates how the page is generated.
-  pub fn generation(&self) -> Option<ImplementationGuide_PageGeneration> {
-    if let Some(Value::String(val)) = self.value.get("generation") {
-      return Some(ImplementationGuide_PageGeneration::from_string(&val).unwrap());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -126,18 +126,12 @@ impl ImplementationGuide_Page<'_> {
     if let Some(_val) = self.name_reference() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.title() {
     }
-    if let Some(_val) = self.name_url() {
+    if let Some(_val) = self.generation() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._name_url() {
-      _val.validate();
-    }
-    if let Some(_val) = self._title() {
-      _val.validate();
     }
     if let Some(_val) = self._generation() {
       _val.validate();
@@ -145,12 +139,18 @@ impl ImplementationGuide_Page<'_> {
     if let Some(_val) = self.page() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self._title() {
+      _val.validate();
+    }
+    if let Some(_val) = self._name_url() {
+      _val.validate();
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.title() {
+    if let Some(_val) = self.name_url() {
     }
-    if let Some(_val) = self.generation() {
+    if let Some(_val) = self.id() {
     }
     return true;
   }

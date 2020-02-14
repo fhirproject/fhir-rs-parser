@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -14,37 +14,28 @@ pub struct CompartmentDefinition_Resource<'a> {
 }
 
 impl CompartmentDefinition_Resource<'_> {
+  /// The name of a search parameter that represents the link to the compartment. More
+  /// than one may be listed because a resource may be linked to a compartment in more
+  /// than one way,.
+  pub fn param(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("param") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for param
+  pub fn _param(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_param") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// Extensions for documentation
   pub fn _documentation(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_documentation") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Additional documentation about the resource and compartment.
-  pub fn documentation(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("documentation") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The name of a search parameter that represents the link to the compartment. More
-  /// than one may be listed because a resource may be linked to a compartment in more
-  /// than one way,.
-  pub fn param(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("param") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -67,18 +58,27 @@ impl CompartmentDefinition_Resource<'_> {
     return None;
   }
 
-  /// The name of a resource supported by the server.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for param
-  pub fn _param(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_param") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// Extensions for code
+  pub fn _code(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_code") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The name of a resource supported by the server.
+  pub fn code(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string);
     }
     return None;
   }
@@ -95,38 +95,38 @@ impl CompartmentDefinition_Resource<'_> {
     return None;
   }
 
-  /// Extensions for code
-  pub fn _code(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_code") {
-      return Some(Element { value: val });
+  /// Additional documentation about the resource and compartment.
+  pub fn documentation(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("documentation") {
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._documentation() {
-      _val.validate();
-    }
-    if let Some(_val) = self.documentation() {
-    }
     if let Some(_val) = self.param() {
       _val.into_iter().for_each(|_e| {});
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.code() {
     }
     if let Some(_val) = self._param() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.extension() {
+    if let Some(_val) = self._documentation() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self._code() {
       _val.validate();
+    }
+    if let Some(_val) = self.code() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.documentation() {
     }
     return true;
   }

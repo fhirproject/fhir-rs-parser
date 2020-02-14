@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
-use crate::model::Extension::Extension;
 use crate::model::Attachment::Attachment;
+use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -17,18 +17,9 @@ pub struct Contract_Legal<'a> {
 
 impl Contract_Legal<'_> {
   /// Contract legal text in human renderable form.
-  pub fn content_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("contentReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  pub fn content_attachment(&self) -> Option<Attachment> {
+    if let Some(val) = self.value.get("contentAttachment") {
+      return Some(Attachment { value: val });
     }
     return None;
   }
@@ -46,9 +37,9 @@ impl Contract_Legal<'_> {
   }
 
   /// Contract legal text in human renderable form.
-  pub fn content_attachment(&self) -> Option<Attachment> {
-    if let Some(val) = self.value.get("contentAttachment") {
-      return Some(Attachment { value: val });
+  pub fn content_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("contentReference") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -71,20 +62,29 @@ impl Contract_Legal<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.content_reference() {
-      _val.validate();
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
-    if let Some(_val) = self.id() {
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.content_attachment() {
+      _val.validate();
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.content_attachment() {
+    if let Some(_val) = self.content_reference() {
       _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

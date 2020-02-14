@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Period::Period;
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -21,6 +21,14 @@ impl EpisodeOfCare_StatusHistory<'_> {
   pub fn status(&self) -> Option<EpisodeOfCare_StatusHistoryStatus> {
     if let Some(Value::String(val)) = self.value.get("status") {
       return Some(EpisodeOfCare_StatusHistoryStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -45,11 +53,18 @@ impl EpisodeOfCare_StatusHistory<'_> {
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
+  }
+
+  /// The period during this EpisodeOfCare that the specific status applied.
+  pub fn period(&self) -> Period {
+    Period {
+      value: &self.value["period"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -64,36 +79,21 @@ impl EpisodeOfCare_StatusHistory<'_> {
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The period during this EpisodeOfCare that the specific status applied.
-  pub fn period(&self) -> Period {
-    Period {
-      value: &self.value["period"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.id() {
     }
+    let _ = self.period().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._status() {
-      _val.validate();
-    }
-    let _ = self.period().validate();
     return true;
   }
 

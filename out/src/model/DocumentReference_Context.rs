@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Period::Period;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::Extension::Extension;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Period::Period;
 use serde_json::value::Value;
 
 
@@ -20,30 +20,11 @@ pub struct DocumentReference_Context<'a> {
 }
 
 impl DocumentReference_Context<'_> {
-  /// The time period over which the service that is described by the document was
-  /// provided.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// This list of codes represents the main clinical acts, such as a colonoscopy or
-  /// an appendectomy, being documented. In some cases, the event is inherent in the
-  /// type Code, such as a "History and Physical Report" in which the procedure being
-  /// documented is necessarily a "History and Physical" act.
-  pub fn event(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("event") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The kind of facility where the patient was seen.
-  pub fn facility_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("facilityType") {
-      return Some(CodeableConcept { value: val });
+  /// Describes the clinical encounter or type of care that the document content is
+  /// associated with.
+  pub fn encounter(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("encounter") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -60,11 +41,11 @@ impl DocumentReference_Context<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The Patient Information as known when the document was published. May be a
+  /// reference to a version specific, or contained.
+  pub fn source_patient_info(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("sourcePatientInfo") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -72,15 +53,6 @@ impl DocumentReference_Context<'_> {
   /// Related identifiers or resources associated with the DocumentReference.
   pub fn related(&self) -> Option<Vec<Reference>> {
     if let Some(Value::Array(val)) = self.value.get("related") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Describes the clinical encounter or type of care that the document content is
-  /// associated with.
-  pub fn encounter(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("encounter") {
       return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
@@ -104,11 +76,21 @@ impl DocumentReference_Context<'_> {
     return None;
   }
 
-  /// The Patient Information as known when the document was published. May be a
-  /// reference to a version specific, or contained.
-  pub fn source_patient_info(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("sourcePatientInfo") {
-      return Some(Reference { value: val });
+  /// This list of codes represents the main clinical acts, such as a colonoscopy or
+  /// an appendectomy, being documented. In some cases, the event is inherent in the
+  /// type Code, such as a "History and Physical Report" in which the procedure being
+  /// documented is necessarily a "History and Physical" act.
+  pub fn event(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("event") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The kind of facility where the patient was seen.
+  pub fn facility_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("facilityType") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
@@ -122,9 +104,39 @@ impl DocumentReference_Context<'_> {
     return None;
   }
 
+  /// The time period over which the service that is described by the document was
+  /// provided.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.period() {
+    if let Some(_val) = self.encounter() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.source_patient_info() {
       _val.validate();
+    }
+    if let Some(_val) = self.related() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.event() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -132,25 +144,13 @@ impl DocumentReference_Context<'_> {
     if let Some(_val) = self.facility_type() {
       _val.validate();
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.related() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.encounter() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.source_patient_info() {
-      _val.validate();
-    }
     if let Some(_val) = self.practice_setting() {
       _val.validate();
+    }
+    if let Some(_val) = self.period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

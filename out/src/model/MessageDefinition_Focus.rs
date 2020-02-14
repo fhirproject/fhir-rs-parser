@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -34,11 +34,27 @@ impl MessageDefinition_Focus<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for min
+  pub fn _min(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_min") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The kind of resource that must be the focus for this message.
+  pub fn code(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("code") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A profile that reflects constraints for the focal resource (and potentially for
+  /// related resources).
+  pub fn profile(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("profile") {
+      return Some(string);
     }
     return None;
   }
@@ -55,27 +71,11 @@ impl MessageDefinition_Focus<'_> {
     return None;
   }
 
-  /// Extensions for min
-  pub fn _min(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_min") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A profile that reflects constraints for the focal resource (and potentially for
-  /// related resources).
-  pub fn profile(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("profile") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for max
-  pub fn _max(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_max") {
-      return Some(Element { value: val });
+  /// Identifies the minimum number of resources of this type that must be pointed to
+  /// by a message in order for it to be valid against this MessageDefinition.
+  pub fn min(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("min") {
+      return Some(val.as_u64().unwrap());
     }
     return None;
   }
@@ -88,28 +88,28 @@ impl MessageDefinition_Focus<'_> {
     return None;
   }
 
-  /// The kind of resource that must be the focus for this message.
-  pub fn code(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("code") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Identifies the minimum number of resources of this type that must be pointed to
-  /// by a message in order for it to be valid against this MessageDefinition.
-  pub fn min(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("min") {
-      return Some(val.as_u64().unwrap());
-    }
-    return None;
-  }
-
   /// Identifies the maximum number of resources of this type that must be pointed to
   /// by a message in order for it to be valid against this MessageDefinition.
-  pub fn max(&self) -> Option<String> {
+  pub fn max(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("max") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for max
+  pub fn _max(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_max") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -118,27 +118,27 @@ impl MessageDefinition_Focus<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self._min() {
-      _val.validate();
-    }
-    if let Some(_val) = self.profile() {
-    }
-    if let Some(_val) = self._max() {
-      _val.validate();
-    }
-    if let Some(_val) = self._code() {
       _val.validate();
     }
     if let Some(_val) = self.code() {
     }
+    if let Some(_val) = self.profile() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.min() {
     }
+    if let Some(_val) = self._code() {
+      _val.validate();
+    }
     if let Some(_val) = self.max() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._max() {
+      _val.validate();
     }
     return true;
   }

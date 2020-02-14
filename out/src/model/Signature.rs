@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Coding::Coding;
 use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use serde_json::value::Value;
@@ -20,12 +20,12 @@ pub struct Signature<'a> {
 }
 
 impl Signature<'_> {
-  /// Extensions for targetFormat
-  pub fn _target_format(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_targetFormat") {
-      return Some(Element { value: val });
+  /// A reference to an application-usable description of the identity that signed
+  /// (e.g. the signature used their private key).
+  pub fn who(&self) -> Reference {
+    Reference {
+      value: &self.value["who"],
     }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -40,54 +40,26 @@ impl Signature<'_> {
     return None;
   }
 
-  /// The base64 encoding of the Signature content. When signature is not recorded
-  /// electronically this element would be empty.
-  pub fn data(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("data") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A reference to an application-usable description of the identity that signed
-  /// (e.g. the signature used their private key).
-  pub fn who(&self) -> Reference {
-    Reference {
-      value: &self.value["who"],
-    }
-  }
-
   /// A mime type that indicates the technical format of the target resources signed
   /// by the signature.
-  pub fn target_format(&self) -> Option<String> {
+  pub fn target_format(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("targetFormat") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// When the digital signature was signed.
+  pub fn when(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("when") {
+      return Some(string);
     }
     return None;
   }
 
-  /// A mime type that indicates the technical format of the signature. Important mime
-  /// types are application/signature+xml for X ML DigSig, application/jose for JWS,
-  /// and image/* for a graphical image of a signature, etc.
-  pub fn sig_format(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("sigFormat") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for data
-  pub fn _data(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_data") {
+  /// Extensions for targetFormat
+  pub fn _target_format(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_targetFormat") {
       return Some(Element { value: val });
     }
     return None;
@@ -98,6 +70,34 @@ impl Signature<'_> {
   pub fn on_behalf_of(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("onBehalfOf") {
       return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A mime type that indicates the technical format of the signature. Important mime
+  /// types are application/signature+xml for X ML DigSig, application/jose for JWS,
+  /// and image/* for a graphical image of a signature, etc.
+  pub fn sig_format(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("sigFormat") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The base64 encoding of the Signature content. When signature is not recorded
+  /// electronically this element would be empty.
+  pub fn data(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("data") {
+      return Some(string);
     }
     return None;
   }
@@ -117,10 +117,10 @@ impl Signature<'_> {
     return None;
   }
 
-  /// When the digital signature was signed.
-  pub fn when(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("when") {
-      return Some(string.to_string());
+  /// Extensions for data
+  pub fn _data(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_data") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -134,32 +134,32 @@ impl Signature<'_> {
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._target_format() {
-      _val.validate();
-    }
+    let _ = self.who().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.data() {
-    }
-    let _ = self.who().validate();
     if let Some(_val) = self.target_format() {
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.when() {
     }
-    if let Some(_val) = self.sig_format() {
-    }
-    if let Some(_val) = self._data() {
+    if let Some(_val) = self._target_format() {
       _val.validate();
     }
     if let Some(_val) = self.on_behalf_of() {
       _val.validate();
     }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.sig_format() {
+    }
+    if let Some(_val) = self.data() {
+    }
     let _ = self.fhir_type().into_iter().for_each(|e| { e.validate(); });
     if let Some(_val) = self._when() {
       _val.validate();
     }
-    if let Some(_val) = self.when() {
+    if let Some(_val) = self._data() {
+      _val.validate();
     }
     if let Some(_val) = self._sig_format() {
       _val.validate();

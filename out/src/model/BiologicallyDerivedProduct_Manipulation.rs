@@ -17,10 +17,11 @@ pub struct BiologicallyDerivedProduct_Manipulation<'a> {
 }
 
 impl BiologicallyDerivedProduct_Manipulation<'_> {
-  /// Description of manipulation.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -38,17 +39,17 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
   }
 
   /// Time of manipulation.
-  pub fn time_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("timePeriod") {
-      return Some(Period { value: val });
+  pub fn time_date_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("timeDateTime") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Time of manipulation.
-  pub fn time_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timeDateTime") {
-      return Some(string.to_string());
+  /// Extensions for timeDateTime
+  pub fn _time_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_timeDateTime") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -71,15 +72,6 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for description
   pub fn _description(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_description") {
@@ -88,35 +80,43 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
     return None;
   }
 
-  /// Extensions for timeDateTime
-  pub fn _time_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_timeDateTime") {
-      return Some(Element { value: val });
+  /// Time of manipulation.
+  pub fn time_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("timePeriod") {
+      return Some(Period { value: val });
+    }
+    return None;
+  }
+
+  /// Description of manipulation.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.description() {
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.time_period() {
-      _val.validate();
-    }
     if let Some(_val) = self.time_date_time() {
+    }
+    if let Some(_val) = self._time_date_time() {
+      _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self._description() {
       _val.validate();
     }
-    if let Some(_val) = self._time_date_time() {
+    if let Some(_val) = self.time_period() {
       _val.validate();
+    }
+    if let Some(_val) = self.description() {
     }
     return true;
   }

@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::ValueSet_Contains::ValueSet_Contains;
 use crate::model::ValueSet_Parameter::ValueSet_Parameter;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::ValueSet_Contains::ValueSet_Contains;
 use serde_json::value::Value;
 
 
@@ -19,6 +19,14 @@ pub struct ValueSet_Expansion<'a> {
 }
 
 impl ValueSet_Expansion<'_> {
+  /// Extensions for identifier
+  pub fn _identifier(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_identifier") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -37,23 +45,12 @@ impl ValueSet_Expansion<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The total number of concepts in the expansion. If the number of concept nodes in
+  /// this resource is less than the stated number, then the server can return more
+  /// using the offset parameter.
+  pub fn total(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("total") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
@@ -66,30 +63,43 @@ impl ValueSet_Expansion<'_> {
     return None;
   }
 
+  /// Extensions for total
+  pub fn _total(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_total") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// An identifier that uniquely identifies this expansion of the valueset, based on
   /// a unique combination of the provided parameters, the system default parameters,
   /// and the underlying system code system versions etc. Systems may re-use the same
   /// identifier as long as those factors remain the same, and the expansion is the
   /// same, but are not required to do so. This is a business identifier.
-  pub fn identifier(&self) -> Option<String> {
+  pub fn identifier(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("identifier") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// The time at which the expansion was produced by the expanding system.
-  pub fn timestamp(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("timestamp") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for total
-  pub fn _total(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_total") {
-      return Some(Element { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -104,20 +114,10 @@ impl ValueSet_Expansion<'_> {
     return None;
   }
 
-  /// Extensions for offset
-  pub fn _offset(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_offset") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The total number of concepts in the expansion. If the number of concept nodes in
-  /// this resource is less than the stated number, then the server can return more
-  /// using the offset parameter.
-  pub fn total(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("total") {
-      return Some(val.as_i64().unwrap());
+  /// The time at which the expansion was produced by the expanding system.
+  pub fn timestamp(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("timestamp") {
+      return Some(string);
     }
     return None;
   }
@@ -140,39 +140,39 @@ impl ValueSet_Expansion<'_> {
     return None;
   }
 
-  /// Extensions for identifier
-  pub fn _identifier(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_identifier") {
+  /// Extensions for offset
+  pub fn _offset(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_offset") {
       return Some(Element { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self._identifier() {
+      _val.validate();
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.total() {
     }
     if let Some(_val) = self._timestamp() {
       _val.validate();
     }
-    if let Some(_val) = self.identifier() {
-    }
-    if let Some(_val) = self.timestamp() {
-    }
     if let Some(_val) = self._total() {
       _val.validate();
     }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.identifier() {
+    }
+    if let Some(_val) = self.id() {
+    }
     if let Some(_val) = self.offset() {
     }
-    if let Some(_val) = self._offset() {
-      _val.validate();
-    }
-    if let Some(_val) = self.total() {
+    if let Some(_val) = self.timestamp() {
     }
     if let Some(_val) = self.parameter() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -180,7 +180,7 @@ impl ValueSet_Expansion<'_> {
     if let Some(_val) = self.contains() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._identifier() {
+    if let Some(_val) = self._offset() {
       _val.validate();
     }
     return true;

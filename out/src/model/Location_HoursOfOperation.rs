@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,23 @@ pub struct Location_HoursOfOperation<'a> {
 }
 
 impl Location_HoursOfOperation<'_> {
+  /// Indicates which days of the week are available between the start and end Times.
+  pub fn days_of_week(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -34,18 +51,26 @@ impl Location_HoursOfOperation<'_> {
     return None;
   }
 
-  /// Time that the Location opens.
-  pub fn opening_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("openingTime") {
-      return Some(string.to_string());
+  /// Extensions for daysOfWeek
+  pub fn _days_of_week(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for closingTime
+  pub fn _closing_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_closingTime") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
   /// Time that the Location closes.
-  pub fn closing_time(&self) -> Option<String> {
+  pub fn closing_time(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("closingTime") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -58,11 +83,10 @@ impl Location_HoursOfOperation<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Time that the Location opens.
+  pub fn opening_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("openingTime") {
+      return Some(string);
     }
     return None;
   }
@@ -79,22 +103,6 @@ impl Location_HoursOfOperation<'_> {
     return None;
   }
 
-  /// The Location is open all day.
-  pub fn all_day(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("allDay") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Indicates which days of the week are available between the start and end Times.
-  pub fn days_of_week(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("daysOfWeek") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// Extensions for openingTime
   pub fn _opening_time(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_openingTime") {
@@ -103,51 +111,43 @@ impl Location_HoursOfOperation<'_> {
     return None;
   }
 
-  /// Extensions for closingTime
-  pub fn _closing_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_closingTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for daysOfWeek
-  pub fn _days_of_week(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// The Location is open all day.
+  pub fn all_day(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("allDay") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.days_of_week() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.id() {
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.opening_time() {
+    if let Some(_val) = self._days_of_week() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._closing_time() {
+      _val.validate();
     }
     if let Some(_val) = self.closing_time() {
     }
     if let Some(_val) = self._all_day() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.opening_time() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.all_day() {
-    }
-    if let Some(_val) = self.days_of_week() {
-      _val.into_iter().for_each(|_e| {});
-    }
     if let Some(_val) = self._opening_time() {
       _val.validate();
     }
-    if let Some(_val) = self._closing_time() {
-      _val.validate();
-    }
-    if let Some(_val) = self._days_of_week() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.all_day() {
     }
     return true;
   }

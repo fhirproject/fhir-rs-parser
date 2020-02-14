@@ -1,10 +1,10 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Coding::Coding;
-use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
+use crate::model::Quantity::Quantity;
+use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use serde_json::value::Value;
 
 
@@ -19,142 +19,6 @@ pub struct Questionnaire_EnableWhen<'a> {
 }
 
 impl Questionnaire_EnableWhen<'_> {
-  /// Extensions for answerInteger
-  pub fn _answer_integer(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerInteger") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_coding(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("answerCoding") {
-      return Some(Coding { value: val });
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("answerString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("answerQuantity") {
-      return Some(Quantity { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for answerTime
-  pub fn _answer_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Specifies the criteria by which the question is enabled.
-  pub fn operator(&self) -> Option<Questionnaire_EnableWhenOperator> {
-    if let Some(Value::String(val)) = self.value.get("operator") {
-      return Some(Questionnaire_EnableWhenOperator::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for answerBoolean
-  pub fn _answer_boolean(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerBoolean") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("answerTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for answerDateTime
-  pub fn _answer_date_time(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerDateTime") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_integer(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("answerInteger") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_decimal(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("answerDecimal") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_reference(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("answerReference") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for answerDate
-  pub fn _answer_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerDate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for question
-  pub fn _question(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_question") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for operator
-  pub fn _operator(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_operator") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A value that the referenced question is tested using the specified operator in
   /// order for the item to be enabled.
   pub fn answer_boolean(&self) -> Option<bool> {
@@ -164,37 +28,10 @@ impl Questionnaire_EnableWhen<'_> {
     return None;
   }
 
-  /// The linkId for the question whose answer (or lack of answer) governs whether
-  /// this item is enabled.
-  pub fn question(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("question") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_date_time(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("answerDateTime") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for answerString
-  pub fn _answer_string(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_answerString") {
+  /// Extensions for question
+  pub fn _question(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_question") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A value that the referenced question is tested using the specified operator in
-  /// order for the item to be enabled.
-  pub fn answer_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("answerDate") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -217,10 +54,148 @@ impl Questionnaire_EnableWhen<'_> {
     return None;
   }
 
+  /// Extensions for operator
+  pub fn _operator(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_operator") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The linkId for the question whose answer (or lack of answer) governs whether
+  /// this item is enabled.
+  pub fn question(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("question") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("answerQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_reference(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("answerReference") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("answerDate") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_date_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("answerDateTime") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for answerTime
+  pub fn _answer_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for answerString
+  pub fn _answer_string(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerString") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Specifies the criteria by which the question is enabled.
+  pub fn operator(&self) -> Option<Questionnaire_EnableWhenOperator> {
+    if let Some(Value::String(val)) = self.value.get("operator") {
+      return Some(Questionnaire_EnableWhenOperator::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   /// Extensions for answerDecimal
   pub fn _answer_decimal(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_answerDecimal") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for answerDate
+  pub fn _answer_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("answerString") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_coding(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("answerCoding") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for answerDateTime
+  pub fn _answer_date_time(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerDateTime") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_integer(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("answerInteger") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_time(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("answerTime") {
+      return Some(string);
     }
     return None;
   }
@@ -237,68 +212,93 @@ impl Questionnaire_EnableWhen<'_> {
     return None;
   }
 
+  /// Extensions for answerBoolean
+  pub fn _answer_boolean(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerBoolean") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for answerInteger
+  pub fn _answer_integer(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_answerInteger") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A value that the referenced question is tested using the specified operator in
+  /// order for the item to be enabled.
+  pub fn answer_decimal(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("answerDecimal") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._answer_integer() {
+    if let Some(_val) = self.answer_boolean() {
+    }
+    if let Some(_val) = self._question() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.answer_coding() {
+    if let Some(_val) = self._operator() {
       _val.validate();
     }
-    if let Some(_val) = self.answer_string() {
+    if let Some(_val) = self.question() {
     }
     if let Some(_val) = self.answer_quantity() {
       _val.validate();
     }
+    if let Some(_val) = self.answer_reference() {
+      _val.validate();
+    }
+    if let Some(_val) = self.answer_date() {
+    }
+    if let Some(_val) = self.answer_date_time() {
+    }
     if let Some(_val) = self._answer_time() {
+      _val.validate();
+    }
+    if let Some(_val) = self._answer_string() {
       _val.validate();
     }
     if let Some(_val) = self.operator() {
     }
-    if let Some(_val) = self._answer_boolean() {
-      _val.validate();
-    }
-    if let Some(_val) = self.answer_time() {
-    }
-    if let Some(_val) = self._answer_date_time() {
-      _val.validate();
-    }
-    if let Some(_val) = self.answer_integer() {
-    }
-    if let Some(_val) = self.answer_decimal() {
-    }
-    if let Some(_val) = self.answer_reference() {
+    if let Some(_val) = self._answer_decimal() {
       _val.validate();
     }
     if let Some(_val) = self._answer_date() {
       _val.validate();
     }
-    if let Some(_val) = self._question() {
+    if let Some(_val) = self.answer_string() {
+    }
+    if let Some(_val) = self.answer_coding() {
       _val.validate();
     }
-    if let Some(_val) = self._operator() {
+    if let Some(_val) = self._answer_date_time() {
       _val.validate();
     }
-    if let Some(_val) = self.answer_boolean() {
+    if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.question() {
+    if let Some(_val) = self.answer_integer() {
     }
-    if let Some(_val) = self.answer_date_time() {
-    }
-    if let Some(_val) = self._answer_string() {
-      _val.validate();
-    }
-    if let Some(_val) = self.answer_date() {
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._answer_decimal() {
-      _val.validate();
+    if let Some(_val) = self.answer_time() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._answer_boolean() {
+      _val.validate();
+    }
+    if let Some(_val) = self._answer_integer() {
+      _val.validate();
+    }
+    if let Some(_val) = self.answer_decimal() {
     }
     return true;
   }

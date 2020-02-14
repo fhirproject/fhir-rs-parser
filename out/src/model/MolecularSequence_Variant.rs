@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Reference::Reference;
 use crate::model::Element::Element;
+use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
@@ -15,6 +15,23 @@ pub struct MolecularSequence_Variant<'a> {
 }
 
 impl MolecularSequence_Variant<'_> {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for cigar
+  pub fn _cigar(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_cigar") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element and that modifies the understanding of the element in
   /// which it is contained and/or the understanding of the containing element's
@@ -33,37 +50,10 @@ impl MolecularSequence_Variant<'_> {
     return None;
   }
 
-  /// Extensions for observedAllele
-  pub fn _observed_allele(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_observedAllele") {
+  /// Extensions for start
+  pub fn _start(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_start") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for end
-  pub fn _end(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_end") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for referenceAllele
-  pub fn _reference_allele(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_referenceAllele") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extended CIGAR string for aligning the sequence with reference bases. See
-  /// detailed documentation
-  /// [here](http://support.illumina.com/help/SequencingAnalysisWorkflow/Content/Vault
-  /// /Informatics/Sequencing_Analysis/CASAVA/swSEQ_mCA_ExtendedCIGARFormat.htm).
-  pub fn cigar(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("cigar") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -76,27 +66,29 @@ impl MolecularSequence_Variant<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Start position of the variant on the  reference sequence. If the coordinate
-  /// system is either 0-based or 1-based, then start position is inclusive.
-  pub fn start(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("start") {
-      return Some(val.as_i64().unwrap());
+  /// Extensions for observedAllele
+  pub fn _observed_allele(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_observedAllele") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Extensions for cigar
-  pub fn _cigar(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_cigar") {
+  /// Extensions for referenceAllele
+  pub fn _reference_allele(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_referenceAllele") {
       return Some(Element { value: val });
     }
     return None;
@@ -115,86 +107,94 @@ impl MolecularSequence_Variant<'_> {
 
   /// An allele is one of a set of coexisting sequence variants of a gene
   /// ([SO:0001023](http://www.sequenceontology.org/browser/current_svn/term/SO:000102
-  /// 3)).  Nucleotide(s)/amino acids from start position of sequence to stop position
-  /// of sequence on the positive (+) strand of the observed  sequence. When the
+  /// 3)). Nucleotide(s)/amino acids from start position of sequence to stop position
+  /// of sequence on the positive (+) strand of the reference sequence. When the
   /// sequence  type is DNA, it should be the sequence on the positive (+) strand.
   /// This will lay in the range between variant.start and variant.end.
-  pub fn observed_allele(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("observedAllele") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  pub fn reference_allele(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("referenceAllele") {
+      return Some(string);
     }
     return None;
   }
 
   /// An allele is one of a set of coexisting sequence variants of a gene
   /// ([SO:0001023](http://www.sequenceontology.org/browser/current_svn/term/SO:000102
-  /// 3)). Nucleotide(s)/amino acids from start position of sequence to stop position
-  /// of sequence on the positive (+) strand of the reference sequence. When the
+  /// 3)).  Nucleotide(s)/amino acids from start position of sequence to stop position
+  /// of sequence on the positive (+) strand of the observed  sequence. When the
   /// sequence  type is DNA, it should be the sequence on the positive (+) strand.
   /// This will lay in the range between variant.start and variant.end.
-  pub fn reference_allele(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("referenceAllele") {
-      return Some(string.to_string());
+  pub fn observed_allele(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("observedAllele") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for start
-  pub fn _start(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_start") {
+  /// Extended CIGAR string for aligning the sequence with reference bases. See
+  /// detailed documentation
+  /// [here](http://support.illumina.com/help/SequencingAnalysisWorkflow/Content/Vault
+  /// /Informatics/Sequencing_Analysis/CASAVA/swSEQ_mCA_ExtendedCIGARFormat.htm).
+  pub fn cigar(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("cigar") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for end
+  pub fn _end(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_end") {
       return Some(Element { value: val });
     }
     return None;
   }
 
+  /// Start position of the variant on the  reference sequence. If the coordinate
+  /// system is either 0-based or 1-based, then start position is inclusive.
+  pub fn start(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("start") {
+      return Some(val.as_i64().unwrap());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._cigar() {
+      _val.validate();
+    }
     if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._start() {
+      _val.validate();
+    }
+    if let Some(_val) = self.variant_pointer() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._observed_allele() {
       _val.validate();
     }
-    if let Some(_val) = self._end() {
-      _val.validate();
-    }
     if let Some(_val) = self._reference_allele() {
-      _val.validate();
-    }
-    if let Some(_val) = self.cigar() {
-    }
-    if let Some(_val) = self.variant_pointer() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.start() {
-    }
-    if let Some(_val) = self._cigar() {
       _val.validate();
     }
     if let Some(_val) = self.end() {
     }
-    if let Some(_val) = self.observed_allele() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.reference_allele() {
     }
-    if let Some(_val) = self._start() {
+    if let Some(_val) = self.observed_allele() {
+    }
+    if let Some(_val) = self.cigar() {
+    }
+    if let Some(_val) = self._end() {
       _val.validate();
+    }
+    if let Some(_val) = self.start() {
     }
     return true;
   }

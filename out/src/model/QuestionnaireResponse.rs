@@ -1,13 +1,13 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Identifier::Identifier;
 use crate::model::Extension::Extension;
-use crate::model::QuestionnaireResponse_Item::QuestionnaireResponse_Item;
-use crate::model::Narrative::Narrative;
 use crate::model::Meta::Meta;
 use crate::model::Element::Element;
-use crate::model::ResourceList::ResourceList;
+use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Identifier::Identifier;
+use crate::model::QuestionnaireResponse_Item::QuestionnaireResponse_Item;
 use serde_json::value::Value;
 
 
@@ -22,21 +22,69 @@ pub struct QuestionnaireResponse<'a> {
 }
 
 impl QuestionnaireResponse<'_> {
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The Encounter during which this questionnaire response was created or to which
+  /// the creation of this record is tightly associated.
+  pub fn encounter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("encounter") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+  /// A business identifier assigned to a particular completed (or partially
+  /// completed) questionnaire.
+  pub fn identifier(&self) -> Option<Identifier> {
+    if let Some(val) = self.value.get("identifier") {
+      return Some(Identifier { value: val });
+    }
+    return None;
+  }
+
+  /// A procedure or observation that this questionnaire was performed as part of the
+  /// execution of.  For example, the surgery a checklist was executed as part of.
+  pub fn part_of(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("partOf") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -62,6 +110,33 @@ impl QuestionnaireResponse<'_> {
     return None;
   }
 
+  /// The person who answered the questions about the subject.
+  pub fn source(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("source") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// The subject of the questionnaire response.  This could be a patient,
   /// organization, practitioner, device, etc.  This is who/what the answers apply to,
   /// but is not necessarily the source of information.
@@ -72,48 +147,45 @@ impl QuestionnaireResponse<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+  /// A group or question item from the original questionnaire for which answers are
+  /// provided.
+  pub fn item(&self) -> Option<Vec<QuestionnaireResponse_Item>> {
+    if let Some(Value::Array(val)) = self.value.get("item") {
+      return Some(val.into_iter().map(|e| QuestionnaireResponse_Item { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// A business identifier assigned to a particular completed (or partially
-  /// completed) questionnaire.
-  pub fn identifier(&self) -> Option<Identifier> {
-    if let Some(val) = self.value.get("identifier") {
-      return Some(Identifier { value: val });
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The date and/or time that this set of answers were last changed.
-  pub fn authored(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("authored") {
-      return Some(string.to_string());
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
 
   /// The Questionnaire that defines and organizes the questions for which answers are
   /// being provided.
-  pub fn questionnaire(&self) -> Option<String> {
+  pub fn questionnaire(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("questionnaire") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The date and/or time that this set of answers were last changed.
+  pub fn authored(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("authored") {
+      return Some(string);
     }
     return None;
   }
@@ -123,32 +195,6 @@ impl QuestionnaireResponse<'_> {
   pub fn author(&self) -> Option<Reference> {
     if let Some(val) = self.value.get("author") {
       return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// A procedure or observation that this questionnaire was performed as part of the
-  /// execution of.  For example, the surgery a checklist was executed as part of.
-  pub fn part_of(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("partOf") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -172,54 +218,10 @@ impl QuestionnaireResponse<'_> {
     return None;
   }
 
-  /// The person who answered the questions about the subject.
-  pub fn source(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("source") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// A group or question item from the original questionnaire for which answers are
-  /// provided.
-  pub fn item(&self) -> Option<Vec<QuestionnaireResponse_Item>> {
-    if let Some(Value::Array(val)) = self.value.get("item") {
-      return Some(val.into_iter().map(|e| QuestionnaireResponse_Item { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for authored
-  pub fn _authored(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_authored") {
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// The Encounter during which this questionnaire response was created or to which
-  /// the creation of this record is tightly associated.
-  pub fn encounter(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("encounter") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -235,79 +237,77 @@ impl QuestionnaireResponse<'_> {
     return None;
   }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+  /// Extensions for authored
+  pub fn _authored(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_authored") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._implicit_rules() {
+    if let Some(_val) = self.meta() {
       _val.validate();
     }
-    if let Some(_val) = self.implicit_rules() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.encounter() {
+      _val.validate();
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.validate();
+    }
+    if let Some(_val) = self.part_of() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.text() {
       _val.validate();
     }
     if let Some(_val) = self.status() {
     }
-    if let Some(_val) = self.subject() {
-      _val.validate();
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.identifier() {
-      _val.validate();
-    }
-    if let Some(_val) = self._status() {
-      _val.validate();
-    }
-    if let Some(_val) = self.authored() {
-    }
-    if let Some(_val) = self.questionnaire() {
-    }
-    if let Some(_val) = self.author() {
-      _val.validate();
-    }
-    if let Some(_val) = self.part_of() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._language() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.source() {
+      _val.validate();
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.subject() {
       _val.validate();
     }
     if let Some(_val) = self.item() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._authored() {
-      _val.validate();
-    }
-    if let Some(_val) = self.meta() {
-      _val.validate();
-    }
-    if let Some(_val) = self.encounter() {
-      _val.validate();
-    }
     if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.questionnaire() {
+    }
+    if let Some(_val) = self.authored() {
+    }
+    if let Some(_val) = self.author() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._status() {
+      _val.validate();
     }
     if let Some(_val) = self.based_on() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self._authored() {
+      _val.validate();
     }
     return true;
   }

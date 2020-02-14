@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Expression::Expression;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -16,10 +16,11 @@ pub struct Measure_Population<'a> {
 }
 
 impl Measure_Population<'_> {
-  /// The type of population criteria.
-  pub fn code(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("code") {
-      return Some(CodeableConcept { value: val });
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -42,10 +43,18 @@ impl Measure_Population<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
+  /// The type of population criteria.
+  pub fn code(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("code") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The human readable description of this population criteria.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
     }
     return None;
   }
@@ -58,11 +67,10 @@ impl Measure_Population<'_> {
     }
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -79,31 +87,23 @@ impl Measure_Population<'_> {
     return None;
   }
 
-  /// The human readable description of this population criteria.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.code() {
-      _val.validate();
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.code() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    let _ = self.criteria().validate();
     if let Some(_val) = self._description() {
       _val.validate();
     }
-    let _ = self.criteria().validate();
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.description() {
     }
     return true;
   }

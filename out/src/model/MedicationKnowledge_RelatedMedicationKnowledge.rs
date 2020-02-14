@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,6 +15,13 @@ pub struct MedicationKnowledge_RelatedMedicationKnowledge<'a> {
 }
 
 impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
+  /// The category of the associated medication knowledge reference.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
   /// Associated documentation about the associated medication knowledge.
   pub fn reference(&self) -> Vec<Reference> {
     self.value.get("reference").unwrap().as_array().unwrap().into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>()
@@ -52,21 +59,15 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// The category of the associated medication knowledge reference.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
+    let _ = self.fhir_type().validate();
     let _ = self.reference().into_iter().for_each(|e| { e.validate(); });
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -76,7 +77,6 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
     }
     if let Some(_val) = self.id() {
     }
-    let _ = self.fhir_type().validate();
     return true;
   }
 

@@ -1,17 +1,17 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::HumanName::HumanName;
+use crate::model::Narrative::Narrative;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::ContactPoint::ContactPoint;
+use crate::model::Practitioner_Qualification::Practitioner_Qualification;
+use crate::model::Attachment::Attachment;
+use crate::model::Identifier::Identifier;
+use crate::model::Meta::Meta;
 use crate::model::Address::Address;
 use crate::model::ResourceList::ResourceList;
-use crate::model::HumanName::HumanName;
-use crate::model::Identifier::Identifier;
 use crate::model::Element::Element;
-use crate::model::Practitioner_Qualification::Practitioner_Qualification;
 use crate::model::Extension::Extension;
-use crate::model::ContactPoint::ContactPoint;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Attachment::Attachment;
-use crate::model::Narrative::Narrative;
-use crate::model::Meta::Meta;
 use serde_json::value::Value;
 
 
@@ -25,29 +25,13 @@ pub struct Practitioner<'a> {
 }
 
 impl Practitioner<'_> {
-  /// Extensions for birthDate
-  pub fn _birth_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_birthDate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
+  pub fn implicit_rules(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for active
-  pub fn _active(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_active") {
-      return Some(Element { value: val });
+      return Some(string);
     }
     return None;
   }
@@ -62,10 +46,46 @@ impl Practitioner<'_> {
     return None;
   }
 
-  /// The name(s) associated with the practitioner.
-  pub fn name(&self) -> Option<Vec<HumanName>> {
-    if let Some(Value::Array(val)) = self.value.get("name") {
-      return Some(val.into_iter().map(|e| HumanName { value: e }).collect::<Vec<_>>());
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Address(es) of the practitioner that are not role specific (typically home
+  /// address).   Work addresses are not typically entered in this property as they
+  /// are usually role dependent.
+  pub fn address(&self) -> Option<Vec<Address>> {
+    if let Some(Value::Array(val)) = self.value.get("address") {
+      return Some(val.into_iter().map(|e| Address { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for gender
+  pub fn _gender(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_gender") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The date of birth for the practitioner.
+  pub fn birth_date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("birthDate") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Whether this practitioner's record is in active use.
+  pub fn active(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("active") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -86,38 +106,6 @@ impl Practitioner<'_> {
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Whether this practitioner's record is in active use.
-  pub fn active(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("active") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
   /// A human-readable narrative that contains a summary of the resource and can be
   /// used to represent the content of the resource to a human. The narrative need not
   /// encode all the structured data, but is required to contain sufficient detail to
@@ -131,40 +119,83 @@ impl Practitioner<'_> {
     return None;
   }
 
+  /// Administrative Gender - the gender that the person is considered to have for
+  /// administration and record keeping purposes.
+  pub fn gender(&self) -> Option<PractitionerGender> {
+    if let Some(Value::String(val)) = self.value.get("gender") {
+      return Some(PractitionerGender::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   /// The logical id of the resource, as used in the URL for the resource. Once
   /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// Address(es) of the practitioner that are not role specific (typically home
-  /// address).   Work addresses are not typically entered in this property as they
-  /// are usually role dependent.
-  pub fn address(&self) -> Option<Vec<Address>> {
-    if let Some(Value::Array(val)) = self.value.get("address") {
-      return Some(val.into_iter().map(|e| Address { value: e }).collect::<Vec<_>>());
+  /// Extensions for active
+  pub fn _active(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_active") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A contact detail for the practitioner, e.g. a telephone number or an email
-  /// address.
-  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("telecom") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+  /// The name(s) associated with the practitioner.
+  pub fn name(&self) -> Option<Vec<HumanName>> {
+    if let Some(Value::Array(val)) = self.value.get("name") {
+      return Some(val.into_iter().map(|e| HumanName { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for birthDate
+  pub fn _birth_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_birthDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The official certifications, training, and licenses that authorize or otherwise
+  /// pertain to the provision of care by the practitioner.  For example, a medical
+  /// license issued by a medical board authorizing the practitioner to practice
+  /// medicine within a certian locality.
+  pub fn qualification(&self) -> Option<Vec<Practitioner_Qualification>> {
+    if let Some(Value::Array(val)) = self.value.get("qualification") {
+      return Some(val.into_iter().map(|e| Practitioner_Qualification { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -188,54 +219,6 @@ impl Practitioner<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Administrative Gender - the gender that the person is considered to have for
-  /// administration and record keeping purposes.
-  pub fn gender(&self) -> Option<PractitionerGender> {
-    if let Some(Value::String(val)) = self.value.get("gender") {
-      return Some(PractitionerGender::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for gender
-  pub fn _gender(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_gender") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The date of birth for the practitioner.
-  pub fn birth_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("birthDate") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The official certifications, training, and licenses that authorize or otherwise
-  /// pertain to the provision of care by the practitioner.  For example, a medical
-  /// license issued by a medical board authorizing the practitioner to practice
-  /// medicine within a certian locality.
-  pub fn qualification(&self) -> Option<Vec<Practitioner_Qualification>> {
-    if let Some(Value::Array(val)) = self.value.get("qualification") {
-      return Some(val.into_iter().map(|e| Practitioner_Qualification { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// A language the practitioner can use in patient communication.
   pub fn communication(&self) -> Option<Vec<CodeableConcept>> {
     if let Some(Value::Array(val)) = self.value.get("communication") {
@@ -244,20 +227,41 @@ impl Practitioner<'_> {
     return None;
   }
 
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A contact detail for the practitioner, e.g. a telephone number or an email
+  /// address.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._birth_date() {
-      _val.validate();
-    }
     if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self._active() {
-      _val.validate();
     }
     if let Some(_val) = self.meta() {
       _val.validate();
     }
-    if let Some(_val) = self.name() {
+    if let Some(_val) = self.contained() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.address() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._gender() {
+      _val.validate();
+    }
+    if let Some(_val) = self.birth_date() {
+    }
+    if let Some(_val) = self.active() {
     }
     if let Some(_val) = self.photo() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -265,47 +269,43 @@ impl Practitioner<'_> {
     if let Some(_val) = self.identifier() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.language() {
+    if let Some(_val) = self.text() {
+      _val.validate();
     }
-    if let Some(_val) = self.active() {
+    if let Some(_val) = self.gender() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._active() {
+      _val.validate();
     }
     if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.name() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._birth_date() {
       _val.validate();
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    if let Some(_val) = self.text() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.address() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.telecom() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.contained() {
+    if let Some(_val) = self.qualification() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.gender() {
-    }
-    if let Some(_val) = self._gender() {
-      _val.validate();
-    }
-    if let Some(_val) = self.birth_date() {
-    }
-    if let Some(_val) = self.qualification() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
     if let Some(_val) = self.communication() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.telecom() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

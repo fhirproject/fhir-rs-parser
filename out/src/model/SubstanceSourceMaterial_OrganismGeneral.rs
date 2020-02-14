@@ -26,17 +26,9 @@ pub struct SubstanceSourceMaterial_OrganismGeneral<'a> {
 }
 
 impl SubstanceSourceMaterial_OrganismGeneral<'_> {
-  /// The phylum of an organism shall be specified.
-  pub fn phylum(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("phylum") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The class of an organism shall be specified.
-  pub fn class(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("class") {
+  /// The kingdom of an organism shall be specified.
+  pub fn kingdom(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("kingdom") {
       return Some(CodeableConcept { value: val });
     }
     return None;
@@ -44,9 +36,9 @@ impl SubstanceSourceMaterial_OrganismGeneral<'_> {
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -89,19 +81,24 @@ impl SubstanceSourceMaterial_OrganismGeneral<'_> {
     return None;
   }
 
-  /// The kingdom of an organism shall be specified.
-  pub fn kingdom(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("kingdom") {
+  /// The phylum of an organism shall be specified.
+  pub fn phylum(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("phylum") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// The class of an organism shall be specified.
+  pub fn class(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("class") {
       return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.phylum() {
-      _val.validate();
-    }
-    if let Some(_val) = self.class() {
+    if let Some(_val) = self.kingdom() {
       _val.validate();
     }
     if let Some(_val) = self.id() {
@@ -115,7 +112,10 @@ impl SubstanceSourceMaterial_OrganismGeneral<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.kingdom() {
+    if let Some(_val) = self.phylum() {
+      _val.validate();
+    }
+    if let Some(_val) = self.class() {
       _val.validate();
     }
     return true;

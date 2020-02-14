@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Quantity::Quantity;
-use crate::model::Identifier::Identifier;
 use crate::model::Extension::Extension;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Identifier::Identifier;
+use crate::model::Quantity::Quantity;
 use serde_json::value::Value;
 
 
@@ -17,63 +17,10 @@ pub struct ProductShelfLife<'a> {
 }
 
 impl ProductShelfLife<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// This describes the shelf life, taking into account various scenarios such as
-  /// shelf life of the packaged Medicinal Product itself, shelf life after
-  /// transformation where necessary and shelf life after the first opening of a
-  /// bottle, etc. The shelf life type shall be specified using an appropriate
-  /// controlled vocabulary The controlled term and the controlled term identifier
-  /// shall be specified.
-  pub fn fhir_type(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["type"],
-    }
-  }
-
   /// Unique identifier for the packaged Medicinal Product.
   pub fn identifier(&self) -> Option<Identifier> {
     if let Some(val) = self.value.get("identifier") {
       return Some(Identifier { value: val });
-    }
-    return None;
-  }
-
-  /// The shelf life time period can be specified using a numerical value for the
-  /// period of time and its unit of time measurement The unit of measurement shall be
-  /// specified in accordance with ISO 11240 and the resulting terminology The symbol
-  /// and the symbol identifier shall be used.
-  pub fn period(&self) -> Quantity {
-    Quantity {
-      value: &self.value["period"],
-    }
-  }
-
-  /// Special precautions for storage, if any, can be specified using an appropriate
-  /// controlled vocabulary The controlled term and the controlled term identifier
-  /// shall be specified.
-  pub fn special_precautions_for_storage(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("specialPrecautionsForStorage") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -96,22 +43,75 @@ impl ProductShelfLife<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+  /// The shelf life time period can be specified using a numerical value for the
+  /// period of time and its unit of time measurement The unit of measurement shall be
+  /// specified in accordance with ISO 11240 and the resulting terminology The symbol
+  /// and the symbol identifier shall be used.
+  pub fn period(&self) -> Quantity {
+    Quantity {
+      value: &self.value["period"],
     }
-    let _ = self.fhir_type().validate();
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Special precautions for storage, if any, can be specified using an appropriate
+  /// controlled vocabulary The controlled term and the controlled term identifier
+  /// shall be specified.
+  pub fn special_precautions_for_storage(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("specialPrecautionsForStorage") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// This describes the shelf life, taking into account various scenarios such as
+  /// shelf life of the packaged Medicinal Product itself, shelf life after
+  /// transformation where necessary and shelf life after the first opening of a
+  /// bottle, etc. The shelf life type shall be specified using an appropriate
+  /// controlled vocabulary The controlled term and the controlled term identifier
+  /// shall be specified.
+  pub fn fhir_type(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["type"],
+    }
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
     if let Some(_val) = self.identifier() {
       _val.validate();
     }
-    let _ = self.period().validate();
-    if let Some(_val) = self.special_precautions_for_storage() {
+    if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    let _ = self.period().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.modifier_extension() {
+    if let Some(_val) = self.special_precautions_for_storage() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.id() {
     }
     return true;
   }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -15,19 +15,10 @@ pub struct MedicationKnowledge_Substitution<'a> {
 }
 
 impl MedicationKnowledge_Substitution<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for allowed
-  pub fn _allowed(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_allowed") {
-      return Some(Element { value: val });
+  /// Specifies if regulation allows for changes in the medication when dispensing.
+  pub fn allowed(&self) -> Option<bool> {
+    if let Some(val) = self.value.get("allowed") {
+      return Some(val.as_bool().unwrap());
     }
     return None;
   }
@@ -50,19 +41,19 @@ impl MedicationKnowledge_Substitution<'_> {
     return None;
   }
 
+  /// Extensions for allowed
+  pub fn _allowed(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_allowed") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Specifies the type of substitution allowed.
   pub fn fhir_type(&self) -> CodeableConcept {
     CodeableConcept {
       value: &self.value["type"],
     }
-  }
-
-  /// Specifies if regulation allows for changes in the medication when dispensing.
-  pub fn allowed(&self) -> Option<bool> {
-    if let Some(val) = self.value.get("allowed") {
-      return Some(val.as_bool().unwrap());
-    }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -77,20 +68,29 @@ impl MedicationKnowledge_Substitution<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
-    if let Some(_val) = self._allowed() {
-      _val.validate();
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.allowed() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.fhir_type().validate();
-    if let Some(_val) = self.allowed() {
+    if let Some(_val) = self._allowed() {
+      _val.validate();
     }
+    let _ = self.fhir_type().validate();
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
     }
     return true;
   }

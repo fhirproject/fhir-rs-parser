@@ -1,16 +1,16 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::MarketingStatus::MarketingStatus;
+use crate::model::MedicinalProductPackaged_PackageItem::MedicinalProductPackaged_PackageItem;
+use crate::model::Element::Element;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Meta::Meta;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Reference::Reference;
-use crate::model::MedicinalProductPackaged_PackageItem::MedicinalProductPackaged_PackageItem;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::MedicinalProductPackaged_BatchIdentifier::MedicinalProductPackaged_BatchIdentifier;
-use crate::model::Element::Element;
-use crate::model::Identifier::Identifier;
-use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
 use crate::model::Narrative::Narrative;
+use crate::model::Extension::Extension;
+use crate::model::Identifier::Identifier;
+use crate::model::MarketingStatus::MarketingStatus;
+use crate::model::MedicinalProductPackaged_BatchIdentifier::MedicinalProductPackaged_BatchIdentifier;
 use serde_json::value::Value;
 
 
@@ -23,57 +23,69 @@ pub struct MedicinalProductPackaged<'a> {
 }
 
 impl MedicinalProductPackaged<'_> {
-  /// Textual description.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// A reference to a set of rules that were followed when the resource was
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
+  pub fn implicit_rules(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Marketing information.
-  pub fn marketing_status(&self) -> Option<Vec<MarketingStatus>> {
-    if let Some(Value::Array(val)) = self.value.get("marketingStatus") {
-      return Some(val.into_iter().map(|e| MarketingStatus { value: e }).collect::<Vec<_>>());
+  /// A packaging item, as a contained for medicine, possibly with other packaging
+  /// items within.
+  pub fn package_item(&self) -> Vec<MedicinalProductPackaged_PackageItem> {
+    self.value.get("packageItem").unwrap().as_array().unwrap().into_iter().map(|e| MedicinalProductPackaged_PackageItem { value: e }).collect::<Vec<_>>()
+  }
+
+  /// The legal status of supply of the medicinal product as classified by the
+  /// regulator.
+  pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("legalStatusOfSupply") {
+      return Some(CodeableConcept { value: val });
     }
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+  /// Manufacturer of this Package Item.
+  pub fn marketing_authorization(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("marketingAuthorization") {
+      return Some(Reference { value: val });
     }
     return None;
   }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
+  /// Unique identifier.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Batch numbering.
+  pub fn batch_identifier(&self) -> Option<Vec<MedicinalProductPackaged_BatchIdentifier>> {
+    if let Some(Value::Array(val)) = self.value.get("batchIdentifier") {
+      return Some(val.into_iter().map(|e| MedicinalProductPackaged_BatchIdentifier { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -91,39 +103,10 @@ impl MedicinalProductPackaged<'_> {
     return None;
   }
 
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource and that modifies the understanding of the element
-  /// that contains it and/or the understanding of the containing element's
-  /// descendants. Usually modifier elements provide negation or qualification. To
-  /// make the use of extensions safe and manageable, there is a strict set of
-  /// governance applied to the definition and use of extensions. Though any
-  /// implementer is allowed to define an extension, there is a set of requirements
-  /// that SHALL be met as part of the definition of the extension. Applications
-  /// processing a resource are required to check for modifier extensions.    Modifier
-  /// extensions SHALL NOT change the meaning of any elements on Resource or
-  /// DomainResource (including cannot change the meaning of modifierExtension
-  /// itself).
-  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The legal status of supply of the medicinal product as classified by the
-  /// regulator.
-  pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("legalStatusOfSupply") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
     }
     return None;
   }
@@ -136,10 +119,18 @@ impl MedicinalProductPackaged<'_> {
     return None;
   }
 
-  /// Manufacturer of this Package Item.
-  pub fn marketing_authorization(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("marketingAuthorization") {
-      return Some(Reference { value: val });
+  /// Textual description.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Marketing information.
+  pub fn marketing_status(&self) -> Option<Vec<MarketingStatus>> {
+    if let Some(Value::Array(val)) = self.value.get("marketingStatus") {
+      return Some(val.into_iter().map(|e| MarketingStatus { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -164,10 +155,12 @@ impl MedicinalProductPackaged<'_> {
     return None;
   }
 
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -180,18 +173,31 @@ impl MedicinalProductPackaged<'_> {
     return None;
   }
 
-  /// Unique identifier.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource and that modifies the understanding of the element
+  /// that contains it and/or the understanding of the containing element's
+  /// descendants. Usually modifier elements provide negation or qualification. To
+  /// make the use of extensions safe and manageable, there is a strict set of
+  /// governance applied to the definition and use of extensions. Though any
+  /// implementer is allowed to define an extension, there is a set of requirements
+  /// that SHALL be met as part of the definition of the extension. Applications
+  /// processing a resource are required to check for modifier extensions.    Modifier
+  /// extensions SHALL NOT change the meaning of any elements on Resource or
+  /// DomainResource (including cannot change the meaning of modifierExtension
+  /// itself).
+  pub fn modifier_extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Batch numbering.
-  pub fn batch_identifier(&self) -> Option<Vec<MedicinalProductPackaged_BatchIdentifier>> {
-    if let Some(Value::Array(val)) = self.value.get("batchIdentifier") {
-      return Some(val.into_iter().map(|e| MedicinalProductPackaged_BatchIdentifier { value: e }).collect::<Vec<_>>());
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }
@@ -204,44 +210,39 @@ impl MedicinalProductPackaged<'_> {
     return None;
   }
 
-  /// A packaging item, as a contained for medicine, possibly with other packaging
-  /// items within.
-  pub fn package_item(&self) -> Vec<MedicinalProductPackaged_PackageItem> {
-    self.value.get("packageItem").unwrap().as_array().unwrap().into_iter().map(|e| MedicinalProductPackaged_PackageItem { value: e }).collect::<Vec<_>>()
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.description() {
-    }
     if let Some(_val) = self.implicit_rules() {
     }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.marketing_status() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.meta() {
+    if let Some(_val) = self._description() {
       _val.validate();
     }
-    if let Some(_val) = self.text() {
-      _val.validate();
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
+    let _ = self.package_item().into_iter().for_each(|e| { e.validate(); });
     if let Some(_val) = self.legal_status_of_supply() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
     if let Some(_val) = self.marketing_authorization() {
       _val.validate();
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.batch_identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.text() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self._implicit_rules() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.marketing_status() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -249,22 +250,21 @@ impl MedicinalProductPackaged<'_> {
     if let Some(_val) = self.manufacturer() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._description() {
-      _val.validate();
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.subject() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.identifier() {
+    if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.batch_identifier() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.meta() {
+      _val.validate();
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    let _ = self.package_item().into_iter().for_each(|e| { e.validate(); });
     return true;
   }
 

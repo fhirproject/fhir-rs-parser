@@ -1,16 +1,16 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Meta::Meta;
-use crate::model::Coding::Coding;
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
+use crate::model::Identifier::Identifier;
 use crate::model::Period::Period;
 use crate::model::ContactPoint::ContactPoint;
-use crate::model::Identifier::Identifier;
-use crate::model::Reference::Reference;
 use crate::model::Narrative::Narrative;
+use crate::model::Extension::Extension;
+use crate::model::Coding::Coding;
+use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Meta::Meta;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -25,18 +25,41 @@ pub struct Endpoint<'a> {
 }
 
 impl Endpoint<'_> {
-  /// The payload type describes the acceptable content that can be communicated on
-  /// the endpoint.
-  pub fn payload_type(&self) -> Vec<CodeableConcept> {
-    self.value.get("payloadType").unwrap().as_array().unwrap().into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>()
-  }
-
-  /// Extensions for header
-  pub fn _header(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_header") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+  /// The mime type to send the payload in - e.g. application/fhir+xml,
+  /// application/fhir+json. If the mime type is not specified, then the sender could
+  /// send any content (including no content depending on the connectionType).
+  pub fn payload_mime_type(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("payloadMimeType") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A coded value that represents the technical details of the usage of this
+  /// endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-
+  /// hook).
+  pub fn connection_type(&self) -> Coding {
+    Coding {
+      value: &self.value["connectionType"],
+    }
   }
 
   /// The metadata about the resource. This is content that is maintained by the
@@ -49,29 +72,18 @@ impl Endpoint<'_> {
     return None;
   }
 
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+  /// The uri that describes the actual end-point to connect to.
+  pub fn address(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("address") {
+      return Some(string);
     }
     return None;
   }
 
-  /// The mime type to send the payload in - e.g. application/fhir+xml,
-  /// application/fhir+json. If the mime type is not specified, then the sender could
-  /// send any content (including no content depending on the connectionType).
-  pub fn payload_mime_type(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("payloadMimeType") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for header
+  pub fn _header(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_header") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -95,71 +107,17 @@ impl Endpoint<'_> {
     return None;
   }
 
-  /// A friendly name that this endpoint can be referred to with.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+  /// active | suspended | error | off | test.
+  pub fn status(&self) -> Option<EndpointStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(EndpointStatus::from_string(&val).unwrap());
     }
     return None;
   }
 
-  /// Identifier for the organization that is used to identify the endpoint across
-  /// multiple disparate systems.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The organization that manages this endpoint (even if technically another
-  /// organization is hosting this in the cloud, it is the organization associated
-  /// with the data).
-  pub fn managing_organization(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("managingOrganization") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
-  /// Contact details for a human to contact about the subscription. The primary use
-  /// of this for system administrator troubleshooting.
-  pub fn contact(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("contact") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The uri that describes the actual end-point to connect to.
-  pub fn address(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("address") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
@@ -178,59 +136,10 @@ impl Endpoint<'_> {
     return None;
   }
 
-  /// active | suspended | error | off | test.
-  pub fn status(&self) -> Option<EndpointStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(EndpointStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// The interval during which the endpoint is expected to be operational.
   pub fn period(&self) -> Option<Period> {
     if let Some(val) = self.value.get("period") {
       return Some(Period { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for payloadMimeType
-  pub fn _payload_mime_type(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_payloadMimeType") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A coded value that represents the technical details of the usage of this
-  /// endpoint, such as what WSDLs should be used in what way. (e.g. XDS.b/DICOM/cds-
-  /// hook).
-  pub fn connection_type(&self) -> Coding {
-    Coding {
-      value: &self.value["connectionType"],
-    }
-  }
-
-  /// Extensions for address
-  pub fn _address(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_address") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Additional headers / information to send as part of the notification.
-  pub fn header(&self) -> Option<Vec<String>> {
-    if let Some(Value::Array(val)) = self.value.get("header") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -247,6 +156,57 @@ impl Endpoint<'_> {
     return None;
   }
 
+  /// Additional headers / information to send as part of the notification.
+  pub fn header(&self) -> Option<Vec<&str>> {
+    if let Some(Value::Array(val)) = self.value.get("header") {
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A friendly name that this endpoint can be referred to with.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The payload type describes the acceptable content that can be communicated on
+  /// the endpoint.
+  pub fn payload_type(&self) -> Vec<CodeableConcept> {
+    self.value.get("payloadType").unwrap().as_array().unwrap().into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>()
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The organization that manages this endpoint (even if technically another
+  /// organization is hosting this in the cloud, it is the organization associated
+  /// with the data).
+  pub fn managing_organization(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("managingOrganization") {
+      return Some(Reference { value: val });
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// Extensions for implicitRules
   pub fn _implicit_rules(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_implicitRules") {
@@ -255,39 +215,60 @@ impl Endpoint<'_> {
     return None;
   }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Contact details for a human to contact about the subscription. The primary use
+  /// of this for system administrator troubleshooting.
+  pub fn contact(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("contact") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for payloadMimeType
+  pub fn _payload_mime_type(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_payloadMimeType") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for address
+  pub fn _address(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_address") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Identifier for the organization that is used to identify the endpoint across
+  /// multiple disparate systems.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    let _ = self.payload_type().into_iter().for_each(|e| { e.validate(); });
-    if let Some(_val) = self._header() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.meta() {
-      _val.validate();
-    }
-    if let Some(_val) = self.language() {
-    }
     if let Some(_val) = self.payload_mime_type() {
       _val.into_iter().for_each(|_e| {});
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.name() {
-    }
-    if let Some(_val) = self.identifier() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._status() {
       _val.validate();
@@ -295,45 +276,64 @@ impl Endpoint<'_> {
     if let Some(_val) = self.contained() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.managing_organization() {
+    let _ = self.connection_type().validate();
+    if let Some(_val) = self.meta() {
       _val.validate();
-    }
-    if let Some(_val) = self.contact() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.address() {
     }
-    if let Some(_val) = self._language() {
+    if let Some(_val) = self._header() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self._name() {
       _val.validate();
     }
     if let Some(_val) = self.text() {
       _val.validate();
     }
-    if let Some(_val) = self.status() {
-    }
     if let Some(_val) = self.period() {
       _val.validate();
-    }
-    if let Some(_val) = self._payload_mime_type() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.connection_type().validate();
-    if let Some(_val) = self._address() {
-      _val.validate();
-    }
-    if let Some(_val) = self._name() {
-      _val.validate();
-    }
-    if let Some(_val) = self.header() {
-      _val.into_iter().for_each(|_e| {});
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.header() {
+      _val.into_iter().for_each(|_e| {});
+    }
+    if let Some(_val) = self.name() {
+    }
+    let _ = self.payload_type().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.managing_organization() {
+      _val.validate();
+    }
+    if let Some(_val) = self.language() {
+    }
     if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
-    if let Some(_val) = self.implicit_rules() {
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.contact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._payload_mime_type() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._address() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

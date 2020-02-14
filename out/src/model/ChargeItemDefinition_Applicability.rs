@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -17,10 +17,31 @@ pub struct ChargeItemDefinition_Applicability<'a> {
 }
 
 impl ChargeItemDefinition_Applicability<'_> {
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
+  /// Extensions for expression
+  pub fn _expression(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_expression") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A brief, natural language description of the condition that effectively
+  /// communicates the intended semantics.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -33,28 +54,19 @@ impl ChargeItemDefinition_Applicability<'_> {
     return None;
   }
 
-  /// Extensions for expression
-  pub fn _expression(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_expression") {
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The media type of the language for the expression, e.g. "text/cql" for Clinical
-  /// Query Language expressions or "text/fhirpath" for FHIRPath expressions.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
     }
     return None;
   }
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -77,11 +89,11 @@ impl ChargeItemDefinition_Applicability<'_> {
     return None;
   }
 
-  /// A brief, natural language description of the condition that effectively
-  /// communicates the intended semantics.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+  /// The media type of the language for the expression, e.g. "text/cql" for Clinical
+  /// Query Language expressions or "text/fhirpath" for FHIRPath expressions.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
     }
     return None;
   }
@@ -90,48 +102,36 @@ impl ChargeItemDefinition_Applicability<'_> {
   /// satisfied. When using FHIRPath expressions, the %context environment variable
   /// must be replaced at runtime with the ChargeItem resource to which this
   /// definition is applied.
-  pub fn expression(&self) -> Option<String> {
+  pub fn expression(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("expression") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._description() {
+    if let Some(_val) = self._expression() {
       _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    if let Some(_val) = self._expression() {
+    if let Some(_val) = self._description() {
       _val.validate();
-    }
-    if let Some(_val) = self.language() {
     }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.description() {
+    if let Some(_val) = self.language() {
     }
     if let Some(_val) = self.expression() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

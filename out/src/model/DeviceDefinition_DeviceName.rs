@@ -17,9 +17,9 @@ pub struct DeviceDefinition_DeviceName<'a> {
 impl DeviceDefinition_DeviceName<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -32,27 +32,10 @@ impl DeviceDefinition_DeviceName<'_> {
     return None;
   }
 
-  /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
-  /// ManufactureDeviceName | ModelName.
-  pub fn fhir_type(&self) -> Option<DeviceDefinition_DeviceNameType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(DeviceDefinition_DeviceNameType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// The name of the device.
-  pub fn name(&self) -> Option<String> {
+  pub fn name(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
+      return Some(string);
     }
     return None;
   }
@@ -87,24 +70,41 @@ impl DeviceDefinition_DeviceName<'_> {
     return None;
   }
 
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
+  /// ManufactureDeviceName | ModelName.
+  pub fn fhir_type(&self) -> Option<DeviceDefinition_DeviceNameType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(DeviceDefinition_DeviceNameType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self._type() {
       _val.validate();
     }
-    if let Some(_val) = self.fhir_type() {
-    }
     if let Some(_val) = self.name() {
-    }
-    if let Some(_val) = self._name() {
-      _val.validate();
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.fhir_type() {
     }
     return true;
   }

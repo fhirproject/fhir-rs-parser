@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Extension::Extension;
 use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -14,19 +14,27 @@ pub struct StructureMap_Dependent<'a> {
 }
 
 impl StructureMap_Dependent<'_> {
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for name
   pub fn _name(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for variable
+  pub fn _variable(&self) -> Option<Vec<Element>> {
+    if let Some(Value::Array(val)) = self.value.get("_variable") {
+      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -43,26 +51,10 @@ impl StructureMap_Dependent<'_> {
     return None;
   }
 
-  /// Name of a rule or group to apply.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Variable to pass to the rule or group.
-  pub fn variable(&self) -> Option<Vec<String>> {
+  pub fn variable(&self) -> Option<Vec<&str>> {
     if let Some(Value::Array(val)) = self.value.get("variable") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for variable
-  pub fn _variable(&self) -> Option<Vec<Element>> {
-    if let Some(Value::Array(val)) = self.value.get("_variable") {
-      return Some(val.into_iter().map(|e| Element { value: e }).collect::<Vec<_>>());
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
@@ -85,25 +77,33 @@ impl StructureMap_Dependent<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.id() {
+  /// Name of a rule or group to apply.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
     if let Some(_val) = self._name() {
       _val.validate();
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.name() {
-    }
-    if let Some(_val) = self.variable() {
-      _val.into_iter().for_each(|_e| {});
     }
     if let Some(_val) = self._variable() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.variable() {
+      _val.into_iter().for_each(|_e| {});
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.name() {
     }
     return true;
   }

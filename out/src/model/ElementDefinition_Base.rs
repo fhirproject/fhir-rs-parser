@@ -14,54 +14,19 @@ pub struct ElementDefinition_Base<'a> {
 }
 
 impl ElementDefinition_Base<'_> {
+  /// Extensions for min
+  pub fn _min(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_min") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for path
-  pub fn _path(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_path") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Minimum cardinality of the base element identified by the path.
-  pub fn min(&self) -> Option<u64> {
-    if let Some(val) = self.value.get("min") {
-      return Some(val.as_u64().unwrap());
-    }
-    return None;
-  }
-
-  /// Extensions for max
-  pub fn _max(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_max") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Maximum cardinality of the base element identified by the path.
-  pub fn max(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("max") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The Path that identifies the base element - this matches the
-  /// ElementDefinition.path for that element. Across FHIR, there is only one base
-  /// definition of any element - that is, an element definition on a
-  /// [[[StructureDefinition]]] without a StructureDefinition.base.
-  pub fn path(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("path") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -84,9 +49,17 @@ impl ElementDefinition_Base<'_> {
     return None;
   }
 
-  /// Extensions for min
-  pub fn _min(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_min") {
+  /// Extensions for max
+  pub fn _max(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_max") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for path
+  pub fn _path(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_path") {
       return Some(Element { value: val });
     }
     return None;
@@ -104,29 +77,56 @@ impl ElementDefinition_Base<'_> {
     return None;
   }
 
+  /// Minimum cardinality of the base element identified by the path.
+  pub fn min(&self) -> Option<u64> {
+    if let Some(val) = self.value.get("min") {
+      return Some(val.as_u64().unwrap());
+    }
+    return None;
+  }
+
+  /// The Path that identifies the base element - this matches the
+  /// ElementDefinition.path for that element. Across FHIR, there is only one base
+  /// definition of any element - that is, an element definition on a
+  /// [[[StructureDefinition]]] without a StructureDefinition.base.
+  pub fn path(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("path") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Maximum cardinality of the base element identified by the path.
+  pub fn max(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("max") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self._min() {
+      _val.validate();
+    }
     if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self._path() {
-      _val.validate();
-    }
-    if let Some(_val) = self.min() {
-    }
-    if let Some(_val) = self._max() {
-      _val.validate();
-    }
-    if let Some(_val) = self.max() {
-    }
-    if let Some(_val) = self.path() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._min() {
+    if let Some(_val) = self._max() {
+      _val.validate();
+    }
+    if let Some(_val) = self._path() {
       _val.validate();
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.min() {
+    }
+    if let Some(_val) = self.path() {
+    }
+    if let Some(_val) = self.max() {
     }
     return true;
   }

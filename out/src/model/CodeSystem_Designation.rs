@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Coding::Coding;
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use serde_json::value::Value;
 
 
@@ -17,38 +17,6 @@ pub struct CodeSystem_Designation<'a> {
 }
 
 impl CodeSystem_Designation<'_> {
-  /// A code that details how this designation would be used.
-  pub fn fhir_use(&self) -> Option<Coding> {
-    if let Some(val) = self.value.get("use") {
-      return Some(Coding { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The language this designation is defined for.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The text value for this designation.
-  pub fn value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("value") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Extensions for value
   pub fn _value(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_value") {
@@ -75,11 +43,35 @@ impl CodeSystem_Designation<'_> {
     return None;
   }
 
+  /// The language this designation is defined for.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A code that details how this designation would be used.
+  pub fn fhir_use(&self) -> Option<Coding> {
+    if let Some(val) = self.value.get("use") {
+      return Some(Coding { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -96,27 +88,35 @@ impl CodeSystem_Designation<'_> {
     return None;
   }
 
+  /// The text value for this designation.
+  pub fn value(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.fhir_use() {
-      _val.validate();
-    }
-    if let Some(_val) = self._language() {
-      _val.validate();
-    }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.value() {
-    }
     if let Some(_val) = self._value() {
       _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.fhir_use() {
+      _val.validate();
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.value() {
     }
     return true;
   }

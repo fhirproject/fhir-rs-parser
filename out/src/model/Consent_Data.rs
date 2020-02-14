@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -17,14 +17,6 @@ pub struct Consent_Data<'a> {
 }
 
 impl Consent_Data<'_> {
-  /// How the resource reference is interpreted when testing consent restrictions.
-  pub fn meaning(&self) -> Option<Consent_DataMeaning> {
-    if let Some(Value::String(val)) = self.value.get("meaning") {
-      return Some(Consent_DataMeaning::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// Extensions for meaning
   pub fn _meaning(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_meaning") {
@@ -63,11 +55,10 @@ impl Consent_Data<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// How the resource reference is interpreted when testing consent restrictions.
+  pub fn meaning(&self) -> Option<Consent_DataMeaning> {
+    if let Some(Value::String(val)) = self.value.get("meaning") {
+      return Some(Consent_DataMeaning::from_string(&val).unwrap());
     }
     return None;
   }
@@ -80,9 +71,16 @@ impl Consent_Data<'_> {
     }
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.meaning() {
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
     if let Some(_val) = self._meaning() {
       _val.validate();
     }
@@ -92,9 +90,11 @@ impl Consent_Data<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.meaning() {
     }
     let _ = self.reference().validate();
+    if let Some(_val) = self.id() {
+    }
     return true;
   }
 

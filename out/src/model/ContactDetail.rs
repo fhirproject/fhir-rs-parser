@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::ContactPoint::ContactPoint;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,11 +15,11 @@ pub struct ContactDetail<'a> {
 }
 
 impl ContactDetail<'_> {
-  /// The contact details for the individual (if a name was provided) or the
-  /// organization.
-  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
-    if let Some(Value::Array(val)) = self.value.get("telecom") {
-      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -32,19 +32,10 @@ impl ContactDetail<'_> {
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// The name of an individual to contact.
-  pub fn name(&self) -> Option<String> {
+  pub fn name(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -61,18 +52,27 @@ impl ContactDetail<'_> {
     return None;
   }
 
+  /// The contact details for the individual (if a name was provided) or the
+  /// organization.
+  pub fn telecom(&self) -> Option<Vec<ContactPoint>> {
+    if let Some(Value::Array(val)) = self.value.get("telecom") {
+      return Some(val.into_iter().map(|e| ContactPoint { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.telecom() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self._name() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
-    }
     if let Some(_val) = self.name() {
     }
     if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.telecom() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

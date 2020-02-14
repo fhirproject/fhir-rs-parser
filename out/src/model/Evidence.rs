@@ -1,18 +1,18 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::UsageContext::UsageContext;
-use crate::model::Meta::Meta;
-use crate::model::Period::Period;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::Identifier::Identifier;
-use crate::model::Reference::Reference;
-use crate::model::Annotation::Annotation;
-use crate::model::RelatedArtifact::RelatedArtifact;
-use crate::model::ContactDetail::ContactDetail;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Period::Period;
 use crate::model::Narrative::Narrative;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Reference::Reference;
+use crate::model::Meta::Meta;
+use crate::model::RelatedArtifact::RelatedArtifact;
+use crate::model::Element::Element;
+use crate::model::UsageContext::UsageContext;
+use crate::model::Annotation::Annotation;
+use crate::model::ContactDetail::ContactDetail;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -27,92 +27,66 @@ pub struct Evidence<'a> {
 }
 
 impl Evidence<'_> {
-  /// The short title provides an alternate title for use in informal descriptive
-  /// contexts where the full, formal title is not necessary.
-  pub fn short_title(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("shortTitle") {
-      return Some(string.to_string());
+  /// The date on which the resource content was last reviewed. Review happens
+  /// periodically after approval but does not change the original approval date.
+  pub fn last_review_date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("lastReviewDate") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for version
-  pub fn _version(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_version") {
+  /// A reference to a EvidenceVariable resource that defines the exposure for the
+  /// research.
+  pub fn exposure_variant(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("exposureVariant") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
+    }
+    return None;
+  }
+
+  /// The content was developed with a focus and intent of supporting the contexts
+  /// that are listed. These contexts may be general categories (gender, age, ...) or
+  /// may be references to specific programs (insurance plans, studies, ...) and may
+  /// be used to assist with indexing and searching for appropriate evidence
+  /// instances.
+  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
+    if let Some(Value::Array(val)) = self.value.get("useContext") {
+      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A human-readable string to clarify or explain concepts about the resource.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
+  pub fn language(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A natural language name identifying the evidence. This name should be usable as
-  /// an identifier for the module by machine processing applications such as code
-  /// generation.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An explanatory or alternate title for the Evidence giving additional information
-  /// about its content.
-  pub fn subtitle(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("subtitle") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for subtitle
-  pub fn _subtitle(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_subtitle") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for title
-  pub fn _title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_title") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The date  (and optionally time) when the evidence was published. The date must
-  /// change when the business version changes and it must change if the status code
-  /// changes. In addition, it should change when the substantive content of the
-  /// evidence changes.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -130,47 +104,54 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The date on which the resource content was last reviewed. Review happens
-  /// periodically after approval but does not change the original approval date.
-  pub fn last_review_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("lastReviewDate") {
-      return Some(string.to_string());
+  /// The date  (and optionally time) when the evidence was published. The date must
+  /// change when the business version changes and it must change if the status code
+  /// changes. In addition, it should change when the substantive content of the
+  /// evidence changes.
+  pub fn date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string);
     }
     return None;
   }
 
-  /// The period during which the evidence content was or is planned to be in active
-  /// use.
-  pub fn effective_period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("effectivePeriod") {
-      return Some(Period { value: val });
+  /// Extensions for copyright
+  pub fn _copyright(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_copyright") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for shortTitle
+  pub fn _short_title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_shortTitle") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A formal identifier that is used to identify this evidence when it is
-  /// represented in other formats, or referenced in a specification, model, design or
-  /// an instance.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An individual or organization primarily responsible for internal coherence of
+  /// the content.
+  pub fn editor(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("editor") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -180,6 +161,41 @@ impl Evidence<'_> {
   pub fn contact(&self) -> Option<Vec<ContactDetail>> {
     if let Some(Value::Array(val)) = self.value.get("contact") {
       return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Descriptive topics related to the content of the Evidence. Topics provide a
+  /// high-level categorization grouping types of Evidences that can be useful for
+  /// filtering and searching.
+  pub fn topic(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("topic") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Related artifacts such as additional documentation, justification, or
+  /// bibliographic references.
+  pub fn related_artifact(&self) -> Option<Vec<RelatedArtifact>> {
+    if let Some(Value::Array(val)) = self.value.get("relatedArtifact") {
+      return Some(val.into_iter().map(|e| RelatedArtifact { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A legal or geographic region in which the evidence is intended to be used.
+  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -196,10 +212,62 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// Extensions for url
-  pub fn _url(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_url") {
+  /// Extensions for version
+  pub fn _version(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_version") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// An individiual or organization primarily involved in the creation and
+  /// maintenance of the content.
+  pub fn author(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("author") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// The identifier that is used to identify this version of the evidence when it is
+  /// referenced in a specification, model, design or instance. This is an arbitrary
+  /// value managed by the evidence author and is not expected to be globally unique.
+  /// For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not
+  /// available. There is also no expectation that versions can be placed in a
+  /// lexicographical sequence. To provide a version consistent with the Decision
+  /// Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0).
+  /// For more information on versioning knowledge assets, refer to the Decision
+  /// Support Service specification. Note that a version is required for non-
+  /// experimental active artifacts.
+  pub fn version(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("version") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// An individual or organization primarily responsible for review of some aspect of
+  /// the content.
+  pub fn reviewer(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("reviewer") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The short title provides an alternate title for use in informal descriptive
+  /// contexts where the full, formal title is not necessary.
+  pub fn short_title(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("shortTitle") {
+      return Some(string);
     }
     return None;
   }
@@ -207,9 +275,18 @@ impl Evidence<'_> {
   /// A copyright statement relating to the evidence and/or its contents. Copyright
   /// statements are generally legal restrictions on the use and publishing of the
   /// evidence.
-  pub fn copyright(&self) -> Option<String> {
+  pub fn copyright(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("copyright") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// An individual or organization responsible for officially endorsing the content
+  /// for use in some setting.
+  pub fn endorser(&self) -> Option<Vec<ContactDetail>> {
+    if let Some(Value::Array(val)) = self.value.get("endorser") {
+      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -224,38 +301,20 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// Extensions for copyright
-  pub fn _copyright(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_copyright") {
+  /// Extensions for publisher
+  pub fn _publisher(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_publisher") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The date on which the resource content was approved by the publisher. Approval
-  /// happens once when the content is officially approved for usage.
-  pub fn approval_date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("approvalDate") {
-      return Some(string.to_string());
+  /// A reference to a EvidenceVariable resource that defines the population for the
+  /// research.
+  pub fn exposure_background(&self) -> Reference {
+    Reference {
+      value: &self.value["exposureBackground"],
     }
-    return None;
-  }
-
-  /// An individual or organization responsible for officially endorsing the content
-  /// for use in some setting.
-  pub fn endorser(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("endorser") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for shortTitle
-  pub fn _short_title(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_shortTitle") {
-      return Some(Element { value: val });
-    }
-    return None;
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -277,100 +336,20 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// The status of this evidence. Enables tracking the life-cycle of the content.
-  pub fn status(&self) -> Option<EvidenceStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(EvidenceStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// An individiual or organization primarily involved in the creation and
-  /// maintenance of the content.
-  pub fn author(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("author") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
+  /// Extensions for url
+  pub fn _url(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_url") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// An absolute URI that is used to identify this evidence when it is referenced in
-  /// a specification, model, design or an instance; also called its canonical
-  /// identifier. This SHOULD be globally unique and SHOULD be a literal address at
-  /// which at which an authoritative instance of this evidence is (or will be)
-  /// published. This URL can be the target of a canonical reference. It SHALL remain
-  /// the same when the evidence is stored on different servers.
-  pub fn url(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("url") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An individual or organization primarily responsible for internal coherence of
-  /// the content.
-  pub fn editor(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("editor") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A reference to a EvidenceVariable resource that defines the population for the
-  /// research.
-  pub fn exposure_background(&self) -> Reference {
-    Reference {
-      value: &self.value["exposureBackground"],
-    }
-  }
-
-  /// Extensions for lastReviewDate
-  pub fn _last_review_date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lastReviewDate") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// A reference to a EvidenceVariable resource that defines the exposure for the
-  /// research.
-  pub fn exposure_variant(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("exposureVariant") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The identifier that is used to identify this version of the evidence when it is
-  /// referenced in a specification, model, design or instance. This is an arbitrary
-  /// value managed by the evidence author and is not expected to be globally unique.
-  /// For example, it might be a timestamp (e.g. yyyymmdd) if a managed version is not
-  /// available. There is also no expectation that versions can be placed in a
-  /// lexicographical sequence. To provide a version consistent with the Decision
-  /// Support Service specification, use the format Major.Minor.Revision (e.g. 1.0.0).
-  /// For more information on versioning knowledge assets, refer to the Decision
-  /// Support Service specification. Note that a version is required for non-
-  /// experimental active artifacts.
-  pub fn version(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("version") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// An individual or organization primarily responsible for review of some aspect of
-  /// the content.
-  pub fn reviewer(&self) -> Option<Vec<ContactDetail>> {
-    if let Some(Value::Array(val)) = self.value.get("reviewer") {
-      return Some(val.into_iter().map(|e| ContactDetail { value: e }).collect::<Vec<_>>());
+  /// A natural language name identifying the evidence. This name should be usable as
+  /// an identifier for the module by machine processing applications such as code
+  /// generation.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
     }
     return None;
   }
@@ -384,55 +363,36 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// A free text natural language description of the evidence from a consumer's
-  /// perspective.
-  pub fn description(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// A human-readable string to clarify or explain concepts about the resource.
-  pub fn note(&self) -> Option<Vec<Annotation>> {
-    if let Some(Value::Array(val)) = self.value.get("note") {
-      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Descriptive topics related to the content of the Evidence. Topics provide a
-  /// high-level categorization grouping types of Evidences that can be useful for
-  /// filtering and searching.
-  pub fn topic(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("topic") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// A formal identifier that is used to identify this evidence when it is
+  /// represented in other formats, or referenced in a specification, model, design or
+  /// an instance.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   /// A short, descriptive, user-friendly title for the evidence.
-  pub fn title(&self) -> Option<String> {
+  pub fn title(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("title") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
+  /// Extensions for title
+  pub fn _title(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_title") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The status of this evidence. Enables tracking the life-cycle of the content.
+  pub fn status(&self) -> Option<EvidenceStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(EvidenceStatus::from_string(&val).unwrap());
     }
     return None;
   }
@@ -445,38 +405,78 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// The content was developed with a focus and intent of supporting the contexts
-  /// that are listed. These contexts may be general categories (gender, age, ...) or
-  /// may be references to specific programs (insurance plans, studies, ...) and may
-  /// be used to assist with indexing and searching for appropriate evidence
-  /// instances.
-  pub fn use_context(&self) -> Option<Vec<UsageContext>> {
-    if let Some(Value::Array(val)) = self.value.get("useContext") {
-      return Some(val.into_iter().map(|e| UsageContext { value: e }).collect::<Vec<_>>());
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
+  /// Extensions for subtitle
+  pub fn _subtitle(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_subtitle") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// The name of the organization or individual that published the evidence.
-  pub fn publisher(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("publisher") {
-      return Some(string.to_string());
+  /// The period during which the evidence content was or is planned to be in active
+  /// use.
+  pub fn effective_period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("effectivePeriod") {
+      return Some(Period { value: val });
     }
     return None;
   }
 
-  /// A legal or geographic region in which the evidence is intended to be used.
-  pub fn jurisdiction(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// An absolute URI that is used to identify this evidence when it is referenced in
+  /// a specification, model, design or an instance; also called its canonical
+  /// identifier. This SHOULD be globally unique and SHOULD be a literal address at
+  /// which at which an authoritative instance of this evidence is (or will be)
+  /// published. This URL can be the target of a canonical reference. It SHALL remain
+  /// the same when the evidence is stored on different servers.
+  pub fn url(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("url") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The date on which the resource content was approved by the publisher. Approval
+  /// happens once when the content is officially approved for usage.
+  pub fn approval_date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("approvalDate") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for lastReviewDate
+  pub fn _last_review_date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lastReviewDate") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// A free text natural language description of the evidence from a consumer's
+  /// perspective.
+  pub fn description(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("description") {
+      return Some(string);
     }
     return None;
   }
@@ -489,110 +489,85 @@ impl Evidence<'_> {
     return None;
   }
 
-  /// Related artifacts such as additional documentation, justification, or
-  /// bibliographic references.
-  pub fn related_artifact(&self) -> Option<Vec<RelatedArtifact>> {
-    if let Some(Value::Array(val)) = self.value.get("relatedArtifact") {
-      return Some(val.into_iter().map(|e| RelatedArtifact { value: e }).collect::<Vec<_>>());
+  /// An explanatory or alternate title for the Evidence giving additional information
+  /// about its content.
+  pub fn subtitle(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("subtitle") {
+      return Some(string);
     }
     return None;
   }
 
-  /// Extensions for publisher
-  pub fn _publisher(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_publisher") {
-      return Some(Element { value: val });
+  /// The name of the organization or individual that published the evidence.
+  pub fn publisher(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("publisher") {
+      return Some(string);
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.short_title() {
-    }
-    if let Some(_val) = self._version() {
-      _val.validate();
-    }
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.name() {
-    }
-    if let Some(_val) = self.subtitle() {
-    }
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self._implicit_rules() {
-      _val.validate();
-    }
-    if let Some(_val) = self._subtitle() {
-      _val.validate();
-    }
-    if let Some(_val) = self._title() {
-      _val.validate();
-    }
-    if let Some(_val) = self.date() {
-    }
-    if let Some(_val) = self.text() {
-      _val.validate();
-    }
-    if let Some(_val) = self._status() {
-      _val.validate();
-    }
     if let Some(_val) = self.last_review_date() {
     }
-    if let Some(_val) = self.effective_period() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.identifier() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.contact() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._url() {
-      _val.validate();
-    }
-    if let Some(_val) = self.copyright() {
-    }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._copyright() {
-      _val.validate();
-    }
-    if let Some(_val) = self.approval_date() {
-    }
-    if let Some(_val) = self.endorser() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._short_title() {
-      _val.validate();
-    }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.status() {
-    }
-    if let Some(_val) = self.author() {
+    if let Some(_val) = self.exposure_variant() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._description() {
       _val.validate();
     }
-    if let Some(_val) = self.url() {
+    if let Some(_val) = self.meta() {
+      _val.validate();
+    }
+    if let Some(_val) = self.use_context() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.note() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.text() {
+      _val.validate();
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
+    }
+    if let Some(_val) = self.date() {
+    }
+    if let Some(_val) = self._copyright() {
+      _val.validate();
+    }
+    if let Some(_val) = self._short_title() {
+      _val.validate();
+    }
+    if let Some(_val) = self._date() {
+      _val.validate();
     }
     if let Some(_val) = self.editor() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.exposure_background().validate();
-    if let Some(_val) = self._last_review_date() {
+    if let Some(_val) = self.contact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._status() {
       _val.validate();
     }
-    if let Some(_val) = self.exposure_variant() {
+    if let Some(_val) = self.topic() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.related_artifact() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.jurisdiction() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._version() {
+      _val.validate();
+    }
+    if let Some(_val) = self.author() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.version() {
@@ -600,47 +575,72 @@ impl Evidence<'_> {
     if let Some(_val) = self.reviewer() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.outcome() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.description() {
-    }
-    if let Some(_val) = self.note() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.topic() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.title() {
-    }
-    if let Some(_val) = self.meta() {
+    if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
-    if let Some(_val) = self._date() {
-      _val.validate();
+    if let Some(_val) = self.short_title() {
     }
-    if let Some(_val) = self._language() {
-      _val.validate();
+    if let Some(_val) = self.copyright() {
     }
-    if let Some(_val) = self.use_context() {
+    if let Some(_val) = self.endorser() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._name() {
-      _val.validate();
-    }
-    if let Some(_val) = self.publisher() {
-    }
-    if let Some(_val) = self.jurisdiction() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._approval_date() {
-      _val.validate();
-    }
-    if let Some(_val) = self.related_artifact() {
+    if let Some(_val) = self.contained() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self._publisher() {
       _val.validate();
+    }
+    let _ = self.exposure_background().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self._url() {
+      _val.validate();
+    }
+    if let Some(_val) = self.name() {
+    }
+    if let Some(_val) = self.outcome() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.identifier() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.title() {
+    }
+    if let Some(_val) = self._title() {
+      _val.validate();
+    }
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._subtitle() {
+      _val.validate();
+    }
+    if let Some(_val) = self.effective_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.url() {
+    }
+    if let Some(_val) = self.approval_date() {
+    }
+    if let Some(_val) = self._last_review_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.description() {
+    }
+    if let Some(_val) = self._approval_date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.subtitle() {
+    }
+    if let Some(_val) = self.publisher() {
     }
     return true;
   }

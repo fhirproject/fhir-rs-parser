@@ -20,20 +20,11 @@ pub struct AdverseEvent_SuspectEntity<'a> {
 impl AdverseEvent_SuspectEntity<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
-  }
-
-  /// Identifies the actual instance of what caused the adverse event.  May be a
-  /// substance, medication, medication administration, medication statement or a
-  /// device.
-  pub fn instance(&self) -> Reference {
-    Reference {
-      value: &self.value["instance"],
-    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -54,14 +45,6 @@ impl AdverseEvent_SuspectEntity<'_> {
     return None;
   }
 
-  /// Information on the possible cause of the event.
-  pub fn causality(&self) -> Option<Vec<AdverseEvent_Causality>> {
-    if let Some(Value::Array(val)) = self.value.get("causality") {
-      return Some(val.into_iter().map(|e| AdverseEvent_Causality { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -74,17 +57,34 @@ impl AdverseEvent_SuspectEntity<'_> {
     return None;
   }
 
+  /// Identifies the actual instance of what caused the adverse event.  May be a
+  /// substance, medication, medication administration, medication statement or a
+  /// device.
+  pub fn instance(&self) -> Reference {
+    Reference {
+      value: &self.value["instance"],
+    }
+  }
+
+  /// Information on the possible cause of the event.
+  pub fn causality(&self) -> Option<Vec<AdverseEvent_Causality>> {
+    if let Some(Value::Array(val)) = self.value.get("causality") {
+      return Some(val.into_iter().map(|e| AdverseEvent_Causality { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.id() {
     }
-    let _ = self.instance().validate();
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.causality() {
+    if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.extension() {
+    let _ = self.instance().validate();
+    if let Some(_val) = self.causality() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Element::Element;
 use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,6 +16,23 @@ pub struct CodeableConcept<'a> {
 }
 
 impl CodeableConcept<'_> {
+  /// Extensions for text
+  pub fn _text(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_text") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -28,33 +45,6 @@ impl CodeableConcept<'_> {
     return None;
   }
 
-  /// A human language representation of the concept as seen/selected/uttered by the
-  /// user who entered the data and/or which represents the intended meaning of the
-  /// user.
-  pub fn text(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("text") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for text
-  pub fn _text(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_text") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// A reference to a code defined by a terminology system.
   pub fn coding(&self) -> Option<Vec<Coding>> {
     if let Some(Value::Array(val)) = self.value.get("coding") {
@@ -63,19 +53,29 @@ impl CodeableConcept<'_> {
     return None;
   }
 
+  /// A human language representation of the concept as seen/selected/uttered by the
+  /// user who entered the data and/or which represents the intended meaning of the
+  /// user.
+  pub fn text(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("text") {
+      return Some(string);
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.text() {
-    }
     if let Some(_val) = self._text() {
       _val.validate();
     }
     if let Some(_val) = self.id() {
     }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.coding() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.text() {
     }
     return true;
   }

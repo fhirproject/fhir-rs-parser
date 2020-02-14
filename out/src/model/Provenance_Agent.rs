@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Reference::Reference;
 use crate::model::Extension::Extension;
-use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
 
@@ -23,20 +23,26 @@ pub struct Provenance_Agent<'a> {
 }
 
 impl Provenance_Agent<'_> {
-  /// The function of the agent with respect to the activity. The security role
-  /// enabling the agent with respect to the activity.
-  pub fn role(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("role") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// The individual, device, or organization for whom the change was made.
+  pub fn on_behalf_of(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("onBehalfOf") {
+      return Some(Reference { value: val });
     }
     return None;
   }
 
+  /// The individual, device or organization that participated in the event.
+  pub fn who(&self) -> Reference {
+    Reference {
+      value: &self.value["who"],
+    }
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -59,29 +65,6 @@ impl Provenance_Agent<'_> {
     return None;
   }
 
-  /// The participation the agent had with respect to the activity.
-  pub fn fhir_type(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("type") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The individual, device or organization that participated in the event.
-  pub fn who(&self) -> Reference {
-    Reference {
-      value: &self.value["who"],
-    }
-  }
-
-  /// The individual, device, or organization for whom the change was made.
-  pub fn on_behalf_of(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("onBehalfOf") {
-      return Some(Reference { value: val });
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -94,23 +77,40 @@ impl Provenance_Agent<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.role() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+  /// The participation the agent had with respect to the activity.
+  pub fn fhir_type(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("type") {
+      return Some(CodeableConcept { value: val });
     }
+    return None;
+  }
+
+  /// The function of the agent with respect to the activity. The security role
+  /// enabling the agent with respect to the activity.
+  pub fn role(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("role") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self.on_behalf_of() {
+      _val.validate();
+    }
+    let _ = self.who().validate();
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     if let Some(_val) = self.fhir_type() {
       _val.validate();
     }
-    let _ = self.who().validate();
-    if let Some(_val) = self.on_behalf_of() {
-      _val.validate();
-    }
-    if let Some(_val) = self.extension() {
+    if let Some(_val) = self.role() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;

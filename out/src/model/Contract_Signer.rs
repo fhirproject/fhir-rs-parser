@@ -1,9 +1,9 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Coding::Coding;
 use crate::model::Signature::Signature;
-use crate::model::Reference::Reference;
+use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use crate::model::Reference::Reference;
 use serde_json::value::Value;
 
 
@@ -17,6 +17,18 @@ pub struct Contract_Signer<'a> {
 }
 
 impl Contract_Signer<'_> {
+  /// Party which is a signator to this Contract.
+  pub fn party(&self) -> Reference {
+    Reference {
+      value: &self.value["party"],
+    }
+  }
+
+  /// Legally binding Contract DSIG signature contents in Base64.
+  pub fn signature(&self) -> Vec<Signature> {
+    self.value.get("signature").unwrap().as_array().unwrap().into_iter().map(|e| Signature { value: e }).collect::<Vec<_>>()
+  }
+
   /// May be used to represent additional information that is not part of the basic
   /// definition of the element. To make the use of extensions safe and manageable,
   /// there is a strict set of governance  applied to the definition and use of
@@ -27,6 +39,22 @@ impl Contract_Signer<'_> {
       return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
     }
     return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Role of this Contract signer, e.g. notary, grantee.
+  pub fn fhir_type(&self) -> Coding {
+    Coding {
+      value: &self.value["type"],
+    }
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -47,46 +75,18 @@ impl Contract_Signer<'_> {
     return None;
   }
 
-  /// Legally binding Contract DSIG signature contents in Base64.
-  pub fn signature(&self) -> Vec<Signature> {
-    self.value.get("signature").unwrap().as_array().unwrap().into_iter().map(|e| Signature { value: e }).collect::<Vec<_>>()
-  }
-
-  /// Party which is a signator to this Contract.
-  pub fn party(&self) -> Reference {
-    Reference {
-      value: &self.value["party"],
-    }
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Role of this Contract signer, e.g. notary, grantee.
-  pub fn fhir_type(&self) -> Coding {
-    Coding {
-      value: &self.value["type"],
-    }
-  }
-
   pub fn validate(&self) -> bool {
+    let _ = self.party().validate();
+    let _ = self.signature().into_iter().for_each(|e| { e.validate(); });
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.signature().into_iter().for_each(|e| { e.validate(); });
-    let _ = self.party().validate();
     if let Some(_val) = self.id() {
     }
     let _ = self.fhir_type().validate();
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
     return true;
   }
 

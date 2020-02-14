@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Parameters_Parameter::Parameters_Parameter;
 use crate::model::Meta::Meta;
+use crate::model::Parameters_Parameter::Parameters_Parameter;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -25,6 +25,14 @@ impl Parameters<'_> {
     return None;
   }
 
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// A parameter passed to or received from the operation.
   pub fn parameter(&self) -> Option<Vec<Parameters_Parameter>> {
     if let Some(Value::Array(val)) = self.value.get("parameter") {
@@ -33,19 +41,10 @@ impl Parameters<'_> {
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -60,10 +59,11 @@ impl Parameters<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
     }
     return None;
   }
@@ -72,9 +72,9 @@ impl Parameters<'_> {
   /// constructed, and which must be understood when processing the content. Often,
   /// this is a reference to an implementation guide that defines the special rules
   /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
+  pub fn implicit_rules(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -83,18 +83,18 @@ impl Parameters<'_> {
     if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
+    if let Some(_val) = self.language() {
+    }
     if let Some(_val) = self.parameter() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.language() {
+    if let Some(_val) = self._language() {
+      _val.validate();
     }
     if let Some(_val) = self.meta() {
       _val.validate();
     }
-    if let Some(_val) = self._language() {
-      _val.validate();
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.implicit_rules() {
     }

@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
-use crate::model::Element::Element;
 use crate::model::CodeableConcept::CodeableConcept;
 use serde_json::value::Value;
 
@@ -18,30 +18,9 @@ pub struct MedicationKnowledge_PatientCharacteristics<'a> {
 impl MedicationKnowledge_PatientCharacteristics<'_> {
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Specific characteristic that is relevant to the administration guideline (e.g.
-  /// height, weight, gender).
-  pub fn characteristic_quantity(&self) -> Option<Quantity> {
-    if let Some(val) = self.value.get("characteristicQuantity") {
-      return Some(Quantity { value: val });
+      return Some(string);
     }
     return None;
   }
@@ -81,22 +60,37 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
     return None;
   }
 
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Specific characteristic that is relevant to the administration guideline (e.g.
+  /// height, weight, gender).
+  pub fn characteristic_quantity(&self) -> Option<Quantity> {
+    if let Some(val) = self.value.get("characteristicQuantity") {
+      return Some(Quantity { value: val });
+    }
+    return None;
+  }
+
   /// The specific characteristic (e.g. height, weight, gender, etc.).
-  pub fn value(&self) -> Option<Vec<String>> {
+  pub fn value(&self) -> Option<Vec<&str>> {
     if let Some(Value::Array(val)) = self.value.get("value") {
-      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());
+      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
     if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.characteristic_quantity() {
-      _val.validate();
     }
     if let Some(_val) = self._value() {
       _val.into_iter().for_each(|e| { e.validate(); });
@@ -105,6 +99,12 @@ impl MedicationKnowledge_PatientCharacteristics<'_> {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
     if let Some(_val) = self.characteristic_codeable_concept() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.characteristic_quantity() {
       _val.validate();
     }
     if let Some(_val) = self.value() {

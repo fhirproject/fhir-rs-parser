@@ -1,14 +1,14 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
-use crate::model::Narrative::Narrative;
-use crate::model::MeasureReport_Group::MeasureReport_Group;
-use crate::model::Reference::Reference;
-use crate::model::ResourceList::ResourceList;
-use crate::model::Period::Period;
 use crate::model::Meta::Meta;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
+use crate::model::Reference::Reference;
+use crate::model::Period::Period;
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::MeasureReport_Group::MeasureReport_Group;
+use crate::model::ResourceList::ResourceList;
+use crate::model::Narrative::Narrative;
 use crate::model::Identifier::Identifier;
 use serde_json::value::Value;
 
@@ -23,59 +23,10 @@ pub struct MeasureReport<'a> {
 }
 
 impl MeasureReport<'_> {
-  /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// The MeasureReport status. No data will be available until the MeasureReport
-  /// status is complete.
-  pub fn status(&self) -> Option<MeasureReportStatus> {
-    if let Some(Value::String(val)) = self.value.get("status") {
-      return Some(MeasureReportStatus::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the resource. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The individual, location, or organization that is reporting the data.
+  pub fn reporter(&self) -> Option<Reference> {
+    if let Some(val) = self.value.get("reporter") {
+      return Some(Reference { value: val });
     }
     return None;
   }
@@ -93,57 +44,29 @@ impl MeasureReport<'_> {
     return None;
   }
 
-  /// A reference to the Measure that was calculated to produce this report.
-  pub fn measure(&self) -> String {
-    self.value.get("measure").unwrap().as_str().unwrap().to_string()
+  /// The reporting period for which the report was calculated.
+  pub fn period(&self) -> Period {
+    Period {
+      value: &self.value["period"],
+    }
   }
 
-  /// The date this measure report was generated.
-  pub fn date(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("date") {
-      return Some(string.to_string());
+  /// A formal identifier that is used to identify this MeasureReport when it is
+  /// represented in other formats or referenced in a specification, model, design or
+  /// an instance.
+  pub fn identifier(&self) -> Option<Vec<Identifier>> {
+    if let Some(Value::Array(val)) = self.value.get("identifier") {
+      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
-  /// Whether improvement in the measure is noted by an increase or decrease in the
-  /// measure score.
-  pub fn improvement_notation(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("improvementNotation") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// The results of the calculation, one for each population group in the measure.
-  pub fn group(&self) -> Option<Vec<MeasureReport_Group>> {
-    if let Some(Value::Array(val)) = self.value.get("group") {
-      return Some(val.into_iter().map(|e| MeasureReport_Group { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// A reference to a Bundle containing the Resources that were used in the
-  /// calculation of this measure.
-  pub fn evaluated_resource(&self) -> Option<Vec<Reference>> {
-    if let Some(Value::Array(val)) = self.value.get("evaluatedResource") {
-      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for date
-  pub fn _date(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_date") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The individual, location, or organization that is reporting the data.
-  pub fn reporter(&self) -> Option<Reference> {
-    if let Some(val) = self.value.get("reporter") {
-      return Some(Reference { value: val });
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }
@@ -161,9 +84,92 @@ impl MeasureReport<'_> {
     return None;
   }
 
+  /// A reference to a Bundle containing the Resources that were used in the
+  /// calculation of this measure.
+  pub fn evaluated_resource(&self) -> Option<Vec<Reference>> {
+    if let Some(Value::Array(val)) = self.value.get("evaluatedResource") {
+      return Some(val.into_iter().map(|e| Reference { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the resource. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for status
+  pub fn _status(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_status") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// Extensions for type
   pub fn _type(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_type") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for date
+  pub fn _date(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_date") {
       return Some(Element { value: val });
     }
     return None;
@@ -188,12 +194,49 @@ impl MeasureReport<'_> {
     return None;
   }
 
-  /// A formal identifier that is used to identify this MeasureReport when it is
-  /// represented in other formats or referenced in a specification, model, design or
-  /// an instance.
-  pub fn identifier(&self) -> Option<Vec<Identifier>> {
-    if let Some(Value::Array(val)) = self.value.get("identifier") {
-      return Some(val.into_iter().map(|e| Identifier { value: e }).collect::<Vec<_>>());
+  /// The MeasureReport status. No data will be available until the MeasureReport
+  /// status is complete.
+  pub fn status(&self) -> Option<MeasureReportStatus> {
+    if let Some(Value::String(val)) = self.value.get("status") {
+      return Some(MeasureReportStatus::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// The base language in which the resource is written.
+  pub fn language(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("language") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Whether improvement in the measure is noted by an increase or decrease in the
+  /// measure score.
+  pub fn improvement_notation(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("improvementNotation") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
+  /// A reference to the Measure that was calculated to produce this report.
+  pub fn measure(&self) -> &str {
+    self.value.get("measure").unwrap().as_str().unwrap()
+  }
+
+  /// The date this measure report was generated.
+  pub fn date(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("date") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The results of the calculation, one for each population group in the measure.
+  pub fn group(&self) -> Option<Vec<MeasureReport_Group>> {
+    if let Some(Value::Array(val)) = self.value.get("group") {
+      return Some(val.into_iter().map(|e| MeasureReport_Group { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -206,135 +249,73 @@ impl MeasureReport<'_> {
     return None;
   }
 
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The reporting period for which the report was calculated.
-  pub fn period(&self) -> Period {
-    Period {
-      value: &self.value["period"],
-    }
-  }
-
-  /// Extensions for status
-  pub fn _status(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_status") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.language() {
-    }
-    if let Some(_val) = self.status() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self._implicit_rules() {
+    if let Some(_val) = self.reporter() {
       _val.validate();
-    }
-    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.text() {
       _val.validate();
     }
-    let _ = self.measure();
-    if let Some(_val) = self.date() {
-    }
-    if let Some(_val) = self.improvement_notation() {
-      _val.validate();
-    }
-    if let Some(_val) = self.group() {
+    let _ = self.period().validate();
+    if let Some(_val) = self.identifier() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.evaluated_resource() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._date() {
-      _val.validate();
-    }
-    if let Some(_val) = self.reporter() {
+    if let Some(_val) = self.meta() {
       _val.validate();
     }
     if let Some(_val) = self.fhir_type() {
     }
-    if let Some(_val) = self._type() {
+    if let Some(_val) = self.evaluated_resource() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.implicit_rules() {
+    }
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self._status() {
       _val.validate();
     }
-    if let Some(_val) = self.modifier_extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.identifier() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.subject() {
+    if let Some(_val) = self._type() {
       _val.validate();
     }
     if let Some(_val) = self._language() {
       _val.validate();
     }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.period().validate();
-    if let Some(_val) = self._status() {
+    if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
-    if let Some(_val) = self.meta() {
+    if let Some(_val) = self._date() {
+      _val.validate();
+    }
+    if let Some(_val) = self.modifier_extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.status() {
+    }
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self.improvement_notation() {
+      _val.validate();
+    }
+    let _ = self.measure();
+    if let Some(_val) = self.date() {
+    }
+    if let Some(_val) = self.group() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.subject() {
       _val.validate();
     }
     return true;
   }
 
 }
-
-#[derive(Debug)]
-pub enum MeasureReportStatus {
-  Complete,
-  Pending,
-  Error,
-}
-
-impl MeasureReportStatus {
-    pub fn from_string(string: &str) -> Option<MeasureReportStatus> {
-      match string {
-        "complete" => Some(MeasureReportStatus::Complete),
-        "pending" => Some(MeasureReportStatus::Pending),
-        "error" => Some(MeasureReportStatus::Error),
-        _ => None,
-    }
-  }
-}
-
 
 #[derive(Debug)]
 pub enum MeasureReportType {
@@ -351,6 +332,25 @@ impl MeasureReportType {
         "subject-list" => Some(MeasureReportType::SubjectList),
         "summary" => Some(MeasureReportType::Summary),
         "data-collection" => Some(MeasureReportType::DataCollection),
+        _ => None,
+    }
+  }
+}
+
+
+#[derive(Debug)]
+pub enum MeasureReportStatus {
+  Complete,
+  Pending,
+  Error,
+}
+
+impl MeasureReportStatus {
+    pub fn from_string(string: &str) -> Option<MeasureReportStatus> {
+      match string {
+        "complete" => Some(MeasureReportStatus::Complete),
+        "pending" => Some(MeasureReportStatus::Pending),
+        "error" => Some(MeasureReportStatus::Error),
         _ => None,
     }
   }

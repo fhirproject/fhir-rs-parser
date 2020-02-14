@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
+use crate::model::Extension::Extension;
 use crate::model::Element::Element;
 use crate::model::Quantity::Quantity;
-use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -16,17 +16,18 @@ pub struct SampledData<'a> {
 }
 
 impl SampledData<'_> {
-  /// Extensions for lowerLimit
-  pub fn _lower_limit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_lowerLimit") {
-      return Some(Element { value: val });
+  /// A correction factor that is applied to the sampled data points before they are
+  /// added to the origin.
+  pub fn factor(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("factor") {
+      return Some(val.as_f64().unwrap());
     }
     return None;
   }
 
-  /// Extensions for dimensions
-  pub fn _dimensions(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_dimensions") {
+  /// Extensions for data
+  pub fn _data(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_data") {
       return Some(Element { value: val });
     }
     return None;
@@ -40,28 +41,39 @@ impl SampledData<'_> {
     }
   }
 
-  /// A correction factor that is applied to the sampled data points before they are
-  /// added to the origin.
-  pub fn factor(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("factor") {
-      return Some(val.as_f64().unwrap());
+  /// The number of sample points at each time point. If this value is greater than
+  /// one, then the dimensions will be interlaced - all the sample points for a point
+  /// in time will be recorded at once.
+  pub fn dimensions(&self) -> Option<i64> {
+    if let Some(val) = self.value.get("dimensions") {
+      return Some(val.as_i64().unwrap());
     }
     return None;
   }
 
-  /// Extensions for upperLimit
-  pub fn _upper_limit(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_upperLimit") {
+  /// Extensions for period
+  pub fn _period(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_period") {
       return Some(Element { value: val });
     }
     return None;
   }
 
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// The lower limit of detection of the measured points. This is needed if any of
+  /// the data points have the value "L" (lower than detection limit).
+  pub fn lower_limit(&self) -> Option<f64> {
+    if let Some(val) = self.value.get("lowerLimit") {
+      return Some(val.as_f64().unwrap());
+    }
+    return None;
+  }
+
+  /// A series of data points which are decimal values separated by a single space
+  /// (character u20). The special values "E" (error), "L" (below detection limit) and
+  /// "U" (above detection limit) can also be used in place of a decimal value.
+  pub fn data(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("data") {
+      return Some(string);
     }
     return None;
   }
@@ -95,6 +107,31 @@ impl SampledData<'_> {
     return None;
   }
 
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for dimensions
+  pub fn _dimensions(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_dimensions") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Extensions for lowerLimit
+  pub fn _lower_limit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_lowerLimit") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   /// The length of time between sampling times, measured in milliseconds.
   pub fn period(&self) -> Option<f64> {
     if let Some(val) = self.value.get("period") {
@@ -103,65 +140,29 @@ impl SampledData<'_> {
     return None;
   }
 
-  /// The lower limit of detection of the measured points. This is needed if any of
-  /// the data points have the value "L" (lower than detection limit).
-  pub fn lower_limit(&self) -> Option<f64> {
-    if let Some(val) = self.value.get("lowerLimit") {
-      return Some(val.as_f64().unwrap());
-    }
-    return None;
-  }
-
-  /// The number of sample points at each time point. If this value is greater than
-  /// one, then the dimensions will be interlaced - all the sample points for a point
-  /// in time will be recorded at once.
-  pub fn dimensions(&self) -> Option<i64> {
-    if let Some(val) = self.value.get("dimensions") {
-      return Some(val.as_i64().unwrap());
-    }
-    return None;
-  }
-
-  /// A series of data points which are decimal values separated by a single space
-  /// (character u20). The special values "E" (error), "L" (below detection limit) and
-  /// "U" (above detection limit) can also be used in place of a decimal value.
-  pub fn data(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("data") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for data
-  pub fn _data(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_data") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Extensions for period
-  pub fn _period(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_period") {
+  /// Extensions for upperLimit
+  pub fn _upper_limit(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_upperLimit") {
       return Some(Element { value: val });
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._lower_limit() {
-      _val.validate();
+    if let Some(_val) = self.factor() {
     }
-    if let Some(_val) = self._dimensions() {
+    if let Some(_val) = self._data() {
       _val.validate();
     }
     let _ = self.origin().validate();
-    if let Some(_val) = self.factor() {
+    if let Some(_val) = self.dimensions() {
     }
-    if let Some(_val) = self._upper_limit() {
+    if let Some(_val) = self._period() {
       _val.validate();
     }
-    if let Some(_val) = self.id() {
+    if let Some(_val) = self.lower_limit() {
+    }
+    if let Some(_val) = self.data() {
     }
     if let Some(_val) = self._factor() {
       _val.validate();
@@ -171,18 +172,17 @@ impl SampledData<'_> {
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.period() {
+    if let Some(_val) = self.id() {
     }
-    if let Some(_val) = self.lower_limit() {
-    }
-    if let Some(_val) = self.dimensions() {
-    }
-    if let Some(_val) = self.data() {
-    }
-    if let Some(_val) = self._data() {
+    if let Some(_val) = self._dimensions() {
       _val.validate();
     }
-    if let Some(_val) = self._period() {
+    if let Some(_val) = self._lower_limit() {
+      _val.validate();
+    }
+    if let Some(_val) = self.period() {
+    }
+    if let Some(_val) = self._upper_limit() {
       _val.validate();
     }
     return true;

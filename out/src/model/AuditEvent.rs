@@ -1,16 +1,16 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Narrative::Narrative;
-use crate::model::Coding::Coding;
-use crate::model::CodeableConcept::CodeableConcept;
-use crate::model::Period::Period;
-use crate::model::Element::Element;
 use crate::model::AuditEvent_Agent::AuditEvent_Agent;
+use crate::model::Element::Element;
+use crate::model::Coding::Coding;
 use crate::model::Meta::Meta;
-use crate::model::Extension::Extension;
+use crate::model::Period::Period;
+use crate::model::AuditEvent_Source::AuditEvent_Source;
+use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::ResourceList::ResourceList;
 use crate::model::AuditEvent_Entity::AuditEvent_Entity;
-use crate::model::AuditEvent_Source::AuditEvent_Source;
+use crate::model::Extension::Extension;
 use serde_json::value::Value;
 
 
@@ -25,38 +25,6 @@ pub struct AuditEvent<'a> {
 }
 
 impl AuditEvent<'_> {
-  /// A free text description of the outcome of the event.
-  pub fn outcome_desc(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("outcomeDesc") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for outcomeDesc
-  pub fn _outcome_desc(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_outcomeDesc") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Specific instances of data or objects that have been accessed.
-  pub fn entity(&self) -> Option<Vec<AuditEvent_Entity>> {
-    if let Some(Value::Array(val)) = self.value.get("entity") {
-      return Some(val.into_iter().map(|e| AuditEvent_Entity { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// The time when the event was recorded.
-  pub fn recorded(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("recorded") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// May be used to represent additional information that is not part of the basic
   /// definition of the resource and that modifies the understanding of the element
   /// that contains it and/or the understanding of the containing element's
@@ -76,10 +44,12 @@ impl AuditEvent<'_> {
     return None;
   }
 
-  /// The period during which the activity occurred.
-  pub fn period(&self) -> Option<Period> {
-    if let Some(val) = self.value.get("period") {
-      return Some(Period { value: val });
+  /// The metadata about the resource. This is content that is maintained by the
+  /// infrastructure. Changes to the content might not always be associated with
+  /// version changes to the resource.
+  pub fn meta(&self) -> Option<Meta> {
+    if let Some(val) = self.value.get("meta") {
+      return Some(Meta { value: val });
     }
     return None;
   }
@@ -100,28 +70,10 @@ impl AuditEvent<'_> {
     return None;
   }
 
-  /// Extensions for action
-  pub fn _action(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_action") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// These resources do not have an independent existence apart from the resource
-  /// that contains them - they cannot be identified independently, and nor can they
-  /// have their own independent transaction scope.
-  pub fn contained(&self) -> Option<Vec<ResourceList>> {
-    if let Some(Value::Array(val)) = self.value.get("contained") {
-      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Extensions for language
-  pub fn _language(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_language") {
-      return Some(Element { value: val });
+  /// The period during which the activity occurred.
+  pub fn period(&self) -> Option<Period> {
+    if let Some(val) = self.value.get("period") {
+      return Some(Period { value: val });
     }
     return None;
   }
@@ -134,39 +86,26 @@ impl AuditEvent<'_> {
     return None;
   }
 
-  /// The system that is reporting the event.
-  pub fn source(&self) -> AuditEvent_Source {
-    AuditEvent_Source {
-      value: &self.value["source"],
-    }
-  }
-
-  /// The metadata about the resource. This is content that is maintained by the
-  /// infrastructure. Changes to the content might not always be associated with
-  /// version changes to the resource.
-  pub fn meta(&self) -> Option<Meta> {
-    if let Some(val) = self.value.get("meta") {
-      return Some(Meta { value: val });
+  /// A free text description of the outcome of the event.
+  pub fn outcome_desc(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("outcomeDesc") {
+      return Some(string);
     }
     return None;
   }
 
-  /// The logical id of the resource, as used in the URL for the resource. Once
-  /// assigned, this value never changes.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for implicitRules
+  pub fn _implicit_rules(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_implicitRules") {
+      return Some(Element { value: val });
     }
     return None;
   }
 
-  /// A reference to a set of rules that were followed when the resource was
-  /// constructed, and which must be understood when processing the content. Often,
-  /// this is a reference to an implementation guide that defines the special rules
-  /// along with other profiles etc.
-  pub fn implicit_rules(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("implicitRules") {
-      return Some(string.to_string());
+  /// Extensions for language
+  pub fn _language(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_language") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -183,10 +122,69 @@ impl AuditEvent<'_> {
     return None;
   }
 
-  /// Extensions for implicitRules
-  pub fn _implicit_rules(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_implicitRules") {
+  /// Extensions for outcomeDesc
+  pub fn _outcome_desc(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_outcomeDesc") {
       return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// The time when the event was recorded.
+  pub fn recorded(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("recorded") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The system that is reporting the event.
+  pub fn source(&self) -> AuditEvent_Source {
+    AuditEvent_Source {
+      value: &self.value["source"],
+    }
+  }
+
+  /// The logical id of the resource, as used in the URL for the resource. Once
+  /// assigned, this value never changes.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// The purposeOfUse (reason) that was used during the event being recorded.
+  pub fn purpose_of_event(&self) -> Option<Vec<CodeableConcept>> {
+    if let Some(Value::Array(val)) = self.value.get("purposeOfEvent") {
+      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Indicator for type of action performed during the event that generated the
+  /// audit.
+  pub fn action(&self) -> Option<AuditEventAction> {
+    if let Some(Value::String(val)) = self.value.get("action") {
+      return Some(AuditEventAction::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// These resources do not have an independent existence apart from the resource
+  /// that contains them - they cannot be identified independently, and nor can they
+  /// have their own independent transaction scope.
+  pub fn contained(&self) -> Option<Vec<ResourceList>> {
+    if let Some(Value::Array(val)) = self.value.get("contained") {
+      return Some(val.into_iter().map(|e| ResourceList { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Specific instances of data or objects that have been accessed.
+  pub fn entity(&self) -> Option<Vec<AuditEvent_Entity>> {
+    if let Some(Value::Array(val)) = self.value.get("entity") {
+      return Some(val.into_iter().map(|e| AuditEvent_Entity { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
@@ -200,26 +198,18 @@ impl AuditEvent<'_> {
     }
   }
 
-  /// Identifier for the category of event.
-  pub fn subtype(&self) -> Option<Vec<Coding>> {
-    if let Some(Value::Array(val)) = self.value.get("subtype") {
-      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
   /// The base language in which the resource is written.
-  pub fn language(&self) -> Option<String> {
+  pub fn language(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("language") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
-  /// The purposeOfUse (reason) that was used during the event being recorded.
-  pub fn purpose_of_event(&self) -> Option<Vec<CodeableConcept>> {
-    if let Some(Value::Array(val)) = self.value.get("purposeOfEvent") {
-      return Some(val.into_iter().map(|e| CodeableConcept { value: e }).collect::<Vec<_>>());
+  /// Extensions for action
+  pub fn _action(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_action") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -227,6 +217,17 @@ impl AuditEvent<'_> {
   /// An actor taking an active role in the event or activity that is logged.
   pub fn agent(&self) -> Vec<AuditEvent_Agent> {
     self.value.get("agent").unwrap().as_array().unwrap().into_iter().map(|e| AuditEvent_Agent { value: e }).collect::<Vec<_>>()
+  }
+
+  /// A reference to a set of rules that were followed when the resource was
+  /// constructed, and which must be understood when processing the content. Often,
+  /// this is a reference to an implementation guide that defines the special rules
+  /// along with other profiles etc.
+  pub fn implicit_rules(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("implicitRules") {
+      return Some(string);
+    }
+    return None;
   }
 
   /// A human-readable narrative that contains a summary of the resource and can be
@@ -242,30 +243,19 @@ impl AuditEvent<'_> {
     return None;
   }
 
-  /// Indicator for type of action performed during the event that generated the
-  /// audit.
-  pub fn action(&self) -> Option<AuditEventAction> {
-    if let Some(Value::String(val)) = self.value.get("action") {
-      return Some(AuditEventAction::from_string(&val).unwrap());
+  /// Identifier for the category of event.
+  pub fn subtype(&self) -> Option<Vec<Coding>> {
+    if let Some(Value::Array(val)) = self.value.get("subtype") {
+      return Some(val.into_iter().map(|e| Coding { value: e }).collect::<Vec<_>>());
     }
     return None;
   }
 
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.outcome_desc() {
-    }
-    if let Some(_val) = self._outcome_desc() {
-      _val.validate();
-    }
-    if let Some(_val) = self.entity() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.recorded() {
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.period() {
+    if let Some(_val) = self.meta() {
       _val.validate();
     }
     if let Some(_val) = self._recorded() {
@@ -273,46 +263,56 @@ impl AuditEvent<'_> {
     }
     if let Some(_val) = self.outcome() {
     }
-    if let Some(_val) = self._action() {
-      _val.validate();
-    }
-    if let Some(_val) = self.contained() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self._language() {
+    if let Some(_val) = self.period() {
       _val.validate();
     }
     if let Some(_val) = self._outcome() {
       _val.validate();
     }
-    let _ = self.source().validate();
-    if let Some(_val) = self.meta() {
-      _val.validate();
-    }
-    if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self.implicit_rules() {
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.outcome_desc() {
     }
     if let Some(_val) = self._implicit_rules() {
       _val.validate();
     }
-    let _ = self.fhir_type().validate();
-    if let Some(_val) = self.subtype() {
+    if let Some(_val) = self._language() {
+      _val.validate();
+    }
+    if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.language() {
+    if let Some(_val) = self._outcome_desc() {
+      _val.validate();
+    }
+    if let Some(_val) = self.recorded() {
+    }
+    let _ = self.source().validate();
+    if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.purpose_of_event() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
+    if let Some(_val) = self.action() {
+    }
+    if let Some(_val) = self.contained() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.entity() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    let _ = self.fhir_type().validate();
+    if let Some(_val) = self.language() {
+    }
+    if let Some(_val) = self._action() {
+      _val.validate();
+    }
     let _ = self.agent().into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.implicit_rules() {
+    }
     if let Some(_val) = self.text() {
       _val.validate();
     }
-    if let Some(_val) = self.action() {
+    if let Some(_val) = self.subtype() {
+      _val.into_iter().for_each(|e| { e.validate(); });
     }
     return true;
   }

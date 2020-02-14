@@ -130,25 +130,25 @@ fn main() {
     "int" => ("i64", None),
     "integer" => ("i64", None),
     "number" => ("f64", None), // todo
-    "uri" => ("String", None),
-    "url" => ("String", None),
-    "markdown" => ("String", None),
-    "xhtml" => ("String", None),
+    "uri" => ("&str", None),
+    "url" => ("&str", None),
+    "markdown" => ("&str", None),
+    "xhtml" => ("&str", None),
     "decimal" => ("f64", None),
     "positiveInt" => ("i64", None),
-    "canonical" => ("String", None),
+    "canonical" => ("&str", None),
     "float" => ("f64", None),
-    "string" => ("String", None),
-    "code" => ("String", None),
+    "string" => ("&str", None),
+    "code" => ("&str", None),
     "boolean" => ("bool", None),
     "unsignedInt" => ("u64", None),
-    "id" => ("String", None),
-    "time" => ("String", None), // todo
-    "time" => ("String", None), // todo
-    "instant" => ("String", None), // todo
-    "date" => ("String", None), // todo
-    "base64Binary" => ("String", None),
-    "dateTime" => ("String", None), // todo
+    "id" => ("&str", None),
+    "time" => ("&str", None), // todo
+    "time" => ("&str", None), // todo
+    "instant" => ("&str", None), // todo
+    "date" => ("&str", None), // todo
+    "base64Binary" => ("&str", None),
+    "dateTime" => ("&str", None), // todo
 
   };
 
@@ -635,10 +635,10 @@ fn write_property(
   if array {
     if type_definition.builtin {
       if required {
-        if type_definition.name == "String" {
+        if type_definition.name == "&str" {
           inner_string.push_str("    self.value.get(\"");
           inner_string.push_str(&property_name);
-          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>()\n");
+          inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>()\n");
         } else {
           inner_string.push_str("    self.value.get(\"");
           inner_string.push_str(&property_name);
@@ -647,11 +647,11 @@ fn write_property(
           inner_string.push_str("().unwrap()).collect::<Vec<_>>()\n");
         }
       } else {
-        if type_definition.name == "String" {
+        if type_definition.name == "&str" {
           inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
           inner_string.push_str(&property_name);
           inner_string
-            .push_str("\") {\n      return Some(val.into_iter().map(|e| e.as_str().unwrap().to_string()).collect::<Vec<_>>());\n    }\n    return None;\n");
+            .push_str("\") {\n      return Some(val.into_iter().map(|e| e.as_str().unwrap()).collect::<Vec<_>>());\n    }\n    return None;\n");
         } else {
           inner_string.push_str("    if let Some(Value::Array(val)) = self.value.get(\"");
           inner_string.push_str(&property_name);
@@ -696,10 +696,10 @@ fn write_property(
   // end arrays
   } else if type_definition.builtin {
     if required {
-      if type_definition.name == "String" {
+      if type_definition.name == "&str" {
         inner_string.push_str("    self.value.get(\"");
         inner_string.push_str(&property_name);
-        inner_string.push_str("\").unwrap().as_str().unwrap().to_string()\n");
+        inner_string.push_str("\").unwrap().as_str().unwrap()\n");
       } else {
         inner_string.push_str("    self.value.get(\"");
         inner_string.push_str(&property_name);
@@ -708,11 +708,10 @@ fn write_property(
         inner_string.push_str("().unwrap()\n");
       }
     } else {
-      if type_definition.name == "String" {
+      if type_definition.name == "&str" {
         inner_string.push_str("    if let Some(Value::String(string)) = self.value.get(\"");
         inner_string.push_str(&property_name);
-        inner_string
-          .push_str("\") {\n      return Some(string.to_string());\n    }\n    return None;\n");
+        inner_string.push_str("\") {\n      return Some(string);\n    }\n    return None;\n");
       } else {
         inner_string.push_str("    if let Some(val) = self.value.get(\"");
         inner_string.push_str(&property_name);
@@ -729,7 +728,7 @@ fn write_property(
         inner_string.push_str("::from_string(");
         inner_string.push_str("&self.value[\"");
         inner_string.push_str(&property_name);
-        inner_string.push_str("\"].as_str().unwrap().to_string()).unwrap()\n");
+        inner_string.push_str("\"].as_str().unwrap()).unwrap()\n");
       } else {
         inner_string.push_str("    ");
         inner_string.push_str(&type_definition.name);

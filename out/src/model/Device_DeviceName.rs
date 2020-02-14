@@ -1,7 +1,7 @@
 #![allow(unused_imports, non_camel_case_types)]
 
-use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -16,11 +16,19 @@ pub struct Device_DeviceName<'a> {
 }
 
 impl Device_DeviceName<'_> {
+  /// The name of the device.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
@@ -37,35 +45,10 @@ impl Device_DeviceName<'_> {
     return None;
   }
 
-  /// Extensions for name
-  pub fn _name(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_name") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
-  /// ManufactureDeviceName | ModelName.
-  pub fn fhir_type(&self) -> Option<Device_DeviceNameType> {
-    if let Some(Value::String(val)) = self.value.get("type") {
-      return Some(Device_DeviceNameType::from_string(&val).unwrap());
-    }
-    return None;
-  }
-
   /// Extensions for type
   pub fn _type(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_type") {
       return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The name of the device.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
     }
     return None;
   }
@@ -88,24 +71,41 @@ impl Device_DeviceName<'_> {
     return None;
   }
 
+  /// The type of deviceName.  UDILabelName | UserFriendlyName | PatientReportedName |
+  /// ManufactureDeviceName | ModelName.
+  pub fn fhir_type(&self) -> Option<Device_DeviceNameType> {
+    if let Some(Value::String(val)) = self.value.get("type") {
+      return Some(Device_DeviceNameType::from_string(&val).unwrap());
+    }
+    return None;
+  }
+
+  /// Extensions for name
+  pub fn _name(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_name") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
+    if let Some(_val) = self.name() {
+    }
     if let Some(_val) = self.id() {
     }
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self._name() {
-      _val.validate();
-    }
-    if let Some(_val) = self.fhir_type() {
-    }
     if let Some(_val) = self._type() {
       _val.validate();
     }
-    if let Some(_val) = self.name() {
-    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.fhir_type() {
+    }
+    if let Some(_val) = self._name() {
+      _val.validate();
     }
     return true;
   }

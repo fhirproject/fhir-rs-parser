@@ -16,21 +16,10 @@ pub struct ConceptMap_DependsOn<'a> {
 }
 
 impl ConceptMap_DependsOn<'_> {
-  /// A reference to an element that holds a coded value that corresponds to a code
-  /// system property. The idea is that the information model carries an element
-  /// somewhere that is labeled to correspond with a code system property.
-  pub fn property(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("property") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Unique id for the element within a resource (for internal references). This may
-  /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+  /// Extensions for value
+  pub fn _value(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_value") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -53,28 +42,11 @@ impl ConceptMap_DependsOn<'_> {
     return None;
   }
 
-  /// An absolute URI that identifies the code system of the dependency code (if the
-  /// source/dependency is a value set that crosses code systems).
-  pub fn system(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("system") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for value
-  pub fn _value(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_value") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// The display for the code. The display is only provided to help editors when
-  /// editing the concept map.
-  pub fn display(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("display") {
-      return Some(string.to_string());
+  /// Identity (code or path) or the element/item/ValueSet/text that the map depends
+  /// on / refers to.
+  pub fn value(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("value") {
+      return Some(string);
     }
     return None;
   }
@@ -82,23 +54,6 @@ impl ConceptMap_DependsOn<'_> {
   /// Extensions for property
   pub fn _property(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_property") {
-      return Some(Element { value: val });
-    }
-    return None;
-  }
-
-  /// Identity (code or path) or the element/item/ValueSet/text that the map depends
-  /// on / refers to.
-  pub fn value(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("value") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for display
-  pub fn _display(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_display") {
       return Some(Element { value: val });
     }
     return None;
@@ -116,31 +71,76 @@ impl ConceptMap_DependsOn<'_> {
     return None;
   }
 
-  pub fn validate(&self) -> bool {
-    if let Some(_val) = self.property() {
+  /// An absolute URI that identifies the code system of the dependency code (if the
+  /// source/dependency is a value set that crosses code systems).
+  pub fn system(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("system") {
+      return Some(string);
     }
-    if let Some(_val) = self.id() {
+    return None;
+  }
+
+  /// The display for the code. The display is only provided to help editors when
+  /// editing the concept map.
+  pub fn display(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("display") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for display
+  pub fn _display(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_display") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Unique id for the element within a resource (for internal references). This may
+  /// be any string value that does not contain spaces.
+  pub fn id(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("id") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// A reference to an element that holds a coded value that corresponds to a code
+  /// system property. The idea is that the information model carries an element
+  /// somewhere that is labeled to correspond with a code system property.
+  pub fn property(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("property") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  pub fn validate(&self) -> bool {
+    if let Some(_val) = self._value() {
+      _val.validate();
     }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    if let Some(_val) = self.system() {
-    }
-    if let Some(_val) = self._value() {
-      _val.validate();
-    }
-    if let Some(_val) = self.display() {
+    if let Some(_val) = self.value() {
     }
     if let Some(_val) = self._property() {
       _val.validate();
     }
-    if let Some(_val) = self.value() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.system() {
+    }
+    if let Some(_val) = self.display() {
     }
     if let Some(_val) = self._display() {
       _val.validate();
     }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
+    if let Some(_val) = self.id() {
+    }
+    if let Some(_val) = self.property() {
     }
     return true;
   }

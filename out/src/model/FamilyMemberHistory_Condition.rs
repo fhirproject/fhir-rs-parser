@@ -1,12 +1,12 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::CodeableConcept::CodeableConcept;
+use crate::model::Element::Element;
+use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Annotation::Annotation;
-use crate::model::Extension::Extension;
-use crate::model::Age::Age;
-use crate::model::Element::Element;
 use crate::model::Range::Range;
+use crate::model::Age::Age;
 use serde_json::value::Value;
 
 
@@ -20,58 +20,11 @@ pub struct FamilyMemberHistory_Condition<'a> {
 }
 
 impl FamilyMemberHistory_Condition<'_> {
-  /// An area where general notes can be placed about this specific condition.
-  pub fn note(&self) -> Option<Vec<Annotation>> {
-    if let Some(Value::Array(val)) = self.value.get("note") {
-      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// May be used to represent additional information that is not part of the basic
-  /// definition of the element. To make the use of extensions safe and manageable,
-  /// there is a strict set of governance  applied to the definition and use of
-  /// extensions. Though any implementer can define an extension, there is a set of
-  /// requirements that SHALL be met as part of the definition of the extension.
-  pub fn extension(&self) -> Option<Vec<Extension>> {
-    if let Some(Value::Array(val)) = self.value.get("extension") {
-      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
-    }
-    return None;
-  }
-
-  /// Indicates what happened following the condition.  If the condition resulted in
-  /// death, deceased date is captured on the relation.
-  pub fn outcome(&self) -> Option<CodeableConcept> {
-    if let Some(val) = self.value.get("outcome") {
-      return Some(CodeableConcept { value: val });
-    }
-    return None;
-  }
-
-  /// Either the age of onset, range of approximate age or descriptive string can be
-  /// recorded.  For conditions with multiple occurrences, this describes the first
-  /// known occurrence.
-  pub fn onset_age(&self) -> Option<Age> {
-    if let Some(val) = self.value.get("onsetAge") {
-      return Some(Age { value: val });
-    }
-    return None;
-  }
-
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
-  /// Extensions for contributedToDeath
-  pub fn _contributed_to_death(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_contributedToDeath") {
-      return Some(Element { value: val });
+      return Some(string);
     }
     return None;
   }
@@ -121,25 +74,6 @@ impl FamilyMemberHistory_Condition<'_> {
     return None;
   }
 
-  /// The actual condition specified. Could be a coded condition (like MI or Diabetes)
-  /// or a less specific string like 'cancer' depending on how much is known about the
-  /// condition and the capabilities of the creating system.
-  pub fn code(&self) -> CodeableConcept {
-    CodeableConcept {
-      value: &self.value["code"],
-    }
-  }
-
-  /// Either the age of onset, range of approximate age or descriptive string can be
-  /// recorded.  For conditions with multiple occurrences, this describes the first
-  /// known occurrence.
-  pub fn onset_string(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("onsetString") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   /// Either the age of onset, range of approximate age or descriptive string can be
   /// recorded.  For conditions with multiple occurrences, this describes the first
   /// known occurrence.
@@ -150,23 +84,74 @@ impl FamilyMemberHistory_Condition<'_> {
     return None;
   }
 
+  /// Extensions for contributedToDeath
+  pub fn _contributed_to_death(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_contributedToDeath") {
+      return Some(Element { value: val });
+    }
+    return None;
+  }
+
+  /// Either the age of onset, range of approximate age or descriptive string can be
+  /// recorded.  For conditions with multiple occurrences, this describes the first
+  /// known occurrence.
+  pub fn onset_string(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("onsetString") {
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// May be used to represent additional information that is not part of the basic
+  /// definition of the element. To make the use of extensions safe and manageable,
+  /// there is a strict set of governance  applied to the definition and use of
+  /// extensions. Though any implementer can define an extension, there is a set of
+  /// requirements that SHALL be met as part of the definition of the extension.
+  pub fn extension(&self) -> Option<Vec<Extension>> {
+    if let Some(Value::Array(val)) = self.value.get("extension") {
+      return Some(val.into_iter().map(|e| Extension { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// An area where general notes can be placed about this specific condition.
+  pub fn note(&self) -> Option<Vec<Annotation>> {
+    if let Some(Value::Array(val)) = self.value.get("note") {
+      return Some(val.into_iter().map(|e| Annotation { value: e }).collect::<Vec<_>>());
+    }
+    return None;
+  }
+
+  /// Either the age of onset, range of approximate age or descriptive string can be
+  /// recorded.  For conditions with multiple occurrences, this describes the first
+  /// known occurrence.
+  pub fn onset_age(&self) -> Option<Age> {
+    if let Some(val) = self.value.get("onsetAge") {
+      return Some(Age { value: val });
+    }
+    return None;
+  }
+
+  /// The actual condition specified. Could be a coded condition (like MI or Diabetes)
+  /// or a less specific string like 'cancer' depending on how much is known about the
+  /// condition and the capabilities of the creating system.
+  pub fn code(&self) -> CodeableConcept {
+    CodeableConcept {
+      value: &self.value["code"],
+    }
+  }
+
+  /// Indicates what happened following the condition.  If the condition resulted in
+  /// death, deceased date is captured on the relation.
+  pub fn outcome(&self) -> Option<CodeableConcept> {
+    if let Some(val) = self.value.get("outcome") {
+      return Some(CodeableConcept { value: val });
+    }
+    return None;
+  }
+
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self.note() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.extension() {
-      _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    if let Some(_val) = self.outcome() {
-      _val.validate();
-    }
-    if let Some(_val) = self.onset_age() {
-      _val.validate();
-    }
     if let Some(_val) = self.id() {
-    }
-    if let Some(_val) = self._contributed_to_death() {
-      _val.validate();
     }
     if let Some(_val) = self._onset_string() {
       _val.validate();
@@ -179,10 +164,25 @@ impl FamilyMemberHistory_Condition<'_> {
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
     }
-    let _ = self.code().validate();
+    if let Some(_val) = self.onset_period() {
+      _val.validate();
+    }
+    if let Some(_val) = self._contributed_to_death() {
+      _val.validate();
+    }
     if let Some(_val) = self.onset_string() {
     }
-    if let Some(_val) = self.onset_period() {
+    if let Some(_val) = self.extension() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.note() {
+      _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.onset_age() {
+      _val.validate();
+    }
+    let _ = self.code().validate();
+    if let Some(_val) = self.outcome() {
       _val.validate();
     }
     return true;

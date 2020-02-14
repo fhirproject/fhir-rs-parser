@@ -1,8 +1,8 @@
 #![allow(unused_imports, non_camel_case_types)]
 
 use crate::model::Extension::Extension;
-use crate::model::Element::Element;
 use crate::model::TestReport_Action1::TestReport_Action1;
+use crate::model::Element::Element;
 use serde_json::value::Value;
 
 
@@ -15,12 +15,9 @@ pub struct TestReport_Test<'a> {
 }
 
 impl TestReport_Test<'_> {
-  /// Extensions for description
-  pub fn _description(&self) -> Option<Element> {
-    if let Some(val) = self.value.get("_description") {
-      return Some(Element { value: val });
-    }
-    return None;
+  /// Action would contain either an operation or an assertion.
+  pub fn action(&self) -> Vec<TestReport_Action1> {
+    self.value.get("action").unwrap().as_array().unwrap().into_iter().map(|e| TestReport_Action1 { value: e }).collect::<Vec<_>>()
   }
 
   /// May be used to represent additional information that is not part of the basic
@@ -35,6 +32,14 @@ impl TestReport_Test<'_> {
     return None;
   }
 
+  /// The name of this test used for tracking/logging purposes by test engines.
+  pub fn name(&self) -> Option<&str> {
+    if let Some(Value::String(string)) = self.value.get("name") {
+      return Some(string);
+    }
+    return None;
+  }
+
   /// Extensions for name
   pub fn _name(&self) -> Option<Element> {
     if let Some(val) = self.value.get("_name") {
@@ -45,18 +50,26 @@ impl TestReport_Test<'_> {
 
   /// Unique id for the element within a resource (for internal references). This may
   /// be any string value that does not contain spaces.
-  pub fn id(&self) -> Option<String> {
+  pub fn id(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("id") {
-      return Some(string.to_string());
+      return Some(string);
     }
     return None;
   }
 
   /// A short description of the test used by test engines for tracking and reporting
   /// purposes.
-  pub fn description(&self) -> Option<String> {
+  pub fn description(&self) -> Option<&str> {
     if let Some(Value::String(string)) = self.value.get("description") {
-      return Some(string.to_string());
+      return Some(string);
+    }
+    return None;
+  }
+
+  /// Extensions for description
+  pub fn _description(&self) -> Option<Element> {
+    if let Some(val) = self.value.get("_description") {
+      return Some(Element { value: val });
     }
     return None;
   }
@@ -79,25 +92,12 @@ impl TestReport_Test<'_> {
     return None;
   }
 
-  /// Action would contain either an operation or an assertion.
-  pub fn action(&self) -> Vec<TestReport_Action1> {
-    self.value.get("action").unwrap().as_array().unwrap().into_iter().map(|e| TestReport_Action1 { value: e }).collect::<Vec<_>>()
-  }
-
-  /// The name of this test used for tracking/logging purposes by test engines.
-  pub fn name(&self) -> Option<String> {
-    if let Some(Value::String(string)) = self.value.get("name") {
-      return Some(string.to_string());
-    }
-    return None;
-  }
-
   pub fn validate(&self) -> bool {
-    if let Some(_val) = self._description() {
-      _val.validate();
-    }
+    let _ = self.action().into_iter().for_each(|e| { e.validate(); });
     if let Some(_val) = self.extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
+    }
+    if let Some(_val) = self.name() {
     }
     if let Some(_val) = self._name() {
       _val.validate();
@@ -106,11 +106,11 @@ impl TestReport_Test<'_> {
     }
     if let Some(_val) = self.description() {
     }
+    if let Some(_val) = self._description() {
+      _val.validate();
+    }
     if let Some(_val) = self.modifier_extension() {
       _val.into_iter().for_each(|e| { e.validate(); });
-    }
-    let _ = self.action().into_iter().for_each(|e| { e.validate(); });
-    if let Some(_val) = self.name() {
     }
     return true;
   }
