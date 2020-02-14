@@ -8,6 +8,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::iter::FromIterator;
 use std::path::Path;
+use std::process::Command;
 use textwrap::{fill, indent};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -224,6 +225,15 @@ fn write_string_to_file(contents: &str, path_string: &str) -> bool {
     Err(why) => panic!("couldn't write to {}: {}", path_string, why.description()),
     Ok(_) => println!("successfully wrote to {}", path_string),
   }
+
+  // Run rustfmt on the file if it ends with .rs
+  if path_string.ends_with(".rs") {
+    Command::new("rustfmt")
+      .arg(&path_string)
+      .output()
+      .expect("failed to execute process");
+  }
+
   return true;
 }
 
