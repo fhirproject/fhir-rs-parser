@@ -437,124 +437,170 @@ impl Condition<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._abatement_date_time() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._abatement_string() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._implicit_rules() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._language() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._onset_date_time() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._onset_string() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._recorded_date() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.abatement_age() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.abatement_date_time() {}
         if let Some(_val) = self.abatement_period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.abatement_range() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.abatement_string() {}
         if let Some(_val) = self.asserter() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.body_site() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.category() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.clinical_status() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.code() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.contained() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.encounter() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.evidence() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.implicit_rules() {}
         if let Some(_val) = self.language() {}
         if let Some(_val) = self.meta() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.note() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.onset_age() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.onset_date_time() {}
         if let Some(_val) = self.onset_period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.onset_range() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.onset_string() {}
         if let Some(_val) = self.recorded_date() {}
         if let Some(_val) = self.recorder() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.severity() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.stage() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
-        let _ = self.subject().validate();
+        if !self.subject().validate() {
+            return false;
+        }
         if let Some(_val) = self.text() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.verification_status() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         return true;
     }

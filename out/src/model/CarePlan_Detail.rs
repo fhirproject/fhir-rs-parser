@@ -325,42 +325,56 @@ impl CarePlan_Detail<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._description() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._do_not_perform() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._instantiates_uri() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self._kind() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._scheduled_string() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._status() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.code() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.daily_amount() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.description() {}
         if let Some(_val) = self.do_not_perform() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.goal() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.instantiates_canonical() {
@@ -371,47 +385,61 @@ impl CarePlan_Detail<'_> {
         }
         if let Some(_val) = self.kind() {}
         if let Some(_val) = self.location() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.performer() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.product_codeable_concept() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.product_reference() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.quantity() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.reason_code() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.reason_reference() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.scheduled_period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.scheduled_string() {}
         if let Some(_val) = self.scheduled_timing() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.status() {}
         if let Some(_val) = self.status_reason() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         return true;
     }

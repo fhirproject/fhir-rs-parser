@@ -169,38 +169,50 @@ impl Claim_Insurance<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._business_arrangement() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._focal() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._pre_auth_ref() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self._sequence() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.business_arrangement() {}
         if let Some(_val) = self.claim_response() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
-        let _ = self.coverage().validate();
+        if !self.coverage().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.focal() {}
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.pre_auth_ref() {
             _val.into_iter().for_each(|_e| {});

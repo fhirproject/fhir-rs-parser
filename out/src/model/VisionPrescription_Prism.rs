@@ -94,23 +94,27 @@ impl VisionPrescription_Prism<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._amount() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._base() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.amount() {}
         if let Some(_val) = self.base() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         return true;
     }

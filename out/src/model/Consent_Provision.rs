@@ -203,64 +203,70 @@ impl Consent_Provision<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._type() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.action() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.actor() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.class() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.code() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.data() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.data_period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.provision() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.purpose() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.security_label() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.fhir_type() {}
         return true;

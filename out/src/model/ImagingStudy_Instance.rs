@@ -121,27 +121,35 @@ impl ImagingStudy_Instance<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._number() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._title() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._uid() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.number() {}
-        let _ = self.sop_class().validate();
+        if !self.sop_class().validate() {
+            return false;
+        }
         if let Some(_val) = self.title() {}
         if let Some(_val) = self.uid() {}
         return true;

@@ -152,34 +152,48 @@ impl SampledData<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._data() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._dimensions() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._factor() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._lower_limit() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._upper_limit() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.data() {}
         if let Some(_val) = self.dimensions() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.factor() {}
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.lower_limit() {}
-        let _ = self.origin().validate();
+        if !self.origin().validate() {
+            return false;
+        }
         if let Some(_val) = self.period() {}
         if let Some(_val) = self.upper_limit() {}
         return true;

@@ -99,23 +99,29 @@ impl Group_Member<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._inactive() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
-        let _ = self.entity().validate();
+        if !self.entity().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.inactive() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.period() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         return true;
     }

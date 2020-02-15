@@ -124,26 +124,36 @@ impl MarketingStatus<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._restore_date() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
-        let _ = self.country().validate();
-        let _ = self.date_range().validate();
+        if !self.country().validate() {
+            return false;
+        }
+        if !self.date_range().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.jurisdiction() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.restore_date() {}
-        let _ = self.status().validate();
+        if !self.status().validate() {
+            return false;
+        }
         return true;
     }
 }

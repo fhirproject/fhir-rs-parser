@@ -109,25 +109,33 @@ impl ClaimResponse_Adjudication<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._value() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.amount() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
-        let _ = self.category().validate();
+        if !self.category().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.reason() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.value() {}
         return true;

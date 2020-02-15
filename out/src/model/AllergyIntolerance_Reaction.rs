@@ -164,41 +164,56 @@ impl AllergyIntolerance_Reaction<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._description() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._onset() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._severity() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.description() {}
         if let Some(_val) = self.exposure_route() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
-        let _ = self.manifestation().into_iter().for_each(|e| {
-            e.validate();
-        });
+        if !self
+            .manifestation()
+            .into_iter()
+            .map(|e| e.validate())
+            .all(|x| x == true)
+        {
+            return false;
+        }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.note() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.onset() {}
         if let Some(_val) = self.severity() {}
         if let Some(_val) = self.substance() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         return true;
     }

@@ -108,26 +108,32 @@ impl ProductShelfLife<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.identifier() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
-        let _ = self.period().validate();
+        if !self.period().validate() {
+            return false;
+        }
         if let Some(_val) = self.special_precautions_for_storage() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
-        let _ = self.fhir_type().validate();
+        if !self.fhir_type().validate() {
+            return false;
+        }
         return true;
     }
 }

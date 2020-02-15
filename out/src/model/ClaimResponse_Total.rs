@@ -80,18 +80,22 @@ impl ClaimResponse_Total<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.amount().validate();
-        let _ = self.category().validate();
+        if !self.amount().validate() {
+            return false;
+        }
+        if !self.category().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         return true;
     }

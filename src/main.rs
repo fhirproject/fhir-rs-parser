@@ -344,6 +344,19 @@ fn generate_trait(
 
     validation_string.push_str("  pub fn validate(&self) -> bool {\n");
 
+    let mut builder_string = String::new();
+    builder_string.push_str("\n#[derive(Debug)]\n");
+    builder_string.push_str("pub struct ");
+    builder_string.push_str(name);
+    builder_string.push_str("Builder {\n");
+    builder_string.push_str("  pub value: Value,\n}\n\n");
+    builder_string.push_str("impl ");
+    builder_string.push_str(name);
+    builder_string.push_str("Builder {\n");
+    builder_string.push_str("  pub fn build() -> ");
+    builder_string.push_str(name);
+    builder_string.push_str("{\n");
+
     let properties = match &definition.properties {
       Some(properties) => properties,
       None => return String::new(),
@@ -616,31 +629,40 @@ fn write_property(
   }
 
   if required {
-    validation_string.push_str("    let _ = self.");
-    validation_string.push_str(&sanitized_name);
-    validation_string.push_str("()");
     if array {
       if !type_definition.builtin {
-        validation_string.push_str(".into_iter().for_each(|e| { e.validate(); })")
+        validation_string.push_str("    if !");
+        validation_string.push_str("self.");
+        validation_string.push_str(&sanitized_name);
+        validation_string.push_str("()");
+        validation_string.push_str(
+          ".into_iter().map(|e| { e.validate() }).all(|x| x == true) { return false; }\n",
+        );
       } else {
-        validation_string.push_str(".into_iter().for_each(|_e| {})")
+        validation_string.push_str("    self.");
+        validation_string.push_str(&sanitized_name);
+        validation_string.push_str("()");
+        validation_string.push_str(".into_iter().for_each(|_e| {});\n");
       }
     } else if !type_definition.builtin && !type_definition.string_enum {
-      validation_string.push_str(".validate()");
+      validation_string.push_str("    if !");
+      validation_string.push_str("self.");
+      validation_string.push_str(&sanitized_name);
+      validation_string.push_str("()");
+      validation_string.push_str(".validate() { return false; }\n");
     }
-    validation_string.push_str(";\n");
   } else {
     validation_string.push_str("    if let Some(_val) = self.");
     validation_string.push_str(&sanitized_name);
     validation_string.push_str("() {\n");
     if array {
       if !type_definition.builtin {
-        validation_string.push_str("      _val.into_iter().for_each(|e| { e.validate(); });\n");
+        validation_string.push_str("      if !_val.into_iter().map(|e| { e.validate() }).all(|x| x == true) { return false; }\n");
       } else {
         validation_string.push_str("      _val.into_iter().for_each(|_e| {});\n");
       }
     } else if !type_definition.builtin && !type_definition.string_enum {
-      validation_string.push_str("      _val.validate();\n");
+      validation_string.push_str("      if !_val.validate() { return false; }\n");
     }
     validation_string.push_str("    }\n");
   }

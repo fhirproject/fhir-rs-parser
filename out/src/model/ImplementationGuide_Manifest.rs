@@ -160,44 +160,51 @@ impl ImplementationGuide_Manifest<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._image() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self._other() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self._rendering() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.image() {
             _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.other() {
             _val.into_iter().for_each(|_e| {});
         }
         if let Some(_val) = self.page() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.rendering() {}
-        let _ = self.resource().into_iter().for_each(|e| {
-            e.validate();
-        });
+        if !self
+            .resource()
+            .into_iter()
+            .map(|e| e.validate())
+            .all(|x| x == true)
+        {
+            return false;
+        }
         return true;
     }
 }

@@ -144,34 +144,51 @@ impl Signature<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._data() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._sig_format() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._target_format() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._when() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.data() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.on_behalf_of() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.sig_format() {}
         if let Some(_val) = self.target_format() {}
-        let _ = self.fhir_type().into_iter().for_each(|e| {
-            e.validate();
-        });
+        if !self
+            .fhir_type()
+            .into_iter()
+            .map(|e| e.validate())
+            .all(|x| x == true)
+        {
+            return false;
+        }
         if let Some(_val) = self.when() {}
-        let _ = self.who().validate();
+        if !self.who().validate() {
+            return false;
+        }
         return true;
     }
 }

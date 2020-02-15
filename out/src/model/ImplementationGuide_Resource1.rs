@@ -124,28 +124,36 @@ impl ImplementationGuide_Resource1<'_> {
 
     pub fn validate(&self) -> bool {
         if let Some(_val) = self._example_boolean() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._example_canonical() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self._relative_path() {
-            _val.validate();
+            if !_val.validate() {
+                return false;
+            }
         }
         if let Some(_val) = self.example_boolean() {}
         if let Some(_val) = self.example_canonical() {}
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
-        let _ = self.reference().validate();
+        if !self.reference().validate() {
+            return false;
+        }
         if let Some(_val) = self.relative_path() {}
         return true;
     }

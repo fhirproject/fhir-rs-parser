@@ -75,19 +75,23 @@ impl MeasureReport_Component<'_> {
     }
 
     pub fn validate(&self) -> bool {
-        let _ = self.code().validate();
+        if !self.code().validate() {
+            return false;
+        }
         if let Some(_val) = self.extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.modifier_extension() {
-            _val.into_iter().for_each(|e| {
-                e.validate();
-            });
+            if !_val.into_iter().map(|e| e.validate()).all(|x| x == true) {
+                return false;
+            }
         }
-        let _ = self.value().validate();
+        if !self.value().validate() {
+            return false;
+        }
         return true;
     }
 }
