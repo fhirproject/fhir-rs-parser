@@ -11,20 +11,24 @@ use crate::model::TestReport_Participant::TestReport_Participant;
 use crate::model::TestReport_Setup::TestReport_Setup;
 use crate::model::TestReport_Teardown::TestReport_Teardown;
 use crate::model::TestReport_Test::TestReport_Test;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A summary of information based on the results of executing a TestScript.
 
 #[derive(Debug)]
 pub struct TestReport<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestReport<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl TestReport<'_> {
     /// Extensions for issued
     pub fn _issued(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl TestReport<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl TestReport<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +66,9 @@ impl TestReport<'_> {
     /// Extensions for result
     pub fn _result(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_result") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +76,9 @@ impl TestReport<'_> {
     /// Extensions for score
     pub fn _score(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_score") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +86,9 @@ impl TestReport<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +96,9 @@ impl TestReport<'_> {
     /// Extensions for tester
     pub fn _tester(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_tester") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +110,9 @@ impl TestReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,7 +128,9 @@ impl TestReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -128,7 +150,9 @@ impl TestReport<'_> {
     /// of FHIR.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +189,9 @@ impl TestReport<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -186,7 +212,9 @@ impl TestReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -207,7 +235,9 @@ impl TestReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("participant") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestReport_Participant { value: e })
+                    .map(|e| TestReport_Participant {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -235,7 +265,9 @@ impl TestReport<'_> {
     /// executed.
     pub fn setup(&self) -> Option<TestReport_Setup> {
         if let Some(val) = self.value.get("setup") {
-            return Some(TestReport_Setup { value: val });
+            return Some(TestReport_Setup {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -252,7 +284,9 @@ impl TestReport<'_> {
     /// were executed (successfully or otherwise).
     pub fn teardown(&self) -> Option<TestReport_Teardown> {
         if let Some(val) = self.value.get("teardown") {
-            return Some(TestReport_Teardown { value: val });
+            return Some(TestReport_Teardown {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +296,9 @@ impl TestReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("test") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestReport_Test { value: e })
+                    .map(|e| TestReport_Test {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -273,7 +309,7 @@ impl TestReport<'_> {
     /// TestScript that was executed, matching the `TestScript.url`.
     pub fn test_script(&self) -> Reference {
         Reference {
-            value: &self.value["testScript"],
+            value: Cow::Borrowed(&self.value["testScript"]),
         }
     }
 
@@ -293,7 +329,9 @@ impl TestReport<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -402,6 +440,25 @@ impl TestReport<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestReportBuilder {
+    pub value: Value,
+}
+
+impl TestReportBuilder {
+    pub fn build(&self) -> TestReport {
+        TestReport {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(test_script: Reference) -> TestReportBuilder {
+        let mut __value: Value = json!({});
+        __value["testScript"] = json!(test_script.value);
+        return TestReportBuilder { value: __value };
     }
 }
 

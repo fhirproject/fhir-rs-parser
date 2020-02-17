@@ -4,7 +4,9 @@ use crate::model::Annotation::Annotation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::RiskEvidenceSynthesis_CertaintySubcomponent::RiskEvidenceSynthesis_CertaintySubcomponent;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a
 /// population plus exposure state where the risk estimate is derived from a
@@ -12,7 +14,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_Certainty<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RiskEvidenceSynthesis_Certainty<'_> {
@@ -23,7 +25,9 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
         if let Some(Value::Array(val)) = self.value.get("certaintySubcomponent") {
             return Some(
                 val.into_iter()
-                    .map(|e| RiskEvidenceSynthesis_CertaintySubcomponent { value: e })
+                    .map(|e| RiskEvidenceSynthesis_CertaintySubcomponent {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -39,7 +43,9 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +76,9 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +90,9 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +104,9 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
         if let Some(Value::Array(val)) = self.value.get("rating") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,5 +141,23 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RiskEvidenceSynthesis_CertaintyBuilder {
+    pub value: Value,
+}
+
+impl RiskEvidenceSynthesis_CertaintyBuilder {
+    pub fn build(&self) -> RiskEvidenceSynthesis_Certainty {
+        RiskEvidenceSynthesis_Certainty {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RiskEvidenceSynthesis_CertaintyBuilder {
+        let mut __value: Value = json!({});
+        return RiskEvidenceSynthesis_CertaintyBuilder { value: __value };
     }
 }

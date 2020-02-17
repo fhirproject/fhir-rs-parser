@@ -3,20 +3,24 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Todo.
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_Classification<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceReferenceInformation_Classification<'_> {
     /// Todo.
     pub fn classification(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("classification") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
     /// Todo.
     pub fn domain(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("domain") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +77,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +91,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
         if let Some(Value::Array(val)) = self.value.get("source") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +105,9 @@ impl SubstanceReferenceInformation_Classification<'_> {
         if let Some(Value::Array(val)) = self.value.get("subtype") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,5 +147,23 @@ impl SubstanceReferenceInformation_Classification<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceReferenceInformation_ClassificationBuilder {
+    pub value: Value,
+}
+
+impl SubstanceReferenceInformation_ClassificationBuilder {
+    pub fn build(&self) -> SubstanceReferenceInformation_Classification {
+        SubstanceReferenceInformation_Classification {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceReferenceInformation_ClassificationBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceReferenceInformation_ClassificationBuilder { value: __value };
     }
 }

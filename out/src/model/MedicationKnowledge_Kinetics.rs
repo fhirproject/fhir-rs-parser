@@ -3,13 +3,15 @@
 use crate::model::Duration::Duration;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_Kinetics<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_Kinetics<'_> {
@@ -18,7 +20,9 @@ impl MedicationKnowledge_Kinetics<'_> {
         if let Some(Value::Array(val)) = self.value.get("areaUnderCurve") {
             return Some(
                 val.into_iter()
-                    .map(|e| Quantity { value: e })
+                    .map(|e| Quantity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -34,7 +38,9 @@ impl MedicationKnowledge_Kinetics<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +51,9 @@ impl MedicationKnowledge_Kinetics<'_> {
     /// substance in the body) to decrease by half.
     pub fn half_life_period(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("halfLifePeriod") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +72,9 @@ impl MedicationKnowledge_Kinetics<'_> {
         if let Some(Value::Array(val)) = self.value.get("lethalDose50") {
             return Some(
                 val.into_iter()
-                    .map(|e| Quantity { value: e })
+                    .map(|e| Quantity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +96,9 @@ impl MedicationKnowledge_Kinetics<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -121,5 +133,23 @@ impl MedicationKnowledge_Kinetics<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_KineticsBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_KineticsBuilder {
+    pub fn build(&self) -> MedicationKnowledge_Kinetics {
+        MedicationKnowledge_Kinetics {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicationKnowledge_KineticsBuilder {
+        let mut __value: Value = json!({});
+        return MedicationKnowledge_KineticsBuilder { value: __value };
     }
 }

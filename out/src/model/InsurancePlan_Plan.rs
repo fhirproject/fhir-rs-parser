@@ -6,13 +6,15 @@ use crate::model::Identifier::Identifier;
 use crate::model::InsurancePlan_GeneralCost::InsurancePlan_GeneralCost;
 use crate::model::InsurancePlan_SpecificCost::InsurancePlan_SpecificCost;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details of a Health Insurance product/plan provided by an organization.
 
 #[derive(Debug)]
 pub struct InsurancePlan_Plan<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl InsurancePlan_Plan<'_> {
@@ -21,7 +23,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("coverageArea") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -37,7 +41,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -49,7 +55,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("generalCost") {
             return Some(
                 val.into_iter()
-                    .map(|e| InsurancePlan_GeneralCost { value: e })
+                    .map(|e| InsurancePlan_GeneralCost {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +79,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +103,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +117,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("network") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +131,9 @@ impl InsurancePlan_Plan<'_> {
         if let Some(Value::Array(val)) = self.value.get("specificCost") {
             return Some(
                 val.into_iter()
-                    .map(|e| InsurancePlan_SpecificCost { value: e })
+                    .map(|e| InsurancePlan_SpecificCost {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -127,7 +143,9 @@ impl InsurancePlan_Plan<'_> {
     /// Type of plan. For example, "Platinum" or "High Deductable".
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -175,5 +193,23 @@ impl InsurancePlan_Plan<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct InsurancePlan_PlanBuilder {
+    pub value: Value,
+}
+
+impl InsurancePlan_PlanBuilder {
+    pub fn build(&self) -> InsurancePlan_Plan {
+        InsurancePlan_Plan {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> InsurancePlan_PlanBuilder {
+        let mut __value: Value = json!({});
+        return InsurancePlan_PlanBuilder { value: __value };
     }
 }

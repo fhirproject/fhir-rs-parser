@@ -6,7 +6,9 @@ use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Specifies clinical/business/etc. metadata that can be used to retrieve, index
 /// and/or categorize an artifact. This metadata can either be specific to the
@@ -15,7 +17,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct UsageContext<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl UsageContext<'_> {
@@ -23,7 +25,7 @@ impl UsageContext<'_> {
     /// context.
     pub fn code(&self) -> Coding {
         Coding {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -36,7 +38,9 @@ impl UsageContext<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -56,7 +60,9 @@ impl UsageContext<'_> {
     /// interpretation of the value is defined by the code.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +71,9 @@ impl UsageContext<'_> {
     /// interpretation of the value is defined by the code.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +82,9 @@ impl UsageContext<'_> {
     /// interpretation of the value is defined by the code.
     pub fn value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +93,9 @@ impl UsageContext<'_> {
     /// interpretation of the value is defined by the code.
     pub fn value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("valueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -119,5 +131,24 @@ impl UsageContext<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct UsageContextBuilder {
+    pub value: Value,
+}
+
+impl UsageContextBuilder {
+    pub fn build(&self) -> UsageContext {
+        UsageContext {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: Coding) -> UsageContextBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return UsageContextBuilder { value: __value };
     }
 }

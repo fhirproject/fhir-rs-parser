@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The parameters to the module. This collection specifies both the input and
 /// output parameters. Input parameters are provided by the caller as part of the
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ParameterDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ParameterDefinition<'_> {
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl ParameterDefinition<'_> {
     /// Extensions for max
     pub fn _max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl ParameterDefinition<'_> {
     /// Extensions for min
     pub fn _min(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl ParameterDefinition<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +59,9 @@ impl ParameterDefinition<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +69,9 @@ impl ParameterDefinition<'_> {
     /// Extensions for use
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +94,9 @@ impl ParameterDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -193,5 +209,23 @@ impl ParameterDefinition<'_> {
         if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.fhir_use() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ParameterDefinitionBuilder {
+    pub value: Value,
+}
+
+impl ParameterDefinitionBuilder {
+    pub fn build(&self) -> ParameterDefinition {
+        ParameterDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ParameterDefinitionBuilder {
+        let mut __value: Value = json!({});
+        return ParameterDefinitionBuilder { value: __value };
     }
 }

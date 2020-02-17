@@ -3,7 +3,9 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Representation of the content produced in a DICOM imaging study. A study
 /// comprises a set of series, each of which includes a set of Service-Object Pair
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImagingStudy_Instance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImagingStudy_Instance<'_> {
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl ImagingStudy_Instance<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl ImagingStudy_Instance<'_> {
     /// Extensions for uid
     pub fn _uid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_uid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl ImagingStudy_Instance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +91,9 @@ impl ImagingStudy_Instance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,7 +111,7 @@ impl ImagingStudy_Instance<'_> {
     /// DICOM instance  type.
     pub fn sop_class(&self) -> Coding {
         Coding {
-            value: &self.value["sopClass"],
+            value: Cow::Borrowed(&self.value["sopClass"]),
         }
     }
 
@@ -153,5 +165,24 @@ impl ImagingStudy_Instance<'_> {
         if let Some(_val) = self.title() {}
         if let Some(_val) = self.uid() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImagingStudy_InstanceBuilder {
+    pub value: Value,
+}
+
+impl ImagingStudy_InstanceBuilder {
+    pub fn build(&self) -> ImagingStudy_Instance {
+        ImagingStudy_Instance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(sop_class: Coding) -> ImagingStudy_InstanceBuilder {
+        let mut __value: Value = json!({});
+        __value["sopClass"] = json!(sop_class.value);
+        return ImagingStudy_InstanceBuilder { value: __value };
     }
 }

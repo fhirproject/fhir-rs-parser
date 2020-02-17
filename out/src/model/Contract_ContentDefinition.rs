@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_ContentDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_ContentDefinition<'_> {
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Contract_ContentDefinition<'_> {
     /// Extensions for publicationDate
     pub fn _publication_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publicationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl Contract_ContentDefinition<'_> {
     /// Extensions for publicationStatus
     pub fn _publication_status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publicationStatus") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +66,9 @@ impl Contract_ContentDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +99,9 @@ impl Contract_ContentDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,7 +132,9 @@ impl Contract_ContentDefinition<'_> {
     /// The  individual or organization that published the Contract precursor content.
     pub fn publisher(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("publisher") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -128,7 +142,9 @@ impl Contract_ContentDefinition<'_> {
     /// Detailed Precusory content type.
     pub fn sub_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -138,7 +154,7 @@ impl Contract_ContentDefinition<'_> {
     /// workers compensation.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -186,5 +202,24 @@ impl Contract_ContentDefinition<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_ContentDefinitionBuilder {
+    pub value: Value,
+}
+
+impl Contract_ContentDefinitionBuilder {
+    pub fn build(&self) -> Contract_ContentDefinition {
+        Contract_ContentDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> Contract_ContentDefinitionBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return Contract_ContentDefinitionBuilder { value: __value };
     }
 }

@@ -2,13 +2,15 @@
 
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of ordered Quantities defined by a low and high limit.
 
 #[derive(Debug)]
 pub struct Range<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Range<'_> {
@@ -21,7 +23,9 @@ impl Range<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -31,7 +35,9 @@ impl Range<'_> {
     /// The high limit. The boundary is inclusive.
     pub fn high(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("high") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl Range<'_> {
     /// The low limit. The boundary is inclusive.
     pub fn low(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("low") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,5 +79,23 @@ impl Range<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RangeBuilder {
+    pub value: Value,
+}
+
+impl RangeBuilder {
+    pub fn build(&self) -> Range {
+        Range {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RangeBuilder {
+        let mut __value: Value = json!({});
+        return RangeBuilder { value: __value };
     }
 }

@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Timing_Repeat::Timing_Repeat;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Specifies an event that may occur multiple times. Timing schedules are used to
 /// record when things are planned, expected or requested to occur. The most common
@@ -14,7 +16,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Timing<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Timing<'_> {
@@ -23,7 +25,9 @@ impl Timing<'_> {
         if let Some(Value::Array(val)) = self.value.get("_event") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -38,7 +42,9 @@ impl Timing<'_> {
     /// still applies over the code (and is not contained in the code).
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +70,9 @@ impl Timing<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +103,9 @@ impl Timing<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +115,9 @@ impl Timing<'_> {
     /// A set of rules that describe when the event is scheduled.
     pub fn repeat(&self) -> Option<Timing_Repeat> {
         if let Some(val) = self.value.get("repeat") {
-            return Some(Timing_Repeat { value: val });
+            return Some(Timing_Repeat {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -141,5 +153,23 @@ impl Timing<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TimingBuilder {
+    pub value: Value,
+}
+
+impl TimingBuilder {
+    pub fn build(&self) -> Timing {
+        Timing {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TimingBuilder {
+        let mut __value: Value = json!({});
+        return TimingBuilder { value: __value };
     }
 }

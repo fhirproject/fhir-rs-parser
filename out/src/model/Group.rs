@@ -10,7 +10,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Represents a defined collection of entities that may be discussed or acted upon
 /// collectively but which are not expected to act collectively, and are not
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Group<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Group<'_> {
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl Group<'_> {
     /// Extensions for actual
     pub fn _actual(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actual") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl Group<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl Group<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl Group<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl Group<'_> {
     /// Extensions for quantity
     pub fn _quantity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_quantity") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +88,9 @@ impl Group<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +118,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("characteristic") {
             return Some(
                 val.into_iter()
-                    .map(|e| Group_Characteristic { value: e })
+                    .map(|e| Group_Characteristic {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +131,9 @@ impl Group<'_> {
     /// etc.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -125,7 +145,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -141,7 +163,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -162,7 +186,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -192,7 +218,9 @@ impl Group<'_> {
     /// registered members.
     pub fn managing_entity(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("managingEntity") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -202,7 +230,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("member") {
             return Some(
                 val.into_iter()
-                    .map(|e| Group_Member { value: e })
+                    .map(|e| Group_Member {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +244,9 @@ impl Group<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -235,7 +267,9 @@ impl Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -266,7 +300,9 @@ impl Group<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -374,6 +410,24 @@ impl Group<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct GroupBuilder {
+    pub value: Value,
+}
+
+impl GroupBuilder {
+    pub fn build(&self) -> Group {
+        Group {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> GroupBuilder {
+        let mut __value: Value = json!({});
+        return GroupBuilder { value: __value };
     }
 }
 

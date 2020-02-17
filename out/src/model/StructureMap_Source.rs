@@ -33,20 +33,24 @@ use crate::model::Signature::Signature;
 use crate::model::Timing::Timing;
 use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A Map of relationships between 2 structures that can be used to transform data.
 
 #[derive(Debug)]
 pub struct StructureMap_Source<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl StructureMap_Source<'_> {
     /// Extensions for check
     pub fn _check(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_check") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +58,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for condition
     pub fn _condition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_condition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +68,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for context
     pub fn _context(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_context") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -70,7 +78,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueBase64Binary
     pub fn _default_value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +88,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueBoolean
     pub fn _default_value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -86,7 +98,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueCanonical
     pub fn _default_value_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +108,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueCode
     pub fn _default_value_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +118,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueDate
     pub fn _default_value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -110,7 +128,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueDateTime
     pub fn _default_value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -118,7 +138,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueDecimal
     pub fn _default_value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +148,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueId
     pub fn _default_value_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -134,7 +158,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueInstant
     pub fn _default_value_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -142,7 +168,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueInteger
     pub fn _default_value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -150,7 +178,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueMarkdown
     pub fn _default_value_markdown(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueMarkdown") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -158,7 +188,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueOid
     pub fn _default_value_oid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueOid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -166,7 +198,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValuePositiveInt
     pub fn _default_value_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValuePositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -174,7 +208,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueString
     pub fn _default_value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -182,7 +218,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueTime
     pub fn _default_value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -190,7 +228,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueUnsignedInt
     pub fn _default_value_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -198,7 +238,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueUri
     pub fn _default_value_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -206,7 +248,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueUrl
     pub fn _default_value_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -214,7 +258,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for defaultValueUuid
     pub fn _default_value_uuid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUuid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,7 +268,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for element
     pub fn _element(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_element") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -230,7 +278,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for listMode
     pub fn _list_mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_listMode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -238,7 +288,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for logMessage
     pub fn _log_message(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_logMessage") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -246,7 +298,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for max
     pub fn _max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -254,7 +308,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for min
     pub fn _min(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +318,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -270,7 +328,9 @@ impl StructureMap_Source<'_> {
     /// Extensions for variable
     pub fn _variable(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_variable") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -303,7 +363,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("defaultValueAddress") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -311,7 +373,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("defaultValueAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -319,7 +383,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_annotation(&self) -> Option<Annotation> {
         if let Some(val) = self.value.get("defaultValueAnnotation") {
-            return Some(Annotation { value: val });
+            return Some(Annotation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -327,7 +393,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("defaultValueAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -367,7 +435,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("defaultValueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -375,7 +445,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("defaultValueCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -383,7 +455,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_contact_detail(&self) -> Option<ContactDetail> {
         if let Some(val) = self.value.get("defaultValueContactDetail") {
-            return Some(ContactDetail { value: val });
+            return Some(ContactDetail {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -391,7 +465,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_contact_point(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("defaultValueContactPoint") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -399,7 +475,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_contributor(&self) -> Option<Contributor> {
         if let Some(val) = self.value.get("defaultValueContributor") {
-            return Some(Contributor { value: val });
+            return Some(Contributor {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -407,7 +485,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_count(&self) -> Option<Count> {
         if let Some(val) = self.value.get("defaultValueCount") {
-            return Some(Count { value: val });
+            return Some(Count {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -415,7 +495,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("defaultValueDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -447,7 +529,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_distance(&self) -> Option<Distance> {
         if let Some(val) = self.value.get("defaultValueDistance") {
-            return Some(Distance { value: val });
+            return Some(Distance {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -455,7 +539,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_dosage(&self) -> Option<Dosage> {
         if let Some(val) = self.value.get("defaultValueDosage") {
-            return Some(Dosage { value: val });
+            return Some(Dosage {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -463,7 +549,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("defaultValueDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -471,7 +559,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("defaultValueExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -479,7 +569,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_human_name(&self) -> Option<HumanName> {
         if let Some(val) = self.value.get("defaultValueHumanName") {
-            return Some(HumanName { value: val });
+            return Some(HumanName {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -495,7 +587,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("defaultValueIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -527,7 +621,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("defaultValueMeta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -535,7 +631,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("defaultValueMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -551,7 +649,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_parameter_definition(&self) -> Option<ParameterDefinition> {
         if let Some(val) = self.value.get("defaultValueParameterDefinition") {
-            return Some(ParameterDefinition { value: val });
+            return Some(ParameterDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -559,7 +659,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("defaultValuePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -575,7 +677,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("defaultValueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -583,7 +687,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("defaultValueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -591,7 +697,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("defaultValueRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -599,7 +707,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("defaultValueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -607,7 +717,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_related_artifact(&self) -> Option<RelatedArtifact> {
         if let Some(val) = self.value.get("defaultValueRelatedArtifact") {
-            return Some(RelatedArtifact { value: val });
+            return Some(RelatedArtifact {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -615,7 +727,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("defaultValueSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -623,7 +737,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("defaultValueSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -647,7 +763,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("defaultValueTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -655,7 +773,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("defaultValueTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -687,7 +807,9 @@ impl StructureMap_Source<'_> {
     /// A value to use if there is no existing value in the source object.
     pub fn default_value_usage_context(&self) -> Option<UsageContext> {
         if let Some(val) = self.value.get("defaultValueUsageContext") {
-            return Some(UsageContext { value: val });
+            return Some(UsageContext {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -717,7 +839,9 @@ impl StructureMap_Source<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -784,7 +908,9 @@ impl StructureMap_Source<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -1150,6 +1276,24 @@ impl StructureMap_Source<'_> {
         if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.variable() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct StructureMap_SourceBuilder {
+    pub value: Value,
+}
+
+impl StructureMap_SourceBuilder {
+    pub fn build(&self) -> StructureMap_Source {
+        StructureMap_Source {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> StructureMap_SourceBuilder {
+        let mut __value: Value = json!({});
+        return StructureMap_SourceBuilder { value: __value };
     }
 }
 

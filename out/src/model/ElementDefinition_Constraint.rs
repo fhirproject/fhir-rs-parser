@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Captures constraints on each element within the resource, profile, or extension.
 
 #[derive(Debug)]
 pub struct ElementDefinition_Constraint<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ElementDefinition_Constraint<'_> {
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl ElementDefinition_Constraint<'_> {
     /// Extensions for human
     pub fn _human(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_human") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl ElementDefinition_Constraint<'_> {
     /// Extensions for key
     pub fn _key(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_key") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl ElementDefinition_Constraint<'_> {
     /// Extensions for requirements
     pub fn _requirements(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requirements") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +57,9 @@ impl ElementDefinition_Constraint<'_> {
     /// Extensions for severity
     pub fn _severity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_severity") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +67,9 @@ impl ElementDefinition_Constraint<'_> {
     /// Extensions for xpath
     pub fn _xpath(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_xpath") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +92,9 @@ impl ElementDefinition_Constraint<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -128,7 +144,9 @@ impl ElementDefinition_Constraint<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -219,6 +237,24 @@ impl ElementDefinition_Constraint<'_> {
         if let Some(_val) = self.source() {}
         if let Some(_val) = self.xpath() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ElementDefinition_ConstraintBuilder {
+    pub value: Value,
+}
+
+impl ElementDefinition_ConstraintBuilder {
+    pub fn build(&self) -> ElementDefinition_Constraint {
+        ElementDefinition_Constraint {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ElementDefinition_ConstraintBuilder {
+        let mut __value: Value = json!({});
+        return ElementDefinition_ConstraintBuilder { value: __value };
     }
 }
 

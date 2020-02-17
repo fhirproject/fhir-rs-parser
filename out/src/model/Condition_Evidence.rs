@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A clinical condition, problem, diagnosis, or other event, situation, issue, or
 /// clinical concept that has risen to a level of concern.
 
 #[derive(Debug)]
 pub struct Condition_Evidence<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Condition_Evidence<'_> {
@@ -19,7 +21,9 @@ impl Condition_Evidence<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -31,7 +35,9 @@ impl Condition_Evidence<'_> {
         if let Some(Value::Array(val)) = self.value.get("detail") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -47,7 +53,9 @@ impl Condition_Evidence<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -78,7 +86,9 @@ impl Condition_Evidence<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,5 +118,23 @@ impl Condition_Evidence<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Condition_EvidenceBuilder {
+    pub value: Value,
+}
+
+impl Condition_EvidenceBuilder {
+    pub fn build(&self) -> Condition_Evidence {
+        Condition_Evidence {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Condition_EvidenceBuilder {
+        let mut __value: Value = json!({});
+        return Condition_EvidenceBuilder { value: __value };
     }
 }

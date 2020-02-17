@@ -3,21 +3,25 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Demographics and other administrative information about an individual or animal
 /// receiving care or other health-related services.
 
 #[derive(Debug)]
 pub struct Patient_Communication<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Patient_Communication<'_> {
     /// Extensions for preferred
     pub fn _preferred(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferred") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl Patient_Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -53,7 +59,7 @@ impl Patient_Communication<'_> {
     /// English.
     pub fn language(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["language"],
+            value: Cow::Borrowed(&self.value["language"]),
         }
     }
 
@@ -72,7 +78,9 @@ impl Patient_Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,5 +118,24 @@ impl Patient_Communication<'_> {
         }
         if let Some(_val) = self.preferred() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Patient_CommunicationBuilder {
+    pub value: Value,
+}
+
+impl Patient_CommunicationBuilder {
+    pub fn build(&self) -> Patient_Communication {
+        Patient_Communication {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(language: CodeableConcept) -> Patient_CommunicationBuilder {
+        let mut __value: Value = json!({});
+        __value["language"] = json!(language.value);
+        return Patient_CommunicationBuilder { value: __value };
     }
 }

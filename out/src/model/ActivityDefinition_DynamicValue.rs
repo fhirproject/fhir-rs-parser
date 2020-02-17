@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource allows for the definition of some activity to be performed,
 /// independent of a particular patient, practitioner, or other performance context.
 
 #[derive(Debug)]
 pub struct ActivityDefinition_DynamicValue<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ActivityDefinition_DynamicValue<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,7 @@ impl ActivityDefinition_DynamicValue<'_> {
     /// An expression specifying the value of the customized element.
     pub fn expression(&self) -> Expression {
         Expression {
-            value: &self.value["expression"],
+            value: Cow::Borrowed(&self.value["expression"]),
         }
     }
 
@@ -38,7 +42,9 @@ impl ActivityDefinition_DynamicValue<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +75,9 @@ impl ActivityDefinition_DynamicValue<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,5 +121,24 @@ impl ActivityDefinition_DynamicValue<'_> {
         }
         if let Some(_val) = self.path() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ActivityDefinition_DynamicValueBuilder {
+    pub value: Value,
+}
+
+impl ActivityDefinition_DynamicValueBuilder {
+    pub fn build(&self) -> ActivityDefinition_DynamicValue {
+        ActivityDefinition_DynamicValue {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(expression: Expression) -> ActivityDefinition_DynamicValueBuilder {
+        let mut __value: Value = json!({});
+        __value["expression"] = json!(expression.value);
+        return ActivityDefinition_DynamicValueBuilder { value: __value };
     }
 }

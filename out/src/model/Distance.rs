@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A length - a value with a unit that is a physical distance.
 
 #[derive(Debug)]
 pub struct Distance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Distance<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl Distance<'_> {
     /// Extensions for comparator
     pub fn _comparator(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comparator") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl Distance<'_> {
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl Distance<'_> {
     /// Extensions for unit
     pub fn _unit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_unit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +57,9 @@ impl Distance<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +91,9 @@ impl Distance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -158,6 +172,24 @@ impl Distance<'_> {
         if let Some(_val) = self.unit() {}
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DistanceBuilder {
+    pub value: Value,
+}
+
+impl DistanceBuilder {
+    pub fn build(&self) -> Distance {
+        Distance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DistanceBuilder {
+        let mut __value: Value = json!({});
+        return DistanceBuilder { value: __value };
     }
 }
 

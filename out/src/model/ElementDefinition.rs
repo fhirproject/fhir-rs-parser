@@ -40,13 +40,15 @@ use crate::model::Signature::Signature;
 use crate::model::Timing::Timing;
 use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Captures constraints on each element within the resource, profile, or extension.
 
 #[derive(Debug)]
 pub struct ElementDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ElementDefinition<'_> {
@@ -55,7 +57,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +69,9 @@ impl ElementDefinition<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +81,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("_condition") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +93,9 @@ impl ElementDefinition<'_> {
     /// Extensions for contentReference
     pub fn _content_reference(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentReference") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -93,7 +103,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueBase64Binary
     pub fn _default_value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -101,7 +113,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueBoolean
     pub fn _default_value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -109,7 +123,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueCanonical
     pub fn _default_value_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -117,7 +133,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueCode
     pub fn _default_value_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -125,7 +143,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueDate
     pub fn _default_value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +153,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueDateTime
     pub fn _default_value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -141,7 +163,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueDecimal
     pub fn _default_value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -149,7 +173,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueId
     pub fn _default_value_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -157,7 +183,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueInstant
     pub fn _default_value_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +193,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueInteger
     pub fn _default_value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -173,7 +203,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueMarkdown
     pub fn _default_value_markdown(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueMarkdown") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -181,7 +213,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueOid
     pub fn _default_value_oid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueOid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -189,7 +223,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValuePositiveInt
     pub fn _default_value_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValuePositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -197,7 +233,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueString
     pub fn _default_value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -205,7 +243,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueTime
     pub fn _default_value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,7 +253,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueUnsignedInt
     pub fn _default_value_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -221,7 +263,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueUri
     pub fn _default_value_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -229,7 +273,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueUrl
     pub fn _default_value_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -237,7 +283,9 @@ impl ElementDefinition<'_> {
     /// Extensions for defaultValueUuid
     pub fn _default_value_uuid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValueUuid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -245,7 +293,9 @@ impl ElementDefinition<'_> {
     /// Extensions for definition
     pub fn _definition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -253,7 +303,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedBase64Binary
     pub fn _fixed_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -261,7 +313,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedBoolean
     pub fn _fixed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -269,7 +323,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedCanonical
     pub fn _fixed_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +333,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedCode
     pub fn _fixed_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -285,7 +343,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedDate
     pub fn _fixed_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -293,7 +353,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedDateTime
     pub fn _fixed_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -301,7 +363,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedDecimal
     pub fn _fixed_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -309,7 +373,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedId
     pub fn _fixed_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -317,7 +383,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedInstant
     pub fn _fixed_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -325,7 +393,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedInteger
     pub fn _fixed_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -333,7 +403,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedMarkdown
     pub fn _fixed_markdown(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedMarkdown") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -341,7 +413,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedOid
     pub fn _fixed_oid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedOid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -349,7 +423,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedPositiveInt
     pub fn _fixed_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -357,7 +433,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedString
     pub fn _fixed_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -365,7 +443,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedTime
     pub fn _fixed_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -373,7 +453,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedUnsignedInt
     pub fn _fixed_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -381,7 +463,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedUri
     pub fn _fixed_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -389,7 +473,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedUrl
     pub fn _fixed_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -397,7 +483,9 @@ impl ElementDefinition<'_> {
     /// Extensions for fixedUuid
     pub fn _fixed_uuid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fixedUuid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -405,7 +493,9 @@ impl ElementDefinition<'_> {
     /// Extensions for isModifier
     pub fn _is_modifier(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isModifier") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -413,7 +503,9 @@ impl ElementDefinition<'_> {
     /// Extensions for isModifierReason
     pub fn _is_modifier_reason(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isModifierReason") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -421,7 +513,9 @@ impl ElementDefinition<'_> {
     /// Extensions for isSummary
     pub fn _is_summary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isSummary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -429,7 +523,9 @@ impl ElementDefinition<'_> {
     /// Extensions for label
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -437,7 +533,9 @@ impl ElementDefinition<'_> {
     /// Extensions for max
     pub fn _max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -445,7 +543,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxLength
     pub fn _max_length(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxLength") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -453,7 +553,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueDate
     pub fn _max_value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -461,7 +563,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueDateTime
     pub fn _max_value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -469,7 +573,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueDecimal
     pub fn _max_value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -477,7 +583,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueInstant
     pub fn _max_value_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -485,7 +593,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueInteger
     pub fn _max_value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -493,7 +603,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValuePositiveInt
     pub fn _max_value_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValuePositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -501,7 +613,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueTime
     pub fn _max_value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -509,7 +623,9 @@ impl ElementDefinition<'_> {
     /// Extensions for maxValueUnsignedInt
     pub fn _max_value_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maxValueUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -517,7 +633,9 @@ impl ElementDefinition<'_> {
     /// Extensions for meaningWhenMissing
     pub fn _meaning_when_missing(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_meaningWhenMissing") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -525,7 +643,9 @@ impl ElementDefinition<'_> {
     /// Extensions for min
     pub fn _min(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -533,7 +653,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueDate
     pub fn _min_value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -541,7 +663,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueDateTime
     pub fn _min_value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -549,7 +673,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueDecimal
     pub fn _min_value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -557,7 +683,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueInstant
     pub fn _min_value_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -565,7 +693,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueInteger
     pub fn _min_value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -573,7 +703,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValuePositiveInt
     pub fn _min_value_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValuePositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -581,7 +713,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueTime
     pub fn _min_value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -589,7 +723,9 @@ impl ElementDefinition<'_> {
     /// Extensions for minValueUnsignedInt
     pub fn _min_value_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minValueUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -597,7 +733,9 @@ impl ElementDefinition<'_> {
     /// Extensions for mustSupport
     pub fn _must_support(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mustSupport") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -605,7 +743,9 @@ impl ElementDefinition<'_> {
     /// Extensions for orderMeaning
     pub fn _order_meaning(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_orderMeaning") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -613,7 +753,9 @@ impl ElementDefinition<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -621,7 +763,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternBase64Binary
     pub fn _pattern_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -629,7 +773,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternBoolean
     pub fn _pattern_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -637,7 +783,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternCanonical
     pub fn _pattern_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -645,7 +793,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternCode
     pub fn _pattern_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -653,7 +803,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternDate
     pub fn _pattern_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -661,7 +813,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternDateTime
     pub fn _pattern_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -669,7 +823,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternDecimal
     pub fn _pattern_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -677,7 +833,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternId
     pub fn _pattern_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -685,7 +843,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternInstant
     pub fn _pattern_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -693,7 +853,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternInteger
     pub fn _pattern_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -701,7 +863,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternMarkdown
     pub fn _pattern_markdown(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternMarkdown") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -709,7 +873,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternOid
     pub fn _pattern_oid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternOid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -717,7 +883,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternPositiveInt
     pub fn _pattern_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -725,7 +893,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternString
     pub fn _pattern_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -733,7 +903,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternTime
     pub fn _pattern_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -741,7 +913,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternUnsignedInt
     pub fn _pattern_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -749,7 +923,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternUri
     pub fn _pattern_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -757,7 +933,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternUrl
     pub fn _pattern_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -765,7 +943,9 @@ impl ElementDefinition<'_> {
     /// Extensions for patternUuid
     pub fn _pattern_uuid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patternUuid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -775,7 +955,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("_representation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -785,7 +967,9 @@ impl ElementDefinition<'_> {
     /// Extensions for requirements
     pub fn _requirements(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requirements") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -793,7 +977,9 @@ impl ElementDefinition<'_> {
     /// Extensions for short
     pub fn _short(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_short") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -801,7 +987,9 @@ impl ElementDefinition<'_> {
     /// Extensions for sliceIsConstraining
     pub fn _slice_is_constraining(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sliceIsConstraining") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -809,7 +997,9 @@ impl ElementDefinition<'_> {
     /// Extensions for sliceName
     pub fn _slice_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sliceName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -835,7 +1025,9 @@ impl ElementDefinition<'_> {
     /// definition of the element, it will be same.
     pub fn base(&self) -> Option<ElementDefinition_Base> {
         if let Some(val) = self.value.get("base") {
-            return Some(ElementDefinition_Base { value: val });
+            return Some(ElementDefinition_Base {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -844,7 +1036,9 @@ impl ElementDefinition<'_> {
     /// Quantity), or the data types (string, uri).
     pub fn binding(&self) -> Option<ElementDefinition_Binding> {
         if let Some(val) = self.value.get("binding") {
-            return Some(ElementDefinition_Binding { value: val });
+            return Some(ElementDefinition_Binding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -854,7 +1048,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -890,7 +1086,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("constraint") {
             return Some(
                 val.into_iter()
-                    .map(|e| ElementDefinition_Constraint { value: e })
+                    .map(|e| ElementDefinition_Constraint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -912,7 +1110,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("defaultValueAddress") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -921,7 +1121,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("defaultValueAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -930,7 +1132,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_annotation(&self) -> Option<Annotation> {
         if let Some(val) = self.value.get("defaultValueAnnotation") {
-            return Some(Annotation { value: val });
+            return Some(Annotation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -939,7 +1143,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("defaultValueAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -984,7 +1190,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("defaultValueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -993,7 +1201,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("defaultValueCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1002,7 +1212,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_contact_detail(&self) -> Option<ContactDetail> {
         if let Some(val) = self.value.get("defaultValueContactDetail") {
-            return Some(ContactDetail { value: val });
+            return Some(ContactDetail {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1011,7 +1223,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_contact_point(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("defaultValueContactPoint") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1020,7 +1234,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_contributor(&self) -> Option<Contributor> {
         if let Some(val) = self.value.get("defaultValueContributor") {
-            return Some(Contributor { value: val });
+            return Some(Contributor {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1029,7 +1245,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_count(&self) -> Option<Count> {
         if let Some(val) = self.value.get("defaultValueCount") {
-            return Some(Count { value: val });
+            return Some(Count {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1038,7 +1256,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("defaultValueDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1074,7 +1294,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_distance(&self) -> Option<Distance> {
         if let Some(val) = self.value.get("defaultValueDistance") {
-            return Some(Distance { value: val });
+            return Some(Distance {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1083,7 +1305,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_dosage(&self) -> Option<Dosage> {
         if let Some(val) = self.value.get("defaultValueDosage") {
-            return Some(Dosage { value: val });
+            return Some(Dosage {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1092,7 +1316,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("defaultValueDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1101,7 +1327,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("defaultValueExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1110,7 +1338,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_human_name(&self) -> Option<HumanName> {
         if let Some(val) = self.value.get("defaultValueHumanName") {
-            return Some(HumanName { value: val });
+            return Some(HumanName {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1128,7 +1358,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("defaultValueIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1164,7 +1396,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("defaultValueMeta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1173,7 +1407,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("defaultValueMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1191,7 +1427,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_parameter_definition(&self) -> Option<ParameterDefinition> {
         if let Some(val) = self.value.get("defaultValueParameterDefinition") {
-            return Some(ParameterDefinition { value: val });
+            return Some(ParameterDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1200,7 +1438,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("defaultValuePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1218,7 +1458,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("defaultValueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1227,7 +1469,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("defaultValueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1236,7 +1480,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("defaultValueRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1245,7 +1491,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("defaultValueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1254,7 +1502,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_related_artifact(&self) -> Option<RelatedArtifact> {
         if let Some(val) = self.value.get("defaultValueRelatedArtifact") {
-            return Some(RelatedArtifact { value: val });
+            return Some(RelatedArtifact {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1263,7 +1513,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("defaultValueSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1272,7 +1524,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("defaultValueSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1299,7 +1553,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("defaultValueTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1308,7 +1564,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("defaultValueTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1344,7 +1602,9 @@ impl ElementDefinition<'_> {
     /// 'if not otherwise specified, the abstract is false').
     pub fn default_value_usage_context(&self) -> Option<UsageContext> {
         if let Some(val) = self.value.get("defaultValueUsageContext") {
-            return Some(UsageContext { value: val });
+            return Some(UsageContext {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1377,7 +1637,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("example") {
             return Some(
                 val.into_iter()
-                    .map(|e| ElementDefinition_Example { value: e })
+                    .map(|e| ElementDefinition_Example {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -1393,7 +1655,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -1406,7 +1670,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("fixedAddress") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1417,7 +1683,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("fixedAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1428,7 +1696,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_annotation(&self) -> Option<Annotation> {
         if let Some(val) = self.value.get("fixedAnnotation") {
-            return Some(Annotation { value: val });
+            return Some(Annotation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1439,7 +1709,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("fixedAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1494,7 +1766,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fixedCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1505,7 +1779,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("fixedCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1516,7 +1792,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_contact_detail(&self) -> Option<ContactDetail> {
         if let Some(val) = self.value.get("fixedContactDetail") {
-            return Some(ContactDetail { value: val });
+            return Some(ContactDetail {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1527,7 +1805,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_contact_point(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("fixedContactPoint") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1538,7 +1818,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_contributor(&self) -> Option<Contributor> {
         if let Some(val) = self.value.get("fixedContributor") {
-            return Some(Contributor { value: val });
+            return Some(Contributor {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1549,7 +1831,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_count(&self) -> Option<Count> {
         if let Some(val) = self.value.get("fixedCount") {
-            return Some(Count { value: val });
+            return Some(Count {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1560,7 +1844,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("fixedDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1604,7 +1890,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_distance(&self) -> Option<Distance> {
         if let Some(val) = self.value.get("fixedDistance") {
-            return Some(Distance { value: val });
+            return Some(Distance {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1615,7 +1903,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_dosage(&self) -> Option<Dosage> {
         if let Some(val) = self.value.get("fixedDosage") {
-            return Some(Dosage { value: val });
+            return Some(Dosage {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1626,7 +1916,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("fixedDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1637,7 +1929,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("fixedExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1648,7 +1942,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_human_name(&self) -> Option<HumanName> {
         if let Some(val) = self.value.get("fixedHumanName") {
-            return Some(HumanName { value: val });
+            return Some(HumanName {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1670,7 +1966,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("fixedIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1714,7 +2012,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("fixedMeta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1725,7 +2025,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("fixedMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1747,7 +2049,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_parameter_definition(&self) -> Option<ParameterDefinition> {
         if let Some(val) = self.value.get("fixedParameterDefinition") {
-            return Some(ParameterDefinition { value: val });
+            return Some(ParameterDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1758,7 +2062,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("fixedPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1780,7 +2086,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("fixedQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1791,7 +2099,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("fixedRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1802,7 +2112,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("fixedRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1813,7 +2125,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("fixedReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1824,7 +2138,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_related_artifact(&self) -> Option<RelatedArtifact> {
         if let Some(val) = self.value.get("fixedRelatedArtifact") {
-            return Some(RelatedArtifact { value: val });
+            return Some(RelatedArtifact {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1835,7 +2151,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("fixedSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1846,7 +2164,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("fixedSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1879,7 +2199,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("fixedTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1890,7 +2212,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("fixedTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -1934,7 +2258,9 @@ impl ElementDefinition<'_> {
     /// elements/attributes must also be missing.
     pub fn fixed_usage_context(&self) -> Option<UsageContext> {
         if let Some(val) = self.value.get("fixedUsageContext") {
-            return Some(UsageContext { value: val });
+            return Some(UsageContext {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2006,7 +2332,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("mapping") {
             return Some(
                 val.into_iter()
-                    .map(|e| ElementDefinition_Mapping { value: e })
+                    .map(|e| ElementDefinition_Mapping {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -2096,7 +2424,9 @@ impl ElementDefinition<'_> {
     /// Quantity.
     pub fn max_value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxValueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2203,7 +2533,9 @@ impl ElementDefinition<'_> {
     /// Quantity.
     pub fn min_value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("minValueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2243,7 +2575,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -2294,7 +2628,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("patternAddress") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2313,7 +2649,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("patternAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2332,7 +2670,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_annotation(&self) -> Option<Annotation> {
         if let Some(val) = self.value.get("patternAnnotation") {
-            return Some(Annotation { value: val });
+            return Some(Annotation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2351,7 +2691,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("patternAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2446,7 +2788,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("patternCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2465,7 +2809,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("patternCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2484,7 +2830,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_contact_detail(&self) -> Option<ContactDetail> {
         if let Some(val) = self.value.get("patternContactDetail") {
-            return Some(ContactDetail { value: val });
+            return Some(ContactDetail {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2503,7 +2851,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_contact_point(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("patternContactPoint") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2522,7 +2872,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_contributor(&self) -> Option<Contributor> {
         if let Some(val) = self.value.get("patternContributor") {
-            return Some(Contributor { value: val });
+            return Some(Contributor {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2541,7 +2893,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_count(&self) -> Option<Count> {
         if let Some(val) = self.value.get("patternCount") {
-            return Some(Count { value: val });
+            return Some(Count {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2560,7 +2914,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("patternDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2636,7 +2992,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_distance(&self) -> Option<Distance> {
         if let Some(val) = self.value.get("patternDistance") {
-            return Some(Distance { value: val });
+            return Some(Distance {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2655,7 +3013,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_dosage(&self) -> Option<Dosage> {
         if let Some(val) = self.value.get("patternDosage") {
-            return Some(Dosage { value: val });
+            return Some(Dosage {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2674,7 +3034,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("patternDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2693,7 +3055,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("patternExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2712,7 +3076,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_human_name(&self) -> Option<HumanName> {
         if let Some(val) = self.value.get("patternHumanName") {
-            return Some(HumanName { value: val });
+            return Some(HumanName {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2750,7 +3116,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("patternIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2826,7 +3194,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("patternMeta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2845,7 +3215,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("patternMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2883,7 +3255,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_parameter_definition(&self) -> Option<ParameterDefinition> {
         if let Some(val) = self.value.get("patternParameterDefinition") {
-            return Some(ParameterDefinition { value: val });
+            return Some(ParameterDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2902,7 +3276,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("patternPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2940,7 +3316,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("patternQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2959,7 +3337,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("patternRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2978,7 +3358,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("patternRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -2997,7 +3379,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("patternReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3016,7 +3400,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_related_artifact(&self) -> Option<RelatedArtifact> {
         if let Some(val) = self.value.get("patternRelatedArtifact") {
-            return Some(RelatedArtifact { value: val });
+            return Some(RelatedArtifact {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3035,7 +3421,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("patternSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3054,7 +3442,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("patternSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3111,7 +3501,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("patternTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3130,7 +3522,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("patternTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3206,7 +3600,9 @@ impl ElementDefinition<'_> {
     /// If an array: it must match (recursively) the pattern value.
     pub fn pattern_usage_context(&self) -> Option<UsageContext> {
         if let Some(val) = self.value.get("patternUsageContext") {
-            return Some(UsageContext { value: val });
+            return Some(UsageContext {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3281,7 +3677,9 @@ impl ElementDefinition<'_> {
     /// terminates the set).
     pub fn slicing(&self) -> Option<ElementDefinition_Slicing> {
         if let Some(val) = self.value.get("slicing") {
-            return Some(ElementDefinition_Slicing { value: val });
+            return Some(ElementDefinition_Slicing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -3291,7 +3689,9 @@ impl ElementDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| ElementDefinition_Type { value: e })
+                    .map(|e| ElementDefinition_Type {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -4393,5 +4793,23 @@ impl ElementDefinition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ElementDefinitionBuilder {
+    pub value: Value,
+}
+
+impl ElementDefinitionBuilder {
+    pub fn build(&self) -> ElementDefinition {
+        ElementDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ElementDefinitionBuilder {
+        let mut __value: Value = json!({});
+        return ElementDefinitionBuilder { value: __value };
     }
 }

@@ -11,7 +11,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An association between a patient and an organization / healthcare provider(s)
 /// during which time encounters may occur. The managing organization assumes a
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EpisodeOfCare<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EpisodeOfCare<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl EpisodeOfCare<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl EpisodeOfCare<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("account") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +72,9 @@ impl EpisodeOfCare<'_> {
     /// The practitioner that is the care manager/care coordinator for this patient.
     pub fn care_manager(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("careManager") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +86,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +100,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("diagnosis") {
             return Some(
                 val.into_iter()
-                    .map(|e| EpisodeOfCare_Diagnosis { value: e })
+                    .map(|e| EpisodeOfCare_Diagnosis {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +118,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +143,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -155,7 +175,9 @@ impl EpisodeOfCare<'_> {
     /// specified duration.
     pub fn managing_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("managingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +187,9 @@ impl EpisodeOfCare<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -186,7 +210,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -196,7 +222,7 @@ impl EpisodeOfCare<'_> {
     /// The patient who is the focus of this episode of care.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -204,7 +230,9 @@ impl EpisodeOfCare<'_> {
     /// responsibility.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -215,7 +243,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("referralRequest") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -236,7 +266,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("statusHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| EpisodeOfCare_StatusHistory { value: e })
+                    .map(|e| EpisodeOfCare_StatusHistory {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -249,7 +281,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("team") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -264,7 +298,9 @@ impl EpisodeOfCare<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -275,7 +311,9 @@ impl EpisodeOfCare<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -381,6 +419,25 @@ impl EpisodeOfCare<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EpisodeOfCareBuilder {
+    pub value: Value,
+}
+
+impl EpisodeOfCareBuilder {
+    pub fn build(&self) -> EpisodeOfCare {
+        EpisodeOfCare {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(patient: Reference) -> EpisodeOfCareBuilder {
+        let mut __value: Value = json!({});
+        __value["patient"] = json!(patient.value);
+        return EpisodeOfCareBuilder { value: __value };
     }
 }
 

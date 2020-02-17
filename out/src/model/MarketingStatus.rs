@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The marketing status describes the date when a medicinal product is actually put
 /// on the market or the date as of which it is no longer available.
 
 #[derive(Debug)]
 pub struct MarketingStatus<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MarketingStatus<'_> {
     /// Extensions for restoreDate
     pub fn _restore_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_restoreDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,7 @@ impl MarketingStatus<'_> {
     /// specified It should be specified using the ISO 3166 ‑ 1 alpha-2 code elements.
     pub fn country(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["country"],
+            value: Cow::Borrowed(&self.value["country"]),
         }
     }
 
@@ -39,7 +43,7 @@ impl MarketingStatus<'_> {
     /// chain.
     pub fn date_range(&self) -> Period {
         Period {
-            value: &self.value["dateRange"],
+            value: Cow::Borrowed(&self.value["dateRange"]),
         }
     }
 
@@ -52,7 +56,9 @@ impl MarketingStatus<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -74,7 +80,9 @@ impl MarketingStatus<'_> {
     /// the controlled term identifier shall be specified.
     pub fn jurisdiction(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("jurisdiction") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +102,9 @@ impl MarketingStatus<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +128,7 @@ impl MarketingStatus<'_> {
     /// medicinal product See ISO/TS 20443 for more information and examples.
     pub fn status(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["status"],
+            value: Cow::Borrowed(&self.value["status"]),
         }
     }
 
@@ -155,5 +165,30 @@ impl MarketingStatus<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MarketingStatusBuilder {
+    pub value: Value,
+}
+
+impl MarketingStatusBuilder {
+    pub fn build(&self) -> MarketingStatus {
+        MarketingStatus {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        country: CodeableConcept,
+        date_range: Period,
+        status: CodeableConcept,
+    ) -> MarketingStatusBuilder {
+        let mut __value: Value = json!({});
+        __value["country"] = json!(country.value);
+        __value["dateRange"] = json!(date_range.value);
+        __value["status"] = json!(status.value);
+        return MarketingStatusBuilder { value: __value };
     }
 }

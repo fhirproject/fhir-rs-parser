@@ -3,21 +3,25 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse_Error<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse_Error<'_> {
     /// Extensions for detailSequence
     pub fn _detail_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detailSequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl ClaimResponse_Error<'_> {
     /// Extensions for itemSequence
     pub fn _item_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_itemSequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl ClaimResponse_Error<'_> {
     /// Extensions for subDetailSequence
     pub fn _sub_detail_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_subDetailSequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,7 @@ impl ClaimResponse_Error<'_> {
     /// not be adjudicated.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -65,7 +73,9 @@ impl ClaimResponse_Error<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +115,9 @@ impl ClaimResponse_Error<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -156,5 +168,24 @@ impl ClaimResponse_Error<'_> {
         }
         if let Some(_val) = self.sub_detail_sequence() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponse_ErrorBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponse_ErrorBuilder {
+    pub fn build(&self) -> ClaimResponse_Error {
+        ClaimResponse_Error {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> ClaimResponse_ErrorBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return ClaimResponse_ErrorBuilder { value: __value };
     }
 }

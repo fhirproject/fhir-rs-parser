@@ -3,20 +3,24 @@
 use crate::model::Element::Element;
 use crate::model::ExampleScenario_Step::ExampleScenario_Step;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Example of workflow instance.
 
 #[derive(Debug)]
 pub struct ExampleScenario_Process<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ExampleScenario_Process<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl ExampleScenario_Process<'_> {
     /// Extensions for postConditions
     pub fn _post_conditions(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_postConditions") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl ExampleScenario_Process<'_> {
     /// Extensions for preConditions
     pub fn _pre_conditions(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preConditions") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl ExampleScenario_Process<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +72,9 @@ impl ExampleScenario_Process<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +105,9 @@ impl ExampleScenario_Process<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -121,7 +135,9 @@ impl ExampleScenario_Process<'_> {
         if let Some(Value::Array(val)) = self.value.get("step") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExampleScenario_Step { value: e })
+                    .map(|e| ExampleScenario_Step {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -178,5 +194,23 @@ impl ExampleScenario_Process<'_> {
         }
         if let Some(_val) = self.title() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ExampleScenario_ProcessBuilder {
+    pub value: Value,
+}
+
+impl ExampleScenario_ProcessBuilder {
+    pub fn build(&self) -> ExampleScenario_Process {
+        ExampleScenario_Process {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ExampleScenario_ProcessBuilder {
+        let mut __value: Value = json!({});
+        return ExampleScenario_ProcessBuilder { value: __value };
     }
 }

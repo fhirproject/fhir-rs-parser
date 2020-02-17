@@ -11,20 +11,24 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A medicinal product in a container or package.
 
 #[derive(Debug)]
 pub struct MedicinalProductPackaged<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPackaged<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl MedicinalProductPackaged<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl MedicinalProductPackaged<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("batchIdentifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductPackaged_BatchIdentifier { value: e })
+                    .map(|e| MedicinalProductPackaged_BatchIdentifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +74,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +100,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +123,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +155,9 @@ impl MedicinalProductPackaged<'_> {
     /// regulator.
     pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("legalStatusOfSupply") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -149,7 +167,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("manufacturer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +179,9 @@ impl MedicinalProductPackaged<'_> {
     /// Manufacturer of this Package Item.
     pub fn marketing_authorization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("marketingAuthorization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -169,7 +191,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("marketingStatus") {
             return Some(
                 val.into_iter()
-                    .map(|e| MarketingStatus { value: e })
+                    .map(|e| MarketingStatus {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -181,7 +205,9 @@ impl MedicinalProductPackaged<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -202,7 +228,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -218,7 +246,9 @@ impl MedicinalProductPackaged<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| MedicinalProductPackaged_PackageItem { value: e })
+            .map(|e| MedicinalProductPackaged_PackageItem {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -227,7 +257,9 @@ impl MedicinalProductPackaged<'_> {
         if let Some(Value::Array(val)) = self.value.get("subject") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -242,7 +274,9 @@ impl MedicinalProductPackaged<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -336,5 +370,29 @@ impl MedicinalProductPackaged<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPackagedBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPackagedBuilder {
+    pub fn build(&self) -> MedicinalProductPackaged {
+        MedicinalProductPackaged {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        package_item: Vec<MedicinalProductPackaged_PackageItem>,
+    ) -> MedicinalProductPackagedBuilder {
+        let mut __value: Value = json!({});
+        __value["packageItem"] = json!(package_item
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        return MedicinalProductPackagedBuilder { value: __value };
     }
 }

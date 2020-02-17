@@ -6,21 +6,25 @@ use crate::model::Extension::Extension;
 use crate::model::NutritionOrder_Nutrient::NutritionOrder_Nutrient;
 use crate::model::NutritionOrder_Texture::NutritionOrder_Texture;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A request to supply a diet, formula feeding (enteral) or oral nutritional
 /// supplement to a patient/resident.
 
 #[derive(Debug)]
 pub struct NutritionOrder_OralDiet<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl NutritionOrder_OralDiet<'_> {
     /// Extensions for instruction
     pub fn _instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_instruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -47,7 +53,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("fluidConsistencyType") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +94,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,7 +109,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("nutrient") {
             return Some(
                 val.into_iter()
-                    .map(|e| NutritionOrder_Nutrient { value: e })
+                    .map(|e| NutritionOrder_Nutrient {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +125,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("schedule") {
             return Some(
                 val.into_iter()
-                    .map(|e| Timing { value: e })
+                    .map(|e| Timing {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -126,7 +140,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("texture") {
             return Some(
                 val.into_iter()
-                    .map(|e| NutritionOrder_Texture { value: e })
+                    .map(|e| NutritionOrder_Texture {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +155,9 @@ impl NutritionOrder_OralDiet<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -190,5 +208,23 @@ impl NutritionOrder_OralDiet<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct NutritionOrder_OralDietBuilder {
+    pub value: Value,
+}
+
+impl NutritionOrder_OralDietBuilder {
+    pub fn build(&self) -> NutritionOrder_OralDiet {
+        NutritionOrder_OralDiet {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> NutritionOrder_OralDietBuilder {
+        let mut __value: Value = json!({});
+        return NutritionOrder_OralDietBuilder { value: __value };
     }
 }

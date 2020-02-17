@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a person that is involved in the care for a patient, but who
 /// is not the target of healthcare, nor has a formal responsibility in the care
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct RelatedPerson_Communication<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RelatedPerson_Communication<'_> {
     /// Extensions for preferred
     pub fn _preferred(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferred") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl RelatedPerson_Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +60,7 @@ impl RelatedPerson_Communication<'_> {
     /// English.
     pub fn language(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["language"],
+            value: Cow::Borrowed(&self.value["language"]),
         }
     }
 
@@ -73,7 +79,9 @@ impl RelatedPerson_Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -111,5 +119,24 @@ impl RelatedPerson_Communication<'_> {
         }
         if let Some(_val) = self.preferred() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RelatedPerson_CommunicationBuilder {
+    pub value: Value,
+}
+
+impl RelatedPerson_CommunicationBuilder {
+    pub fn build(&self) -> RelatedPerson_Communication {
+        RelatedPerson_Communication {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(language: CodeableConcept) -> RelatedPerson_CommunicationBuilder {
+        let mut __value: Value = json!({});
+        __value["language"] = json!(language.value);
+        return RelatedPerson_CommunicationBuilder { value: __value };
     }
 }

@@ -10,7 +10,9 @@ use crate::model::ResourceList::ResourceList;
 use crate::model::SubstanceSourceMaterial_FractionDescription::SubstanceSourceMaterial_FractionDescription;
 use crate::model::SubstanceSourceMaterial_Organism::SubstanceSourceMaterial_Organism;
 use crate::model::SubstanceSourceMaterial_PartDescription::SubstanceSourceMaterial_PartDescription;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Source material shall capture information on the taxonomic and anatomical
 /// origins as well as the fraction of a material that can result in or can be
@@ -28,7 +30,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSourceMaterial<'_> {
@@ -37,7 +39,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("_geographicalLocation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -47,7 +51,9 @@ impl SubstanceSourceMaterial<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +61,9 @@ impl SubstanceSourceMaterial<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +71,9 @@ impl SubstanceSourceMaterial<'_> {
     /// Extensions for organismName
     pub fn _organism_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_organismName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +83,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("_parentSubstanceName") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -87,7 +99,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +117,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("countryOfOrigin") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +131,9 @@ impl SubstanceSourceMaterial<'_> {
     /// stages (e.g. foetal bovine serum).
     pub fn development_stage(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("developmentStage") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,7 +147,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +168,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("fractionDescription") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSourceMaterial_FractionDescription { value: e })
+                    .map(|e| SubstanceSourceMaterial_FractionDescription {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -201,7 +223,9 @@ impl SubstanceSourceMaterial<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,7 +246,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -235,7 +261,9 @@ impl SubstanceSourceMaterial<'_> {
     /// ., Leaf.
     pub fn organism(&self) -> Option<SubstanceSourceMaterial_Organism> {
         if let Some(val) = self.value.get("organism") {
-            return Some(SubstanceSourceMaterial_Organism { value: val });
+            return Some(SubstanceSourceMaterial_Organism {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -244,7 +272,9 @@ impl SubstanceSourceMaterial<'_> {
     /// be specified.
     pub fn organism_id(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("organismId") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -264,7 +294,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("parentSubstanceId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -288,7 +320,9 @@ impl SubstanceSourceMaterial<'_> {
         if let Some(Value::Array(val)) = self.value.get("partDescription") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSourceMaterial_PartDescription { value: e })
+                    .map(|e| SubstanceSourceMaterial_PartDescription {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -299,7 +333,9 @@ impl SubstanceSourceMaterial<'_> {
     /// of the material.
     pub fn source_material_class(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("sourceMaterialClass") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -307,7 +343,9 @@ impl SubstanceSourceMaterial<'_> {
     /// The state of the source material when extracted.
     pub fn source_material_state(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("sourceMaterialState") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -317,7 +355,9 @@ impl SubstanceSourceMaterial<'_> {
     /// agent.
     pub fn source_material_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("sourceMaterialType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -330,7 +370,9 @@ impl SubstanceSourceMaterial<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -447,5 +489,23 @@ impl SubstanceSourceMaterial<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSourceMaterialBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSourceMaterialBuilder {
+    pub fn build(&self) -> SubstanceSourceMaterial {
+        SubstanceSourceMaterial {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSourceMaterialBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSourceMaterialBuilder { value: __value };
     }
 }

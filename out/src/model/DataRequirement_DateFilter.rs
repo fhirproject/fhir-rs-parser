@@ -4,21 +4,25 @@ use crate::model::Duration::Duration;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes a required data item for evaluation in terms of the type of data, and
 /// optional code or date-based filters of the data.
 
 #[derive(Debug)]
 pub struct DataRequirement_DateFilter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DataRequirement_DateFilter<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl DataRequirement_DateFilter<'_> {
     /// Extensions for searchParam
     pub fn _search_param(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_searchParam") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl DataRequirement_DateFilter<'_> {
     /// Extensions for valueDateTime
     pub fn _value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl DataRequirement_DateFilter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +89,9 @@ impl DataRequirement_DateFilter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -132,7 +144,9 @@ impl DataRequirement_DateFilter<'_> {
     /// Duration before now.
     pub fn value_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("valueDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +159,9 @@ impl DataRequirement_DateFilter<'_> {
     /// Duration before now.
     pub fn value_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("valuePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -191,5 +207,23 @@ impl DataRequirement_DateFilter<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DataRequirement_DateFilterBuilder {
+    pub value: Value,
+}
+
+impl DataRequirement_DateFilterBuilder {
+    pub fn build(&self) -> DataRequirement_DateFilter {
+        DataRequirement_DateFilter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DataRequirement_DateFilterBuilder {
+        let mut __value: Value = json!({});
+        return DataRequirement_DateFilterBuilder { value: __value };
     }
 }

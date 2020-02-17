@@ -11,21 +11,25 @@ use crate::model::Timing::Timing;
 use crate::model::VerificationResult_Attestation::VerificationResult_Attestation;
 use crate::model::VerificationResult_PrimarySource::VerificationResult_PrimarySource;
 use crate::model::VerificationResult_Validator::VerificationResult_Validator;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes validation requirements, source(s), status and dates for one or more
 /// elements.
 
 #[derive(Debug)]
 pub struct VerificationResult<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VerificationResult<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl VerificationResult<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl VerificationResult<'_> {
     /// Extensions for lastPerformed
     pub fn _last_performed(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastPerformed") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl VerificationResult<'_> {
     /// Extensions for nextScheduled
     pub fn _next_scheduled(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_nextScheduled") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl VerificationResult<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl VerificationResult<'_> {
     /// Extensions for statusDate
     pub fn _status_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_statusDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +89,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("_targetLocation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +101,9 @@ impl VerificationResult<'_> {
     /// Information about the entity attesting to information.
     pub fn attestation(&self) -> Option<VerificationResult_Attestation> {
         if let Some(val) = self.value.get("attestation") {
-            return Some(VerificationResult_Attestation { value: val });
+            return Some(VerificationResult_Attestation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +115,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +133,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +145,9 @@ impl VerificationResult<'_> {
     /// The result if validation fails (fatal; warning; record only; none).
     pub fn failure_action(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("failureAction") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -131,7 +155,9 @@ impl VerificationResult<'_> {
     /// Frequency of revalidation.
     pub fn frequency(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("frequency") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -177,7 +203,9 @@ impl VerificationResult<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -198,7 +226,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -208,7 +238,9 @@ impl VerificationResult<'_> {
     /// The frequency with which the target must be validated (none; initial; periodic).
     pub fn need(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("need") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -226,7 +258,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("primarySource") {
             return Some(
                 val.into_iter()
-                    .map(|e| VerificationResult_PrimarySource { value: e })
+                    .map(|e| VerificationResult_PrimarySource {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -255,7 +289,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("target") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -282,7 +318,9 @@ impl VerificationResult<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -293,7 +331,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("validationProcess") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -304,7 +344,9 @@ impl VerificationResult<'_> {
     /// sources).
     pub fn validation_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("validationType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -314,7 +356,9 @@ impl VerificationResult<'_> {
         if let Some(Value::Array(val)) = self.value.get("validator") {
             return Some(
                 val.into_iter()
-                    .map(|e| VerificationResult_Validator { value: e })
+                    .map(|e| VerificationResult_Validator {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -438,5 +482,23 @@ impl VerificationResult<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VerificationResultBuilder {
+    pub value: Value,
+}
+
+impl VerificationResultBuilder {
+    pub fn build(&self) -> VerificationResult {
+        VerificationResult {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> VerificationResultBuilder {
+        let mut __value: Value = json!({});
+        return VerificationResultBuilder { value: __value };
     }
 }

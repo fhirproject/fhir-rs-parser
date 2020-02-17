@@ -4,7 +4,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Provenance_Agent::Provenance_Agent;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Provenance of a resource is a record that describes entities and processes
 /// involved in producing and delivering or otherwise influencing that resource.
@@ -18,14 +20,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Provenance_Entity<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Provenance_Entity<'_> {
     /// Extensions for role
     pub fn _role(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_role") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +42,9 @@ impl Provenance_Entity<'_> {
         if let Some(Value::Array(val)) = self.value.get("agent") {
             return Some(
                 val.into_iter()
-                    .map(|e| Provenance_Agent { value: e })
+                    .map(|e| Provenance_Agent {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +60,9 @@ impl Provenance_Entity<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +93,9 @@ impl Provenance_Entity<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +114,7 @@ impl Provenance_Entity<'_> {
     /// absolute or relative.
     pub fn what(&self) -> Reference {
         Reference {
-            value: &self.value["what"],
+            value: Cow::Borrowed(&self.value["what"]),
         }
     }
 
@@ -135,6 +145,25 @@ impl Provenance_Entity<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Provenance_EntityBuilder {
+    pub value: Value,
+}
+
+impl Provenance_EntityBuilder {
+    pub fn build(&self) -> Provenance_Entity {
+        Provenance_Entity {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(what: Reference) -> Provenance_EntityBuilder {
+        let mut __value: Value = json!({});
+        __value["what"] = json!(what.value);
+        return Provenance_EntityBuilder { value: __value };
     }
 }
 

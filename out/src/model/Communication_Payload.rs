@@ -4,7 +4,9 @@ use crate::model::Attachment::Attachment;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An occurrence of information being transmitted; e.g. an alert that was sent to a
 /// responsible provider, a public health agency that was notified about a
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Communication_Payload<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Communication_Payload<'_> {
     /// Extensions for contentString
     pub fn _content_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Communication_Payload<'_> {
     /// communication).
     pub fn content_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("contentAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl Communication_Payload<'_> {
     /// communication).
     pub fn content_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("contentReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +68,9 @@ impl Communication_Payload<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +101,9 @@ impl Communication_Payload<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -127,5 +139,23 @@ impl Communication_Payload<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Communication_PayloadBuilder {
+    pub value: Value,
+}
+
+impl Communication_PayloadBuilder {
+    pub fn build(&self) -> Communication_Payload {
+        Communication_Payload {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Communication_PayloadBuilder {
+        let mut __value: Value = json!({});
+        return Communication_PayloadBuilder { value: __value };
     }
 }

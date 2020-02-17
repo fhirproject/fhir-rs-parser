@@ -16,7 +16,9 @@ use crate::model::Reference::Reference;
 use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::Timing::Timing;
 use crate::model::TriggerDefinition::TriggerDefinition;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource allows for the definition of various types of plans as a sharable,
 /// consumable, and executable artifact. The resource is general enough to support
@@ -25,14 +27,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct PlanDefinition_Action<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl PlanDefinition_Action<'_> {
     /// Extensions for cardinalityBehavior
     pub fn _cardinality_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cardinalityBehavior") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +44,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for definitionCanonical
     pub fn _definition_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definitionCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for definitionUri
     pub fn _definition_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definitionUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +76,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_goalId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +88,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for groupingBehavior
     pub fn _grouping_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_groupingBehavior") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +98,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for precheckBehavior
     pub fn _precheck_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_precheckBehavior") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +108,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for prefix
     pub fn _prefix(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_prefix") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,7 +118,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +128,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for requiredBehavior
     pub fn _required_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requiredBehavior") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -116,7 +138,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for selectionBehavior
     pub fn _selection_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_selectionBehavior") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -124,7 +148,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for textEquivalent
     pub fn _text_equivalent(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_textEquivalent") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +158,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for timingDateTime
     pub fn _timing_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timingDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -140,7 +168,9 @@ impl PlanDefinition_Action<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +183,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("action") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_Action { value: e })
+                    .map(|e| PlanDefinition_Action {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -174,7 +206,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -187,7 +221,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("condition") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_Condition { value: e })
+                    .map(|e| PlanDefinition_Condition {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -228,7 +264,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("documentation") {
             return Some(
                 val.into_iter()
-                    .map(|e| RelatedArtifact { value: e })
+                    .map(|e| RelatedArtifact {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -243,7 +281,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("dynamicValue") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_DynamicValue { value: e })
+                    .map(|e| PlanDefinition_DynamicValue {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -259,7 +299,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -301,7 +343,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("input") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement { value: e })
+                    .map(|e| DataRequirement {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -323,7 +367,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -335,7 +381,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("output") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement { value: e })
+                    .map(|e| DataRequirement {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -347,7 +395,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("participant") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_Participant { value: e })
+                    .map(|e| PlanDefinition_Participant {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -384,7 +434,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("reason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -397,7 +449,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatedAction") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_RelatedAction { value: e })
+                    .map(|e| PlanDefinition_RelatedAction {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -424,7 +478,9 @@ impl PlanDefinition_Action<'_> {
     /// its children, if any.
     pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subjectCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -433,7 +489,9 @@ impl PlanDefinition_Action<'_> {
     /// its children, if any.
     pub fn subject_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subjectReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -451,7 +509,9 @@ impl PlanDefinition_Action<'_> {
     /// An optional value describing when the action should be performed.
     pub fn timing_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("timingAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -467,7 +527,9 @@ impl PlanDefinition_Action<'_> {
     /// An optional value describing when the action should be performed.
     pub fn timing_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("timingDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -475,7 +537,9 @@ impl PlanDefinition_Action<'_> {
     /// An optional value describing when the action should be performed.
     pub fn timing_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("timingPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -483,7 +547,9 @@ impl PlanDefinition_Action<'_> {
     /// An optional value describing when the action should be performed.
     pub fn timing_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("timingRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -491,7 +557,9 @@ impl PlanDefinition_Action<'_> {
     /// An optional value describing when the action should be performed.
     pub fn timing_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("timingTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -519,7 +587,9 @@ impl PlanDefinition_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("trigger") {
             return Some(
                 val.into_iter()
-                    .map(|e| TriggerDefinition { value: e })
+                    .map(|e| TriggerDefinition {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -529,7 +599,9 @@ impl PlanDefinition_Action<'_> {
     /// The type of action to perform (create, update, remove).
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -729,6 +801,24 @@ impl PlanDefinition_Action<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PlanDefinition_ActionBuilder {
+    pub value: Value,
+}
+
+impl PlanDefinition_ActionBuilder {
+    pub fn build(&self) -> PlanDefinition_Action {
+        PlanDefinition_Action {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> PlanDefinition_ActionBuilder {
+        let mut __value: Value = json!({});
+        return PlanDefinition_ActionBuilder { value: __value };
     }
 }
 

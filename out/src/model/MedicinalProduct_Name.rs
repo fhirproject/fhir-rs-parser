@@ -4,21 +4,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProduct_CountryLanguage::MedicinalProduct_CountryLanguage;
 use crate::model::MedicinalProduct_NamePart::MedicinalProduct_NamePart;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Detailed definition of a medicinal product, typically for uses other than direct
 /// patient care (e.g. regulatory use).
 
 #[derive(Debug)]
 pub struct MedicinalProduct_Name<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProduct_Name<'_> {
     /// Extensions for productName
     pub fn _product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_productName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl MedicinalProduct_Name<'_> {
         if let Some(Value::Array(val)) = self.value.get("countryLanguage") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProduct_CountryLanguage { value: e })
+                    .map(|e| MedicinalProduct_CountryLanguage {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -44,7 +50,9 @@ impl MedicinalProduct_Name<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +83,9 @@ impl MedicinalProduct_Name<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -87,7 +97,9 @@ impl MedicinalProduct_Name<'_> {
         if let Some(Value::Array(val)) = self.value.get("namePart") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProduct_NamePart { value: e })
+                    .map(|e| MedicinalProduct_NamePart {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -131,5 +143,23 @@ impl MedicinalProduct_Name<'_> {
         }
         if let Some(_val) = self.product_name() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProduct_NameBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProduct_NameBuilder {
+    pub fn build(&self) -> MedicinalProduct_Name {
+        MedicinalProduct_Name {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProduct_NameBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProduct_NameBuilder { value: __value };
     }
 }

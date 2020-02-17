@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The regulatory authorization of a medicinal product.
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorization_Procedure<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductAuthorization_Procedure<'_> {
     /// Extensions for dateDateTime
     pub fn _date_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl MedicinalProductAuthorization_Procedure<'_> {
         if let Some(Value::Array(val)) = self.value.get("application") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductAuthorization_Procedure { value: e })
+                    .map(|e| MedicinalProductAuthorization_Procedure {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -46,7 +52,9 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     /// Date of procedure.
     pub fn date_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("datePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +68,9 @@ impl MedicinalProductAuthorization_Procedure<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +89,9 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     /// Identifier for this procedure.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -99,7 +111,9 @@ impl MedicinalProductAuthorization_Procedure<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +123,7 @@ impl MedicinalProductAuthorization_Procedure<'_> {
     /// Type of procedure.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -150,5 +164,24 @@ impl MedicinalProductAuthorization_Procedure<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductAuthorization_ProcedureBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductAuthorization_ProcedureBuilder {
+    pub fn build(&self) -> MedicinalProductAuthorization_Procedure {
+        MedicinalProductAuthorization_Procedure {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> MedicinalProductAuthorization_ProcedureBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return MedicinalProductAuthorization_ProcedureBuilder { value: __value };
     }
 }

@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Indicates an actual or potential clinical issue with or between one or more
 /// active or proposed clinical actions for a patient; e.g. Drug-drug interaction,
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DetectedIssue_Mitigation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DetectedIssue_Mitigation<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,7 @@ impl DetectedIssue_Mitigation<'_> {
     /// reduces/eliminates the risk associated with the identified issue.
     pub fn action(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["action"],
+            value: Cow::Borrowed(&self.value["action"]),
         }
     }
 
@@ -36,7 +40,9 @@ impl DetectedIssue_Mitigation<'_> {
     /// responsibility for the mitigation step occurring.
     pub fn author(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +64,9 @@ impl DetectedIssue_Mitigation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +97,9 @@ impl DetectedIssue_Mitigation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,5 +133,24 @@ impl DetectedIssue_Mitigation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DetectedIssue_MitigationBuilder {
+    pub value: Value,
+}
+
+impl DetectedIssue_MitigationBuilder {
+    pub fn build(&self) -> DetectedIssue_Mitigation {
+        DetectedIssue_Mitigation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(action: CodeableConcept) -> DetectedIssue_MitigationBuilder {
+        let mut __value: Value = json!({});
+        __value["action"] = json!(action.value);
+        return DetectedIssue_MitigationBuilder { value: __value };
     }
 }

@@ -13,20 +13,24 @@ use crate::model::Narrative::Narrative;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Raw data describing a biological sequence.
 
 #[derive(Debug)]
 pub struct MolecularSequence<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MolecularSequence<'_> {
     /// Extensions for coordinateSystem
     pub fn _coordinate_system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_coordinateSystem") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl MolecularSequence<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl MolecularSequence<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl MolecularSequence<'_> {
     /// Extensions for observedSeq
     pub fn _observed_seq(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_observedSeq") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl MolecularSequence<'_> {
     /// Extensions for readCoverage
     pub fn _read_coverage(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_readCoverage") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl MolecularSequence<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +92,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -98,7 +114,9 @@ impl MolecularSequence<'_> {
     /// The method for sequencing, for example, chip information.
     pub fn device(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("device") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +130,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -134,7 +154,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -165,7 +187,9 @@ impl MolecularSequence<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -186,7 +210,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -206,7 +232,9 @@ impl MolecularSequence<'_> {
     /// The patient whose sequencing results are described by this resource.
     pub fn patient(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -214,7 +242,9 @@ impl MolecularSequence<'_> {
     /// The organization or lab that should be responsible for this result.
     pub fn performer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("performer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -224,7 +254,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("pointer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -239,7 +271,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("quality") {
             return Some(
                 val.into_iter()
-                    .map(|e| MolecularSequence_Quality { value: e })
+                    .map(|e| MolecularSequence_Quality {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -249,7 +283,9 @@ impl MolecularSequence<'_> {
     /// The number of copies of the sequence of interest. (RNASeq).
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -267,7 +303,9 @@ impl MolecularSequence<'_> {
     /// a sequence analyzed.
     pub fn reference_seq(&self) -> Option<MolecularSequence_ReferenceSeq> {
         if let Some(val) = self.value.get("referenceSeq") {
-            return Some(MolecularSequence_ReferenceSeq { value: val });
+            return Some(MolecularSequence_ReferenceSeq {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -278,7 +316,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("repository") {
             return Some(
                 val.into_iter()
-                    .map(|e| MolecularSequence_Repository { value: e })
+                    .map(|e| MolecularSequence_Repository {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -288,7 +328,9 @@ impl MolecularSequence<'_> {
     /// Specimen used for sequencing.
     pub fn specimen(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("specimen") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -298,7 +340,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("structureVariant") {
             return Some(
                 val.into_iter()
-                    .map(|e| MolecularSequence_StructureVariant { value: e })
+                    .map(|e| MolecularSequence_StructureVariant {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -313,7 +357,9 @@ impl MolecularSequence<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -335,7 +381,9 @@ impl MolecularSequence<'_> {
         if let Some(Value::Array(val)) = self.value.get("variant") {
             return Some(
                 val.into_iter()
-                    .map(|e| MolecularSequence_Variant { value: e })
+                    .map(|e| MolecularSequence_Variant {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -466,6 +514,24 @@ impl MolecularSequence<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MolecularSequenceBuilder {
+    pub value: Value,
+}
+
+impl MolecularSequenceBuilder {
+    pub fn build(&self) -> MolecularSequence {
+        MolecularSequence {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MolecularSequenceBuilder {
+        let mut __value: Value = json!({});
+        return MolecularSequenceBuilder { value: __value };
     }
 }
 

@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::SpecimenDefinition_Additive::SpecimenDefinition_Additive;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A kind of specimen with associated set of requirements.
 
 #[derive(Debug)]
 pub struct SpecimenDefinition_Container<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SpecimenDefinition_Container<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl SpecimenDefinition_Container<'_> {
     /// Extensions for minimumVolumeString
     pub fn _minimum_volume_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minimumVolumeString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl SpecimenDefinition_Container<'_> {
     /// Extensions for preparation
     pub fn _preparation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preparation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +53,9 @@ impl SpecimenDefinition_Container<'_> {
         if let Some(Value::Array(val)) = self.value.get("additive") {
             return Some(
                 val.into_iter()
-                    .map(|e| SpecimenDefinition_Additive { value: e })
+                    .map(|e| SpecimenDefinition_Additive {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -55,7 +65,9 @@ impl SpecimenDefinition_Container<'_> {
     /// Color of container cap.
     pub fn cap(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("cap") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +75,9 @@ impl SpecimenDefinition_Container<'_> {
     /// The capacity (volume or other measure) of this kind of container.
     pub fn capacity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("capacity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -85,7 +99,9 @@ impl SpecimenDefinition_Container<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +120,9 @@ impl SpecimenDefinition_Container<'_> {
     /// The type of material of the container.
     pub fn material(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("material") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +130,9 @@ impl SpecimenDefinition_Container<'_> {
     /// The minimum volume to be conditioned in the container.
     pub fn minimum_volume_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("minimumVolumeQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -140,7 +160,9 @@ impl SpecimenDefinition_Container<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +181,9 @@ impl SpecimenDefinition_Container<'_> {
     /// The type of container used to contain this kind of specimen.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -225,5 +249,23 @@ impl SpecimenDefinition_Container<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SpecimenDefinition_ContainerBuilder {
+    pub value: Value,
+}
+
+impl SpecimenDefinition_ContainerBuilder {
+    pub fn build(&self) -> SpecimenDefinition_Container {
+        SpecimenDefinition_Container {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SpecimenDefinition_ContainerBuilder {
+        let mut __value: Value = json!({});
+        return SpecimenDefinition_ContainerBuilder { value: __value };
     }
 }

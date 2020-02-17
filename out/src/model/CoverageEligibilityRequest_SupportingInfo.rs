@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CoverageEligibilityRequest provides patient and insurance coverage
 /// information to an insurer for them to respond, in the form of an
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_SupportingInfo<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CoverageEligibilityRequest_SupportingInfo<'_> {
     /// Extensions for appliesToAll
     pub fn _applies_to_all(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_appliesToAll") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +57,9 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +79,7 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
     /// including references to the data or the actual inclusion of the data.
     pub fn information(&self) -> Reference {
         Reference {
-            value: &self.value["information"],
+            value: Cow::Borrowed(&self.value["information"]),
         }
     }
 
@@ -90,7 +98,9 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,5 +143,24 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
         }
         if let Some(_val) = self.sequence() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CoverageEligibilityRequest_SupportingInfoBuilder {
+    pub value: Value,
+}
+
+impl CoverageEligibilityRequest_SupportingInfoBuilder {
+    pub fn build(&self) -> CoverageEligibilityRequest_SupportingInfo {
+        CoverageEligibilityRequest_SupportingInfo {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(information: Reference) -> CoverageEligibilityRequest_SupportingInfoBuilder {
+        let mut __value: Value = json!({});
+        __value["information"] = json!(information.value);
+        return CoverageEligibilityRequest_SupportingInfoBuilder { value: __value };
     }
 }

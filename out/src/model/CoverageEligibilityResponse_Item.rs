@@ -5,21 +5,25 @@ use crate::model::CoverageEligibilityResponse_Benefit::CoverageEligibilityRespon
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides eligibility and plan details from the processing of an
 /// CoverageEligibilityRequest resource.
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse_Item<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CoverageEligibilityResponse_Item<'_> {
     /// Extensions for authorizationRequired
     pub fn _authorization_required(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorizationRequired") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// Extensions for authorizationUrl
     pub fn _authorization_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorizationUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// Extensions for excluded
     pub fn _excluded(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_excluded") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +61,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +83,9 @@ impl CoverageEligibilityResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("authorizationSupporting") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +106,9 @@ impl CoverageEligibilityResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("benefit") {
             return Some(
                 val.into_iter()
-                    .map(|e| CoverageEligibilityResponse_Benefit { value: e })
+                    .map(|e| CoverageEligibilityResponse_Benefit {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +119,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// are provided.
     pub fn category(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -134,7 +152,9 @@ impl CoverageEligibilityResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -156,7 +176,9 @@ impl CoverageEligibilityResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -178,7 +200,9 @@ impl CoverageEligibilityResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -197,7 +221,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// of-network providers.
     pub fn network(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("network") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -205,7 +231,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// This contains the product, service, drug or other billing code for the item.
     pub fn product_or_service(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("productOrService") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,7 +241,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// The practitioner who is eligible for the provision of the product or service.
     pub fn provider(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("provider") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,7 +252,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// annual visits'.
     pub fn term(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("term") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -230,7 +262,9 @@ impl CoverageEligibilityResponse_Item<'_> {
     /// Indicates if the benefits apply to an individual or to the family.
     pub fn unit(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("unit") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -323,5 +357,23 @@ impl CoverageEligibilityResponse_Item<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CoverageEligibilityResponse_ItemBuilder {
+    pub value: Value,
+}
+
+impl CoverageEligibilityResponse_ItemBuilder {
+    pub fn build(&self) -> CoverageEligibilityResponse_Item {
+        CoverageEligibilityResponse_Item {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CoverageEligibilityResponse_ItemBuilder {
+        let mut __value: Value = json!({});
+        return CoverageEligibilityResponse_ItemBuilder { value: __value };
     }
 }

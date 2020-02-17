@@ -6,7 +6,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::SubstanceNucleicAcid_Linkage::SubstanceNucleicAcid_Linkage;
 use crate::model::SubstanceNucleicAcid_Sugar::SubstanceNucleicAcid_Sugar;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Nucleic acids are defined by three distinct elements: the base, sugar and
 /// linkage. Individual substance/moiety IDs will be created for each of these
@@ -14,14 +16,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceNucleicAcid_Subunit<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceNucleicAcid_Subunit<'_> {
     /// Extensions for length
     pub fn _length(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_length") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     /// Extensions for subunit
     pub fn _subunit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_subunit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +59,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +74,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     /// sequence. A separate representation would be redundant.
     pub fn five_prime(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fivePrime") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +103,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("linkage") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceNucleicAcid_Linkage { value: e })
+                    .map(|e| SubstanceNucleicAcid_Linkage {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +127,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,7 +149,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     /// (TBC).
     pub fn sequence_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("sequenceAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +171,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("sugar") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceNucleicAcid_Sugar { value: e })
+                    .map(|e| SubstanceNucleicAcid_Sugar {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -166,7 +186,9 @@ impl SubstanceNucleicAcid_Subunit<'_> {
     /// A separate representation would be redundant.
     pub fn three_prime(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("threePrime") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -227,5 +249,23 @@ impl SubstanceNucleicAcid_Subunit<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceNucleicAcid_SubunitBuilder {
+    pub value: Value,
+}
+
+impl SubstanceNucleicAcid_SubunitBuilder {
+    pub fn build(&self) -> SubstanceNucleicAcid_Subunit {
+        SubstanceNucleicAcid_Subunit {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceNucleicAcid_SubunitBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceNucleicAcid_SubunitBuilder { value: __value };
     }
 }

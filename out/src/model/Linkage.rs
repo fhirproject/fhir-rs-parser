@@ -7,21 +7,25 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Identifies two or more records (resource instances) that refer to the same real-
 /// world "occurrence".
 
 #[derive(Debug)]
 pub struct Linkage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Linkage<'_> {
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl Linkage<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl Linkage<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl Linkage<'_> {
     /// of each linkage is evaluated.
     pub fn author(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +77,9 @@ impl Linkage<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +95,9 @@ impl Linkage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,7 +134,9 @@ impl Linkage<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Linkage_Item { value: e })
+            .map(|e| Linkage_Item {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -137,7 +153,9 @@ impl Linkage<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -158,7 +176,9 @@ impl Linkage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -173,7 +193,9 @@ impl Linkage<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -237,5 +259,24 @@ impl Linkage<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct LinkageBuilder {
+    pub value: Value,
+}
+
+impl LinkageBuilder {
+    pub fn build(&self) -> Linkage {
+        Linkage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(item: Vec<Linkage_Item>) -> LinkageBuilder {
+        let mut __value: Value = json!({});
+        __value["item"] = json!(item.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return LinkageBuilder { value: __value };
     }
 }

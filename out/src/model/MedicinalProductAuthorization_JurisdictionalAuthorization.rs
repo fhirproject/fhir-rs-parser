@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The regulatory authorization of a medicinal product.
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorization_JurisdictionalAuthorization<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
     /// Country of authorization.
     pub fn country(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("country") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -52,7 +58,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +72,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -74,7 +84,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
     /// The legal status of supply in a jurisdiction or region.
     pub fn legal_status_of_supply(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("legalStatusOfSupply") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +106,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +118,9 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
     /// The start and expected end date of the authorization.
     pub fn validity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("validityPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -147,5 +163,23 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+    pub fn build(&self) -> MedicinalProductAuthorization_JurisdictionalAuthorization {
+        MedicinalProductAuthorization_JurisdictionalAuthorization {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder { value: __value };
     }
 }

@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes a required data item for evaluation in terms of the type of data, and
 /// optional code or date-based filters of the data.
 
 #[derive(Debug)]
 pub struct DataRequirement_Sort<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DataRequirement_Sort<'_> {
     /// Extensions for direction
     pub fn _direction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_direction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl DataRequirement_Sort<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +52,9 @@ impl DataRequirement_Sort<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -77,7 +85,9 @@ impl DataRequirement_Sort<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,6 +130,24 @@ impl DataRequirement_Sort<'_> {
         }
         if let Some(_val) = self.path() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DataRequirement_SortBuilder {
+    pub value: Value,
+}
+
+impl DataRequirement_SortBuilder {
+    pub fn build(&self) -> DataRequirement_Sort {
+        DataRequirement_Sort {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DataRequirement_SortBuilder {
+        let mut __value: Value = json!({});
+        return DataRequirement_SortBuilder { value: __value };
     }
 }
 

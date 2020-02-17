@@ -11,7 +11,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The technical details of an endpoint that can be used for electronic services,
 /// such as for web services providing XDS.b or a REST endpoint for another FHIR
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Endpoint<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Endpoint<'_> {
     /// Extensions for address
     pub fn _address(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_address") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("_header") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -46,7 +52,9 @@ impl Endpoint<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +62,9 @@ impl Endpoint<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +72,9 @@ impl Endpoint<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +84,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("_payloadMimeType") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +96,9 @@ impl Endpoint<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,7 +116,7 @@ impl Endpoint<'_> {
     /// hook).
     pub fn connection_type(&self) -> Coding {
         Coding {
-            value: &self.value["connectionType"],
+            value: Cow::Borrowed(&self.value["connectionType"]),
         }
     }
 
@@ -110,7 +126,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +142,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +160,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -174,7 +196,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -205,7 +229,9 @@ impl Endpoint<'_> {
     /// with the data).
     pub fn managing_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("managingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -215,7 +241,9 @@ impl Endpoint<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -236,7 +264,9 @@ impl Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -274,14 +304,18 @@ impl Endpoint<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| CodeableConcept { value: e })
+            .map(|e| CodeableConcept {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// The interval during which the endpoint is expected to be operational.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -302,7 +336,9 @@ impl Endpoint<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -412,6 +448,29 @@ impl Endpoint<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EndpointBuilder {
+    pub value: Value,
+}
+
+impl EndpointBuilder {
+    pub fn build(&self) -> Endpoint {
+        Endpoint {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(connection_type: Coding, payload_type: Vec<CodeableConcept>) -> EndpointBuilder {
+        let mut __value: Value = json!({});
+        __value["connectionType"] = json!(connection_type.value);
+        __value["payloadType"] = json!(payload_type
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        return EndpointBuilder { value: __value };
     }
 }
 

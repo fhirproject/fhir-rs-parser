@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_Property<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSpecification_Property<'_> {
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl SubstanceSpecification_Property<'_> {
     /// Extensions for parameters
     pub fn _parameters(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_parameters") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl SubstanceSpecification_Property<'_> {
     /// Quantitative value for this property.
     pub fn amount_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +59,9 @@ impl SubstanceSpecification_Property<'_> {
     /// A category for this property, e.g. Physical, Chemical, Enzymatic.
     pub fn category(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +69,9 @@ impl SubstanceSpecification_Property<'_> {
     /// Property type e.g. viscosity, pH, isoelectric point.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl SubstanceSpecification_Property<'_> {
     /// water, in alcohol).
     pub fn defining_substance_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("definingSubstanceCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +91,9 @@ impl SubstanceSpecification_Property<'_> {
     /// water, in alcohol).
     pub fn defining_substance_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("definingSubstanceReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +107,9 @@ impl SubstanceSpecification_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -122,7 +140,9 @@ impl SubstanceSpecification_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -188,5 +208,23 @@ impl SubstanceSpecification_Property<'_> {
         }
         if let Some(_val) = self.parameters() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_PropertyBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSpecification_PropertyBuilder {
+    pub fn build(&self) -> SubstanceSpecification_Property {
+        SubstanceSpecification_Property {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSpecification_PropertyBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSpecification_PropertyBuilder { value: __value };
     }
 }

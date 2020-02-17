@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details and position information for a physical place where services are
 /// provided and resources and participants may be stored, found, contained, or
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Location_HoursOfOperation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Location_HoursOfOperation<'_> {
     /// Extensions for allDay
     pub fn _all_day(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allDay") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl Location_HoursOfOperation<'_> {
     /// Extensions for closingTime
     pub fn _closing_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_closingTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl Location_HoursOfOperation<'_> {
         if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +53,9 @@ impl Location_HoursOfOperation<'_> {
     /// Extensions for openingTime
     pub fn _opening_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_openingTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +97,9 @@ impl Location_HoursOfOperation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +130,9 @@ impl Location_HoursOfOperation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,5 +186,23 @@ impl Location_HoursOfOperation<'_> {
         }
         if let Some(_val) = self.opening_time() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Location_HoursOfOperationBuilder {
+    pub value: Value,
+}
+
+impl Location_HoursOfOperationBuilder {
+    pub fn build(&self) -> Location_HoursOfOperation {
+        Location_HoursOfOperation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Location_HoursOfOperationBuilder {
+        let mut __value: Value = json!({});
+        return Location_HoursOfOperationBuilder { value: __value };
     }
 }

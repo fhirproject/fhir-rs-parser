@@ -11,7 +11,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Indicates an actual or potential clinical issue with or between one or more
 /// active or proposed clinical actions for a patient; e.g. Drug-drug interaction,
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DetectedIssue<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DetectedIssue<'_> {
     /// Extensions for detail
     pub fn _detail(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detail") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl DetectedIssue<'_> {
     /// Extensions for identifiedDateTime
     pub fn _identified_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identifiedDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl DetectedIssue<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl DetectedIssue<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl DetectedIssue<'_> {
     /// Extensions for reference
     pub fn _reference(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_reference") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl DetectedIssue<'_> {
     /// Extensions for severity
     pub fn _severity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_severity") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +88,9 @@ impl DetectedIssue<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +99,9 @@ impl DetectedIssue<'_> {
     /// decision support application or a pharmacist conducting a medication review.
     pub fn author(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +109,9 @@ impl DetectedIssue<'_> {
     /// Identifies the general type of issue identified.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -103,7 +123,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +146,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("evidence") {
             return Some(
                 val.into_iter()
-                    .map(|e| DetectedIssue_Evidence { value: e })
+                    .map(|e| DetectedIssue_Evidence {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +164,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,7 +193,9 @@ impl DetectedIssue<'_> {
     /// The date or period when the detected issue was initially identified.
     pub fn identified_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("identifiedPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -177,7 +205,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -190,7 +220,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("implicated") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -221,7 +253,9 @@ impl DetectedIssue<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -234,7 +268,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("mitigation") {
             return Some(
                 val.into_iter()
-                    .map(|e| DetectedIssue_Mitigation { value: e })
+                    .map(|e| DetectedIssue_Mitigation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -257,7 +293,9 @@ impl DetectedIssue<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -267,7 +305,9 @@ impl DetectedIssue<'_> {
     /// Indicates the patient whose record the detected issue is associated with.
     pub fn patient(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -306,7 +346,9 @@ impl DetectedIssue<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -421,6 +463,24 @@ impl DetectedIssue<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DetectedIssueBuilder {
+    pub value: Value,
+}
+
+impl DetectedIssueBuilder {
+    pub fn build(&self) -> DetectedIssue {
+        DetectedIssue {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DetectedIssueBuilder {
+        let mut __value: Value = json!({});
+        return DetectedIssueBuilder { value: __value };
     }
 }
 

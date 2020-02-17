@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Money::Money;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse_Payment<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse_Payment<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl ClaimResponse_Payment<'_> {
     /// which are not related to this claim's adjudication.
     pub fn adjustment(&self) -> Option<Money> {
         if let Some(val) = self.value.get("adjustment") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl ClaimResponse_Payment<'_> {
     /// Reason for the payment adjustment.
     pub fn adjustment_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("adjustmentReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,7 @@ impl ClaimResponse_Payment<'_> {
     /// Benefits payable less any payment adjustment.
     pub fn amount(&self) -> Money {
         Money {
-            value: &self.value["amount"],
+            value: Cow::Borrowed(&self.value["amount"]),
         }
     }
 
@@ -65,7 +73,9 @@ impl ClaimResponse_Payment<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +94,9 @@ impl ClaimResponse_Payment<'_> {
     /// Issuer's unique identifier for the payment instrument.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -104,7 +116,9 @@ impl ClaimResponse_Payment<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,7 +128,7 @@ impl ClaimResponse_Payment<'_> {
     /// Whether this represents partial or complete payment of the benefits payable.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -158,5 +172,25 @@ impl ClaimResponse_Payment<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponse_PaymentBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponse_PaymentBuilder {
+    pub fn build(&self) -> ClaimResponse_Payment {
+        ClaimResponse_Payment {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(amount: Money, fhir_type: CodeableConcept) -> ClaimResponse_PaymentBuilder {
+        let mut __value: Value = json!({});
+        __value["amount"] = json!(amount.value);
+        __value["type"] = json!(fhir_type.value);
+        return ClaimResponse_PaymentBuilder { value: __value };
     }
 }

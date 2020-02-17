@@ -3,13 +3,15 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_Monograph<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_Monograph<'_> {
@@ -22,7 +24,9 @@ impl MedicationKnowledge_Monograph<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -53,7 +57,9 @@ impl MedicationKnowledge_Monograph<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl MedicationKnowledge_Monograph<'_> {
     /// Associated documentation about the medication.
     pub fn source(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("source") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,9 @@ impl MedicationKnowledge_Monograph<'_> {
     /// monograph, patient education monograph).
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,5 +110,23 @@ impl MedicationKnowledge_Monograph<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_MonographBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_MonographBuilder {
+    pub fn build(&self) -> MedicationKnowledge_Monograph {
+        MedicationKnowledge_Monograph {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicationKnowledge_MonographBuilder {
+        let mut __value: Value = json!({});
+        return MedicationKnowledge_MonographBuilder { value: __value };
     }
 }

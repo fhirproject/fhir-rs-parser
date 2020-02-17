@@ -18,21 +18,25 @@ use crate::model::TestScript_Teardown::TestScript_Teardown;
 use crate::model::TestScript_Test::TestScript_Test;
 use crate::model::TestScript_Variable::TestScript_Variable;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript<'_> {
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +44,9 @@ impl TestScript<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl TestScript<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl TestScript<'_> {
     /// Extensions for experimental
     pub fn _experimental(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl TestScript<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +84,9 @@ impl TestScript<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +94,9 @@ impl TestScript<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl TestScript<'_> {
     /// Extensions for publisher
     pub fn _publisher(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +114,9 @@ impl TestScript<'_> {
     /// Extensions for purpose
     pub fn _purpose(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -104,7 +124,9 @@ impl TestScript<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +134,9 @@ impl TestScript<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +144,9 @@ impl TestScript<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -128,7 +154,9 @@ impl TestScript<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -139,7 +167,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,7 +183,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -196,7 +228,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("destination") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Destination { value: e })
+                    .map(|e| TestScript_Destination {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -222,7 +256,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -235,7 +271,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("fixture") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Fixture { value: e })
+                    .map(|e| TestScript_Fixture {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -256,7 +294,9 @@ impl TestScript<'_> {
     /// an instance.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +317,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -297,7 +339,9 @@ impl TestScript<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -306,7 +350,9 @@ impl TestScript<'_> {
     /// FHIR server being tested.
     pub fn metadata(&self) -> Option<TestScript_Metadata> {
         if let Some(val) = self.value.get("metadata") {
-            return Some(TestScript_Metadata { value: val });
+            return Some(TestScript_Metadata {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -327,7 +373,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -350,7 +398,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("origin") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Origin { value: e })
+                    .map(|e| TestScript_Origin {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -362,7 +412,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("profile") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -389,7 +441,9 @@ impl TestScript<'_> {
     /// A series of required setup operations before tests are executed.
     pub fn setup(&self) -> Option<TestScript_Setup> {
         if let Some(val) = self.value.get("setup") {
-            return Some(TestScript_Setup { value: val });
+            return Some(TestScript_Setup {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -406,7 +460,9 @@ impl TestScript<'_> {
     /// (successfully or otherwise).
     pub fn teardown(&self) -> Option<TestScript_Teardown> {
         if let Some(val) = self.value.get("teardown") {
-            return Some(TestScript_Teardown { value: val });
+            return Some(TestScript_Teardown {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -416,7 +472,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("test") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Test { value: e })
+                    .map(|e| TestScript_Test {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -431,7 +489,9 @@ impl TestScript<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -466,7 +526,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("useContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| UsageContext { value: e })
+                    .map(|e| UsageContext {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -479,7 +541,9 @@ impl TestScript<'_> {
         if let Some(Value::Array(val)) = self.value.get("variable") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Variable { value: e })
+                    .map(|e| TestScript_Variable {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -670,6 +734,24 @@ impl TestScript<'_> {
         }
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScriptBuilder {
+    pub value: Value,
+}
+
+impl TestScriptBuilder {
+    pub fn build(&self) -> TestScript {
+        TestScript {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TestScriptBuilder {
+        let mut __value: Value = json!({});
+        return TestScriptBuilder { value: __value };
     }
 }
 

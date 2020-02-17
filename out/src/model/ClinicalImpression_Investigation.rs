@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a clinical assessment performed to determine what problem(s) may
 /// affect the patient and before planning the treatments or management strategies
@@ -15,7 +17,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ClinicalImpression_Investigation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClinicalImpression_Investigation<'_> {
@@ -25,7 +27,7 @@ impl ClinicalImpression_Investigation<'_> {
     /// (exposure|family|travel|nutritional) history may be used.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -38,7 +40,9 @@ impl ClinicalImpression_Investigation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -59,7 +63,9 @@ impl ClinicalImpression_Investigation<'_> {
         if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +87,9 @@ impl ClinicalImpression_Investigation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,5 +117,24 @@ impl ClinicalImpression_Investigation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClinicalImpression_InvestigationBuilder {
+    pub value: Value,
+}
+
+impl ClinicalImpression_InvestigationBuilder {
+    pub fn build(&self) -> ClinicalImpression_Investigation {
+        ClinicalImpression_Investigation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> ClinicalImpression_InvestigationBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return ClinicalImpression_InvestigationBuilder { value: __value };
     }
 }

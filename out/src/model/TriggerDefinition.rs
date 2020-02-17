@@ -6,21 +6,25 @@ use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A description of a triggering event. Triggering events can be named events, data
 /// events, or periodic, as determined by the type element.
 
 #[derive(Debug)]
 pub struct TriggerDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TriggerDefinition<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl TriggerDefinition<'_> {
     /// Extensions for timingDate
     pub fn _timing_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timingDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl TriggerDefinition<'_> {
     /// Extensions for timingDateTime
     pub fn _timing_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timingDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl TriggerDefinition<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +63,9 @@ impl TriggerDefinition<'_> {
     /// the trigger definition and returns whether or not the trigger fires.
     pub fn condition(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("condition") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +76,9 @@ impl TriggerDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("data") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement { value: e })
+                    .map(|e| DataRequirement {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +94,9 @@ impl TriggerDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +141,9 @@ impl TriggerDefinition<'_> {
     /// The timing of the event (if this is a periodic trigger).
     pub fn timing_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("timingReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +151,9 @@ impl TriggerDefinition<'_> {
     /// The timing of the event (if this is a periodic trigger).
     pub fn timing_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("timingTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -198,6 +218,24 @@ impl TriggerDefinition<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TriggerDefinitionBuilder {
+    pub value: Value,
+}
+
+impl TriggerDefinitionBuilder {
+    pub fn build(&self) -> TriggerDefinition {
+        TriggerDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TriggerDefinitionBuilder {
+        let mut __value: Value = json!({});
+        return TriggerDefinitionBuilder { value: __value };
     }
 }
 

@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Subject<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Subject<'_> {
@@ -23,7 +25,9 @@ impl Contract_Subject<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +58,9 @@ impl Contract_Subject<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,14 +75,18 @@ impl Contract_Subject<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Reference { value: e })
+            .map(|e| Reference {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// Role type of agent assigned roles in this Contract.
     pub fn role(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -107,5 +117,24 @@ impl Contract_Subject<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_SubjectBuilder {
+    pub value: Value,
+}
+
+impl Contract_SubjectBuilder {
+    pub fn build(&self) -> Contract_Subject {
+        Contract_Subject {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(reference: Vec<Reference>) -> Contract_SubjectBuilder {
+        let mut __value: Value = json!({});
+        __value["reference"] = json!(reference.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return Contract_SubjectBuilder { value: __value };
     }
 }

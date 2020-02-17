@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Source material shall capture information on the taxonomic and anatomical
 /// origins as well as the fraction of a material that can result in or can be
@@ -21,14 +23,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_Author<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSourceMaterial_Author<'_> {
     /// Extensions for authorDescription
     pub fn _author_description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorDescription") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +53,9 @@ impl SubstanceSourceMaterial_Author<'_> {
     /// refers to the first author(s), who validly published the plant/animal name.
     pub fn author_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("authorType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +69,9 @@ impl SubstanceSourceMaterial_Author<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +102,9 @@ impl SubstanceSourceMaterial_Author<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,5 +135,23 @@ impl SubstanceSourceMaterial_Author<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSourceMaterial_AuthorBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSourceMaterial_AuthorBuilder {
+    pub fn build(&self) -> SubstanceSourceMaterial_Author {
+        SubstanceSourceMaterial_Author {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSourceMaterial_AuthorBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSourceMaterial_AuthorBuilder { value: __value };
     }
 }

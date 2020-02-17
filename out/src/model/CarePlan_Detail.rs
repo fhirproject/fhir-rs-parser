@@ -7,7 +7,9 @@ use crate::model::Period::Period;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes the intention of how one or more practitioners intend to deliver care
 /// for a particular patient, group or community for a period of time, possibly
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CarePlan_Detail<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CarePlan_Detail<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl CarePlan_Detail<'_> {
     /// Extensions for doNotPerform
     pub fn _do_not_perform(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doNotPerform") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("_instantiatesUri") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -50,7 +58,9 @@ impl CarePlan_Detail<'_> {
     /// Extensions for kind
     pub fn _kind(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl CarePlan_Detail<'_> {
     /// Extensions for scheduledString
     pub fn _scheduled_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_scheduledString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl CarePlan_Detail<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +89,9 @@ impl CarePlan_Detail<'_> {
     /// procedure, what kind of encounter.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +99,9 @@ impl CarePlan_Detail<'_> {
     /// Identifies the quantity expected to be consumed in a given day.
     pub fn daily_amount(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("dailyAmount") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -118,7 +136,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -131,7 +151,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("goal") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -189,7 +211,9 @@ impl CarePlan_Detail<'_> {
     /// specific clinic, etc.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -209,7 +233,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -221,7 +247,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -232,7 +260,9 @@ impl CarePlan_Detail<'_> {
     /// activity.
     pub fn product_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("productCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -241,7 +271,9 @@ impl CarePlan_Detail<'_> {
     /// activity.
     pub fn product_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("productReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -250,7 +282,9 @@ impl CarePlan_Detail<'_> {
     /// subject.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -261,7 +295,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -275,7 +311,9 @@ impl CarePlan_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -285,7 +323,9 @@ impl CarePlan_Detail<'_> {
     /// The period, timing or frequency upon which the described activity is to occur.
     pub fn scheduled_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("scheduledPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -301,7 +341,9 @@ impl CarePlan_Detail<'_> {
     /// The period, timing or frequency upon which the described activity is to occur.
     pub fn scheduled_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("scheduledTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -318,7 +360,9 @@ impl CarePlan_Detail<'_> {
     /// etc.
     pub fn status_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("statusReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -442,6 +486,24 @@ impl CarePlan_Detail<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CarePlan_DetailBuilder {
+    pub value: Value,
+}
+
+impl CarePlan_DetailBuilder {
+    pub fn build(&self) -> CarePlan_Detail {
+        CarePlan_Detail {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CarePlan_DetailBuilder {
+        let mut __value: Value = json!({});
+        return CarePlan_DetailBuilder { value: __value };
     }
 }
 

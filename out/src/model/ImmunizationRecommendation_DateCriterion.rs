@@ -3,21 +3,25 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A patient's point-in-time set of recommendations (i.e. forecasting) according to
 /// a published schedule with optional supporting justification.
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendation_DateCriterion<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImmunizationRecommendation_DateCriterion<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,7 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
     /// latest date to give, etc.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -39,7 +43,9 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +76,9 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -107,5 +115,24 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
         }
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImmunizationRecommendation_DateCriterionBuilder {
+    pub value: Value,
+}
+
+impl ImmunizationRecommendation_DateCriterionBuilder {
+    pub fn build(&self) -> ImmunizationRecommendation_DateCriterion {
+        ImmunizationRecommendation_DateCriterion {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> ImmunizationRecommendation_DateCriterionBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return ImmunizationRecommendation_DateCriterionBuilder { value: __value };
     }
 }

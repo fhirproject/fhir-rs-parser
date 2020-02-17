@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ImmunizationRecommendation_DateCriterion::ImmunizationRecommendation_DateCriterion;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A patient's point-in-time set of recommendations (i.e. forecasting) according to
 /// a published schedule with optional supporting justification.
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendation_Recommendation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for doseNumberPositiveInt
     pub fn _dose_number_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doseNumberPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for doseNumberString
     pub fn _dose_number_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doseNumberString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for series
     pub fn _series(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_series") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +61,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for seriesDosesPositiveInt
     pub fn _series_doses_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_seriesDosesPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +71,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// Extensions for seriesDosesString
     pub fn _series_doses_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_seriesDosesString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +83,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("contraindicatedVaccineCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +98,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("dateCriterion") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImmunizationRecommendation_DateCriterion { value: e })
+                    .map(|e| ImmunizationRecommendation_DateCriterion {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +143,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -137,7 +157,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("forecastReason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +170,7 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// disease.
     pub fn forecast_status(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["forecastStatus"],
+            value: Cow::Borrowed(&self.value["forecastStatus"]),
         }
     }
 
@@ -176,7 +198,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +238,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingImmunization") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -227,7 +253,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingPatientInformation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -237,7 +265,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
     /// The targeted disease for the recommendation.
     pub fn target_disease(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("targetDisease") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -247,7 +277,9 @@ impl ImmunizationRecommendation_Recommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("vaccineCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -341,5 +373,26 @@ impl ImmunizationRecommendation_Recommendation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImmunizationRecommendation_RecommendationBuilder {
+    pub value: Value,
+}
+
+impl ImmunizationRecommendation_RecommendationBuilder {
+    pub fn build(&self) -> ImmunizationRecommendation_Recommendation {
+        ImmunizationRecommendation_Recommendation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        forecast_status: CodeableConcept,
+    ) -> ImmunizationRecommendation_RecommendationBuilder {
+        let mut __value: Value = json!({});
+        __value["forecastStatus"] = json!(forecast_status.value);
+        return ImmunizationRecommendation_RecommendationBuilder { value: __value };
     }
 }

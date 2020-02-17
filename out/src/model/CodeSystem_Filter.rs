@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CodeSystem resource is used to declare the existence of and describe a code
 /// system or code system supplement and its key properties, and optionally define a
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CodeSystem_Filter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CodeSystem_Filter<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl CodeSystem_Filter<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl CodeSystem_Filter<'_> {
         if let Some(Value::Array(val)) = self.value.get("_operator") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +53,9 @@ impl CodeSystem_Filter<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +86,9 @@ impl CodeSystem_Filter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -107,7 +119,9 @@ impl CodeSystem_Filter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -173,5 +187,23 @@ impl CodeSystem_Filter<'_> {
         }
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodeSystem_FilterBuilder {
+    pub value: Value,
+}
+
+impl CodeSystem_FilterBuilder {
+    pub fn build(&self) -> CodeSystem_Filter {
+        CodeSystem_Filter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodeSystem_FilterBuilder {
+        let mut __value: Value = json!({});
+        return CodeSystem_FilterBuilder { value: __value };
     }
 }

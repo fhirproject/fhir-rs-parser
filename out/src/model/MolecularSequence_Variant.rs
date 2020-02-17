@@ -3,20 +3,24 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Raw data describing a biological sequence.
 
 #[derive(Debug)]
 pub struct MolecularSequence_Variant<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MolecularSequence_Variant<'_> {
     /// Extensions for cigar
     pub fn _cigar(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cigar") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl MolecularSequence_Variant<'_> {
     /// Extensions for end
     pub fn _end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_end") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl MolecularSequence_Variant<'_> {
     /// Extensions for observedAllele
     pub fn _observed_allele(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_observedAllele") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl MolecularSequence_Variant<'_> {
     /// Extensions for referenceAllele
     pub fn _reference_allele(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_referenceAllele") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +58,9 @@ impl MolecularSequence_Variant<'_> {
     /// Extensions for start
     pub fn _start(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_start") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +96,9 @@ impl MolecularSequence_Variant<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +129,9 @@ impl MolecularSequence_Variant<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -160,7 +176,9 @@ impl MolecularSequence_Variant<'_> {
     /// A pointer to an Observation containing variant information.
     pub fn variant_pointer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("variantPointer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,5 +231,23 @@ impl MolecularSequence_Variant<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MolecularSequence_VariantBuilder {
+    pub value: Value,
+}
+
+impl MolecularSequence_VariantBuilder {
+    pub fn build(&self) -> MolecularSequence_Variant {
+        MolecularSequence_Variant {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MolecularSequence_VariantBuilder {
+        let mut __value: Value = json!({});
+        return MolecularSequence_VariantBuilder { value: __value };
     }
 }

@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Detailed definition of a medicinal product, typically for uses other than direct
 /// patient care (e.g. regulatory use).
 
 #[derive(Debug)]
 pub struct MedicinalProduct_SpecialDesignation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProduct_SpecialDesignation<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +45,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +80,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// Condition for which the medicinal use applies.
     pub fn indication_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("indicationCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +90,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// Condition for which the medicinal use applies.
     pub fn indication_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("indicationReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +100,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// The intended use of the product, e.g. prevention, treatment.
     pub fn intended_use(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("intendedUse") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +122,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +134,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// Animal species for which this applies.
     pub fn species(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("species") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +144,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// For example granted, pending, expired or withdrawn.
     pub fn status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("status") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -134,7 +154,9 @@ impl MedicinalProduct_SpecialDesignation<'_> {
     /// The type of special designation, e.g. orphan drug, minor use.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -193,5 +215,23 @@ impl MedicinalProduct_SpecialDesignation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProduct_SpecialDesignationBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProduct_SpecialDesignationBuilder {
+    pub fn build(&self) -> MedicinalProduct_SpecialDesignation {
+        MedicinalProduct_SpecialDesignation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProduct_SpecialDesignationBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProduct_SpecialDesignationBuilder { value: __value };
     }
 }

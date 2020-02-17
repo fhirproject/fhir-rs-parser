@@ -12,7 +12,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of healthcare-related information that is assembled together into a single
 /// logical package that provides a single coherent statement of meaning,
@@ -26,14 +28,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Composition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Composition<'_> {
     /// Extensions for confidentiality
     pub fn _confidentiality(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_confidentiality") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +45,9 @@ impl Composition<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +55,9 @@ impl Composition<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +65,9 @@ impl Composition<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl Composition<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +85,9 @@ impl Composition<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +97,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("attester") {
             return Some(
                 val.into_iter()
-                    .map(|e| Composition_Attester { value: e })
+                    .map(|e| Composition_Attester {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,7 +115,9 @@ impl Composition<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Reference { value: e })
+            .map(|e| Reference {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -110,7 +128,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -132,7 +152,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -143,7 +165,9 @@ impl Composition<'_> {
     /// of and access to the composition/document information.
     pub fn custodian(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("custodian") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -161,7 +185,9 @@ impl Composition<'_> {
     /// associated with.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -172,7 +198,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("event") {
             return Some(
                 val.into_iter()
-                    .map(|e| Composition_Event { value: e })
+                    .map(|e| Composition_Event {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -188,7 +216,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -208,7 +238,9 @@ impl Composition<'_> {
     /// constant as the composition is changed over time.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -237,7 +269,9 @@ impl Composition<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -258,7 +292,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -271,7 +307,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatesTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| Composition_RelatesTo { value: e })
+                    .map(|e| Composition_RelatesTo {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -283,7 +321,9 @@ impl Composition<'_> {
         if let Some(Value::Array(val)) = self.value.get("section") {
             return Some(
                 val.into_iter()
-                    .map(|e| Composition_Section { value: e })
+                    .map(|e| Composition_Section {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -305,7 +345,9 @@ impl Composition<'_> {
     /// that share a common exposure).
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -318,7 +360,9 @@ impl Composition<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -336,7 +380,7 @@ impl Composition<'_> {
     /// the composition.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -460,6 +504,26 @@ impl Composition<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CompositionBuilder {
+    pub value: Value,
+}
+
+impl CompositionBuilder {
+    pub fn build(&self) -> Composition {
+        Composition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(author: Vec<Reference>, fhir_type: CodeableConcept) -> CompositionBuilder {
+        let mut __value: Value = json!({});
+        __value["author"] = json!(author.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["type"] = json!(fhir_type.value);
+        return CompositionBuilder { value: __value };
     }
 }
 

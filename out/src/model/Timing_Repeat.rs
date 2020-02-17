@@ -5,7 +5,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Specifies an event that may occur multiple times. Timing schedules are used to
 /// record when things are planned, expected or requested to occur. The most common
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Timing_Repeat<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Timing_Repeat<'_> {
     /// Extensions for count
     pub fn _count(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_count") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for countMax
     pub fn _count_max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_countMax") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl Timing_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("_dayOfWeek") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -50,7 +58,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for duration
     pub fn _duration(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_duration") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for durationMax
     pub fn _duration_max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_durationMax") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for durationUnit
     pub fn _duration_unit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_durationUnit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +88,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for frequency
     pub fn _frequency(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_frequency") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +98,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for frequencyMax
     pub fn _frequency_max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_frequencyMax") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +108,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for offset
     pub fn _offset(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_offset") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +118,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for period
     pub fn _period(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_period") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -106,7 +128,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for periodMax
     pub fn _period_max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_periodMax") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -114,7 +138,9 @@ impl Timing_Repeat<'_> {
     /// Extensions for periodUnit
     pub fn _period_unit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_periodUnit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -124,7 +150,9 @@ impl Timing_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("_timeOfDay") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -136,7 +164,9 @@ impl Timing_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("_when") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -147,7 +177,9 @@ impl Timing_Repeat<'_> {
     /// length, or outer bounds for start and/or end limits of the timing schedule.
     pub fn bounds_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("boundsDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -156,7 +188,9 @@ impl Timing_Repeat<'_> {
     /// length, or outer bounds for start and/or end limits of the timing schedule.
     pub fn bounds_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("boundsPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +199,9 @@ impl Timing_Repeat<'_> {
     /// length, or outer bounds for start and/or end limits of the timing schedule.
     pub fn bounds_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("boundsRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -237,7 +273,9 @@ impl Timing_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -287,7 +325,9 @@ impl Timing_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -459,6 +499,24 @@ impl Timing_Repeat<'_> {
             _val.into_iter().for_each(|_e| {});
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Timing_RepeatBuilder {
+    pub value: Value,
+}
+
+impl Timing_RepeatBuilder {
+    pub fn build(&self) -> Timing_Repeat {
+        Timing_Repeat {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Timing_RepeatBuilder {
+        let mut __value: Value = json!({});
+        return Timing_RepeatBuilder { value: __value };
     }
 }
 

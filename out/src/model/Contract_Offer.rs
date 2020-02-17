@@ -7,14 +7,16 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Offer<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Offer<'_> {
@@ -23,7 +25,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("_linkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -35,7 +39,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +51,9 @@ impl Contract_Offer<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("answer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Answer { value: e })
+                    .map(|e| Contract_Answer {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +76,9 @@ impl Contract_Offer<'_> {
     /// offeror/ grantee.
     pub fn decision(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("decision") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +88,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("decisionMode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +106,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +129,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +166,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -160,7 +180,9 @@ impl Contract_Offer<'_> {
         if let Some(Value::Array(val)) = self.value.get("party") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Party { value: e })
+                    .map(|e| Contract_Party {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -192,7 +214,9 @@ impl Contract_Offer<'_> {
     /// contract, custom, or law (Hart, 1995, p. 30).
     pub fn topic(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("topic") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -201,7 +225,9 @@ impl Contract_Offer<'_> {
     /// obligations, prohibitions, e.g. life time maximum benefit.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -276,5 +302,23 @@ impl Contract_Offer<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_OfferBuilder {
+    pub value: Value,
+}
+
+impl Contract_OfferBuilder {
+    pub fn build(&self) -> Contract_Offer {
+        Contract_Offer {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Contract_OfferBuilder {
+        let mut __value: Value = json!({});
+        return Contract_OfferBuilder { value: __value };
     }
 }

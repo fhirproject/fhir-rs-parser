@@ -15,21 +15,25 @@ use crate::model::SubstanceSpecification_Name::SubstanceSpecification_Name;
 use crate::model::SubstanceSpecification_Property::SubstanceSpecification_Property;
 use crate::model::SubstanceSpecification_Relationship::SubstanceSpecification_Relationship;
 use crate::model::SubstanceSpecification_Structure::SubstanceSpecification_Structure;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
 
 #[derive(Debug)]
 pub struct SubstanceSpecification<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSpecification<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +41,9 @@ impl SubstanceSpecification<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +51,9 @@ impl SubstanceSpecification<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl SubstanceSpecification<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Code { value: e })
+                    .map(|e| SubstanceSpecification_Code {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +97,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +117,9 @@ impl SubstanceSpecification<'_> {
     /// If the substance applies to only human or veterinary use.
     pub fn domain(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("domain") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -117,7 +133,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -136,7 +154,9 @@ impl SubstanceSpecification<'_> {
     /// Identifier by which this substance is known.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +185,9 @@ impl SubstanceSpecification<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -186,7 +208,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -198,7 +222,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("moiety") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Moiety { value: e })
+                    .map(|e| SubstanceSpecification_Moiety {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -210,7 +236,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("molecularWeight") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_MolecularWeight { value: e })
+                    .map(|e| SubstanceSpecification_MolecularWeight {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -222,7 +250,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("name") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Name { value: e })
+                    .map(|e| SubstanceSpecification_Name {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -232,7 +262,9 @@ impl SubstanceSpecification<'_> {
     /// Data items specific to nucleic acids.
     pub fn nucleic_acid(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("nucleicAcid") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -240,7 +272,9 @@ impl SubstanceSpecification<'_> {
     /// Data items specific to polymers.
     pub fn polymer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("polymer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -251,7 +285,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("property") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Property { value: e })
+                    .map(|e| SubstanceSpecification_Property {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -261,7 +297,9 @@ impl SubstanceSpecification<'_> {
     /// Data items specific to proteins.
     pub fn protein(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("protein") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -269,7 +307,9 @@ impl SubstanceSpecification<'_> {
     /// General information detailing this substance.
     pub fn reference_information(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("referenceInformation") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -279,7 +319,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("relationship") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Relationship { value: e })
+                    .map(|e| SubstanceSpecification_Relationship {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -291,7 +333,9 @@ impl SubstanceSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("source") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -301,7 +345,9 @@ impl SubstanceSpecification<'_> {
     /// Material or taxonomic/anatomical source for the substance.
     pub fn source_material(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("sourceMaterial") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -309,7 +355,9 @@ impl SubstanceSpecification<'_> {
     /// Status of substance within the catalogue e.g. approved.
     pub fn status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("status") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -317,7 +365,9 @@ impl SubstanceSpecification<'_> {
     /// Structural information.
     pub fn structure(&self) -> Option<SubstanceSpecification_Structure> {
         if let Some(val) = self.value.get("structure") {
-            return Some(SubstanceSpecification_Structure { value: val });
+            return Some(SubstanceSpecification_Structure {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -330,7 +380,9 @@ impl SubstanceSpecification<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -338,7 +390,9 @@ impl SubstanceSpecification<'_> {
     /// High level categorization, e.g. polymer or nucleic acid.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -480,5 +534,23 @@ impl SubstanceSpecification<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSpecificationBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSpecificationBuilder {
+    pub fn build(&self) -> SubstanceSpecification {
+        SubstanceSpecification {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSpecificationBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSpecificationBuilder { value: __value };
     }
 }

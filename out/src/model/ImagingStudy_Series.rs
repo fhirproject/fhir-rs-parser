@@ -6,7 +6,9 @@ use crate::model::Extension::Extension;
 use crate::model::ImagingStudy_Instance::ImagingStudy_Instance;
 use crate::model::ImagingStudy_Performer::ImagingStudy_Performer;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Representation of the content produced in a DICOM imaging study. A study
 /// comprises a set of series, each of which includes a set of Service-Object Pair
@@ -16,14 +18,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImagingStudy_Series<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImagingStudy_Series<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl ImagingStudy_Series<'_> {
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl ImagingStudy_Series<'_> {
     /// Extensions for numberOfInstances
     pub fn _number_of_instances(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfInstances") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +55,9 @@ impl ImagingStudy_Series<'_> {
     /// Extensions for started
     pub fn _started(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_started") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +65,9 @@ impl ImagingStudy_Series<'_> {
     /// Extensions for uid
     pub fn _uid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_uid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +79,9 @@ impl ImagingStudy_Series<'_> {
     /// ImagingStudy.series.laterality.
     pub fn body_site(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("bodySite") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +102,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("endpoint") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +120,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +143,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("instance") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImagingStudy_Instance { value: e })
+                    .map(|e| ImagingStudy_Instance {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -137,7 +157,9 @@ impl ImagingStudy_Series<'_> {
     /// any laterality information indicated in ImagingStudy.series.bodySite.
     pub fn laterality(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("laterality") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +167,7 @@ impl ImagingStudy_Series<'_> {
     /// The modality of this series sequence.
     pub fn modality(&self) -> Coding {
         Coding {
-            value: &self.value["modality"],
+            value: Cow::Borrowed(&self.value["modality"]),
         }
     }
 
@@ -164,7 +186,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -195,7 +219,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImagingStudy_Performer { value: e })
+                    .map(|e| ImagingStudy_Performer {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -207,7 +233,9 @@ impl ImagingStudy_Series<'_> {
         if let Some(Value::Array(val)) = self.value.get("specimen") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -306,5 +334,24 @@ impl ImagingStudy_Series<'_> {
         if let Some(_val) = self.started() {}
         if let Some(_val) = self.uid() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImagingStudy_SeriesBuilder {
+    pub value: Value,
+}
+
+impl ImagingStudy_SeriesBuilder {
+    pub fn build(&self) -> ImagingStudy_Series {
+        ImagingStudy_Series {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(modality: Coding) -> ImagingStudy_SeriesBuilder {
+        let mut __value: Value = json!({});
+        __value["modality"] = json!(modality.value);
+        return ImagingStudy_SeriesBuilder { value: __value };
     }
 }

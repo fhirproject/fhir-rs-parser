@@ -5,13 +5,15 @@ use crate::model::MedicationKnowledge_MaxDispense::MedicationKnowledge_MaxDispen
 use crate::model::MedicationKnowledge_Schedule::MedicationKnowledge_Schedule;
 use crate::model::MedicationKnowledge_Substitution::MedicationKnowledge_Substitution;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_Regulatory<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_Regulatory<'_> {
@@ -24,7 +26,9 @@ impl MedicationKnowledge_Regulatory<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl MedicationKnowledge_Regulatory<'_> {
     /// The maximum number of units of the medication that can be dispensed in a period.
     pub fn max_dispense(&self) -> Option<MedicationKnowledge_MaxDispense> {
         if let Some(val) = self.value.get("maxDispense") {
-            return Some(MedicationKnowledge_MaxDispense { value: val });
+            return Some(MedicationKnowledge_MaxDispense {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +69,9 @@ impl MedicationKnowledge_Regulatory<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +81,7 @@ impl MedicationKnowledge_Regulatory<'_> {
     /// The authority that is specifying the regulations.
     pub fn regulatory_authority(&self) -> Reference {
         Reference {
-            value: &self.value["regulatoryAuthority"],
+            value: Cow::Borrowed(&self.value["regulatoryAuthority"]),
         }
     }
 
@@ -82,7 +90,9 @@ impl MedicationKnowledge_Regulatory<'_> {
         if let Some(Value::Array(val)) = self.value.get("schedule") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicationKnowledge_Schedule { value: e })
+                    .map(|e| MedicationKnowledge_Schedule {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +105,9 @@ impl MedicationKnowledge_Regulatory<'_> {
         if let Some(Value::Array(val)) = self.value.get("substitution") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicationKnowledge_Substitution { value: e })
+                    .map(|e| MedicationKnowledge_Substitution {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,5 +145,24 @@ impl MedicationKnowledge_Regulatory<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_RegulatoryBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_RegulatoryBuilder {
+    pub fn build(&self) -> MedicationKnowledge_Regulatory {
+        MedicationKnowledge_Regulatory {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(regulatory_authority: Reference) -> MedicationKnowledge_RegulatoryBuilder {
+        let mut __value: Value = json!({});
+        __value["regulatoryAuthority"] = json!(regulatory_authority.value);
+        return MedicationKnowledge_RegulatoryBuilder { value: __value };
     }
 }

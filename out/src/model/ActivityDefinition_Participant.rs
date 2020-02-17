@@ -3,21 +3,25 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource allows for the definition of some activity to be performed,
 /// independent of a particular patient, practitioner, or other performance context.
 
 #[derive(Debug)]
 pub struct ActivityDefinition_Participant<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ActivityDefinition_Participant<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl ActivityDefinition_Participant<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl ActivityDefinition_Participant<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +80,9 @@ impl ActivityDefinition_Participant<'_> {
     /// The role the participant should play in performing the described action.
     pub fn role(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -109,5 +119,23 @@ impl ActivityDefinition_Participant<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ActivityDefinition_ParticipantBuilder {
+    pub value: Value,
+}
+
+impl ActivityDefinition_ParticipantBuilder {
+    pub fn build(&self) -> ActivityDefinition_Participant {
+        ActivityDefinition_Participant {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ActivityDefinition_ParticipantBuilder {
+        let mut __value: Value = json!({});
+        return ActivityDefinition_ParticipantBuilder { value: __value };
     }
 }

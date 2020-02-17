@@ -11,7 +11,9 @@ use crate::model::Provenance_Entity::Provenance_Entity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Signature::Signature;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Provenance of a resource is a record that describes entities and processes
 /// involved in producing and delivering or otherwise influencing that resource.
@@ -25,14 +27,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Provenance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Provenance<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +44,9 @@ impl Provenance<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl Provenance<'_> {
     /// Extensions for occurredDateTime
     pub fn _occurred_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurredDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +66,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("_policy") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -68,7 +78,9 @@ impl Provenance<'_> {
     /// Extensions for recorded
     pub fn _recorded(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recorded") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +90,9 @@ impl Provenance<'_> {
     /// relocating, using, or generating entities.
     pub fn activity(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("activity") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +106,9 @@ impl Provenance<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Provenance_Agent { value: e })
+            .map(|e| Provenance_Agent {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -103,7 +119,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +133,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("entity") {
             return Some(
                 val.into_iter()
-                    .map(|e| Provenance_Entity { value: e })
+                    .map(|e| Provenance_Entity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -131,7 +151,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -169,7 +191,9 @@ impl Provenance<'_> {
     /// Where the activity occurred, if relevant.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -179,7 +203,9 @@ impl Provenance<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -200,7 +226,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -218,7 +246,9 @@ impl Provenance<'_> {
     /// The period during which the activity occurred.
     pub fn occurred_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurredPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -242,7 +272,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("reason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -263,7 +295,9 @@ impl Provenance<'_> {
         if let Some(Value::Array(val)) = self.value.get("signature") {
             return Some(
                 val.into_iter()
-                    .map(|e| Signature { value: e })
+                    .map(|e| Signature {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -280,7 +314,9 @@ impl Provenance<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Reference { value: e })
+            .map(|e| Reference {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -292,7 +328,9 @@ impl Provenance<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -403,5 +441,25 @@ impl Provenance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ProvenanceBuilder {
+    pub value: Value,
+}
+
+impl ProvenanceBuilder {
+    pub fn build(&self) -> Provenance {
+        Provenance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(agent: Vec<Provenance_Agent>, target: Vec<Reference>) -> ProvenanceBuilder {
+        let mut __value: Value = json!({});
+        __value["agent"] = json!(agent.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["target"] = json!(target.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return ProvenanceBuilder { value: __value };
     }
 }

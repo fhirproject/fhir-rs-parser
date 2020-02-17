@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a clinical assessment performed to determine what problem(s) may
 /// affect the patient and before planning the treatments or management strategies
@@ -16,14 +18,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ClinicalImpression_Finding<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClinicalImpression_Finding<'_> {
     /// Extensions for basis
     pub fn _basis(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_basis") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +49,9 @@ impl ClinicalImpression_Finding<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +71,9 @@ impl ClinicalImpression_Finding<'_> {
     /// resolved conditions.
     pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +82,9 @@ impl ClinicalImpression_Finding<'_> {
     /// resolved conditions.
     pub fn item_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +104,9 @@ impl ClinicalImpression_Finding<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -130,5 +142,23 @@ impl ClinicalImpression_Finding<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClinicalImpression_FindingBuilder {
+    pub value: Value,
+}
+
+impl ClinicalImpression_FindingBuilder {
+    pub fn build(&self) -> ClinicalImpression_Finding {
+        ClinicalImpression_Finding {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ClinicalImpression_FindingBuilder {
+        let mut __value: Value = json!({});
+        return ClinicalImpression_FindingBuilder { value: __value };
     }
 }

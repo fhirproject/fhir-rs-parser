@@ -3,7 +3,9 @@
 use crate::model::AdverseEvent_Causality::AdverseEvent_Causality;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Actual or  potential/avoided event causing unintended physical injury resulting
 /// from or contributed to by medical care, a research study or other healthcare
@@ -12,7 +14,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct AdverseEvent_SuspectEntity<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AdverseEvent_SuspectEntity<'_> {
@@ -21,7 +23,9 @@ impl AdverseEvent_SuspectEntity<'_> {
         if let Some(Value::Array(val)) = self.value.get("causality") {
             return Some(
                 val.into_iter()
-                    .map(|e| AdverseEvent_Causality { value: e })
+                    .map(|e| AdverseEvent_Causality {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -37,7 +41,9 @@ impl AdverseEvent_SuspectEntity<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -58,7 +64,7 @@ impl AdverseEvent_SuspectEntity<'_> {
     /// device.
     pub fn instance(&self) -> Reference {
         Reference {
-            value: &self.value["instance"],
+            value: Cow::Borrowed(&self.value["instance"]),
         }
     }
 
@@ -77,7 +83,9 @@ impl AdverseEvent_SuspectEntity<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,5 +113,24 @@ impl AdverseEvent_SuspectEntity<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AdverseEvent_SuspectEntityBuilder {
+    pub value: Value,
+}
+
+impl AdverseEvent_SuspectEntityBuilder {
+    pub fn build(&self) -> AdverseEvent_SuspectEntity {
+        AdverseEvent_SuspectEntity {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(instance: Reference) -> AdverseEvent_SuspectEntityBuilder {
+        let mut __value: Value = json!({});
+        __value["instance"] = json!(instance.value);
+        return AdverseEvent_SuspectEntityBuilder { value: __value };
     }
 }

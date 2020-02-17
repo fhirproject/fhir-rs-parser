@@ -7,21 +7,25 @@ use crate::model::Identifier::Identifier;
 use crate::model::Money::Money;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_ValuedItem<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_ValuedItem<'_> {
     /// Extensions for effectiveTime
     pub fn _effective_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl Contract_ValuedItem<'_> {
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl Contract_ValuedItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("_linkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -49,7 +57,9 @@ impl Contract_ValuedItem<'_> {
     /// Extensions for payment
     pub fn _payment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_payment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl Contract_ValuedItem<'_> {
     /// Extensions for paymentDate
     pub fn _payment_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_paymentDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl Contract_ValuedItem<'_> {
     /// Extensions for points
     pub fn _points(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_points") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +89,9 @@ impl Contract_ValuedItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +110,9 @@ impl Contract_ValuedItem<'_> {
     /// Specific type of Contract Valued Item that may be priced.
     pub fn entity_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("entityCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +120,9 @@ impl Contract_ValuedItem<'_> {
     /// Specific type of Contract Valued Item that may be priced.
     pub fn entity_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("entityReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -116,7 +136,9 @@ impl Contract_ValuedItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -145,7 +167,9 @@ impl Contract_ValuedItem<'_> {
     /// Identifies a Contract Valued Item instance.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -178,7 +202,9 @@ impl Contract_ValuedItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -191,7 +217,9 @@ impl Contract_ValuedItem<'_> {
     /// assumed to be 1 if not supplied.
     pub fn net(&self) -> Option<Money> {
         if let Some(val) = self.value.get("net") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -227,7 +255,9 @@ impl Contract_ValuedItem<'_> {
     /// and quantifies the countable or measurable Contract Valued Item instances.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -235,7 +265,9 @@ impl Contract_ValuedItem<'_> {
     /// Who will receive payment.
     pub fn recipient(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("recipient") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -243,7 +275,9 @@ impl Contract_ValuedItem<'_> {
     /// Who will make payment.
     pub fn responsible(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("responsible") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -264,7 +298,9 @@ impl Contract_ValuedItem<'_> {
     /// A Contract Valued Item unit valuation measure.
     pub fn unit_price(&self) -> Option<Money> {
         if let Some(val) = self.value.get("unitPrice") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -368,5 +404,23 @@ impl Contract_ValuedItem<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_ValuedItemBuilder {
+    pub value: Value,
+}
+
+impl Contract_ValuedItemBuilder {
+    pub fn build(&self) -> Contract_ValuedItem {
+        Contract_ValuedItem {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Contract_ValuedItemBuilder {
+        let mut __value: Value = json!({});
+        return Contract_ValuedItemBuilder { value: __value };
     }
 }

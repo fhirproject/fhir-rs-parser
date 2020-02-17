@@ -5,21 +5,23 @@ use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A person who is directly or indirectly involved in the provisioning of
 /// healthcare.
 
 #[derive(Debug)]
 pub struct Practitioner_Qualification<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Practitioner_Qualification<'_> {
     /// Coded representation of the qualification.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -32,7 +34,9 @@ impl Practitioner_Qualification<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -53,7 +57,9 @@ impl Practitioner_Qualification<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl Practitioner_Qualification<'_> {
     /// Organization that regulates and issues the qualification.
     pub fn issuer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("issuer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +91,9 @@ impl Practitioner_Qualification<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +103,9 @@ impl Practitioner_Qualification<'_> {
     /// Period during which the qualification is valid.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,5 +141,24 @@ impl Practitioner_Qualification<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Practitioner_QualificationBuilder {
+    pub value: Value,
+}
+
+impl Practitioner_QualificationBuilder {
+    pub fn build(&self) -> Practitioner_Qualification {
+        Practitioner_Qualification {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> Practitioner_QualificationBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return Practitioner_QualificationBuilder { value: __value };
     }
 }

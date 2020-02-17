@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Identifies two or more records (resource instances) that refer to the same real-
 /// world "occurrence".
 
 #[derive(Debug)]
 pub struct Linkage_Item<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Linkage_Item<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl Linkage_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl Linkage_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +80,7 @@ impl Linkage_Item<'_> {
     /// The resource instance being linked as part of the group.
     pub fn resource(&self) -> Reference {
         Reference {
-            value: &self.value["resource"],
+            value: Cow::Borrowed(&self.value["resource"]),
         }
     }
 
@@ -107,6 +115,25 @@ impl Linkage_Item<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Linkage_ItemBuilder {
+    pub value: Value,
+}
+
+impl Linkage_ItemBuilder {
+    pub fn build(&self) -> Linkage_Item {
+        Linkage_Item {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(resource: Reference) -> Linkage_ItemBuilder {
+        let mut __value: Value = json!({});
+        __value["resource"] = json!(resource.value);
+        return Linkage_ItemBuilder { value: __value };
     }
 }
 

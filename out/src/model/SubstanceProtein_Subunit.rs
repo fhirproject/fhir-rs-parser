@@ -4,7 +4,9 @@ use crate::model::Attachment::Attachment;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A SubstanceProtein is defined as a single unit of a linear amino acid sequence,
 /// or a combination of subunits that are either covalently linked or have a defined
@@ -17,14 +19,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceProtein_Subunit<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceProtein_Subunit<'_> {
     /// Extensions for cTerminalModification
     pub fn _c_terminal_modification(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cTerminalModification") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Extensions for length
     pub fn _length(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_length") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Extensions for nTerminalModification
     pub fn _n_terminal_modification(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_nTerminalModification") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +66,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Extensions for subunit
     pub fn _subunit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_subunit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +85,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Substance ID.
     pub fn c_terminal_modification_id(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("cTerminalModificationId") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +101,9 @@ impl SubstanceProtein_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -126,7 +142,9 @@ impl SubstanceProtein_Subunit<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -146,7 +164,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// Substance ID.
     pub fn n_terminal_modification_id(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("nTerminalModificationId") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -174,7 +194,9 @@ impl SubstanceProtein_Subunit<'_> {
     /// will be distinguished by their position in the sequence.
     pub fn sequence_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("sequenceAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -248,5 +270,23 @@ impl SubstanceProtein_Subunit<'_> {
         }
         if let Some(_val) = self.subunit() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceProtein_SubunitBuilder {
+    pub value: Value,
+}
+
+impl SubstanceProtein_SubunitBuilder {
+    pub fn build(&self) -> SubstanceProtein_Subunit {
+        SubstanceProtein_Subunit {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceProtein_SubunitBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceProtein_SubunitBuilder { value: __value };
     }
 }

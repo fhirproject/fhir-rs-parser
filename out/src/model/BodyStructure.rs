@@ -9,21 +9,25 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Record details about an anatomical structure.  This resource may be used when a
 /// coded concept does not provide the necessary detail needed for the use case.
 
 #[derive(Debug)]
 pub struct BodyStructure<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl BodyStructure<'_> {
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl BodyStructure<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl BodyStructure<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +55,9 @@ impl BodyStructure<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +77,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +103,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +126,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +140,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("image") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| Attachment {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,7 +171,9 @@ impl BodyStructure<'_> {
     /// The anatomical location or region of the specimen, lesion, or body structure.
     pub fn location(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("location") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -164,7 +184,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("locationQualifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -176,7 +198,9 @@ impl BodyStructure<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -197,7 +221,9 @@ impl BodyStructure<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -209,7 +235,9 @@ impl BodyStructure<'_> {
     /// morphologies.
     pub fn morphology(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("morphology") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -217,7 +245,7 @@ impl BodyStructure<'_> {
     /// The person to which the body site belongs.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -229,7 +257,9 @@ impl BodyStructure<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -314,5 +344,24 @@ impl BodyStructure<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct BodyStructureBuilder {
+    pub value: Value,
+}
+
+impl BodyStructureBuilder {
+    pub fn build(&self) -> BodyStructure {
+        BodyStructure {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(patient: Reference) -> BodyStructureBuilder {
+        let mut __value: Value = json!({});
+        __value["patient"] = json!(patient.value);
+        return BodyStructureBuilder { value: __value };
     }
 }

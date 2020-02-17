@@ -12,21 +12,25 @@ use crate::model::PaymentReconciliation_ProcessNote::PaymentReconciliation_Proce
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the details including amount of a payment and allocates
 /// the payment items being paid.
 
 #[derive(Debug)]
 pub struct PaymentReconciliation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl PaymentReconciliation<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for disposition
     pub fn _disposition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_disposition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for outcome
     pub fn _outcome(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for paymentDate
     pub fn _payment_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_paymentDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +88,9 @@ impl PaymentReconciliation<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -86,7 +102,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -106,7 +124,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("detail") {
             return Some(
                 val.into_iter()
-                    .map(|e| PaymentReconciliation_Detail { value: e })
+                    .map(|e| PaymentReconciliation_Detail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -131,7 +151,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -141,7 +163,9 @@ impl PaymentReconciliation<'_> {
     /// A code for the form to be used for printing the content.
     pub fn form_code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("formCode") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -160,7 +184,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -191,7 +217,9 @@ impl PaymentReconciliation<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -212,7 +240,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -230,7 +260,7 @@ impl PaymentReconciliation<'_> {
     /// Total payment amount as indicated on the financial instrument.
     pub fn payment_amount(&self) -> Money {
         Money {
-            value: &self.value["paymentAmount"],
+            value: Cow::Borrowed(&self.value["paymentAmount"]),
         }
     }
 
@@ -245,7 +275,9 @@ impl PaymentReconciliation<'_> {
     /// Issuer's unique identifier for the payment instrument.
     pub fn payment_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("paymentIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -253,7 +285,9 @@ impl PaymentReconciliation<'_> {
     /// The party who generated the payment.
     pub fn payment_issuer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("paymentIssuer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +296,9 @@ impl PaymentReconciliation<'_> {
     /// for settlement.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -272,7 +308,9 @@ impl PaymentReconciliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("processNote") {
             return Some(
                 val.into_iter()
-                    .map(|e| PaymentReconciliation_ProcessNote { value: e })
+                    .map(|e| PaymentReconciliation_ProcessNote {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -282,7 +320,9 @@ impl PaymentReconciliation<'_> {
     /// Original request resource reference.
     pub fn request(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("request") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -290,7 +330,9 @@ impl PaymentReconciliation<'_> {
     /// The practitioner who is responsible for the services rendered to the patient.
     pub fn requestor(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requestor") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -311,7 +353,9 @@ impl PaymentReconciliation<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -434,6 +478,25 @@ impl PaymentReconciliation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PaymentReconciliationBuilder {
+    pub value: Value,
+}
+
+impl PaymentReconciliationBuilder {
+    pub fn build(&self) -> PaymentReconciliation {
+        PaymentReconciliation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(payment_amount: Money) -> PaymentReconciliationBuilder {
+        let mut __value: Value = json!({});
+        __value["paymentAmount"] = json!(payment_amount.value);
+        return PaymentReconciliationBuilder { value: __value };
     }
 }
 

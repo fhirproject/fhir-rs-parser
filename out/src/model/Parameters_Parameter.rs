@@ -34,7 +34,9 @@ use crate::model::Signature::Signature;
 use crate::model::Timing::Timing;
 use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource is a non-persisted resource used to pass information into and back
 /// from an [operation](operations.html). It has no other use, and there is no
@@ -42,14 +44,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Parameters_Parameter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Parameters_Parameter<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +61,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueBase64Binary
     pub fn _value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +71,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +81,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueCanonical
     pub fn _value_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -81,7 +91,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueCode
     pub fn _value_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +101,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueDate
     pub fn _value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +111,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueDateTime
     pub fn _value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +121,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueDecimal
     pub fn _value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -113,7 +131,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueId
     pub fn _value_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -121,7 +141,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueInstant
     pub fn _value_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,7 +151,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueInteger
     pub fn _value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -137,7 +161,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueMarkdown
     pub fn _value_markdown(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueMarkdown") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +171,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueOid
     pub fn _value_oid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueOid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +181,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valuePositiveInt
     pub fn _value_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valuePositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -161,7 +191,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -169,7 +201,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueTime
     pub fn _value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -177,7 +211,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueUnsignedInt
     pub fn _value_unsigned_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueUnsignedInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -185,7 +221,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueUri
     pub fn _value_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -193,7 +231,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueUrl
     pub fn _value_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -201,7 +241,9 @@ impl Parameters_Parameter<'_> {
     /// Extensions for valueUuid
     pub fn _value_uuid(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueUuid") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -215,7 +257,9 @@ impl Parameters_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -246,7 +290,9 @@ impl Parameters_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -266,7 +312,9 @@ impl Parameters_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("part") {
             return Some(
                 val.into_iter()
-                    .map(|e| Parameters_Parameter { value: e })
+                    .map(|e| Parameters_Parameter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -276,7 +324,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a whole resource.
     pub fn resource(&self) -> Option<ResourceList> {
         if let Some(val) = self.value.get("resource") {
-            return Some(ResourceList { value: val });
+            return Some(ResourceList {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -284,7 +334,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("valueAddress") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -292,7 +344,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("valueAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -300,7 +354,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_annotation(&self) -> Option<Annotation> {
         if let Some(val) = self.value.get("valueAnnotation") {
-            return Some(Annotation { value: val });
+            return Some(Annotation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -308,7 +364,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("valueAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -348,7 +406,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -356,7 +416,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("valueCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -364,7 +426,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_contact_detail(&self) -> Option<ContactDetail> {
         if let Some(val) = self.value.get("valueContactDetail") {
-            return Some(ContactDetail { value: val });
+            return Some(ContactDetail {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -372,7 +436,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_contact_point(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("valueContactPoint") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -380,7 +446,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_contributor(&self) -> Option<Contributor> {
         if let Some(val) = self.value.get("valueContributor") {
-            return Some(Contributor { value: val });
+            return Some(Contributor {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -388,7 +456,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_count(&self) -> Option<Count> {
         if let Some(val) = self.value.get("valueCount") {
-            return Some(Count { value: val });
+            return Some(Count {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -396,7 +466,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("valueDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -428,7 +500,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_distance(&self) -> Option<Distance> {
         if let Some(val) = self.value.get("valueDistance") {
-            return Some(Distance { value: val });
+            return Some(Distance {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -436,7 +510,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_dosage(&self) -> Option<Dosage> {
         if let Some(val) = self.value.get("valueDosage") {
-            return Some(Dosage { value: val });
+            return Some(Dosage {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -444,7 +520,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("valueDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -452,7 +530,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("valueExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -460,7 +540,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_human_name(&self) -> Option<HumanName> {
         if let Some(val) = self.value.get("valueHumanName") {
-            return Some(HumanName { value: val });
+            return Some(HumanName {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -476,7 +558,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("valueIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -508,7 +592,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("valueMeta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -516,7 +602,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("valueMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -532,7 +620,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_parameter_definition(&self) -> Option<ParameterDefinition> {
         if let Some(val) = self.value.get("valueParameterDefinition") {
-            return Some(ParameterDefinition { value: val });
+            return Some(ParameterDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -540,7 +630,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("valuePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -556,7 +648,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -564,7 +658,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -572,7 +668,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("valueRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -580,7 +678,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("valueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -588,7 +688,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_related_artifact(&self) -> Option<RelatedArtifact> {
         if let Some(val) = self.value.get("valueRelatedArtifact") {
-            return Some(RelatedArtifact { value: val });
+            return Some(RelatedArtifact {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -596,7 +698,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("valueSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -604,7 +708,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("valueSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -628,7 +734,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("valueTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -636,7 +744,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("valueTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -668,7 +778,9 @@ impl Parameters_Parameter<'_> {
     /// If the parameter is a data type.
     pub fn value_usage_context(&self) -> Option<UsageContext> {
         if let Some(val) = self.value.get("valueUsageContext") {
-            return Some(UsageContext { value: val });
+            return Some(UsageContext {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -979,5 +1091,23 @@ impl Parameters_Parameter<'_> {
         }
         if let Some(_val) = self.value_uuid() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Parameters_ParameterBuilder {
+    pub value: Value,
+}
+
+impl Parameters_ParameterBuilder {
+    pub fn build(&self) -> Parameters_Parameter {
+        Parameters_Parameter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Parameters_ParameterBuilder {
+        let mut __value: Value = json!({});
+        return Parameters_ParameterBuilder { value: __value };
     }
 }

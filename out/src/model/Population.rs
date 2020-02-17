@@ -3,20 +3,24 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A populatioof people with some set of grouping criteria.
 
 #[derive(Debug)]
 pub struct Population<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Population<'_> {
     /// The age of the specific population.
     pub fn age_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("ageCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl Population<'_> {
     /// The age of the specific population.
     pub fn age_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("ageRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl Population<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -48,7 +56,9 @@ impl Population<'_> {
     /// The gender of the specific population.
     pub fn gender(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("gender") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +87,9 @@ impl Population<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +100,9 @@ impl Population<'_> {
     /// applies.
     pub fn physiological_condition(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("physiologicalCondition") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +110,9 @@ impl Population<'_> {
     /// Race of the specific population.
     pub fn race(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("race") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -139,5 +155,23 @@ impl Population<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PopulationBuilder {
+    pub value: Value,
+}
+
+impl PopulationBuilder {
+    pub fn build(&self) -> Population {
+        Population {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> PopulationBuilder {
+        let mut __value: Value = json!({});
+        return PopulationBuilder { value: __value };
     }
 }

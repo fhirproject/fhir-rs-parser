@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::NutritionOrder_Administration::NutritionOrder_Administration;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A request to supply a diet, formula feeding (enteral) or oral nutritional
 /// supplement to a patient/resident.
 
 #[derive(Debug)]
 pub struct NutritionOrder_EnteralFormula<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl NutritionOrder_EnteralFormula<'_> {
     /// Extensions for additiveProductName
     pub fn _additive_product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_additiveProductName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// Extensions for administrationInstruction
     pub fn _administration_instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_administrationInstruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// Extensions for baseFormulaProductName
     pub fn _base_formula_product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_baseFormulaProductName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// fiber to be provided in addition to or mixed with the base formula.
     pub fn additive_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("additiveType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +76,9 @@ impl NutritionOrder_EnteralFormula<'_> {
         if let Some(Value::Array(val)) = self.value.get("administration") {
             return Some(
                 val.into_iter()
-                    .map(|e| NutritionOrder_Administration { value: e })
+                    .map(|e| NutritionOrder_Administration {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +107,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// fiber or a soy-based infant formula.
     pub fn base_formula_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("baseFormulaType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -106,7 +120,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// enteral formula that provides 1.5 calorie/mL.
     pub fn caloric_density(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("caloricDensity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +136,9 @@ impl NutritionOrder_EnteralFormula<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +158,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// the period of time, e.g. 1440 mL over 24 hours.
     pub fn max_volume_to_deliver(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxVolumeToDeliver") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -160,7 +180,9 @@ impl NutritionOrder_EnteralFormula<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,7 +194,9 @@ impl NutritionOrder_EnteralFormula<'_> {
     /// nasogastric tube.
     pub fn routeof_administration(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("routeofAdministration") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -238,5 +262,23 @@ impl NutritionOrder_EnteralFormula<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct NutritionOrder_EnteralFormulaBuilder {
+    pub value: Value,
+}
+
+impl NutritionOrder_EnteralFormulaBuilder {
+    pub fn build(&self) -> NutritionOrder_EnteralFormula {
+        NutritionOrder_EnteralFormula {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> NutritionOrder_EnteralFormulaBuilder {
+        let mut __value: Value = json!({});
+        return NutritionOrder_EnteralFormulaBuilder { value: __value };
     }
 }

@@ -11,21 +11,25 @@ use crate::model::Reference::Reference;
 use crate::model::Timing::Timing;
 use crate::model::TriggerDefinition::TriggerDefinition;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The EvidenceVariable resource describes a "PICO" element that knowledge
 /// (evidence, assertion, recommendation) is about.
 
 #[derive(Debug)]
 pub struct EvidenceVariable_Characteristic<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EvidenceVariable_Characteristic<'_> {
     /// Extensions for definitionCanonical
     pub fn _definition_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definitionCanonical") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Extensions for exclude
     pub fn _exclude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exclude") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Extensions for groupMeasure
     pub fn _group_measure(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_groupMeasure") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Extensions for participantEffectiveDateTime
     pub fn _participant_effective_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_participantEffectiveDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +91,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// last year).
     pub fn definition_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("definitionCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +104,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// last year).
     pub fn definition_data_requirement(&self) -> Option<DataRequirement> {
         if let Some(val) = self.value.get("definitionDataRequirement") {
-            return Some(DataRequirement { value: val });
+            return Some(DataRequirement {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -101,7 +117,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// last year).
     pub fn definition_expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("definitionExpression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +130,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// last year).
     pub fn definition_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("definitionReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -123,7 +143,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// last year).
     pub fn definition_trigger_definition(&self) -> Option<TriggerDefinition> {
         if let Some(val) = self.value.get("definitionTriggerDefinition") {
-            return Some(TriggerDefinition { value: val });
+            return Some(TriggerDefinition {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -154,7 +176,9 @@ impl EvidenceVariable_Characteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -193,7 +217,9 @@ impl EvidenceVariable_Characteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -211,7 +237,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Indicates what effective period the study covers.
     pub fn participant_effective_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("participantEffectiveDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -219,7 +247,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Indicates what effective period the study covers.
     pub fn participant_effective_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("participantEffectivePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -227,7 +257,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Indicates what effective period the study covers.
     pub fn participant_effective_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("participantEffectiveTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -235,7 +267,9 @@ impl EvidenceVariable_Characteristic<'_> {
     /// Indicates duration from the participant's study entry.
     pub fn time_from_start(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("timeFromStart") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -246,7 +280,9 @@ impl EvidenceVariable_Characteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("usageContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| UsageContext { value: e })
+                    .map(|e| UsageContext {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -346,6 +382,24 @@ impl EvidenceVariable_Characteristic<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EvidenceVariable_CharacteristicBuilder {
+    pub value: Value,
+}
+
+impl EvidenceVariable_CharacteristicBuilder {
+    pub fn build(&self) -> EvidenceVariable_Characteristic {
+        EvidenceVariable_Characteristic {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> EvidenceVariable_CharacteristicBuilder {
+        let mut __value: Value = json!({});
+        return EvidenceVariable_CharacteristicBuilder { value: __value };
     }
 }
 

@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A series of measurements taken by a device, with upper and lower limits. There
 /// may be more than one dimension in the data.
 
 #[derive(Debug)]
 pub struct SampledData<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SampledData<'_> {
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl SampledData<'_> {
     /// Extensions for dimensions
     pub fn _dimensions(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dimensions") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl SampledData<'_> {
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl SampledData<'_> {
     /// Extensions for lowerLimit
     pub fn _lower_limit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lowerLimit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +59,9 @@ impl SampledData<'_> {
     /// Extensions for period
     pub fn _period(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_period") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +69,9 @@ impl SampledData<'_> {
     /// Extensions for upperLimit
     pub fn _upper_limit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_upperLimit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +105,9 @@ impl SampledData<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +145,7 @@ impl SampledData<'_> {
     /// provides the units of the entire measurement series.
     pub fn origin(&self) -> Quantity {
         Quantity {
-            value: &self.value["origin"],
+            value: Cow::Borrowed(&self.value["origin"]),
         }
     }
 
@@ -197,5 +213,24 @@ impl SampledData<'_> {
         if let Some(_val) = self.period() {}
         if let Some(_val) = self.upper_limit() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SampledDataBuilder {
+    pub value: Value,
+}
+
+impl SampledDataBuilder {
+    pub fn build(&self) -> SampledData {
+        SampledData {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(origin: Quantity) -> SampledDataBuilder {
+        let mut __value: Value = json!({});
+        __value["origin"] = json!(origin.value);
+        return SampledDataBuilder { value: __value };
     }
 }

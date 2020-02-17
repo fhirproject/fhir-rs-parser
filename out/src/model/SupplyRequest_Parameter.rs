@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a request for a medication, substance or device used in the
 /// healthcare setting.
 
 #[derive(Debug)]
 pub struct SupplyRequest_Parameter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SupplyRequest_Parameter<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl SupplyRequest_Parameter<'_> {
     /// A code or string that identifies the device detail being asserted.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl SupplyRequest_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +80,9 @@ impl SupplyRequest_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +100,9 @@ impl SupplyRequest_Parameter<'_> {
     /// The value of the device detail.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +110,9 @@ impl SupplyRequest_Parameter<'_> {
     /// The value of the device detail.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -106,7 +120,9 @@ impl SupplyRequest_Parameter<'_> {
     /// The value of the device detail.
     pub fn value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -150,5 +166,23 @@ impl SupplyRequest_Parameter<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SupplyRequest_ParameterBuilder {
+    pub value: Value,
+}
+
+impl SupplyRequest_ParameterBuilder {
+    pub fn build(&self) -> SupplyRequest_Parameter {
+        SupplyRequest_Parameter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SupplyRequest_ParameterBuilder {
+        let mut __value: Value = json!({});
+        return SupplyRequest_ParameterBuilder { value: __value };
     }
 }

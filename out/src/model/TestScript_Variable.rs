@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript_Variable<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript_Variable<'_> {
     /// Extensions for defaultValue
     pub fn _default_value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValue") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for headerField
     pub fn _header_field(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_headerField") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +58,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for hint
     pub fn _hint(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_hint") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +68,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +78,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +88,9 @@ impl TestScript_Variable<'_> {
     /// Extensions for sourceId
     pub fn _source_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sourceId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +129,9 @@ impl TestScript_Variable<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -160,7 +180,9 @@ impl TestScript_Variable<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -254,5 +276,23 @@ impl TestScript_Variable<'_> {
         if let Some(_val) = self.path() {}
         if let Some(_val) = self.source_id() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScript_VariableBuilder {
+    pub value: Value,
+}
+
+impl TestScript_VariableBuilder {
+    pub fn build(&self) -> TestScript_Variable {
+        TestScript_Variable {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TestScript_VariableBuilder {
+        let mut __value: Value = json!({});
+        return TestScript_VariableBuilder { value: __value };
     }
 }

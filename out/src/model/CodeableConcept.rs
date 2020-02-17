@@ -3,21 +3,25 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A concept that may be defined by a formal reference to a terminology or ontology
 /// or may be provided by text.
 
 #[derive(Debug)]
 pub struct CodeableConcept<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CodeableConcept<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl CodeableConcept<'_> {
         if let Some(Value::Array(val)) = self.value.get("coding") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +49,9 @@ impl CodeableConcept<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,5 +96,23 @@ impl CodeableConcept<'_> {
         if let Some(_val) = self.id() {}
         if let Some(_val) = self.text() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodeableConceptBuilder {
+    pub value: Value,
+}
+
+impl CodeableConceptBuilder {
+    pub fn build(&self) -> CodeableConcept {
+        CodeableConcept {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodeableConceptBuilder {
+        let mut __value: Value = json!({});
+        return CodeableConceptBuilder { value: __value };
     }
 }

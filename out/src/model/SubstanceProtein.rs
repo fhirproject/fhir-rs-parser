@@ -7,7 +7,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::ResourceList::ResourceList;
 use crate::model::SubstanceProtein_Subunit::SubstanceProtein_Subunit;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A SubstanceProtein is defined as a single unit of a linear amino acid sequence,
 /// or a combination of subunits that are either covalently linked or have a defined
@@ -20,7 +22,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceProtein<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceProtein<'_> {
@@ -29,7 +31,9 @@ impl SubstanceProtein<'_> {
         if let Some(Value::Array(val)) = self.value.get("_disulfideLinkage") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -39,7 +43,9 @@ impl SubstanceProtein<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl SubstanceProtein<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl SubstanceProtein<'_> {
     /// Extensions for numberOfSubunits
     pub fn _number_of_subunits(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfSubunits") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +77,9 @@ impl SubstanceProtein<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +112,9 @@ impl SubstanceProtein<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +154,9 @@ impl SubstanceProtein<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -161,7 +177,9 @@ impl SubstanceProtein<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -183,7 +201,9 @@ impl SubstanceProtein<'_> {
     /// sequence.
     pub fn sequence_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("sequenceType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -200,7 +220,9 @@ impl SubstanceProtein<'_> {
         if let Some(Value::Array(val)) = self.value.get("subunit") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceProtein_Subunit { value: e })
+                    .map(|e| SubstanceProtein_Subunit {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -215,7 +237,9 @@ impl SubstanceProtein<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -284,5 +308,23 @@ impl SubstanceProtein<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceProteinBuilder {
+    pub value: Value,
+}
+
+impl SubstanceProteinBuilder {
+    pub fn build(&self) -> SubstanceProtein {
+        SubstanceProtein {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceProteinBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceProteinBuilder { value: __value };
     }
 }

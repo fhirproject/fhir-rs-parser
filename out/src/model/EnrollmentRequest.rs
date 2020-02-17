@@ -7,21 +7,25 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the insurance enrollment details to the insurer regarding
 /// a specified coverage.
 
 #[derive(Debug)]
 pub struct EnrollmentRequest<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EnrollmentRequest<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl EnrollmentRequest<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl EnrollmentRequest<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +53,9 @@ impl EnrollmentRequest<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +63,9 @@ impl EnrollmentRequest<'_> {
     /// Patient Resource.
     pub fn candidate(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("candidate") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl EnrollmentRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +89,9 @@ impl EnrollmentRequest<'_> {
     /// Reference to the program or plan identification, underwriter or payor.
     pub fn coverage(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("coverage") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +113,9 @@ impl EnrollmentRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +136,9 @@ impl EnrollmentRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +159,9 @@ impl EnrollmentRequest<'_> {
     /// The Insurer who is target  of the request.
     pub fn insurer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("insurer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -157,7 +179,9 @@ impl EnrollmentRequest<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -178,7 +202,9 @@ impl EnrollmentRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -188,7 +214,9 @@ impl EnrollmentRequest<'_> {
     /// The practitioner who is responsible for the services rendered to the patient.
     pub fn provider(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("provider") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -209,7 +237,9 @@ impl EnrollmentRequest<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -291,5 +321,23 @@ impl EnrollmentRequest<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EnrollmentRequestBuilder {
+    pub value: Value,
+}
+
+impl EnrollmentRequestBuilder {
+    pub fn build(&self) -> EnrollmentRequest {
+        EnrollmentRequest {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> EnrollmentRequestBuilder {
+        let mut __value: Value = json!({});
+        return EnrollmentRequestBuilder { value: __value };
     }
 }

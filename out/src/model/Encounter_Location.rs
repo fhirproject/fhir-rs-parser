@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
 /// providing healthcare service(s) or assessing the health status of a patient.
 
 #[derive(Debug)]
 pub struct Encounter_Location<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Encounter_Location<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl Encounter_Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -52,7 +58,7 @@ impl Encounter_Location<'_> {
     /// The location where the encounter takes place.
     pub fn location(&self) -> Reference {
         Reference {
-            value: &self.value["location"],
+            value: Cow::Borrowed(&self.value["location"]),
         }
     }
 
@@ -71,7 +77,9 @@ impl Encounter_Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +89,9 @@ impl Encounter_Location<'_> {
     /// Time period during which the patient was present at the location.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +100,9 @@ impl Encounter_Location<'_> {
     /// be recorded to simplify either messaging or query.
     pub fn physical_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("physicalType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -137,6 +149,25 @@ impl Encounter_Location<'_> {
         }
         if let Some(_val) = self.status() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Encounter_LocationBuilder {
+    pub value: Value,
+}
+
+impl Encounter_LocationBuilder {
+    pub fn build(&self) -> Encounter_Location {
+        Encounter_Location {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(location: Reference) -> Encounter_LocationBuilder {
+        let mut __value: Value = json!({});
+        __value["location"] = json!(location.value);
+        return Encounter_LocationBuilder { value: __value };
     }
 }
 

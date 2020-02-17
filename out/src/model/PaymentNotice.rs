@@ -9,21 +9,25 @@ use crate::model::Money::Money;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the status of the payment for goods and services
 /// rendered, and the request and response resource references.
 
 #[derive(Debug)]
 pub struct PaymentNotice<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl PaymentNotice<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl PaymentNotice<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl PaymentNotice<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +55,9 @@ impl PaymentNotice<'_> {
     /// Extensions for paymentDate
     pub fn _payment_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_paymentDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +65,9 @@ impl PaymentNotice<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +75,7 @@ impl PaymentNotice<'_> {
     /// The amount sent to the payee.
     pub fn amount(&self) -> Money {
         Money {
-            value: &self.value["amount"],
+            value: Cow::Borrowed(&self.value["amount"]),
         }
     }
 
@@ -74,7 +86,9 @@ impl PaymentNotice<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -98,7 +112,9 @@ impl PaymentNotice<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -119,7 +135,9 @@ impl PaymentNotice<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,7 +168,9 @@ impl PaymentNotice<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -171,7 +191,9 @@ impl PaymentNotice<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -182,7 +204,9 @@ impl PaymentNotice<'_> {
     /// notification.
     pub fn payee(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("payee") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -190,7 +214,7 @@ impl PaymentNotice<'_> {
     /// A reference to the payment which is the subject of this notice.
     pub fn payment(&self) -> Reference {
         Reference {
-            value: &self.value["payment"],
+            value: Cow::Borrowed(&self.value["payment"]),
         }
     }
 
@@ -205,7 +229,9 @@ impl PaymentNotice<'_> {
     /// A code indicating whether payment has been sent or cleared.
     pub fn payment_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("paymentStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,7 +239,9 @@ impl PaymentNotice<'_> {
     /// The practitioner who is responsible for the services rendered to the patient.
     pub fn provider(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("provider") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -221,14 +249,16 @@ impl PaymentNotice<'_> {
     /// The party who is notified of the payment status.
     pub fn recipient(&self) -> Reference {
         Reference {
-            value: &self.value["recipient"],
+            value: Cow::Borrowed(&self.value["recipient"]),
         }
     }
 
     /// Reference of resource for which payment is being made.
     pub fn request(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("request") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -236,7 +266,9 @@ impl PaymentNotice<'_> {
     /// Reference of response to resource for which payment is being made.
     pub fn response(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("response") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -257,7 +289,9 @@ impl PaymentNotice<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -359,5 +393,26 @@ impl PaymentNotice<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PaymentNoticeBuilder {
+    pub value: Value,
+}
+
+impl PaymentNoticeBuilder {
+    pub fn build(&self) -> PaymentNotice {
+        PaymentNotice {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(amount: Money, payment: Reference, recipient: Reference) -> PaymentNoticeBuilder {
+        let mut __value: Value = json!({});
+        __value["amount"] = json!(amount.value);
+        __value["payment"] = json!(payment.value);
+        __value["recipient"] = json!(recipient.value);
+        return PaymentNoticeBuilder { value: __value };
     }
 }

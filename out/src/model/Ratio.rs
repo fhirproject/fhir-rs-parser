@@ -2,21 +2,25 @@
 
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A relationship of two Quantity values - expressed as a numerator and a
 /// denominator.
 
 #[derive(Debug)]
 pub struct Ratio<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Ratio<'_> {
     /// The value of the denominator.
     pub fn denominator(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("denominator") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl Ratio<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -49,7 +55,9 @@ impl Ratio<'_> {
     /// The value of the numerator.
     pub fn numerator(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("numerator") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,5 +80,23 @@ impl Ratio<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RatioBuilder {
+    pub value: Value,
+}
+
+impl RatioBuilder {
+    pub fn build(&self) -> Ratio {
+        Ratio {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RatioBuilder {
+        let mut __value: Value = json!({});
+        return RatioBuilder { value: __value };
     }
 }

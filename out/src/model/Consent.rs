@@ -12,7 +12,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
 /// recipient(s) or recipient role(s) to perform one or more actions within a given
@@ -20,14 +22,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Consent<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Consent<'_> {
     /// Extensions for dateTime
     pub fn _date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +39,9 @@ impl Consent<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +49,9 @@ impl Consent<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +59,9 @@ impl Consent<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl Consent<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| CodeableConcept { value: e })
+            .map(|e| CodeableConcept {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -76,7 +88,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +114,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -121,7 +137,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -152,7 +170,9 @@ impl Consent<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -173,7 +193,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -186,7 +208,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("organization") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -196,7 +220,9 @@ impl Consent<'_> {
     /// The patient/healthcare consumer to whom this consent applies.
     pub fn patient(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -209,7 +235,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -222,7 +250,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("policy") {
             return Some(
                 val.into_iter()
-                    .map(|e| Consent_Policy { value: e })
+                    .map(|e| Consent_Policy {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -232,7 +262,9 @@ impl Consent<'_> {
     /// A reference to the specific base computable regulation or policy.
     pub fn policy_rule(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("policyRule") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -241,7 +273,9 @@ impl Consent<'_> {
     /// or removal of access permissions.
     pub fn provision(&self) -> Option<Consent_Provision> {
         if let Some(val) = self.value.get("provision") {
-            return Some(Consent_Provision { value: val });
+            return Some(Consent_Provision {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -250,7 +284,7 @@ impl Consent<'_> {
     /// Research.  This list is now extensible.
     pub fn scope(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["scope"],
+            value: Cow::Borrowed(&self.value["scope"]),
         }
     }
 
@@ -260,7 +294,9 @@ impl Consent<'_> {
     /// original consent document.
     pub fn source_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("sourceAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -271,7 +307,9 @@ impl Consent<'_> {
     /// original consent document.
     pub fn source_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("sourceReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -292,7 +330,9 @@ impl Consent<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -303,7 +343,9 @@ impl Consent<'_> {
         if let Some(Value::Array(val)) = self.value.get("verification") {
             return Some(
                 val.into_iter()
-                    .map(|e| Consent_Verification { value: e })
+                    .map(|e| Consent_Verification {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -423,6 +465,26 @@ impl Consent<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ConsentBuilder {
+    pub value: Value,
+}
+
+impl ConsentBuilder {
+    pub fn build(&self) -> Consent {
+        Consent {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(category: Vec<CodeableConcept>, scope: CodeableConcept) -> ConsentBuilder {
+        let mut __value: Value = json!({});
+        __value["category"] = json!(category.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["scope"] = json!(scope.value);
+        return ConsentBuilder { value: __value };
     }
 }
 

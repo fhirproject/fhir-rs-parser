@@ -3,21 +3,25 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Detailed definition of a medicinal product, typically for uses other than direct
 /// patient care (e.g. regulatory use).
 
 #[derive(Debug)]
 pub struct MedicinalProduct_NamePart<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProduct_NamePart<'_> {
     /// Extensions for part
     pub fn _part(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_part") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl MedicinalProduct_NamePart<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl MedicinalProduct_NamePart<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +88,7 @@ impl MedicinalProduct_NamePart<'_> {
     /// Idenifying type for this part of the name (e.g. strength part).
     pub fn fhir_type(&self) -> Coding {
         Coding {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -106,5 +114,24 @@ impl MedicinalProduct_NamePart<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProduct_NamePartBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProduct_NamePartBuilder {
+    pub fn build(&self) -> MedicinalProduct_NamePart {
+        MedicinalProduct_NamePart {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: Coding) -> MedicinalProduct_NamePartBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return MedicinalProduct_NamePartBuilder { value: __value };
     }
 }

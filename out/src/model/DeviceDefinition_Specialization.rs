@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The characteristics, operational status and capabilities of a medical-related
 /// component of a medical device.
 
 #[derive(Debug)]
 pub struct DeviceDefinition_Specialization<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceDefinition_Specialization<'_> {
     /// Extensions for systemType
     pub fn _system_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_systemType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl DeviceDefinition_Specialization<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl DeviceDefinition_Specialization<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +77,9 @@ impl DeviceDefinition_Specialization<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,5 +127,23 @@ impl DeviceDefinition_Specialization<'_> {
         if let Some(_val) = self.system_type() {}
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceDefinition_SpecializationBuilder {
+    pub value: Value,
+}
+
+impl DeviceDefinition_SpecializationBuilder {
+    pub fn build(&self) -> DeviceDefinition_Specialization {
+        DeviceDefinition_Specialization {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DeviceDefinition_SpecializationBuilder {
+        let mut __value: Value = json!({});
+        return DeviceDefinition_SpecializationBuilder { value: __value };
     }
 }

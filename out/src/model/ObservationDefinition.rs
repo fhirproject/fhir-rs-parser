@@ -10,21 +10,25 @@ use crate::model::ObservationDefinition_QualifiedInterval::ObservationDefinition
 use crate::model::ObservationDefinition_QuantitativeDetails::ObservationDefinition_QuantitativeDetails;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Set of definitional characteristics for a kind of observation or measurement
 /// produced or consumed by an orderable health care service.
 
 #[derive(Debug)]
 pub struct ObservationDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ObservationDefinition<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl ObservationDefinition<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl ObservationDefinition<'_> {
     /// Extensions for multipleResultsAllowed
     pub fn _multiple_results_allowed(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_multipleResultsAllowed") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("_permittedDataType") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -60,7 +70,9 @@ impl ObservationDefinition<'_> {
     /// Extensions for preferredReportName
     pub fn _preferred_report_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferredReportName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +81,9 @@ impl ObservationDefinition<'_> {
     /// ObservationDefinition.
     pub fn abnormal_coded_value_set(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("abnormalCodedValueSet") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +93,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +106,7 @@ impl ObservationDefinition<'_> {
     /// "name".
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -101,7 +117,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +130,9 @@ impl ObservationDefinition<'_> {
     /// ObservationDefinition.
     pub fn critical_coded_value_set(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("criticalCodedValueSet") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +146,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -147,7 +169,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -178,7 +202,9 @@ impl ObservationDefinition<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -186,7 +212,9 @@ impl ObservationDefinition<'_> {
     /// The method or technique used to perform the observation.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -207,7 +235,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -227,7 +257,9 @@ impl ObservationDefinition<'_> {
     /// ObservationDefinition.
     pub fn normal_coded_value_set(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("normalCodedValueSet") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -247,7 +279,9 @@ impl ObservationDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("qualifiedInterval") {
             return Some(
                 val.into_iter()
-                    .map(|e| ObservationDefinition_QualifiedInterval { value: e })
+                    .map(|e| ObservationDefinition_QualifiedInterval {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -257,7 +291,9 @@ impl ObservationDefinition<'_> {
     /// Characteristics for quantitative results of this observation.
     pub fn quantitative_details(&self) -> Option<ObservationDefinition_QuantitativeDetails> {
         if let Some(val) = self.value.get("quantitativeDetails") {
-            return Some(ObservationDefinition_QuantitativeDetails { value: val });
+            return Some(ObservationDefinition_QuantitativeDetails {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -270,7 +306,9 @@ impl ObservationDefinition<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -279,7 +317,9 @@ impl ObservationDefinition<'_> {
     /// ObservationDefinition.
     pub fn valid_coded_value_set(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("validCodedValueSet") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -389,5 +429,24 @@ impl ObservationDefinition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ObservationDefinitionBuilder {
+    pub value: Value,
+}
+
+impl ObservationDefinitionBuilder {
+    pub fn build(&self) -> ObservationDefinition {
+        ObservationDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> ObservationDefinitionBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return ObservationDefinitionBuilder { value: __value };
     }
 }

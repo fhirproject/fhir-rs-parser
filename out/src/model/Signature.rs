@@ -4,7 +4,9 @@ use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A signature along with supporting context. The signature may be a digital
 /// signature that is cryptographic in nature, or some other signature acceptable to
@@ -14,14 +16,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Signature<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Signature<'_> {
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl Signature<'_> {
     /// Extensions for sigFormat
     pub fn _sig_format(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sigFormat") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl Signature<'_> {
     /// Extensions for targetFormat
     pub fn _target_format(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_targetFormat") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +53,9 @@ impl Signature<'_> {
     /// Extensions for when
     pub fn _when(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_when") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +78,9 @@ impl Signature<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +100,9 @@ impl Signature<'_> {
     /// represented by the signature.
     pub fn on_behalf_of(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("onBehalfOf") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +136,9 @@ impl Signature<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Coding { value: e })
+            .map(|e| Coding {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -138,7 +154,7 @@ impl Signature<'_> {
     /// (e.g. the signature used their private key).
     pub fn who(&self) -> Reference {
         Reference {
-            value: &self.value["who"],
+            value: Cow::Borrowed(&self.value["who"]),
         }
     }
 
@@ -190,5 +206,25 @@ impl Signature<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SignatureBuilder {
+    pub value: Value,
+}
+
+impl SignatureBuilder {
+    pub fn build(&self) -> Signature {
+        Signature {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: Vec<Coding>, who: Reference) -> SignatureBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["who"] = json!(who.value);
+        return SignatureBuilder { value: __value };
     }
 }

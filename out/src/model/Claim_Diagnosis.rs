@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A provider issued list of professional services and products which have been
 /// provided, or are to be provided, to a patient which is sent to an insurer for
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Claim_Diagnosis<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Claim_Diagnosis<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Claim_Diagnosis<'_> {
     /// external defined Condition.
     pub fn diagnosis_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("diagnosisCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl Claim_Diagnosis<'_> {
     /// external defined Condition.
     pub fn diagnosis_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("diagnosisReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +59,9 @@ impl Claim_Diagnosis<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +92,9 @@ impl Claim_Diagnosis<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +104,9 @@ impl Claim_Diagnosis<'_> {
     /// Indication of whether the diagnosis was present on admission to a facility.
     pub fn on_admission(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("onAdmission") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +116,9 @@ impl Claim_Diagnosis<'_> {
     /// predetermined grouping code system.
     pub fn package_code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("packageCode") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +136,9 @@ impl Claim_Diagnosis<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -171,5 +189,23 @@ impl Claim_Diagnosis<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Claim_DiagnosisBuilder {
+    pub value: Value,
+}
+
+impl Claim_DiagnosisBuilder {
+    pub fn build(&self) -> Claim_Diagnosis {
+        Claim_Diagnosis {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Claim_DiagnosisBuilder {
+        let mut __value: Value = json!({});
+        return Claim_DiagnosisBuilder { value: __value };
     }
 }

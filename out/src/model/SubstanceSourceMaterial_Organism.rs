@@ -6,7 +6,9 @@ use crate::model::Extension::Extension;
 use crate::model::SubstanceSourceMaterial_Author::SubstanceSourceMaterial_Author;
 use crate::model::SubstanceSourceMaterial_Hybrid::SubstanceSourceMaterial_Hybrid;
 use crate::model::SubstanceSourceMaterial_OrganismGeneral::SubstanceSourceMaterial_OrganismGeneral;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Source material shall capture information on the taxonomic and anatomical
 /// origins as well as the fraction of a material that can result in or can be
@@ -24,14 +26,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_Organism<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSourceMaterial_Organism<'_> {
     /// Extensions for intraspecificDescription
     pub fn _intraspecific_description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_intraspecificDescription") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +45,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
         if let Some(Value::Array(val)) = self.value.get("author") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSourceMaterial_Author { value: e })
+                    .map(|e| SubstanceSourceMaterial_Author {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -57,7 +63,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -67,7 +75,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// The family of an organism shall be specified.
     pub fn family(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("family") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +87,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// genera, species and infraspecies.
     pub fn genus(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("genus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -85,7 +97,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// 4.9.13.8.1 Hybrid species maternal organism ID (Optional).
     pub fn hybrid(&self) -> Option<SubstanceSourceMaterial_Hybrid> {
         if let Some(val) = self.value.get("hybrid") {
-            return Some(SubstanceSourceMaterial_Hybrid { value: val });
+            return Some(SubstanceSourceMaterial_Hybrid {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +126,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// The Intraspecific type of an organism shall be specified.
     pub fn intraspecific_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("intraspecificType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +148,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -142,7 +160,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// 4.9.13.7.1 Kingdom (Conditional).
     pub fn organism_general(&self) -> Option<SubstanceSourceMaterial_OrganismGeneral> {
         if let Some(val) = self.value.get("organismGeneral") {
-            return Some(SubstanceSourceMaterial_OrganismGeneral { value: val });
+            return Some(SubstanceSourceMaterial_OrganismGeneral {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -152,7 +172,9 @@ impl SubstanceSourceMaterial_Organism<'_> {
     /// infraspecies.
     pub fn species(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("species") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -211,5 +233,23 @@ impl SubstanceSourceMaterial_Organism<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSourceMaterial_OrganismBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSourceMaterial_OrganismBuilder {
+    pub fn build(&self) -> SubstanceSourceMaterial_Organism {
+        SubstanceSourceMaterial_Organism {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSourceMaterial_OrganismBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSourceMaterial_OrganismBuilder { value: __value };
     }
 }

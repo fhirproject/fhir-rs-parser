@@ -4,13 +4,15 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::InsurancePlan_Benefit::InsurancePlan_Benefit;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details of a Health Insurance product/plan provided by an organization.
 
 #[derive(Debug)]
 pub struct InsurancePlan_Coverage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl InsurancePlan_Coverage<'_> {
@@ -22,7 +24,9 @@ impl InsurancePlan_Coverage<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| InsurancePlan_Benefit { value: e })
+            .map(|e| InsurancePlan_Benefit {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -35,7 +39,9 @@ impl InsurancePlan_Coverage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +72,9 @@ impl InsurancePlan_Coverage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -78,7 +86,9 @@ impl InsurancePlan_Coverage<'_> {
         if let Some(Value::Array(val)) = self.value.get("network") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +99,7 @@ impl InsurancePlan_Coverage<'_> {
     /// Drug; Short Term; Long Term Care; Hospice; Home Health).
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -122,5 +132,28 @@ impl InsurancePlan_Coverage<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct InsurancePlan_CoverageBuilder {
+    pub value: Value,
+}
+
+impl InsurancePlan_CoverageBuilder {
+    pub fn build(&self) -> InsurancePlan_Coverage {
+        InsurancePlan_Coverage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        benefit: Vec<InsurancePlan_Benefit>,
+        fhir_type: CodeableConcept,
+    ) -> InsurancePlan_CoverageBuilder {
+        let mut __value: Value = json!({});
+        __value["benefit"] = json!(benefit.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["type"] = json!(fhir_type.value);
+        return InsurancePlan_CoverageBuilder { value: __value };
     }
 }

@@ -7,7 +7,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::ResourceList::ResourceList;
 use crate::model::SubstanceNucleicAcid_Subunit::SubstanceNucleicAcid_Subunit;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Nucleic acids are defined by three distinct elements: the base, sugar and
 /// linkage. Individual substance/moiety IDs will be created for each of these
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceNucleicAcid<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceNucleicAcid<'_> {
     /// Extensions for areaOfHybridisation
     pub fn _area_of_hybridisation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_areaOfHybridisation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl SubstanceNucleicAcid<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl SubstanceNucleicAcid<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl SubstanceNucleicAcid<'_> {
     /// Extensions for numberOfSubunits
     pub fn _number_of_subunits(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfSubunits") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +79,9 @@ impl SubstanceNucleicAcid<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +97,9 @@ impl SubstanceNucleicAcid<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +139,9 @@ impl SubstanceNucleicAcid<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -146,7 +162,9 @@ impl SubstanceNucleicAcid<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,7 +185,9 @@ impl SubstanceNucleicAcid<'_> {
     /// (TBC).
     pub fn oligo_nucleotide_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("oligoNucleotideType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -175,7 +195,9 @@ impl SubstanceNucleicAcid<'_> {
     /// The type of the sequence shall be specified based on a controlled vocabulary.
     pub fn sequence_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("sequenceType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -187,7 +209,9 @@ impl SubstanceNucleicAcid<'_> {
         if let Some(Value::Array(val)) = self.value.get("subunit") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceNucleicAcid_Subunit { value: e })
+                    .map(|e| SubstanceNucleicAcid_Subunit {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -202,7 +226,9 @@ impl SubstanceNucleicAcid<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -274,5 +300,23 @@ impl SubstanceNucleicAcid<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceNucleicAcidBuilder {
+    pub value: Value,
+}
+
+impl SubstanceNucleicAcidBuilder {
+    pub fn build(&self) -> SubstanceNucleicAcid {
+        SubstanceNucleicAcid {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceNucleicAcidBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceNucleicAcidBuilder { value: __value };
     }
 }

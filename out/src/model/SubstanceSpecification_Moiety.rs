@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_Moiety<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSpecification_Moiety<'_> {
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Extensions for molecularFormula
     pub fn _molecular_formula(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_molecularFormula") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Quantitative value for this moiety.
     pub fn amount_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl SubstanceSpecification_Moiety<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +96,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Identifier by which this moiety substance is known.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -104,7 +118,9 @@ impl SubstanceSpecification_Moiety<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -130,7 +146,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Optical activity type.
     pub fn optical_activity(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("opticalActivity") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -138,7 +156,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Role that the moiety is playing.
     pub fn role(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -146,7 +166,9 @@ impl SubstanceSpecification_Moiety<'_> {
     /// Stereochemistry type.
     pub fn stereochemistry(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("stereochemistry") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -207,5 +229,23 @@ impl SubstanceSpecification_Moiety<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_MoietyBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSpecification_MoietyBuilder {
+    pub fn build(&self) -> SubstanceSpecification_Moiety {
+        SubstanceSpecification_Moiety {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSpecification_MoietyBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSpecification_MoietyBuilder { value: __value };
     }
 }

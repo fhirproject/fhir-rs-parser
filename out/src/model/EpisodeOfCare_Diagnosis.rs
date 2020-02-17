@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An association between a patient and an organization / healthcare provider(s)
 /// during which time encounters may occur. The managing organization assumes a
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EpisodeOfCare_Diagnosis<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EpisodeOfCare_Diagnosis<'_> {
     /// Extensions for rank
     pub fn _rank(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rank") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,7 @@ impl EpisodeOfCare_Diagnosis<'_> {
     /// be providing care for.
     pub fn condition(&self) -> Reference {
         Reference {
-            value: &self.value["condition"],
+            value: Cow::Borrowed(&self.value["condition"]),
         }
     }
 
@@ -41,7 +45,9 @@ impl EpisodeOfCare_Diagnosis<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +78,9 @@ impl EpisodeOfCare_Diagnosis<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +99,9 @@ impl EpisodeOfCare_Diagnosis<'_> {
     /// billing, discharge …).
     pub fn role(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("role") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -123,5 +133,24 @@ impl EpisodeOfCare_Diagnosis<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EpisodeOfCare_DiagnosisBuilder {
+    pub value: Value,
+}
+
+impl EpisodeOfCare_DiagnosisBuilder {
+    pub fn build(&self) -> EpisodeOfCare_Diagnosis {
+        EpisodeOfCare_Diagnosis {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(condition: Reference) -> EpisodeOfCare_DiagnosisBuilder {
+        let mut __value: Value = json!({});
+        __value["condition"] = json!(condition.value);
+        return EpisodeOfCare_DiagnosisBuilder { value: __value };
     }
 }

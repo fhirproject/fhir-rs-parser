@@ -3,7 +3,9 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
 /// Server for a particular version of FHIR that may be used as a statement of
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CapabilityStatement_Endpoint<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CapabilityStatement_Endpoint<'_> {
     /// Extensions for address
     pub fn _address(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_address") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +46,9 @@ impl CapabilityStatement_Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +79,9 @@ impl CapabilityStatement_Endpoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +92,7 @@ impl CapabilityStatement_Endpoint<'_> {
     /// endpoint.
     pub fn protocol(&self) -> Coding {
         Coding {
-            value: &self.value["protocol"],
+            value: Cow::Borrowed(&self.value["protocol"]),
         }
     }
 
@@ -110,5 +118,24 @@ impl CapabilityStatement_Endpoint<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CapabilityStatement_EndpointBuilder {
+    pub value: Value,
+}
+
+impl CapabilityStatement_EndpointBuilder {
+    pub fn build(&self) -> CapabilityStatement_Endpoint {
+        CapabilityStatement_Endpoint {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(protocol: Coding) -> CapabilityStatement_EndpointBuilder {
+        let mut __value: Value = json!({});
+        __value["protocol"] = json!(protocol.value);
+        return CapabilityStatement_EndpointBuilder { value: __value };
     }
 }

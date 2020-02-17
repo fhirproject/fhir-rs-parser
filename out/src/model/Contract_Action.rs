@@ -8,14 +8,16 @@ use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Action<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Action<'_> {
@@ -24,7 +26,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_contextLinkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -34,7 +38,9 @@ impl Contract_Action<'_> {
     /// Extensions for doNotPerform
     pub fn _do_not_perform(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doNotPerform") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_linkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +62,9 @@ impl Contract_Action<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_performerLinkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +88,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_reason") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +102,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_reasonLinkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +116,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_requesterLinkId") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +130,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("_securityLabelNumber") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -122,7 +142,9 @@ impl Contract_Action<'_> {
     /// Encounter or Episode with primary association to specified term activity.
     pub fn context(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("context") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -157,7 +179,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -176,7 +200,7 @@ impl Contract_Action<'_> {
     /// Reason or purpose for the action stipulated by this Contract Provision.
     pub fn intent(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["intent"],
+            value: Cow::Borrowed(&self.value["intent"]),
         }
     }
 
@@ -208,7 +232,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -221,7 +247,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -239,7 +267,9 @@ impl Contract_Action<'_> {
     /// When action happens.
     pub fn occurrence_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -247,7 +277,9 @@ impl Contract_Action<'_> {
     /// When action happens.
     pub fn occurrence_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -255,7 +287,9 @@ impl Contract_Action<'_> {
     /// Indicates who or what is being asked to perform (or not perform) the ction.
     pub fn performer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("performer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +311,9 @@ impl Contract_Action<'_> {
     /// or not perform the action.
     pub fn performer_role(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("performerRole") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -288,7 +324,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("performerType") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -313,7 +351,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -339,7 +379,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -351,7 +393,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("requester") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -386,7 +430,7 @@ impl Contract_Action<'_> {
     /// Current state of the term action.
     pub fn status(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["status"],
+            value: Cow::Borrowed(&self.value["status"]),
         }
     }
 
@@ -395,7 +439,9 @@ impl Contract_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("subject") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Subject { value: e })
+                    .map(|e| Contract_Subject {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -406,7 +452,7 @@ impl Contract_Action<'_> {
     /// performed, effectuated or not by this Contract term.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -555,5 +601,30 @@ impl Contract_Action<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_ActionBuilder {
+    pub value: Value,
+}
+
+impl Contract_ActionBuilder {
+    pub fn build(&self) -> Contract_Action {
+        Contract_Action {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        intent: CodeableConcept,
+        status: CodeableConcept,
+        fhir_type: CodeableConcept,
+    ) -> Contract_ActionBuilder {
+        let mut __value: Value = json!({});
+        __value["intent"] = json!(intent.value);
+        __value["status"] = json!(status.value);
+        __value["type"] = json!(fhir_type.value);
+        return Contract_ActionBuilder { value: __value };
     }
 }

@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A reference to a code defined by a terminology system.
 
 #[derive(Debug)]
 pub struct Coding<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Coding<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl Coding<'_> {
     /// Extensions for display
     pub fn _display(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl Coding<'_> {
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl Coding<'_> {
     /// Extensions for userSelected
     pub fn _user_selected(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_userSelected") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +57,9 @@ impl Coding<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +91,9 @@ impl Coding<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -163,5 +177,23 @@ impl Coding<'_> {
         if let Some(_val) = self.user_selected() {}
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodingBuilder {
+    pub value: Value,
+}
+
+impl CodingBuilder {
+    pub fn build(&self) -> Coding {
+        Coding {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodingBuilder {
+        let mut __value: Value = json!({});
+        return CodingBuilder { value: __value };
     }
 }

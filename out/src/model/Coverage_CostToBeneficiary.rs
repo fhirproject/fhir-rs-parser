@@ -5,14 +5,16 @@ use crate::model::Coverage_Exception::Coverage_Exception;
 use crate::model::Extension::Extension;
 use crate::model::Money::Money;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Financial instrument which may be used to reimburse or pay for health care
 /// products and services. Includes both insurance and self-payment.
 
 #[derive(Debug)]
 pub struct Coverage_CostToBeneficiary<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Coverage_CostToBeneficiary<'_> {
@@ -22,7 +24,9 @@ impl Coverage_CostToBeneficiary<'_> {
         if let Some(Value::Array(val)) = self.value.get("exception") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coverage_Exception { value: e })
+                    .map(|e| Coverage_Exception {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -38,7 +42,9 @@ impl Coverage_CostToBeneficiary<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +75,9 @@ impl Coverage_CostToBeneficiary<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl Coverage_CostToBeneficiary<'_> {
     /// The category of patient centric costs associated with treatment.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +97,9 @@ impl Coverage_CostToBeneficiary<'_> {
     /// The amount due from the patient for the cost category.
     pub fn value_money(&self) -> Option<Money> {
         if let Some(val) = self.value.get("valueMoney") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +107,9 @@ impl Coverage_CostToBeneficiary<'_> {
     /// The amount due from the patient for the cost category.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,5 +147,23 @@ impl Coverage_CostToBeneficiary<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Coverage_CostToBeneficiaryBuilder {
+    pub value: Value,
+}
+
+impl Coverage_CostToBeneficiaryBuilder {
+    pub fn build(&self) -> Coverage_CostToBeneficiary {
+        Coverage_CostToBeneficiary {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Coverage_CostToBeneficiaryBuilder {
+        let mut __value: Value = json!({});
+        return Coverage_CostToBeneficiaryBuilder { value: __value };
     }
 }

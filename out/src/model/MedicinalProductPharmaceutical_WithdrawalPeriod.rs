@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A pharmaceutical product described in terms of its composition and dose form.
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_WithdrawalPeriod<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
     /// Extensions for supportingInformation
     pub fn _supporting_information(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_supportingInformation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,14 +89,14 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
     /// e.g. meat, milk.
     pub fn tissue(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["tissue"],
+            value: Cow::Borrowed(&self.value["tissue"]),
         }
     }
 
     /// A value for the time.
     pub fn value(&self) -> Quantity {
         Quantity {
-            value: &self.value["value"],
+            value: Cow::Borrowed(&self.value["value"]),
         }
     }
 
@@ -117,5 +125,28 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+    pub fn build(&self) -> MedicinalProductPharmaceutical_WithdrawalPeriod {
+        MedicinalProductPharmaceutical_WithdrawalPeriod {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        tissue: CodeableConcept,
+        value: Quantity,
+    ) -> MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        let mut __value: Value = json!({});
+        __value["tissue"] = json!(tissue.value);
+        __value["value"] = json!(value.value);
+        return MedicinalProductPharmaceutical_WithdrawalPeriodBuilder { value: __value };
     }
 }

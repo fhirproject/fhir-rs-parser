@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A request to supply a diet, formula feeding (enteral) or oral nutritional
 /// supplement to a patient/resident.
 
 #[derive(Debug)]
 pub struct NutritionOrder_Supplement<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl NutritionOrder_Supplement<'_> {
     /// Extensions for instruction
     pub fn _instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_instruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl NutritionOrder_Supplement<'_> {
     /// Extensions for productName
     pub fn _product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_productName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl NutritionOrder_Supplement<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +89,9 @@ impl NutritionOrder_Supplement<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +110,9 @@ impl NutritionOrder_Supplement<'_> {
     /// The amount of the nutritional supplement to be given.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +124,9 @@ impl NutritionOrder_Supplement<'_> {
         if let Some(Value::Array(val)) = self.value.get("schedule") {
             return Some(
                 val.into_iter()
-                    .map(|e| Timing { value: e })
+                    .map(|e| Timing {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +137,9 @@ impl NutritionOrder_Supplement<'_> {
     /// pediatric clear liquid supplement.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -168,5 +184,23 @@ impl NutritionOrder_Supplement<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct NutritionOrder_SupplementBuilder {
+    pub value: Value,
+}
+
+impl NutritionOrder_SupplementBuilder {
+    pub fn build(&self) -> NutritionOrder_Supplement {
+        NutritionOrder_Supplement {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> NutritionOrder_SupplementBuilder {
+        let mut __value: Value = json!({});
+        return NutritionOrder_SupplementBuilder { value: __value };
     }
 }

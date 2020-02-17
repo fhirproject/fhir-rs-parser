@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript_Assert<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript_Assert<'_> {
     /// Extensions for compareToSourceExpression
     pub fn _compare_to_source_expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_compareToSourceExpression") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for compareToSourceId
     pub fn _compare_to_source_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_compareToSourceId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for compareToSourcePath
     pub fn _compare_to_source_path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_compareToSourcePath") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +58,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +68,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for direction
     pub fn _direction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_direction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +78,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +88,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for headerField
     pub fn _header_field(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_headerField") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +98,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for label
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +108,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for minimumId
     pub fn _minimum_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minimumId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +118,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for navigationLinks
     pub fn _navigation_links(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_navigationLinks") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -104,7 +128,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for operator
     pub fn _operator(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_operator") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +138,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +148,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for requestMethod
     pub fn _request_method(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requestMethod") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -128,7 +158,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for requestURL
     pub fn _request_u_r_l(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requestURL") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -136,7 +168,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for resource
     pub fn _resource(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_resource") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -144,7 +178,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for response
     pub fn _response(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_response") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -152,7 +188,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for responseCode
     pub fn _response_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_responseCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -160,7 +198,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for sourceId
     pub fn _source_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sourceId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -168,7 +208,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for validateProfileId
     pub fn _validate_profile_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_validateProfileId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -176,7 +218,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -184,7 +228,9 @@ impl TestScript_Assert<'_> {
     /// Extensions for warningOnly
     pub fn _warning_only(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_warningOnly") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +308,9 @@ impl TestScript_Assert<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -318,7 +366,9 @@ impl TestScript_Assert<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -572,6 +622,24 @@ impl TestScript_Assert<'_> {
         if let Some(_val) = self.value() {}
         if let Some(_val) = self.warning_only() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScript_AssertBuilder {
+    pub value: Value,
+}
+
+impl TestScript_AssertBuilder {
+    pub fn build(&self) -> TestScript_Assert {
+        TestScript_Assert {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TestScript_AssertBuilder {
+        let mut __value: Value = json!({});
+        return TestScript_AssertBuilder { value: __value };
     }
 }
 

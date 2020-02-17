@@ -15,7 +15,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A type of a manufactured item that is used in the provision of healthcare
 /// without being substantially changed through that activity. The device may be a
@@ -23,14 +25,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Device<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Device<'_> {
     /// Extensions for distinctIdentifier
     pub fn _distinct_identifier(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_distinctIdentifier") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +42,9 @@ impl Device<'_> {
     /// Extensions for expirationDate
     pub fn _expiration_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expirationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +52,9 @@ impl Device<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +62,9 @@ impl Device<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +72,9 @@ impl Device<'_> {
     /// Extensions for lotNumber
     pub fn _lot_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lotNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -70,7 +82,9 @@ impl Device<'_> {
     /// Extensions for manufactureDate
     pub fn _manufacture_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_manufactureDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +92,9 @@ impl Device<'_> {
     /// Extensions for manufacturer
     pub fn _manufacturer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_manufacturer") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -86,7 +102,9 @@ impl Device<'_> {
     /// Extensions for modelNumber
     pub fn _model_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_modelNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +112,9 @@ impl Device<'_> {
     /// Extensions for partNumber
     pub fn _part_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_partNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +122,9 @@ impl Device<'_> {
     /// Extensions for serialNumber
     pub fn _serial_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_serialNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -110,7 +132,9 @@ impl Device<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -118,7 +142,9 @@ impl Device<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,7 +155,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -143,7 +171,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,7 +183,9 @@ impl Device<'_> {
     /// The reference to the definition for the device.
     pub fn definition(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("definition") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -166,7 +198,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("deviceName") {
             return Some(
                 val.into_iter()
-                    .map(|e| Device_DeviceName { value: e })
+                    .map(|e| Device_DeviceName {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -200,7 +234,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -222,7 +258,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -251,7 +289,9 @@ impl Device<'_> {
     /// The place where the device can be found.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -285,7 +325,9 @@ impl Device<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -314,7 +356,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -327,7 +371,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -338,7 +384,9 @@ impl Device<'_> {
     /// the device.
     pub fn owner(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("owner") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -346,7 +394,9 @@ impl Device<'_> {
     /// The parent device.
     pub fn parent(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("parent") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -362,7 +412,9 @@ impl Device<'_> {
     /// Patient information, If the device is affixed to a person.
     pub fn patient(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("patient") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -373,7 +425,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("property") {
             return Some(
                 val.into_iter()
-                    .map(|e| Device_Property { value: e })
+                    .map(|e| Device_Property {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -386,7 +440,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("safety") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -407,7 +463,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialization") {
             return Some(
                 val.into_iter()
-                    .map(|e| Device_Specialization { value: e })
+                    .map(|e| Device_Specialization {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -427,7 +485,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("statusReason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -442,7 +502,9 @@ impl Device<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -450,7 +512,9 @@ impl Device<'_> {
     /// The kind or type of device.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -463,7 +527,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("udiCarrier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Device_UdiCarrier { value: e })
+                    .map(|e| Device_UdiCarrier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -483,7 +549,9 @@ impl Device<'_> {
         if let Some(Value::Array(val)) = self.value.get("version") {
             return Some(
                 val.into_iter()
-                    .map(|e| Device_Version { value: e })
+                    .map(|e| Device_Version {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -670,6 +738,24 @@ impl Device<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceBuilder {
+    pub value: Value,
+}
+
+impl DeviceBuilder {
+    pub fn build(&self) -> Device {
+        Device {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DeviceBuilder {
+        let mut __value: Value = json!({});
+        return DeviceBuilder { value: __value };
     }
 }
 

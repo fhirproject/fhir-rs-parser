@@ -2,7 +2,9 @@
 
 use crate::model::ElementDefinition::ElementDefinition;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A definition of a FHIR structure. This resource is used to describe the
 /// underlying resources, data types defined in FHIR, and also for describing
@@ -10,7 +12,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct StructureDefinition_Snapshot<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl StructureDefinition_Snapshot<'_> {
@@ -22,7 +24,9 @@ impl StructureDefinition_Snapshot<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ElementDefinition { value: e })
+            .map(|e| ElementDefinition {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -35,7 +39,9 @@ impl StructureDefinition_Snapshot<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +72,9 @@ impl StructureDefinition_Snapshot<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,5 +102,24 @@ impl StructureDefinition_Snapshot<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct StructureDefinition_SnapshotBuilder {
+    pub value: Value,
+}
+
+impl StructureDefinition_SnapshotBuilder {
+    pub fn build(&self) -> StructureDefinition_Snapshot {
+        StructureDefinition_Snapshot {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(element: Vec<ElementDefinition>) -> StructureDefinition_SnapshotBuilder {
+        let mut __value: Value = json!({});
+        __value["element"] = json!(element.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return StructureDefinition_SnapshotBuilder { value: __value };
     }
 }

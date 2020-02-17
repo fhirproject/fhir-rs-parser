@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The EffectEvidenceSynthesis resource describes the difference in an outcome
 /// between exposures states in a population where the effect estimate is derived
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_PrecisionEstimate<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     /// Extensions for from
     pub fn _from(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_from") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     /// Extensions for level
     pub fn _level(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_level") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     /// Extensions for to
     pub fn _to(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_to") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +105,9 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +125,9 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
     /// Examples include confidence interval and interquartile range.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -154,5 +168,23 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+    pub value: Value,
+}
+
+impl EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+    pub fn build(&self) -> EffectEvidenceSynthesis_PrecisionEstimate {
+        EffectEvidenceSynthesis_PrecisionEstimate {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        let mut __value: Value = json!({});
+        return EffectEvidenceSynthesis_PrecisionEstimateBuilder { value: __value };
     }
 }

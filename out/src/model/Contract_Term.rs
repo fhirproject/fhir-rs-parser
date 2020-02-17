@@ -10,21 +10,25 @@ use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Term<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Term<'_> {
     /// Extensions for issued
     pub fn _issued(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl Contract_Term<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +49,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("action") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Action { value: e })
+                    .map(|e| Contract_Action {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -53,7 +61,9 @@ impl Contract_Term<'_> {
     /// Relevant time or time-period when this Contract Provision is applicable.
     pub fn applies(&self) -> Option<Period> {
         if let Some(val) = self.value.get("applies") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("asset") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Asset { value: e })
+                    .map(|e| Contract_Asset {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +91,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +105,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("group") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_Term { value: e })
+                    .map(|e| Contract_Term {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,7 +126,9 @@ impl Contract_Term<'_> {
     /// Unique identifier for this particular Contract Provision.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -138,7 +156,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +168,7 @@ impl Contract_Term<'_> {
     /// The matter of concern in the context of this provision of the agrement.
     pub fn offer(&self) -> Contract_Offer {
         Contract_Offer {
-            value: &self.value["offer"],
+            value: Cow::Borrowed(&self.value["offer"]),
         }
     }
 
@@ -158,7 +178,9 @@ impl Contract_Term<'_> {
         if let Some(Value::Array(val)) = self.value.get("securityLabel") {
             return Some(
                 val.into_iter()
-                    .map(|e| Contract_SecurityLabel { value: e })
+                    .map(|e| Contract_SecurityLabel {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -168,7 +190,9 @@ impl Contract_Term<'_> {
     /// A specialized legal clause or condition based on overarching contract type.
     pub fn sub_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -184,7 +208,9 @@ impl Contract_Term<'_> {
     /// The entity that the term applies to.
     pub fn topic_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("topicCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -192,7 +218,9 @@ impl Contract_Term<'_> {
     /// The entity that the term applies to.
     pub fn topic_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("topicReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -203,7 +231,9 @@ impl Contract_Term<'_> {
     /// specified time.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -286,5 +316,24 @@ impl Contract_Term<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_TermBuilder {
+    pub value: Value,
+}
+
+impl Contract_TermBuilder {
+    pub fn build(&self) -> Contract_Term {
+        Contract_Term {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(offer: Contract_Offer) -> Contract_TermBuilder {
+        let mut __value: Value = json!({});
+        __value["offer"] = json!(offer.value);
+        return Contract_TermBuilder { value: __value };
     }
 }

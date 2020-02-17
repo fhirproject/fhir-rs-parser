@@ -10,7 +10,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A booking of a healthcare event among patient(s), practitioner(s), related
 /// person(s) and/or device(s) for a specific date/time. This may result in one or
@@ -18,14 +20,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Appointment<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Appointment<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl Appointment<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl Appointment<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl Appointment<'_> {
     /// Extensions for end
     pub fn _end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_end") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl Appointment<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl Appointment<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +87,9 @@ impl Appointment<'_> {
     /// Extensions for minutesDuration
     pub fn _minutes_duration(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_minutesDuration") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -81,7 +97,9 @@ impl Appointment<'_> {
     /// Extensions for patientInstruction
     pub fn _patient_instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patientInstruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +107,9 @@ impl Appointment<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +117,9 @@ impl Appointment<'_> {
     /// Extensions for start
     pub fn _start(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_start") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +127,9 @@ impl Appointment<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -114,7 +138,9 @@ impl Appointment<'_> {
     /// service type).
     pub fn appointment_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("appointmentType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -125,7 +151,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -137,7 +165,9 @@ impl Appointment<'_> {
     /// required, or specific fees apply.
     pub fn cancelation_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("cancelationReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -157,7 +187,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -202,7 +234,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -226,7 +260,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -257,7 +293,9 @@ impl Appointment<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -291,7 +329,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -306,7 +346,9 @@ impl Appointment<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Appointment_Participant { value: e })
+            .map(|e| Appointment_Participant {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -337,7 +379,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -353,7 +397,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -369,7 +415,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("requestedPeriod") {
             return Some(
                 val.into_iter()
-                    .map(|e| Period { value: e })
+                    .map(|e| Period {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -382,7 +430,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("serviceCategory") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -394,7 +444,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("serviceType") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -407,7 +459,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("slot") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -420,7 +474,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialty") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -451,7 +507,9 @@ impl Appointment<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingInformation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -466,7 +524,9 @@ impl Appointment<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -633,6 +693,26 @@ impl Appointment<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AppointmentBuilder {
+    pub value: Value,
+}
+
+impl AppointmentBuilder {
+    pub fn build(&self) -> Appointment {
+        Appointment {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(participant: Vec<Appointment_Participant>) -> AppointmentBuilder {
+        let mut __value: Value = json!({});
+        __value["participant"] =
+            json!(participant.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return AppointmentBuilder { value: __value };
     }
 }
 

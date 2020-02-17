@@ -6,20 +6,24 @@ use crate::model::Element::Element;
 use crate::model::Identifier::Identifier;
 use crate::model::Meta::Meta;
 use crate::model::Signature::Signature;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A container for a collection of resources.
 
 #[derive(Debug)]
 pub struct Bundle<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Bundle<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl Bundle<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl Bundle<'_> {
     /// Extensions for timestamp
     pub fn _timestamp(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timestamp") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl Bundle<'_> {
     /// Extensions for total
     pub fn _total(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_total") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +61,9 @@ impl Bundle<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +74,9 @@ impl Bundle<'_> {
         if let Some(Value::Array(val)) = self.value.get("entry") {
             return Some(
                 val.into_iter()
-                    .map(|e| Bundle_Entry { value: e })
+                    .map(|e| Bundle_Entry {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +96,9 @@ impl Bundle<'_> {
     /// from server to server.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +127,9 @@ impl Bundle<'_> {
         if let Some(Value::Array(val)) = self.value.get("link") {
             return Some(
                 val.into_iter()
-                    .map(|e| Bundle_Link { value: e })
+                    .map(|e| Bundle_Link {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +141,9 @@ impl Bundle<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -131,7 +151,9 @@ impl Bundle<'_> {
     /// Digital Signature - base64 encoded. XML-DSig or a JWT.
     pub fn signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("signature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,6 +244,24 @@ impl Bundle<'_> {
         if let Some(_val) = self.total() {}
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct BundleBuilder {
+    pub value: Value,
+}
+
+impl BundleBuilder {
+    pub fn build(&self) -> Bundle {
+        Bundle {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> BundleBuilder {
+        let mut __value: Value = json!({});
+        return BundleBuilder { value: __value };
     }
 }
 

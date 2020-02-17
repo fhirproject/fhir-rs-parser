@@ -11,21 +11,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides eligibility and plan details from the processing of an
 /// CoverageEligibilityRequest resource.
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CoverageEligibilityResponse<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for disposition
     pub fn _disposition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_disposition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for outcome
     pub fn _outcome(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for preAuthRef
     pub fn _pre_auth_ref(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preAuthRef") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +89,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("_purpose") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +101,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for servicedDate
     pub fn _serviced_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_servicedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -93,7 +111,9 @@ impl CoverageEligibilityResponse<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +125,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,7 +155,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("error") {
             return Some(
                 val.into_iter()
-                    .map(|e| CoverageEligibilityResponse_Error { value: e })
+                    .map(|e| CoverageEligibilityResponse_Error {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -149,7 +173,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +185,9 @@ impl CoverageEligibilityResponse<'_> {
     /// A code for the form to be used for printing the content.
     pub fn form(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("form") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -178,7 +206,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -202,7 +232,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("insurance") {
             return Some(
                 val.into_iter()
-                    .map(|e| CoverageEligibilityResponse_Insurance { value: e })
+                    .map(|e| CoverageEligibilityResponse_Insurance {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -213,7 +245,7 @@ impl CoverageEligibilityResponse<'_> {
     /// response.
     pub fn insurer(&self) -> Reference {
         Reference {
-            value: &self.value["insurer"],
+            value: Cow::Borrowed(&self.value["insurer"]),
         }
     }
 
@@ -230,7 +262,9 @@ impl CoverageEligibilityResponse<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -251,7 +285,9 @@ impl CoverageEligibilityResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -270,7 +306,7 @@ impl CoverageEligibilityResponse<'_> {
     /// eligibility is sought.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -286,14 +322,16 @@ impl CoverageEligibilityResponse<'_> {
     /// Reference to the original request resource.
     pub fn request(&self) -> Reference {
         Reference {
-            value: &self.value["request"],
+            value: Cow::Borrowed(&self.value["request"]),
         }
     }
 
     /// The provider which is responsible for the request.
     pub fn requestor(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requestor") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -311,7 +349,9 @@ impl CoverageEligibilityResponse<'_> {
     /// completed.
     pub fn serviced_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("servicedPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -332,7 +372,9 @@ impl CoverageEligibilityResponse<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -457,6 +499,31 @@ impl CoverageEligibilityResponse<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CoverageEligibilityResponseBuilder {
+    pub value: Value,
+}
+
+impl CoverageEligibilityResponseBuilder {
+    pub fn build(&self) -> CoverageEligibilityResponse {
+        CoverageEligibilityResponse {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        insurer: Reference,
+        patient: Reference,
+        request: Reference,
+    ) -> CoverageEligibilityResponseBuilder {
+        let mut __value: Value = json!({});
+        __value["insurer"] = json!(insurer.value);
+        __value["patient"] = json!(patient.value);
+        __value["request"] = json!(request.value);
+        return CoverageEligibilityResponseBuilder { value: __value };
     }
 }
 

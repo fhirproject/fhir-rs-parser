@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::RiskEvidenceSynthesis_PrecisionEstimate::RiskEvidenceSynthesis_PrecisionEstimate;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a
 /// population plus exposure state where the risk estimate is derived from a
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_RiskEstimate<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Extensions for denominatorCount
     pub fn _denominator_count(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_denominatorCount") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Extensions for numeratorCount
     pub fn _numerator_count(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numeratorCount") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +83,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +116,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +138,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("precisionEstimate") {
             return Some(
                 val.into_iter()
-                    .map(|e| RiskEvidenceSynthesis_PrecisionEstimate { value: e })
+                    .map(|e| RiskEvidenceSynthesis_PrecisionEstimate {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -134,7 +150,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Examples include proportion and mean.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -142,7 +160,9 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
     /// Specifies the UCUM unit for the outcome.
     pub fn unit_of_measure(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("unitOfMeasure") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -207,5 +227,23 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
         }
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RiskEvidenceSynthesis_RiskEstimateBuilder {
+    pub value: Value,
+}
+
+impl RiskEvidenceSynthesis_RiskEstimateBuilder {
+    pub fn build(&self) -> RiskEvidenceSynthesis_RiskEstimate {
+        RiskEvidenceSynthesis_RiskEstimate {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RiskEvidenceSynthesis_RiskEstimateBuilder {
+        let mut __value: Value = json!({});
+        return RiskEvidenceSynthesis_RiskEstimateBuilder { value: __value };
     }
 }

@@ -3,7 +3,9 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CodeSystem resource is used to declare the existence of and describe a code
 /// system or code system supplement and its key properties, and optionally define a
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CodeSystem_Designation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CodeSystem_Designation<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl CodeSystem_Designation<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl CodeSystem_Designation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl CodeSystem_Designation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +99,9 @@ impl CodeSystem_Designation<'_> {
     /// A code that details how this designation would be used.
     pub fn fhir_use(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("use") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,5 +144,23 @@ impl CodeSystem_Designation<'_> {
         }
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodeSystem_DesignationBuilder {
+    pub value: Value,
+}
+
+impl CodeSystem_DesignationBuilder {
+    pub fn build(&self) -> CodeSystem_Designation {
+        CodeSystem_Designation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodeSystem_DesignationBuilder {
+        let mut __value: Value = json!({});
+        return CodeSystem_DesignationBuilder { value: __value };
     }
 }

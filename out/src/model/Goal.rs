@@ -10,7 +10,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes the intended objective(s) for a patient, group or organization care,
 /// for example, weight loss, restoring an activity of daily living, obtaining herd
@@ -18,14 +20,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Goal<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Goal<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl Goal<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl Goal<'_> {
     /// Extensions for lifecycleStatus
     pub fn _lifecycle_status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lifecycleStatus") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl Goal<'_> {
     /// Extensions for startDate
     pub fn _start_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_startDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl Goal<'_> {
     /// Extensions for statusDate
     pub fn _status_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_statusDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl Goal<'_> {
     /// Extensions for statusReason
     pub fn _status_reason(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_statusReason") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +87,9 @@ impl Goal<'_> {
     /// Describes the progression, or lack thereof, towards the goal against the target.
     pub fn achievement_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("achievementStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +100,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("addresses") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -96,7 +114,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,7 +130,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -122,14 +144,16 @@ impl Goal<'_> {
     /// with child at wedding".
     pub fn description(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["description"],
+            value: Cow::Borrowed(&self.value["description"]),
         }
     }
 
     /// Indicates whose goal this is - patient goal, practitioner goal, etc.
     pub fn expressed_by(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("expressedBy") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -143,7 +167,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -166,7 +192,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -205,7 +233,9 @@ impl Goal<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -226,7 +256,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -238,7 +270,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -251,7 +285,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("outcomeCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -263,7 +299,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("outcomeReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -274,7 +312,9 @@ impl Goal<'_> {
     /// reaching/sustaining the goal.
     pub fn priority(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("priority") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -282,7 +322,9 @@ impl Goal<'_> {
     /// The date or event after which the goal should begin being pursued.
     pub fn start_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("startCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -316,7 +358,7 @@ impl Goal<'_> {
     /// established.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -325,7 +367,9 @@ impl Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("target") {
             return Some(
                 val.into_iter()
-                    .map(|e| Goal_Target { value: e })
+                    .map(|e| Goal_Target {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -340,7 +384,9 @@ impl Goal<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -470,6 +516,26 @@ impl Goal<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct GoalBuilder {
+    pub value: Value,
+}
+
+impl GoalBuilder {
+    pub fn build(&self) -> Goal {
+        Goal {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(description: CodeableConcept, subject: Reference) -> GoalBuilder {
+        let mut __value: Value = json!({});
+        __value["description"] = json!(description.value);
+        __value["subject"] = json!(subject.value);
+        return GoalBuilder { value: __value };
     }
 }
 

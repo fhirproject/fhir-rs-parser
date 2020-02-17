@@ -3,21 +3,23 @@
 use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
 /// providing healthcare service(s) or assessing the health status of a patient.
 
 #[derive(Debug)]
 pub struct Encounter_ClassHistory<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Encounter_ClassHistory<'_> {
     /// inpatient | outpatient | ambulatory | emergency +.
     pub fn class(&self) -> Coding {
         Coding {
-            value: &self.value["class"],
+            value: Cow::Borrowed(&self.value["class"]),
         }
     }
 
@@ -30,7 +32,9 @@ impl Encounter_ClassHistory<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -61,7 +65,9 @@ impl Encounter_ClassHistory<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +77,7 @@ impl Encounter_ClassHistory<'_> {
     /// The time that the episode was in the specified class.
     pub fn period(&self) -> Period {
         Period {
-            value: &self.value["period"],
+            value: Cow::Borrowed(&self.value["period"]),
         }
     }
 
@@ -94,5 +100,25 @@ impl Encounter_ClassHistory<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Encounter_ClassHistoryBuilder {
+    pub value: Value,
+}
+
+impl Encounter_ClassHistoryBuilder {
+    pub fn build(&self) -> Encounter_ClassHistory {
+        Encounter_ClassHistory {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(class: Coding, period: Period) -> Encounter_ClassHistoryBuilder {
+        let mut __value: Value = json!({});
+        __value["class"] = json!(class.value);
+        __value["period"] = json!(period.value);
+        return Encounter_ClassHistoryBuilder { value: __value };
     }
 }

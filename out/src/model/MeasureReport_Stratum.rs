@@ -5,14 +5,16 @@ use crate::model::Extension::Extension;
 use crate::model::MeasureReport_Component::MeasureReport_Component;
 use crate::model::MeasureReport_Population1::MeasureReport_Population1;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The MeasureReport resource contains the results of the calculation of a measure;
 /// and optionally a reference to the resources involved in that calculation.
 
 #[derive(Debug)]
 pub struct MeasureReport_Stratum<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MeasureReport_Stratum<'_> {
@@ -21,7 +23,9 @@ impl MeasureReport_Stratum<'_> {
         if let Some(Value::Array(val)) = self.value.get("component") {
             return Some(
                 val.into_iter()
-                    .map(|e| MeasureReport_Component { value: e })
+                    .map(|e| MeasureReport_Component {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -37,7 +41,9 @@ impl MeasureReport_Stratum<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -57,7 +63,9 @@ impl MeasureReport_Stratum<'_> {
     /// type and scoring method, and based on only the members of this stratum.
     pub fn measure_score(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("measureScore") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +85,9 @@ impl MeasureReport_Stratum<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +100,9 @@ impl MeasureReport_Stratum<'_> {
         if let Some(Value::Array(val)) = self.value.get("population") {
             return Some(
                 val.into_iter()
-                    .map(|e| MeasureReport_Population1 { value: e })
+                    .map(|e| MeasureReport_Population1 {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +114,9 @@ impl MeasureReport_Stratum<'_> {
     /// for each stratum within the stratifier is unique.
     pub fn value(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("value") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -140,5 +154,23 @@ impl MeasureReport_Stratum<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MeasureReport_StratumBuilder {
+    pub value: Value,
+}
+
+impl MeasureReport_StratumBuilder {
+    pub fn build(&self) -> MeasureReport_Stratum {
+        MeasureReport_Stratum {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MeasureReport_StratumBuilder {
+        let mut __value: Value = json!({});
+        return MeasureReport_StratumBuilder { value: __value };
     }
 }

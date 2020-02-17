@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Page<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImplementationGuide_Page<'_> {
     /// Extensions for generation
     pub fn _generation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_generation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl ImplementationGuide_Page<'_> {
     /// Extensions for nameUrl
     pub fn _name_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_nameUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl ImplementationGuide_Page<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl ImplementationGuide_Page<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +98,9 @@ impl ImplementationGuide_Page<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -98,7 +110,9 @@ impl ImplementationGuide_Page<'_> {
     /// The source address for the page.
     pub fn name_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("nameReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -116,7 +130,9 @@ impl ImplementationGuide_Page<'_> {
         if let Some(Value::Array(val)) = self.value.get("page") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Page { value: e })
+                    .map(|e| ImplementationGuide_Page {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -173,6 +189,24 @@ impl ImplementationGuide_Page<'_> {
         }
         if let Some(_val) = self.title() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImplementationGuide_PageBuilder {
+    pub value: Value,
+}
+
+impl ImplementationGuide_PageBuilder {
+    pub fn build(&self) -> ImplementationGuide_Page {
+        ImplementationGuide_Page {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ImplementationGuide_PageBuilder {
+        let mut __value: Value = json!({});
+        return ImplementationGuide_PageBuilder { value: __value };
     }
 }
 

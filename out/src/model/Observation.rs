@@ -17,21 +17,25 @@ use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::SampledData::SampledData;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Measurements and simple assertions made about a patient, device or other
 /// subject.
 
 #[derive(Debug)]
 pub struct Observation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Observation<'_> {
     /// Extensions for effectiveDateTime
     pub fn _effective_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +43,9 @@ impl Observation<'_> {
     /// Extensions for effectiveInstant
     pub fn _effective_instant(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveInstant") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl Observation<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl Observation<'_> {
     /// Extensions for issued
     pub fn _issued(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl Observation<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +83,9 @@ impl Observation<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +93,9 @@ impl Observation<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +103,9 @@ impl Observation<'_> {
     /// Extensions for valueDateTime
     pub fn _value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +113,9 @@ impl Observation<'_> {
     /// Extensions for valueInteger
     pub fn _value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -103,7 +123,9 @@ impl Observation<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +133,9 @@ impl Observation<'_> {
     /// Extensions for valueTime
     pub fn _value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -123,7 +147,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -134,7 +160,9 @@ impl Observation<'_> {
     /// the target site).
     pub fn body_site(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("bodySite") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -144,7 +172,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -154,7 +184,7 @@ impl Observation<'_> {
     /// Describes what was observed. Sometimes this is called the observation "name".
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -167,7 +197,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("component") {
             return Some(
                 val.into_iter()
-                    .map(|e| Observation_Component { value: e })
+                    .map(|e| Observation_Component {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -181,7 +213,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -192,7 +226,9 @@ impl Observation<'_> {
     /// missing.
     pub fn data_absent_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("dataAbsentReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -204,7 +240,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("derivedFrom") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +252,9 @@ impl Observation<'_> {
     /// The device used to generate the observation data.
     pub fn device(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("device") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -250,7 +290,9 @@ impl Observation<'_> {
     /// is not known, only the date/time itself.
     pub fn effective_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("effectivePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +304,9 @@ impl Observation<'_> {
     /// is not known, only the date/time itself.
     pub fn effective_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("effectiveTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -271,7 +315,9 @@ impl Observation<'_> {
     /// during which this observation is made.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -285,7 +331,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -305,7 +353,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("focus") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -318,7 +368,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("hasMember") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -339,7 +391,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -363,7 +417,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("interpretation") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -392,7 +448,9 @@ impl Observation<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -400,7 +458,9 @@ impl Observation<'_> {
     /// Indicates the mechanism used to perform the observation.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -421,7 +481,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -433,7 +495,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -446,7 +510,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -458,7 +524,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -473,7 +541,9 @@ impl Observation<'_> {
         if let Some(Value::Array(val)) = self.value.get("referenceRange") {
             return Some(
                 val.into_iter()
-                    .map(|e| Observation_ReferenceRange { value: e })
+                    .map(|e| Observation_ReferenceRange {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -483,7 +553,9 @@ impl Observation<'_> {
     /// The specimen that was used when this observation was made.
     pub fn specimen(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("specimen") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -503,7 +575,9 @@ impl Observation<'_> {
     /// focus of the observation.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -516,7 +590,9 @@ impl Observation<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -534,7 +610,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -561,7 +639,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("valuePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -570,7 +650,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -579,7 +661,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -588,7 +672,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("valueRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -597,7 +683,9 @@ impl Observation<'_> {
     /// information has a simple value.
     pub fn value_sampled_data(&self) -> Option<SampledData> {
         if let Some(val) = self.value.get("valueSampledData") {
-            return Some(SampledData { value: val });
+            return Some(SampledData {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -852,6 +940,25 @@ impl Observation<'_> {
         if let Some(_val) = self.value_string() {}
         if let Some(_val) = self.value_time() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ObservationBuilder {
+    pub value: Value,
+}
+
+impl ObservationBuilder {
+    pub fn build(&self) -> Observation {
+        Observation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> ObservationBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return ObservationBuilder { value: __value };
     }
 }
 

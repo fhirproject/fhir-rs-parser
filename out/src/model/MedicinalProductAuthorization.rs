@@ -11,20 +11,24 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The regulatory authorization of a medicinal product.
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorization<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductAuthorization<'_> {
     /// Extensions for dateOfFirstAuthorization
     pub fn _date_of_first_authorization(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateOfFirstAuthorization") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Extensions for internationalBirthDate
     pub fn _international_birth_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_internationalBirthDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +66,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Extensions for restoreDate
     pub fn _restore_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_restoreDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +76,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Extensions for statusDate
     pub fn _status_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_statusDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +90,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +104,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("country") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,7 +117,9 @@ impl MedicinalProductAuthorization<'_> {
     /// submitted.
     pub fn data_exclusivity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("dataExclusivityPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +142,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -132,7 +154,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Marketing Authorization Holder.
     pub fn holder(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("holder") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -151,7 +175,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -183,7 +209,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -197,7 +225,11 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdictionalAuthorization") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductAuthorization_JurisdictionalAuthorization { value: e })
+                    .map(
+                        |e| MedicinalProductAuthorization_JurisdictionalAuthorization {
+                            value: Cow::Borrowed(e),
+                        },
+                    )
                     .collect::<Vec<_>>(),
             );
         }
@@ -215,7 +247,9 @@ impl MedicinalProductAuthorization<'_> {
     /// The legal framework against which this authorization is granted.
     pub fn legal_basis(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("legalBasis") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -225,7 +259,9 @@ impl MedicinalProductAuthorization<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -246,7 +282,9 @@ impl MedicinalProductAuthorization<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -256,7 +294,9 @@ impl MedicinalProductAuthorization<'_> {
     /// The regulatory procedure for granting or amending a marketing authorization.
     pub fn procedure(&self) -> Option<MedicinalProductAuthorization_Procedure> {
         if let Some(val) = self.value.get("procedure") {
-            return Some(MedicinalProductAuthorization_Procedure { value: val });
+            return Some(MedicinalProductAuthorization_Procedure {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -264,7 +304,9 @@ impl MedicinalProductAuthorization<'_> {
     /// Medicines Regulatory Agency.
     pub fn regulator(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("regulator") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -281,7 +323,9 @@ impl MedicinalProductAuthorization<'_> {
     /// The status of the marketing authorization.
     pub fn status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("status") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -297,7 +341,9 @@ impl MedicinalProductAuthorization<'_> {
     /// The medicinal product that is being authorized.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -310,7 +356,9 @@ impl MedicinalProductAuthorization<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -320,7 +368,9 @@ impl MedicinalProductAuthorization<'_> {
     /// year shall be specified using the ISO 8601 date format.
     pub fn validity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("validityPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -449,5 +499,23 @@ impl MedicinalProductAuthorization<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductAuthorizationBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductAuthorizationBuilder {
+    pub fn build(&self) -> MedicinalProductAuthorization {
+        MedicinalProductAuthorization {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProductAuthorizationBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProductAuthorizationBuilder { value: __value };
     }
 }

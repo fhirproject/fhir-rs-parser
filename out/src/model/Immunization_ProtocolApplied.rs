@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes the event of a patient being administered a vaccine or a record of an
 /// immunization as reported by a patient, a clinician or another party.
 
 #[derive(Debug)]
 pub struct Immunization_ProtocolApplied<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Immunization_ProtocolApplied<'_> {
     /// Extensions for doseNumberPositiveInt
     pub fn _dose_number_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doseNumberPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Immunization_ProtocolApplied<'_> {
     /// Extensions for doseNumberString
     pub fn _dose_number_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doseNumberString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl Immunization_ProtocolApplied<'_> {
     /// Extensions for series
     pub fn _series(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_series") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl Immunization_ProtocolApplied<'_> {
     /// Extensions for seriesDosesPositiveInt
     pub fn _series_doses_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_seriesDosesPositiveInt") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +60,9 @@ impl Immunization_ProtocolApplied<'_> {
     /// Extensions for seriesDosesString
     pub fn _series_doses_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_seriesDosesString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +71,9 @@ impl Immunization_ProtocolApplied<'_> {
     /// followed.
     pub fn authority(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("authority") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +103,9 @@ impl Immunization_ProtocolApplied<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,7 +136,9 @@ impl Immunization_ProtocolApplied<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -157,7 +175,9 @@ impl Immunization_ProtocolApplied<'_> {
         if let Some(Value::Array(val)) = self.value.get("targetDisease") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -217,5 +237,23 @@ impl Immunization_ProtocolApplied<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Immunization_ProtocolAppliedBuilder {
+    pub value: Value,
+}
+
+impl Immunization_ProtocolAppliedBuilder {
+    pub fn build(&self) -> Immunization_ProtocolApplied {
+        Immunization_ProtocolApplied {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Immunization_ProtocolAppliedBuilder {
+        let mut __value: Value = json!({});
+        return Immunization_ProtocolAppliedBuilder { value: __value };
     }
 }

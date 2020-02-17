@@ -3,13 +3,15 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Dosage::Dosage;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_Dosage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_Dosage<'_> {
@@ -21,7 +23,9 @@ impl MedicationKnowledge_Dosage<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Dosage { value: e })
+            .map(|e| Dosage {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -34,7 +38,9 @@ impl MedicationKnowledge_Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +71,9 @@ impl MedicationKnowledge_Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +83,7 @@ impl MedicationKnowledge_Dosage<'_> {
     /// The type of dosage (for example, prophylaxis, maintenance, therapeutic, etc.).
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -103,5 +111,28 @@ impl MedicationKnowledge_Dosage<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_DosageBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_DosageBuilder {
+    pub fn build(&self) -> MedicationKnowledge_Dosage {
+        MedicationKnowledge_Dosage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        dosage: Vec<Dosage>,
+        fhir_type: CodeableConcept,
+    ) -> MedicationKnowledge_DosageBuilder {
+        let mut __value: Value = json!({});
+        __value["dosage"] = json!(dosage.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["type"] = json!(fhir_type.value);
+        return MedicationKnowledge_DosageBuilder { value: __value };
     }
 }

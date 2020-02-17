@@ -25,7 +25,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides: the claim details; adjudication details from the
 /// processing of a Claim; and optionally account balance information, for informing
@@ -33,14 +35,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ExplanationOfBenefit<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +52,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for disposition
     pub fn _disposition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_disposition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +62,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +72,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +82,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for outcome
     pub fn _outcome(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +94,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("_preAuthRef") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +106,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for precedence
     pub fn _precedence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_precedence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,7 +116,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +126,9 @@ impl ExplanationOfBenefit<'_> {
     /// Extensions for use
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -117,7 +137,9 @@ impl ExplanationOfBenefit<'_> {
     /// services listed in the claim.
     pub fn accident(&self) -> Option<ExplanationOfBenefit_Accident> {
         if let Some(val) = self.value.get("accident") {
-            return Some(ExplanationOfBenefit_Accident { value: val });
+            return Some(ExplanationOfBenefit_Accident {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -127,7 +149,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("addItem") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_AddItem { value: e })
+                    .map(|e| ExplanationOfBenefit_AddItem {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +164,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("adjudication") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Adjudication { value: e })
+                    .map(|e| ExplanationOfBenefit_Adjudication {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -152,7 +178,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("benefitBalance") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_BenefitBalance { value: e })
+                    .map(|e| ExplanationOfBenefit_BenefitBalance {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -162,7 +190,9 @@ impl ExplanationOfBenefit<'_> {
     /// The term of the benefits documented in this response.
     pub fn benefit_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("benefitPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -170,7 +200,9 @@ impl ExplanationOfBenefit<'_> {
     /// The period for which charges are being submitted.
     pub fn billable_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("billablePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -180,7 +212,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("careTeam") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_CareTeam { value: e })
+                    .map(|e| ExplanationOfBenefit_CareTeam {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -191,7 +225,9 @@ impl ExplanationOfBenefit<'_> {
     /// predetermination or preauthorization.
     pub fn claim(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("claim") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -200,7 +236,9 @@ impl ExplanationOfBenefit<'_> {
     /// predetermination or preauthorization response.
     pub fn claim_response(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("claimResponse") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -212,7 +250,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -232,7 +272,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("diagnosis") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Diagnosis { value: e })
+                    .map(|e| ExplanationOfBenefit_Diagnosis {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -250,7 +292,9 @@ impl ExplanationOfBenefit<'_> {
     /// Individual who created the claim, predetermination or preauthorization.
     pub fn enterer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("enterer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -264,7 +308,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -274,7 +320,9 @@ impl ExplanationOfBenefit<'_> {
     /// Facility where the services were provided.
     pub fn facility(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("facility") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -282,7 +330,9 @@ impl ExplanationOfBenefit<'_> {
     /// The actual form, by reference or inclusion, for printing the content or an EOB.
     pub fn form(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("form") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -290,7 +340,9 @@ impl ExplanationOfBenefit<'_> {
     /// A code for the form to be used for printing the content.
     pub fn form_code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("formCode") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -299,7 +351,9 @@ impl ExplanationOfBenefit<'_> {
     /// benefits payable have been reserved and for whom.
     pub fn funds_reserve(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fundsReserve") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -308,7 +362,9 @@ impl ExplanationOfBenefit<'_> {
     /// claims.
     pub fn funds_reserve_requested(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fundsReserveRequested") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -327,7 +383,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -354,14 +412,16 @@ impl ExplanationOfBenefit<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ExplanationOfBenefit_Insurance { value: e })
+            .map(|e| ExplanationOfBenefit_Insurance {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// The party responsible for authorization, adjudication and reimbursement.
     pub fn insurer(&self) -> Reference {
         Reference {
-            value: &self.value["insurer"],
+            value: Cow::Borrowed(&self.value["insurer"]),
         }
     }
 
@@ -371,7 +431,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Item { value: e })
+                    .map(|e| ExplanationOfBenefit_Item {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -391,7 +453,9 @@ impl ExplanationOfBenefit<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -412,7 +476,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -423,7 +489,9 @@ impl ExplanationOfBenefit<'_> {
     /// the dispensing of pharmacy services, medications or products.
     pub fn original_prescription(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("originalPrescription") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -441,7 +509,7 @@ impl ExplanationOfBenefit<'_> {
     /// sought.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -449,7 +517,9 @@ impl ExplanationOfBenefit<'_> {
     /// the terms of the policy.
     pub fn payee(&self) -> Option<ExplanationOfBenefit_Payee> {
         if let Some(val) = self.value.get("payee") {
-            return Some(ExplanationOfBenefit_Payee { value: val });
+            return Some(ExplanationOfBenefit_Payee {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -457,7 +527,9 @@ impl ExplanationOfBenefit<'_> {
     /// Payment details for the adjudication of the claim.
     pub fn payment(&self) -> Option<ExplanationOfBenefit_Payment> {
         if let Some(val) = self.value.get("payment") {
-            return Some(ExplanationOfBenefit_Payment { value: val });
+            return Some(ExplanationOfBenefit_Payment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -481,7 +553,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("preAuthRefPeriod") {
             return Some(
                 val.into_iter()
-                    .map(|e| Period { value: e })
+                    .map(|e| Period {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -500,7 +574,9 @@ impl ExplanationOfBenefit<'_> {
     /// Prescription to support the dispensing of pharmacy, device or vision products.
     pub fn prescription(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("prescription") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -509,7 +585,9 @@ impl ExplanationOfBenefit<'_> {
     /// stat, routine deferred.
     pub fn priority(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("priority") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -520,7 +598,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("procedure") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Procedure { value: e })
+                    .map(|e| ExplanationOfBenefit_Procedure {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -532,7 +612,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("processNote") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_ProcessNote { value: e })
+                    .map(|e| ExplanationOfBenefit_ProcessNote {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -543,14 +625,16 @@ impl ExplanationOfBenefit<'_> {
     /// preauthorization.
     pub fn provider(&self) -> Reference {
         Reference {
-            value: &self.value["provider"],
+            value: Cow::Borrowed(&self.value["provider"]),
         }
     }
 
     /// A reference to a referral resource.
     pub fn referral(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("referral") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -561,7 +645,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("related") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Related { value: e })
+                    .map(|e| ExplanationOfBenefit_Related {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -580,7 +666,9 @@ impl ExplanationOfBenefit<'_> {
     /// information such as Inpatient vs Outpatient and/or a specialty service.
     pub fn sub_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -591,7 +679,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_SupportingInfo { value: e })
+                    .map(|e| ExplanationOfBenefit_SupportingInfo {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -606,7 +696,9 @@ impl ExplanationOfBenefit<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -616,7 +708,9 @@ impl ExplanationOfBenefit<'_> {
         if let Some(Value::Array(val)) = self.value.get("total") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Total { value: e })
+                    .map(|e| ExplanationOfBenefit_Total {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -626,7 +720,7 @@ impl ExplanationOfBenefit<'_> {
     /// The category of claim, e.g. oral, pharmacy, vision, institutional, professional.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -901,6 +995,35 @@ impl ExplanationOfBenefit<'_> {
         }
         if let Some(_val) = self.fhir_use() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ExplanationOfBenefitBuilder {
+    pub value: Value,
+}
+
+impl ExplanationOfBenefitBuilder {
+    pub fn build(&self) -> ExplanationOfBenefit {
+        ExplanationOfBenefit {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        insurance: Vec<ExplanationOfBenefit_Insurance>,
+        insurer: Reference,
+        patient: Reference,
+        provider: Reference,
+        fhir_type: CodeableConcept,
+    ) -> ExplanationOfBenefitBuilder {
+        let mut __value: Value = json!({});
+        __value["insurance"] = json!(insurance.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["insurer"] = json!(insurer.value);
+        __value["patient"] = json!(patient.value);
+        __value["provider"] = json!(provider.value);
+        __value["type"] = json!(fhir_type.value);
+        return ExplanationOfBenefitBuilder { value: __value };
     }
 }
 

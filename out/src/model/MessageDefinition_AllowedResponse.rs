@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Defines the characteristics of a message that can be shared between systems,
 /// including the type of event that initiates the message, the content to be
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct MessageDefinition_AllowedResponse<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MessageDefinition_AllowedResponse<'_> {
     /// Extensions for situation
     pub fn _situation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_situation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl MessageDefinition_AllowedResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -68,7 +74,9 @@ impl MessageDefinition_AllowedResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,5 +111,24 @@ impl MessageDefinition_AllowedResponse<'_> {
         }
         if let Some(_val) = self.situation() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MessageDefinition_AllowedResponseBuilder {
+    pub value: Value,
+}
+
+impl MessageDefinition_AllowedResponseBuilder {
+    pub fn build(&self) -> MessageDefinition_AllowedResponse {
+        MessageDefinition_AllowedResponse {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(message: &str) -> MessageDefinition_AllowedResponseBuilder {
+        let mut __value: Value = json!({});
+        __value["message"] = json!(message);
+        return MessageDefinition_AllowedResponseBuilder { value: __value };
     }
 }

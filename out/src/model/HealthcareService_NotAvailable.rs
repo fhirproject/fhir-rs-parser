@@ -3,20 +3,24 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The details of a healthcare service available at a location.
 
 #[derive(Debug)]
 pub struct HealthcareService_NotAvailable<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl HealthcareService_NotAvailable<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl HealthcareService_NotAvailable<'_> {
     /// Service is not available (seasonally or for a public holiday) from this date.
     pub fn during(&self) -> Option<Period> {
         if let Some(val) = self.value.get("during") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl HealthcareService_NotAvailable<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -78,7 +86,9 @@ impl HealthcareService_NotAvailable<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,5 +119,23 @@ impl HealthcareService_NotAvailable<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct HealthcareService_NotAvailableBuilder {
+    pub value: Value,
+}
+
+impl HealthcareService_NotAvailableBuilder {
+    pub fn build(&self) -> HealthcareService_NotAvailable {
+        HealthcareService_NotAvailable {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> HealthcareService_NotAvailableBuilder {
+        let mut __value: Value = json!({});
+        return HealthcareService_NotAvailableBuilder { value: __value };
     }
 }

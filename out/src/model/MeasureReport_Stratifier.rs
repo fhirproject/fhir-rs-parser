@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::MeasureReport_Stratum::MeasureReport_Stratum;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The MeasureReport resource contains the results of the calculation of a measure;
 /// and optionally a reference to the resources involved in that calculation.
 
 #[derive(Debug)]
 pub struct MeasureReport_Stratifier<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MeasureReport_Stratifier<'_> {
@@ -19,7 +21,9 @@ impl MeasureReport_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -35,7 +39,9 @@ impl MeasureReport_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +72,9 @@ impl MeasureReport_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +88,9 @@ impl MeasureReport_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("stratum") {
             return Some(
                 val.into_iter()
-                    .map(|e| MeasureReport_Stratum { value: e })
+                    .map(|e| MeasureReport_Stratum {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,5 +120,23 @@ impl MeasureReport_Stratifier<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MeasureReport_StratifierBuilder {
+    pub value: Value,
+}
+
+impl MeasureReport_StratifierBuilder {
+    pub fn build(&self) -> MeasureReport_Stratifier {
+        MeasureReport_Stratifier {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MeasureReport_StratifierBuilder {
+        let mut __value: Value = json!({});
+        return MeasureReport_StratifierBuilder { value: __value };
     }
 }

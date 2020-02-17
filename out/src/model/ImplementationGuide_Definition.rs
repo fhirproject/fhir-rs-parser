@@ -6,7 +6,9 @@ use crate::model::ImplementationGuide_Page::ImplementationGuide_Page;
 use crate::model::ImplementationGuide_Parameter::ImplementationGuide_Parameter;
 use crate::model::ImplementationGuide_Resource::ImplementationGuide_Resource;
 use crate::model::ImplementationGuide_Template::ImplementationGuide_Template;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
@@ -15,7 +17,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Definition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImplementationGuide_Definition<'_> {
@@ -28,7 +30,9 @@ impl ImplementationGuide_Definition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -40,7 +44,9 @@ impl ImplementationGuide_Definition<'_> {
         if let Some(Value::Array(val)) = self.value.get("grouping") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Grouping { value: e })
+                    .map(|e| ImplementationGuide_Grouping {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +77,9 @@ impl ImplementationGuide_Definition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +90,9 @@ impl ImplementationGuide_Definition<'_> {
     /// implementation guide home page.
     pub fn page(&self) -> Option<ImplementationGuide_Page> {
         if let Some(val) = self.value.get("page") {
-            return Some(ImplementationGuide_Page { value: val });
+            return Some(ImplementationGuide_Page {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +102,9 @@ impl ImplementationGuide_Definition<'_> {
         if let Some(Value::Array(val)) = self.value.get("parameter") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Parameter { value: e })
+                    .map(|e| ImplementationGuide_Parameter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,7 +122,9 @@ impl ImplementationGuide_Definition<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ImplementationGuide_Resource { value: e })
+            .map(|e| ImplementationGuide_Resource {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -119,7 +133,9 @@ impl ImplementationGuide_Definition<'_> {
         if let Some(Value::Array(val)) = self.value.get("template") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Template { value: e })
+                    .map(|e| ImplementationGuide_Template {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,5 +183,26 @@ impl ImplementationGuide_Definition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImplementationGuide_DefinitionBuilder {
+    pub value: Value,
+}
+
+impl ImplementationGuide_DefinitionBuilder {
+    pub fn build(&self) -> ImplementationGuide_Definition {
+        ImplementationGuide_Definition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        resource: Vec<ImplementationGuide_Resource>,
+    ) -> ImplementationGuide_DefinitionBuilder {
+        let mut __value: Value = json!({});
+        __value["resource"] = json!(resource.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return ImplementationGuide_DefinitionBuilder { value: __value };
     }
 }

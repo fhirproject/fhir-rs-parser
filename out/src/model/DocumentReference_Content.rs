@@ -3,7 +3,9 @@
 use crate::model::Attachment::Attachment;
 use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A reference to a document of any kind for any purpose. Provides metadata about
 /// the document so that the document can be discovered and managed. The scope of a
@@ -13,7 +15,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DocumentReference_Content<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DocumentReference_Content<'_> {
@@ -21,7 +23,7 @@ impl DocumentReference_Content<'_> {
     /// content has integrity.
     pub fn attachment(&self) -> Attachment {
         Attachment {
-            value: &self.value["attachment"],
+            value: Cow::Borrowed(&self.value["attachment"]),
         }
     }
 
@@ -34,7 +36,9 @@ impl DocumentReference_Content<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +49,9 @@ impl DocumentReference_Content<'_> {
     /// document conforms to beyond the base format indicated in the mimeType.
     pub fn format(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("format") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +80,9 @@ impl DocumentReference_Content<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,5 +110,24 @@ impl DocumentReference_Content<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DocumentReference_ContentBuilder {
+    pub value: Value,
+}
+
+impl DocumentReference_ContentBuilder {
+    pub fn build(&self) -> DocumentReference_Content {
+        DocumentReference_Content {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(attachment: Attachment) -> DocumentReference_ContentBuilder {
+        let mut __value: Value = json!({});
+        __value["attachment"] = json!(attachment.value);
+        return DocumentReference_ContentBuilder { value: __value };
     }
 }

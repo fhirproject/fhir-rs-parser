@@ -7,21 +7,25 @@ use crate::model::DataRequirement_Sort::DataRequirement_Sort;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes a required data item for evaluation in terms of the type of data, and
 /// optional code or date-based filters of the data.
 
 #[derive(Debug)]
 pub struct DataRequirement<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DataRequirement<'_> {
     /// Extensions for limit
     pub fn _limit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_limit") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl DataRequirement<'_> {
         if let Some(Value::Array(val)) = self.value.get("_mustSupport") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -41,7 +47,9 @@ impl DataRequirement<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl DataRequirement<'_> {
         if let Some(Value::Array(val)) = self.value.get("codeFilter") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement_CodeFilter { value: e })
+                    .map(|e| DataRequirement_CodeFilter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -67,7 +77,9 @@ impl DataRequirement<'_> {
         if let Some(Value::Array(val)) = self.value.get("dateFilter") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement_DateFilter { value: e })
+                    .map(|e| DataRequirement_DateFilter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +95,9 @@ impl DataRequirement<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -145,7 +159,9 @@ impl DataRequirement<'_> {
         if let Some(Value::Array(val)) = self.value.get("sort") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement_Sort { value: e })
+                    .map(|e| DataRequirement_Sort {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -156,7 +172,9 @@ impl DataRequirement<'_> {
     /// a Patient subject is assumed.
     pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subjectCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +183,9 @@ impl DataRequirement<'_> {
     /// a Patient subject is assumed.
     pub fn subject_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subjectReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -235,5 +255,23 @@ impl DataRequirement<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DataRequirementBuilder {
+    pub value: Value,
+}
+
+impl DataRequirementBuilder {
+    pub fn build(&self) -> DataRequirement {
+        DataRequirement {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DataRequirementBuilder {
+        let mut __value: Value = json!({});
+        return DataRequirementBuilder { value: __value };
     }
 }

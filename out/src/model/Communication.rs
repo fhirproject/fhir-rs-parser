@@ -10,7 +10,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An occurrence of information being transmitted; e.g. an alert that was sent to a
 /// responsible provider, a public health agency that was notified about a
@@ -18,14 +20,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Communication<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Communication<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +39,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("_instantiatesUri") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +51,9 @@ impl Communication<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl Communication<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -61,7 +71,9 @@ impl Communication<'_> {
     /// Extensions for received
     pub fn _received(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_received") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +81,9 @@ impl Communication<'_> {
     /// Extensions for sent
     pub fn _sent(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sent") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +91,9 @@ impl Communication<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("about") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +118,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +133,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -127,7 +149,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -138,7 +162,9 @@ impl Communication<'_> {
     /// creation of this record is tightly associated.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -152,7 +178,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -175,7 +203,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -198,7 +228,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("inResponseTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -244,7 +276,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("medium") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -256,7 +290,9 @@ impl Communication<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +313,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -290,7 +328,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -302,7 +342,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -314,7 +356,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("payload") {
             return Some(
                 val.into_iter()
-                    .map(|e| Communication_Payload { value: e })
+                    .map(|e| Communication_Payload {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -335,7 +379,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -347,7 +393,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -372,7 +420,9 @@ impl Communication<'_> {
         if let Some(Value::Array(val)) = self.value.get("recipient") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -383,7 +433,9 @@ impl Communication<'_> {
     /// which was the source of the communication.
     pub fn sender(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("sender") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -407,7 +459,9 @@ impl Communication<'_> {
     /// Captures the reason for the current state of the Communication.
     pub fn status_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("statusReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -415,7 +469,9 @@ impl Communication<'_> {
     /// The patient or group that was the focus of this communication.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -428,7 +484,9 @@ impl Communication<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -436,7 +494,9 @@ impl Communication<'_> {
     /// Description of the purpose/content, similar to a subject line in an email.
     pub fn topic(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("topic") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -601,5 +661,23 @@ impl Communication<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CommunicationBuilder {
+    pub value: Value,
+}
+
+impl CommunicationBuilder {
+    pub fn build(&self) -> Communication {
+        Communication {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CommunicationBuilder {
+        let mut __value: Value = json!({});
+        return CommunicationBuilder { value: __value };
     }
 }

@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Financial instrument which may be used to reimburse or pay for health care
 /// products and services. Includes both insurance and self-payment.
 
 #[derive(Debug)]
 pub struct Coverage_Exception<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Coverage_Exception<'_> {
@@ -23,7 +25,9 @@ impl Coverage_Exception<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +58,9 @@ impl Coverage_Exception<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +70,9 @@ impl Coverage_Exception<'_> {
     /// The timeframe during when the exception is in force.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,7 @@ impl Coverage_Exception<'_> {
     /// The code for the specific exception.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -97,5 +105,24 @@ impl Coverage_Exception<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Coverage_ExceptionBuilder {
+    pub value: Value,
+}
+
+impl Coverage_ExceptionBuilder {
+    pub fn build(&self) -> Coverage_Exception {
+        Coverage_Exception {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> Coverage_ExceptionBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return Coverage_ExceptionBuilder { value: __value };
     }
 }

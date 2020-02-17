@@ -6,20 +6,22 @@ use crate::model::Extension::Extension;
 use crate::model::MedicinalProductPharmaceutical_TargetSpecies::MedicinalProductPharmaceutical_TargetSpecies;
 use crate::model::Quantity::Quantity;
 use crate::model::Ratio::Ratio;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A pharmaceutical product described in terms of its composition and dose form.
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_RouteOfAdministration<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// Coded expression for the route.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -32,7 +34,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -44,7 +48,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// measurement.
     pub fn first_dose(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("firstDose") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +69,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// clinical trial authorisation.
     pub fn max_dose_per_day(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxDosePerDay") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// protocol referenced in the clinical trial authorisation.
     pub fn max_dose_per_treatment_period(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("maxDosePerTreatmentPeriod") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +92,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// measurement.
     pub fn max_single_dose(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxSingleDose") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +104,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
     /// authorisation.
     pub fn max_treatment_period(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("maxTreatmentPeriod") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +126,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +140,9 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
         if let Some(Value::Array(val)) = self.value.get("targetSpecies") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductPharmaceutical_TargetSpecies { value: e })
+                    .map(|e| MedicinalProductPharmaceutical_TargetSpecies {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -177,5 +195,26 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+    pub fn build(&self) -> MedicinalProductPharmaceutical_RouteOfAdministration {
+        MedicinalProductPharmaceutical_RouteOfAdministration {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        code: CodeableConcept,
+    ) -> MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return MedicinalProductPharmaceutical_RouteOfAdministrationBuilder { value: __value };
     }
 }

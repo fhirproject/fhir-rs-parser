@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details for all kinds of technology mediated contact points for a person or
 /// organization, including telephone, email, etc.
 
 #[derive(Debug)]
 pub struct ContactPoint<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ContactPoint<'_> {
     /// Extensions for rank
     pub fn _rank(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rank") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl ContactPoint<'_> {
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl ContactPoint<'_> {
     /// Extensions for use
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl ContactPoint<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +65,9 @@ impl ContactPoint<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -74,7 +86,9 @@ impl ContactPoint<'_> {
     /// Time period when the contact point was/is in use.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -151,6 +165,24 @@ impl ContactPoint<'_> {
         if let Some(_val) = self.fhir_use() {}
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ContactPointBuilder {
+    pub value: Value,
+}
+
+impl ContactPointBuilder {
+    pub fn build(&self) -> ContactPoint {
+        ContactPoint {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ContactPointBuilder {
+        let mut __value: Value = json!({});
+        return ContactPointBuilder { value: __value };
     }
 }
 

@@ -6,7 +6,9 @@ use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
 use crate::model::SubstanceAmount_ReferenceRange::SubstanceAmount_ReferenceRange;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Chemical substances are a single substance type whose primary defining element
 /// is the molecular structure. Chemical substances shall be defined on the basis of
@@ -17,14 +19,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceAmount<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceAmount<'_> {
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl SubstanceAmount<'_> {
     /// Extensions for amountText
     pub fn _amount_text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountText") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl SubstanceAmount<'_> {
     /// value for a given element is given, it would be captured in this field.
     pub fn amount_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl SubstanceAmount<'_> {
     /// value for a given element is given, it would be captured in this field.
     pub fn amount_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("amountRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +94,9 @@ impl SubstanceAmount<'_> {
     /// elements.
     pub fn amount_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("amountType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +110,9 @@ impl SubstanceAmount<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +143,9 @@ impl SubstanceAmount<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +155,9 @@ impl SubstanceAmount<'_> {
     /// Reference range of possible or expected values.
     pub fn reference_range(&self) -> Option<SubstanceAmount_ReferenceRange> {
         if let Some(val) = self.value.get("referenceRange") {
-            return Some(SubstanceAmount_ReferenceRange { value: val });
+            return Some(SubstanceAmount_ReferenceRange {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -189,5 +207,23 @@ impl SubstanceAmount<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceAmountBuilder {
+    pub value: Value,
+}
+
+impl SubstanceAmountBuilder {
+    pub fn build(&self) -> SubstanceAmount {
+        SubstanceAmount {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceAmountBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceAmountBuilder { value: __value };
     }
 }

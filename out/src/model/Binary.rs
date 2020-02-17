@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Meta::Meta;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A resource that represents the data of a single raw artifact as digital content
 /// accessible in its native format.  A Binary resource can contain any content,
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Binary<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Binary<'_> {
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Binary<'_> {
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl Binary<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl Binary<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +106,9 @@ impl Binary<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +124,9 @@ impl Binary<'_> {
     /// access should only be granted to applications that have access to the patient.
     pub fn security_context(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("securityContext") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -154,5 +168,23 @@ impl Binary<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct BinaryBuilder {
+    pub value: Value,
+}
+
+impl BinaryBuilder {
+    pub fn build(&self) -> Binary {
+        Binary {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> BinaryBuilder {
+        let mut __value: Value = json!({});
+        return BinaryBuilder { value: __value };
     }
 }

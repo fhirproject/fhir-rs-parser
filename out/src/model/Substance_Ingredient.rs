@@ -4,13 +4,15 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Ratio::Ratio;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A homogeneous material with a definite composition.
 
 #[derive(Debug)]
 pub struct Substance_Ingredient<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Substance_Ingredient<'_> {
@@ -23,7 +25,9 @@ impl Substance_Ingredient<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +58,9 @@ impl Substance_Ingredient<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +70,9 @@ impl Substance_Ingredient<'_> {
     /// The amount of the ingredient in the substance - a concentration ratio.
     pub fn quantity(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,9 @@ impl Substance_Ingredient<'_> {
     /// Another substance that is a component of this substance.
     pub fn substance_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("substanceCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +90,9 @@ impl Substance_Ingredient<'_> {
     /// Another substance that is a component of this substance.
     pub fn substance_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("substanceReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -113,5 +125,23 @@ impl Substance_Ingredient<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Substance_IngredientBuilder {
+    pub value: Value,
+}
+
+impl Substance_IngredientBuilder {
+    pub fn build(&self) -> Substance_Ingredient {
+        Substance_Ingredient {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Substance_IngredientBuilder {
+        let mut __value: Value = json!({});
+        return Substance_IngredientBuilder { value: __value };
     }
 }

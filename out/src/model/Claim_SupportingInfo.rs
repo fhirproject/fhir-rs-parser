@@ -7,7 +7,9 @@ use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A provider issued list of professional services and products which have been
 /// provided, or are to be provided, to a patient which is sent to an insurer for
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Claim_SupportingInfo<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Claim_SupportingInfo<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl Claim_SupportingInfo<'_> {
     /// Extensions for timingDate
     pub fn _timing_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timingDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl Claim_SupportingInfo<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl Claim_SupportingInfo<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +65,7 @@ impl Claim_SupportingInfo<'_> {
     /// employment; onset, etc.
     pub fn category(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["category"],
+            value: Cow::Borrowed(&self.value["category"]),
         }
     }
 
@@ -64,7 +74,9 @@ impl Claim_SupportingInfo<'_> {
     /// sought.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +90,9 @@ impl Claim_SupportingInfo<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +123,9 @@ impl Claim_SupportingInfo<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,7 +136,9 @@ impl Claim_SupportingInfo<'_> {
     /// to the content.
     pub fn reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -144,7 +162,9 @@ impl Claim_SupportingInfo<'_> {
     /// The date when or period to which this information refers.
     pub fn timing_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("timingPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +173,9 @@ impl Claim_SupportingInfo<'_> {
     /// including references to the data or the actual inclusion of the data.
     pub fn value_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("valueAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -171,7 +193,9 @@ impl Claim_SupportingInfo<'_> {
     /// including references to the data or the actual inclusion of the data.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -180,7 +204,9 @@ impl Claim_SupportingInfo<'_> {
     /// including references to the data or the actual inclusion of the data.
     pub fn value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("valueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -264,5 +290,24 @@ impl Claim_SupportingInfo<'_> {
         }
         if let Some(_val) = self.value_string() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Claim_SupportingInfoBuilder {
+    pub value: Value,
+}
+
+impl Claim_SupportingInfoBuilder {
+    pub fn build(&self) -> Claim_SupportingInfo {
+        Claim_SupportingInfo {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(category: CodeableConcept) -> Claim_SupportingInfoBuilder {
+        let mut __value: Value = json!({});
+        __value["category"] = json!(category.value);
+        return Claim_SupportingInfoBuilder { value: __value };
     }
 }

@@ -3,7 +3,9 @@
 use crate::model::ChargeItemDefinition_Applicability::ChargeItemDefinition_Applicability;
 use crate::model::ChargeItemDefinition_PriceComponent::ChargeItemDefinition_PriceComponent;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The ChargeItemDefinition resource provides the properties that apply to the
 /// (billing) codes necessary to calculate costs and prices. The properties may
@@ -12,7 +14,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ChargeItemDefinition_PropertyGroup<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ChargeItemDefinition_PropertyGroup<'_> {
@@ -21,7 +23,9 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
         if let Some(Value::Array(val)) = self.value.get("applicability") {
             return Some(
                 val.into_iter()
-                    .map(|e| ChargeItemDefinition_Applicability { value: e })
+                    .map(|e| ChargeItemDefinition_Applicability {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -37,7 +41,9 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -68,7 +74,9 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +93,9 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
         if let Some(Value::Array(val)) = self.value.get("priceComponent") {
             return Some(
                 val.into_iter()
-                    .map(|e| ChargeItemDefinition_PriceComponent { value: e })
+                    .map(|e| ChargeItemDefinition_PriceComponent {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,5 +125,23 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ChargeItemDefinition_PropertyGroupBuilder {
+    pub value: Value,
+}
+
+impl ChargeItemDefinition_PropertyGroupBuilder {
+    pub fn build(&self) -> ChargeItemDefinition_PropertyGroup {
+        ChargeItemDefinition_PropertyGroup {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ChargeItemDefinition_PropertyGroupBuilder {
+        let mut __value: Value = json!({});
+        return ChargeItemDefinition_PropertyGroupBuilder { value: __value };
     }
 }

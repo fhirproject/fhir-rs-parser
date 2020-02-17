@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The findings and interpretation of diagnostic  tests performed on patients,
 /// groups of patients, devices, and locations, and/or specimens derived from these.
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DiagnosticReport_Media<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DiagnosticReport_Media<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +48,9 @@ impl DiagnosticReport_Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,7 @@ impl DiagnosticReport_Media<'_> {
     /// Reference to the image source.
     pub fn link(&self) -> Reference {
         Reference {
-            value: &self.value["link"],
+            value: Cow::Borrowed(&self.value["link"]),
         }
     }
 
@@ -82,7 +88,9 @@ impl DiagnosticReport_Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -111,5 +119,24 @@ impl DiagnosticReport_Media<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DiagnosticReport_MediaBuilder {
+    pub value: Value,
+}
+
+impl DiagnosticReport_MediaBuilder {
+    pub fn build(&self) -> DiagnosticReport_Media {
+        DiagnosticReport_Media {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(link: Reference) -> DiagnosticReport_MediaBuilder {
+        let mut __value: Value = json!({});
+        __value["link"] = json!(link.value);
+        return DiagnosticReport_MediaBuilder { value: __value };
     }
 }

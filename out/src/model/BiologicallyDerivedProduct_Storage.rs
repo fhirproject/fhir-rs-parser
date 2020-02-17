@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A material substance originating from a biological entity intended to be
 /// transplanted or infused
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct BiologicallyDerivedProduct_Storage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl BiologicallyDerivedProduct_Storage<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl BiologicallyDerivedProduct_Storage<'_> {
     /// Extensions for scale
     pub fn _scale(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_scale") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl BiologicallyDerivedProduct_Storage<'_> {
     /// Extensions for temperature
     pub fn _temperature(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_temperature") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl BiologicallyDerivedProduct_Storage<'_> {
     /// Storage timeperiod.
     pub fn duration(&self) -> Option<Period> {
         if let Some(val) = self.value.get("duration") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl BiologicallyDerivedProduct_Storage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +107,9 @@ impl BiologicallyDerivedProduct_Storage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -154,6 +168,24 @@ impl BiologicallyDerivedProduct_Storage<'_> {
         if let Some(_val) = self.scale() {}
         if let Some(_val) = self.temperature() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct BiologicallyDerivedProduct_StorageBuilder {
+    pub value: Value,
+}
+
+impl BiologicallyDerivedProduct_StorageBuilder {
+    pub fn build(&self) -> BiologicallyDerivedProduct_Storage {
+        BiologicallyDerivedProduct_Storage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> BiologicallyDerivedProduct_StorageBuilder {
+        let mut __value: Value = json!({});
+        return BiologicallyDerivedProduct_StorageBuilder { value: __value };
     }
 }
 

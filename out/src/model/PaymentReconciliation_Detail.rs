@@ -6,21 +6,25 @@ use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Money::Money;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the details including amount of a payment and allocates
 /// the payment items being paid.
 
 #[derive(Debug)]
 pub struct PaymentReconciliation_Detail<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl PaymentReconciliation_Detail<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// The monetary amount allocated from the total payment to the payable.
     pub fn amount(&self) -> Option<Money> {
         if let Some(val) = self.value.get("amount") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +56,9 @@ impl PaymentReconciliation_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +77,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// Unique identifier for the current payment item for the referenced payable.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +99,9 @@ impl PaymentReconciliation_Detail<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,7 +111,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// The party which is receiving the payment.
     pub fn payee(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("payee") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -107,7 +121,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// Unique identifier for the prior payment item for the referenced payable.
     pub fn predecessor(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("predecessor") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -115,7 +131,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// A resource, such as a Claim, the evaluation of which could lead to payment.
     pub fn request(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("request") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -123,7 +141,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// A resource, such as a ClaimResponse, which contains a commitment to payment.
     pub fn response(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("response") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +152,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// response and its payment.
     pub fn responsible(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("responsible") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -140,7 +162,9 @@ impl PaymentReconciliation_Detail<'_> {
     /// The party which submitted the claim or financial transaction.
     pub fn submitter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("submitter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -148,7 +172,7 @@ impl PaymentReconciliation_Detail<'_> {
     /// Code to indicate the nature of the payment.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -214,5 +238,24 @@ impl PaymentReconciliation_Detail<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PaymentReconciliation_DetailBuilder {
+    pub value: Value,
+}
+
+impl PaymentReconciliation_DetailBuilder {
+    pub fn build(&self) -> PaymentReconciliation_Detail {
+        PaymentReconciliation_Detail {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> PaymentReconciliation_DetailBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return PaymentReconciliation_DetailBuilder { value: __value };
     }
 }

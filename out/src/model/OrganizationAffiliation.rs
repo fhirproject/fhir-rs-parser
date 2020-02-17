@@ -10,21 +10,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Defines an affiliation/assotiation/relationship between 2 distinct oganizations,
 /// that is not a part-of relationship/sub-division relationship.
 
 #[derive(Debug)]
 pub struct OrganizationAffiliation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl OrganizationAffiliation<'_> {
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl OrganizationAffiliation<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl OrganizationAffiliation<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +66,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +82,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +96,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("endpoint") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +114,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +128,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("healthcareService") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -133,7 +151,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -164,7 +184,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("location") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -176,7 +198,9 @@ impl OrganizationAffiliation<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -197,7 +221,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -211,7 +237,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("network") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -221,7 +249,9 @@ impl OrganizationAffiliation<'_> {
     /// Organization where the role is available (primary organization/has members).
     pub fn organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("organization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -230,7 +260,9 @@ impl OrganizationAffiliation<'_> {
     /// to the Primary Organization (e.g. providing services or is a member of).
     pub fn participating_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("participatingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -239,7 +271,9 @@ impl OrganizationAffiliation<'_> {
     /// primary organization.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -249,7 +283,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialty") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -261,7 +297,9 @@ impl OrganizationAffiliation<'_> {
         if let Some(Value::Array(val)) = self.value.get("telecom") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -276,7 +314,9 @@ impl OrganizationAffiliation<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -382,5 +422,23 @@ impl OrganizationAffiliation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct OrganizationAffiliationBuilder {
+    pub value: Value,
+}
+
+impl OrganizationAffiliationBuilder {
+    pub fn build(&self) -> OrganizationAffiliation {
+        OrganizationAffiliation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> OrganizationAffiliationBuilder {
+        let mut __value: Value = json!({});
+        return OrganizationAffiliationBuilder { value: __value };
     }
 }

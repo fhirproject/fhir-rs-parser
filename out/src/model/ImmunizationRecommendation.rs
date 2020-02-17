@@ -8,21 +8,25 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A patient's point-in-time set of recommendations (i.e. forecasting) according to
 /// a published schedule with optional supporting justification.
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImmunizationRecommendation<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl ImmunizationRecommendation<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl ImmunizationRecommendation<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl ImmunizationRecommendation<'_> {
     /// Indicates the authority who published the protocol (e.g. ACIP).
     pub fn authority(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("authority") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl ImmunizationRecommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +94,9 @@ impl ImmunizationRecommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +117,9 @@ impl ImmunizationRecommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -134,7 +150,9 @@ impl ImmunizationRecommendation<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -155,7 +173,9 @@ impl ImmunizationRecommendation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -165,7 +185,7 @@ impl ImmunizationRecommendation<'_> {
     /// The patient the recommendation(s) are for.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -177,7 +197,9 @@ impl ImmunizationRecommendation<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ImmunizationRecommendation_Recommendation { value: e })
+            .map(|e| ImmunizationRecommendation_Recommendation {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -189,7 +211,9 @@ impl ImmunizationRecommendation<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -261,5 +285,31 @@ impl ImmunizationRecommendation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImmunizationRecommendationBuilder {
+    pub value: Value,
+}
+
+impl ImmunizationRecommendationBuilder {
+    pub fn build(&self) -> ImmunizationRecommendation {
+        ImmunizationRecommendation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        patient: Reference,
+        recommendation: Vec<ImmunizationRecommendation_Recommendation>,
+    ) -> ImmunizationRecommendationBuilder {
+        let mut __value: Value = json!({});
+        __value["patient"] = json!(patient.value);
+        __value["recommendation"] = json!(recommendation
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        return ImmunizationRecommendationBuilder { value: __value };
     }
 }

@@ -6,6 +6,7 @@ pub mod model;
 #[cfg(test)]
 mod tests {
   use serde_json::Result;
+  use std::borrow::Cow;
   use std::fs;
   use std::time::Instant;
   #[test]
@@ -32,7 +33,9 @@ mod tests {
             string_parse_begin.elapsed().as_micros()
           );
           let resource_parse_begin = Instant::now();
-          let resource = crate::model::ResourceList::ResourceList { value: &value };
+          let resource = crate::model::ResourceList::ResourceList {
+            value: Cow::Borrowed(&value),
+          };
           println!(
             "Parsed resource {}: {}us",
             &unwrapped_path.to_str().unwrap(),

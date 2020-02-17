@@ -8,21 +8,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A physical entity which is the primary unit of operational and/or administrative
 /// interest in a study.
 
 #[derive(Debug)]
 pub struct ResearchSubject<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ResearchSubject<'_> {
     /// Extensions for actualArm
     pub fn _actual_arm(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actualArm") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl ResearchSubject<'_> {
     /// Extensions for assignedArm
     pub fn _assigned_arm(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_assignedArm") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl ResearchSubject<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl ResearchSubject<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +64,9 @@ impl ResearchSubject<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +92,9 @@ impl ResearchSubject<'_> {
     /// A record of the patient's informed agreement to participate in the study.
     pub fn consent(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("consent") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +106,9 @@ impl ResearchSubject<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,7 +124,9 @@ impl ResearchSubject<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +147,9 @@ impl ResearchSubject<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,7 +170,7 @@ impl ResearchSubject<'_> {
     /// The record of the person or animal who is involved in the study.
     pub fn individual(&self) -> Reference {
         Reference {
-            value: &self.value["individual"],
+            value: Cow::Borrowed(&self.value["individual"]),
         }
     }
 
@@ -167,7 +187,9 @@ impl ResearchSubject<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -188,7 +210,9 @@ impl ResearchSubject<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -198,7 +222,9 @@ impl ResearchSubject<'_> {
     /// The dates the subject began and ended their participation in the study.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -214,7 +240,7 @@ impl ResearchSubject<'_> {
     /// Reference to the study the subject is participating in.
     pub fn study(&self) -> Reference {
         Reference {
-            value: &self.value["study"],
+            value: Cow::Borrowed(&self.value["study"]),
         }
     }
 
@@ -226,7 +252,9 @@ impl ResearchSubject<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -310,6 +338,26 @@ impl ResearchSubject<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ResearchSubjectBuilder {
+    pub value: Value,
+}
+
+impl ResearchSubjectBuilder {
+    pub fn build(&self) -> ResearchSubject {
+        ResearchSubject {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(individual: Reference, study: Reference) -> ResearchSubjectBuilder {
+        let mut __value: Value = json!({});
+        __value["individual"] = json!(individual.value);
+        __value["study"] = json!(study.value);
+        return ResearchSubjectBuilder { value: __value };
     }
 }
 

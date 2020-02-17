@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Measure_Population::Measure_Population;
 use crate::model::Measure_Stratifier::Measure_Stratifier;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The Measure resource provides the definition of a quality measure.
 
 #[derive(Debug)]
 pub struct Measure_Group<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Measure_Group<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Measure_Group<'_> {
     /// allowing groups to be correlated across measures.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +56,9 @@ impl Measure_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +89,9 @@ impl Measure_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +103,9 @@ impl Measure_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("population") {
             return Some(
                 val.into_iter()
-                    .map(|e| Measure_Population { value: e })
+                    .map(|e| Measure_Population {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -107,7 +119,9 @@ impl Measure_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("stratifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Measure_Stratifier { value: e })
+                    .map(|e| Measure_Stratifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,5 +162,23 @@ impl Measure_Group<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Measure_GroupBuilder {
+    pub value: Value,
+}
+
+impl Measure_GroupBuilder {
+    pub fn build(&self) -> Measure_Group {
+        Measure_Group {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Measure_GroupBuilder {
+        let mut __value: Value = json!({});
+        return Measure_GroupBuilder { value: __value };
     }
 }

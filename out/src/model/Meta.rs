@@ -3,7 +3,9 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The metadata about a resource. This is content in the resource that is
 /// maintained by the infrastructure. Changes to the content might not always be
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Meta<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Meta<'_> {
     /// Extensions for lastUpdated
     pub fn _last_updated(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastUpdated") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Meta<'_> {
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl Meta<'_> {
     /// Extensions for versionId
     pub fn _version_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_versionId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl Meta<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +102,9 @@ impl Meta<'_> {
         if let Some(Value::Array(val)) = self.value.get("security") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +129,9 @@ impl Meta<'_> {
         if let Some(Value::Array(val)) = self.value.get("tag") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,5 +186,23 @@ impl Meta<'_> {
         }
         if let Some(_val) = self.version_id() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MetaBuilder {
+    pub value: Value,
+}
+
+impl MetaBuilder {
+    pub fn build(&self) -> Meta {
+        Meta {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MetaBuilder {
+        let mut __value: Value = json!({});
+        return MetaBuilder { value: __value };
     }
 }

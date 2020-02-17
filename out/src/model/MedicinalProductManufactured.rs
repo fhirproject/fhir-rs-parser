@@ -9,20 +9,24 @@ use crate::model::ProdCharacteristic::ProdCharacteristic;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The manufactured item as contained in the packaged medicinal product.
 
 #[derive(Debug)]
 pub struct MedicinalProductManufactured<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductManufactured<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl MedicinalProductManufactured<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -58,7 +66,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +100,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("ingredient") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +121,7 @@ impl MedicinalProductManufactured<'_> {
     /// product.
     pub fn manufactured_dose_form(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["manufacturedDoseForm"],
+            value: Cow::Borrowed(&self.value["manufacturedDoseForm"]),
         }
     }
 
@@ -119,7 +131,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("manufacturer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -131,7 +145,9 @@ impl MedicinalProductManufactured<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -152,7 +168,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -164,7 +182,9 @@ impl MedicinalProductManufactured<'_> {
         if let Some(Value::Array(val)) = self.value.get("otherCharacteristics") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -174,7 +194,9 @@ impl MedicinalProductManufactured<'_> {
     /// Dimensions, color etc.
     pub fn physical_characteristics(&self) -> Option<ProdCharacteristic> {
         if let Some(val) = self.value.get("physicalCharacteristics") {
-            return Some(ProdCharacteristic { value: val });
+            return Some(ProdCharacteristic {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -182,7 +204,7 @@ impl MedicinalProductManufactured<'_> {
     /// The quantity or "count number" of the manufactured item.
     pub fn quantity(&self) -> Quantity {
         Quantity {
-            value: &self.value["quantity"],
+            value: Cow::Borrowed(&self.value["quantity"]),
         }
     }
 
@@ -194,7 +216,9 @@ impl MedicinalProductManufactured<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -203,7 +227,9 @@ impl MedicinalProductManufactured<'_> {
     /// described.
     pub fn unit_of_presentation(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("unitOfPresentation") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -279,5 +305,28 @@ impl MedicinalProductManufactured<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductManufacturedBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductManufacturedBuilder {
+    pub fn build(&self) -> MedicinalProductManufactured {
+        MedicinalProductManufactured {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        manufactured_dose_form: CodeableConcept,
+        quantity: Quantity,
+    ) -> MedicinalProductManufacturedBuilder {
+        let mut __value: Value = json!({});
+        __value["manufacturedDoseForm"] = json!(manufactured_dose_form.value);
+        __value["quantity"] = json!(quantity.value);
+        return MedicinalProductManufacturedBuilder { value: __value };
     }
 }

@@ -13,7 +13,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details and position information for a physical place where services are
 /// provided and resources and participants may be stored, found, contained, or
@@ -21,7 +23,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Location<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Location<'_> {
@@ -30,7 +32,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -40,7 +44,9 @@ impl Location<'_> {
     /// Extensions for availabilityExceptions
     pub fn _availability_exceptions(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_availabilityExceptions") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl Location<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl Location<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl Location<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +84,9 @@ impl Location<'_> {
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +94,9 @@ impl Location<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl Location<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +114,9 @@ impl Location<'_> {
     /// Physical location.
     pub fn address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("address") {
-            return Some(Address { value: val });
+            return Some(Address {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -131,7 +151,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -151,7 +173,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("endpoint") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,7 +191,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -179,7 +205,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("hoursOfOperation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Location_HoursOfOperation { value: e })
+                    .map(|e| Location_HoursOfOperation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -200,7 +228,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -229,7 +259,9 @@ impl Location<'_> {
     /// The organization responsible for the provisioning and upkeep of the location.
     pub fn managing_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("managingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -239,7 +271,9 @@ impl Location<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -269,7 +303,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -290,7 +326,9 @@ impl Location<'_> {
     /// activities like maintenance.
     pub fn operational_status(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("operationalStatus") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -298,7 +336,9 @@ impl Location<'_> {
     /// Another Location of which this Location is physically a part of.
     pub fn part_of(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("partOf") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -306,7 +346,9 @@ impl Location<'_> {
     /// Physical form of the location, e.g. building, room, vehicle, road.
     pub fn physical_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("physicalType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -315,7 +357,9 @@ impl Location<'_> {
     /// datum (This is the same co-ordinate system used in KML).
     pub fn position(&self) -> Option<Location_Position> {
         if let Some(val) = self.value.get("position") {
-            return Some(Location_Position { value: val });
+            return Some(Location_Position {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -337,7 +381,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("telecom") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -352,7 +398,9 @@ impl Location<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -362,7 +410,9 @@ impl Location<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -502,6 +552,24 @@ impl Location<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct LocationBuilder {
+    pub value: Value,
+}
+
+impl LocationBuilder {
+    pub fn build(&self) -> Location {
+        Location {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> LocationBuilder {
+        let mut __value: Value = json!({});
+        return LocationBuilder { value: __value };
     }
 }
 

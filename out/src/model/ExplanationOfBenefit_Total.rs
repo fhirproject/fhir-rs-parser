@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Money::Money;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides: the claim details; adjudication details from the
 /// processing of a Claim; and optionally account balance information, for informing
@@ -11,14 +13,14 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_Total<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ExplanationOfBenefit_Total<'_> {
     /// Monetary total amount associated with the category.
     pub fn amount(&self) -> Money {
         Money {
-            value: &self.value["amount"],
+            value: Cow::Borrowed(&self.value["amount"]),
         }
     }
 
@@ -29,7 +31,7 @@ impl ExplanationOfBenefit_Total<'_> {
     /// payable for this item.
     pub fn category(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["category"],
+            value: Cow::Borrowed(&self.value["category"]),
         }
     }
 
@@ -42,7 +44,9 @@ impl ExplanationOfBenefit_Total<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +77,9 @@ impl ExplanationOfBenefit_Total<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,5 +105,25 @@ impl ExplanationOfBenefit_Total<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ExplanationOfBenefit_TotalBuilder {
+    pub value: Value,
+}
+
+impl ExplanationOfBenefit_TotalBuilder {
+    pub fn build(&self) -> ExplanationOfBenefit_Total {
+        ExplanationOfBenefit_Total {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(amount: Money, category: CodeableConcept) -> ExplanationOfBenefit_TotalBuilder {
+        let mut __value: Value = json!({});
+        __value["amount"] = json!(amount.value);
+        __value["category"] = json!(category.value);
+        return ExplanationOfBenefit_TotalBuilder { value: __value };
     }
 }

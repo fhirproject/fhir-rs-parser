@@ -13,20 +13,24 @@ use crate::model::ResourceList::ResourceList;
 use crate::model::Task_Input::Task_Input;
 use crate::model::Task_Output::Task_Output;
 use crate::model::Task_Restriction::Task_Restriction;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A task to be performed.
 
 #[derive(Debug)]
 pub struct Task<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Task<'_> {
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl Task<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl Task<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl Task<'_> {
     /// Extensions for instantiatesUri
     pub fn _instantiates_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_instantiatesUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl Task<'_> {
     /// Extensions for intent
     pub fn _intent(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_intent") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl Task<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +88,9 @@ impl Task<'_> {
     /// Extensions for lastModified
     pub fn _last_modified(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastModified") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +98,9 @@ impl Task<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +108,9 @@ impl Task<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -114,7 +134,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +146,9 @@ impl Task<'_> {
     /// Contains business-specific nuances of the business state.
     pub fn business_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("businessStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +156,9 @@ impl Task<'_> {
     /// A name or code (or both) briefly describing what the task involves.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -144,7 +170,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -163,7 +191,9 @@ impl Task<'_> {
     /// during which this task was created.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -173,7 +203,9 @@ impl Task<'_> {
     /// (end).
     pub fn execution_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("executionPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -187,7 +219,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -197,7 +231,9 @@ impl Task<'_> {
     /// The request being actioned or the resource being manipulated by this task.
     pub fn focus(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("focus") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -206,7 +242,9 @@ impl Task<'_> {
     /// task (e.g., the patient).
     pub fn fhir_for(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("for") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -215,7 +253,9 @@ impl Task<'_> {
     /// created in the same context.
     pub fn group_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("groupIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -234,7 +274,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -257,7 +299,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("input") {
             return Some(
                 val.into_iter()
-                    .map(|e| Task_Input { value: e })
+                    .map(|e| Task_Input {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -288,7 +332,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("insurance") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -323,7 +369,9 @@ impl Task<'_> {
     /// Principal physical location where the this task is performed.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -333,7 +381,9 @@ impl Task<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -354,7 +404,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -366,7 +418,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -378,7 +432,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("output") {
             return Some(
                 val.into_iter()
-                    .map(|e| Task_Output { value: e })
+                    .map(|e| Task_Output {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -388,7 +444,9 @@ impl Task<'_> {
     /// Individual organization or Device currently responsible for task execution.
     pub fn owner(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("owner") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -398,7 +456,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -410,7 +470,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("performerType") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -429,7 +491,9 @@ impl Task<'_> {
     /// A description or code indicating why this task needs to be performed.
     pub fn reason_code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reasonCode") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -437,7 +501,9 @@ impl Task<'_> {
     /// A resource reference indicating why this task needs to be performed.
     pub fn reason_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("reasonReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -449,7 +515,9 @@ impl Task<'_> {
         if let Some(Value::Array(val)) = self.value.get("relevantHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -459,7 +527,9 @@ impl Task<'_> {
     /// The creator of the task.
     pub fn requester(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requester") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -469,7 +539,9 @@ impl Task<'_> {
     /// limitations on what parts of the referenced request should be actioned.
     pub fn restriction(&self) -> Option<Task_Restriction> {
         if let Some(val) = self.value.get("restriction") {
-            return Some(Task_Restriction { value: val });
+            return Some(Task_Restriction {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -485,7 +557,9 @@ impl Task<'_> {
     /// An explanation as to why this task is held, failed, was refused, etc.
     pub fn status_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("statusReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -498,7 +572,9 @@ impl Task<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -701,6 +777,24 @@ impl Task<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TaskBuilder {
+    pub value: Value,
+}
+
+impl TaskBuilder {
+    pub fn build(&self) -> Task {
+        Task {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TaskBuilder {
+        let mut __value: Value = json!({});
+        return TaskBuilder { value: __value };
     }
 }
 

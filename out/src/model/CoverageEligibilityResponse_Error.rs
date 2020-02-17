@@ -2,14 +2,16 @@
 
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides eligibility and plan details from the processing of an
 /// CoverageEligibilityRequest resource.
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse_Error<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CoverageEligibilityResponse_Error<'_> {
@@ -17,7 +19,7 @@ impl CoverageEligibilityResponse_Error<'_> {
     /// check could not be performed.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -30,7 +32,9 @@ impl CoverageEligibilityResponse_Error<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -61,7 +65,9 @@ impl CoverageEligibilityResponse_Error<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,5 +90,24 @@ impl CoverageEligibilityResponse_Error<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CoverageEligibilityResponse_ErrorBuilder {
+    pub value: Value,
+}
+
+impl CoverageEligibilityResponse_ErrorBuilder {
+    pub fn build(&self) -> CoverageEligibilityResponse_Error {
+        CoverageEligibilityResponse_Error {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> CoverageEligibilityResponse_ErrorBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return CoverageEligibilityResponse_ErrorBuilder { value: __value };
     }
 }

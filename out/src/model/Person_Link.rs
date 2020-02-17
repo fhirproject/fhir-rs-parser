@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Demographics and administrative information about a person independent of a
 /// specific health-related context.
 
 #[derive(Debug)]
 pub struct Person_Link<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Person_Link<'_> {
     /// Extensions for assurance
     pub fn _assurance(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_assurance") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +43,9 @@ impl Person_Link<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +76,9 @@ impl Person_Link<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +88,7 @@ impl Person_Link<'_> {
     /// The resource to which this actual person is associated.
     pub fn target(&self) -> Reference {
         Reference {
-            value: &self.value["target"],
+            value: Cow::Borrowed(&self.value["target"]),
         }
     }
 
@@ -106,6 +114,25 @@ impl Person_Link<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Person_LinkBuilder {
+    pub value: Value,
+}
+
+impl Person_LinkBuilder {
+    pub fn build(&self) -> Person_Link {
+        Person_Link {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(target: Reference) -> Person_LinkBuilder {
+        let mut __value: Value = json!({});
+        __value["target"] = json!(target.value);
+        return Person_LinkBuilder { value: __value };
     }
 }
 

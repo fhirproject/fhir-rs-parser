@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Example of workflow instance.
 
 #[derive(Debug)]
 pub struct ExampleScenario_Version<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ExampleScenario_Version<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl ExampleScenario_Version<'_> {
     /// Extensions for versionId
     pub fn _version_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_versionId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +51,9 @@ impl ExampleScenario_Version<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +84,9 @@ impl ExampleScenario_Version<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -116,5 +126,23 @@ impl ExampleScenario_Version<'_> {
         }
         if let Some(_val) = self.version_id() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ExampleScenario_VersionBuilder {
+    pub value: Value,
+}
+
+impl ExampleScenario_VersionBuilder {
+    pub fn build(&self) -> ExampleScenario_Version {
+        ExampleScenario_Version {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ExampleScenario_VersionBuilder {
+        let mut __value: Value = json!({});
+        return ExampleScenario_VersionBuilder { value: __value };
     }
 }

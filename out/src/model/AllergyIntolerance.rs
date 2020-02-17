@@ -13,14 +13,16 @@ use crate::model::Period::Period;
 use crate::model::Range::Range;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Risk of harmful or undesirable, physiological response which is unique to an
 /// individual and associated with exposure to a substance.
 
 #[derive(Debug)]
 pub struct AllergyIntolerance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AllergyIntolerance<'_> {
@@ -29,7 +31,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("_category") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -39,7 +43,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for criticality
     pub fn _criticality(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_criticality") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for lastOccurrence
     pub fn _last_occurrence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastOccurrence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +83,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for onsetDateTime
     pub fn _onset_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onsetDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +93,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for onsetString
     pub fn _onset_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onsetString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +103,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for recordedDate
     pub fn _recorded_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recordedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +113,9 @@ impl AllergyIntolerance<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -103,7 +123,9 @@ impl AllergyIntolerance<'_> {
     /// The source of the information about the allergy that is recorded.
     pub fn asserter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("asserter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +133,9 @@ impl AllergyIntolerance<'_> {
     /// The clinical status of the allergy or intolerance.
     pub fn clinical_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("clinicalStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +157,9 @@ impl AllergyIntolerance<'_> {
     /// AllergyIntolerance.reaction.substance.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +171,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -164,7 +192,9 @@ impl AllergyIntolerance<'_> {
     /// The encounter when the allergy or intolerance was asserted.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -178,7 +208,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -201,7 +233,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -241,7 +275,9 @@ impl AllergyIntolerance<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +298,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -275,7 +313,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -286,7 +326,9 @@ impl AllergyIntolerance<'_> {
     /// identified.
     pub fn onset_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("onsetAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -304,7 +346,9 @@ impl AllergyIntolerance<'_> {
     /// identified.
     pub fn onset_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("onsetPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -313,7 +357,9 @@ impl AllergyIntolerance<'_> {
     /// identified.
     pub fn onset_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("onsetRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -330,7 +376,7 @@ impl AllergyIntolerance<'_> {
     /// The patient who has the allergy or intolerance.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -340,7 +386,9 @@ impl AllergyIntolerance<'_> {
         if let Some(Value::Array(val)) = self.value.get("reaction") {
             return Some(
                 val.into_iter()
-                    .map(|e| AllergyIntolerance_Reaction { value: e })
+                    .map(|e| AllergyIntolerance_Reaction {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -359,7 +407,9 @@ impl AllergyIntolerance<'_> {
     /// Individual who recorded the record and takes responsibility for its content.
     pub fn recorder(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("recorder") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -372,7 +422,9 @@ impl AllergyIntolerance<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -389,7 +441,9 @@ impl AllergyIntolerance<'_> {
     /// a reaction to the identified substance (including pharmaceutical product).
     pub fn verification_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("verificationStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -538,6 +592,25 @@ impl AllergyIntolerance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AllergyIntoleranceBuilder {
+    pub value: Value,
+}
+
+impl AllergyIntoleranceBuilder {
+    pub fn build(&self) -> AllergyIntolerance {
+        AllergyIntolerance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(patient: Reference) -> AllergyIntoleranceBuilder {
+        let mut __value: Value = json!({});
+        __value["patient"] = json!(patient.value);
+        return AllergyIntoleranceBuilder { value: __value };
     }
 }
 

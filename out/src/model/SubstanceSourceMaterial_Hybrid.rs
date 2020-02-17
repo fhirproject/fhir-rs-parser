@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Source material shall capture information on the taxonomic and anatomical
 /// origins as well as the fraction of a material that can result in or can be
@@ -21,14 +23,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_Hybrid<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSourceMaterial_Hybrid<'_> {
     /// Extensions for maternalOrganismId
     pub fn _maternal_organism_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maternalOrganismId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
     /// Extensions for maternalOrganismName
     pub fn _maternal_organism_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maternalOrganismName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
     /// Extensions for paternalOrganismId
     pub fn _paternal_organism_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_paternalOrganismId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
     /// Extensions for paternalOrganismName
     pub fn _paternal_organism_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_paternalOrganismName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +76,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +88,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
     /// The hybrid type of an organism shall be specified.
     pub fn hybrid_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("hybridType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +140,9 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -193,5 +209,23 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
         if let Some(_val) = self.paternal_organism_id() {}
         if let Some(_val) = self.paternal_organism_name() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSourceMaterial_HybridBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSourceMaterial_HybridBuilder {
+    pub fn build(&self) -> SubstanceSourceMaterial_Hybrid {
+        SubstanceSourceMaterial_Hybrid {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSourceMaterial_HybridBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSourceMaterial_HybridBuilder { value: __value };
     }
 }

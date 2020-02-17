@@ -6,7 +6,9 @@ use crate::model::Extension::Extension;
 use crate::model::Money::Money;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A provider issued list of professional services and products which have been
 /// provided, or are to be provided, to a patient which is sent to an insurer for
@@ -14,14 +16,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Claim_SubDetail<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Claim_SubDetail<'_> {
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl Claim_SubDetail<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl Claim_SubDetail<'_> {
     /// are provided.
     pub fn category(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl Claim_SubDetail<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +94,9 @@ impl Claim_SubDetail<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -106,7 +118,9 @@ impl Claim_SubDetail<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +131,9 @@ impl Claim_SubDetail<'_> {
     /// charge.
     pub fn net(&self) -> Option<Money> {
         if let Some(val) = self.value.get("net") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -127,7 +143,7 @@ impl Claim_SubDetail<'_> {
     /// code for the item.
     pub fn product_or_service(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["productOrService"],
+            value: Cow::Borrowed(&self.value["productOrService"]),
         }
     }
 
@@ -136,7 +152,9 @@ impl Claim_SubDetail<'_> {
         if let Some(Value::Array(val)) = self.value.get("programCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -146,7 +164,9 @@ impl Claim_SubDetail<'_> {
     /// The number of repetitions of a service or product.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -154,7 +174,9 @@ impl Claim_SubDetail<'_> {
     /// The type of revenue or cost center providing the product and/or service.
     pub fn revenue(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("revenue") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -172,7 +194,9 @@ impl Claim_SubDetail<'_> {
         if let Some(Value::Array(val)) = self.value.get("udi") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -183,7 +207,9 @@ impl Claim_SubDetail<'_> {
     /// otherwise this is the total of the fees for the details of the group.
     pub fn unit_price(&self) -> Option<Money> {
         if let Some(val) = self.value.get("unitPrice") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -256,5 +282,24 @@ impl Claim_SubDetail<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Claim_SubDetailBuilder {
+    pub value: Value,
+}
+
+impl Claim_SubDetailBuilder {
+    pub fn build(&self) -> Claim_SubDetail {
+        Claim_SubDetail {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(product_or_service: CodeableConcept) -> Claim_SubDetailBuilder {
+        let mut __value: Value = json!({});
+        __value["productOrService"] = json!(product_or_service.value);
+        return Claim_SubDetailBuilder { value: __value };
     }
 }

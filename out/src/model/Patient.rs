@@ -15,21 +15,25 @@ use crate::model::Patient_Contact::Patient_Contact;
 use crate::model::Patient_Link::Patient_Link;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Demographics and other administrative information about an individual or animal
 /// receiving care or other health-related services.
 
 #[derive(Debug)]
 pub struct Patient<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Patient<'_> {
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +41,9 @@ impl Patient<'_> {
     /// Extensions for birthDate
     pub fn _birth_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_birthDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +51,9 @@ impl Patient<'_> {
     /// Extensions for deceasedBoolean
     pub fn _deceased_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_deceasedBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl Patient<'_> {
     /// Extensions for deceasedDateTime
     pub fn _deceased_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_deceasedDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -61,7 +71,9 @@ impl Patient<'_> {
     /// Extensions for gender
     pub fn _gender(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_gender") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +81,9 @@ impl Patient<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -77,7 +91,9 @@ impl Patient<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -85,7 +101,9 @@ impl Patient<'_> {
     /// Extensions for multipleBirthBoolean
     pub fn _multiple_birth_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_multipleBirthBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -93,7 +111,9 @@ impl Patient<'_> {
     /// Extensions for multipleBirthInteger
     pub fn _multiple_birth_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_multipleBirthInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -116,7 +136,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("address") {
             return Some(
                 val.into_iter()
-                    .map(|e| Address { value: e })
+                    .map(|e| Address {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -137,7 +159,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("communication") {
             return Some(
                 val.into_iter()
-                    .map(|e| Patient_Communication { value: e })
+                    .map(|e| Patient_Communication {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -149,7 +173,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| Patient_Contact { value: e })
+                    .map(|e| Patient_Contact {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -163,7 +189,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -195,7 +223,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -216,7 +246,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("generalPractitioner") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -237,7 +269,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -268,7 +302,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("link") {
             return Some(
                 val.into_iter()
-                    .map(|e| Patient_Link { value: e })
+                    .map(|e| Patient_Link {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -278,7 +314,9 @@ impl Patient<'_> {
     /// Organization that is the custodian of the patient record.
     pub fn managing_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("managingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -286,7 +324,9 @@ impl Patient<'_> {
     /// This field contains a patient's most recent marital (civil) status.
     pub fn marital_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("maritalStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -296,7 +336,9 @@ impl Patient<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -317,7 +359,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -347,7 +391,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("name") {
             return Some(
                 val.into_iter()
-                    .map(|e| HumanName { value: e })
+                    .map(|e| HumanName {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -359,7 +405,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("photo") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| Attachment {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -372,7 +420,9 @@ impl Patient<'_> {
         if let Some(Value::Array(val)) = self.value.get("telecom") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -387,7 +437,9 @@ impl Patient<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -529,6 +581,24 @@ impl Patient<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PatientBuilder {
+    pub value: Value,
+}
+
+impl PatientBuilder {
+    pub fn build(&self) -> Patient {
+        Patient {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> PatientBuilder {
+        let mut __value: Value = json!({});
+        return PatientBuilder { value: __value };
     }
 }
 

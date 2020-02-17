@@ -5,14 +5,16 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The marketing status describes the date when a medicinal product is actually put
 /// on the market or the date as of which it is no longer available.
 
 #[derive(Debug)]
 pub struct ProdCharacteristic<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ProdCharacteristic<'_> {
@@ -21,7 +23,9 @@ impl ProdCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("_color") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -33,7 +37,9 @@ impl ProdCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("_imprint") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +49,9 @@ impl ProdCharacteristic<'_> {
     /// Extensions for shape
     pub fn _shape(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_shape") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +75,9 @@ impl ProdCharacteristic<'_> {
     /// identifier shall be used.
     pub fn depth(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("depth") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -81,7 +91,9 @@ impl ProdCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +106,9 @@ impl ProdCharacteristic<'_> {
     /// symbol identifier shall be used.
     pub fn external_diameter(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("externalDiameter") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +119,9 @@ impl ProdCharacteristic<'_> {
     /// identifier shall be used.
     pub fn height(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("height") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -125,7 +141,9 @@ impl ProdCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("image") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| Attachment {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +177,9 @@ impl ProdCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,7 +192,9 @@ impl ProdCharacteristic<'_> {
     /// symbol identifier shall be used.
     pub fn nominal_volume(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("nominalVolume") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -181,7 +203,9 @@ impl ProdCharacteristic<'_> {
     /// vocabulary shall be used The term and the term identifier shall be used.
     pub fn scoring(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("scoring") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -201,7 +225,9 @@ impl ProdCharacteristic<'_> {
     /// identifier shall be used.
     pub fn weight(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("weight") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -212,7 +238,9 @@ impl ProdCharacteristic<'_> {
     /// identifier shall be used.
     pub fn width(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("width") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -292,5 +320,23 @@ impl ProdCharacteristic<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ProdCharacteristicBuilder {
+    pub value: Value,
+}
+
+impl ProdCharacteristicBuilder {
+    pub fn build(&self) -> ProdCharacteristic {
+        ProdCharacteristic {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ProdCharacteristicBuilder {
+        let mut __value: Value = json!({});
+        return ProdCharacteristicBuilder { value: __value };
     }
 }

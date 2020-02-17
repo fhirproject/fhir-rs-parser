@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Representation of the content produced in a DICOM imaging study. A study
 /// comprises a set of series, each of which includes a set of Service-Object Pair
@@ -13,14 +15,14 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImagingStudy_Performer<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImagingStudy_Performer<'_> {
     /// Indicates who or what performed the series.
     pub fn actor(&self) -> Reference {
         Reference {
-            value: &self.value["actor"],
+            value: Cow::Borrowed(&self.value["actor"]),
         }
     }
 
@@ -33,7 +35,9 @@ impl ImagingStudy_Performer<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl ImagingStudy_Performer<'_> {
     /// Distinguishes the type of involvement of the performer in the series.
     pub fn function(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("function") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +78,9 @@ impl ImagingStudy_Performer<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,5 +108,24 @@ impl ImagingStudy_Performer<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImagingStudy_PerformerBuilder {
+    pub value: Value,
+}
+
+impl ImagingStudy_PerformerBuilder {
+    pub fn build(&self) -> ImagingStudy_Performer {
+        ImagingStudy_Performer {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(actor: Reference) -> ImagingStudy_PerformerBuilder {
+        let mut __value: Value = json!({});
+        __value["actor"] = json!(actor.value);
+        return ImagingStudy_PerformerBuilder { value: __value };
     }
 }

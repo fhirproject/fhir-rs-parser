@@ -7,7 +7,9 @@ use crate::model::Consent_Data::Consent_Data;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
 /// recipient(s) or recipient role(s) to perform one or more actions within a given
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Consent_Provision<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Consent_Provision<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("action") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +51,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("actor") {
             return Some(
                 val.into_iter()
-                    .map(|e| Consent_Actor { value: e })
+                    .map(|e| Consent_Actor {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -59,7 +67,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("class") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +81,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +95,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("data") {
             return Some(
                 val.into_iter()
-                    .map(|e| Consent_Data { value: e })
+                    .map(|e| Consent_Data {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +108,9 @@ impl Consent_Provision<'_> {
     /// by this rule.
     pub fn data_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("dataPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +124,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +157,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -149,7 +169,9 @@ impl Consent_Provision<'_> {
     /// The timeframe in this rule is valid.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -159,7 +181,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("provision") {
             return Some(
                 val.into_iter()
-                    .map(|e| Consent_Provision { value: e })
+                    .map(|e| Consent_Provision {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,7 +196,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("purpose") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -185,7 +211,9 @@ impl Consent_Provision<'_> {
         if let Some(Value::Array(val)) = self.value.get("securityLabel") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -270,6 +298,24 @@ impl Consent_Provision<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Consent_ProvisionBuilder {
+    pub value: Value,
+}
+
+impl Consent_ProvisionBuilder {
+    pub fn build(&self) -> Consent_Provision {
+        Consent_Provision {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Consent_ProvisionBuilder {
+        let mut __value: Value = json!({});
+        return Consent_ProvisionBuilder { value: __value };
     }
 }
 

@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_DrugCharacteristic<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_DrugCharacteristic<'_> {
     /// Extensions for valueBase64Binary
     pub fn _value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBase64Binary") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +78,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +91,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
     /// example, colour, shape, imprint).
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +109,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
     /// Description of the characteristic.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +119,9 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
     /// Description of the characteristic.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -158,5 +174,23 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
         }
         if let Some(_val) = self.value_string() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_DrugCharacteristicBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_DrugCharacteristicBuilder {
+    pub fn build(&self) -> MedicationKnowledge_DrugCharacteristic {
+        MedicationKnowledge_DrugCharacteristic {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicationKnowledge_DrugCharacteristicBuilder {
+        let mut __value: Value = json!({});
+        return MedicationKnowledge_DrugCharacteristicBuilder { value: __value };
     }
 }

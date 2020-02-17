@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::EffectEvidenceSynthesis_PrecisionEstimate::EffectEvidenceSynthesis_PrecisionEstimate;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The EffectEvidenceSynthesis resource describes the difference in an outcome
 /// between exposures states in a population where the effect estimate is derived
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_EffectEstimate<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EffectEvidenceSynthesis_EffectEstimate<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +55,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +88,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +102,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
         if let Some(Value::Array(val)) = self.value.get("precisionEstimate") {
             return Some(
                 val.into_iter()
-                    .map(|e| EffectEvidenceSynthesis_PrecisionEstimate { value: e })
+                    .map(|e| EffectEvidenceSynthesis_PrecisionEstimate {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +114,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
     /// Examples include relative risk and mean difference.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -110,7 +124,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
     /// Specifies the UCUM unit for the outcome.
     pub fn unit_of_measure(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("unitOfMeasure") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +142,9 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
     /// Used to define variant exposure states such as low-risk state.
     pub fn variant_state(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("variantState") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -176,5 +194,23 @@ impl EffectEvidenceSynthesis_EffectEstimate<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EffectEvidenceSynthesis_EffectEstimateBuilder {
+    pub value: Value,
+}
+
+impl EffectEvidenceSynthesis_EffectEstimateBuilder {
+    pub fn build(&self) -> EffectEvidenceSynthesis_EffectEstimate {
+        EffectEvidenceSynthesis_EffectEstimate {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> EffectEvidenceSynthesis_EffectEstimateBuilder {
+        let mut __value: Value = json!({});
+        return EffectEvidenceSynthesis_EffectEstimateBuilder { value: __value };
     }
 }

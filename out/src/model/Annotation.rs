@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A  text note which also  contains information about who made the statement and
 /// when.
 
 #[derive(Debug)]
 pub struct Annotation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Annotation<'_> {
     /// Extensions for authorString
     pub fn _author_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl Annotation<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl Annotation<'_> {
     /// Extensions for time
     pub fn _time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_time") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl Annotation<'_> {
     /// The individual responsible for making the annotation.
     pub fn author_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("authorReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl Annotation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -126,5 +138,23 @@ impl Annotation<'_> {
         if let Some(_val) = self.text() {}
         if let Some(_val) = self.time() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AnnotationBuilder {
+    pub value: Value,
+}
+
+impl AnnotationBuilder {
+    pub fn build(&self) -> Annotation {
+        Annotation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> AnnotationBuilder {
+        let mut __value: Value = json!({});
+        return AnnotationBuilder { value: __value };
     }
 }

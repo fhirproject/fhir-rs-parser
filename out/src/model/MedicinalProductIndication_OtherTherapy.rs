@@ -3,13 +3,15 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Indication for the Medicinal Product.
 
 #[derive(Debug)]
 pub struct MedicinalProductIndication_OtherTherapy<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductIndication_OtherTherapy<'_> {
@@ -22,7 +24,9 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -42,7 +46,9 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
     /// of products) as part of an indication or contraindication.
     pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("medicationCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +57,9 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
     /// of products) as part of an indication or contraindication.
     pub fn medication_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("medicationReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +79,9 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +92,7 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
     /// contraindication and another therapy.
     pub fn therapy_relationship_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["therapyRelationshipType"],
+            value: Cow::Borrowed(&self.value["therapyRelationshipType"]),
         }
     }
 
@@ -112,5 +122,26 @@ impl MedicinalProductIndication_OtherTherapy<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductIndication_OtherTherapyBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductIndication_OtherTherapyBuilder {
+    pub fn build(&self) -> MedicinalProductIndication_OtherTherapy {
+        MedicinalProductIndication_OtherTherapy {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        therapy_relationship_type: CodeableConcept,
+    ) -> MedicinalProductIndication_OtherTherapyBuilder {
+        let mut __value: Value = json!({});
+        __value["therapyRelationshipType"] = json!(therapy_relationship_type.value);
+        return MedicinalProductIndication_OtherTherapyBuilder { value: __value };
     }
 }

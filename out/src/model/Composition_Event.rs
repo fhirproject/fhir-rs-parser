@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of healthcare-related information that is assembled together into a single
 /// logical package that provides a single coherent statement of meaning,
@@ -18,7 +20,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Composition_Event<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Composition_Event<'_> {
@@ -30,7 +32,9 @@ impl Composition_Event<'_> {
         if let Some(Value::Array(val)) = self.value.get("code") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl Composition_Event<'_> {
         if let Some(Value::Array(val)) = self.value.get("detail") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -59,7 +65,9 @@ impl Composition_Event<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +98,9 @@ impl Composition_Event<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +112,9 @@ impl Composition_Event<'_> {
     /// documents events during this time.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -135,5 +147,23 @@ impl Composition_Event<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Composition_EventBuilder {
+    pub value: Value,
+}
+
+impl Composition_EventBuilder {
+    pub fn build(&self) -> Composition_Event {
+        Composition_Event {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Composition_EventBuilder {
+        let mut __value: Value = json!({});
+        return Composition_EventBuilder { value: __value };
     }
 }

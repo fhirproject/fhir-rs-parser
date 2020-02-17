@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
 /// providing healthcare service(s) or assessing the health status of a patient.
 
 #[derive(Debug)]
 pub struct Encounter_Hospitalization<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Encounter_Hospitalization<'_> {
     /// From where patient was admitted (physician referral, transfer).
     pub fn admit_source(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("admitSource") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Encounter_Hospitalization<'_> {
     /// Location/organization to which the patient is discharged.
     pub fn destination(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("destination") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl Encounter_Hospitalization<'_> {
         if let Some(Value::Array(val)) = self.value.get("dietPreference") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -46,7 +54,9 @@ impl Encounter_Hospitalization<'_> {
     /// Category or kind of location after discharge.
     pub fn discharge_disposition(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("dischargeDisposition") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +70,9 @@ impl Encounter_Hospitalization<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +103,9 @@ impl Encounter_Hospitalization<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,7 +115,9 @@ impl Encounter_Hospitalization<'_> {
     /// The location/organization from which the patient came before admission.
     pub fn origin(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("origin") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -109,7 +125,9 @@ impl Encounter_Hospitalization<'_> {
     /// Pre-admission identifier.
     pub fn pre_admission_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("preAdmissionIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -117,7 +135,9 @@ impl Encounter_Hospitalization<'_> {
     /// Whether this hospitalization is a readmission and why if known.
     pub fn re_admission(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reAdmission") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -128,7 +148,9 @@ impl Encounter_Hospitalization<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialArrangement") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +162,9 @@ impl Encounter_Hospitalization<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialCourtesy") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -205,5 +229,23 @@ impl Encounter_Hospitalization<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Encounter_HospitalizationBuilder {
+    pub value: Value,
+}
+
+impl Encounter_HospitalizationBuilder {
+    pub fn build(&self) -> Encounter_Hospitalization {
+        Encounter_Hospitalization {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Encounter_HospitalizationBuilder {
+        let mut __value: Value = json!({});
+        return Encounter_HospitalizationBuilder { value: __value };
     }
 }

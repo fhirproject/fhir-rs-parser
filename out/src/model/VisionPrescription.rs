@@ -8,21 +8,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::VisionPrescription_LensSpecification::VisionPrescription_LensSpecification;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An authorization for the provision of glasses and/or contact lenses to a
 /// patient.
 
 #[derive(Debug)]
 pub struct VisionPrescription<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VisionPrescription<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl VisionPrescription<'_> {
     /// Extensions for dateWritten
     pub fn _date_written(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateWritten") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl VisionPrescription<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl VisionPrescription<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +64,9 @@ impl VisionPrescription<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl VisionPrescription<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +108,9 @@ impl VisionPrescription<'_> {
     /// issued.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +124,9 @@ impl VisionPrescription<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +147,9 @@ impl VisionPrescription<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -164,7 +184,9 @@ impl VisionPrescription<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| VisionPrescription_LensSpecification { value: e })
+            .map(|e| VisionPrescription_LensSpecification {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -173,7 +195,9 @@ impl VisionPrescription<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -194,7 +218,9 @@ impl VisionPrescription<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -204,14 +230,14 @@ impl VisionPrescription<'_> {
     /// A resource reference to the person to whom the vision prescription applies.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
     /// The healthcare professional responsible for authorizing the prescription.
     pub fn prescriber(&self) -> Reference {
         Reference {
-            value: &self.value["prescriber"],
+            value: Cow::Borrowed(&self.value["prescriber"]),
         }
     }
 
@@ -231,7 +257,9 @@ impl VisionPrescription<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -318,5 +346,33 @@ impl VisionPrescription<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VisionPrescriptionBuilder {
+    pub value: Value,
+}
+
+impl VisionPrescriptionBuilder {
+    pub fn build(&self) -> VisionPrescription {
+        VisionPrescription {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        lens_specification: Vec<VisionPrescription_LensSpecification>,
+        patient: Reference,
+        prescriber: Reference,
+    ) -> VisionPrescriptionBuilder {
+        let mut __value: Value = json!({});
+        __value["lensSpecification"] = json!(lens_specification
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        __value["patient"] = json!(patient.value);
+        __value["prescriber"] = json!(prescriber.value);
+        return VisionPrescriptionBuilder { value: __value };
     }
 }

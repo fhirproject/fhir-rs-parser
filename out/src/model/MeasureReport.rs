@@ -10,21 +10,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The MeasureReport resource contains the results of the calculation of a measure;
 /// and optionally a reference to the resources involved in that calculation.
 
 #[derive(Debug)]
 pub struct MeasureReport<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MeasureReport<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl MeasureReport<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl MeasureReport<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +56,9 @@ impl MeasureReport<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +66,9 @@ impl MeasureReport<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +103,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("evaluatedResource") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +121,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +135,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("group") {
             return Some(
                 val.into_iter()
-                    .map(|e| MeasureReport_Group { value: e })
+                    .map(|e| MeasureReport_Group {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -140,7 +160,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -162,7 +184,9 @@ impl MeasureReport<'_> {
     /// measure score.
     pub fn improvement_notation(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("improvementNotation") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -185,7 +209,9 @@ impl MeasureReport<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -206,7 +232,9 @@ impl MeasureReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -216,14 +244,16 @@ impl MeasureReport<'_> {
     /// The reporting period for which the report was calculated.
     pub fn period(&self) -> Period {
         Period {
-            value: &self.value["period"],
+            value: Cow::Borrowed(&self.value["period"]),
         }
     }
 
     /// The individual, location, or organization that is reporting the data.
     pub fn reporter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("reporter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -240,7 +270,9 @@ impl MeasureReport<'_> {
     /// Optional subject identifying the individual or individuals the report is for.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -253,7 +285,9 @@ impl MeasureReport<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -362,6 +396,26 @@ impl MeasureReport<'_> {
         }
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MeasureReportBuilder {
+    pub value: Value,
+}
+
+impl MeasureReportBuilder {
+    pub fn build(&self) -> MeasureReport {
+        MeasureReport {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(measure: &str, period: Period) -> MeasureReportBuilder {
+        let mut __value: Value = json!({});
+        __value["measure"] = json!(measure);
+        __value["period"] = json!(period.value);
+        return MeasureReportBuilder { value: __value };
     }
 }
 

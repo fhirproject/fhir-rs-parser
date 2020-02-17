@@ -7,20 +7,24 @@ use crate::model::Identifier::Identifier;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Todo.
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_Target<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceReferenceInformation_Target<'_> {
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn amount_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amountQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn amount_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("amountRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn amount_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("amountType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +76,9 @@ impl SubstanceReferenceInformation_Target<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +97,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn interaction(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("interaction") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +119,9 @@ impl SubstanceReferenceInformation_Target<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +131,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn organism(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("organism") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -123,7 +141,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn organism_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("organismType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +153,9 @@ impl SubstanceReferenceInformation_Target<'_> {
         if let Some(Value::Array(val)) = self.value.get("source") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -143,7 +165,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn target(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("target") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -151,7 +175,9 @@ impl SubstanceReferenceInformation_Target<'_> {
     /// Todo.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -220,5 +246,23 @@ impl SubstanceReferenceInformation_Target<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceReferenceInformation_TargetBuilder {
+    pub value: Value,
+}
+
+impl SubstanceReferenceInformation_TargetBuilder {
+    pub fn build(&self) -> SubstanceReferenceInformation_Target {
+        SubstanceReferenceInformation_Target {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceReferenceInformation_TargetBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceReferenceInformation_TargetBuilder { value: __value };
     }
 }

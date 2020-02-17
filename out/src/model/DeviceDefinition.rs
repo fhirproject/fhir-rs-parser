@@ -19,21 +19,25 @@ use crate::model::ProductShelfLife::ProductShelfLife;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The characteristics, operational status and capabilities of a medical-related
 /// component of a medical device.
 
 #[derive(Debug)]
 pub struct DeviceDefinition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceDefinition<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +45,9 @@ impl DeviceDefinition<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +55,9 @@ impl DeviceDefinition<'_> {
     /// Extensions for manufacturerString
     pub fn _manufacturer_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_manufacturerString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +65,9 @@ impl DeviceDefinition<'_> {
     /// Extensions for modelNumber
     pub fn _model_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_modelNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl DeviceDefinition<'_> {
     /// Extensions for onlineInformation
     pub fn _online_information(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onlineInformation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +85,9 @@ impl DeviceDefinition<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +97,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("_version") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +111,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("capability") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_Capability { value: e })
+                    .map(|e| DeviceDefinition_Capability {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,7 +126,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactPoint { value: e })
+                    .map(|e| ContactPoint {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -122,7 +142,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -134,7 +156,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("deviceName") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_DeviceName { value: e })
+                    .map(|e| DeviceDefinition_DeviceName {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,7 +174,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -172,7 +198,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -204,7 +232,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("languageCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +244,9 @@ impl DeviceDefinition<'_> {
     /// A name of the manufacturer.
     pub fn manufacturer_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("manufacturerReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -232,7 +264,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("material") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_Material { value: e })
+                    .map(|e| DeviceDefinition_Material {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -244,7 +278,9 @@ impl DeviceDefinition<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -273,7 +309,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -286,7 +324,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -305,7 +345,9 @@ impl DeviceDefinition<'_> {
     /// the device.
     pub fn owner(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("owner") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -313,7 +355,9 @@ impl DeviceDefinition<'_> {
     /// The parent device it can be part of.
     pub fn parent_device(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("parentDevice") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -321,7 +365,9 @@ impl DeviceDefinition<'_> {
     /// Dimensions, color etc.
     pub fn physical_characteristics(&self) -> Option<ProdCharacteristic> {
         if let Some(val) = self.value.get("physicalCharacteristics") {
-            return Some(ProdCharacteristic { value: val });
+            return Some(ProdCharacteristic {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -332,7 +378,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("property") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_Property { value: e })
+                    .map(|e| DeviceDefinition_Property {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -344,7 +392,9 @@ impl DeviceDefinition<'_> {
     /// product).
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -354,7 +404,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("safety") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -366,7 +418,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("shelfLifeStorage") {
             return Some(
                 val.into_iter()
-                    .map(|e| ProductShelfLife { value: e })
+                    .map(|e| ProductShelfLife {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -379,7 +433,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialization") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_Specialization { value: e })
+                    .map(|e| DeviceDefinition_Specialization {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -394,7 +450,9 @@ impl DeviceDefinition<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -402,7 +460,9 @@ impl DeviceDefinition<'_> {
     /// What kind of device or device system this is.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -415,7 +475,9 @@ impl DeviceDefinition<'_> {
         if let Some(Value::Array(val)) = self.value.get("udiDeviceIdentifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| DeviceDefinition_UdiDeviceIdentifier { value: e })
+                    .map(|e| DeviceDefinition_UdiDeviceIdentifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -604,5 +666,23 @@ impl DeviceDefinition<'_> {
             _val.into_iter().for_each(|_e| {});
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceDefinitionBuilder {
+    pub value: Value,
+}
+
+impl DeviceDefinitionBuilder {
+    pub fn build(&self) -> DeviceDefinition {
+        DeviceDefinition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DeviceDefinitionBuilder {
+        let mut __value: Value = json!({});
+        return DeviceDefinitionBuilder { value: __value };
     }
 }

@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A container for a collection of resources.
 
 #[derive(Debug)]
 pub struct Bundle_Request<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Bundle_Request<'_> {
     /// Extensions for ifMatch
     pub fn _if_match(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_ifMatch") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl Bundle_Request<'_> {
     /// Extensions for ifModifiedSince
     pub fn _if_modified_since(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_ifModifiedSince") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl Bundle_Request<'_> {
     /// Extensions for ifNoneExist
     pub fn _if_none_exist(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_ifNoneExist") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl Bundle_Request<'_> {
     /// Extensions for ifNoneMatch
     pub fn _if_none_match(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_ifNoneMatch") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +57,9 @@ impl Bundle_Request<'_> {
     /// Extensions for method
     pub fn _method(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_method") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +67,9 @@ impl Bundle_Request<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +83,9 @@ impl Bundle_Request<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -147,7 +163,9 @@ impl Bundle_Request<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -212,6 +230,24 @@ impl Bundle_Request<'_> {
         }
         if let Some(_val) = self.url() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Bundle_RequestBuilder {
+    pub value: Value,
+}
+
+impl Bundle_RequestBuilder {
+    pub fn build(&self) -> Bundle_Request {
+        Bundle_Request {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Bundle_RequestBuilder {
+        let mut __value: Value = json!({});
+        return Bundle_RequestBuilder { value: __value };
     }
 }
 

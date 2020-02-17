@@ -12,21 +12,25 @@ use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::SupplyRequest_Parameter::SupplyRequest_Parameter;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a request for a medication, substance or device used in the
 /// healthcare setting.
 
 #[derive(Debug)]
 pub struct SupplyRequest<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SupplyRequest<'_> {
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl SupplyRequest<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl SupplyRequest<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl SupplyRequest<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl SupplyRequest<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl SupplyRequest<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +97,9 @@ impl SupplyRequest<'_> {
     /// flows associated with the supply process.
     pub fn category(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +111,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +123,9 @@ impl SupplyRequest<'_> {
     /// Where the supply is expected to come from.
     pub fn deliver_from(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("deliverFrom") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -113,7 +133,9 @@ impl SupplyRequest<'_> {
     /// Where the supply is destined to go.
     pub fn deliver_to(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("deliverTo") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -127,7 +149,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,7 +174,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -173,7 +199,9 @@ impl SupplyRequest<'_> {
     /// known list.
     pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -183,7 +211,9 @@ impl SupplyRequest<'_> {
     /// known list.
     pub fn item_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -201,7 +231,9 @@ impl SupplyRequest<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,7 +254,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -240,7 +274,9 @@ impl SupplyRequest<'_> {
     /// When the request should be fulfilled.
     pub fn occurrence_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -248,7 +284,9 @@ impl SupplyRequest<'_> {
     /// When the request should be fulfilled.
     pub fn occurrence_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -259,7 +297,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("parameter") {
             return Some(
                 val.into_iter()
-                    .map(|e| SupplyRequest_Parameter { value: e })
+                    .map(|e| SupplyRequest_Parameter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -278,7 +318,7 @@ impl SupplyRequest<'_> {
     /// The amount that is being ordered of the indicated item.
     pub fn quantity(&self) -> Quantity {
         Quantity {
-            value: &self.value["quantity"],
+            value: Cow::Borrowed(&self.value["quantity"]),
         }
     }
 
@@ -287,7 +327,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -299,7 +341,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -309,7 +353,9 @@ impl SupplyRequest<'_> {
     /// The device, practitioner, etc. who initiated the request.
     pub fn requester(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requester") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -327,7 +373,9 @@ impl SupplyRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("supplier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -342,7 +390,9 @@ impl SupplyRequest<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -479,6 +529,25 @@ impl SupplyRequest<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SupplyRequestBuilder {
+    pub value: Value,
+}
+
+impl SupplyRequestBuilder {
+    pub fn build(&self) -> SupplyRequest {
+        SupplyRequest {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(quantity: Quantity) -> SupplyRequestBuilder {
+        let mut __value: Value = json!({});
+        __value["quantity"] = json!(quantity.value);
+        return SupplyRequestBuilder { value: __value };
     }
 }
 

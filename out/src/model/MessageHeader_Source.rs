@@ -3,7 +3,9 @@
 use crate::model::ContactPoint::ContactPoint;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The header for a message exchange that is either requesting or responding to an
 /// action.  The reference(s) that are the subject of the action as well as other
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct MessageHeader_Source<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MessageHeader_Source<'_> {
     /// Extensions for endpoint
     pub fn _endpoint(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_endpoint") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl MessageHeader_Source<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl MessageHeader_Source<'_> {
     /// Extensions for software
     pub fn _software(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_software") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl MessageHeader_Source<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +62,9 @@ impl MessageHeader_Source<'_> {
     /// message communications.
     pub fn contact(&self) -> Option<ContactPoint> {
         if let Some(val) = self.value.get("contact") {
-            return Some(ContactPoint { value: val });
+            return Some(ContactPoint {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +86,9 @@ impl MessageHeader_Source<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +119,9 @@ impl MessageHeader_Source<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -179,5 +195,23 @@ impl MessageHeader_Source<'_> {
         if let Some(_val) = self.software() {}
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MessageHeader_SourceBuilder {
+    pub value: Value,
+}
+
+impl MessageHeader_SourceBuilder {
+    pub fn build(&self) -> MessageHeader_Source {
+        MessageHeader_Source {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MessageHeader_SourceBuilder {
+        let mut __value: Value = json!({});
+        return MessageHeader_SourceBuilder { value: __value };
     }
 }

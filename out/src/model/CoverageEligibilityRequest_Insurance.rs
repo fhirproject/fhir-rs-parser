@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CoverageEligibilityRequest provides patient and insurance coverage
 /// information to an insurer for them to respond, in the form of an
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_Insurance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CoverageEligibilityRequest_Insurance<'_> {
     /// Extensions for businessArrangement
     pub fn _business_arrangement(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_businessArrangement") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl CoverageEligibilityRequest_Insurance<'_> {
     /// Extensions for focal
     pub fn _focal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_focal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,7 @@ impl CoverageEligibilityRequest_Insurance<'_> {
     /// patient's actual coverage within the insurer's information system.
     pub fn coverage(&self) -> Reference {
         Reference {
-            value: &self.value["coverage"],
+            value: Cow::Borrowed(&self.value["coverage"]),
         }
     }
 
@@ -60,7 +66,9 @@ impl CoverageEligibilityRequest_Insurance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +108,9 @@ impl CoverageEligibilityRequest_Insurance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -135,5 +145,24 @@ impl CoverageEligibilityRequest_Insurance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CoverageEligibilityRequest_InsuranceBuilder {
+    pub value: Value,
+}
+
+impl CoverageEligibilityRequest_InsuranceBuilder {
+    pub fn build(&self) -> CoverageEligibilityRequest_Insurance {
+        CoverageEligibilityRequest_Insurance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(coverage: Reference) -> CoverageEligibilityRequest_InsuranceBuilder {
+        let mut __value: Value = json!({});
+        __value["coverage"] = json!(coverage.value);
+        return CoverageEligibilityRequest_InsuranceBuilder { value: __value };
     }
 }

@@ -3,20 +3,24 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::SubstanceAmount::SubstanceAmount;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Todo.
 
 #[derive(Debug)]
 pub struct SubstancePolymer_DegreeOfPolymerisation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstancePolymer_DegreeOfPolymerisation<'_> {
     /// Todo.
     pub fn amount(&self) -> Option<SubstanceAmount> {
         if let Some(val) = self.value.get("amount") {
-            return Some(SubstanceAmount { value: val });
+            return Some(SubstanceAmount {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl SubstancePolymer_DegreeOfPolymerisation<'_> {
     /// Todo.
     pub fn degree(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("degree") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl SubstancePolymer_DegreeOfPolymerisation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +77,9 @@ impl SubstancePolymer_DegreeOfPolymerisation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -99,5 +109,23 @@ impl SubstancePolymer_DegreeOfPolymerisation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstancePolymer_DegreeOfPolymerisationBuilder {
+    pub value: Value,
+}
+
+impl SubstancePolymer_DegreeOfPolymerisationBuilder {
+    pub fn build(&self) -> SubstancePolymer_DegreeOfPolymerisation {
+        SubstancePolymer_DegreeOfPolymerisation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstancePolymer_DegreeOfPolymerisationBuilder {
+        let mut __value: Value = json!({});
+        return SubstancePolymer_DegreeOfPolymerisationBuilder { value: __value };
     }
 }

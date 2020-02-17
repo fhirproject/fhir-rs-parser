@@ -4,7 +4,9 @@ use crate::model::ConceptMap_Element::ConceptMap_Element;
 use crate::model::ConceptMap_Unmapped::ConceptMap_Unmapped;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A statement of relationships from one set of concepts to one or more other
 /// concepts - either concepts in code systems, or data element/data element
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ConceptMap_Group<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ConceptMap_Group<'_> {
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl ConceptMap_Group<'_> {
     /// Extensions for sourceVersion
     pub fn _source_version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sourceVersion") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl ConceptMap_Group<'_> {
     /// Extensions for target
     pub fn _target(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_target") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl ConceptMap_Group<'_> {
     /// Extensions for targetVersion
     pub fn _target_version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_targetVersion") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl ConceptMap_Group<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ConceptMap_Element { value: e })
+            .map(|e| ConceptMap_Element {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -70,7 +82,9 @@ impl ConceptMap_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,7 +115,9 @@ impl ConceptMap_Group<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -149,7 +165,9 @@ impl ConceptMap_Group<'_> {
     /// is specified to have equivalence = unmatched.
     pub fn unmapped(&self) -> Option<ConceptMap_Unmapped> {
         if let Some(val) = self.value.get("unmapped") {
-            return Some(ConceptMap_Unmapped { value: val });
+            return Some(ConceptMap_Unmapped {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -204,5 +222,24 @@ impl ConceptMap_Group<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ConceptMap_GroupBuilder {
+    pub value: Value,
+}
+
+impl ConceptMap_GroupBuilder {
+    pub fn build(&self) -> ConceptMap_Group {
+        ConceptMap_Group {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(element: Vec<ConceptMap_Element>) -> ConceptMap_GroupBuilder {
+        let mut __value: Value = json!({});
+        __value["element"] = json!(element.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return ConceptMap_GroupBuilder { value: __value };
     }
 }

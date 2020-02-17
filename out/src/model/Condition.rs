@@ -14,21 +14,25 @@ use crate::model::Period::Period;
 use crate::model::Range::Range;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A clinical condition, problem, diagnosis, or other event, situation, issue, or
 /// clinical concept that has risen to a level of concern.
 
 #[derive(Debug)]
 pub struct Condition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Condition<'_> {
     /// Extensions for abatementDateTime
     pub fn _abatement_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_abatementDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl Condition<'_> {
     /// Extensions for abatementString
     pub fn _abatement_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_abatementString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl Condition<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl Condition<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +70,9 @@ impl Condition<'_> {
     /// Extensions for onsetDateTime
     pub fn _onset_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onsetDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl Condition<'_> {
     /// Extensions for onsetString
     pub fn _onset_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onsetString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +90,9 @@ impl Condition<'_> {
     /// Extensions for recordedDate
     pub fn _recorded_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recordedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +103,9 @@ impl Condition<'_> {
     /// resolved, but they can abate.
     pub fn abatement_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("abatementAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -109,7 +127,9 @@ impl Condition<'_> {
     /// resolved, but they can abate.
     pub fn abatement_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("abatementPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +140,9 @@ impl Condition<'_> {
     /// resolved, but they can abate.
     pub fn abatement_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("abatementRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -139,7 +161,9 @@ impl Condition<'_> {
     /// Individual who is making the condition statement.
     pub fn asserter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("asserter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -149,7 +173,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("bodySite") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -161,7 +187,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -171,7 +199,9 @@ impl Condition<'_> {
     /// The clinical status of the condition.
     pub fn clinical_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("clinicalStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -179,7 +209,9 @@ impl Condition<'_> {
     /// Identification of the condition, problem or diagnosis.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -191,7 +223,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -202,7 +236,9 @@ impl Condition<'_> {
     /// of this record is tightly associated.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,7 +249,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("evidence") {
             return Some(
                 val.into_iter()
-                    .map(|e| Condition_Evidence { value: e })
+                    .map(|e| Condition_Evidence {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -229,7 +267,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -252,7 +292,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -283,7 +325,9 @@ impl Condition<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -304,7 +348,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -317,7 +363,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -328,7 +376,9 @@ impl Condition<'_> {
     /// the clinician.
     pub fn onset_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("onsetAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -346,7 +396,9 @@ impl Condition<'_> {
     /// the clinician.
     pub fn onset_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("onsetPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -355,7 +407,9 @@ impl Condition<'_> {
     /// the clinician.
     pub fn onset_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("onsetRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -381,7 +435,9 @@ impl Condition<'_> {
     /// Individual who recorded the record and takes responsibility for its content.
     pub fn recorder(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("recorder") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -390,7 +446,9 @@ impl Condition<'_> {
     /// clinician.
     pub fn severity(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("severity") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -400,7 +458,9 @@ impl Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("stage") {
             return Some(
                 val.into_iter()
-                    .map(|e| Condition_Stage { value: e })
+                    .map(|e| Condition_Stage {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -410,7 +470,7 @@ impl Condition<'_> {
     /// Indicates the patient or group who the condition record is associated with.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -422,7 +482,9 @@ impl Condition<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -430,7 +492,9 @@ impl Condition<'_> {
     /// The verification status to support the clinical status of the condition.
     pub fn verification_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("verificationStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -603,5 +667,24 @@ impl Condition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ConditionBuilder {
+    pub value: Value,
+}
+
+impl ConditionBuilder {
+    pub fn build(&self) -> Condition {
+        Condition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(subject: Reference) -> ConditionBuilder {
+        let mut __value: Value = json!({});
+        __value["subject"] = json!(subject.value);
+        return ConditionBuilder { value: __value };
     }
 }

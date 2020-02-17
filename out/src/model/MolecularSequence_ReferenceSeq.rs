@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Raw data describing a biological sequence.
 
 #[derive(Debug)]
 pub struct MolecularSequence_ReferenceSeq<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for genomeBuild
     pub fn _genome_build(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_genomeBuild") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for orientation
     pub fn _orientation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_orientation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for referenceSeqString
     pub fn _reference_seq_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_referenceSeqString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for strand
     pub fn _strand(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_strand") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +59,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for windowEnd
     pub fn _window_end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_windowEnd") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +69,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// Extensions for windowStart
     pub fn _window_start(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_windowStart") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -69,7 +83,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// 0)).
     pub fn chromosome(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("chromosome") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +99,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +142,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -147,7 +167,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// and “NP_” for amino acid sequences.
     pub fn reference_seq_id(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("referenceSeqId") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -155,7 +177,9 @@ impl MolecularSequence_ReferenceSeq<'_> {
     /// A pointer to another MolecularSequence entity as reference sequence.
     pub fn reference_seq_pointer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("referenceSeqPointer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,6 +286,24 @@ impl MolecularSequence_ReferenceSeq<'_> {
         if let Some(_val) = self.window_end() {}
         if let Some(_val) = self.window_start() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MolecularSequence_ReferenceSeqBuilder {
+    pub value: Value,
+}
+
+impl MolecularSequence_ReferenceSeqBuilder {
+    pub fn build(&self) -> MolecularSequence_ReferenceSeq {
+        MolecularSequence_ReferenceSeq {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MolecularSequence_ReferenceSeqBuilder {
+        let mut __value: Value = json!({});
+        return MolecularSequence_ReferenceSeqBuilder { value: __value };
     }
 }
 

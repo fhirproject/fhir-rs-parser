@@ -3,20 +3,22 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProductPharmaceutical_WithdrawalPeriod::MedicinalProductPharmaceutical_WithdrawalPeriod;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A pharmaceutical product described in terms of its composition and dose form.
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_TargetSpecies<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
     /// Coded expression for the species.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -29,7 +31,9 @@ impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -60,7 +64,9 @@ impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +81,9 @@ impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
         if let Some(Value::Array(val)) = self.value.get("withdrawalPeriod") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductPharmaceutical_WithdrawalPeriod { value: e })
+                    .map(|e| MedicinalProductPharmaceutical_WithdrawalPeriod {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,5 +111,24 @@ impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+    pub fn build(&self) -> MedicinalProductPharmaceutical_TargetSpecies {
+        MedicinalProductPharmaceutical_TargetSpecies {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return MedicinalProductPharmaceutical_TargetSpeciesBuilder { value: __value };
     }
 }

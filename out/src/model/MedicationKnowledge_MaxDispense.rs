@@ -3,13 +3,15 @@
 use crate::model::Duration::Duration;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Information about a medication that is used to support knowledge.
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_MaxDispense<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationKnowledge_MaxDispense<'_> {
@@ -22,7 +24,9 @@ impl MedicationKnowledge_MaxDispense<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -53,7 +57,9 @@ impl MedicationKnowledge_MaxDispense<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl MedicationKnowledge_MaxDispense<'_> {
     /// The period that applies to the maximum number of units.
     pub fn period(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("period") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +79,7 @@ impl MedicationKnowledge_MaxDispense<'_> {
     /// The maximum number of units of the medication that can be dispensed.
     pub fn quantity(&self) -> Quantity {
         Quantity {
-            value: &self.value["quantity"],
+            value: Cow::Borrowed(&self.value["quantity"]),
         }
     }
 
@@ -96,5 +104,24 @@ impl MedicationKnowledge_MaxDispense<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationKnowledge_MaxDispenseBuilder {
+    pub value: Value,
+}
+
+impl MedicationKnowledge_MaxDispenseBuilder {
+    pub fn build(&self) -> MedicationKnowledge_MaxDispense {
+        MedicationKnowledge_MaxDispense {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(quantity: Quantity) -> MedicationKnowledge_MaxDispenseBuilder {
+        let mut __value: Value = json!({});
+        __value["quantity"] = json!(quantity.value);
+        return MedicationKnowledge_MaxDispenseBuilder { value: __value };
     }
 }

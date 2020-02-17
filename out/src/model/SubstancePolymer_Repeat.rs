@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::SubstancePolymer_RepeatUnit::SubstancePolymer_RepeatUnit;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Todo.
 
 #[derive(Debug)]
 pub struct SubstancePolymer_Repeat<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstancePolymer_Repeat<'_> {
     /// Extensions for averageMolecularFormula
     pub fn _average_molecular_formula(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_averageMolecularFormula") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl SubstancePolymer_Repeat<'_> {
     /// Extensions for numberOfUnits
     pub fn _number_of_units(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfUnits") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl SubstancePolymer_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -78,7 +86,9 @@ impl SubstancePolymer_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -98,7 +108,9 @@ impl SubstancePolymer_Repeat<'_> {
         if let Some(Value::Array(val)) = self.value.get("repeatUnit") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstancePolymer_RepeatUnit { value: e })
+                    .map(|e| SubstancePolymer_RepeatUnit {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,7 +120,9 @@ impl SubstancePolymer_Repeat<'_> {
     /// Todo.
     pub fn repeat_unit_amount_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("repeatUnitAmountType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -148,5 +162,23 @@ impl SubstancePolymer_Repeat<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstancePolymer_RepeatBuilder {
+    pub value: Value,
+}
+
+impl SubstancePolymer_RepeatBuilder {
+    pub fn build(&self) -> SubstancePolymer_Repeat {
+        SubstancePolymer_Repeat {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstancePolymer_RepeatBuilder {
+        let mut __value: Value = json!({});
+        return SubstancePolymer_RepeatBuilder { value: __value };
     }
 }

@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A financial tool for tracking value accrued for a particular purpose.  In the
 /// healthcare field, used to track charges for a patient, cost centers, etc.
 
 #[derive(Debug)]
 pub struct Account_Coverage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Account_Coverage<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,7 @@ impl Account_Coverage<'_> {
     /// could be important when processing billing.
     pub fn coverage(&self) -> Reference {
         Reference {
-            value: &self.value["coverage"],
+            value: Cow::Borrowed(&self.value["coverage"]),
         }
     }
 
@@ -41,7 +45,9 @@ impl Account_Coverage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +78,9 @@ impl Account_Coverage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,5 +117,24 @@ impl Account_Coverage<'_> {
         }
         if let Some(_val) = self.priority() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Account_CoverageBuilder {
+    pub value: Value,
+}
+
+impl Account_CoverageBuilder {
+    pub fn build(&self) -> Account_Coverage {
+        Account_Coverage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(coverage: Reference) -> Account_CoverageBuilder {
+        let mut __value: Value = json!({});
+        __value["coverage"] = json!(coverage.value);
+        return Account_CoverageBuilder { value: __value };
     }
 }

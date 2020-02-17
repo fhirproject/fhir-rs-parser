@@ -5,7 +5,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of questions intended to guide the collection of answers from
 /// end-users. Questionnaires provide detailed control over order, presentation,
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Questionnaire_EnableWhen<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerBoolean
     pub fn _answer_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerDate
     pub fn _answer_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerDateTime
     pub fn _answer_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerDecimal
     pub fn _answer_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +62,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerInteger
     pub fn _answer_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +72,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerString
     pub fn _answer_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +82,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for answerTime
     pub fn _answer_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +92,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for operator
     pub fn _operator(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_operator") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +102,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// Extensions for question
     pub fn _question(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_question") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -102,7 +122,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// order for the item to be enabled.
     pub fn answer_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("answerCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -147,7 +169,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// order for the item to be enabled.
     pub fn answer_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("answerQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -156,7 +180,9 @@ impl Questionnaire_EnableWhen<'_> {
     /// order for the item to be enabled.
     pub fn answer_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("answerReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -188,7 +214,9 @@ impl Questionnaire_EnableWhen<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -219,7 +247,9 @@ impl Questionnaire_EnableWhen<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -325,6 +355,24 @@ impl Questionnaire_EnableWhen<'_> {
         if let Some(_val) = self.operator() {}
         if let Some(_val) = self.question() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Questionnaire_EnableWhenBuilder {
+    pub value: Value,
+}
+
+impl Questionnaire_EnableWhenBuilder {
+    pub fn build(&self) -> Questionnaire_EnableWhen {
+        Questionnaire_EnableWhen {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Questionnaire_EnableWhenBuilder {
+        let mut __value: Value = json!({});
+        return Questionnaire_EnableWhenBuilder { value: __value };
     }
 }
 

@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The clinical particulars - indications, contraindications etc. of a medicinal
 /// product, including for regulatory purposes.
 
 #[derive(Debug)]
 pub struct MedicinalProductContraindication_OtherTherapy<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductContraindication_OtherTherapy<'_> {
@@ -23,7 +25,9 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
     /// of products) as part of an indication or contraindication.
     pub fn medication_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("medicationCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +58,9 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
     /// of products) as part of an indication or contraindication.
     pub fn medication_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("medicationReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,9 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +93,7 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
     /// contraindication and another therapy.
     pub fn therapy_relationship_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["therapyRelationshipType"],
+            value: Cow::Borrowed(&self.value["therapyRelationshipType"]),
         }
     }
 
@@ -113,5 +123,26 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductContraindication_OtherTherapyBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductContraindication_OtherTherapyBuilder {
+    pub fn build(&self) -> MedicinalProductContraindication_OtherTherapy {
+        MedicinalProductContraindication_OtherTherapy {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        therapy_relationship_type: CodeableConcept,
+    ) -> MedicinalProductContraindication_OtherTherapyBuilder {
+        let mut __value: Value = json!({});
+        __value["therapyRelationshipType"] = json!(therapy_relationship_type.value);
+        return MedicinalProductContraindication_OtherTherapyBuilder { value: __value };
     }
 }

@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The EffectEvidenceSynthesis resource describes the difference in an outcome
 /// between exposures states in a population where the effect estimate is derived
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_ResultsByExposure<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
     /// Extensions for exposureState
     pub fn _exposure_state(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exposureState") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +65,9 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +98,9 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,14 +110,16 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
     /// Reference to a RiskEvidenceSynthesis resource.
     pub fn risk_evidence_synthesis(&self) -> Reference {
         Reference {
-            value: &self.value["riskEvidenceSynthesis"],
+            value: Cow::Borrowed(&self.value["riskEvidenceSynthesis"]),
         }
     }
 
     /// Used to define variant exposure states such as low-risk state.
     pub fn variant_state(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("variantState") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,6 +157,27 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EffectEvidenceSynthesis_ResultsByExposureBuilder {
+    pub value: Value,
+}
+
+impl EffectEvidenceSynthesis_ResultsByExposureBuilder {
+    pub fn build(&self) -> EffectEvidenceSynthesis_ResultsByExposure {
+        EffectEvidenceSynthesis_ResultsByExposure {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        risk_evidence_synthesis: Reference,
+    ) -> EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        let mut __value: Value = json!({});
+        __value["riskEvidenceSynthesis"] = json!(risk_evidence_synthesis.value);
+        return EffectEvidenceSynthesis_ResultsByExposureBuilder { value: __value };
     }
 }
 

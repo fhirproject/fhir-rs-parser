@@ -10,20 +10,24 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Catalog entries are wrappers that contextualize items included in a catalog.
 
 #[derive(Debug)]
 pub struct CatalogEntry<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CatalogEntry<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl CatalogEntry<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl CatalogEntry<'_> {
     /// Extensions for lastUpdated
     pub fn _last_updated(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastUpdated") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +55,9 @@ impl CatalogEntry<'_> {
     /// Extensions for orderable
     pub fn _orderable(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_orderable") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +65,9 @@ impl CatalogEntry<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +75,9 @@ impl CatalogEntry<'_> {
     /// Extensions for validTo
     pub fn _valid_to(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_validTo") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +87,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("additionalCharacteristic") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +101,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("additionalClassification") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -97,7 +115,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("additionalIdentifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +129,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("classification") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +145,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -139,7 +163,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -161,7 +187,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -201,7 +229,9 @@ impl CatalogEntry<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -222,7 +252,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -240,7 +272,7 @@ impl CatalogEntry<'_> {
     /// The item in a catalog or definition.
     pub fn referenced_item(&self) -> Reference {
         Reference {
-            value: &self.value["referencedItem"],
+            value: Cow::Borrowed(&self.value["referencedItem"]),
         }
     }
 
@@ -250,7 +282,9 @@ impl CatalogEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatedEntry") {
             return Some(
                 val.into_iter()
-                    .map(|e| CatalogEntry_RelatedEntry { value: e })
+                    .map(|e| CatalogEntry_RelatedEntry {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -274,7 +308,9 @@ impl CatalogEntry<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -282,7 +318,9 @@ impl CatalogEntry<'_> {
     /// The type of item - medication, device, service, protocol or other.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -298,7 +336,9 @@ impl CatalogEntry<'_> {
     /// The time period in which this catalog entry is expected to be active.
     pub fn validity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("validityPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -410,6 +450,25 @@ impl CatalogEntry<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CatalogEntryBuilder {
+    pub value: Value,
+}
+
+impl CatalogEntryBuilder {
+    pub fn build(&self) -> CatalogEntry {
+        CatalogEntry {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(referenced_item: Reference) -> CatalogEntryBuilder {
+        let mut __value: Value = json!({});
+        __value["referencedItem"] = json!(referenced_item.value);
+        return CatalogEntryBuilder { value: __value };
     }
 }
 

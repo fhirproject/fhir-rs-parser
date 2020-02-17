@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes validation requirements, source(s), status and dates for one or more
 /// elements.
 
 #[derive(Debug)]
 pub struct VerificationResult_PrimarySource<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VerificationResult_PrimarySource<'_> {
     /// Extensions for validationDate
     pub fn _validation_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_validationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl VerificationResult_PrimarySource<'_> {
     /// Ability of the primary source to push updates/alerts (yes; no; undetermined).
     pub fn can_push_updates(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("canPushUpdates") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl VerificationResult_PrimarySource<'_> {
         if let Some(Value::Array(val)) = self.value.get("communicationMethod") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -52,7 +60,9 @@ impl VerificationResult_PrimarySource<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +93,9 @@ impl VerificationResult_PrimarySource<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -96,7 +108,9 @@ impl VerificationResult_PrimarySource<'_> {
         if let Some(Value::Array(val)) = self.value.get("pushTypeAvailable") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,7 +124,9 @@ impl VerificationResult_PrimarySource<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +145,9 @@ impl VerificationResult_PrimarySource<'_> {
     /// failed; unknown).
     pub fn validation_status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("validationStatus") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -137,7 +155,9 @@ impl VerificationResult_PrimarySource<'_> {
     /// Reference to the primary source.
     pub fn who(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("who") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -191,5 +211,23 @@ impl VerificationResult_PrimarySource<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VerificationResult_PrimarySourceBuilder {
+    pub value: Value,
+}
+
+impl VerificationResult_PrimarySourceBuilder {
+    pub fn build(&self) -> VerificationResult_PrimarySource {
+        VerificationResult_PrimarySource {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> VerificationResult_PrimarySourceBuilder {
+        let mut __value: Value = json!({});
+        return VerificationResult_PrimarySourceBuilder { value: __value };
     }
 }

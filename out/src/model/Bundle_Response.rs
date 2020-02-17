@@ -3,20 +3,24 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A container for a collection of resources.
 
 #[derive(Debug)]
 pub struct Bundle_Response<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Bundle_Response<'_> {
     /// Extensions for etag
     pub fn _etag(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_etag") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl Bundle_Response<'_> {
     /// Extensions for lastModified
     pub fn _last_modified(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastModified") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl Bundle_Response<'_> {
     /// Extensions for location
     pub fn _location(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_location") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl Bundle_Response<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl Bundle_Response<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +124,9 @@ impl Bundle_Response<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +137,9 @@ impl Bundle_Response<'_> {
     /// this entry in a batch or transaction.
     pub fn outcome(&self) -> Option<ResourceList> {
         if let Some(val) = self.value.get("outcome") {
-            return Some(ResourceList { value: val });
+            return Some(ResourceList {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -180,5 +196,23 @@ impl Bundle_Response<'_> {
         }
         if let Some(_val) = self.status() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Bundle_ResponseBuilder {
+    pub value: Value,
+}
+
+impl Bundle_ResponseBuilder {
+    pub fn build(&self) -> Bundle_Response {
+        Bundle_Response {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Bundle_ResponseBuilder {
+        let mut __value: Value = json!({});
+        return Bundle_ResponseBuilder { value: __value };
     }
 }

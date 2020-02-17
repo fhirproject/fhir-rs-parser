@@ -8,20 +8,24 @@ use crate::model::Narrative::Narrative;
 use crate::model::Population::Population;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describe the undesirable effects of the medicinal product.
 
 #[derive(Debug)]
 pub struct MedicinalProductUndesirableEffect<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductUndesirableEffect<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +43,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// Classification of the effect.
     pub fn classification(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("classification") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +75,9 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +87,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// The frequency of occurrence of the effect.
     pub fn frequency_of_occurrence(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("frequencyOfOccurrence") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -113,7 +127,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -134,7 +150,9 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -146,7 +164,9 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(Value::Array(val)) = self.value.get("population") {
             return Some(
                 val.into_iter()
-                    .map(|e| Population { value: e })
+                    .map(|e| Population {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -158,7 +178,9 @@ impl MedicinalProductUndesirableEffect<'_> {
         if let Some(Value::Array(val)) = self.value.get("subject") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -168,7 +190,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// The symptom, condition or undesirable effect.
     pub fn symptom_condition_effect(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("symptomConditionEffect") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -181,7 +205,9 @@ impl MedicinalProductUndesirableEffect<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -251,5 +277,23 @@ impl MedicinalProductUndesirableEffect<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductUndesirableEffectBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductUndesirableEffectBuilder {
+    pub fn build(&self) -> MedicinalProductUndesirableEffect {
+        MedicinalProductUndesirableEffect {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProductUndesirableEffectBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProductUndesirableEffectBuilder { value: __value };
     }
 }

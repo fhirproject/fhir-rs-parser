@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Template<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImplementationGuide_Template<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl ImplementationGuide_Template<'_> {
     /// Extensions for scope
     pub fn _scope(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_scope") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl ImplementationGuide_Template<'_> {
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl ImplementationGuide_Template<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -87,7 +97,9 @@ impl ImplementationGuide_Template<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -141,5 +153,23 @@ impl ImplementationGuide_Template<'_> {
         if let Some(_val) = self.scope() {}
         if let Some(_val) = self.source() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImplementationGuide_TemplateBuilder {
+    pub value: Value,
+}
+
+impl ImplementationGuide_TemplateBuilder {
+    pub fn build(&self) -> ImplementationGuide_Template {
+        ImplementationGuide_Template {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ImplementationGuide_TemplateBuilder {
+        let mut __value: Value = json!({});
+        return ImplementationGuide_TemplateBuilder { value: __value };
     }
 }

@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The resource ChargeItem describes the provision of healthcare provider products
 /// for a certain patient, therefore referring not only to the product, but
@@ -13,14 +15,14 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ChargeItem_Performer<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ChargeItem_Performer<'_> {
     /// The device, practitioner, etc. who performed or participated in the service.
     pub fn actor(&self) -> Reference {
         Reference {
-            value: &self.value["actor"],
+            value: Cow::Borrowed(&self.value["actor"]),
         }
     }
 
@@ -33,7 +35,9 @@ impl ChargeItem_Performer<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -44,7 +48,9 @@ impl ChargeItem_Performer<'_> {
     /// anesthesiologiest, etc.).
     pub fn function(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("function") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +79,9 @@ impl ChargeItem_Performer<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,5 +109,24 @@ impl ChargeItem_Performer<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ChargeItem_PerformerBuilder {
+    pub value: Value,
+}
+
+impl ChargeItem_PerformerBuilder {
+    pub fn build(&self) -> ChargeItem_Performer {
+        ChargeItem_Performer {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(actor: Reference) -> ChargeItem_PerformerBuilder {
+        let mut __value: Value = json!({});
+        __value["actor"] = json!(actor.value);
+        return ChargeItem_PerformerBuilder { value: __value };
     }
 }

@@ -4,21 +4,25 @@ use crate::model::Annotation::Annotation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Risk of harmful or undesirable, physiological response which is unique to an
 /// individual and associated with exposure to a substance.
 
 #[derive(Debug)]
 pub struct AllergyIntolerance_Reaction<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AllergyIntolerance_Reaction<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl AllergyIntolerance_Reaction<'_> {
     /// Extensions for onset
     pub fn _onset(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onset") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl AllergyIntolerance_Reaction<'_> {
     /// Extensions for severity
     pub fn _severity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_severity") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +59,9 @@ impl AllergyIntolerance_Reaction<'_> {
     /// Identification of the route by which the subject was exposed to the substance.
     pub fn exposure_route(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("exposureRoute") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl AllergyIntolerance_Reaction<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +102,9 @@ impl AllergyIntolerance_Reaction<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| CodeableConcept { value: e })
+            .map(|e| CodeableConcept {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -109,7 +123,9 @@ impl AllergyIntolerance_Reaction<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -121,7 +137,9 @@ impl AllergyIntolerance_Reaction<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -157,7 +175,9 @@ impl AllergyIntolerance_Reaction<'_> {
     /// AllergyIntolerance.reaction.substance.
     pub fn substance(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("substance") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -216,6 +236,28 @@ impl AllergyIntolerance_Reaction<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AllergyIntolerance_ReactionBuilder {
+    pub value: Value,
+}
+
+impl AllergyIntolerance_ReactionBuilder {
+    pub fn build(&self) -> AllergyIntolerance_Reaction {
+        AllergyIntolerance_Reaction {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(manifestation: Vec<CodeableConcept>) -> AllergyIntolerance_ReactionBuilder {
+        let mut __value: Value = json!({});
+        __value["manifestation"] = json!(manifestation
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        return AllergyIntolerance_ReactionBuilder { value: __value };
     }
 }
 

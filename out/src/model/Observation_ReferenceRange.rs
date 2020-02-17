@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Measurements and simple assertions made about a patient, device or other
 /// subject.
 
 #[derive(Debug)]
 pub struct Observation_ReferenceRange<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Observation_ReferenceRange<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Observation_ReferenceRange<'_> {
     /// (e.g. number of weeks at term) if the meaning says so.
     pub fn age(&self) -> Option<Range> {
         if let Some(val) = self.value.get("age") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl Observation_ReferenceRange<'_> {
         if let Some(Value::Array(val)) = self.value.get("appliesTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -58,7 +66,9 @@ impl Observation_ReferenceRange<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +81,9 @@ impl Observation_ReferenceRange<'_> {
     /// reference range is >= 2.3).
     pub fn high(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("high") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +103,9 @@ impl Observation_ReferenceRange<'_> {
     /// reference range is <=2.3).
     pub fn low(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("low") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +125,9 @@ impl Observation_ReferenceRange<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -132,7 +148,9 @@ impl Observation_ReferenceRange<'_> {
     /// to. For example, the normal or therapeutic range.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -181,5 +199,23 @@ impl Observation_ReferenceRange<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Observation_ReferenceRangeBuilder {
+    pub value: Value,
+}
+
+impl Observation_ReferenceRangeBuilder {
+    pub fn build(&self) -> Observation_ReferenceRange {
+        Observation_ReferenceRange {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Observation_ReferenceRangeBuilder {
+        let mut __value: Value = json!({});
+        return Observation_ReferenceRangeBuilder { value: __value };
     }
 }

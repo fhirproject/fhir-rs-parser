@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A formal computable definition of an operation (on the RESTful interface) or a
 /// named query (using the search interaction).
 
 #[derive(Debug)]
 pub struct OperationDefinition_Binding<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl OperationDefinition_Binding<'_> {
     /// Extensions for strength
     pub fn _strength(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_strength") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl OperationDefinition_Binding<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -61,7 +67,9 @@ impl OperationDefinition_Binding<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,6 +111,25 @@ impl OperationDefinition_Binding<'_> {
         }
         if let Some(_val) = self.strength() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct OperationDefinition_BindingBuilder {
+    pub value: Value,
+}
+
+impl OperationDefinition_BindingBuilder {
+    pub fn build(&self) -> OperationDefinition_Binding {
+        OperationDefinition_Binding {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(value_set: &str) -> OperationDefinition_BindingBuilder {
+        let mut __value: Value = json!({});
+        __value["valueSet"] = json!(value_set);
+        return OperationDefinition_BindingBuilder { value: __value };
     }
 }
 

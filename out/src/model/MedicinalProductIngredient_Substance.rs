@@ -3,20 +3,22 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An ingredient of a manufactured item or pharmaceutical product.
 
 #[derive(Debug)]
 pub struct MedicinalProductIngredient_Substance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductIngredient_Substance<'_> {
     /// The ingredient substance.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -29,7 +31,9 @@ impl MedicinalProductIngredient_Substance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -60,7 +64,9 @@ impl MedicinalProductIngredient_Substance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +79,9 @@ impl MedicinalProductIngredient_Substance<'_> {
         if let Some(Value::Array(val)) = self.value.get("strength") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductIngredient_Strength { value: e })
+                    .map(|e| MedicinalProductIngredient_Strength {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,5 +109,24 @@ impl MedicinalProductIngredient_Substance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductIngredient_SubstanceBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductIngredient_SubstanceBuilder {
+    pub fn build(&self) -> MedicinalProductIngredient_Substance {
+        MedicinalProductIngredient_Substance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> MedicinalProductIngredient_SubstanceBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return MedicinalProductIngredient_SubstanceBuilder { value: __value };
     }
 }

@@ -3,14 +3,16 @@
 use crate::model::Extension::Extension;
 use crate::model::TestScript_Capability::TestScript_Capability;
 use crate::model::TestScript_Link::TestScript_Link;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript_Metadata<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript_Metadata<'_> {
@@ -23,7 +25,9 @@ impl TestScript_Metadata<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| TestScript_Capability { value: e })
+            .map(|e| TestScript_Capability {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -36,7 +40,9 @@ impl TestScript_Metadata<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -57,7 +63,9 @@ impl TestScript_Metadata<'_> {
         if let Some(Value::Array(val)) = self.value.get("link") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_Link { value: e })
+                    .map(|e| TestScript_Link {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl TestScript_Metadata<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,5 +122,24 @@ impl TestScript_Metadata<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScript_MetadataBuilder {
+    pub value: Value,
+}
+
+impl TestScript_MetadataBuilder {
+    pub fn build(&self) -> TestScript_Metadata {
+        TestScript_Metadata {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(capability: Vec<TestScript_Capability>) -> TestScript_MetadataBuilder {
+        let mut __value: Value = json!({});
+        __value["capability"] = json!(capability.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return TestScript_MetadataBuilder { value: __value };
     }
 }

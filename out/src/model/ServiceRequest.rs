@@ -14,21 +14,25 @@ use crate::model::Ratio::Ratio;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a request for service such as diagnostic investigations, treatments,
 /// or operations to be performed.
 
 #[derive(Debug)]
 pub struct ServiceRequest<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ServiceRequest<'_> {
     /// Extensions for asNeededBoolean
     pub fn _as_needed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_asNeededBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl ServiceRequest<'_> {
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl ServiceRequest<'_> {
     /// Extensions for doNotPerform
     pub fn _do_not_perform(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doNotPerform") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl ServiceRequest<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +72,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("_instantiatesUri") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -72,7 +84,9 @@ impl ServiceRequest<'_> {
     /// Extensions for intent
     pub fn _intent(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_intent") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +94,9 @@ impl ServiceRequest<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl ServiceRequest<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +114,9 @@ impl ServiceRequest<'_> {
     /// Extensions for patientInstruction
     pub fn _patient_instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patientInstruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -104,7 +124,9 @@ impl ServiceRequest<'_> {
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +134,9 @@ impl ServiceRequest<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +154,9 @@ impl ServiceRequest<'_> {
     /// the service.  For example "pain", "on flare-up", etc.
     pub fn as_needed_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("asNeededCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -148,7 +174,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -161,7 +189,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("bodySite") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -174,7 +204,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -185,7 +217,9 @@ impl ServiceRequest<'_> {
     /// investigation, or panel of investigations) that have been requested.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -197,7 +231,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -217,7 +253,9 @@ impl ServiceRequest<'_> {
     /// in which this request is made.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -231,7 +269,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -253,7 +293,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -303,7 +345,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("insurance") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -332,7 +376,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("locationCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -345,7 +391,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("locationReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -357,7 +405,9 @@ impl ServiceRequest<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -378,7 +428,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -391,7 +443,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -409,7 +463,9 @@ impl ServiceRequest<'_> {
     /// The date/time at which the requested service should occur.
     pub fn occurrence_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -417,7 +473,9 @@ impl ServiceRequest<'_> {
     /// The date/time at which the requested service should occur.
     pub fn occurrence_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -430,7 +488,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("orderDetail") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -451,7 +511,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -461,7 +523,9 @@ impl ServiceRequest<'_> {
     /// Desired type of performer for doing the requested service.
     pub fn performer_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("performerType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -480,7 +544,9 @@ impl ServiceRequest<'_> {
     /// or a range (2.0 to 1.8 Gy per fraction).
     pub fn quantity_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantityQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -490,7 +556,9 @@ impl ServiceRequest<'_> {
     /// or a range (2.0 to 1.8 Gy per fraction).
     pub fn quantity_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("quantityRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -500,7 +568,9 @@ impl ServiceRequest<'_> {
     /// or a range (2.0 to 1.8 Gy per fraction).
     pub fn quantity_ratio(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("quantityRatio") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -512,7 +582,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -525,7 +597,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -537,7 +611,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("relevantHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -550,7 +626,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("replaces") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -561,7 +639,9 @@ impl ServiceRequest<'_> {
     /// activation.
     pub fn requester(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requester") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -571,7 +651,9 @@ impl ServiceRequest<'_> {
     /// identifier.
     pub fn requisition(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("requisition") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -581,7 +663,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("specimen") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -601,7 +685,7 @@ impl ServiceRequest<'_> {
     /// as dialysis machines, or even locations (typically for environmental scans).
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -616,7 +700,9 @@ impl ServiceRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingInfo") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -631,7 +717,9 @@ impl ServiceRequest<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -873,5 +961,24 @@ impl ServiceRequest<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ServiceRequestBuilder {
+    pub value: Value,
+}
+
+impl ServiceRequestBuilder {
+    pub fn build(&self) -> ServiceRequest {
+        ServiceRequest {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(subject: Reference) -> ServiceRequestBuilder {
+        let mut __value: Value = json!({});
+        __value["subject"] = json!(subject.value);
+        return ServiceRequestBuilder { value: __value };
     }
 }

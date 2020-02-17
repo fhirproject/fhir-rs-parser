@@ -7,20 +7,24 @@ use crate::model::Bundle_Search::Bundle_Search;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A container for a collection of resources.
 
 #[derive(Debug)]
 pub struct Bundle_Entry<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Bundle_Entry<'_> {
     /// Extensions for fullUrl
     pub fn _full_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fullUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl Bundle_Entry<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +75,9 @@ impl Bundle_Entry<'_> {
         if let Some(Value::Array(val)) = self.value.get("link") {
             return Some(
                 val.into_iter()
-                    .map(|e| Bundle_Link { value: e })
+                    .map(|e| Bundle_Link {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +99,9 @@ impl Bundle_Entry<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +113,9 @@ impl Bundle_Entry<'_> {
     /// create the version contained in the entry.
     pub fn request(&self) -> Option<Bundle_Request> {
         if let Some(val) = self.value.get("request") {
-            return Some(Bundle_Request { value: val });
+            return Some(Bundle_Request {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +124,9 @@ impl Bundle_Entry<'_> {
     /// the Bundle.type.
     pub fn resource(&self) -> Option<ResourceList> {
         if let Some(val) = self.value.get("resource") {
-            return Some(ResourceList { value: val });
+            return Some(ResourceList {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +136,9 @@ impl Bundle_Entry<'_> {
     /// where when returning history.
     pub fn response(&self) -> Option<Bundle_Response> {
         if let Some(val) = self.value.get("response") {
-            return Some(Bundle_Response { value: val });
+            return Some(Bundle_Response {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +146,9 @@ impl Bundle_Entry<'_> {
     /// Information about the search process that lead to the creation of this entry.
     pub fn search(&self) -> Option<Bundle_Search> {
         if let Some(val) = self.value.get("search") {
-            return Some(Bundle_Search { value: val });
+            return Some(Bundle_Search {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -179,5 +197,23 @@ impl Bundle_Entry<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Bundle_EntryBuilder {
+    pub value: Value,
+}
+
+impl Bundle_EntryBuilder {
+    pub fn build(&self) -> Bundle_Entry {
+        Bundle_Entry {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Bundle_EntryBuilder {
+        let mut __value: Value = json!({});
+        return Bundle_EntryBuilder { value: __value };
     }
 }

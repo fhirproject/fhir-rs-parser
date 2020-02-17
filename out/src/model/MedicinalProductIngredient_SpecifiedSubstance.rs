@@ -3,27 +3,31 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::MedicinalProductIngredient_Strength::MedicinalProductIngredient_Strength;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An ingredient of a manufactured item or pharmaceutical product.
 
 #[derive(Debug)]
 pub struct MedicinalProductIngredient_SpecifiedSubstance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
     /// The specified substance.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
     /// Confidentiality level of the specified substance as the ingredient.
     pub fn confidentiality(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("confidentiality") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +41,9 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -47,7 +53,7 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
     /// The group of specified substance, e.g. group 1 to 4.
     pub fn group(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["group"],
+            value: Cow::Borrowed(&self.value["group"]),
         }
     }
 
@@ -75,7 +81,9 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +96,9 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
         if let Some(Value::Array(val)) = self.value.get("strength") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductIngredient_Strength { value: e })
+                    .map(|e| MedicinalProductIngredient_Strength {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,5 +134,28 @@ impl MedicinalProductIngredient_SpecifiedSubstance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductIngredient_SpecifiedSubstanceBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductIngredient_SpecifiedSubstanceBuilder {
+    pub fn build(&self) -> MedicinalProductIngredient_SpecifiedSubstance {
+        MedicinalProductIngredient_SpecifiedSubstance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        code: CodeableConcept,
+        group: CodeableConcept,
+    ) -> MedicinalProductIngredient_SpecifiedSubstanceBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        __value["group"] = json!(group.value);
+        return MedicinalProductIngredient_SpecifiedSubstanceBuilder { value: __value };
     }
 }

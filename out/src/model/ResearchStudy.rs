@@ -14,7 +14,9 @@ use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::ResearchStudy_Arm::ResearchStudy_Arm;
 use crate::model::ResearchStudy_Objective::ResearchStudy_Objective;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A process where a researcher or organization plans and then executes a series of
 /// steps intended to increase the field of healthcare-related knowledge.  This
@@ -25,14 +27,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ResearchStudy<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ResearchStudy<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +44,9 @@ impl ResearchStudy<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl ResearchStudy<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl ResearchStudy<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl ResearchStudy<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +87,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("arm") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResearchStudy_Arm { value: e })
+                    .map(|e| ResearchStudy_Arm {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -88,7 +102,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +118,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("condition") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +133,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +149,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -151,7 +173,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("enrollment") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,7 +191,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -180,7 +206,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("focus") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -201,7 +229,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -224,7 +254,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("keyword") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -244,7 +276,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("location") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -256,7 +290,9 @@ impl ResearchStudy<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +313,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -289,7 +327,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -302,7 +342,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("objective") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResearchStudy_Objective { value: e })
+                    .map(|e| ResearchStudy_Objective {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -314,7 +356,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -325,7 +369,9 @@ impl ResearchStudy<'_> {
     /// date for the study.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -334,7 +380,9 @@ impl ResearchStudy<'_> {
     /// humans in clinical trials to post-market evaluation.
     pub fn phase(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("phase") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -343,7 +391,9 @@ impl ResearchStudy<'_> {
     /// classification of the intent of the study.
     pub fn primary_purpose_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("primaryPurposeType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -354,7 +404,9 @@ impl ResearchStudy<'_> {
     /// interpretation and presentation.
     pub fn principal_investigator(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("principalInvestigator") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -364,7 +416,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("protocol") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -374,7 +428,9 @@ impl ResearchStudy<'_> {
     /// A description and/or code explaining the premature termination of the study.
     pub fn reason_stopped(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reasonStopped") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -384,7 +440,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatedArtifact") {
             return Some(
                 val.into_iter()
-                    .map(|e| RelatedArtifact { value: e })
+                    .map(|e| RelatedArtifact {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -396,7 +454,9 @@ impl ResearchStudy<'_> {
         if let Some(Value::Array(val)) = self.value.get("site") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -407,7 +467,9 @@ impl ResearchStudy<'_> {
     /// the study.
     pub fn sponsor(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("sponsor") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -428,7 +490,9 @@ impl ResearchStudy<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -604,6 +668,24 @@ impl ResearchStudy<'_> {
         }
         if let Some(_val) = self.title() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ResearchStudyBuilder {
+    pub value: Value,
+}
+
+impl ResearchStudyBuilder {
+    pub fn build(&self) -> ResearchStudy {
+        ResearchStudy {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ResearchStudyBuilder {
+        let mut __value: Value = json!({});
+        return ResearchStudyBuilder { value: __value };
     }
 }
 

@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
 /// recipient(s) or recipient role(s) to perform one or more actions within a given
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Consent_Policy<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Consent_Policy<'_> {
     /// Extensions for authority
     pub fn _authority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authority") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl Consent_Policy<'_> {
     /// Extensions for uri
     pub fn _uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_uri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl Consent_Policy<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl Consent_Policy<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -120,5 +130,23 @@ impl Consent_Policy<'_> {
         }
         if let Some(_val) = self.uri() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Consent_PolicyBuilder {
+    pub value: Value,
+}
+
+impl Consent_PolicyBuilder {
+    pub fn build(&self) -> Consent_Policy {
+        Consent_Policy {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Consent_PolicyBuilder {
+        let mut __value: Value = json!({});
+        return Consent_PolicyBuilder { value: __value };
     }
 }

@@ -7,13 +7,15 @@ use crate::model::ProdCharacteristic::ProdCharacteristic;
 use crate::model::ProductShelfLife::ProductShelfLife;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A medicinal product in a container or package.
 
 #[derive(Debug)]
 pub struct MedicinalProductPackaged_PackageItem<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPackaged_PackageItem<'_> {
@@ -22,7 +24,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("alternateMaterial") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -34,7 +38,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("device") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -50,7 +56,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +79,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +93,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("manufacturedItem") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -95,7 +107,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("manufacturer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -107,7 +121,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("material") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -129,7 +145,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -141,7 +159,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("otherCharacteristics") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,7 +173,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("packageItem") {
             return Some(
                 val.into_iter()
-                    .map(|e| MedicinalProductPackaged_PackageItem { value: e })
+                    .map(|e| MedicinalProductPackaged_PackageItem {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -163,7 +185,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
     /// Dimensions, color etc.
     pub fn physical_characteristics(&self) -> Option<ProdCharacteristic> {
         if let Some(val) = self.value.get("physicalCharacteristics") {
-            return Some(ProdCharacteristic { value: val });
+            return Some(ProdCharacteristic {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -172,7 +196,7 @@ impl MedicinalProductPackaged_PackageItem<'_> {
     /// packaging. The outermost is always 1.
     pub fn quantity(&self) -> Quantity {
         Quantity {
-            value: &self.value["quantity"],
+            value: Cow::Borrowed(&self.value["quantity"]),
         }
     }
 
@@ -181,7 +205,9 @@ impl MedicinalProductPackaged_PackageItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("shelfLifeStorage") {
             return Some(
                 val.into_iter()
-                    .map(|e| ProductShelfLife { value: e })
+                    .map(|e| ProductShelfLife {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -191,7 +217,7 @@ impl MedicinalProductPackaged_PackageItem<'_> {
     /// The physical type of the container of the medicine.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -264,5 +290,28 @@ impl MedicinalProductPackaged_PackageItem<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPackaged_PackageItemBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPackaged_PackageItemBuilder {
+    pub fn build(&self) -> MedicinalProductPackaged_PackageItem {
+        MedicinalProductPackaged_PackageItem {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        quantity: Quantity,
+        fhir_type: CodeableConcept,
+    ) -> MedicinalProductPackaged_PackageItemBuilder {
+        let mut __value: Value = json!({});
+        __value["quantity"] = json!(quantity.value);
+        __value["type"] = json!(fhir_type.value);
+        return MedicinalProductPackaged_PackageItemBuilder { value: __value };
     }
 }

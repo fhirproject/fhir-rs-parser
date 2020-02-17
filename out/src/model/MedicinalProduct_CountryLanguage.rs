@@ -2,21 +2,23 @@
 
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Detailed definition of a medicinal product, typically for uses other than direct
 /// patient care (e.g. regulatory use).
 
 #[derive(Debug)]
 pub struct MedicinalProduct_CountryLanguage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProduct_CountryLanguage<'_> {
     /// Country code for where this name applies.
     pub fn country(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["country"],
+            value: Cow::Borrowed(&self.value["country"]),
         }
     }
 
@@ -29,7 +31,9 @@ impl MedicinalProduct_CountryLanguage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -48,7 +52,9 @@ impl MedicinalProduct_CountryLanguage<'_> {
     /// Jurisdiction code for where this name applies.
     pub fn jurisdiction(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("jurisdiction") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +62,7 @@ impl MedicinalProduct_CountryLanguage<'_> {
     /// Language code for this name.
     pub fn language(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["language"],
+            value: Cow::Borrowed(&self.value["language"]),
         }
     }
 
@@ -75,7 +81,9 @@ impl MedicinalProduct_CountryLanguage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -106,5 +114,28 @@ impl MedicinalProduct_CountryLanguage<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProduct_CountryLanguageBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProduct_CountryLanguageBuilder {
+    pub fn build(&self) -> MedicinalProduct_CountryLanguage {
+        MedicinalProduct_CountryLanguage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        country: CodeableConcept,
+        language: CodeableConcept,
+    ) -> MedicinalProduct_CountryLanguageBuilder {
+        let mut __value: Value = json!({});
+        __value["country"] = json!(country.value);
+        __value["language"] = json!(language.value);
+        return MedicinalProduct_CountryLanguageBuilder { value: __value };
     }
 }

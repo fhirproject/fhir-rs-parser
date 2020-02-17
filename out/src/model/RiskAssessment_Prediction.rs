@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An assessment of the likely outcome(s) for a patient or other subject as well as
 /// the likelihood of each outcome.
 
 #[derive(Debug)]
 pub struct RiskAssessment_Prediction<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RiskAssessment_Prediction<'_> {
     /// Extensions for probabilityDecimal
     pub fn _probability_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_probabilityDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl RiskAssessment_Prediction<'_> {
     /// Extensions for rationale
     pub fn _rationale(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rationale") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl RiskAssessment_Prediction<'_> {
     /// Extensions for relativeRisk
     pub fn _relative_risk(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relativeRisk") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl RiskAssessment_Prediction<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +90,9 @@ impl RiskAssessment_Prediction<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +103,9 @@ impl RiskAssessment_Prediction<'_> {
     /// particular condition).
     pub fn outcome(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("outcome") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -107,7 +121,9 @@ impl RiskAssessment_Prediction<'_> {
     /// Indicates how likely the outcome is (in the specified timeframe).
     pub fn probability_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("probabilityRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -116,7 +132,9 @@ impl RiskAssessment_Prediction<'_> {
     /// qualitative value (e.g. low, medium, or high).
     pub fn qualitative_risk(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("qualitativeRisk") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -144,7 +162,9 @@ impl RiskAssessment_Prediction<'_> {
     /// probability applies.
     pub fn when_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("whenPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +173,9 @@ impl RiskAssessment_Prediction<'_> {
     /// probability applies.
     pub fn when_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("whenRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -214,5 +236,23 @@ impl RiskAssessment_Prediction<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RiskAssessment_PredictionBuilder {
+    pub value: Value,
+}
+
+impl RiskAssessment_PredictionBuilder {
+    pub fn build(&self) -> RiskAssessment_Prediction {
+        RiskAssessment_Prediction {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RiskAssessment_PredictionBuilder {
+        let mut __value: Value = json!({});
+        return RiskAssessment_PredictionBuilder { value: __value };
     }
 }

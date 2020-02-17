@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A search parameter that defines a named search item that can be used to
 /// search/filter on a resource.
 
 #[derive(Debug)]
 pub struct SearchParameter_Component<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SearchParameter_Component<'_> {
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +48,9 @@ impl SearchParameter_Component<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +81,9 @@ impl SearchParameter_Component<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,5 +109,24 @@ impl SearchParameter_Component<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SearchParameter_ComponentBuilder {
+    pub value: Value,
+}
+
+impl SearchParameter_ComponentBuilder {
+    pub fn build(&self) -> SearchParameter_Component {
+        SearchParameter_Component {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(definition: &str) -> SearchParameter_ComponentBuilder {
+        let mut __value: Value = json!({});
+        __value["definition"] = json!(definition);
+        return SearchParameter_ComponentBuilder { value: __value };
     }
 }

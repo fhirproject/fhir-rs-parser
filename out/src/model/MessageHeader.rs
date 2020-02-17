@@ -11,7 +11,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The header for a message exchange that is either requesting or responding to an
 /// action.  The reference(s) that are the subject of the action as well as other
@@ -20,14 +22,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct MessageHeader<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MessageHeader<'_> {
     /// Extensions for eventUri
     pub fn _event_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_eventUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +39,9 @@ impl MessageHeader<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +49,9 @@ impl MessageHeader<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl MessageHeader<'_> {
     /// most proximal to the MessageHeader. Can provide other authors in extensions.
     pub fn author(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl MessageHeader<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +97,9 @@ impl MessageHeader<'_> {
         if let Some(Value::Array(val)) = self.value.get("destination") {
             return Some(
                 val.into_iter()
-                    .map(|e| MessageHeader_Destination { value: e })
+                    .map(|e| MessageHeader_Destination {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -97,7 +111,9 @@ impl MessageHeader<'_> {
     /// provide other enterers in extensions.
     pub fn enterer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("enterer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -108,7 +124,9 @@ impl MessageHeader<'_> {
     /// to the EventDefinition.
     pub fn event_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("eventCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +151,9 @@ impl MessageHeader<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -146,7 +166,9 @@ impl MessageHeader<'_> {
         if let Some(Value::Array(val)) = self.value.get("focus") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -186,7 +208,9 @@ impl MessageHeader<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -207,7 +231,9 @@ impl MessageHeader<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -218,7 +244,9 @@ impl MessageHeader<'_> {
     /// occurrence of the event that is a focus of this message.
     pub fn reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -227,7 +255,9 @@ impl MessageHeader<'_> {
     /// if this message is a response.
     pub fn response(&self) -> Option<MessageHeader_Response> {
         if let Some(val) = self.value.get("response") {
-            return Some(MessageHeader_Response { value: val });
+            return Some(MessageHeader_Response {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -237,7 +267,9 @@ impl MessageHeader<'_> {
     /// policies of the responsible party.
     pub fn responsible(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("responsible") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -245,7 +277,9 @@ impl MessageHeader<'_> {
     /// Identifies the sending system to allow the use of a trust relationship.
     pub fn sender(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("sender") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -253,7 +287,7 @@ impl MessageHeader<'_> {
     /// The source application from which this message originated.
     pub fn source(&self) -> MessageHeader_Source {
         MessageHeader_Source {
-            value: &self.value["source"],
+            value: Cow::Borrowed(&self.value["source"]),
         }
     }
 
@@ -265,7 +299,9 @@ impl MessageHeader<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -365,5 +401,24 @@ impl MessageHeader<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MessageHeaderBuilder {
+    pub value: Value,
+}
+
+impl MessageHeaderBuilder {
+    pub fn build(&self) -> MessageHeader {
+        MessageHeader {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(source: MessageHeader_Source) -> MessageHeaderBuilder {
+        let mut __value: Value = json!({});
+        __value["source"] = json!(source.value);
+        return MessageHeaderBuilder { value: __value };
     }
 }

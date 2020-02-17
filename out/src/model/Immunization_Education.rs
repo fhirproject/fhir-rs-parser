@@ -2,21 +2,25 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes the event of a patient being administered a vaccine or a record of an
 /// immunization as reported by a patient, a clinician or another party.
 
 #[derive(Debug)]
 pub struct Immunization_Education<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Immunization_Education<'_> {
     /// Extensions for documentType
     pub fn _document_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl Immunization_Education<'_> {
     /// Extensions for presentationDate
     pub fn _presentation_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_presentationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +38,9 @@ impl Immunization_Education<'_> {
     /// Extensions for publicationDate
     pub fn _publication_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publicationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +48,9 @@ impl Immunization_Education<'_> {
     /// Extensions for reference
     pub fn _reference(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_reference") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +72,9 @@ impl Immunization_Education<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +105,9 @@ impl Immunization_Education<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -162,5 +176,23 @@ impl Immunization_Education<'_> {
         if let Some(_val) = self.publication_date() {}
         if let Some(_val) = self.reference() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Immunization_EducationBuilder {
+    pub value: Value,
+}
+
+impl Immunization_EducationBuilder {
+    pub fn build(&self) -> Immunization_Education {
+        Immunization_Education {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Immunization_EducationBuilder {
+        let mut __value: Value = json!({});
+        return Immunization_EducationBuilder { value: __value };
     }
 }

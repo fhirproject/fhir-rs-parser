@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
 /// Server for a particular version of FHIR that may be used as a statement of
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CapabilityStatement_Implementation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CapabilityStatement_Implementation<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl CapabilityStatement_Implementation<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl CapabilityStatement_Implementation<'_> {
     /// the data on the server at the specified URL.
     pub fn custodian(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("custodian") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +67,9 @@ impl CapabilityStatement_Implementation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +100,9 @@ impl CapabilityStatement_Implementation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -136,5 +148,23 @@ impl CapabilityStatement_Implementation<'_> {
         }
         if let Some(_val) = self.url() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CapabilityStatement_ImplementationBuilder {
+    pub value: Value,
+}
+
+impl CapabilityStatement_ImplementationBuilder {
+    pub fn build(&self) -> CapabilityStatement_Implementation {
+        CapabilityStatement_Implementation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CapabilityStatement_ImplementationBuilder {
+        let mut __value: Value = json!({});
+        return CapabilityStatement_ImplementationBuilder { value: __value };
     }
 }

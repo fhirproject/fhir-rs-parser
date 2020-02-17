@@ -4,14 +4,16 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The shelf-life and storage information for a medicinal product item or container
 /// can be described using this class.
 
 #[derive(Debug)]
 pub struct ProductShelfLife<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ProductShelfLife<'_> {
@@ -24,7 +26,9 @@ impl ProductShelfLife<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl ProductShelfLife<'_> {
     /// Unique identifier for the packaged Medicinal Product.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +69,9 @@ impl ProductShelfLife<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +84,7 @@ impl ProductShelfLife<'_> {
     /// and the symbol identifier shall be used.
     pub fn period(&self) -> Quantity {
         Quantity {
-            value: &self.value["period"],
+            value: Cow::Borrowed(&self.value["period"]),
         }
     }
 
@@ -87,7 +95,9 @@ impl ProductShelfLife<'_> {
         if let Some(Value::Array(val)) = self.value.get("specialPrecautionsForStorage") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +112,7 @@ impl ProductShelfLife<'_> {
     /// shall be specified.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -135,5 +145,25 @@ impl ProductShelfLife<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ProductShelfLifeBuilder {
+    pub value: Value,
+}
+
+impl ProductShelfLifeBuilder {
+    pub fn build(&self) -> ProductShelfLife {
+        ProductShelfLife {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(period: Quantity, fhir_type: CodeableConcept) -> ProductShelfLifeBuilder {
+        let mut __value: Value = json!({});
+        __value["period"] = json!(period.value);
+        __value["type"] = json!(fhir_type.value);
+        return ProductShelfLifeBuilder { value: __value };
     }
 }

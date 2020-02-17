@@ -14,7 +14,9 @@ use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The resource ChargeItem describes the provision of healthcare provider products
 /// for a certain patient, therefore referring not only to the product, but
@@ -24,7 +26,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ChargeItem<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ChargeItem<'_> {
@@ -33,7 +35,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("_definitionUri") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +47,9 @@ impl ChargeItem<'_> {
     /// Extensions for enteredDate
     pub fn _entered_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_enteredDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -51,7 +57,9 @@ impl ChargeItem<'_> {
     /// Extensions for factorOverride
     pub fn _factor_override(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factorOverride") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -59,7 +67,9 @@ impl ChargeItem<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -67,7 +77,9 @@ impl ChargeItem<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -75,7 +87,9 @@ impl ChargeItem<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +97,9 @@ impl ChargeItem<'_> {
     /// Extensions for overrideReason
     pub fn _override_reason(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_overrideReason") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +107,9 @@ impl ChargeItem<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -101,7 +119,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("account") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +133,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("bodysite") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +145,7 @@ impl ChargeItem<'_> {
     /// A code that identifies the charge, like a billing code.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -134,7 +156,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -144,7 +168,9 @@ impl ChargeItem<'_> {
     /// The encounter or episode of care that establishes the context for this event.
     pub fn context(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("context") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -152,7 +178,9 @@ impl ChargeItem<'_> {
     /// The financial cost center permits the tracking of charge attribution.
     pub fn cost_center(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("costCenter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -194,7 +222,9 @@ impl ChargeItem<'_> {
     /// The device, practitioner, etc. who entered the charge item.
     pub fn enterer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("enterer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -208,7 +238,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -237,7 +269,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -268,7 +302,9 @@ impl ChargeItem<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -289,7 +325,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -301,7 +339,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -319,7 +359,9 @@ impl ChargeItem<'_> {
     /// Date/time(s) or duration when the charged service was applied.
     pub fn occurrence_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -327,7 +369,9 @@ impl ChargeItem<'_> {
     /// Date/time(s) or duration when the charged service was applied.
     pub fn occurrence_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("occurrenceTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -347,7 +391,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -359,7 +405,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| ChargeItem_Performer { value: e })
+                    .map(|e| ChargeItem_Performer {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -369,7 +417,9 @@ impl ChargeItem<'_> {
     /// The organization requesting the service.
     pub fn performing_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("performingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -377,7 +427,9 @@ impl ChargeItem<'_> {
     /// Total price of the charge overriding the list price associated with the code.
     pub fn price_override(&self) -> Option<Money> {
         if let Some(val) = self.value.get("priceOverride") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -386,7 +438,9 @@ impl ChargeItem<'_> {
     /// code or reference to an instance.
     pub fn product_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("productCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -395,7 +449,9 @@ impl ChargeItem<'_> {
     /// code or reference to an instance.
     pub fn product_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("productReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -403,7 +459,9 @@ impl ChargeItem<'_> {
     /// Quantity of which the charge item has been serviced.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -413,7 +471,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("reason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -423,7 +483,9 @@ impl ChargeItem<'_> {
     /// The organization performing the service.
     pub fn requesting_organization(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requestingOrganization") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -433,7 +495,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("service") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -451,7 +515,7 @@ impl ChargeItem<'_> {
     /// The individual or set of individuals the action is being or was performed on.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -460,7 +524,9 @@ impl ChargeItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("supportingInformation") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -475,7 +541,9 @@ impl ChargeItem<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -667,6 +735,26 @@ impl ChargeItem<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ChargeItemBuilder {
+    pub value: Value,
+}
+
+impl ChargeItemBuilder {
+    pub fn build(&self) -> ChargeItem {
+        ChargeItem {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept, subject: Reference) -> ChargeItemBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        __value["subject"] = json!(subject.value);
+        return ChargeItemBuilder { value: __value };
     }
 }
 

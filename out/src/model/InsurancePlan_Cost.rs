@@ -3,13 +3,15 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details of a Health Insurance product/plan provided by an organization.
 
 #[derive(Debug)]
 pub struct InsurancePlan_Cost<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl InsurancePlan_Cost<'_> {
@@ -17,7 +19,9 @@ impl InsurancePlan_Cost<'_> {
     /// out-of-network; other).
     pub fn applicability(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("applicability") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl InsurancePlan_Cost<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -62,7 +68,9 @@ impl InsurancePlan_Cost<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +83,9 @@ impl InsurancePlan_Cost<'_> {
         if let Some(Value::Array(val)) = self.value.get("qualifiers") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +95,7 @@ impl InsurancePlan_Cost<'_> {
     /// Type of cost (copay; individual cap; family cap; coinsurance; deductible).
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -93,7 +103,9 @@ impl InsurancePlan_Cost<'_> {
     /// rather than currency, e.g. 10% coinsurance).
     pub fn value(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("value") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,5 +141,24 @@ impl InsurancePlan_Cost<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct InsurancePlan_CostBuilder {
+    pub value: Value,
+}
+
+impl InsurancePlan_CostBuilder {
+    pub fn build(&self) -> InsurancePlan_Cost {
+        InsurancePlan_Cost {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> InsurancePlan_CostBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return InsurancePlan_CostBuilder { value: __value };
     }
 }

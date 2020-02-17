@@ -14,21 +14,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes the event of a patient being administered a vaccine or a record of an
 /// immunization as reported by a patient, a clinician or another party.
 
 #[derive(Debug)]
 pub struct Immunization<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Immunization<'_> {
     /// Extensions for expirationDate
     pub fn _expiration_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expirationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl Immunization<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl Immunization<'_> {
     /// Extensions for isSubpotent
     pub fn _is_subpotent(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isSubpotent") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl Immunization<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +70,9 @@ impl Immunization<'_> {
     /// Extensions for lotNumber
     pub fn _lot_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lotNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl Immunization<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +90,9 @@ impl Immunization<'_> {
     /// Extensions for occurrenceString
     pub fn _occurrence_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +100,9 @@ impl Immunization<'_> {
     /// Extensions for primarySource
     pub fn _primary_source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_primarySource") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +110,9 @@ impl Immunization<'_> {
     /// Extensions for recorded
     pub fn _recorded(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recorded") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,7 +120,9 @@ impl Immunization<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -112,7 +134,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -122,7 +146,9 @@ impl Immunization<'_> {
     /// The quantity of vaccine product that was administered.
     pub fn dose_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("doseQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +159,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("education") {
             return Some(
                 val.into_iter()
-                    .map(|e| Immunization_Education { value: e })
+                    .map(|e| Immunization_Education {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -144,7 +172,9 @@ impl Immunization<'_> {
     /// the immunization was performed as part of.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -166,7 +196,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -179,7 +211,9 @@ impl Immunization<'_> {
     /// funds was actually administered).
     pub fn funding_source(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fundingSource") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -198,7 +232,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -236,7 +272,9 @@ impl Immunization<'_> {
     /// The service delivery location where the vaccine administration occurred.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -252,7 +290,9 @@ impl Immunization<'_> {
     /// Name of vaccine manufacturer.
     pub fn manufacturer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("manufacturer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -262,7 +302,9 @@ impl Immunization<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -283,7 +325,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -296,7 +340,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -322,7 +368,7 @@ impl Immunization<'_> {
     /// The patient who either received or did not receive the immunization.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
@@ -331,7 +377,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Immunization_Performer { value: e })
+                    .map(|e| Immunization_Performer {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -353,7 +401,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("programEligibility") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -366,7 +416,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("protocolApplied") {
             return Some(
                 val.into_iter()
-                    .map(|e| Immunization_ProtocolApplied { value: e })
+                    .map(|e| Immunization_ProtocolApplied {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -379,7 +431,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("reaction") {
             return Some(
                 val.into_iter()
-                    .map(|e| Immunization_Reaction { value: e })
+                    .map(|e| Immunization_Reaction {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -391,7 +445,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -404,7 +460,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -424,7 +482,9 @@ impl Immunization<'_> {
     /// information from the person who administered the vaccine.
     pub fn report_origin(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reportOrigin") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -432,7 +492,9 @@ impl Immunization<'_> {
     /// The path by which the vaccine product is taken into the body.
     pub fn route(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("route") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -440,7 +502,9 @@ impl Immunization<'_> {
     /// Body site where vaccine was administered.
     pub fn site(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("site") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -456,7 +520,9 @@ impl Immunization<'_> {
     /// Indicates the reason the immunization event was not performed.
     pub fn status_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("statusReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -466,7 +532,9 @@ impl Immunization<'_> {
         if let Some(Value::Array(val)) = self.value.get("subpotentReason") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -481,7 +549,9 @@ impl Immunization<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -489,7 +559,7 @@ impl Immunization<'_> {
     /// Vaccine that was administered or was to be administered.
     pub fn vaccine_code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["vaccineCode"],
+            value: Cow::Borrowed(&self.value["vaccineCode"]),
         }
     }
 
@@ -682,5 +752,25 @@ impl Immunization<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImmunizationBuilder {
+    pub value: Value,
+}
+
+impl ImmunizationBuilder {
+    pub fn build(&self) -> Immunization {
+        Immunization {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(patient: Reference, vaccine_code: CodeableConcept) -> ImmunizationBuilder {
+        let mut __value: Value = json!({});
+        __value["patient"] = json!(patient.value);
+        __value["vaccineCode"] = json!(vaccine_code.value);
+        return ImmunizationBuilder { value: __value };
     }
 }

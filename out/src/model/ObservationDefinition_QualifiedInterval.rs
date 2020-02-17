@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Set of definitional characteristics for a kind of observation or measurement
 /// produced or consumed by an orderable health care service.
 
 #[derive(Debug)]
 pub struct ObservationDefinition_QualifiedInterval<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ObservationDefinition_QualifiedInterval<'_> {
     /// Extensions for category
     pub fn _category(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_category") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// Extensions for condition
     pub fn _condition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_condition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// Extensions for gender
     pub fn _gender(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_gender") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +51,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// (e.g. number of weeks at term) if the meaning says so.
     pub fn age(&self) -> Option<Range> {
         if let Some(val) = self.value.get("age") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +63,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         if let Some(Value::Array(val)) = self.value.get("appliesTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +95,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// normal or therapeutic range.
     pub fn context(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("context") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +111,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -116,7 +132,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// of pregnancy.
     pub fn gestational_age(&self) -> Option<Range> {
         if let Some(val) = self.value.get("gestationalAge") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +163,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -156,7 +176,9 @@ impl ObservationDefinition_QualifiedInterval<'_> {
     /// two.
     pub fn range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("range") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -217,6 +239,24 @@ impl ObservationDefinition_QualifiedInterval<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ObservationDefinition_QualifiedIntervalBuilder {
+    pub value: Value,
+}
+
+impl ObservationDefinition_QualifiedIntervalBuilder {
+    pub fn build(&self) -> ObservationDefinition_QualifiedInterval {
+        ObservationDefinition_QualifiedInterval {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ObservationDefinition_QualifiedIntervalBuilder {
+        let mut __value: Value = json!({});
+        return ObservationDefinition_QualifiedIntervalBuilder { value: __value };
     }
 }
 

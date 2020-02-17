@@ -11,21 +11,25 @@ use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a device being used by a patient where the record is the result of a
 /// report from the patient or another clinician.
 
 #[derive(Debug)]
 pub struct DeviceUseStatement<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceUseStatement<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl DeviceUseStatement<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl DeviceUseStatement<'_> {
     /// Extensions for recordedOn
     pub fn _recorded_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recordedOn") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl DeviceUseStatement<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl DeviceUseStatement<'_> {
     /// Extensions for timingDateTime
     pub fn _timing_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_timingDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +93,9 @@ impl DeviceUseStatement<'_> {
     /// ( i.e. the target).
     pub fn body_site(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("bodySite") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -91,7 +107,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +122,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("derivedFrom") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,7 +134,7 @@ impl DeviceUseStatement<'_> {
     /// The details of the device used.
     pub fn device(&self) -> Reference {
         Reference {
-            value: &self.value["device"],
+            value: Cow::Borrowed(&self.value["device"]),
         }
     }
 
@@ -127,7 +147,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +170,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -179,7 +203,9 @@ impl DeviceUseStatement<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -200,7 +226,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +242,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -226,7 +256,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -238,7 +270,9 @@ impl DeviceUseStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -256,7 +290,9 @@ impl DeviceUseStatement<'_> {
     /// Who reported the device was being used by the patient.
     pub fn source(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("source") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -274,7 +310,7 @@ impl DeviceUseStatement<'_> {
     /// The patient who used the device.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -286,7 +322,9 @@ impl DeviceUseStatement<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -302,7 +340,9 @@ impl DeviceUseStatement<'_> {
     /// How often the device was used.
     pub fn timing_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("timingPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -310,7 +350,9 @@ impl DeviceUseStatement<'_> {
     /// How often the device was used.
     pub fn timing_timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("timingTiming") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -429,6 +471,26 @@ impl DeviceUseStatement<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceUseStatementBuilder {
+    pub value: Value,
+}
+
+impl DeviceUseStatementBuilder {
+    pub fn build(&self) -> DeviceUseStatement {
+        DeviceUseStatement {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(device: Reference, subject: Reference) -> DeviceUseStatementBuilder {
+        let mut __value: Value = json!({});
+        __value["device"] = json!(device.value);
+        __value["subject"] = json!(subject.value);
+        return DeviceUseStatementBuilder { value: __value };
     }
 }
 

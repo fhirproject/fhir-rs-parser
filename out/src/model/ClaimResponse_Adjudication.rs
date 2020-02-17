@@ -4,21 +4,25 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Money::Money;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse_Adjudication<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse_Adjudication<'_> {
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl ClaimResponse_Adjudication<'_> {
     /// Monetary amount associated with the category.
     pub fn amount(&self) -> Option<Money> {
         if let Some(val) = self.value.get("amount") {
-            return Some(Money { value: val });
+            return Some(Money {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,7 @@ impl ClaimResponse_Adjudication<'_> {
     /// benefit payable for this item.
     pub fn category(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["category"],
+            value: Cow::Borrowed(&self.value["category"]),
         }
     }
 
@@ -51,7 +57,9 @@ impl ClaimResponse_Adjudication<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +90,9 @@ impl ClaimResponse_Adjudication<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -93,7 +103,9 @@ impl ClaimResponse_Adjudication<'_> {
     /// variance from expected amount.
     pub fn reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -139,5 +151,24 @@ impl ClaimResponse_Adjudication<'_> {
         }
         if let Some(_val) = self.value() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponse_AdjudicationBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponse_AdjudicationBuilder {
+    pub fn build(&self) -> ClaimResponse_Adjudication {
+        ClaimResponse_Adjudication {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(category: CodeableConcept) -> ClaimResponse_AdjudicationBuilder {
+        let mut __value: Value = json!({});
+        __value["category"] = json!(category.value);
+        return ClaimResponse_AdjudicationBuilder { value: __value };
     }
 }

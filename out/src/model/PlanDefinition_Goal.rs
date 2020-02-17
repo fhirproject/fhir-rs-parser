@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::PlanDefinition_Target::PlanDefinition_Target;
 use crate::model::RelatedArtifact::RelatedArtifact;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource allows for the definition of various types of plans as a sharable,
 /// consumable, and executable artifact. The resource is general enough to support
@@ -13,7 +15,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct PlanDefinition_Goal<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl PlanDefinition_Goal<'_> {
@@ -23,7 +25,9 @@ impl PlanDefinition_Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("addresses") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -33,7 +37,9 @@ impl PlanDefinition_Goal<'_> {
     /// Indicates a category the goal falls within.
     pub fn category(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("category") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +49,7 @@ impl PlanDefinition_Goal<'_> {
     /// with child at wedding".
     pub fn description(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["description"],
+            value: Cow::Borrowed(&self.value["description"]),
         }
     }
 
@@ -54,7 +60,9 @@ impl PlanDefinition_Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("documentation") {
             return Some(
                 val.into_iter()
-                    .map(|e| RelatedArtifact { value: e })
+                    .map(|e| RelatedArtifact {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +78,9 @@ impl PlanDefinition_Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,7 +111,9 @@ impl PlanDefinition_Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -112,7 +124,9 @@ impl PlanDefinition_Goal<'_> {
     /// the defined goal.
     pub fn priority(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("priority") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -120,7 +134,9 @@ impl PlanDefinition_Goal<'_> {
     /// The event after which the goal should begin being pursued.
     pub fn start(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("start") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +146,9 @@ impl PlanDefinition_Goal<'_> {
         if let Some(Value::Array(val)) = self.value.get("target") {
             return Some(
                 val.into_iter()
-                    .map(|e| PlanDefinition_Target { value: e })
+                    .map(|e| PlanDefinition_Target {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -183,5 +201,24 @@ impl PlanDefinition_Goal<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct PlanDefinition_GoalBuilder {
+    pub value: Value,
+}
+
+impl PlanDefinition_GoalBuilder {
+    pub fn build(&self) -> PlanDefinition_Goal {
+        PlanDefinition_Goal {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(description: CodeableConcept) -> PlanDefinition_GoalBuilder {
+        let mut __value: Value = json!({});
+        __value["description"] = json!(description.value);
+        return PlanDefinition_GoalBuilder { value: __value };
     }
 }

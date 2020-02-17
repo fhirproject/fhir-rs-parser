@@ -4,21 +4,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use crate::model::Signature::Signature;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes validation requirements, source(s), status and dates for one or more
 /// elements.
 
 #[derive(Debug)]
 pub struct VerificationResult_Validator<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VerificationResult_Validator<'_> {
     /// Extensions for identityCertificate
     pub fn _identity_certificate(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identityCertificate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl VerificationResult_Validator<'_> {
     /// Signed assertion by the validator that they have validated the information.
     pub fn attestation_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("attestationSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl VerificationResult_Validator<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl VerificationResult_Validator<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +99,7 @@ impl VerificationResult_Validator<'_> {
     /// Reference to the organization validating information.
     pub fn organization(&self) -> Reference {
         Reference {
-            value: &self.value["organization"],
+            value: Cow::Borrowed(&self.value["organization"]),
         }
     }
 
@@ -120,5 +130,24 @@ impl VerificationResult_Validator<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VerificationResult_ValidatorBuilder {
+    pub value: Value,
+}
+
+impl VerificationResult_ValidatorBuilder {
+    pub fn build(&self) -> VerificationResult_Validator {
+        VerificationResult_Validator {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(organization: Reference) -> VerificationResult_ValidatorBuilder {
+        let mut __value: Value = json!({});
+        __value["organization"] = json!(organization.value);
+        return VerificationResult_ValidatorBuilder { value: __value };
     }
 }

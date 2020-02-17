@@ -13,7 +13,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::ResourceList::ResourceList;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A Capability Statement documents a set of capabilities (behaviors) of a FHIR
 /// Server for a particular version of FHIR that may be used as a statement of
@@ -22,14 +24,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CapabilityStatement<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CapabilityStatement<'_> {
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -37,7 +41,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +51,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for experimental
     pub fn _experimental(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -61,7 +71,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for fhirVersion
     pub fn _fhir_version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fhirVersion") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +83,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("_format") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -81,7 +95,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +105,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for kind
     pub fn _kind(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +115,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -105,7 +125,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -115,7 +137,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("_patchFormat") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -125,7 +149,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for publisher
     pub fn _publisher(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -133,7 +159,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for purpose
     pub fn _purpose(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -141,7 +169,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -149,7 +179,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -157,7 +189,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +199,9 @@ impl CapabilityStatement<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -176,7 +212,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -190,7 +228,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -234,7 +274,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("document") {
             return Some(
                 val.into_iter()
-                    .map(|e| CapabilityStatement_Document { value: e })
+                    .map(|e| CapabilityStatement_Document {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -260,7 +302,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -304,7 +348,9 @@ impl CapabilityStatement<'_> {
     /// capabilities of a software program.
     pub fn implementation(&self) -> Option<CapabilityStatement_Implementation> {
         if let Some(val) = self.value.get("implementation") {
-            return Some(CapabilityStatement_Implementation { value: val });
+            return Some(CapabilityStatement_Implementation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -370,7 +416,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -400,7 +448,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("messaging") {
             return Some(
                 val.into_iter()
-                    .map(|e| CapabilityStatement_Messaging { value: e })
+                    .map(|e| CapabilityStatement_Messaging {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -412,7 +462,9 @@ impl CapabilityStatement<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -433,7 +485,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -486,7 +540,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("rest") {
             return Some(
                 val.into_iter()
-                    .map(|e| CapabilityStatement_Rest { value: e })
+                    .map(|e| CapabilityStatement_Rest {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -498,7 +554,9 @@ impl CapabilityStatement<'_> {
     /// version, independent of an installation.
     pub fn software(&self) -> Option<CapabilityStatement_Software> {
         if let Some(val) = self.value.get("software") {
-            return Some(CapabilityStatement_Software { value: val });
+            return Some(CapabilityStatement_Software {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -520,7 +578,9 @@ impl CapabilityStatement<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -556,7 +616,9 @@ impl CapabilityStatement<'_> {
         if let Some(Value::Array(val)) = self.value.get("useContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| UsageContext { value: e })
+                    .map(|e| UsageContext {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -759,6 +821,24 @@ impl CapabilityStatement<'_> {
         }
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CapabilityStatementBuilder {
+    pub value: Value,
+}
+
+impl CapabilityStatementBuilder {
+    pub fn build(&self) -> CapabilityStatement {
+        CapabilityStatement {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CapabilityStatementBuilder {
+        let mut __value: Value = json!({});
+        return CapabilityStatementBuilder { value: __value };
     }
 }
 

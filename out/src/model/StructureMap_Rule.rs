@@ -5,20 +5,24 @@ use crate::model::Extension::Extension;
 use crate::model::StructureMap_Dependent::StructureMap_Dependent;
 use crate::model::StructureMap_Source::StructureMap_Source;
 use crate::model::StructureMap_Target::StructureMap_Target;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A Map of relationships between 2 structures that can be used to transform data.
 
 #[derive(Debug)]
 pub struct StructureMap_Rule<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl StructureMap_Rule<'_> {
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl StructureMap_Rule<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl StructureMap_Rule<'_> {
         if let Some(Value::Array(val)) = self.value.get("dependent") {
             return Some(
                 val.into_iter()
-                    .map(|e| StructureMap_Dependent { value: e })
+                    .map(|e| StructureMap_Dependent {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -60,7 +68,9 @@ impl StructureMap_Rule<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +101,9 @@ impl StructureMap_Rule<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -111,7 +123,9 @@ impl StructureMap_Rule<'_> {
         if let Some(Value::Array(val)) = self.value.get("rule") {
             return Some(
                 val.into_iter()
-                    .map(|e| StructureMap_Rule { value: e })
+                    .map(|e| StructureMap_Rule {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -126,7 +140,9 @@ impl StructureMap_Rule<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| StructureMap_Source { value: e })
+            .map(|e| StructureMap_Source {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -135,7 +151,9 @@ impl StructureMap_Rule<'_> {
         if let Some(Value::Array(val)) = self.value.get("target") {
             return Some(
                 val.into_iter()
-                    .map(|e| StructureMap_Target { value: e })
+                    .map(|e| StructureMap_Target {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -190,5 +208,24 @@ impl StructureMap_Rule<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct StructureMap_RuleBuilder {
+    pub value: Value,
+}
+
+impl StructureMap_RuleBuilder {
+    pub fn build(&self) -> StructureMap_Rule {
+        StructureMap_Rule {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(source: Vec<StructureMap_Source>) -> StructureMap_RuleBuilder {
+        let mut __value: Value = json!({});
+        __value["source"] = json!(source.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return StructureMap_RuleBuilder { value: __value };
     }
 }

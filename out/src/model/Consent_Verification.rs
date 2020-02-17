@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
 /// recipient(s) or recipient role(s) to perform one or more actions within a given
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Consent_Verification<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Consent_Verification<'_> {
     /// Extensions for verificationDate
     pub fn _verification_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_verificationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Consent_Verification<'_> {
     /// Extensions for verified
     pub fn _verified(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_verified") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl Consent_Verification<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +79,9 @@ impl Consent_Verification<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -97,7 +107,9 @@ impl Consent_Verification<'_> {
     /// Who verified the instruction (Patient, Relative or other Authorized Person).
     pub fn verified_with(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("verifiedWith") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,5 +144,23 @@ impl Consent_Verification<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Consent_VerificationBuilder {
+    pub value: Value,
+}
+
+impl Consent_VerificationBuilder {
+    pub fn build(&self) -> Consent_Verification {
+        Consent_Verification {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Consent_VerificationBuilder {
+        let mut __value: Value = json!({});
+        return Consent_VerificationBuilder { value: __value };
     }
 }

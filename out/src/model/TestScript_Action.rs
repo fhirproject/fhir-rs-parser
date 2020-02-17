@@ -3,14 +3,16 @@
 use crate::model::Extension::Extension;
 use crate::model::TestScript_Assert::TestScript_Assert;
 use crate::model::TestScript_Operation::TestScript_Operation;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript_Action<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript_Action<'_> {
@@ -18,7 +20,9 @@ impl TestScript_Action<'_> {
     /// test behaves appropriately.
     pub fn assert(&self) -> Option<TestScript_Assert> {
         if let Some(val) = self.value.get("assert") {
-            return Some(TestScript_Assert { value: val });
+            return Some(TestScript_Assert {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl TestScript_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl TestScript_Action<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +81,9 @@ impl TestScript_Action<'_> {
     /// The operation to perform.
     pub fn operation(&self) -> Option<TestScript_Operation> {
         if let Some(val) = self.value.get("operation") {
-            return Some(TestScript_Operation { value: val });
+            return Some(TestScript_Operation {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -101,5 +111,23 @@ impl TestScript_Action<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScript_ActionBuilder {
+    pub value: Value,
+}
+
+impl TestScript_ActionBuilder {
+    pub fn build(&self) -> TestScript_Action {
+        TestScript_Action {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TestScript_ActionBuilder {
+        let mut __value: Value = json!({});
+        return TestScript_ActionBuilder { value: __value };
     }
 }

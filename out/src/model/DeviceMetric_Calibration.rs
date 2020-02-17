@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes a measurement, calculation or setting capability of a medical device.
 
 #[derive(Debug)]
 pub struct DeviceMetric_Calibration<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceMetric_Calibration<'_> {
     /// Extensions for state
     pub fn _state(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_state") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl DeviceMetric_Calibration<'_> {
     /// Extensions for time
     pub fn _time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_time") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl DeviceMetric_Calibration<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +53,9 @@ impl DeviceMetric_Calibration<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -76,7 +86,9 @@ impl DeviceMetric_Calibration<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -138,6 +150,24 @@ impl DeviceMetric_Calibration<'_> {
         if let Some(_val) = self.time() {}
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceMetric_CalibrationBuilder {
+    pub value: Value,
+}
+
+impl DeviceMetric_CalibrationBuilder {
+    pub fn build(&self) -> DeviceMetric_Calibration {
+        DeviceMetric_Calibration {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DeviceMetric_CalibrationBuilder {
+        let mut __value: Value = json!({});
+        return DeviceMetric_CalibrationBuilder { value: __value };
     }
 }
 

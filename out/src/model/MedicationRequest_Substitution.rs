@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An order or request for both supply of the medication and the instructions for
 /// administration of the medication to a patient. The resource is called
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct MedicationRequest_Substitution<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationRequest_Substitution<'_> {
     /// Extensions for allowedBoolean
     pub fn _allowed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowedBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +42,9 @@ impl MedicationRequest_Substitution<'_> {
     /// prescribed.
     pub fn allowed_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("allowedCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +58,9 @@ impl MedicationRequest_Substitution<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +91,9 @@ impl MedicationRequest_Substitution<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +104,9 @@ impl MedicationRequest_Substitution<'_> {
     /// be performed.
     pub fn reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("reason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -128,5 +140,23 @@ impl MedicationRequest_Substitution<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationRequest_SubstitutionBuilder {
+    pub value: Value,
+}
+
+impl MedicationRequest_SubstitutionBuilder {
+    pub fn build(&self) -> MedicationRequest_Substitution {
+        MedicationRequest_Substitution {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicationRequest_SubstitutionBuilder {
+        let mut __value: Value = json!({});
+        return MedicationRequest_SubstitutionBuilder { value: __value };
     }
 }

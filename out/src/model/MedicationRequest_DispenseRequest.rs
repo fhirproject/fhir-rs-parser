@@ -7,7 +7,9 @@ use crate::model::MedicationRequest_InitialFill::MedicationRequest_InitialFill;
 use crate::model::Period::Period;
 use crate::model::Quantity::Quantity;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An order or request for both supply of the medication and the instructions for
 /// administration of the medication to a patient. The resource is called
@@ -17,14 +19,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct MedicationRequest_DispenseRequest<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicationRequest_DispenseRequest<'_> {
     /// Extensions for numberOfRepeatsAllowed
     pub fn _number_of_repeats_allowed(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfRepeatsAllowed") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// The minimum period of time that must occur between dispenses of the medication.
     pub fn dispense_interval(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("dispenseInterval") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// used, or the length of time the dispense is expected to last.
     pub fn expected_supply_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("expectedSupplyDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl MedicationRequest_DispenseRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -74,7 +84,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// Indicates the quantity or duration for the first dispense of the medication.
     pub fn initial_fill(&self) -> Option<MedicationRequest_InitialFill> {
         if let Some(val) = self.value.get("initialFill") {
-            return Some(MedicationRequest_InitialFill { value: val });
+            return Some(MedicationRequest_InitialFill {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -94,7 +106,9 @@ impl MedicationRequest_DispenseRequest<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +132,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// Indicates the intended dispensing Organization specified by the prescriber.
     pub fn performer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("performer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +142,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// The amount that is to be dispensed for one fill.
     pub fn quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("quantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -135,7 +153,9 @@ impl MedicationRequest_DispenseRequest<'_> {
     /// Prescription).
     pub fn validity_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("validityPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -189,5 +209,23 @@ impl MedicationRequest_DispenseRequest<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicationRequest_DispenseRequestBuilder {
+    pub value: Value,
+}
+
+impl MedicationRequest_DispenseRequestBuilder {
+    pub fn build(&self) -> MedicationRequest_DispenseRequest {
+        MedicationRequest_DispenseRequest {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicationRequest_DispenseRequestBuilder {
+        let mut __value: Value = json!({});
+        return MedicationRequest_DispenseRequestBuilder { value: __value };
     }
 }

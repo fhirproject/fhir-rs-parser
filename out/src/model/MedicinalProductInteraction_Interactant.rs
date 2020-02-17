@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The interactions of the medicinal product with other medicinal products, or
 /// other forms of interactions.
 
 #[derive(Debug)]
 pub struct MedicinalProductInteraction_Interactant<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductInteraction_Interactant<'_> {
@@ -23,7 +25,9 @@ impl MedicinalProductInteraction_Interactant<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -42,7 +46,9 @@ impl MedicinalProductInteraction_Interactant<'_> {
     /// The specific medication, food or laboratory test that interacts.
     pub fn item_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("itemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +56,9 @@ impl MedicinalProductInteraction_Interactant<'_> {
     /// The specific medication, food or laboratory test that interacts.
     pub fn item_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("itemReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -70,7 +78,9 @@ impl MedicinalProductInteraction_Interactant<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,5 +110,23 @@ impl MedicinalProductInteraction_Interactant<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductInteraction_InteractantBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductInteraction_InteractantBuilder {
+    pub fn build(&self) -> MedicinalProductInteraction_Interactant {
+        MedicinalProductInteraction_Interactant {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MedicinalProductInteraction_InteractantBuilder {
+        let mut __value: Value = json!({});
+        return MedicinalProductInteraction_InteractantBuilder { value: __value };
     }
 }

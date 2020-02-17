@@ -4,7 +4,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ImplementationGuide_Page1::ImplementationGuide_Page1;
 use crate::model::ImplementationGuide_Resource1::ImplementationGuide_Resource1;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of rules of how a particular interoperability or standards problem is
 /// solved - typically through the use of FHIR resources. This resource is used to
@@ -13,7 +15,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Manifest<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ImplementationGuide_Manifest<'_> {
@@ -22,7 +24,9 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(Value::Array(val)) = self.value.get("_image") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -34,7 +38,9 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(Value::Array(val)) = self.value.get("_other") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -44,7 +50,9 @@ impl ImplementationGuide_Manifest<'_> {
     /// Extensions for rendering
     pub fn _rendering(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rendering") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +66,9 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,7 +111,9 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -127,7 +139,9 @@ impl ImplementationGuide_Manifest<'_> {
         if let Some(Value::Array(val)) = self.value.get("page") {
             return Some(
                 val.into_iter()
-                    .map(|e| ImplementationGuide_Page1 { value: e })
+                    .map(|e| ImplementationGuide_Page1 {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -154,7 +168,9 @@ impl ImplementationGuide_Manifest<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ImplementationGuide_Resource1 { value: e })
+            .map(|e| ImplementationGuide_Resource1 {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -206,5 +222,26 @@ impl ImplementationGuide_Manifest<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ImplementationGuide_ManifestBuilder {
+    pub value: Value,
+}
+
+impl ImplementationGuide_ManifestBuilder {
+    pub fn build(&self) -> ImplementationGuide_Manifest {
+        ImplementationGuide_Manifest {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        resource: Vec<ImplementationGuide_Resource1>,
+    ) -> ImplementationGuide_ManifestBuilder {
+        let mut __value: Value = json!({});
+        __value["resource"] = json!(resource.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return ImplementationGuide_ManifestBuilder { value: __value };
     }
 }

@@ -11,21 +11,25 @@ use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
 use crate::model::RiskAssessment_Prediction::RiskAssessment_Prediction;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An assessment of the likely outcome(s) for a patient or other subject as well as
 /// the likelihood of each outcome.
 
 #[derive(Debug)]
 pub struct RiskAssessment<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RiskAssessment<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl RiskAssessment<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl RiskAssessment<'_> {
     /// Extensions for mitigation
     pub fn _mitigation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mitigation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl RiskAssessment<'_> {
     /// Extensions for occurrenceDateTime
     pub fn _occurrence_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_occurrenceDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl RiskAssessment<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl RiskAssessment<'_> {
     /// A reference to the request that is fulfilled by this risk assessment.
     pub fn based_on(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("basedOn") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +90,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("basis") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +102,9 @@ impl RiskAssessment<'_> {
     /// The type of the risk assessment performed.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +113,9 @@ impl RiskAssessment<'_> {
     /// condition being assessed.
     pub fn condition(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("condition") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -107,7 +127,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +139,9 @@ impl RiskAssessment<'_> {
     /// The encounter where the assessment was performed.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -131,7 +155,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -152,7 +178,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -183,7 +211,9 @@ impl RiskAssessment<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -191,7 +221,9 @@ impl RiskAssessment<'_> {
     /// The algorithm, process or mechanism used to evaluate the risk.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -220,7 +252,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -232,7 +266,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -250,7 +286,9 @@ impl RiskAssessment<'_> {
     /// The date (and possibly time) the risk assessment was performed.
     pub fn occurrence_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("occurrencePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -259,7 +297,9 @@ impl RiskAssessment<'_> {
     /// Procedure.
     pub fn parent(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("parent") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -267,7 +307,9 @@ impl RiskAssessment<'_> {
     /// The provider or software application that performed the assessment.
     pub fn performer(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("performer") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -277,7 +319,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("prediction") {
             return Some(
                 val.into_iter()
-                    .map(|e| RiskAssessment_Prediction { value: e })
+                    .map(|e| RiskAssessment_Prediction {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -289,7 +333,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -301,7 +347,9 @@ impl RiskAssessment<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -319,7 +367,7 @@ impl RiskAssessment<'_> {
     /// The patient or group the risk assessment applies to.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -331,7 +379,9 @@ impl RiskAssessment<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -467,5 +517,24 @@ impl RiskAssessment<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RiskAssessmentBuilder {
+    pub value: Value,
+}
+
+impl RiskAssessmentBuilder {
+    pub fn build(&self) -> RiskAssessment {
+        RiskAssessment {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(subject: Reference) -> RiskAssessmentBuilder {
+        let mut __value: Value = json!({});
+        __value["subject"] = json!(subject.value);
+        return RiskAssessmentBuilder { value: __value };
     }
 }

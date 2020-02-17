@@ -6,21 +6,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::VisionPrescription_Prism::VisionPrescription_Prism;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An authorization for the provision of glasses and/or contact lenses to a
 /// patient.
 
 #[derive(Debug)]
 pub struct VisionPrescription_LensSpecification<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for add
     pub fn _add(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_add") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for axis
     pub fn _axis(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_axis") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for backCurve
     pub fn _back_curve(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_backCurve") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for brand
     pub fn _brand(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_brand") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +62,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for color
     pub fn _color(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_color") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +72,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for cylinder
     pub fn _cylinder(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cylinder") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +82,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for diameter
     pub fn _diameter(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_diameter") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +92,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for eye
     pub fn _eye(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_eye") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +102,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for power
     pub fn _power(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_power") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +112,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// Extensions for sphere
     pub fn _sphere(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sphere") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -156,7 +178,9 @@ impl VisionPrescription_LensSpecification<'_> {
     /// The recommended maximum wear period for the lens.
     pub fn duration(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("duration") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -170,7 +194,9 @@ impl VisionPrescription_LensSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -209,7 +235,9 @@ impl VisionPrescription_LensSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -221,7 +249,9 @@ impl VisionPrescription_LensSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -241,7 +271,9 @@ impl VisionPrescription_LensSpecification<'_> {
         if let Some(Value::Array(val)) = self.value.get("prism") {
             return Some(
                 val.into_iter()
-                    .map(|e| VisionPrescription_Prism { value: e })
+                    .map(|e| VisionPrescription_Prism {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -252,7 +284,7 @@ impl VisionPrescription_LensSpecification<'_> {
     /// patient.
     pub fn product(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["product"],
+            value: Cow::Borrowed(&self.value["product"]),
         }
     }
 
@@ -355,6 +387,25 @@ impl VisionPrescription_LensSpecification<'_> {
         }
         if let Some(_val) = self.sphere() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VisionPrescription_LensSpecificationBuilder {
+    pub value: Value,
+}
+
+impl VisionPrescription_LensSpecificationBuilder {
+    pub fn build(&self) -> VisionPrescription_LensSpecification {
+        VisionPrescription_LensSpecification {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(product: CodeableConcept) -> VisionPrescription_LensSpecificationBuilder {
+        let mut __value: Value = json!({});
+        __value["product"] = json!(product.value);
+        return VisionPrescription_LensSpecificationBuilder { value: __value };
     }
 }
 

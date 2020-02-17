@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
 use crate::model::Measure_Component::Measure_Component;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The Measure resource provides the definition of a quality measure.
 
 #[derive(Debug)]
 pub struct Measure_Stratifier<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Measure_Stratifier<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Measure_Stratifier<'_> {
     /// terminology, allowing stratifiers to be correlated across measures.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl Measure_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("component") {
             return Some(
                 val.into_iter()
-                    .map(|e| Measure_Component { value: e })
+                    .map(|e| Measure_Component {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -52,7 +60,9 @@ impl Measure_Stratifier<'_> {
     /// be a path to a stratifier element.
     pub fn criteria(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("criteria") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +84,9 @@ impl Measure_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +117,9 @@ impl Measure_Stratifier<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -146,5 +160,23 @@ impl Measure_Stratifier<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Measure_StratifierBuilder {
+    pub value: Value,
+}
+
+impl Measure_StratifierBuilder {
+    pub fn build(&self) -> Measure_Stratifier {
+        Measure_Stratifier {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Measure_StratifierBuilder {
+        let mut __value: Value = json!({});
+        return Measure_StratifierBuilder { value: __value };
     }
 }

@@ -7,20 +7,24 @@ use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::Ratio::Ratio;
 use crate::model::Timing::Timing;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Indicates how the medication is/was taken or should be taken by the patient.
 
 #[derive(Debug)]
 pub struct Dosage<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Dosage<'_> {
     /// Extensions for asNeededBoolean
     pub fn _as_needed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_asNeededBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl Dosage<'_> {
     /// Extensions for patientInstruction
     pub fn _patient_instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_patientInstruction") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl Dosage<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl Dosage<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("additionalInstruction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +91,9 @@ impl Dosage<'_> {
     /// the Medication (CodeableConcept).
     pub fn as_needed_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("asNeededCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +103,9 @@ impl Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("doseAndRate") {
             return Some(
                 val.into_iter()
-                    .map(|e| Dosage_DoseAndRate { value: e })
+                    .map(|e| Dosage_DoseAndRate {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +121,9 @@ impl Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -124,7 +142,9 @@ impl Dosage<'_> {
     /// Upper limit on medication per administration.
     pub fn max_dose_per_administration(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxDosePerAdministration") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +152,9 @@ impl Dosage<'_> {
     /// Upper limit on medication per lifetime of the patient.
     pub fn max_dose_per_lifetime(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("maxDosePerLifetime") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -140,7 +162,9 @@ impl Dosage<'_> {
     /// Upper limit on medication per unit of time.
     pub fn max_dose_per_period(&self) -> Option<Ratio> {
         if let Some(val) = self.value.get("maxDosePerPeriod") {
-            return Some(Ratio { value: val });
+            return Some(Ratio {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -148,7 +172,9 @@ impl Dosage<'_> {
     /// Technique for administering medication.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -168,7 +194,9 @@ impl Dosage<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -186,7 +214,9 @@ impl Dosage<'_> {
     /// How drug should enter body.
     pub fn route(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("route") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -203,7 +233,9 @@ impl Dosage<'_> {
     /// Body site to administer to.
     pub fn site(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("site") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -219,7 +251,9 @@ impl Dosage<'_> {
     /// When medication should be administered.
     pub fn timing(&self) -> Option<Timing> {
         if let Some(val) = self.value.get("timing") {
-            return Some(Timing { value: val });
+            return Some(Timing {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -311,5 +345,23 @@ impl Dosage<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DosageBuilder {
+    pub value: Value,
+}
+
+impl DosageBuilder {
+    pub fn build(&self) -> Dosage {
+        Dosage {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> DosageBuilder {
+        let mut __value: Value = json!({});
+        return DosageBuilder { value: __value };
     }
 }

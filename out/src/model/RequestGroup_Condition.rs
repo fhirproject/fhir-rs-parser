@@ -3,21 +3,25 @@
 use crate::model::Element::Element;
 use crate::model::Expression::Expression;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A group of related requests that can be used to capture intended activities that
 /// have inter-dependencies such as "give this medication after that one".
 
 #[derive(Debug)]
 pub struct RequestGroup_Condition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RequestGroup_Condition<'_> {
     /// Extensions for kind
     pub fn _kind(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_kind") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl RequestGroup_Condition<'_> {
     /// condition is satisfied.
     pub fn expression(&self) -> Option<Expression> {
         if let Some(val) = self.value.get("expression") {
-            return Some(Expression { value: val });
+            return Some(Expression {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl RequestGroup_Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl RequestGroup_Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,5 +120,23 @@ impl RequestGroup_Condition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RequestGroup_ConditionBuilder {
+    pub value: Value,
+}
+
+impl RequestGroup_ConditionBuilder {
+    pub fn build(&self) -> RequestGroup_Condition {
+        RequestGroup_Condition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RequestGroup_ConditionBuilder {
+        let mut __value: Value = json!({});
+        return RequestGroup_ConditionBuilder { value: __value };
     }
 }

@@ -18,21 +18,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse<'_> {
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +44,9 @@ impl ClaimResponse<'_> {
     /// Extensions for disposition
     pub fn _disposition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_disposition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl ClaimResponse<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl ClaimResponse<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +74,9 @@ impl ClaimResponse<'_> {
     /// Extensions for outcome
     pub fn _outcome(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +84,9 @@ impl ClaimResponse<'_> {
     /// Extensions for preAuthRef
     pub fn _pre_auth_ref(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preAuthRef") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -80,7 +94,9 @@ impl ClaimResponse<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl ClaimResponse<'_> {
     /// Extensions for use
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +116,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("addItem") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_AddItem { value: e })
+                    .map(|e| ClaimResponse_AddItem {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -111,7 +131,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("adjudication") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Adjudication { value: e })
+                    .map(|e| ClaimResponse_Adjudication {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +145,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("communicationRequest") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -137,7 +161,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -165,7 +191,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("error") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Error { value: e })
+                    .map(|e| ClaimResponse_Error {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -181,7 +209,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -191,7 +221,9 @@ impl ClaimResponse<'_> {
     /// The actual form, by reference or inclusion, for printing the content or an EOB.
     pub fn form(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("form") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -199,7 +231,9 @@ impl ClaimResponse<'_> {
     /// A code for the form to be used for printing the content.
     pub fn form_code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("formCode") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -208,7 +242,9 @@ impl ClaimResponse<'_> {
     /// benefits payable have been reserved and for whom.
     pub fn funds_reserve(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("fundsReserve") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -227,7 +263,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -251,7 +289,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("insurance") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Insurance { value: e })
+                    .map(|e| ClaimResponse_Insurance {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -261,7 +301,7 @@ impl ClaimResponse<'_> {
     /// The party responsible for authorization, adjudication and reimbursement.
     pub fn insurer(&self) -> Reference {
         Reference {
-            value: &self.value["insurer"],
+            value: Cow::Borrowed(&self.value["insurer"]),
         }
     }
 
@@ -271,7 +311,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Item { value: e })
+                    .map(|e| ClaimResponse_Item {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -291,7 +333,9 @@ impl ClaimResponse<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -312,7 +356,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -331,14 +377,16 @@ impl ClaimResponse<'_> {
     /// or are being considered and for whom actual for facast reimbursement is sought.
     pub fn patient(&self) -> Reference {
         Reference {
-            value: &self.value["patient"],
+            value: Cow::Borrowed(&self.value["patient"]),
         }
     }
 
     /// Type of Party to be reimbursed: subscriber, provider, other.
     pub fn payee_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("payeeType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -346,7 +394,9 @@ impl ClaimResponse<'_> {
     /// Payment details for the adjudication of the claim.
     pub fn payment(&self) -> Option<ClaimResponse_Payment> {
         if let Some(val) = self.value.get("payment") {
-            return Some(ClaimResponse_Payment { value: val });
+            return Some(ClaimResponse_Payment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -354,7 +404,9 @@ impl ClaimResponse<'_> {
     /// The time frame during which this authorization is effective.
     pub fn pre_auth_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("preAuthPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -373,7 +425,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("processNote") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_ProcessNote { value: e })
+                    .map(|e| ClaimResponse_ProcessNote {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -383,7 +437,9 @@ impl ClaimResponse<'_> {
     /// Original request resource reference.
     pub fn request(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("request") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -392,7 +448,9 @@ impl ClaimResponse<'_> {
     /// preauthorization.
     pub fn requestor(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("requestor") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -409,7 +467,9 @@ impl ClaimResponse<'_> {
     /// information such as Inpatient vs Outpatient and/or a specialty service.
     pub fn sub_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -422,7 +482,9 @@ impl ClaimResponse<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -432,7 +494,9 @@ impl ClaimResponse<'_> {
         if let Some(Value::Array(val)) = self.value.get("total") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Total { value: e })
+                    .map(|e| ClaimResponse_Total {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -443,7 +507,7 @@ impl ClaimResponse<'_> {
     /// information such as Inpatient vs Outpatient and/or a specialty service.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -634,5 +698,30 @@ impl ClaimResponse<'_> {
         }
         if let Some(_val) = self.fhir_use() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponseBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponseBuilder {
+    pub fn build(&self) -> ClaimResponse {
+        ClaimResponse {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        insurer: Reference,
+        patient: Reference,
+        fhir_type: CodeableConcept,
+    ) -> ClaimResponseBuilder {
+        let mut __value: Value = json!({});
+        __value["insurer"] = json!(insurer.value);
+        __value["patient"] = json!(patient.value);
+        __value["type"] = json!(fhir_type.value);
+        return ClaimResponseBuilder { value: __value };
     }
 }

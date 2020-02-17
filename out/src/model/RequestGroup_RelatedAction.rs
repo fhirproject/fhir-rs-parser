@@ -4,21 +4,25 @@ use crate::model::Duration::Duration;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A group of related requests that can be used to capture intended activities that
 /// have inter-dependencies such as "give this medication after that one".
 
 #[derive(Debug)]
 pub struct RequestGroup_RelatedAction<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RequestGroup_RelatedAction<'_> {
     /// Extensions for actionId
     pub fn _action_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actionId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl RequestGroup_RelatedAction<'_> {
     /// Extensions for relationship
     pub fn _relationship(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relationship") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl RequestGroup_RelatedAction<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl RequestGroup_RelatedAction<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +100,9 @@ impl RequestGroup_RelatedAction<'_> {
     /// 60 minutes before.
     pub fn offset_duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("offsetDuration") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -99,7 +111,9 @@ impl RequestGroup_RelatedAction<'_> {
     /// 60 minutes before.
     pub fn offset_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("offsetRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -147,5 +161,23 @@ impl RequestGroup_RelatedAction<'_> {
         }
         if let Some(_val) = self.relationship() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RequestGroup_RelatedActionBuilder {
+    pub value: Value,
+}
+
+impl RequestGroup_RelatedActionBuilder {
+    pub fn build(&self) -> RequestGroup_RelatedAction {
+        RequestGroup_RelatedAction {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RequestGroup_RelatedActionBuilder {
+        let mut __value: Value = json!({});
+        return RequestGroup_RelatedActionBuilder { value: __value };
     }
 }

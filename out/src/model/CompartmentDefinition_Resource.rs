@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A compartment definition that defines how resources are accessed on a server.
 
 #[derive(Debug)]
 pub struct CompartmentDefinition_Resource<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CompartmentDefinition_Resource<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl CompartmentDefinition_Resource<'_> {
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl CompartmentDefinition_Resource<'_> {
         if let Some(Value::Array(val)) = self.value.get("_param") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +73,9 @@ impl CompartmentDefinition_Resource<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -96,7 +106,9 @@ impl CompartmentDefinition_Resource<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,5 +162,23 @@ impl CompartmentDefinition_Resource<'_> {
             _val.into_iter().for_each(|_e| {});
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CompartmentDefinition_ResourceBuilder {
+    pub value: Value,
+}
+
+impl CompartmentDefinition_ResourceBuilder {
+    pub fn build(&self) -> CompartmentDefinition_Resource {
+        CompartmentDefinition_Resource {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CompartmentDefinition_ResourceBuilder {
+        let mut __value: Value = json!({});
+        return CompartmentDefinition_ResourceBuilder { value: __value };
     }
 }

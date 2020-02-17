@@ -4,7 +4,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Represents a defined collection of entities that may be discussed or acted upon
 /// collectively but which are not expected to act collectively, and are not
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Group_Member<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Group_Member<'_> {
     /// Extensions for inactive
     pub fn _inactive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_inactive") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,7 @@ impl Group_Member<'_> {
     /// Group.type. If the entity is another group, then the type must be the same.
     pub fn entity(&self) -> Reference {
         Reference {
-            value: &self.value["entity"],
+            value: Cow::Borrowed(&self.value["entity"]),
         }
     }
 
@@ -42,7 +46,9 @@ impl Group_Member<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +88,9 @@ impl Group_Member<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +100,9 @@ impl Group_Member<'_> {
     /// The period that the member was in the group, if known.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -124,5 +134,24 @@ impl Group_Member<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Group_MemberBuilder {
+    pub value: Value,
+}
+
+impl Group_MemberBuilder {
+    pub fn build(&self) -> Group_Member {
+        Group_Member {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(entity: Reference) -> Group_MemberBuilder {
+        let mut __value: Value = json!({});
+        __value["entity"] = json!(entity.value);
+        return Group_MemberBuilder { value: __value };
     }
 }

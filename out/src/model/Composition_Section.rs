@@ -5,7 +5,9 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A set of healthcare-related information that is assembled together into a single
 /// logical package that provides a single coherent statement of meaning,
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Composition_Section<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Composition_Section<'_> {
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl Composition_Section<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -45,7 +51,9 @@ impl Composition_Section<'_> {
         if let Some(Value::Array(val)) = self.value.get("author") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -56,7 +64,9 @@ impl Composition_Section<'_> {
     /// be consistent with the section title.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +75,9 @@ impl Composition_Section<'_> {
     /// some text explaining the empty reason.
     pub fn empty_reason(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("emptyReason") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +88,9 @@ impl Composition_Section<'_> {
         if let Some(Value::Array(val)) = self.value.get("entry") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +106,9 @@ impl Composition_Section<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -109,7 +125,9 @@ impl Composition_Section<'_> {
     /// logical subject (few resources).
     pub fn focus(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("focus") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -149,7 +167,9 @@ impl Composition_Section<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +179,9 @@ impl Composition_Section<'_> {
     /// Specifies the order applied to the items in the section entries.
     pub fn ordered_by(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("orderedBy") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -169,7 +191,9 @@ impl Composition_Section<'_> {
         if let Some(Value::Array(val)) = self.value.get("section") {
             return Some(
                 val.into_iter()
-                    .map(|e| Composition_Section { value: e })
+                    .map(|e| Composition_Section {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -182,7 +206,9 @@ impl Composition_Section<'_> {
     /// make it "clinically safe" for a human to just read the narrative.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -261,5 +287,23 @@ impl Composition_Section<'_> {
         }
         if let Some(_val) = self.title() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Composition_SectionBuilder {
+    pub value: Value,
+}
+
+impl Composition_SectionBuilder {
+    pub fn build(&self) -> Composition_Section {
+        Composition_Section {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Composition_SectionBuilder {
+        let mut __value: Value = json!({});
+        return Composition_SectionBuilder { value: __value };
     }
 }

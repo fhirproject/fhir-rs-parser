@@ -15,7 +15,9 @@ use crate::model::Reference::Reference;
 use crate::model::RelatedArtifact::RelatedArtifact;
 use crate::model::ResourceList::ResourceList;
 use crate::model::UsageContext::UsageContext;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The Library resource is a general-purpose container for knowledge asset
 /// definitions. It can be used to describe and expose existing knowledge assets
@@ -24,14 +26,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Library<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Library<'_> {
     /// Extensions for approvalDate
     pub fn _approval_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_approvalDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +43,9 @@ impl Library<'_> {
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl Library<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +63,9 @@ impl Library<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +73,9 @@ impl Library<'_> {
     /// Extensions for experimental
     pub fn _experimental(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_experimental") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +83,9 @@ impl Library<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -79,7 +93,9 @@ impl Library<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -87,7 +103,9 @@ impl Library<'_> {
     /// Extensions for lastReviewDate
     pub fn _last_review_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastReviewDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +113,9 @@ impl Library<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -103,7 +123,9 @@ impl Library<'_> {
     /// Extensions for publisher
     pub fn _publisher(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_publisher") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +133,9 @@ impl Library<'_> {
     /// Extensions for purpose
     pub fn _purpose(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_purpose") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -119,7 +143,9 @@ impl Library<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -127,7 +153,9 @@ impl Library<'_> {
     /// Extensions for subtitle
     pub fn _subtitle(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_subtitle") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -135,7 +163,9 @@ impl Library<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -143,7 +173,9 @@ impl Library<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -151,7 +183,9 @@ impl Library<'_> {
     /// Extensions for usage
     pub fn _usage(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_usage") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -159,7 +193,9 @@ impl Library<'_> {
     /// Extensions for version
     pub fn _version(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_version") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -179,7 +215,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("author") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -192,7 +230,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("contact") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -206,7 +246,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -220,7 +262,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("content") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| Attachment {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -243,7 +287,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("dataRequirement") {
             return Some(
                 val.into_iter()
-                    .map(|e| DataRequirement { value: e })
+                    .map(|e| DataRequirement {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -276,7 +322,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("editor") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -287,7 +335,9 @@ impl Library<'_> {
     /// use.
     pub fn effective_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("effectivePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -298,7 +348,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("endorser") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -324,7 +376,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -348,7 +402,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -371,7 +427,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("jurisdiction") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -400,7 +458,9 @@ impl Library<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -421,7 +481,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -443,7 +505,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("parameter") {
             return Some(
                 val.into_iter()
-                    .map(|e| ParameterDefinition { value: e })
+                    .map(|e| ParameterDefinition {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -473,7 +537,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatedArtifact") {
             return Some(
                 val.into_iter()
-                    .map(|e| RelatedArtifact { value: e })
+                    .map(|e| RelatedArtifact {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -486,7 +552,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("reviewer") {
             return Some(
                 val.into_iter()
-                    .map(|e| ContactDetail { value: e })
+                    .map(|e| ContactDetail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -505,7 +573,9 @@ impl Library<'_> {
     /// of the library.
     pub fn subject_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("subjectCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -514,7 +584,9 @@ impl Library<'_> {
     /// of the library.
     pub fn subject_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subjectReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -536,7 +608,9 @@ impl Library<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -556,7 +630,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("topic") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -567,7 +643,7 @@ impl Library<'_> {
     /// Collection, or Module Definition.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -600,7 +676,9 @@ impl Library<'_> {
         if let Some(Value::Array(val)) = self.value.get("useContext") {
             return Some(
                 val.into_iter()
-                    .map(|e| UsageContext { value: e })
+                    .map(|e| UsageContext {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -837,6 +915,25 @@ impl Library<'_> {
         }
         if let Some(_val) = self.version() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct LibraryBuilder {
+    pub value: Value,
+}
+
+impl LibraryBuilder {
+    pub fn build(&self) -> Library {
+        Library {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> LibraryBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return LibraryBuilder { value: __value };
     }
 }
 

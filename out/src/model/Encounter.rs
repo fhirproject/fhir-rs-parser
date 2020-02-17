@@ -17,21 +17,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An interaction between a patient and healthcare provider(s) for the purpose of
 /// providing healthcare service(s) or assessing the health status of a patient.
 
 #[derive(Debug)]
 pub struct Encounter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Encounter<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +43,9 @@ impl Encounter<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl Encounter<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +65,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("account") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +79,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("appointment") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +94,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -94,7 +108,7 @@ impl Encounter<'_> {
     /// variations.
     pub fn class(&self) -> Coding {
         Coding {
-            value: &self.value["class"],
+            value: Cow::Borrowed(&self.value["class"]),
         }
     }
 
@@ -109,7 +123,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("classHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| Encounter_ClassHistory { value: e })
+                    .map(|e| Encounter_ClassHistory {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -123,7 +139,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -135,7 +153,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("diagnosis") {
             return Some(
                 val.into_iter()
-                    .map(|e| Encounter_Diagnosis { value: e })
+                    .map(|e| Encounter_Diagnosis {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,7 +173,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("episodeOfCare") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -169,7 +191,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -179,7 +203,9 @@ impl Encounter<'_> {
     /// Details about the admission to a healthcare service.
     pub fn hospitalization(&self) -> Option<Encounter_Hospitalization> {
         if let Some(val) = self.value.get("hospitalization") {
-            return Some(Encounter_Hospitalization { value: val });
+            return Some(Encounter_Hospitalization {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -198,7 +224,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -228,7 +256,9 @@ impl Encounter<'_> {
     /// absence.
     pub fn length(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("length") {
-            return Some(Duration { value: val });
+            return Some(Duration {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -238,7 +268,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("location") {
             return Some(
                 val.into_iter()
-                    .map(|e| Encounter_Location { value: e })
+                    .map(|e| Encounter_Location {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -250,7 +282,9 @@ impl Encounter<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -271,7 +305,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -282,7 +318,9 @@ impl Encounter<'_> {
     /// time).
     pub fn part_of(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("partOf") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -292,7 +330,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("participant") {
             return Some(
                 val.into_iter()
-                    .map(|e| Encounter_Participant { value: e })
+                    .map(|e| Encounter_Participant {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -302,7 +342,9 @@ impl Encounter<'_> {
     /// The start and end time of the encounter.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -310,7 +352,9 @@ impl Encounter<'_> {
     /// Indicates the urgency of the encounter.
     pub fn priority(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("priority") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -321,7 +365,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -334,7 +380,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonReference") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -349,7 +397,9 @@ impl Encounter<'_> {
     /// colonoscopy.
     pub fn service_provider(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("serviceProvider") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -357,7 +407,9 @@ impl Encounter<'_> {
     /// Broad categorization of the service that is to be provided (e.g. cardiology).
     pub fn service_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("serviceType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -377,7 +429,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("statusHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| Encounter_StatusHistory { value: e })
+                    .map(|e| Encounter_StatusHistory {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -387,7 +441,9 @@ impl Encounter<'_> {
     /// The patient or group present at the encounter.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -400,7 +456,9 @@ impl Encounter<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -411,7 +469,9 @@ impl Encounter<'_> {
         if let Some(Value::Array(val)) = self.value.get("type") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -572,6 +632,25 @@ impl Encounter<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EncounterBuilder {
+    pub value: Value,
+}
+
+impl EncounterBuilder {
+    pub fn build(&self) -> Encounter {
+        Encounter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(class: Coding) -> EncounterBuilder {
+        let mut __value: Value = json!({});
+        __value["class"] = json!(class.value);
+        return EncounterBuilder { value: __value };
     }
 }
 

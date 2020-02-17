@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::ValueSet_Include::ValueSet_Include;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A ValueSet resource instance specifies a set of codes drawn from one or more
 /// code systems, intended for use in a particular context. Value sets link between
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ValueSet_Compose<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ValueSet_Compose<'_> {
     /// Extensions for inactive
     pub fn _inactive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_inactive") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl ValueSet_Compose<'_> {
     /// Extensions for lockedDate
     pub fn _locked_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lockedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl ValueSet_Compose<'_> {
         if let Some(Value::Array(val)) = self.value.get("exclude") {
             return Some(
                 val.into_iter()
-                    .map(|e| ValueSet_Include { value: e })
+                    .map(|e| ValueSet_Include {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +62,9 @@ impl ValueSet_Compose<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +101,9 @@ impl ValueSet_Compose<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ValueSet_Include { value: e })
+            .map(|e| ValueSet_Include {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -120,7 +132,9 @@ impl ValueSet_Compose<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -165,5 +179,24 @@ impl ValueSet_Compose<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ValueSet_ComposeBuilder {
+    pub value: Value,
+}
+
+impl ValueSet_ComposeBuilder {
+    pub fn build(&self) -> ValueSet_Compose {
+        ValueSet_Compose {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(include: Vec<ValueSet_Include>) -> ValueSet_ComposeBuilder {
+        let mut __value: Value = json!({});
+        __value["include"] = json!(include.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return ValueSet_ComposeBuilder { value: __value };
     }
 }

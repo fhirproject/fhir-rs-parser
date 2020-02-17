@@ -7,7 +7,9 @@ use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
 use crate::model::QuestionnaireResponse_Item::QuestionnaireResponse_Item;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of questions and their answers. The questions are ordered and
 /// grouped into coherent subsets, corresponding to the structure of the grouping of
@@ -15,14 +17,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct QuestionnaireResponse_Answer<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueDate
     pub fn _value_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -38,7 +44,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueDateTime
     pub fn _value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +54,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueDecimal
     pub fn _value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -54,7 +64,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueInteger
     pub fn _value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -62,7 +74,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -70,7 +84,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueTime
     pub fn _value_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +94,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// Extensions for valueUri
     pub fn _value_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueUri") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -92,7 +110,9 @@ impl QuestionnaireResponse_Answer<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -113,7 +133,9 @@ impl QuestionnaireResponse_Answer<'_> {
         if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| QuestionnaireResponse_Item { value: e })
+                    .map(|e| QuestionnaireResponse_Item {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -135,7 +157,9 @@ impl QuestionnaireResponse_Answer<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -145,7 +169,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// The answer (or one of the answers) provided by the respondent to the question.
     pub fn value_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("valueAttachment") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -161,7 +187,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// The answer (or one of the answers) provided by the respondent to the question.
     pub fn value_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("valueCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -201,7 +229,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// The answer (or one of the answers) provided by the respondent to the question.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -209,7 +239,9 @@ impl QuestionnaireResponse_Answer<'_> {
     /// The answer (or one of the answers) provided by the respondent to the question.
     pub fn value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("valueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -324,5 +356,23 @@ impl QuestionnaireResponse_Answer<'_> {
         if let Some(_val) = self.value_time() {}
         if let Some(_val) = self.value_uri() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct QuestionnaireResponse_AnswerBuilder {
+    pub value: Value,
+}
+
+impl QuestionnaireResponse_AnswerBuilder {
+    pub fn build(&self) -> QuestionnaireResponse_Answer {
+        QuestionnaireResponse_Answer {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> QuestionnaireResponse_AnswerBuilder {
+        let mut __value: Value = json!({});
+        return QuestionnaireResponse_AnswerBuilder { value: __value };
     }
 }

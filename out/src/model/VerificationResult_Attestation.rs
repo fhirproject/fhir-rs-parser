@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use crate::model::Signature::Signature;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Describes validation requirements, source(s), status and dates for one or more
 /// elements.
 
 #[derive(Debug)]
 pub struct VerificationResult_Attestation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl VerificationResult_Attestation<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl VerificationResult_Attestation<'_> {
     /// Extensions for proxyIdentityCertificate
     pub fn _proxy_identity_certificate(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_proxyIdentityCertificate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl VerificationResult_Attestation<'_> {
     /// Extensions for sourceIdentityCertificate
     pub fn _source_identity_certificate(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sourceIdentityCertificate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl VerificationResult_Attestation<'_> {
     /// Push).
     pub fn communication_method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("communicationMethod") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +76,9 @@ impl VerificationResult_Attestation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -97,7 +109,9 @@ impl VerificationResult_Attestation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -107,7 +121,9 @@ impl VerificationResult_Attestation<'_> {
     /// When the who is asserting on behalf of another (organization or individual).
     pub fn on_behalf_of(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("onBehalfOf") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -125,7 +141,9 @@ impl VerificationResult_Attestation<'_> {
     /// submit attested information on behalf of the attestation source.
     pub fn proxy_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("proxySignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -142,7 +160,9 @@ impl VerificationResult_Attestation<'_> {
     /// information.
     pub fn source_signature(&self) -> Option<Signature> {
         if let Some(val) = self.value.get("sourceSignature") {
-            return Some(Signature { value: val });
+            return Some(Signature {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -150,7 +170,9 @@ impl VerificationResult_Attestation<'_> {
     /// The individual or organization attesting to information.
     pub fn who(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("who") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -211,5 +233,23 @@ impl VerificationResult_Attestation<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct VerificationResult_AttestationBuilder {
+    pub value: Value,
+}
+
+impl VerificationResult_AttestationBuilder {
+    pub fn build(&self) -> VerificationResult_Attestation {
+        VerificationResult_Attestation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> VerificationResult_AttestationBuilder {
+        let mut __value: Value = json!({});
+        return VerificationResult_AttestationBuilder { value: __value };
     }
 }

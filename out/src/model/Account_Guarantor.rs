@@ -4,21 +4,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A financial tool for tracking value accrued for a particular purpose.  In the
 /// healthcare field, used to track charges for a patient, cost centers, etc.
 
 #[derive(Debug)]
 pub struct Account_Guarantor<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Account_Guarantor<'_> {
     /// Extensions for onHold
     pub fn _on_hold(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onHold") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl Account_Guarantor<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl Account_Guarantor<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,14 +90,16 @@ impl Account_Guarantor<'_> {
     /// The entity who is responsible.
     pub fn party(&self) -> Reference {
         Reference {
-            value: &self.value["party"],
+            value: Cow::Borrowed(&self.value["party"]),
         }
     }
 
     /// The timeframe during which the guarantor accepts responsibility for the account.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -121,5 +131,24 @@ impl Account_Guarantor<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Account_GuarantorBuilder {
+    pub value: Value,
+}
+
+impl Account_GuarantorBuilder {
+    pub fn build(&self) -> Account_Guarantor {
+        Account_Guarantor {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(party: Reference) -> Account_GuarantorBuilder {
+        let mut __value: Value = json!({});
+        __value["party"] = json!(party.value);
+        return Account_GuarantorBuilder { value: __value };
     }
 }

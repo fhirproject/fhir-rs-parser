@@ -3,21 +3,25 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse_ProcessNote<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse_ProcessNote<'_> {
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl ClaimResponse_ProcessNote<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl ClaimResponse_ProcessNote<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +55,9 @@ impl ClaimResponse_ProcessNote<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +76,9 @@ impl ClaimResponse_ProcessNote<'_> {
     /// A code to define the language used in the text of the note.
     pub fn language(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("language") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -86,7 +98,9 @@ impl ClaimResponse_ProcessNote<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,6 +167,24 @@ impl ClaimResponse_ProcessNote<'_> {
         if let Some(_val) = self.text() {}
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponse_ProcessNoteBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponse_ProcessNoteBuilder {
+    pub fn build(&self) -> ClaimResponse_ProcessNote {
+        ClaimResponse_ProcessNote {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ClaimResponse_ProcessNoteBuilder {
+        let mut __value: Value = json!({});
+        return ClaimResponse_ProcessNoteBuilder { value: __value };
     }
 }
 

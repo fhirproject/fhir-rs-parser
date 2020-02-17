@@ -3,14 +3,16 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_SecurityLabel<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_SecurityLabel<'_> {
@@ -19,7 +21,9 @@ impl Contract_SecurityLabel<'_> {
         if let Some(Value::Array(val)) = self.value.get("_number") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -32,7 +36,9 @@ impl Contract_SecurityLabel<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -43,7 +49,7 @@ impl Contract_SecurityLabel<'_> {
     /// required for this term and/or term elements.
     pub fn classification(&self) -> Coding {
         Coding {
-            value: &self.value["classification"],
+            value: Cow::Borrowed(&self.value["classification"]),
         }
     }
 
@@ -53,7 +59,9 @@ impl Contract_SecurityLabel<'_> {
         if let Some(Value::Array(val)) = self.value.get("control") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +77,9 @@ impl Contract_SecurityLabel<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +110,9 @@ impl Contract_SecurityLabel<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -153,5 +165,24 @@ impl Contract_SecurityLabel<'_> {
             _val.into_iter().for_each(|_e| {});
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_SecurityLabelBuilder {
+    pub value: Value,
+}
+
+impl Contract_SecurityLabelBuilder {
+    pub fn build(&self) -> Contract_SecurityLabel {
+        Contract_SecurityLabel {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(classification: Coding) -> Contract_SecurityLabelBuilder {
+        let mut __value: Value = json!({});
+        __value["classification"] = json!(classification.value);
+        return Contract_SecurityLabelBuilder { value: __value };
     }
 }

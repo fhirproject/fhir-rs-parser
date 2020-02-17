@@ -11,7 +11,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A reference to a document of any kind for any purpose. Provides metadata about
 /// the document so that the document can be discovered and managed. The scope of a
@@ -21,14 +23,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DocumentReference<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DocumentReference<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl DocumentReference<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl DocumentReference<'_> {
     /// Extensions for docStatus
     pub fn _doc_status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_docStatus") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl DocumentReference<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +70,9 @@ impl DocumentReference<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl DocumentReference<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +90,9 @@ impl DocumentReference<'_> {
     /// Which person or organization authenticates that this document is valid.
     pub fn authenticator(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("authenticator") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -86,7 +102,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("author") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -100,7 +118,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,7 +134,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -130,14 +152,18 @@ impl DocumentReference<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| DocumentReference_Content { value: e })
+            .map(|e| DocumentReference_Content {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// The clinical context in which the document was prepared.
     pub fn context(&self) -> Option<DocumentReference_Context> {
         if let Some(val) = self.value.get("context") {
-            return Some(DocumentReference_Context { value: val });
+            return Some(DocumentReference_Context {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -146,7 +172,9 @@ impl DocumentReference<'_> {
     /// of and access to the document.
     pub fn custodian(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("custodian") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -184,7 +212,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -206,7 +236,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -237,7 +269,9 @@ impl DocumentReference<'_> {
     /// elsewhere to identify this version of the document.
     pub fn master_identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("masterIdentifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -247,7 +281,9 @@ impl DocumentReference<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -268,7 +304,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -281,7 +319,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("relatesTo") {
             return Some(
                 val.into_iter()
-                    .map(|e| DocumentReference_RelatesTo { value: e })
+                    .map(|e| DocumentReference_RelatesTo {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -297,7 +337,9 @@ impl DocumentReference<'_> {
         if let Some(Value::Array(val)) = self.value.get("securityLabel") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -318,7 +360,9 @@ impl DocumentReference<'_> {
     /// that share a common exposure).
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -331,7 +375,9 @@ impl DocumentReference<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -341,7 +387,9 @@ impl DocumentReference<'_> {
     /// of making the document referenced.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -473,6 +521,25 @@ impl DocumentReference<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DocumentReferenceBuilder {
+    pub value: Value,
+}
+
+impl DocumentReferenceBuilder {
+    pub fn build(&self) -> DocumentReference {
+        DocumentReference {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(content: Vec<DocumentReference_Content>) -> DocumentReferenceBuilder {
+        let mut __value: Value = json!({});
+        __value["content"] = json!(content.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return DocumentReferenceBuilder { value: __value };
     }
 }
 

@@ -4,20 +4,24 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A list is a curated collection of resources.
 
 #[derive(Debug)]
 pub struct List_Entry<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl List_Entry<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl List_Entry<'_> {
     /// Extensions for deleted
     pub fn _deleted(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_deleted") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +61,9 @@ impl List_Entry<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -66,7 +74,9 @@ impl List_Entry<'_> {
     /// significance of the item in the list.
     pub fn flag(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("flag") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -83,7 +93,7 @@ impl List_Entry<'_> {
     /// A reference to the actual resource from which data was derived.
     pub fn item(&self) -> Reference {
         Reference {
-            value: &self.value["item"],
+            value: Cow::Borrowed(&self.value["item"]),
         }
     }
 
@@ -102,7 +112,9 @@ impl List_Entry<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -142,5 +154,24 @@ impl List_Entry<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct List_EntryBuilder {
+    pub value: Value,
+}
+
+impl List_EntryBuilder {
+    pub fn build(&self) -> List_Entry {
+        List_Entry {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(item: Reference) -> List_EntryBuilder {
+        let mut __value: Value = json!({});
+        __value["item"] = json!(item.value);
+        return List_EntryBuilder { value: __value };
     }
 }

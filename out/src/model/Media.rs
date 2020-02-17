@@ -11,21 +11,25 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A photo, video, or audio recording acquired or used in healthcare. The actual
 /// content may be inline or provided by direct reference.
 
 #[derive(Debug)]
 pub struct Media<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Media<'_> {
     /// Extensions for createdDateTime
     pub fn _created_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_createdDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl Media<'_> {
     /// Extensions for deviceName
     pub fn _device_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_deviceName") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl Media<'_> {
     /// Extensions for duration
     pub fn _duration(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_duration") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl Media<'_> {
     /// Extensions for frames
     pub fn _frames(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_frames") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl Media<'_> {
     /// Extensions for height
     pub fn _height(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_height") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl Media<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -73,7 +87,9 @@ impl Media<'_> {
     /// Extensions for issued
     pub fn _issued(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -81,7 +97,9 @@ impl Media<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +107,9 @@ impl Media<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -97,7 +117,9 @@ impl Media<'_> {
     /// Extensions for width
     pub fn _width(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_width") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -107,7 +129,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,7 +142,9 @@ impl Media<'_> {
     /// the target site).
     pub fn body_site(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("bodySite") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +156,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -141,7 +169,7 @@ impl Media<'_> {
     /// source file.
     pub fn content(&self) -> Attachment {
         Attachment {
-            value: &self.value["content"],
+            value: Cow::Borrowed(&self.value["content"]),
         }
     }
 
@@ -156,7 +184,9 @@ impl Media<'_> {
     /// The date and time(s) at which the media was collected.
     pub fn created_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("createdPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -164,7 +194,9 @@ impl Media<'_> {
     /// The device used to collect the media.
     pub fn device(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("device") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -189,7 +221,9 @@ impl Media<'_> {
     /// The encounter that establishes the context for this media.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -203,7 +237,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -246,7 +282,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -286,7 +324,9 @@ impl Media<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -296,7 +336,9 @@ impl Media<'_> {
     /// then this is the modality.
     pub fn modality(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("modality") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -317,7 +359,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -329,7 +373,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -339,7 +385,9 @@ impl Media<'_> {
     /// The person who administered the collection of the image.
     pub fn operator(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("operator") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -349,7 +397,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("partOf") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -361,7 +411,9 @@ impl Media<'_> {
         if let Some(Value::Array(val)) = self.value.get("reasonCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -379,7 +431,9 @@ impl Media<'_> {
     /// Who/What this Media is a record of.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -392,7 +446,9 @@ impl Media<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -401,7 +457,9 @@ impl Media<'_> {
     /// or some other media category.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -409,7 +467,9 @@ impl Media<'_> {
     /// The name of the imaging view e.g. Lateral or Antero-posterior (AP).
     pub fn view(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("view") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -583,5 +643,24 @@ impl Media<'_> {
         }
         if let Some(_val) = self.width() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MediaBuilder {
+    pub value: Value,
+}
+
+impl MediaBuilder {
+    pub fn build(&self) -> Media {
+        Media {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(content: Attachment) -> MediaBuilder {
+        let mut __value: Value = json!({});
+        __value["content"] = json!(content.value);
+        return MediaBuilder { value: __value };
     }
 }

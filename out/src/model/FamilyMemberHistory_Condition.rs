@@ -7,21 +7,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
 use crate::model::Range::Range;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Significant health conditions for a person related to the patient relevant in
 /// the context of care for the patient.
 
 #[derive(Debug)]
 pub struct FamilyMemberHistory_Condition<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl FamilyMemberHistory_Condition<'_> {
     /// Extensions for contributedToDeath
     pub fn _contributed_to_death(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contributedToDeath") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl FamilyMemberHistory_Condition<'_> {
     /// Extensions for onsetString
     pub fn _onset_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onsetString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,7 @@ impl FamilyMemberHistory_Condition<'_> {
     /// condition and the capabilities of the creating system.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -61,7 +67,9 @@ impl FamilyMemberHistory_Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +100,9 @@ impl FamilyMemberHistory_Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -104,7 +114,9 @@ impl FamilyMemberHistory_Condition<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -116,7 +128,9 @@ impl FamilyMemberHistory_Condition<'_> {
     /// known occurrence.
     pub fn onset_age(&self) -> Option<Age> {
         if let Some(val) = self.value.get("onsetAge") {
-            return Some(Age { value: val });
+            return Some(Age {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -126,7 +140,9 @@ impl FamilyMemberHistory_Condition<'_> {
     /// known occurrence.
     pub fn onset_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("onsetPeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -136,7 +152,9 @@ impl FamilyMemberHistory_Condition<'_> {
     /// known occurrence.
     pub fn onset_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("onsetRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -155,7 +173,9 @@ impl FamilyMemberHistory_Condition<'_> {
     /// death, deceased date is captured on the relation.
     pub fn outcome(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("outcome") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,5 +233,24 @@ impl FamilyMemberHistory_Condition<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct FamilyMemberHistory_ConditionBuilder {
+    pub value: Value,
+}
+
+impl FamilyMemberHistory_ConditionBuilder {
+    pub fn build(&self) -> FamilyMemberHistory_Condition {
+        FamilyMemberHistory_Condition {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> FamilyMemberHistory_ConditionBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return FamilyMemberHistory_ConditionBuilder { value: __value };
     }
 }

@@ -11,7 +11,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of an event made for purposes of maintaining a security log. Typical
 /// uses include detection of intrusion attempts and monitoring for inappropriate
@@ -19,14 +21,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct AuditEvent<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AuditEvent<'_> {
     /// Extensions for action
     pub fn _action(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_action") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +38,9 @@ impl AuditEvent<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +48,9 @@ impl AuditEvent<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl AuditEvent<'_> {
     /// Extensions for outcome
     pub fn _outcome(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcome") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +68,9 @@ impl AuditEvent<'_> {
     /// Extensions for outcomeDesc
     pub fn _outcome_desc(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_outcomeDesc") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +78,9 @@ impl AuditEvent<'_> {
     /// Extensions for recorded
     pub fn _recorded(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recorded") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +102,9 @@ impl AuditEvent<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| AuditEvent_Agent { value: e })
+            .map(|e| AuditEvent_Agent {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -99,7 +115,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -111,7 +129,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("entity") {
             return Some(
                 val.into_iter()
-                    .map(|e| AuditEvent_Entity { value: e })
+                    .map(|e| AuditEvent_Entity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -127,7 +147,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -167,7 +189,9 @@ impl AuditEvent<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -188,7 +212,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -214,7 +240,9 @@ impl AuditEvent<'_> {
     /// The period during which the activity occurred.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -224,7 +252,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("purposeOfEvent") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -242,7 +272,7 @@ impl AuditEvent<'_> {
     /// The system that is reporting the event.
     pub fn source(&self) -> AuditEvent_Source {
         AuditEvent_Source {
-            value: &self.value["source"],
+            value: Cow::Borrowed(&self.value["source"]),
         }
     }
 
@@ -251,7 +281,9 @@ impl AuditEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("subtype") {
             return Some(
                 val.into_iter()
-                    .map(|e| Coding { value: e })
+                    .map(|e| Coding {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -266,7 +298,9 @@ impl AuditEvent<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -276,7 +310,7 @@ impl AuditEvent<'_> {
     /// function.
     pub fn fhir_type(&self) -> Coding {
         Coding {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -378,6 +412,31 @@ impl AuditEvent<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AuditEventBuilder {
+    pub value: Value,
+}
+
+impl AuditEventBuilder {
+    pub fn build(&self) -> AuditEvent {
+        AuditEvent {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        agent: Vec<AuditEvent_Agent>,
+        source: AuditEvent_Source,
+        fhir_type: Coding,
+    ) -> AuditEventBuilder {
+        let mut __value: Value = json!({});
+        __value["agent"] = json!(agent.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["source"] = json!(source.value);
+        __value["type"] = json!(fhir_type.value);
+        return AuditEventBuilder { value: __value };
     }
 }
 

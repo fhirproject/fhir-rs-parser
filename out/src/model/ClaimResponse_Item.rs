@@ -4,21 +4,25 @@ use crate::model::ClaimResponse_Adjudication::ClaimResponse_Adjudication;
 use crate::model::ClaimResponse_Detail::ClaimResponse_Detail;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides the adjudication details from the processing of a Claim
 /// resource.
 
 #[derive(Debug)]
 pub struct ClaimResponse_Item<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ClaimResponse_Item<'_> {
     /// Extensions for itemSequence
     pub fn _item_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_itemSequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl ClaimResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("_noteNumber") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -45,7 +51,9 @@ impl ClaimResponse_Item<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| ClaimResponse_Adjudication { value: e })
+            .map(|e| ClaimResponse_Adjudication {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -55,7 +63,9 @@ impl ClaimResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("detail") {
             return Some(
                 val.into_iter()
-                    .map(|e| ClaimResponse_Detail { value: e })
+                    .map(|e| ClaimResponse_Detail {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +81,9 @@ impl ClaimResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -110,7 +122,9 @@ impl ClaimResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -170,5 +184,27 @@ impl ClaimResponse_Item<'_> {
             _val.into_iter().for_each(|_e| {});
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ClaimResponse_ItemBuilder {
+    pub value: Value,
+}
+
+impl ClaimResponse_ItemBuilder {
+    pub fn build(&self) -> ClaimResponse_Item {
+        ClaimResponse_Item {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(adjudication: Vec<ClaimResponse_Adjudication>) -> ClaimResponse_ItemBuilder {
+        let mut __value: Value = json!({});
+        __value["adjudication"] = json!(adjudication
+            .into_iter()
+            .map(|e| e.value)
+            .collect::<Vec<_>>());
+        return ClaimResponse_ItemBuilder { value: __value };
     }
 }

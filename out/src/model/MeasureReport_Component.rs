@@ -2,21 +2,23 @@
 
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The MeasureReport resource contains the results of the calculation of a measure;
 /// and optionally a reference to the resources involved in that calculation.
 
 #[derive(Debug)]
 pub struct MeasureReport_Component<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MeasureReport_Component<'_> {
     /// The code for the stratum component value.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -29,7 +31,9 @@ impl MeasureReport_Component<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -60,7 +64,9 @@ impl MeasureReport_Component<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -70,7 +76,7 @@ impl MeasureReport_Component<'_> {
     /// The stratum component value.
     pub fn value(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["value"],
+            value: Cow::Borrowed(&self.value["value"]),
         }
     }
 
@@ -93,5 +99,25 @@ impl MeasureReport_Component<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MeasureReport_ComponentBuilder {
+    pub value: Value,
+}
+
+impl MeasureReport_ComponentBuilder {
+    pub fn build(&self) -> MeasureReport_Component {
+        MeasureReport_Component {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept, value: CodeableConcept) -> MeasureReport_ComponentBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        __value["value"] = json!(value.value);
+        return MeasureReport_ComponentBuilder { value: __value };
     }
 }

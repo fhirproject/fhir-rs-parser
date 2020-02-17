@@ -7,7 +7,9 @@ use crate::model::Period::Period;
 use crate::model::Quantity::Quantity;
 use crate::model::Range::Range;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Represents a defined collection of entities that may be discussed or acted upon
 /// collectively but which are not expected to act collectively, and are not
@@ -16,14 +18,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Group_Characteristic<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Group_Characteristic<'_> {
     /// Extensions for exclude
     pub fn _exclude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exclude") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +35,9 @@ impl Group_Characteristic<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,7 @@ impl Group_Characteristic<'_> {
     /// A code that identifies the kind of trait being asserted.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -61,7 +67,9 @@ impl Group_Characteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +100,9 @@ impl Group_Characteristic<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -103,7 +113,9 @@ impl Group_Characteristic<'_> {
     /// operation during the month of June.
     pub fn period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("period") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -121,7 +133,9 @@ impl Group_Characteristic<'_> {
     /// of the group.
     pub fn value_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("valueCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +144,9 @@ impl Group_Characteristic<'_> {
     /// of the group.
     pub fn value_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("valueQuantity") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -139,7 +155,9 @@ impl Group_Characteristic<'_> {
     /// of the group.
     pub fn value_range(&self) -> Option<Range> {
         if let Some(val) = self.value.get("valueRange") {
-            return Some(Range { value: val });
+            return Some(Range {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -148,7 +166,9 @@ impl Group_Characteristic<'_> {
     /// of the group.
     pub fn value_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("valueReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -206,5 +226,24 @@ impl Group_Characteristic<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Group_CharacteristicBuilder {
+    pub value: Value,
+}
+
+impl Group_CharacteristicBuilder {
+    pub fn build(&self) -> Group_Characteristic {
+        Group_Characteristic {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> Group_CharacteristicBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return Group_CharacteristicBuilder { value: __value };
     }
 }

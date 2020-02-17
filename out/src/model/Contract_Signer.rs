@@ -4,14 +4,16 @@ use crate::model::Coding::Coding;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
 use crate::model::Signature::Signature;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Signer<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Signer<'_> {
@@ -24,7 +26,9 @@ impl Contract_Signer<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -55,7 +59,9 @@ impl Contract_Signer<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +71,7 @@ impl Contract_Signer<'_> {
     /// Party which is a signator to this Contract.
     pub fn party(&self) -> Reference {
         Reference {
-            value: &self.value["party"],
+            value: Cow::Borrowed(&self.value["party"]),
         }
     }
 
@@ -77,14 +83,16 @@ impl Contract_Signer<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Signature { value: e })
+            .map(|e| Signature {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// Role of this Contract signer, e.g. notary, grantee.
     pub fn fhir_type(&self) -> Coding {
         Coding {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -115,5 +123,30 @@ impl Contract_Signer<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_SignerBuilder {
+    pub value: Value,
+}
+
+impl Contract_SignerBuilder {
+    pub fn build(&self) -> Contract_Signer {
+        Contract_Signer {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(
+        party: Reference,
+        signature: Vec<Signature>,
+        fhir_type: Coding,
+    ) -> Contract_SignerBuilder {
+        let mut __value: Value = json!({});
+        __value["party"] = json!(party.value);
+        __value["signature"] = json!(signature.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["type"] = json!(fhir_type.value);
+        return Contract_SignerBuilder { value: __value };
     }
 }

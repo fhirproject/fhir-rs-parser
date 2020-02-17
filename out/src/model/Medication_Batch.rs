@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource is primarily used for the identification and definition of a
 /// medication for the purposes of prescribing, dispensing, and administering a
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Medication_Batch<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Medication_Batch<'_> {
     /// Extensions for expirationDate
     pub fn _expiration_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expirationDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl Medication_Batch<'_> {
     /// Extensions for lotNumber
     pub fn _lot_number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lotNumber") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +53,9 @@ impl Medication_Batch<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +94,9 @@ impl Medication_Batch<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,5 +128,23 @@ impl Medication_Batch<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Medication_BatchBuilder {
+    pub value: Value,
+}
+
+impl Medication_BatchBuilder {
+    pub fn build(&self) -> Medication_Batch {
+        Medication_Batch {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Medication_BatchBuilder {
+        let mut __value: Value = json!({});
+        return Medication_BatchBuilder { value: __value };
     }
 }

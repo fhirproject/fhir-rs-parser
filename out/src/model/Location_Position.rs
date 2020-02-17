@@ -2,7 +2,9 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details and position information for a physical place where services are
 /// provided and resources and participants may be stored, found, contained, or
@@ -10,14 +12,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Location_Position<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Location_Position<'_> {
     /// Extensions for altitude
     pub fn _altitude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_altitude") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl Location_Position<'_> {
     /// Extensions for latitude
     pub fn _latitude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_latitude") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl Location_Position<'_> {
     /// Extensions for longitude
     pub fn _longitude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_longitude") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl Location_Position<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +115,9 @@ impl Location_Position<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -143,5 +155,23 @@ impl Location_Position<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Location_PositionBuilder {
+    pub value: Value,
+}
+
+impl Location_PositionBuilder {
+    pub fn build(&self) -> Location_Position {
+        Location_Position {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Location_PositionBuilder {
+        let mut __value: Value = json!({});
+        return Location_PositionBuilder { value: __value };
     }
 }

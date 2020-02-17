@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::QuestionnaireResponse_Answer::QuestionnaireResponse_Answer;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of questions and their answers. The questions are ordered and
 /// grouped into coherent subsets, corresponding to the structure of the grouping of
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct QuestionnaireResponse_Item<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl QuestionnaireResponse_Item<'_> {
     /// Extensions for definition
     pub fn _definition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl QuestionnaireResponse_Item<'_> {
     /// Extensions for linkId
     pub fn _link_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_linkId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl QuestionnaireResponse_Item<'_> {
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,9 @@ impl QuestionnaireResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("answer") {
             return Some(
                 val.into_iter()
-                    .map(|e| QuestionnaireResponse_Answer { value: e })
+                    .map(|e| QuestionnaireResponse_Answer {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +79,9 @@ impl QuestionnaireResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -90,7 +102,9 @@ impl QuestionnaireResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("item") {
             return Some(
                 val.into_iter()
-                    .map(|e| QuestionnaireResponse_Item { value: e })
+                    .map(|e| QuestionnaireResponse_Item {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -121,7 +135,9 @@ impl QuestionnaireResponse_Item<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -178,5 +194,23 @@ impl QuestionnaireResponse_Item<'_> {
         }
         if let Some(_val) = self.text() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct QuestionnaireResponse_ItemBuilder {
+    pub value: Value,
+}
+
+impl QuestionnaireResponse_ItemBuilder {
+    pub fn build(&self) -> QuestionnaireResponse_Item {
+        QuestionnaireResponse_Item {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> QuestionnaireResponse_ItemBuilder {
+        let mut __value: Value = json!({});
+        return QuestionnaireResponse_ItemBuilder { value: __value };
     }
 }

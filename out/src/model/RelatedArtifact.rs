@@ -3,21 +3,25 @@
 use crate::model::Attachment::Attachment;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Related artifacts such as additional documentation, justification, or
 /// bibliographic references.
 
 #[derive(Debug)]
 pub struct RelatedArtifact<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RelatedArtifact<'_> {
     /// Extensions for citation
     pub fn _citation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_citation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -25,7 +29,9 @@ impl RelatedArtifact<'_> {
     /// Extensions for display
     pub fn _display(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +39,9 @@ impl RelatedArtifact<'_> {
     /// Extensions for label
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl RelatedArtifact<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +59,9 @@ impl RelatedArtifact<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -76,7 +88,9 @@ impl RelatedArtifact<'_> {
     /// with the resource element.
     pub fn document(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("document") {
-            return Some(Attachment { value: val });
+            return Some(Attachment {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +104,9 @@ impl RelatedArtifact<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -184,6 +200,24 @@ impl RelatedArtifact<'_> {
         if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.url() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RelatedArtifactBuilder {
+    pub value: Value,
+}
+
+impl RelatedArtifactBuilder {
+    pub fn build(&self) -> RelatedArtifact {
+        RelatedArtifact {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RelatedArtifactBuilder {
+        let mut __value: Value = json!({});
+        return RelatedArtifactBuilder { value: __value };
     }
 }
 

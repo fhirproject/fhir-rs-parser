@@ -6,21 +6,25 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::OperationOutcome_Issue::OperationOutcome_Issue;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A collection of error, warning, or information messages that result from a
 /// system action.
 
 #[derive(Debug)]
 pub struct OperationOutcome<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl OperationOutcome<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl OperationOutcome<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -40,7 +46,9 @@ impl OperationOutcome<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -56,7 +64,9 @@ impl OperationOutcome<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -91,7 +101,9 @@ impl OperationOutcome<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| OperationOutcome_Issue { value: e })
+            .map(|e| OperationOutcome_Issue {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
@@ -108,7 +120,9 @@ impl OperationOutcome<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -129,7 +143,9 @@ impl OperationOutcome<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -144,7 +160,9 @@ impl OperationOutcome<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -197,5 +215,24 @@ impl OperationOutcome<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct OperationOutcomeBuilder {
+    pub value: Value,
+}
+
+impl OperationOutcomeBuilder {
+    pub fn build(&self) -> OperationOutcome {
+        OperationOutcome {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(issue: Vec<OperationOutcome_Issue>) -> OperationOutcomeBuilder {
+        let mut __value: Value = json!({});
+        __value["issue"] = json!(issue.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return OperationOutcomeBuilder { value: __value };
     }
 }

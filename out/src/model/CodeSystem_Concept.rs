@@ -4,7 +4,9 @@ use crate::model::CodeSystem_Designation::CodeSystem_Designation;
 use crate::model::CodeSystem_Property1::CodeSystem_Property1;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CodeSystem resource is used to declare the existence of and describe a code
 /// system or code system supplement and its key properties, and optionally define a
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CodeSystem_Concept<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CodeSystem_Concept<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl CodeSystem_Concept<'_> {
     /// Extensions for definition
     pub fn _definition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definition") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl CodeSystem_Concept<'_> {
     /// Extensions for display
     pub fn _display(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_display") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -56,7 +64,9 @@ impl CodeSystem_Concept<'_> {
         if let Some(Value::Array(val)) = self.value.get("concept") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeSystem_Concept { value: e })
+                    .map(|e| CodeSystem_Concept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -80,7 +90,9 @@ impl CodeSystem_Concept<'_> {
         if let Some(Value::Array(val)) = self.value.get("designation") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeSystem_Designation { value: e })
+                    .map(|e| CodeSystem_Designation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +117,9 @@ impl CodeSystem_Concept<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -136,7 +150,9 @@ impl CodeSystem_Concept<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -148,7 +164,9 @@ impl CodeSystem_Concept<'_> {
         if let Some(Value::Array(val)) = self.value.get("property") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeSystem_Property1 { value: e })
+                    .map(|e| CodeSystem_Property1 {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -201,5 +219,23 @@ impl CodeSystem_Concept<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodeSystem_ConceptBuilder {
+    pub value: Value,
+}
+
+impl CodeSystem_ConceptBuilder {
+    pub fn build(&self) -> CodeSystem_Concept {
+        CodeSystem_Concept {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodeSystem_ConceptBuilder {
+        let mut __value: Value = json!({});
+        return CodeSystem_ConceptBuilder { value: __value };
     }
 }

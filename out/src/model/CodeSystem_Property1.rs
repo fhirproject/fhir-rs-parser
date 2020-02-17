@@ -3,7 +3,9 @@
 use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The CodeSystem resource is used to declare the existence of and describe a code
 /// system or code system supplement and its key properties, and optionally define a
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct CodeSystem_Property1<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CodeSystem_Property1<'_> {
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueCode
     pub fn _value_code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueCode") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueDateTime
     pub fn _value_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +60,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueDecimal
     pub fn _value_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueDecimal") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +70,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueInteger
     pub fn _value_integer(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueInteger") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +80,9 @@ impl CodeSystem_Property1<'_> {
     /// Extensions for valueString
     pub fn _value_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueString") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -88,7 +104,9 @@ impl CodeSystem_Property1<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -119,7 +137,9 @@ impl CodeSystem_Property1<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -145,7 +165,9 @@ impl CodeSystem_Property1<'_> {
     /// The value of this property.
     pub fn value_coding(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("valueCoding") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -242,5 +264,23 @@ impl CodeSystem_Property1<'_> {
         if let Some(_val) = self.value_integer() {}
         if let Some(_val) = self.value_string() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CodeSystem_Property1Builder {
+    pub value: Value,
+}
+
+impl CodeSystem_Property1Builder {
+    pub fn build(&self) -> CodeSystem_Property1 {
+        CodeSystem_Property1 {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> CodeSystem_Property1Builder {
+        let mut __value: Value = json!({});
+        return CodeSystem_Property1Builder { value: __value };
     }
 }

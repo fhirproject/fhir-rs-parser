@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Legally enforceable, formally recorded unilateral or bilateral directive i.e., a
 /// policy or agreement.
 
 #[derive(Debug)]
 pub struct Contract_Party<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Contract_Party<'_> {
@@ -23,7 +25,9 @@ impl Contract_Party<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +58,9 @@ impl Contract_Party<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,14 +75,16 @@ impl Contract_Party<'_> {
             .as_array()
             .unwrap()
             .into_iter()
-            .map(|e| Reference { value: e })
+            .map(|e| Reference {
+                value: Cow::Borrowed(e),
+            })
             .collect::<Vec<_>>()
     }
 
     /// How the party participates in the offer.
     pub fn role(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["role"],
+            value: Cow::Borrowed(&self.value["role"]),
         }
     }
 
@@ -104,5 +112,25 @@ impl Contract_Party<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Contract_PartyBuilder {
+    pub value: Value,
+}
+
+impl Contract_PartyBuilder {
+    pub fn build(&self) -> Contract_Party {
+        Contract_Party {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(reference: Vec<Reference>, role: CodeableConcept) -> Contract_PartyBuilder {
+        let mut __value: Value = json!({});
+        __value["reference"] = json!(reference.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        __value["role"] = json!(role.value);
+        return Contract_PartyBuilder { value: __value };
     }
 }

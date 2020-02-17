@@ -5,21 +5,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Invoice_PriceComponent::Invoice_PriceComponent;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Invoice containing collected ChargeItems from an Account with calculated
 /// individual and total price for Billing purpose.
 
 #[derive(Debug)]
 pub struct Invoice_LineItem<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Invoice_LineItem<'_> {
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl Invoice_LineItem<'_> {
     /// added using the CodeableConcept data type instead of the Reference.
     pub fn charge_item_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("chargeItemCodeableConcept") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +45,9 @@ impl Invoice_LineItem<'_> {
     /// added using the CodeableConcept data type instead of the Reference.
     pub fn charge_item_reference(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("chargeItemReference") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -53,7 +61,9 @@ impl Invoice_LineItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -84,7 +94,9 @@ impl Invoice_LineItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,7 +113,9 @@ impl Invoice_LineItem<'_> {
         if let Some(Value::Array(val)) = self.value.get("priceComponent") {
             return Some(
                 val.into_iter()
-                    .map(|e| Invoice_PriceComponent { value: e })
+                    .map(|e| Invoice_PriceComponent {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -150,5 +164,23 @@ impl Invoice_LineItem<'_> {
         }
         if let Some(_val) = self.sequence() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Invoice_LineItemBuilder {
+    pub value: Value,
+}
+
+impl Invoice_LineItemBuilder {
+    pub fn build(&self) -> Invoice_LineItem {
+        Invoice_LineItem {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> Invoice_LineItemBuilder {
+        let mut __value: Value = json!({});
+        return Invoice_LineItemBuilder { value: __value };
     }
 }

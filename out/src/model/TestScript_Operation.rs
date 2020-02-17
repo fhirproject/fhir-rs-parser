@@ -4,21 +4,25 @@ use crate::model::Coding::Coding;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::TestScript_RequestHeader::TestScript_RequestHeader;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A structured set of tests against a FHIR server or client implementation to
 /// determine compliance against the FHIR specification.
 
 #[derive(Debug)]
 pub struct TestScript_Operation<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl TestScript_Operation<'_> {
     /// Extensions for accept
     pub fn _accept(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_accept") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for destination
     pub fn _destination(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_destination") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +60,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for encodeRequestUrl
     pub fn _encode_request_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_encodeRequestUrl") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +70,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for label
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +80,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for method
     pub fn _method(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_method") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +90,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for origin
     pub fn _origin(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_origin") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +100,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for params
     pub fn _params(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_params") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +110,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for requestId
     pub fn _request_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_requestId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +120,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for resource
     pub fn _resource(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_resource") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -106,7 +130,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for responseId
     pub fn _response_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_responseId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -114,7 +140,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for sourceId
     pub fn _source_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sourceId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +150,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for targetId
     pub fn _target_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_targetId") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -130,7 +160,9 @@ impl TestScript_Operation<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -188,7 +220,9 @@ impl TestScript_Operation<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -236,7 +270,9 @@ impl TestScript_Operation<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -266,7 +302,9 @@ impl TestScript_Operation<'_> {
         if let Some(Value::Array(val)) = self.value.get("requestHeader") {
             return Some(
                 val.into_iter()
-                    .map(|e| TestScript_RequestHeader { value: e })
+                    .map(|e| TestScript_RequestHeader {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -316,7 +354,9 @@ impl TestScript_Operation<'_> {
     /// Server interaction or operation type.
     pub fn fhir_type(&self) -> Option<Coding> {
         if let Some(val) = self.value.get("type") {
-            return Some(Coding { value: val });
+            return Some(Coding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -442,6 +482,24 @@ impl TestScript_Operation<'_> {
         }
         if let Some(_val) = self.url() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct TestScript_OperationBuilder {
+    pub value: Value,
+}
+
+impl TestScript_OperationBuilder {
+    pub fn build(&self) -> TestScript_Operation {
+        TestScript_Operation {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> TestScript_OperationBuilder {
+        let mut __value: Value = json!({});
+        return TestScript_OperationBuilder { value: __value };
     }
 }
 

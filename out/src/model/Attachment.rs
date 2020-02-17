@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// For referring to data content defined in other formats.
 
 #[derive(Debug)]
 pub struct Attachment<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Attachment<'_> {
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl Attachment<'_> {
     /// Extensions for creation
     pub fn _creation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_creation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl Attachment<'_> {
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl Attachment<'_> {
     /// Extensions for hash
     pub fn _hash(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_hash") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -47,7 +57,9 @@ impl Attachment<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -55,7 +67,9 @@ impl Attachment<'_> {
     /// Extensions for size
     pub fn _size(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_size") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -63,7 +77,9 @@ impl Attachment<'_> {
     /// Extensions for title
     pub fn _title(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_title") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -71,7 +87,9 @@ impl Attachment<'_> {
     /// Extensions for url
     pub fn _url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_url") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -111,7 +129,9 @@ impl Attachment<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -225,5 +245,23 @@ impl Attachment<'_> {
         if let Some(_val) = self.title() {}
         if let Some(_val) = self.url() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AttachmentBuilder {
+    pub value: Value,
+}
+
+impl AttachmentBuilder {
+    pub fn build(&self) -> Attachment {
+        Attachment {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> AttachmentBuilder {
+        let mut __value: Value = json!({});
+        return AttachmentBuilder { value: __value };
     }
 }

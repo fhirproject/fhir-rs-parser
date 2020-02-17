@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::MolecularSequence_Roc::MolecularSequence_Roc;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Raw data describing a biological sequence.
 
 #[derive(Debug)]
 pub struct MolecularSequence_Quality<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MolecularSequence_Quality<'_> {
     /// Extensions for end
     pub fn _end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_end") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for fScore
     pub fn _f_score(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fScore") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for gtFP
     pub fn _gt_f_p(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_gtFP") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for precision
     pub fn _precision(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_precision") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +60,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for queryFP
     pub fn _query_f_p(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_queryFP") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +70,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for queryTP
     pub fn _query_t_p(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_queryTP") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +80,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for recall
     pub fn _recall(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recall") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +90,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for start
     pub fn _start(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_start") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +100,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for truthFN
     pub fn _truth_f_n(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_truthFN") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +110,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for truthTP
     pub fn _truth_t_p(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_truthTP") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +120,9 @@ impl MolecularSequence_Quality<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +146,9 @@ impl MolecularSequence_Quality<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -160,7 +186,9 @@ impl MolecularSequence_Quality<'_> {
     /// Which method is used to get sequence quality.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -180,7 +208,9 @@ impl MolecularSequence_Quality<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -228,7 +258,9 @@ impl MolecularSequence_Quality<'_> {
     /// tradeoff.
     pub fn roc(&self) -> Option<MolecularSequence_Roc> {
         if let Some(val) = self.value.get("roc") {
-            return Some(MolecularSequence_Roc { value: val });
+            return Some(MolecularSequence_Roc {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -238,7 +270,9 @@ impl MolecularSequence_Quality<'_> {
     /// 5)).
     pub fn score(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("score") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -246,7 +280,9 @@ impl MolecularSequence_Quality<'_> {
     /// Gold standard sequence used for comparing against.
     pub fn standard_sequence(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("standardSequence") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -389,6 +425,24 @@ impl MolecularSequence_Quality<'_> {
         if let Some(_val) = self.truth_t_p() {}
         if let Some(_val) = self.fhir_type() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MolecularSequence_QualityBuilder {
+    pub value: Value,
+}
+
+impl MolecularSequence_QualityBuilder {
+    pub fn build(&self) -> MolecularSequence_Quality {
+        MolecularSequence_Quality {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MolecularSequence_QualityBuilder {
+        let mut __value: Value = json!({});
+        return MolecularSequence_QualityBuilder { value: __value };
     }
 }
 

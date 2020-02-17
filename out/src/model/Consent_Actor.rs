@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A record of a healthcare consumer’s  choices, which permits or denies identified
 /// recipient(s) or recipient role(s) to perform one or more actions within a given
@@ -11,7 +13,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Consent_Actor<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Consent_Actor<'_> {
@@ -24,7 +26,9 @@ impl Consent_Actor<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -55,7 +59,9 @@ impl Consent_Actor<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -67,7 +73,7 @@ impl Consent_Actor<'_> {
     /// officers').
     pub fn reference(&self) -> Reference {
         Reference {
-            value: &self.value["reference"],
+            value: Cow::Borrowed(&self.value["reference"]),
         }
     }
 
@@ -75,7 +81,7 @@ impl Consent_Actor<'_> {
     /// exception.
     pub fn role(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["role"],
+            value: Cow::Borrowed(&self.value["role"]),
         }
     }
 
@@ -98,5 +104,25 @@ impl Consent_Actor<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Consent_ActorBuilder {
+    pub value: Value,
+}
+
+impl Consent_ActorBuilder {
+    pub fn build(&self) -> Consent_Actor {
+        Consent_Actor {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(reference: Reference, role: CodeableConcept) -> Consent_ActorBuilder {
+        let mut __value: Value = json!({});
+        __value["reference"] = json!(reference.value);
+        __value["role"] = json!(role.value);
+        return Consent_ActorBuilder { value: __value };
     }
 }

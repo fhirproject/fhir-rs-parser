@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Captures constraints on each element within the resource, profile, or extension.
 
 #[derive(Debug)]
 pub struct ElementDefinition_Mapping<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ElementDefinition_Mapping<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl ElementDefinition_Mapping<'_> {
     /// Extensions for identity
     pub fn _identity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identity") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl ElementDefinition_Mapping<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -39,7 +47,9 @@ impl ElementDefinition_Mapping<'_> {
     /// Extensions for map
     pub fn _map(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_map") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -61,7 +71,9 @@ impl ElementDefinition_Mapping<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -116,7 +128,9 @@ impl ElementDefinition_Mapping<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -160,5 +174,23 @@ impl ElementDefinition_Mapping<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ElementDefinition_MappingBuilder {
+    pub value: Value,
+}
+
+impl ElementDefinition_MappingBuilder {
+    pub fn build(&self) -> ElementDefinition_Mapping {
+        ElementDefinition_Mapping {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ElementDefinition_MappingBuilder {
+        let mut __value: Value = json!({});
+        return ElementDefinition_MappingBuilder { value: __value };
     }
 }

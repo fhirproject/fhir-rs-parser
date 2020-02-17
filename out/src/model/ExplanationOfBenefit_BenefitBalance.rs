@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::ExplanationOfBenefit_Financial::ExplanationOfBenefit_Financial;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource provides: the claim details; adjudication details from the
 /// processing of a Claim; and optionally account balance information, for informing
@@ -12,14 +14,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_BenefitBalance<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -27,7 +31,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// Extensions for excluded
     pub fn _excluded(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_excluded") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -35,7 +41,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +52,7 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// are provided.
     pub fn category(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["category"],
+            value: Cow::Borrowed(&self.value["category"]),
         }
     }
 
@@ -74,7 +82,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -86,7 +96,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         if let Some(Value::Array(val)) = self.value.get("financial") {
             return Some(
                 val.into_iter()
-                    .map(|e| ExplanationOfBenefit_Financial { value: e })
+                    .map(|e| ExplanationOfBenefit_Financial {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -117,7 +129,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -136,7 +150,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// of-network providers.
     pub fn network(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("network") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -145,7 +161,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// annual visits'.
     pub fn term(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("term") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -153,7 +171,9 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
     /// Indicates if the benefits apply to an individual or to the family.
     pub fn unit(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("unit") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -212,5 +232,24 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ExplanationOfBenefit_BenefitBalanceBuilder {
+    pub value: Value,
+}
+
+impl ExplanationOfBenefit_BenefitBalanceBuilder {
+    pub fn build(&self) -> ExplanationOfBenefit_BenefitBalance {
+        ExplanationOfBenefit_BenefitBalance {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(category: CodeableConcept) -> ExplanationOfBenefit_BenefitBalanceBuilder {
+        let mut __value: Value = json!({});
+        __value["category"] = json!(category.value);
+        return ExplanationOfBenefit_BenefitBalanceBuilder { value: __value };
     }
 }

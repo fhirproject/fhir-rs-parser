@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Period::Period;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// An association between a patient and an organization / healthcare provider(s)
 /// during which time encounters may occur. The managing organization assumes a
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct EpisodeOfCare_StatusHistory<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl EpisodeOfCare_StatusHistory<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -32,7 +36,9 @@ impl EpisodeOfCare_StatusHistory<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -63,7 +69,9 @@ impl EpisodeOfCare_StatusHistory<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +81,7 @@ impl EpisodeOfCare_StatusHistory<'_> {
     /// The period during this EpisodeOfCare that the specific status applied.
     pub fn period(&self) -> Period {
         Period {
-            value: &self.value["period"],
+            value: Cow::Borrowed(&self.value["period"]),
         }
     }
 
@@ -107,6 +115,25 @@ impl EpisodeOfCare_StatusHistory<'_> {
         }
         if let Some(_val) = self.status() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct EpisodeOfCare_StatusHistoryBuilder {
+    pub value: Value,
+}
+
+impl EpisodeOfCare_StatusHistoryBuilder {
+    pub fn build(&self) -> EpisodeOfCare_StatusHistory {
+        EpisodeOfCare_StatusHistory {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(period: Period) -> EpisodeOfCare_StatusHistoryBuilder {
+        let mut __value: Value = json!({});
+        __value["period"] = json!(period.value);
+        return EpisodeOfCare_StatusHistoryBuilder { value: __value };
     }
 }
 

@@ -2,20 +2,24 @@
 
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The details of a healthcare service available at a location.
 
 #[derive(Debug)]
 pub struct HealthcareService_AvailableTime<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl HealthcareService_AvailableTime<'_> {
     /// Extensions for allDay
     pub fn _all_day(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allDay") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -23,7 +27,9 @@ impl HealthcareService_AvailableTime<'_> {
     /// Extensions for availableEndTime
     pub fn _available_end_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_availableEndTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -31,7 +37,9 @@ impl HealthcareService_AvailableTime<'_> {
     /// Extensions for availableStartTime
     pub fn _available_start_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_availableStartTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +49,9 @@ impl HealthcareService_AvailableTime<'_> {
         if let Some(Value::Array(val)) = self.value.get("_daysOfWeek") {
             return Some(
                 val.into_iter()
-                    .map(|e| Element { value: e })
+                    .map(|e| Element {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -83,7 +93,9 @@ impl HealthcareService_AvailableTime<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,7 +126,9 @@ impl HealthcareService_AvailableTime<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -157,5 +171,23 @@ impl HealthcareService_AvailableTime<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct HealthcareService_AvailableTimeBuilder {
+    pub value: Value,
+}
+
+impl HealthcareService_AvailableTimeBuilder {
+    pub fn build(&self) -> HealthcareService_AvailableTime {
+        HealthcareService_AvailableTime {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> HealthcareService_AvailableTimeBuilder {
+        let mut __value: Value = json!({});
+        return HealthcareService_AvailableTimeBuilder { value: __value };
     }
 }

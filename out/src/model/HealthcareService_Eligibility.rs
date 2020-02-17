@@ -3,20 +3,24 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The details of a healthcare service available at a location.
 
 #[derive(Debug)]
 pub struct HealthcareService_Eligibility<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl HealthcareService_Eligibility<'_> {
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -24,7 +28,9 @@ impl HealthcareService_Eligibility<'_> {
     /// Coded value for the eligibility.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -46,7 +52,9 @@ impl HealthcareService_Eligibility<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -77,7 +85,9 @@ impl HealthcareService_Eligibility<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -108,5 +118,23 @@ impl HealthcareService_Eligibility<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct HealthcareService_EligibilityBuilder {
+    pub value: Value,
+}
+
+impl HealthcareService_EligibilityBuilder {
+    pub fn build(&self) -> HealthcareService_Eligibility {
+        HealthcareService_Eligibility {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> HealthcareService_EligibilityBuilder {
+        let mut __value: Value = json!({});
+        return HealthcareService_EligibilityBuilder { value: __value };
     }
 }

@@ -251,8 +251,10 @@ fn generate_trait(
 
   string.push_str("#![allow(unused_imports, non_camel_case_types)]\n\n");
 
+  pending_imports.insert("serde_json::value::Value".to_string());
+  pending_imports.insert("std::borrow::Cow".to_string());
+
   let mut inner_string = String::new();
-  inner_string.push_str("use serde_json::value::Value;\n\n");
 
   let mut validation_string = String::new();
 
@@ -261,7 +263,7 @@ fn generate_trait(
     inner_string.push_str("pub struct ");
     inner_string.push_str(name);
     inner_string.push_str("<'a> {\n");
-    inner_string.push_str("  pub value: &'a Value,\n");
+    inner_string.push_str("  pub(crate) value: Cow<'a, Value>,\n");
     inner_string.push_str("}\n\n");
 
     let mut impl_string = String::new();
@@ -307,7 +309,7 @@ fn generate_trait(
       impl_string.push_str(&type_definition.name);
       impl_string.push_str("(");
       impl_string.push_str(&type_definition.name);
-      impl_string.push_str(" { value: self.value })),\n");
+      impl_string.push_str(" { value: self.value.clone() })),\n");
 
       validation_string.push_str("        ");
       validation_string.push_str(name);
@@ -336,7 +338,7 @@ fn generate_trait(
     inner_string.push_str("pub struct ");
     inner_string.push_str(name);
     inner_string.push_str("<'a> {\n");
-    inner_string.push_str("  pub value: &'a Value,\n}\n\n");
+    inner_string.push_str("  pub(crate) value: Cow<'a, Value>,\n}\n\n");
 
     inner_string.push_str("impl ");
     inner_string.push_str(name);
@@ -344,28 +346,38 @@ fn generate_trait(
 
     validation_string.push_str("  pub fn validate(&self) -> bool {\n");
 
-    let mut builder_string = String::new();
-    builder_string.push_str("\n#[derive(Debug)]\n");
-    builder_string.push_str("pub struct ");
-    builder_string.push_str(name);
-    builder_string.push_str("Builder {\n");
-    builder_string.push_str("  pub value: Value,\n}\n\n");
-    builder_string.push_str("impl ");
-    builder_string.push_str(name);
-    builder_string.push_str("Builder {\n");
-    builder_string.push_str("  pub fn build() -> ");
-    builder_string.push_str(name);
-    builder_string.push_str("{\n");
-
+    let required_property_names: HashSet<String> = match &definition.required {
+      Some(strings) => HashSet::from_iter(strings.iter().cloned()),
+      None => HashSet::new(),
+    };
     let properties = match &definition.properties {
       Some(properties) => properties,
       None => return String::new(),
     };
 
-    let required_property_names: HashSet<String> = match &definition.required {
-      Some(strings) => HashSet::from_iter(strings.iter().cloned()),
-      None => HashSet::new(),
-    };
+    let mut builder_constructor_definition = String::new();
+    builder_constructor_definition.push_str("\n#[derive(Debug)]\n");
+    builder_constructor_definition.push_str("pub struct ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str("Builder {\n");
+    builder_constructor_definition.push_str("  pub value: Value,\n}\n\n");
+    builder_constructor_definition.push_str("impl ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str("Builder {\n");
+    builder_constructor_definition.push_str("  pub fn build(&self) -> ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str("{\n");
+    builder_constructor_definition.push_str("    ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str(" { value: Cow::Owned(self.value.clone()) }\n  }\n\n");
+    builder_constructor_definition.push_str("  pub fn new(");
+
+    let mut builder_constructor_impl = String::new();
+    builder_constructor_impl.push_str(") -> ");
+    builder_constructor_impl.push_str(name);
+    builder_constructor_impl.push_str("Builder {\n");
+    builder_constructor_impl.push_str("    let mut __value: Value = json!({});\n");
+    pending_imports.insert("serde_json::json".to_string());
 
     for (property_name, property) in properties {
       let required = required_property_names.contains(&property_name[..]);
@@ -387,6 +399,8 @@ fn generate_trait(
           write_property(
             &mut inner_string,
             &mut validation_string,
+            &mut builder_constructor_definition,
+            &mut builder_constructor_impl,
             &property_name,
             &type_definition,
             &description,
@@ -415,6 +429,8 @@ fn generate_trait(
           write_property(
             &mut inner_string,
             &mut validation_string,
+            &mut builder_constructor_definition,
+            &mut builder_constructor_impl,
             &property_name,
             &type_definition,
             &description,
@@ -443,6 +459,8 @@ fn generate_trait(
             write_property(
               &mut inner_string,
               &mut validation_string,
+              &mut builder_constructor_definition,
+              &mut builder_constructor_impl,
               &property_name,
               &type_definition,
               &description,
@@ -463,6 +481,8 @@ fn generate_trait(
             write_property(
               &mut inner_string,
               &mut validation_string,
+              &mut builder_constructor_definition,
+              &mut builder_constructor_impl,
               &property_name,
               &type_definition,
               &description,
@@ -489,6 +509,8 @@ fn generate_trait(
           write_property(
             &mut inner_string,
             &mut validation_string,
+            &mut builder_constructor_definition,
+            &mut builder_constructor_impl,
             &property_name,
             &type_definition,
             &description,
@@ -513,6 +535,8 @@ fn generate_trait(
           write_property(
             &mut inner_string,
             &mut validation_string,
+            &mut builder_constructor_definition,
+            &mut builder_constructor_impl,
             &property_name,
             &type_definition,
             &description,
@@ -534,7 +558,13 @@ fn generate_trait(
 
     inner_string.push_str(&validation_string);
 
-    inner_string.push_str("}\n");
+    inner_string.push_str("}\n\n");
+
+    inner_string.push_str(&builder_constructor_definition);
+    inner_string.push_str(&builder_constructor_impl);
+    inner_string.push_str("    return ");
+    inner_string.push_str(name);
+    inner_string.push_str("Builder { value: __value };\n  }\n}\n\n");
   }
 
   for (enum_name, values) in pending_enums {
@@ -600,6 +630,8 @@ fn generate_trait(
 fn write_property(
   inner_string: &mut String,
   validation_string: &mut String,
+  builder_constructor_definition: &mut String,
+  builder_constructor_impl: &mut String,
   property_name: &str,
   type_definition: &TypeDefinition,
   description: &str,
@@ -628,6 +660,46 @@ fn write_property(
     }
   }
 
+  // Builder constructor
+  if required {
+    builder_constructor_definition.push_str(&sanitized_name);
+    builder_constructor_definition.push_str(": ");
+    builder_constructor_definition.push_str(&type_name);
+    builder_constructor_definition.push_str(", ");
+
+    builder_constructor_impl.push_str("    __value[\"");
+    builder_constructor_impl.push_str(&property_name);
+    builder_constructor_impl.push_str("\"] = ");
+    if type_definition.builtin {
+      builder_constructor_impl.push_str("json!(");
+      builder_constructor_impl.push_str(&sanitized_name);
+      builder_constructor_impl.push_str(");\n");
+    } else if type_definition.string_enum {
+      if array {
+        builder_constructor_impl.push_str("json!(");
+        builder_constructor_impl.push_str(&sanitized_name);
+        builder_constructor_impl
+          .push_str(".into_iter().map(|e| e.to_string()).collect::<Vec<_>>());\n")
+      } else {
+        builder_constructor_impl.push_str("json!(");
+        builder_constructor_impl.push_str(&sanitized_name);
+        builder_constructor_impl.push_str(".to_string());\n");
+      }
+    } else {
+      if array {
+        builder_constructor_impl.push_str("json!(");
+        builder_constructor_impl.push_str(&sanitized_name);
+        builder_constructor_impl.push_str(".into_iter().map(|e| e.value).collect::<Vec<_>>());\n")
+      } else {
+        builder_constructor_impl.push_str("json!(");
+        builder_constructor_impl.push_str(&sanitized_name);
+        builder_constructor_impl.push_str(".value);\n");
+      }
+    }
+  }
+  // End Builder constructor
+
+  // Validation
   if required {
     if array {
       if !type_definition.builtin {
@@ -666,6 +738,7 @@ fn write_property(
     }
     validation_string.push_str("    }\n");
   }
+  // End Validation
 
   let mut getter = String::new();
   // getter
@@ -722,7 +795,7 @@ fn write_property(
           inner_string.push_str(&property_name);
           inner_string.push_str("\").unwrap().as_array().unwrap().into_iter().map(|e| ");
           inner_string.push_str(&type_definition.name);
-          inner_string.push_str(" { value: e }).collect::<Vec<_>>()\n");
+          inner_string.push_str(" { value: Cow::Borrowed(e) }).collect::<Vec<_>>()\n");
         }
       } else {
         if type_definition.string_enum {
@@ -738,7 +811,9 @@ fn write_property(
           inner_string.push_str(&property_name);
           inner_string.push_str("\") {\n      return Some(val.into_iter().map(|e| ");
           inner_string.push_str(&type_definition.name);
-          inner_string.push_str(" { value: e }).collect::<Vec<_>>());\n    }\n    return None;\n");
+          inner_string.push_str(
+            " { value: Cow::Borrowed(e) }).collect::<Vec<_>>());\n    }\n    return None;\n",
+          );
         }
       }
     }
@@ -782,9 +857,9 @@ fn write_property(
         inner_string.push_str("    ");
         inner_string.push_str(&type_definition.name);
         inner_string.push_str(" {\n");
-        inner_string.push_str("      value: &self.value[\"");
+        inner_string.push_str("      value: Cow::Borrowed(&self.value[\"");
         inner_string.push_str(&property_name);
-        inner_string.push_str("\"],\n    }\n");
+        inner_string.push_str("\"]),\n    }\n");
       }
     } else {
       if type_definition.string_enum {
@@ -798,7 +873,7 @@ fn write_property(
         inner_string.push_str(&property_name);
         inner_string.push_str("\") {\n      return Some(");
         inner_string.push_str(&type_definition.name);
-        inner_string.push_str(" { value: val });\n    }\n    return None;\n");
+        inner_string.push_str(" { value: Cow::Borrowed(val) });\n    }\n    return None;\n");
       }
     }
   }

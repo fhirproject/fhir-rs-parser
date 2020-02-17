@@ -5,14 +5,16 @@ use crate::model::Extension::Extension;
 use crate::model::Identifier::Identifier;
 use crate::model::Quantity::Quantity;
 use crate::model::SubstanceSpecification_MolecularWeight::SubstanceSpecification_MolecularWeight;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_Isotope<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSpecification_Isotope<'_> {
@@ -25,7 +27,9 @@ impl SubstanceSpecification_Isotope<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -35,7 +39,9 @@ impl SubstanceSpecification_Isotope<'_> {
     /// Half life - for a non-natural nuclide.
     pub fn half_life(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("halfLife") {
-            return Some(Quantity { value: val });
+            return Some(Quantity {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +58,9 @@ impl SubstanceSpecification_Isotope<'_> {
     /// Substance identifier for each non-natural or radioisotope.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -72,7 +80,9 @@ impl SubstanceSpecification_Isotope<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -82,7 +92,9 @@ impl SubstanceSpecification_Isotope<'_> {
     /// The molecular weight or weight range (for proteins, polymers or nucleic acids).
     pub fn molecular_weight(&self) -> Option<SubstanceSpecification_MolecularWeight> {
         if let Some(val) = self.value.get("molecularWeight") {
-            return Some(SubstanceSpecification_MolecularWeight { value: val });
+            return Some(SubstanceSpecification_MolecularWeight {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -90,7 +102,9 @@ impl SubstanceSpecification_Isotope<'_> {
     /// Substance name for each non-natural or radioisotope.
     pub fn name(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("name") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -98,7 +112,9 @@ impl SubstanceSpecification_Isotope<'_> {
     /// The type of isotopic substitution present in a single substance.
     pub fn substitution(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("substitution") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -141,5 +157,23 @@ impl SubstanceSpecification_Isotope<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_IsotopeBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSpecification_IsotopeBuilder {
+    pub fn build(&self) -> SubstanceSpecification_Isotope {
+        SubstanceSpecification_Isotope {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSpecification_IsotopeBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSpecification_IsotopeBuilder { value: __value };
     }
 }

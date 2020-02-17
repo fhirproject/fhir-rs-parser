@@ -7,21 +7,25 @@ use crate::model::Reference::Reference;
 use crate::model::SubstanceSpecification_Isotope::SubstanceSpecification_Isotope;
 use crate::model::SubstanceSpecification_MolecularWeight::SubstanceSpecification_MolecularWeight;
 use crate::model::SubstanceSpecification_Representation::SubstanceSpecification_Representation;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The detailed description of a substance, typically at a level beyond what is
 /// used for prescribing.
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_Structure<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl SubstanceSpecification_Structure<'_> {
     /// Extensions for molecularFormula
     pub fn _molecular_formula(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_molecularFormula") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -29,7 +33,9 @@ impl SubstanceSpecification_Structure<'_> {
     /// Extensions for molecularFormulaByMoiety
     pub fn _molecular_formula_by_moiety(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_molecularFormulaByMoiety") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -43,7 +49,9 @@ impl SubstanceSpecification_Structure<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +73,9 @@ impl SubstanceSpecification_Structure<'_> {
         if let Some(Value::Array(val)) = self.value.get("isotope") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Isotope { value: e })
+                    .map(|e| SubstanceSpecification_Isotope {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -87,7 +97,9 @@ impl SubstanceSpecification_Structure<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -114,7 +126,9 @@ impl SubstanceSpecification_Structure<'_> {
     /// The molecular weight or weight range (for proteins, polymers or nucleic acids).
     pub fn molecular_weight(&self) -> Option<SubstanceSpecification_MolecularWeight> {
         if let Some(val) = self.value.get("molecularWeight") {
-            return Some(SubstanceSpecification_MolecularWeight { value: val });
+            return Some(SubstanceSpecification_MolecularWeight {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,7 +136,9 @@ impl SubstanceSpecification_Structure<'_> {
     /// Optical activity type.
     pub fn optical_activity(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("opticalActivity") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -132,7 +148,9 @@ impl SubstanceSpecification_Structure<'_> {
         if let Some(Value::Array(val)) = self.value.get("representation") {
             return Some(
                 val.into_iter()
-                    .map(|e| SubstanceSpecification_Representation { value: e })
+                    .map(|e| SubstanceSpecification_Representation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -144,7 +162,9 @@ impl SubstanceSpecification_Structure<'_> {
         if let Some(Value::Array(val)) = self.value.get("source") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -154,7 +174,9 @@ impl SubstanceSpecification_Structure<'_> {
     /// Stereochemistry type.
     pub fn stereochemistry(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("stereochemistry") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -214,5 +236,23 @@ impl SubstanceSpecification_Structure<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct SubstanceSpecification_StructureBuilder {
+    pub value: Value,
+}
+
+impl SubstanceSpecification_StructureBuilder {
+    pub fn build(&self) -> SubstanceSpecification_Structure {
+        SubstanceSpecification_Structure {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> SubstanceSpecification_StructureBuilder {
+        let mut __value: Value = json!({});
+        return SubstanceSpecification_StructureBuilder { value: __value };
     }
 }

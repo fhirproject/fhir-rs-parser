@@ -3,13 +3,15 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::InsurancePlan_Benefit1::InsurancePlan_Benefit1;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Details of a Health Insurance product/plan provided by an organization.
 
 #[derive(Debug)]
 pub struct InsurancePlan_SpecificCost<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl InsurancePlan_SpecificCost<'_> {
@@ -18,7 +20,9 @@ impl InsurancePlan_SpecificCost<'_> {
         if let Some(Value::Array(val)) = self.value.get("benefit") {
             return Some(
                 val.into_iter()
-                    .map(|e| InsurancePlan_Benefit1 { value: e })
+                    .map(|e| InsurancePlan_Benefit1 {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -29,7 +33,7 @@ impl InsurancePlan_SpecificCost<'_> {
     /// Substance Abuse; Hospice, Home Health).
     pub fn category(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["category"],
+            value: Cow::Borrowed(&self.value["category"]),
         }
     }
 
@@ -42,7 +46,9 @@ impl InsurancePlan_SpecificCost<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -73,7 +79,9 @@ impl InsurancePlan_SpecificCost<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -101,5 +109,24 @@ impl InsurancePlan_SpecificCost<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct InsurancePlan_SpecificCostBuilder {
+    pub value: Value,
+}
+
+impl InsurancePlan_SpecificCostBuilder {
+    pub fn build(&self) -> InsurancePlan_SpecificCost {
+        InsurancePlan_SpecificCost {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(category: CodeableConcept) -> InsurancePlan_SpecificCostBuilder {
+        let mut __value: Value = json!({});
+        __value["category"] = json!(category.value);
+        return InsurancePlan_SpecificCostBuilder { value: __value };
     }
 }

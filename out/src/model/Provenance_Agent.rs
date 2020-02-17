@@ -3,7 +3,9 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Provenance of a resource is a record that describes entities and processes
 /// involved in producing and delivering or otherwise influencing that resource.
@@ -17,7 +19,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Provenance_Agent<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Provenance_Agent<'_> {
@@ -30,7 +32,9 @@ impl Provenance_Agent<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -61,7 +65,9 @@ impl Provenance_Agent<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -71,7 +77,9 @@ impl Provenance_Agent<'_> {
     /// The individual, device, or organization for whom the change was made.
     pub fn on_behalf_of(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("onBehalfOf") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -82,7 +90,9 @@ impl Provenance_Agent<'_> {
         if let Some(Value::Array(val)) = self.value.get("role") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +102,9 @@ impl Provenance_Agent<'_> {
     /// The participation the agent had with respect to the activity.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -100,7 +112,7 @@ impl Provenance_Agent<'_> {
     /// The individual, device or organization that participated in the event.
     pub fn who(&self) -> Reference {
         Reference {
-            value: &self.value["who"],
+            value: Cow::Borrowed(&self.value["who"]),
         }
     }
 
@@ -135,5 +147,24 @@ impl Provenance_Agent<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct Provenance_AgentBuilder {
+    pub value: Value,
+}
+
+impl Provenance_AgentBuilder {
+    pub fn build(&self) -> Provenance_Agent {
+        Provenance_Agent {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(who: Reference) -> Provenance_AgentBuilder {
+        let mut __value: Value = json!({});
+        __value["who"] = json!(who.value);
+        return Provenance_AgentBuilder { value: __value };
     }
 }

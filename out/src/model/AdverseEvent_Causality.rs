@@ -4,7 +4,9 @@ use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Actual or  potential/avoided event causing unintended physical injury resulting
 /// from or contributed to by medical care, a research study or other healthcare
@@ -13,14 +15,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct AdverseEvent_Causality<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AdverseEvent_Causality<'_> {
     /// Extensions for productRelatedness
     pub fn _product_relatedness(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_productRelatedness") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -28,7 +32,9 @@ impl AdverseEvent_Causality<'_> {
     /// Assessment of if the entity caused the event.
     pub fn assessment(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("assessment") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +42,9 @@ impl AdverseEvent_Causality<'_> {
     /// AdverseEvent.suspectEntity.causalityAuthor.
     pub fn author(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("author") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +58,9 @@ impl AdverseEvent_Causality<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +79,9 @@ impl AdverseEvent_Causality<'_> {
     /// ProbabilityScale | Bayesian | Checklist.
     pub fn method(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("method") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -89,7 +101,9 @@ impl AdverseEvent_Causality<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -138,5 +152,23 @@ impl AdverseEvent_Causality<'_> {
         }
         if let Some(_val) = self.product_relatedness() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AdverseEvent_CausalityBuilder {
+    pub value: Value,
+}
+
+impl AdverseEvent_CausalityBuilder {
+    pub fn build(&self) -> AdverseEvent_Causality {
+        AdverseEvent_Causality {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> AdverseEvent_CausalityBuilder {
+        let mut __value: Value = json!({});
+        return AdverseEvent_CausalityBuilder { value: __value };
     }
 }

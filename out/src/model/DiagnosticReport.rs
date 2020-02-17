@@ -11,7 +11,9 @@ use crate::model::Narrative::Narrative;
 use crate::model::Period::Period;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The findings and interpretation of diagnostic  tests performed on patients,
 /// groups of patients, devices, and locations, and/or specimens derived from these.
@@ -21,14 +23,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct DiagnosticReport<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DiagnosticReport<'_> {
     /// Extensions for conclusion
     pub fn _conclusion(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_conclusion") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -36,7 +40,9 @@ impl DiagnosticReport<'_> {
     /// Extensions for effectiveDateTime
     pub fn _effective_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveDateTime") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -44,7 +50,9 @@ impl DiagnosticReport<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -52,7 +60,9 @@ impl DiagnosticReport<'_> {
     /// Extensions for issued
     pub fn _issued(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_issued") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -60,7 +70,9 @@ impl DiagnosticReport<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -68,7 +80,9 @@ impl DiagnosticReport<'_> {
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -78,7 +92,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("basedOn") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -92,7 +108,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -102,7 +120,7 @@ impl DiagnosticReport<'_> {
     /// A code or name that describes this diagnostic report.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -121,7 +139,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("conclusionCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -135,7 +155,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -159,7 +181,9 @@ impl DiagnosticReport<'_> {
     /// only the date/time itself.
     pub fn effective_period(&self) -> Option<Period> {
         if let Some(val) = self.value.get("effectivePeriod") {
-            return Some(Period { value: val });
+            return Some(Period {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -168,7 +192,9 @@ impl DiagnosticReport<'_> {
     /// this DiagnosticReport is about.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -182,7 +208,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -203,7 +231,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("identifier") {
             return Some(
                 val.into_iter()
-                    .map(|e| Identifier { value: e })
+                    .map(|e| Identifier {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -218,7 +248,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("imagingStudy") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -260,7 +292,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("media") {
             return Some(
                 val.into_iter()
-                    .map(|e| DiagnosticReport_Media { value: e })
+                    .map(|e| DiagnosticReport_Media {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -272,7 +306,9 @@ impl DiagnosticReport<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -293,7 +329,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -305,7 +343,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("performer") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -318,7 +358,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("presentedForm") {
             return Some(
                 val.into_iter()
-                    .map(|e| Attachment { value: e })
+                    .map(|e| Attachment {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -330,7 +372,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("result") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -343,7 +387,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("resultsInterpreter") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -355,7 +401,9 @@ impl DiagnosticReport<'_> {
         if let Some(Value::Array(val)) = self.value.get("specimen") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -375,7 +423,9 @@ impl DiagnosticReport<'_> {
     /// of other sources.
     pub fn subject(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("subject") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -388,7 +438,9 @@ impl DiagnosticReport<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -530,6 +582,25 @@ impl DiagnosticReport<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DiagnosticReportBuilder {
+    pub value: Value,
+}
+
+impl DiagnosticReportBuilder {
+    pub fn build(&self) -> DiagnosticReport {
+        DiagnosticReport {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> DiagnosticReportBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return DiagnosticReportBuilder { value: __value };
     }
 }
 

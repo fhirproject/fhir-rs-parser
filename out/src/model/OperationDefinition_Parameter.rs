@@ -4,21 +4,25 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::OperationDefinition_Binding::OperationDefinition_Binding;
 use crate::model::OperationDefinition_ReferencedFrom::OperationDefinition_ReferencedFrom;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A formal computable definition of an operation (on the RESTful interface) or a
 /// named query (using the search interaction).
 
 #[derive(Debug)]
 pub struct OperationDefinition_Parameter<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl OperationDefinition_Parameter<'_> {
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for max
     pub fn _max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_max") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -34,7 +40,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for min
     pub fn _min(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_min") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -42,7 +50,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -50,7 +60,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for searchType
     pub fn _search_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_searchType") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -58,7 +70,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -66,7 +80,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Extensions for use
     pub fn _use(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_use") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +90,9 @@ impl OperationDefinition_Parameter<'_> {
     /// Binds to a value set if this parameter is coded (code, Coding, CodeableConcept).
     pub fn binding(&self) -> Option<OperationDefinition_Binding> {
         if let Some(val) = self.value.get("binding") {
-            return Some(OperationDefinition_Binding { value: val });
+            return Some(OperationDefinition_Binding {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -96,7 +114,9 @@ impl OperationDefinition_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -145,7 +165,9 @@ impl OperationDefinition_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -165,7 +187,9 @@ impl OperationDefinition_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("part") {
             return Some(
                 val.into_iter()
-                    .map(|e| OperationDefinition_Parameter { value: e })
+                    .map(|e| OperationDefinition_Parameter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -178,7 +202,9 @@ impl OperationDefinition_Parameter<'_> {
         if let Some(Value::Array(val)) = self.value.get("referencedFrom") {
             return Some(
                 val.into_iter()
-                    .map(|e| OperationDefinition_ReferencedFrom { value: e })
+                    .map(|e| OperationDefinition_ReferencedFrom {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -302,6 +328,24 @@ impl OperationDefinition_Parameter<'_> {
         if let Some(_val) = self.fhir_type() {}
         if let Some(_val) = self.fhir_use() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct OperationDefinition_ParameterBuilder {
+    pub value: Value,
+}
+
+impl OperationDefinition_ParameterBuilder {
+    pub fn build(&self) -> OperationDefinition_Parameter {
+        OperationDefinition_Parameter {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> OperationDefinition_ParameterBuilder {
+        let mut __value: Value = json!({});
+        return OperationDefinition_ParameterBuilder { value: __value };
     }
 }
 

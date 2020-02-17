@@ -3,7 +3,9 @@
 use crate::model::Element::Element;
 use crate::model::Meta::Meta;
 use crate::model::Parameters_Parameter::Parameters_Parameter;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// This resource is a non-persisted resource used to pass information into and back
 /// from an [operation](operations.html). It has no other use, and there is no
@@ -11,14 +13,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct Parameters<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl Parameters<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl Parameters<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -64,7 +70,9 @@ impl Parameters<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -74,7 +82,9 @@ impl Parameters<'_> {
         if let Some(Value::Array(val)) = self.value.get("parameter") {
             return Some(
                 val.into_iter()
-                    .map(|e| Parameters_Parameter { value: e })
+                    .map(|e| Parameters_Parameter {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -106,5 +116,23 @@ impl Parameters<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct ParametersBuilder {
+    pub value: Value,
+}
+
+impl ParametersBuilder {
+    pub fn build(&self) -> Parameters {
+        Parameters {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> ParametersBuilder {
+        let mut __value: Value = json!({});
+        return ParametersBuilder { value: __value };
     }
 }

@@ -3,14 +3,16 @@
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
 use crate::model::Quantity::Quantity;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The characteristics, operational status and capabilities of a medical-related
 /// component of a medical device.
 
 #[derive(Debug)]
 pub struct DeviceDefinition_Property<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceDefinition_Property<'_> {
@@ -23,7 +25,9 @@ impl DeviceDefinition_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -54,7 +58,9 @@ impl DeviceDefinition_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -64,7 +70,7 @@ impl DeviceDefinition_Property<'_> {
     /// Code that specifies the property DeviceDefinitionPropetyCode (Extensible).
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -73,7 +79,9 @@ impl DeviceDefinition_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("valueCode") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -85,7 +93,9 @@ impl DeviceDefinition_Property<'_> {
         if let Some(Value::Array(val)) = self.value.get("valueQuantity") {
             return Some(
                 val.into_iter()
-                    .map(|e| Quantity { value: e })
+                    .map(|e| Quantity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -118,5 +128,24 @@ impl DeviceDefinition_Property<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceDefinition_PropertyBuilder {
+    pub value: Value,
+}
+
+impl DeviceDefinition_PropertyBuilder {
+    pub fn build(&self) -> DeviceDefinition_Property {
+        DeviceDefinition_Property {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> DeviceDefinition_PropertyBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return DeviceDefinition_PropertyBuilder { value: __value };
     }
 }

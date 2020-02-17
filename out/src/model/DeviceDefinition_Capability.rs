@@ -2,14 +2,16 @@
 
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The characteristics, operational status and capabilities of a medical-related
 /// component of a medical device.
 
 #[derive(Debug)]
 pub struct DeviceDefinition_Capability<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl DeviceDefinition_Capability<'_> {
@@ -18,7 +20,9 @@ impl DeviceDefinition_Capability<'_> {
         if let Some(Value::Array(val)) = self.value.get("description") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -34,7 +38,9 @@ impl DeviceDefinition_Capability<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -65,7 +71,9 @@ impl DeviceDefinition_Capability<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -75,7 +83,7 @@ impl DeviceDefinition_Capability<'_> {
     /// Type of capability.
     pub fn fhir_type(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["type"],
+            value: Cow::Borrowed(&self.value["type"]),
         }
     }
 
@@ -100,5 +108,24 @@ impl DeviceDefinition_Capability<'_> {
             return false;
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct DeviceDefinition_CapabilityBuilder {
+    pub value: Value,
+}
+
+impl DeviceDefinition_CapabilityBuilder {
+    pub fn build(&self) -> DeviceDefinition_Capability {
+        DeviceDefinition_Capability {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(fhir_type: CodeableConcept) -> DeviceDefinition_CapabilityBuilder {
+        let mut __value: Value = json!({});
+        __value["type"] = json!(fhir_type.value);
+        return DeviceDefinition_CapabilityBuilder { value: __value };
     }
 }

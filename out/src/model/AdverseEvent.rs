@@ -9,7 +9,9 @@ use crate::model::Meta::Meta;
 use crate::model::Narrative::Narrative;
 use crate::model::Reference::Reference;
 use crate::model::ResourceList::ResourceList;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Actual or  potential/avoided event causing unintended physical injury resulting
 /// from or contributed to by medical care, a research study or other healthcare
@@ -18,14 +20,16 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct AdverseEvent<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl AdverseEvent<'_> {
     /// Extensions for actuality
     pub fn _actuality(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actuality") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -33,7 +37,9 @@ impl AdverseEvent<'_> {
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -41,7 +47,9 @@ impl AdverseEvent<'_> {
     /// Extensions for detected
     pub fn _detected(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detected") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -49,7 +57,9 @@ impl AdverseEvent<'_> {
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -57,7 +67,9 @@ impl AdverseEvent<'_> {
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -65,7 +77,9 @@ impl AdverseEvent<'_> {
     /// Extensions for recordedDate
     pub fn _recorded_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_recordedDate") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -84,7 +98,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("category") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -98,7 +114,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("contained") {
             return Some(
                 val.into_iter()
-                    .map(|e| ResourceList { value: e })
+                    .map(|e| ResourceList {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -115,7 +133,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("contributor") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -142,7 +162,9 @@ impl AdverseEvent<'_> {
     /// this record is tightly associated.
     pub fn encounter(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("encounter") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -151,7 +173,9 @@ impl AdverseEvent<'_> {
     /// prevented from occurring.
     pub fn event(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("event") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -165,7 +189,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -186,7 +212,9 @@ impl AdverseEvent<'_> {
     /// server to server.
     pub fn identifier(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("identifier") {
-            return Some(Identifier { value: val });
+            return Some(Identifier {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -213,7 +241,9 @@ impl AdverseEvent<'_> {
     /// The information about where the adverse event occurred.
     pub fn location(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("location") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -223,7 +253,9 @@ impl AdverseEvent<'_> {
     /// version changes to the resource.
     pub fn meta(&self) -> Option<Meta> {
         if let Some(val) = self.value.get("meta") {
-            return Some(Meta { value: val });
+            return Some(Meta {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -244,7 +276,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -254,7 +288,9 @@ impl AdverseEvent<'_> {
     /// Describes the type of outcome from the adverse event.
     pub fn outcome(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("outcome") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -271,7 +307,9 @@ impl AdverseEvent<'_> {
     /// practitioner.
     pub fn recorder(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("recorder") {
-            return Some(Reference { value: val });
+            return Some(Reference {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -281,7 +319,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("referenceDocument") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -294,7 +334,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("resultingCondition") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -304,7 +346,9 @@ impl AdverseEvent<'_> {
     /// Assessment whether this event was of real importance.
     pub fn seriousness(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("seriousness") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -314,7 +358,9 @@ impl AdverseEvent<'_> {
     /// mild heart problem is.
     pub fn severity(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("severity") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -324,7 +370,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("study") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -334,7 +382,7 @@ impl AdverseEvent<'_> {
     /// This subject or group impacted by the event.
     pub fn subject(&self) -> Reference {
         Reference {
-            value: &self.value["subject"],
+            value: Cow::Borrowed(&self.value["subject"]),
         }
     }
 
@@ -343,7 +391,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("subjectMedicalHistory") {
             return Some(
                 val.into_iter()
-                    .map(|e| Reference { value: e })
+                    .map(|e| Reference {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -355,7 +405,9 @@ impl AdverseEvent<'_> {
         if let Some(Value::Array(val)) = self.value.get("suspectEntity") {
             return Some(
                 val.into_iter()
-                    .map(|e| AdverseEvent_SuspectEntity { value: e })
+                    .map(|e| AdverseEvent_SuspectEntity {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -370,7 +422,9 @@ impl AdverseEvent<'_> {
     /// ensure clinical safety.
     pub fn text(&self) -> Option<Narrative> {
         if let Some(val) = self.value.get("text") {
-            return Some(Narrative { value: val });
+            return Some(Narrative {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -517,6 +571,25 @@ impl AdverseEvent<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct AdverseEventBuilder {
+    pub value: Value,
+}
+
+impl AdverseEventBuilder {
+    pub fn build(&self) -> AdverseEvent {
+        AdverseEvent {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(subject: Reference) -> AdverseEventBuilder {
+        let mut __value: Value = json!({});
+        __value["subject"] = json!(subject.value);
+        return AdverseEventBuilder { value: __value };
     }
 }
 

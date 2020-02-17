@@ -2,20 +2,22 @@
 
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// A pharmaceutical product described in terms of its composition and dose form.
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_Characteristics<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MedicinalProductPharmaceutical_Characteristics<'_> {
     /// A coded characteristic.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
-            value: &self.value["code"],
+            value: Cow::Borrowed(&self.value["code"]),
         }
     }
 
@@ -28,7 +30,9 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -59,7 +63,9 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -69,7 +75,9 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
     /// The status of characteristic e.g. assigned or pending.
     pub fn status(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("status") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,5 +103,24 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MedicinalProductPharmaceutical_CharacteristicsBuilder {
+    pub value: Value,
+}
+
+impl MedicinalProductPharmaceutical_CharacteristicsBuilder {
+    pub fn build(&self) -> MedicinalProductPharmaceutical_Characteristics {
+        MedicinalProductPharmaceutical_Characteristics {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(code: CodeableConcept) -> MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        let mut __value: Value = json!({});
+        __value["code"] = json!(code.value);
+        return MedicinalProductPharmaceutical_CharacteristicsBuilder { value: __value };
     }
 }

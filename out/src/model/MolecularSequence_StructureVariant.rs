@@ -5,20 +5,24 @@ use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::MolecularSequence_Inner::MolecularSequence_Inner;
 use crate::model::MolecularSequence_Outer::MolecularSequence_Outer;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Raw data describing a biological sequence.
 
 #[derive(Debug)]
 pub struct MolecularSequence_StructureVariant<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl MolecularSequence_StructureVariant<'_> {
     /// Extensions for exact
     pub fn _exact(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exact") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -26,7 +30,9 @@ impl MolecularSequence_StructureVariant<'_> {
     /// Extensions for length
     pub fn _length(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_length") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -48,7 +54,9 @@ impl MolecularSequence_StructureVariant<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -67,7 +75,9 @@ impl MolecularSequence_StructureVariant<'_> {
     /// Structural variant inner.
     pub fn inner(&self) -> Option<MolecularSequence_Inner> {
         if let Some(val) = self.value.get("inner") {
-            return Some(MolecularSequence_Inner { value: val });
+            return Some(MolecularSequence_Inner {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -95,7 +105,9 @@ impl MolecularSequence_StructureVariant<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -105,7 +117,9 @@ impl MolecularSequence_StructureVariant<'_> {
     /// Structural variant outer.
     pub fn outer(&self) -> Option<MolecularSequence_Outer> {
         if let Some(val) = self.value.get("outer") {
-            return Some(MolecularSequence_Outer { value: val });
+            return Some(MolecularSequence_Outer {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -113,7 +127,9 @@ impl MolecularSequence_StructureVariant<'_> {
     /// Information about chromosome structure variation DNA change type.
     pub fn variant_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("variantType") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -158,5 +174,23 @@ impl MolecularSequence_StructureVariant<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct MolecularSequence_StructureVariantBuilder {
+    pub value: Value,
+}
+
+impl MolecularSequence_StructureVariantBuilder {
+    pub fn build(&self) -> MolecularSequence_StructureVariant {
+        MolecularSequence_StructureVariant {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> MolecularSequence_StructureVariantBuilder {
+        let mut __value: Value = json!({});
+        return MolecularSequence_StructureVariantBuilder { value: __value };
     }
 }

@@ -3,20 +3,24 @@
 use crate::model::Element::Element;
 use crate::model::Extension::Extension;
 use crate::model::Reference::Reference;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// Catalog entries are wrappers that contextualize items included in a catalog.
 
 #[derive(Debug)]
 pub struct CatalogEntry_RelatedEntry<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl CatalogEntry_RelatedEntry<'_> {
     /// Extensions for relationtype
     pub fn _relationtype(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relationtype") {
-            return Some(Element { value: val });
+            return Some(Element {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -30,7 +34,9 @@ impl CatalogEntry_RelatedEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -49,7 +55,7 @@ impl CatalogEntry_RelatedEntry<'_> {
     /// The reference to the related item.
     pub fn item(&self) -> Reference {
         Reference {
-            value: &self.value["item"],
+            value: Cow::Borrowed(&self.value["item"]),
         }
     }
 
@@ -68,7 +74,9 @@ impl CatalogEntry_RelatedEntry<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -106,6 +114,25 @@ impl CatalogEntry_RelatedEntry<'_> {
         }
         if let Some(_val) = self.relationtype() {}
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct CatalogEntry_RelatedEntryBuilder {
+    pub value: Value,
+}
+
+impl CatalogEntry_RelatedEntryBuilder {
+    pub fn build(&self) -> CatalogEntry_RelatedEntry {
+        CatalogEntry_RelatedEntry {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new(item: Reference) -> CatalogEntry_RelatedEntryBuilder {
+        let mut __value: Value = json!({});
+        __value["item"] = json!(item.value);
+        return CatalogEntry_RelatedEntryBuilder { value: __value };
     }
 }
 

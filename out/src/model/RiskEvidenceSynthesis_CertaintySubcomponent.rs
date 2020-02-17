@@ -3,7 +3,9 @@
 use crate::model::Annotation::Annotation;
 use crate::model::CodeableConcept::CodeableConcept;
 use crate::model::Extension::Extension;
+use serde_json::json;
 use serde_json::value::Value;
+use std::borrow::Cow;
 
 /// The RiskEvidenceSynthesis resource describes the likelihood of an outcome in a
 /// population plus exposure state where the risk estimate is derived from a
@@ -11,7 +13,7 @@ use serde_json::value::Value;
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_CertaintySubcomponent<'a> {
-    pub value: &'a Value,
+    pub(crate) value: Cow<'a, Value>,
 }
 
 impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
@@ -24,7 +26,9 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
         if let Some(Value::Array(val)) = self.value.get("extension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -55,7 +59,9 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
         if let Some(Value::Array(val)) = self.value.get("modifierExtension") {
             return Some(
                 val.into_iter()
-                    .map(|e| Extension { value: e })
+                    .map(|e| Extension {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -67,7 +73,9 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
         if let Some(Value::Array(val)) = self.value.get("note") {
             return Some(
                 val.into_iter()
-                    .map(|e| Annotation { value: e })
+                    .map(|e| Annotation {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -79,7 +87,9 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
         if let Some(Value::Array(val)) = self.value.get("rating") {
             return Some(
                 val.into_iter()
-                    .map(|e| CodeableConcept { value: e })
+                    .map(|e| CodeableConcept {
+                        value: Cow::Borrowed(e),
+                    })
                     .collect::<Vec<_>>(),
             );
         }
@@ -89,7 +99,9 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
     /// Type of subcomponent of certainty rating.
     pub fn fhir_type(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("type") {
-            return Some(CodeableConcept { value: val });
+            return Some(CodeableConcept {
+                value: Cow::Borrowed(val),
+            });
         }
         return None;
     }
@@ -122,5 +134,23 @@ impl RiskEvidenceSynthesis_CertaintySubcomponent<'_> {
             }
         }
         return true;
+    }
+}
+
+#[derive(Debug)]
+pub struct RiskEvidenceSynthesis_CertaintySubcomponentBuilder {
+    pub value: Value,
+}
+
+impl RiskEvidenceSynthesis_CertaintySubcomponentBuilder {
+    pub fn build(&self) -> RiskEvidenceSynthesis_CertaintySubcomponent {
+        RiskEvidenceSynthesis_CertaintySubcomponent {
+            value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn new() -> RiskEvidenceSynthesis_CertaintySubcomponentBuilder {
+        let mut __value: Value = json!({});
+        return RiskEvidenceSynthesis_CertaintySubcomponentBuilder { value: __value };
     }
 }
