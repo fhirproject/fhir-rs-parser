@@ -16,6 +16,16 @@ pub struct Contributor<'a> {
 }
 
 impl Contributor<'_> {
+    pub fn new(value: &Value) -> Contributor {
+        Contributor {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -124,7 +134,7 @@ impl Contributor<'_> {
 
 #[derive(Debug)]
 pub struct ContributorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ContributorBuilder {
@@ -134,9 +144,50 @@ impl ContributorBuilder {
         }
     }
 
+    pub fn with(existing: Contributor) -> ContributorBuilder {
+        ContributorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ContributorBuilder {
         let mut __value: Value = json!({});
         return ContributorBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ContributorBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ContributorBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ContributorBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ContributorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ContributorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ContributorBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: ContributorType) -> &'a mut ContributorBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

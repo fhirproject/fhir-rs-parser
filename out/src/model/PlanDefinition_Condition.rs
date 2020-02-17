@@ -18,6 +18,16 @@ pub struct PlanDefinition_Condition<'a> {
 }
 
 impl PlanDefinition_Condition<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_Condition {
+        PlanDefinition_Condition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for kind
     pub fn _kind(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_kind") {
@@ -127,7 +137,7 @@ impl PlanDefinition_Condition<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_ConditionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_ConditionBuilder {
@@ -137,9 +147,58 @@ impl PlanDefinition_ConditionBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_Condition) -> PlanDefinition_ConditionBuilder {
+        PlanDefinition_ConditionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinition_ConditionBuilder {
         let mut __value: Value = json!({});
         return PlanDefinition_ConditionBuilder { value: __value };
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn kind<'a>(
+        &'a mut self,
+        val: PlanDefinition_ConditionKind,
+    ) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["kind"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_ConditionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

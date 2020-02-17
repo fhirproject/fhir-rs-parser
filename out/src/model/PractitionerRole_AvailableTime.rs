@@ -15,6 +15,16 @@ pub struct PractitionerRole_AvailableTime<'a> {
 }
 
 impl PractitionerRole_AvailableTime<'_> {
+    pub fn new(value: &Value) -> PractitionerRole_AvailableTime {
+        PractitionerRole_AvailableTime {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allDay
     pub fn _all_day(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allDay") {
@@ -192,7 +202,7 @@ impl PractitionerRole_AvailableTime<'_> {
 
 #[derive(Debug)]
 pub struct PractitionerRole_AvailableTimeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PractitionerRole_AvailableTimeBuilder {
@@ -202,8 +212,97 @@ impl PractitionerRole_AvailableTimeBuilder {
         }
     }
 
+    pub fn with(existing: PractitionerRole_AvailableTime) -> PractitionerRole_AvailableTimeBuilder {
+        PractitionerRole_AvailableTimeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PractitionerRole_AvailableTimeBuilder {
         let mut __value: Value = json!({});
         return PractitionerRole_AvailableTimeBuilder { value: __value };
+    }
+
+    pub fn _all_day<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["_allDay"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _available_end_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["_availableEndTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _available_start_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["_availableStartTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _days_of_week<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["_daysOfWeek"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn all_day<'a>(&'a mut self, val: bool) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["allDay"] = json!(val);
+        return self;
+    }
+
+    pub fn available_end_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["availableEndTime"] = json!(val);
+        return self;
+    }
+
+    pub fn available_start_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["availableStartTime"] = json!(val);
+        return self;
+    }
+
+    pub fn days_of_week<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["daysOfWeek"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PractitionerRole_AvailableTimeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

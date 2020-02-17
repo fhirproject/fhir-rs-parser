@@ -17,6 +17,16 @@ pub struct MedicinalProductAuthorization_Procedure<'a> {
 }
 
 impl MedicinalProductAuthorization_Procedure<'_> {
+    pub fn new(value: &Value) -> MedicinalProductAuthorization_Procedure {
+        MedicinalProductAuthorization_Procedure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for dateDateTime
     pub fn _date_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateDateTime") {
@@ -169,7 +179,7 @@ impl MedicinalProductAuthorization_Procedure<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorization_ProcedureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductAuthorization_ProcedureBuilder {
@@ -179,9 +189,82 @@ impl MedicinalProductAuthorization_ProcedureBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductAuthorization_Procedure,
+    ) -> MedicinalProductAuthorization_ProcedureBuilder {
+        MedicinalProductAuthorization_ProcedureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> MedicinalProductAuthorization_ProcedureBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return MedicinalProductAuthorization_ProcedureBuilder { value: __value };
+    }
+
+    pub fn _date_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["_dateDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn application<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductAuthorization_Procedure>,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["application"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["dateDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn date_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["datePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorization_ProcedureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

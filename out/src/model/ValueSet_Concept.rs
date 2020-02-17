@@ -18,6 +18,16 @@ pub struct ValueSet_Concept<'a> {
 }
 
 impl ValueSet_Concept<'_> {
+    pub fn new(value: &Value) -> ValueSet_Concept {
+        ValueSet_Concept {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -157,7 +167,7 @@ impl ValueSet_Concept<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_ConceptBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_ConceptBuilder {
@@ -167,8 +177,61 @@ impl ValueSet_ConceptBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Concept) -> ValueSet_ConceptBuilder {
+        ValueSet_ConceptBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_ConceptBuilder {
         let mut __value: Value = json!({});
         return ValueSet_ConceptBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn designation<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Designation>,
+    ) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["designation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_ConceptBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

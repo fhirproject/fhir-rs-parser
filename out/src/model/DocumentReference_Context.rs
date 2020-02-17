@@ -20,6 +20,16 @@ pub struct DocumentReference_Context<'a> {
 }
 
 impl DocumentReference_Context<'_> {
+    pub fn new(value: &Value) -> DocumentReference_Context {
+        DocumentReference_Context {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Describes the clinical encounter or type of care that the document content is
     /// associated with.
     pub fn encounter(&self) -> Option<Vec<Reference>> {
@@ -213,7 +223,7 @@ impl DocumentReference_Context<'_> {
 
 #[derive(Debug)]
 pub struct DocumentReference_ContextBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DocumentReference_ContextBuilder {
@@ -223,8 +233,89 @@ impl DocumentReference_ContextBuilder {
         }
     }
 
+    pub fn with(existing: DocumentReference_Context) -> DocumentReference_ContextBuilder {
+        DocumentReference_ContextBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DocumentReference_ContextBuilder {
         let mut __value: Value = json!({});
         return DocumentReference_ContextBuilder { value: __value };
+    }
+
+    pub fn encounter<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["encounter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn event<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["event"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn facility_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["facilityType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn practice_setting<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["practiceSetting"] = json!(val.value);
+        return self;
+    }
+
+    pub fn related<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["related"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source_patient_info<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut DocumentReference_ContextBuilder {
+        self.value["sourcePatientInfo"] = json!(val.value);
+        return self;
     }
 }

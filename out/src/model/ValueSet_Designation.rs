@@ -18,6 +18,16 @@ pub struct ValueSet_Designation<'a> {
 }
 
 impl ValueSet_Designation<'_> {
+    pub fn new(value: &Value) -> ValueSet_Designation {
+        ValueSet_Designation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
@@ -150,7 +160,7 @@ impl ValueSet_Designation<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_DesignationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_DesignationBuilder {
@@ -160,8 +170,58 @@ impl ValueSet_DesignationBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Designation) -> ValueSet_DesignationBuilder {
+        ValueSet_DesignationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_DesignationBuilder {
         let mut __value: Value = json!({});
         return ValueSet_DesignationBuilder { value: __value };
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: Coding) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_DesignationBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

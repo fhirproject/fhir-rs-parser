@@ -18,6 +18,16 @@ pub struct DetectedIssue_Mitigation<'a> {
 }
 
 impl DetectedIssue_Mitigation<'_> {
+    pub fn new(value: &Value) -> DetectedIssue_Mitigation {
+        DetectedIssue_Mitigation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -138,7 +148,7 @@ impl DetectedIssue_Mitigation<'_> {
 
 #[derive(Debug)]
 pub struct DetectedIssue_MitigationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DetectedIssue_MitigationBuilder {
@@ -148,9 +158,52 @@ impl DetectedIssue_MitigationBuilder {
         }
     }
 
+    pub fn with(existing: DetectedIssue_Mitigation) -> DetectedIssue_MitigationBuilder {
+        DetectedIssue_MitigationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(action: CodeableConcept) -> DetectedIssue_MitigationBuilder {
         let mut __value: Value = json!({});
         __value["action"] = json!(action.value);
         return DetectedIssue_MitigationBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DetectedIssue_MitigationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -19,6 +19,16 @@ pub struct AdverseEvent_Causality<'a> {
 }
 
 impl AdverseEvent_Causality<'_> {
+    pub fn new(value: &Value) -> AdverseEvent_Causality {
+        AdverseEvent_Causality {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for productRelatedness
     pub fn _product_relatedness(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_productRelatedness") {
@@ -157,7 +167,7 @@ impl AdverseEvent_Causality<'_> {
 
 #[derive(Debug)]
 pub struct AdverseEvent_CausalityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AdverseEvent_CausalityBuilder {
@@ -167,8 +177,70 @@ impl AdverseEvent_CausalityBuilder {
         }
     }
 
+    pub fn with(existing: AdverseEvent_Causality) -> AdverseEvent_CausalityBuilder {
+        AdverseEvent_CausalityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AdverseEvent_CausalityBuilder {
         let mut __value: Value = json!({});
         return AdverseEvent_CausalityBuilder { value: __value };
+    }
+
+    pub fn _product_relatedness<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["_productRelatedness"] = json!(val.value);
+        return self;
+    }
+
+    pub fn assessment<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["assessment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn product_relatedness<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut AdverseEvent_CausalityBuilder {
+        self.value["productRelatedness"] = json!(val);
+        return self;
     }
 }

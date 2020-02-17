@@ -21,6 +21,16 @@ pub struct MedicationAdministration_Dosage<'a> {
 }
 
 impl MedicationAdministration_Dosage<'_> {
+    pub fn new(value: &Value) -> MedicationAdministration_Dosage {
+        MedicationAdministration_Dosage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
@@ -221,7 +231,7 @@ impl MedicationAdministration_Dosage<'_> {
 
 #[derive(Debug)]
 pub struct MedicationAdministration_DosageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationAdministration_DosageBuilder {
@@ -231,8 +241,93 @@ impl MedicationAdministration_DosageBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationAdministration_Dosage,
+    ) -> MedicationAdministration_DosageBuilder {
+        MedicationAdministration_DosageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationAdministration_DosageBuilder {
         let mut __value: Value = json!({});
         return MedicationAdministration_DosageBuilder { value: __value };
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dose<'a>(&'a mut self, val: Quantity) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["dose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rate_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["rateQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rate_ratio<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["rateRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn route<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["route"] = json!(val.value);
+        return self;
+    }
+
+    pub fn site<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["site"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministration_DosageBuilder {
+        self.value["text"] = json!(val);
+        return self;
     }
 }

@@ -19,6 +19,16 @@ pub struct ImplementationGuide_Manifest<'a> {
 }
 
 impl ImplementationGuide_Manifest<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Manifest {
+        ImplementationGuide_Manifest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for image
     pub fn _image(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_image") {
@@ -227,7 +237,7 @@ impl ImplementationGuide_Manifest<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_ManifestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_ManifestBuilder {
@@ -237,11 +247,86 @@ impl ImplementationGuide_ManifestBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Manifest) -> ImplementationGuide_ManifestBuilder {
+        ImplementationGuide_ManifestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         resource: Vec<ImplementationGuide_Resource1>,
     ) -> ImplementationGuide_ManifestBuilder {
         let mut __value: Value = json!({});
         __value["resource"] = json!(resource.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return ImplementationGuide_ManifestBuilder { value: __value };
+    }
+
+    pub fn _image<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["_image"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _other<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["_other"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _rendering<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["_rendering"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn image<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["image"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn other<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["other"] = json!(val);
+        return self;
+    }
+
+    pub fn page<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Page1>,
+    ) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["page"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rendering<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ManifestBuilder {
+        self.value["rendering"] = json!(val);
+        return self;
     }
 }

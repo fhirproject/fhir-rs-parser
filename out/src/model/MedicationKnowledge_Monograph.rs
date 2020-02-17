@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_Monograph<'a> {
 }
 
 impl MedicationKnowledge_Monograph<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Monograph {
+        MedicationKnowledge_Monograph {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -115,7 +125,7 @@ impl MedicationKnowledge_Monograph<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_MonographBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_MonographBuilder {
@@ -125,8 +135,52 @@ impl MedicationKnowledge_MonographBuilder {
         }
     }
 
+    pub fn with(existing: MedicationKnowledge_Monograph) -> MedicationKnowledge_MonographBuilder {
+        MedicationKnowledge_MonographBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledge_MonographBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledge_MonographBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MonographBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_MonographBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MonographBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicationKnowledge_MonographBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationKnowledge_MonographBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

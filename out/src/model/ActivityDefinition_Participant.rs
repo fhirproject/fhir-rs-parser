@@ -16,6 +16,16 @@ pub struct ActivityDefinition_Participant<'a> {
 }
 
 impl ActivityDefinition_Participant<'_> {
+    pub fn new(value: &Value) -> ActivityDefinition_Participant {
+        ActivityDefinition_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -124,7 +134,7 @@ impl ActivityDefinition_Participant<'_> {
 
 #[derive(Debug)]
 pub struct ActivityDefinition_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ActivityDefinition_ParticipantBuilder {
@@ -134,8 +144,54 @@ impl ActivityDefinition_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: ActivityDefinition_Participant) -> ActivityDefinition_ParticipantBuilder {
+        ActivityDefinition_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ActivityDefinition_ParticipantBuilder {
         let mut __value: Value = json!({});
         return ActivityDefinition_ParticipantBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn role<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinition_ParticipantBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

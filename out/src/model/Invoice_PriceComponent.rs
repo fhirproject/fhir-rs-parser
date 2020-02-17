@@ -17,6 +17,16 @@ pub struct Invoice_PriceComponent<'a> {
 }
 
 impl Invoice_PriceComponent<'_> {
+    pub fn new(value: &Value) -> Invoice_PriceComponent {
+        Invoice_PriceComponent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
@@ -166,7 +176,7 @@ impl Invoice_PriceComponent<'_> {
 
 #[derive(Debug)]
 pub struct Invoice_PriceComponentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Invoice_PriceComponentBuilder {
@@ -176,9 +186,70 @@ impl Invoice_PriceComponentBuilder {
         }
     }
 
+    pub fn with(existing: Invoice_PriceComponent) -> Invoice_PriceComponentBuilder {
+        Invoice_PriceComponentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Invoice_PriceComponentBuilder {
         let mut __value: Value = json!({});
         return Invoice_PriceComponentBuilder { value: __value };
+    }
+
+    pub fn _factor<'a>(&'a mut self, val: Element) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(&'a mut self, val: Money) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(&'a mut self, val: f64) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Invoice_PriceComponentType,
+    ) -> &'a mut Invoice_PriceComponentBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

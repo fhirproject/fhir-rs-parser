@@ -20,6 +20,16 @@ pub struct Claim_SubDetail<'a> {
 }
 
 impl Claim_SubDetail<'_> {
+    pub fn new(value: &Value) -> Claim_SubDetail {
+        Claim_SubDetail {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
@@ -287,7 +297,7 @@ impl Claim_SubDetail<'_> {
 
 #[derive(Debug)]
 pub struct Claim_SubDetailBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_SubDetailBuilder {
@@ -297,9 +307,97 @@ impl Claim_SubDetailBuilder {
         }
     }
 
+    pub fn with(existing: Claim_SubDetail) -> Claim_SubDetailBuilder {
+        Claim_SubDetailBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(product_or_service: CodeableConcept) -> Claim_SubDetailBuilder {
         let mut __value: Value = json!({});
         __value["productOrService"] = json!(product_or_service.value);
         return Claim_SubDetailBuilder { value: __value };
+    }
+
+    pub fn _factor<'a>(&'a mut self, val: Element) -> &'a mut Claim_SubDetailBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_SubDetailBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_SubDetailBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_SubDetailBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(&'a mut self, val: f64) -> &'a mut Claim_SubDetailBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_SubDetailBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Claim_SubDetailBuilder {
+        self.value["modifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_SubDetailBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn net<'a>(&'a mut self, val: Money) -> &'a mut Claim_SubDetailBuilder {
+        self.value["net"] = json!(val.value);
+        return self;
+    }
+
+    pub fn program_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Claim_SubDetailBuilder {
+        self.value["programCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Claim_SubDetailBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn revenue<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_SubDetailBuilder {
+        self.value["revenue"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_SubDetailBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn udi<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Claim_SubDetailBuilder {
+        self.value["udi"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn unit_price<'a>(&'a mut self, val: Money) -> &'a mut Claim_SubDetailBuilder {
+        self.value["unitPrice"] = json!(val.value);
+        return self;
     }
 }

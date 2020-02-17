@@ -16,6 +16,16 @@ pub struct Contract_Rule<'a> {
 }
 
 impl Contract_Rule<'_> {
+    pub fn new(value: &Value) -> Contract_Rule {
+        Contract_Rule {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Computable Contract conveyed using a policy rule language (e.g. XACML, DKAL,
     /// SecPal).
     pub fn content_attachment(&self) -> Option<Attachment> {
@@ -117,7 +127,7 @@ impl Contract_Rule<'_> {
 
 #[derive(Debug)]
 pub struct Contract_RuleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_RuleBuilder {
@@ -127,8 +137,43 @@ impl Contract_RuleBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Rule) -> Contract_RuleBuilder {
+        Contract_RuleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_RuleBuilder {
         let mut __value: Value = json!({});
         return Contract_RuleBuilder { value: __value };
+    }
+
+    pub fn content_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut Contract_RuleBuilder {
+        self.value["contentAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_reference<'a>(&'a mut self, val: Reference) -> &'a mut Contract_RuleBuilder {
+        self.value["contentReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_RuleBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_RuleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_RuleBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

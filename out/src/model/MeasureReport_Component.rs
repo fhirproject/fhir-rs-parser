@@ -15,6 +15,16 @@ pub struct MeasureReport_Component<'a> {
 }
 
 impl MeasureReport_Component<'_> {
+    pub fn new(value: &Value) -> MeasureReport_Component {
+        MeasureReport_Component {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The code for the stratum component value.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -104,7 +114,7 @@ impl MeasureReport_Component<'_> {
 
 #[derive(Debug)]
 pub struct MeasureReport_ComponentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MeasureReport_ComponentBuilder {
@@ -114,10 +124,38 @@ impl MeasureReport_ComponentBuilder {
         }
     }
 
+    pub fn with(existing: MeasureReport_Component) -> MeasureReport_ComponentBuilder {
+        MeasureReport_ComponentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept, value: CodeableConcept) -> MeasureReport_ComponentBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         __value["value"] = json!(value.value);
         return MeasureReport_ComponentBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReport_ComponentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MeasureReport_ComponentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReport_ComponentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

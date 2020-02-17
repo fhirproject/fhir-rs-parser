@@ -20,6 +20,16 @@ pub struct Timing<'a> {
 }
 
 impl Timing<'_> {
+    pub fn new(value: &Value) -> Timing {
+        Timing {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for event
     pub fn _event(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_event") {
@@ -158,7 +168,7 @@ impl Timing<'_> {
 
 #[derive(Debug)]
 pub struct TimingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TimingBuilder {
@@ -168,8 +178,50 @@ impl TimingBuilder {
         }
     }
 
+    pub fn with(existing: Timing) -> TimingBuilder {
+        TimingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TimingBuilder {
         let mut __value: Value = json!({});
         return TimingBuilder { value: __value };
+    }
+
+    pub fn _event<'a>(&'a mut self, val: Vec<Element>) -> &'a mut TimingBuilder {
+        self.value["_event"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut TimingBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event<'a>(&'a mut self, val: Vec<&str>) -> &'a mut TimingBuilder {
+        self.value["event"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TimingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TimingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TimingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn repeat<'a>(&'a mut self, val: Timing_Repeat) -> &'a mut TimingBuilder {
+        self.value["repeat"] = json!(val.value);
+        return self;
     }
 }

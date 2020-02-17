@@ -17,6 +17,16 @@ pub struct ImplementationGuide_DependsOn<'a> {
 }
 
 impl ImplementationGuide_DependsOn<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_DependsOn {
+        ImplementationGuide_DependsOn {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for packageId
     pub fn _package_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_packageId") {
@@ -140,7 +150,7 @@ impl ImplementationGuide_DependsOn<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_DependsOnBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_DependsOnBuilder {
@@ -150,9 +160,63 @@ impl ImplementationGuide_DependsOnBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_DependsOn) -> ImplementationGuide_DependsOnBuilder {
+        ImplementationGuide_DependsOnBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(uri: &str) -> ImplementationGuide_DependsOnBuilder {
         let mut __value: Value = json!({});
         __value["uri"] = json!(uri);
         return ImplementationGuide_DependsOnBuilder { value: __value };
+    }
+
+    pub fn _package_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["_packageId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn package_id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["packageId"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_DependsOnBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

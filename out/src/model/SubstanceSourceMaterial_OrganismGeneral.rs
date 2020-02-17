@@ -26,6 +26,16 @@ pub struct SubstanceSourceMaterial_OrganismGeneral<'a> {
 }
 
 impl SubstanceSourceMaterial_OrganismGeneral<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_OrganismGeneral {
+        SubstanceSourceMaterial_OrganismGeneral {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The class of an organism shall be specified.
     pub fn class(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("class") {
@@ -155,7 +165,7 @@ impl SubstanceSourceMaterial_OrganismGeneral<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_OrganismGeneralBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_OrganismGeneralBuilder {
@@ -165,8 +175,73 @@ impl SubstanceSourceMaterial_OrganismGeneralBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSourceMaterial_OrganismGeneral,
+    ) -> SubstanceSourceMaterial_OrganismGeneralBuilder {
+        SubstanceSourceMaterial_OrganismGeneralBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_OrganismGeneralBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_OrganismGeneralBuilder { value: __value };
+    }
+
+    pub fn class<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["class"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn kingdom<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["kingdom"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn order<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["order"] = json!(val.value);
+        return self;
+    }
+
+    pub fn phylum<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismGeneralBuilder {
+        self.value["phylum"] = json!(val.value);
+        return self;
     }
 }

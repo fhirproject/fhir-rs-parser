@@ -14,6 +14,16 @@ pub struct ExampleScenario_Actor<'a> {
 }
 
 impl ExampleScenario_Actor<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Actor {
+        ExampleScenario_Actor {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for actorId
     pub fn _actor_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actorId") {
@@ -179,7 +189,7 @@ impl ExampleScenario_Actor<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_ActorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_ActorBuilder {
@@ -189,9 +199,80 @@ impl ExampleScenario_ActorBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Actor) -> ExampleScenario_ActorBuilder {
+        ExampleScenario_ActorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_ActorBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_ActorBuilder { value: __value };
+    }
+
+    pub fn _actor_id<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["_actorId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actor_id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["actorId"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: ExampleScenario_ActorType,
+    ) -> &'a mut ExampleScenario_ActorBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

@@ -15,6 +15,16 @@ pub struct ExampleScenario_Alternative<'a> {
 }
 
 impl ExampleScenario_Alternative<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Alternative {
+        ExampleScenario_Alternative {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -153,7 +163,7 @@ impl ExampleScenario_Alternative<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_AlternativeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_AlternativeBuilder {
@@ -163,8 +173,67 @@ impl ExampleScenario_AlternativeBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Alternative) -> ExampleScenario_AlternativeBuilder {
+        ExampleScenario_AlternativeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_AlternativeBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_AlternativeBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn step<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Step>,
+    ) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["step"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_AlternativeBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }

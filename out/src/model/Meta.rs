@@ -17,6 +17,16 @@ pub struct Meta<'a> {
 }
 
 impl Meta<'_> {
+    pub fn new(value: &Value) -> Meta {
+        Meta {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for lastUpdated
     pub fn _last_updated(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_lastUpdated") {
@@ -191,7 +201,7 @@ impl Meta<'_> {
 
 #[derive(Debug)]
 pub struct MetaBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MetaBuilder {
@@ -201,8 +211,69 @@ impl MetaBuilder {
         }
     }
 
+    pub fn with(existing: Meta) -> MetaBuilder {
+        MetaBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MetaBuilder {
         let mut __value: Value = json!({});
         return MetaBuilder { value: __value };
+    }
+
+    pub fn _last_updated<'a>(&'a mut self, val: Element) -> &'a mut MetaBuilder {
+        self.value["_lastUpdated"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source<'a>(&'a mut self, val: Element) -> &'a mut MetaBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version_id<'a>(&'a mut self, val: Element) -> &'a mut MetaBuilder {
+        self.value["_versionId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MetaBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MetaBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn last_updated<'a>(&'a mut self, val: &str) -> &'a mut MetaBuilder {
+        self.value["lastUpdated"] = json!(val);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: Vec<&str>) -> &'a mut MetaBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn security<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut MetaBuilder {
+        self.value["security"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut MetaBuilder {
+        self.value["source"] = json!(val);
+        return self;
+    }
+
+    pub fn tag<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut MetaBuilder {
+        self.value["tag"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version_id<'a>(&'a mut self, val: &str) -> &'a mut MetaBuilder {
+        self.value["versionId"] = json!(val);
+        return self;
     }
 }

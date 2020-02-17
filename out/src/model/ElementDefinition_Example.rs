@@ -45,6 +45,16 @@ pub struct ElementDefinition_Example<'a> {
 }
 
 impl ElementDefinition_Example<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Example {
+        ElementDefinition_Example {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for label
     pub fn _label(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_label") {
@@ -1109,7 +1119,7 @@ impl ElementDefinition_Example<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_ExampleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_ExampleBuilder {
@@ -1119,8 +1129,502 @@ impl ElementDefinition_ExampleBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Example) -> ElementDefinition_ExampleBuilder {
+        ElementDefinition_ExampleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_ExampleBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_ExampleBuilder { value: __value };
+    }
+
+    pub fn _label<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_label"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_code<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_id<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_instant<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_markdown<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_oid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_url<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uuid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["_valueUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn label<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["label"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_address<'a>(
+        &'a mut self,
+        val: Address,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_age<'a>(&'a mut self, val: Age) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_annotation<'a>(
+        &'a mut self,
+        val: Annotation,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn value_code<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_count<'a>(&'a mut self, val: Count) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_distance<'a>(
+        &'a mut self,
+        val: Distance,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_human_name<'a>(
+        &'a mut self,
+        val: HumanName,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueId"] = json!(val);
+        return self;
+    }
+
+    pub fn value_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_markdown<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn value_meta<'a>(&'a mut self, val: Meta) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_money<'a>(&'a mut self, val: Money) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_oid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueOid"] = json!(val);
+        return self;
+    }
+
+    pub fn value_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_period<'a>(&'a mut self, val: Period) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_timing<'a>(&'a mut self, val: Timing) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
+    }
+
+    pub fn value_url<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn value_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_uuid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ExampleBuilder {
+        self.value["valueUuid"] = json!(val);
+        return self;
     }
 }

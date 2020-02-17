@@ -15,6 +15,16 @@ pub struct CatalogEntry_RelatedEntry<'a> {
 }
 
 impl CatalogEntry_RelatedEntry<'_> {
+    pub fn new(value: &Value) -> CatalogEntry_RelatedEntry {
+        CatalogEntry_RelatedEntry {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for relationtype
     pub fn _relationtype(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relationtype") {
@@ -119,7 +129,7 @@ impl CatalogEntry_RelatedEntry<'_> {
 
 #[derive(Debug)]
 pub struct CatalogEntry_RelatedEntryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CatalogEntry_RelatedEntryBuilder {
@@ -129,10 +139,54 @@ impl CatalogEntry_RelatedEntryBuilder {
         }
     }
 
+    pub fn with(existing: CatalogEntry_RelatedEntry) -> CatalogEntry_RelatedEntryBuilder {
+        CatalogEntry_RelatedEntryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(item: Reference) -> CatalogEntry_RelatedEntryBuilder {
         let mut __value: Value = json!({});
         __value["item"] = json!(item.value);
         return CatalogEntry_RelatedEntryBuilder { value: __value };
+    }
+
+    pub fn _relationtype<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CatalogEntry_RelatedEntryBuilder {
+        self.value["_relationtype"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CatalogEntry_RelatedEntryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntry_RelatedEntryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CatalogEntry_RelatedEntryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relationtype<'a>(
+        &'a mut self,
+        val: CatalogEntry_RelatedEntryRelationtype,
+    ) -> &'a mut CatalogEntry_RelatedEntryBuilder {
+        self.value["relationtype"] = json!(val.to_string());
+        return self;
     }
 }
 

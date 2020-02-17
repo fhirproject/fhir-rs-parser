@@ -16,6 +16,16 @@ pub struct ConceptMap_Unmapped<'a> {
 }
 
 impl ConceptMap_Unmapped<'_> {
+    pub fn new(value: &Value) -> ConceptMap_Unmapped {
+        ConceptMap_Unmapped {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -174,7 +184,7 @@ impl ConceptMap_Unmapped<'_> {
 
 #[derive(Debug)]
 pub struct ConceptMap_UnmappedBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConceptMap_UnmappedBuilder {
@@ -184,9 +194,72 @@ impl ConceptMap_UnmappedBuilder {
         }
     }
 
+    pub fn with(existing: ConceptMap_Unmapped) -> ConceptMap_UnmappedBuilder {
+        ConceptMap_UnmappedBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ConceptMap_UnmappedBuilder {
         let mut __value: Value = json!({});
         return ConceptMap_UnmappedBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(
+        &'a mut self,
+        val: ConceptMap_UnmappedMode,
+    ) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_UnmappedBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }
 

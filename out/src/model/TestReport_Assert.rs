@@ -14,6 +14,16 @@ pub struct TestReport_Assert<'a> {
 }
 
 impl TestReport_Assert<'_> {
+    pub fn new(value: &Value) -> TestReport_Assert {
+        TestReport_Assert {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for detail
     pub fn _detail(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detail") {
@@ -155,7 +165,7 @@ impl TestReport_Assert<'_> {
 
 #[derive(Debug)]
 pub struct TestReport_AssertBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestReport_AssertBuilder {
@@ -165,9 +175,67 @@ impl TestReport_AssertBuilder {
         }
     }
 
+    pub fn with(existing: TestReport_Assert) -> TestReport_AssertBuilder {
+        TestReport_AssertBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestReport_AssertBuilder {
         let mut __value: Value = json!({});
         return TestReport_AssertBuilder { value: __value };
+    }
+
+    pub fn _detail<'a>(&'a mut self, val: Element) -> &'a mut TestReport_AssertBuilder {
+        self.value["_detail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _message<'a>(&'a mut self, val: Element) -> &'a mut TestReport_AssertBuilder {
+        self.value["_message"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _result<'a>(&'a mut self, val: Element) -> &'a mut TestReport_AssertBuilder {
+        self.value["_result"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail<'a>(&'a mut self, val: &str) -> &'a mut TestReport_AssertBuilder {
+        self.value["detail"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReport_AssertBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestReport_AssertBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn message<'a>(&'a mut self, val: &str) -> &'a mut TestReport_AssertBuilder {
+        self.value["message"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestReport_AssertBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn result<'a>(
+        &'a mut self,
+        val: TestReport_AssertResult,
+    ) -> &'a mut TestReport_AssertBuilder {
+        self.value["result"] = json!(val.to_string());
+        return self;
     }
 }
 

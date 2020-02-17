@@ -17,6 +17,16 @@ pub struct MedicinalProductIngredient_Strength<'a> {
 }
 
 impl MedicinalProductIngredient_Strength<'_> {
+    pub fn new(value: &Value) -> MedicinalProductIngredient_Strength {
+        MedicinalProductIngredient_Strength {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for measurementPoint
     pub fn _measurement_point(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_measurementPoint") {
@@ -207,7 +217,7 @@ impl MedicinalProductIngredient_Strength<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductIngredient_StrengthBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductIngredient_StrengthBuilder {
@@ -217,9 +227,96 @@ impl MedicinalProductIngredient_StrengthBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductIngredient_Strength,
+    ) -> MedicinalProductIngredient_StrengthBuilder {
+        MedicinalProductIngredient_StrengthBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(presentation: Ratio) -> MedicinalProductIngredient_StrengthBuilder {
         let mut __value: Value = json!({});
         __value["presentation"] = json!(presentation.value);
         return MedicinalProductIngredient_StrengthBuilder { value: __value };
+    }
+
+    pub fn _measurement_point<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["_measurementPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn concentration<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["concentration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn concentration_low_limit<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["concentrationLowLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn country<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["country"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn measurement_point<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["measurementPoint"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn presentation_low_limit<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["presentationLowLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference_strength<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductIngredient_ReferenceStrength>,
+    ) -> &'a mut MedicinalProductIngredient_StrengthBuilder {
+        self.value["referenceStrength"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

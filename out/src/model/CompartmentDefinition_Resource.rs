@@ -14,6 +14,16 @@ pub struct CompartmentDefinition_Resource<'a> {
 }
 
 impl CompartmentDefinition_Resource<'_> {
+    pub fn new(value: &Value) -> CompartmentDefinition_Resource {
+        CompartmentDefinition_Resource {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -167,7 +177,7 @@ impl CompartmentDefinition_Resource<'_> {
 
 #[derive(Debug)]
 pub struct CompartmentDefinition_ResourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CompartmentDefinition_ResourceBuilder {
@@ -177,8 +187,78 @@ impl CompartmentDefinition_ResourceBuilder {
         }
     }
 
+    pub fn with(existing: CompartmentDefinition_Resource) -> CompartmentDefinition_ResourceBuilder {
+        CompartmentDefinition_ResourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CompartmentDefinition_ResourceBuilder {
         let mut __value: Value = json!({});
         return CompartmentDefinition_ResourceBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _param<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["_param"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn param<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CompartmentDefinition_ResourceBuilder {
+        self.value["param"] = json!(val);
+        return self;
     }
 }

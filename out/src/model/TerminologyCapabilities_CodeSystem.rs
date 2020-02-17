@@ -17,6 +17,16 @@ pub struct TerminologyCapabilities_CodeSystem<'a> {
 }
 
 impl TerminologyCapabilities_CodeSystem<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_CodeSystem {
+        TerminologyCapabilities_CodeSystem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for subsumption
     pub fn _subsumption(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_subsumption") {
@@ -138,7 +148,7 @@ impl TerminologyCapabilities_CodeSystem<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_CodeSystemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_CodeSystemBuilder {
@@ -148,8 +158,67 @@ impl TerminologyCapabilities_CodeSystemBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_CodeSystem,
+    ) -> TerminologyCapabilities_CodeSystemBuilder {
+        TerminologyCapabilities_CodeSystemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_CodeSystemBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_CodeSystemBuilder { value: __value };
+    }
+
+    pub fn _subsumption<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["_subsumption"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subsumption<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["subsumption"] = json!(val);
+        return self;
+    }
+
+    pub fn uri<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["uri"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(
+        &'a mut self,
+        val: Vec<TerminologyCapabilities_Version>,
+    ) -> &'a mut TerminologyCapabilities_CodeSystemBuilder {
+        self.value["version"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -23,6 +23,16 @@ pub struct SubstanceAmount<'a> {
 }
 
 impl SubstanceAmount<'_> {
+    pub fn new(value: &Value) -> SubstanceAmount {
+        SubstanceAmount {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -212,7 +222,7 @@ impl SubstanceAmount<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceAmountBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceAmountBuilder {
@@ -222,8 +232,76 @@ impl SubstanceAmountBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceAmount) -> SubstanceAmountBuilder {
+        SubstanceAmountBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceAmountBuilder {
         let mut __value: Value = json!({});
         return SubstanceAmountBuilder { value: __value };
+    }
+
+    pub fn _amount_string<'a>(&'a mut self, val: Element) -> &'a mut SubstanceAmountBuilder {
+        self.value["_amountString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _amount_text<'a>(&'a mut self, val: Element) -> &'a mut SubstanceAmountBuilder {
+        self.value["_amountText"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut SubstanceAmountBuilder {
+        self.value["amountQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_range<'a>(&'a mut self, val: Range) -> &'a mut SubstanceAmountBuilder {
+        self.value["amountRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_string<'a>(&'a mut self, val: &str) -> &'a mut SubstanceAmountBuilder {
+        self.value["amountString"] = json!(val);
+        return self;
+    }
+
+    pub fn amount_text<'a>(&'a mut self, val: &str) -> &'a mut SubstanceAmountBuilder {
+        self.value["amountText"] = json!(val);
+        return self;
+    }
+
+    pub fn amount_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SubstanceAmountBuilder {
+        self.value["amountType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubstanceAmountBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceAmountBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceAmountBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference_range<'a>(
+        &'a mut self,
+        val: SubstanceAmount_ReferenceRange,
+    ) -> &'a mut SubstanceAmountBuilder {
+        self.value["referenceRange"] = json!(val.value);
+        return self;
     }
 }

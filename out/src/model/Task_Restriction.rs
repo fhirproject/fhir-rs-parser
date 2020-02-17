@@ -16,6 +16,16 @@ pub struct Task_Restriction<'a> {
 }
 
 impl Task_Restriction<'_> {
+    pub fn new(value: &Value) -> Task_Restriction {
+        Task_Restriction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for repetitions
     pub fn _repetitions(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_repetitions") {
@@ -144,7 +154,7 @@ impl Task_Restriction<'_> {
 
 #[derive(Debug)]
 pub struct Task_RestrictionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Task_RestrictionBuilder {
@@ -154,8 +164,53 @@ impl Task_RestrictionBuilder {
         }
     }
 
+    pub fn with(existing: Task_Restriction) -> Task_RestrictionBuilder {
+        Task_RestrictionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Task_RestrictionBuilder {
         let mut __value: Value = json!({});
         return Task_RestrictionBuilder { value: __value };
+    }
+
+    pub fn _repetitions<'a>(&'a mut self, val: Element) -> &'a mut Task_RestrictionBuilder {
+        self.value["_repetitions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Task_RestrictionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Task_RestrictionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Task_RestrictionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Task_RestrictionBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn recipient<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Task_RestrictionBuilder {
+        self.value["recipient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn repetitions<'a>(&'a mut self, val: i64) -> &'a mut Task_RestrictionBuilder {
+        self.value["repetitions"] = json!(val);
+        return self;
     }
 }

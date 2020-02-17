@@ -19,6 +19,16 @@ pub struct CarePlan_Activity<'a> {
 }
 
 impl CarePlan_Activity<'_> {
+    pub fn new(value: &Value) -> CarePlan_Activity {
+        CarePlan_Activity {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A simple summary of a planned activity suitable for a general care plan system
     /// (e.g. form driven) that doesn't know about specific resources such as procedure
     /// etc.
@@ -183,7 +193,7 @@ impl CarePlan_Activity<'_> {
 
 #[derive(Debug)]
 pub struct CarePlan_ActivityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CarePlan_ActivityBuilder {
@@ -193,8 +203,66 @@ impl CarePlan_ActivityBuilder {
         }
     }
 
+    pub fn with(existing: CarePlan_Activity) -> CarePlan_ActivityBuilder {
+        CarePlan_ActivityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CarePlan_ActivityBuilder {
         let mut __value: Value = json!({});
         return CarePlan_ActivityBuilder { value: __value };
+    }
+
+    pub fn detail<'a>(&'a mut self, val: CarePlan_Detail) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["detail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome_codeable_concept<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["outcomeCodeableConcept"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["outcomeReference"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn progress<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["progress"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: Reference) -> &'a mut CarePlan_ActivityBuilder {
+        self.value["reference"] = json!(val.value);
+        return self;
     }
 }

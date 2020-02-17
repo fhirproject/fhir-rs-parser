@@ -19,6 +19,16 @@ pub struct AuditEvent_Entity<'a> {
 }
 
 impl AuditEvent_Entity<'_> {
+    pub fn new(value: &Value) -> AuditEvent_Entity {
+        AuditEvent_Entity {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -259,7 +269,7 @@ impl AuditEvent_Entity<'_> {
 
 #[derive(Debug)]
 pub struct AuditEvent_EntityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEvent_EntityBuilder {
@@ -269,8 +279,96 @@ impl AuditEvent_EntityBuilder {
         }
     }
 
+    pub fn with(existing: AuditEvent_Entity) -> AuditEvent_EntityBuilder {
+        AuditEvent_EntityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AuditEvent_EntityBuilder {
         let mut __value: Value = json!({});
         return AuditEvent_EntityBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _query<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["_query"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn detail<'a>(
+        &'a mut self,
+        val: Vec<AuditEvent_Detail>,
+    ) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn lifecycle<'a>(&'a mut self, val: Coding) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["lifecycle"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn query<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["query"] = json!(val);
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: Coding) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn security_label<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["securityLabel"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Coding) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn what<'a>(&'a mut self, val: Reference) -> &'a mut AuditEvent_EntityBuilder {
+        self.value["what"] = json!(val.value);
+        return self;
     }
 }

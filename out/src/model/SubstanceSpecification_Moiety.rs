@@ -18,6 +18,16 @@ pub struct SubstanceSpecification_Moiety<'a> {
 }
 
 impl SubstanceSpecification_Moiety<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Moiety {
+        SubstanceSpecification_Moiety {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -234,7 +244,7 @@ impl SubstanceSpecification_Moiety<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_MoietyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_MoietyBuilder {
@@ -244,8 +254,118 @@ impl SubstanceSpecification_MoietyBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSpecification_Moiety) -> SubstanceSpecification_MoietyBuilder {
+        SubstanceSpecification_MoietyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_MoietyBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_MoietyBuilder { value: __value };
+    }
+
+    pub fn _amount_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["_amountString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _molecular_formula<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["_molecularFormula"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["amountQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["amountString"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn molecular_formula<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["molecularFormula"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn optical_activity<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["opticalActivity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn role<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn stereochemistry<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_MoietyBuilder {
+        self.value["stereochemistry"] = json!(val.value);
+        return self;
     }
 }

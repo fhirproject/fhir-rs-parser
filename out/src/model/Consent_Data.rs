@@ -17,6 +17,16 @@ pub struct Consent_Data<'a> {
 }
 
 impl Consent_Data<'_> {
+    pub fn new(value: &Value) -> Consent_Data {
+        Consent_Data {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for meaning
     pub fn _meaning(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_meaning") {
@@ -121,7 +131,7 @@ impl Consent_Data<'_> {
 
 #[derive(Debug)]
 pub struct Consent_DataBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Consent_DataBuilder {
@@ -131,10 +141,45 @@ impl Consent_DataBuilder {
         }
     }
 
+    pub fn with(existing: Consent_Data) -> Consent_DataBuilder {
+        Consent_DataBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(reference: Reference) -> Consent_DataBuilder {
         let mut __value: Value = json!({});
         __value["reference"] = json!(reference.value);
         return Consent_DataBuilder { value: __value };
+    }
+
+    pub fn _meaning<'a>(&'a mut self, val: Element) -> &'a mut Consent_DataBuilder {
+        self.value["_meaning"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Consent_DataBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Consent_DataBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn meaning<'a>(&'a mut self, val: Consent_DataMeaning) -> &'a mut Consent_DataBuilder {
+        self.value["meaning"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Consent_DataBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

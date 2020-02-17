@@ -29,6 +29,16 @@ pub struct PlanDefinition<'a> {
 }
 
 impl PlanDefinition<'_> {
+    pub fn new(value: &Value) -> PlanDefinition {
+        PlanDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for approvalDate
     pub fn _approval_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_approvalDate") {
@@ -923,7 +933,7 @@ impl PlanDefinition<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinitionBuilder {
@@ -933,9 +943,316 @@ impl PlanDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition) -> PlanDefinitionBuilder {
+        PlanDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinitionBuilder {
         let mut __value: Value = json!({});
         return PlanDefinitionBuilder { value: __value };
+    }
+
+    pub fn _approval_date<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_approvalDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_review_date<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_lastReviewDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subtitle<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_subtitle"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _usage<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_usage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action<'a>(
+        &'a mut self,
+        val: Vec<PlanDefinition_Action>,
+    ) -> &'a mut PlanDefinitionBuilder {
+        self.value["action"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn approval_date<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["approvalDate"] = json!(val);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut PlanDefinitionBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut PlanDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut PlanDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn editor<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut PlanDefinitionBuilder {
+        self.value["editor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut PlanDefinitionBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endorser<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut PlanDefinitionBuilder {
+        self.value["endorser"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut PlanDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PlanDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn goal<'a>(&'a mut self, val: Vec<PlanDefinition_Goal>) -> &'a mut PlanDefinitionBuilder {
+        self.value["goal"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut PlanDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut PlanDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_review_date<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["lastReviewDate"] = json!(val);
+        return self;
+    }
+
+    pub fn library<'a>(&'a mut self, val: Vec<&str>) -> &'a mut PlanDefinitionBuilder {
+        self.value["library"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut PlanDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn related_artifact<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut PlanDefinitionBuilder {
+        self.value["relatedArtifact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reviewer<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut PlanDefinitionBuilder {
+        self.value["reviewer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: PlanDefinitionStatus) -> &'a mut PlanDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut PlanDefinitionBuilder {
+        self.value["subjectCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subject_reference<'a>(&'a mut self, val: Reference) -> &'a mut PlanDefinitionBuilder {
+        self.value["subjectReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subtitle<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["subtitle"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut PlanDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn topic<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut PlanDefinitionBuilder {
+        self.value["topic"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PlanDefinitionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn usage<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["usage"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut PlanDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

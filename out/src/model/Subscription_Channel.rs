@@ -18,6 +18,16 @@ pub struct Subscription_Channel<'a> {
 }
 
 impl Subscription_Channel<'_> {
+    pub fn new(value: &Value) -> Subscription_Channel {
+        Subscription_Channel {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for endpoint
     pub fn _endpoint(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_endpoint") {
@@ -196,7 +206,7 @@ impl Subscription_Channel<'_> {
 
 #[derive(Debug)]
 pub struct Subscription_ChannelBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Subscription_ChannelBuilder {
@@ -206,9 +216,77 @@ impl Subscription_ChannelBuilder {
         }
     }
 
+    pub fn with(existing: Subscription_Channel) -> Subscription_ChannelBuilder {
+        Subscription_ChannelBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Subscription_ChannelBuilder {
         let mut __value: Value = json!({});
         return Subscription_ChannelBuilder { value: __value };
+    }
+
+    pub fn _endpoint<'a>(&'a mut self, val: Element) -> &'a mut Subscription_ChannelBuilder {
+        self.value["_endpoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _header<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Subscription_ChannelBuilder {
+        self.value["_header"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _payload<'a>(&'a mut self, val: Element) -> &'a mut Subscription_ChannelBuilder {
+        self.value["_payload"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Subscription_ChannelBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: &str) -> &'a mut Subscription_ChannelBuilder {
+        self.value["endpoint"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Subscription_ChannelBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn header<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Subscription_ChannelBuilder {
+        self.value["header"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Subscription_ChannelBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Subscription_ChannelBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn payload<'a>(&'a mut self, val: &str) -> &'a mut Subscription_ChannelBuilder {
+        self.value["payload"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Subscription_ChannelType,
+    ) -> &'a mut Subscription_ChannelBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

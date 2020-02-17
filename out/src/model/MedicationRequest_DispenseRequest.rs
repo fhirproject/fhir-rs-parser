@@ -23,6 +23,16 @@ pub struct MedicationRequest_DispenseRequest<'a> {
 }
 
 impl MedicationRequest_DispenseRequest<'_> {
+    pub fn new(value: &Value) -> MedicationRequest_DispenseRequest {
+        MedicationRequest_DispenseRequest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for numberOfRepeatsAllowed
     pub fn _number_of_repeats_allowed(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_numberOfRepeatsAllowed") {
@@ -214,7 +224,7 @@ impl MedicationRequest_DispenseRequest<'_> {
 
 #[derive(Debug)]
 pub struct MedicationRequest_DispenseRequestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationRequest_DispenseRequestBuilder {
@@ -224,8 +234,102 @@ impl MedicationRequest_DispenseRequestBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationRequest_DispenseRequest,
+    ) -> MedicationRequest_DispenseRequestBuilder {
+        MedicationRequest_DispenseRequestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationRequest_DispenseRequestBuilder {
         let mut __value: Value = json!({});
         return MedicationRequest_DispenseRequestBuilder { value: __value };
+    }
+
+    pub fn _number_of_repeats_allowed<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["_numberOfRepeatsAllowed"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dispense_interval<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["dispenseInterval"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expected_supply_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["expectedSupplyDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn initial_fill<'a>(
+        &'a mut self,
+        val: MedicationRequest_InitialFill,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["initialFill"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number_of_repeats_allowed<'a>(
+        &'a mut self,
+        val: u64,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["numberOfRepeatsAllowed"] = json!(val);
+        return self;
+    }
+
+    pub fn performer<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["performer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn validity_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicationRequest_DispenseRequestBuilder {
+        self.value["validityPeriod"] = json!(val.value);
+        return self;
     }
 }

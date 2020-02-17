@@ -31,6 +31,16 @@ pub struct ResearchStudy<'a> {
 }
 
 impl ResearchStudy<'_> {
+    pub fn new(value: &Value) -> ResearchStudy {
+        ResearchStudy {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -673,7 +683,7 @@ impl ResearchStudy<'_> {
 
 #[derive(Debug)]
 pub struct ResearchStudyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ResearchStudyBuilder {
@@ -683,9 +693,216 @@ impl ResearchStudyBuilder {
         }
     }
 
+    pub fn with(existing: ResearchStudy) -> ResearchStudyBuilder {
+        ResearchStudyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ResearchStudyBuilder {
         let mut __value: Value = json!({});
         return ResearchStudyBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudyBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudyBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudyBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudyBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudyBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn arm<'a>(&'a mut self, val: Vec<ResearchStudy_Arm>) -> &'a mut ResearchStudyBuilder {
+        self.value["arm"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ResearchStudyBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ResearchStudyBuilder {
+        self.value["condition"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ResearchStudyBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ResearchStudyBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudyBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn enrollment<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ResearchStudyBuilder {
+        self.value["enrollment"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ResearchStudyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ResearchStudyBuilder {
+        self.value["focus"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ResearchStudyBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudyBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn keyword<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ResearchStudyBuilder {
+        self.value["keyword"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudyBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ResearchStudyBuilder {
+        self.value["location"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ResearchStudyBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ResearchStudyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ResearchStudyBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn objective<'a>(
+        &'a mut self,
+        val: Vec<ResearchStudy_Objective>,
+    ) -> &'a mut ResearchStudyBuilder {
+        self.value["objective"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ResearchStudyBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut ResearchStudyBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn phase<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ResearchStudyBuilder {
+        self.value["phase"] = json!(val.value);
+        return self;
+    }
+
+    pub fn primary_purpose_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ResearchStudyBuilder {
+        self.value["primaryPurposeType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn principal_investigator<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ResearchStudyBuilder {
+        self.value["principalInvestigator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn protocol<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ResearchStudyBuilder {
+        self.value["protocol"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_stopped<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ResearchStudyBuilder {
+        self.value["reasonStopped"] = json!(val.value);
+        return self;
+    }
+
+    pub fn related_artifact<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut ResearchStudyBuilder {
+        self.value["relatedArtifact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn site<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ResearchStudyBuilder {
+        self.value["site"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sponsor<'a>(&'a mut self, val: Reference) -> &'a mut ResearchStudyBuilder {
+        self.value["sponsor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ResearchStudyStatus) -> &'a mut ResearchStudyBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ResearchStudyBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudyBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }
 

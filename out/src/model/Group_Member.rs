@@ -19,6 +19,16 @@ pub struct Group_Member<'a> {
 }
 
 impl Group_Member<'_> {
+    pub fn new(value: &Value) -> Group_Member {
+        Group_Member {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for inactive
     pub fn _inactive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_inactive") {
@@ -139,7 +149,7 @@ impl Group_Member<'_> {
 
 #[derive(Debug)]
 pub struct Group_MemberBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Group_MemberBuilder {
@@ -149,9 +159,49 @@ impl Group_MemberBuilder {
         }
     }
 
+    pub fn with(existing: Group_Member) -> Group_MemberBuilder {
+        Group_MemberBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(entity: Reference) -> Group_MemberBuilder {
         let mut __value: Value = json!({});
         __value["entity"] = json!(entity.value);
         return Group_MemberBuilder { value: __value };
+    }
+
+    pub fn _inactive<'a>(&'a mut self, val: Element) -> &'a mut Group_MemberBuilder {
+        self.value["_inactive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Group_MemberBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Group_MemberBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn inactive<'a>(&'a mut self, val: bool) -> &'a mut Group_MemberBuilder {
+        self.value["inactive"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Group_MemberBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Group_MemberBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

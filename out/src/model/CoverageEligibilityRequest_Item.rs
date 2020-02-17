@@ -23,6 +23,16 @@ pub struct CoverageEligibilityRequest_Item<'a> {
 }
 
 impl CoverageEligibilityRequest_Item<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityRequest_Item {
+        CoverageEligibilityRequest_Item {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for supportingInfoSequence
     pub fn _supporting_info_sequence(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_supportingInfoSequence") {
@@ -277,7 +287,7 @@ impl CoverageEligibilityRequest_Item<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_ItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityRequest_ItemBuilder {
@@ -287,8 +297,127 @@ impl CoverageEligibilityRequest_ItemBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityRequest_Item,
+    ) -> CoverageEligibilityRequest_ItemBuilder {
+        CoverageEligibilityRequest_ItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CoverageEligibilityRequest_ItemBuilder {
         let mut __value: Value = json!({});
         return CoverageEligibilityRequest_ItemBuilder { value: __value };
+    }
+
+    pub fn _supporting_info_sequence<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["_supportingInfoSequence"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn diagnosis<'a>(
+        &'a mut self,
+        val: Vec<CoverageEligibilityRequest_Diagnosis>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["diagnosis"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn facility<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["facility"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["modifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn product_or_service<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["productOrService"] = json!(val.value);
+        return self;
+    }
+
+    pub fn provider<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["provider"] = json!(val.value);
+        return self;
+    }
+
+    pub fn quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn supporting_info_sequence<'a>(
+        &'a mut self,
+        val: Vec<i64>,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["supportingInfoSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn unit_price<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut CoverageEligibilityRequest_ItemBuilder {
+        self.value["unitPrice"] = json!(val.value);
+        return self;
     }
 }

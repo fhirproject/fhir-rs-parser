@@ -20,6 +20,16 @@ pub struct CapabilityStatement_Resource<'a> {
 }
 
 impl CapabilityStatement_Resource<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Resource {
+        CapabilityStatement_Resource {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for conditionalCreate
     pub fn _conditional_create(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_conditionalCreate") {
@@ -495,7 +505,7 @@ impl CapabilityStatement_Resource<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_ResourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_ResourceBuilder {
@@ -505,9 +515,254 @@ impl CapabilityStatement_ResourceBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement_Resource) -> CapabilityStatement_ResourceBuilder {
+        CapabilityStatement_ResourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_ResourceBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_ResourceBuilder { value: __value };
+    }
+
+    pub fn _conditional_create<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_conditionalCreate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _conditional_delete<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_conditionalDelete"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _conditional_read<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_conditionalRead"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _conditional_update<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_conditionalUpdate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _read_history<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_readHistory"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference_policy<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_referencePolicy"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _search_include<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_searchInclude"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _search_rev_include<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_searchRevInclude"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _update_create<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_updateCreate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _versioning<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["_versioning"] = json!(val.value);
+        return self;
+    }
+
+    pub fn conditional_create<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["conditionalCreate"] = json!(val);
+        return self;
+    }
+
+    pub fn conditional_delete<'a>(
+        &'a mut self,
+        val: CapabilityStatement_ResourceConditionalDelete,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["conditionalDelete"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn conditional_read<'a>(
+        &'a mut self,
+        val: CapabilityStatement_ResourceConditionalRead,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["conditionalRead"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn conditional_update<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["conditionalUpdate"] = json!(val);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn interaction<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Interaction>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["interaction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Operation>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["operation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn read_history<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["readHistory"] = json!(val);
+        return self;
+    }
+
+    pub fn search_include<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["searchInclude"] = json!(val);
+        return self;
+    }
+
+    pub fn search_param<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_SearchParam>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["searchParam"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn search_rev_include<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["searchRevInclude"] = json!(val);
+        return self;
+    }
+
+    pub fn supported_profile<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["supportedProfile"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn update_create<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["updateCreate"] = json!(val);
+        return self;
+    }
+
+    pub fn versioning<'a>(
+        &'a mut self,
+        val: CapabilityStatement_ResourceVersioning,
+    ) -> &'a mut CapabilityStatement_ResourceBuilder {
+        self.value["versioning"] = json!(val.to_string());
+        return self;
     }
 }
 

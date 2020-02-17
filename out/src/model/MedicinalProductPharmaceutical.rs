@@ -22,6 +22,16 @@ pub struct MedicinalProductPharmaceutical<'a> {
 }
 
 impl MedicinalProductPharmaceutical<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPharmaceutical {
+        MedicinalProductPharmaceutical {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -327,13 +337,19 @@ impl MedicinalProductPharmaceutical<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceuticalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPharmaceuticalBuilder {
     pub fn build(&self) -> MedicinalProductPharmaceutical {
         MedicinalProductPharmaceutical {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: MedicinalProductPharmaceutical) -> MedicinalProductPharmaceuticalBuilder {
+        MedicinalProductPharmaceuticalBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -348,5 +364,114 @@ impl MedicinalProductPharmaceuticalBuilder {
             .map(|e| e.value)
             .collect::<Vec<_>>());
         return MedicinalProductPharmaceuticalBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn characteristics<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductPharmaceutical_Characteristics>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["characteristics"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn device<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["device"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn ingredient<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["ingredient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn unit_of_presentation<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductPharmaceuticalBuilder {
+        self.value["unitOfPresentation"] = json!(val.value);
+        return self;
     }
 }

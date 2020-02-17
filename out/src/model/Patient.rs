@@ -28,6 +28,16 @@ pub struct Patient<'a> {
 }
 
 impl Patient<'_> {
+    pub fn new(value: &Value) -> Patient {
+        Patient {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -586,7 +596,7 @@ impl Patient<'_> {
 
 #[derive(Debug)]
 pub struct PatientBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PatientBuilder {
@@ -596,9 +606,195 @@ impl PatientBuilder {
         }
     }
 
+    pub fn with(existing: Patient) -> PatientBuilder {
+        PatientBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PatientBuilder {
         let mut __value: Value = json!({});
         return PatientBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _birth_date<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_birthDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deceased_boolean<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_deceasedBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deceased_date_time<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_deceasedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _gender<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_gender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _multiple_birth_boolean<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_multipleBirthBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _multiple_birth_integer<'a>(&'a mut self, val: Element) -> &'a mut PatientBuilder {
+        self.value["_multipleBirthInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut PatientBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: Vec<Address>) -> &'a mut PatientBuilder {
+        self.value["address"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn birth_date<'a>(&'a mut self, val: &str) -> &'a mut PatientBuilder {
+        self.value["birthDate"] = json!(val);
+        return self;
+    }
+
+    pub fn communication<'a>(
+        &'a mut self,
+        val: Vec<Patient_Communication>,
+    ) -> &'a mut PatientBuilder {
+        self.value["communication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<Patient_Contact>) -> &'a mut PatientBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut PatientBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn deceased_boolean<'a>(&'a mut self, val: bool) -> &'a mut PatientBuilder {
+        self.value["deceasedBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn deceased_date_time<'a>(&'a mut self, val: &str) -> &'a mut PatientBuilder {
+        self.value["deceasedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PatientBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gender<'a>(&'a mut self, val: PatientGender) -> &'a mut PatientBuilder {
+        self.value["gender"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn general_practitioner<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut PatientBuilder {
+        self.value["generalPractitioner"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PatientBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut PatientBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut PatientBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut PatientBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(&'a mut self, val: Vec<Patient_Link>) -> &'a mut PatientBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn managing_organization<'a>(&'a mut self, val: Reference) -> &'a mut PatientBuilder {
+        self.value["managingOrganization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn marital_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PatientBuilder {
+        self.value["maritalStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut PatientBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PatientBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn multiple_birth_boolean<'a>(&'a mut self, val: bool) -> &'a mut PatientBuilder {
+        self.value["multipleBirthBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn multiple_birth_integer<'a>(&'a mut self, val: f64) -> &'a mut PatientBuilder {
+        self.value["multipleBirthInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: Vec<HumanName>) -> &'a mut PatientBuilder {
+        self.value["name"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn photo<'a>(&'a mut self, val: Vec<Attachment>) -> &'a mut PatientBuilder {
+        self.value["photo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut PatientBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut PatientBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

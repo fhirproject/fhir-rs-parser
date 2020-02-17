@@ -30,6 +30,16 @@ pub struct SubstanceSourceMaterial_Organism<'a> {
 }
 
 impl SubstanceSourceMaterial_Organism<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_Organism {
+        SubstanceSourceMaterial_Organism {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for intraspecificDescription
     pub fn _intraspecific_description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_intraspecificDescription") {
@@ -238,7 +248,7 @@ impl SubstanceSourceMaterial_Organism<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_OrganismBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_OrganismBuilder {
@@ -248,8 +258,110 @@ impl SubstanceSourceMaterial_OrganismBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSourceMaterial_Organism,
+    ) -> SubstanceSourceMaterial_OrganismBuilder {
+        SubstanceSourceMaterial_OrganismBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_OrganismBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_OrganismBuilder { value: __value };
+    }
+
+    pub fn _intraspecific_description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["_intraspecificDescription"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSourceMaterial_Author>,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn family<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["family"] = json!(val.value);
+        return self;
+    }
+
+    pub fn genus<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["genus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn hybrid<'a>(
+        &'a mut self,
+        val: SubstanceSourceMaterial_Hybrid,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["hybrid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn intraspecific_description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["intraspecificDescription"] = json!(val);
+        return self;
+    }
+
+    pub fn intraspecific_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["intraspecificType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn organism_general<'a>(
+        &'a mut self,
+        val: SubstanceSourceMaterial_OrganismGeneral,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["organismGeneral"] = json!(val.value);
+        return self;
+    }
+
+    pub fn species<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_OrganismBuilder {
+        self.value["species"] = json!(val.value);
+        return self;
     }
 }

@@ -18,6 +18,16 @@ pub struct SubstancePolymer_RepeatUnit<'a> {
 }
 
 impl SubstancePolymer_RepeatUnit<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_RepeatUnit {
+        SubstancePolymer_RepeatUnit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for repeatUnit
     pub fn _repeat_unit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_repeatUnit") {
@@ -181,7 +191,7 @@ impl SubstancePolymer_RepeatUnit<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_RepeatUnitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_RepeatUnitBuilder {
@@ -191,8 +201,83 @@ impl SubstancePolymer_RepeatUnitBuilder {
         }
     }
 
+    pub fn with(existing: SubstancePolymer_RepeatUnit) -> SubstancePolymer_RepeatUnitBuilder {
+        SubstancePolymer_RepeatUnitBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_RepeatUnitBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_RepeatUnitBuilder { value: __value };
+    }
+
+    pub fn _repeat_unit<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["_repeatUnit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(
+        &'a mut self,
+        val: SubstanceAmount,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn degree_of_polymerisation<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_DegreeOfPolymerisation>,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["degreeOfPolymerisation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn orientation_of_polymerisation<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["orientationOfPolymerisation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn repeat_unit<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["repeatUnit"] = json!(val);
+        return self;
+    }
+
+    pub fn structural_representation<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_StructuralRepresentation>,
+    ) -> &'a mut SubstancePolymer_RepeatUnitBuilder {
+        self.value["structuralRepresentation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

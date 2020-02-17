@@ -16,6 +16,16 @@ pub struct ClaimResponse_Error<'a> {
 }
 
 impl ClaimResponse_Error<'_> {
+    pub fn new(value: &Value) -> ClaimResponse_Error {
+        ClaimResponse_Error {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for detailSequence
     pub fn _detail_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detailSequence") {
@@ -173,7 +183,7 @@ impl ClaimResponse_Error<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponse_ErrorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponse_ErrorBuilder {
@@ -183,9 +193,67 @@ impl ClaimResponse_ErrorBuilder {
         }
     }
 
+    pub fn with(existing: ClaimResponse_Error) -> ClaimResponse_ErrorBuilder {
+        ClaimResponse_ErrorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> ClaimResponse_ErrorBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return ClaimResponse_ErrorBuilder { value: __value };
+    }
+
+    pub fn _detail_sequence<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["_detailSequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _item_sequence<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["_itemSequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sub_detail_sequence<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["_subDetailSequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail_sequence<'a>(&'a mut self, val: i64) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["detailSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_sequence<'a>(&'a mut self, val: i64) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["itemSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sub_detail_sequence<'a>(&'a mut self, val: i64) -> &'a mut ClaimResponse_ErrorBuilder {
+        self.value["subDetailSequence"] = json!(val);
+        return self;
     }
 }

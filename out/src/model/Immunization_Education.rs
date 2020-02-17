@@ -15,6 +15,16 @@ pub struct Immunization_Education<'a> {
 }
 
 impl Immunization_Education<'_> {
+    pub fn new(value: &Value) -> Immunization_Education {
+        Immunization_Education {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentType
     pub fn _document_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentType") {
@@ -181,7 +191,7 @@ impl Immunization_Education<'_> {
 
 #[derive(Debug)]
 pub struct Immunization_EducationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Immunization_EducationBuilder {
@@ -191,8 +201,82 @@ impl Immunization_EducationBuilder {
         }
     }
 
+    pub fn with(existing: Immunization_Education) -> Immunization_EducationBuilder {
+        Immunization_EducationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Immunization_EducationBuilder {
         let mut __value: Value = json!({});
         return Immunization_EducationBuilder { value: __value };
+    }
+
+    pub fn _document_type<'a>(&'a mut self, val: Element) -> &'a mut Immunization_EducationBuilder {
+        self.value["_documentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _presentation_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_EducationBuilder {
+        self.value["_presentationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publication_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_EducationBuilder {
+        self.value["_publicationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference<'a>(&'a mut self, val: Element) -> &'a mut Immunization_EducationBuilder {
+        self.value["_reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn document_type<'a>(&'a mut self, val: &str) -> &'a mut Immunization_EducationBuilder {
+        self.value["documentType"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_EducationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Immunization_EducationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_EducationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn presentation_date<'a>(&'a mut self, val: &str) -> &'a mut Immunization_EducationBuilder {
+        self.value["presentationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn publication_date<'a>(&'a mut self, val: &str) -> &'a mut Immunization_EducationBuilder {
+        self.value["publicationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: &str) -> &'a mut Immunization_EducationBuilder {
+        self.value["reference"] = json!(val);
+        return self;
     }
 }

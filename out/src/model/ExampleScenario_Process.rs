@@ -15,6 +15,16 @@ pub struct ExampleScenario_Process<'a> {
 }
 
 impl ExampleScenario_Process<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Process {
+        ExampleScenario_Process {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -199,7 +209,7 @@ impl ExampleScenario_Process<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_ProcessBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_ProcessBuilder {
@@ -209,8 +219,90 @@ impl ExampleScenario_ProcessBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Process) -> ExampleScenario_ProcessBuilder {
+        ExampleScenario_ProcessBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_ProcessBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_ProcessBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _post_conditions<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["_postConditions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_conditions<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["_preConditions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn post_conditions<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["postConditions"] = json!(val);
+        return self;
+    }
+
+    pub fn pre_conditions<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["preConditions"] = json!(val);
+        return self;
+    }
+
+    pub fn step<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Step>,
+    ) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["step"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ProcessBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }

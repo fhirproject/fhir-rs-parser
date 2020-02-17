@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_Translation<'a> {
 }
 
 impl TerminologyCapabilities_Translation<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Translation {
+        TerminologyCapabilities_Translation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for needsMap
     pub fn _needs_map(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_needsMap") {
@@ -109,7 +119,7 @@ impl TerminologyCapabilities_Translation<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_TranslationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_TranslationBuilder {
@@ -119,8 +129,54 @@ impl TerminologyCapabilities_TranslationBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Translation,
+    ) -> TerminologyCapabilities_TranslationBuilder {
+        TerminologyCapabilities_TranslationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_TranslationBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_TranslationBuilder { value: __value };
+    }
+
+    pub fn _needs_map<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_TranslationBuilder {
+        self.value["_needsMap"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_TranslationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_TranslationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_TranslationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn needs_map<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_TranslationBuilder {
+        self.value["needsMap"] = json!(val);
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct TestScript_Teardown<'a> {
 }
 
 impl TestScript_Teardown<'_> {
+    pub fn new(value: &Value) -> TestScript_Teardown {
+        TestScript_Teardown {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The teardown action will only contain an operation.
     pub fn action(&self) -> Vec<TestScript_Action2> {
         self.value
@@ -106,7 +116,7 @@ impl TestScript_Teardown<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_TeardownBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_TeardownBuilder {
@@ -116,9 +126,34 @@ impl TestScript_TeardownBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Teardown) -> TestScript_TeardownBuilder {
+        TestScript_TeardownBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(action: Vec<TestScript_Action2>) -> TestScript_TeardownBuilder {
         let mut __value: Value = json!({});
         __value["action"] = json!(action.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return TestScript_TeardownBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_TeardownBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_TeardownBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_TeardownBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

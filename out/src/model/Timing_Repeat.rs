@@ -21,6 +21,16 @@ pub struct Timing_Repeat<'a> {
 }
 
 impl Timing_Repeat<'_> {
+    pub fn new(value: &Value) -> Timing_Repeat {
+        Timing_Repeat {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for count
     pub fn _count(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_count") {
@@ -504,7 +514,7 @@ impl Timing_Repeat<'_> {
 
 #[derive(Debug)]
 pub struct Timing_RepeatBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Timing_RepeatBuilder {
@@ -514,9 +524,190 @@ impl Timing_RepeatBuilder {
         }
     }
 
+    pub fn with(existing: Timing_Repeat) -> Timing_RepeatBuilder {
+        Timing_RepeatBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Timing_RepeatBuilder {
         let mut __value: Value = json!({});
         return Timing_RepeatBuilder { value: __value };
+    }
+
+    pub fn _count<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_count"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _count_max<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_countMax"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _day_of_week<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Timing_RepeatBuilder {
+        self.value["_dayOfWeek"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _duration<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _duration_max<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_durationMax"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _duration_unit<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_durationUnit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _frequency<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_frequency"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _frequency_max<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_frequencyMax"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _offset<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_offset"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _period<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _period_max<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_periodMax"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _period_unit<'a>(&'a mut self, val: Element) -> &'a mut Timing_RepeatBuilder {
+        self.value["_periodUnit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time_of_day<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Timing_RepeatBuilder {
+        self.value["_timeOfDay"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _when<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Timing_RepeatBuilder {
+        self.value["_when"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn bounds_duration<'a>(&'a mut self, val: Duration) -> &'a mut Timing_RepeatBuilder {
+        self.value["boundsDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn bounds_period<'a>(&'a mut self, val: Period) -> &'a mut Timing_RepeatBuilder {
+        self.value["boundsPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn bounds_range<'a>(&'a mut self, val: Range) -> &'a mut Timing_RepeatBuilder {
+        self.value["boundsRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn count<'a>(&'a mut self, val: i64) -> &'a mut Timing_RepeatBuilder {
+        self.value["count"] = json!(val);
+        return self;
+    }
+
+    pub fn count_max<'a>(&'a mut self, val: i64) -> &'a mut Timing_RepeatBuilder {
+        self.value["countMax"] = json!(val);
+        return self;
+    }
+
+    pub fn day_of_week<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Timing_RepeatBuilder {
+        self.value["dayOfWeek"] = json!(val);
+        return self;
+    }
+
+    pub fn duration<'a>(&'a mut self, val: f64) -> &'a mut Timing_RepeatBuilder {
+        self.value["duration"] = json!(val);
+        return self;
+    }
+
+    pub fn duration_max<'a>(&'a mut self, val: f64) -> &'a mut Timing_RepeatBuilder {
+        self.value["durationMax"] = json!(val);
+        return self;
+    }
+
+    pub fn duration_unit<'a>(
+        &'a mut self,
+        val: Timing_RepeatDurationUnit,
+    ) -> &'a mut Timing_RepeatBuilder {
+        self.value["durationUnit"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Timing_RepeatBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn frequency<'a>(&'a mut self, val: i64) -> &'a mut Timing_RepeatBuilder {
+        self.value["frequency"] = json!(val);
+        return self;
+    }
+
+    pub fn frequency_max<'a>(&'a mut self, val: i64) -> &'a mut Timing_RepeatBuilder {
+        self.value["frequencyMax"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Timing_RepeatBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Timing_RepeatBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn offset<'a>(&'a mut self, val: u64) -> &'a mut Timing_RepeatBuilder {
+        self.value["offset"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: f64) -> &'a mut Timing_RepeatBuilder {
+        self.value["period"] = json!(val);
+        return self;
+    }
+
+    pub fn period_max<'a>(&'a mut self, val: f64) -> &'a mut Timing_RepeatBuilder {
+        self.value["periodMax"] = json!(val);
+        return self;
+    }
+
+    pub fn period_unit<'a>(
+        &'a mut self,
+        val: Timing_RepeatPeriodUnit,
+    ) -> &'a mut Timing_RepeatBuilder {
+        self.value["periodUnit"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn time_of_day<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Timing_RepeatBuilder {
+        self.value["timeOfDay"] = json!(val);
+        return self;
     }
 }
 

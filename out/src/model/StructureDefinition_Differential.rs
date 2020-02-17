@@ -16,6 +16,16 @@ pub struct StructureDefinition_Differential<'a> {
 }
 
 impl StructureDefinition_Differential<'_> {
+    pub fn new(value: &Value) -> StructureDefinition_Differential {
+        StructureDefinition_Differential {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Captures constraints on each element within the resource.
     pub fn element(&self) -> Vec<ElementDefinition> {
         self.value
@@ -107,7 +117,7 @@ impl StructureDefinition_Differential<'_> {
 
 #[derive(Debug)]
 pub struct StructureDefinition_DifferentialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureDefinition_DifferentialBuilder {
@@ -117,9 +127,39 @@ impl StructureDefinition_DifferentialBuilder {
         }
     }
 
+    pub fn with(
+        existing: StructureDefinition_Differential,
+    ) -> StructureDefinition_DifferentialBuilder {
+        StructureDefinition_DifferentialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(element: Vec<ElementDefinition>) -> StructureDefinition_DifferentialBuilder {
         let mut __value: Value = json!({});
         __value["element"] = json!(element.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return StructureDefinition_DifferentialBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_DifferentialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_DifferentialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_DifferentialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

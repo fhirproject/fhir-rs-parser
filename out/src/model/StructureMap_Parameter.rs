@@ -14,6 +14,16 @@ pub struct StructureMap_Parameter<'a> {
 }
 
 impl StructureMap_Parameter<'_> {
+    pub fn new(value: &Value) -> StructureMap_Parameter {
+        StructureMap_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
@@ -203,7 +213,7 @@ impl StructureMap_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_ParameterBuilder {
@@ -213,8 +223,86 @@ impl StructureMap_ParameterBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Parameter) -> StructureMap_ParameterBuilder {
+        StructureMap_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureMap_ParameterBuilder {
         let mut __value: Value = json!({});
         return StructureMap_ParameterBuilder { value: __value };
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_id<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["_valueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["valueId"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_ParameterBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

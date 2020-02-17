@@ -18,6 +18,16 @@ pub struct CoverageEligibilityResponse_Item<'a> {
 }
 
 impl CoverageEligibilityResponse_Item<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityResponse_Item {
+        CoverageEligibilityResponse_Item {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authorizationRequired
     pub fn _authorization_required(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorizationRequired") {
@@ -362,7 +372,7 @@ impl CoverageEligibilityResponse_Item<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse_ItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityResponse_ItemBuilder {
@@ -372,8 +382,188 @@ impl CoverageEligibilityResponse_ItemBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityResponse_Item,
+    ) -> CoverageEligibilityResponse_ItemBuilder {
+        CoverageEligibilityResponse_ItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CoverageEligibilityResponse_ItemBuilder {
         let mut __value: Value = json!({});
         return CoverageEligibilityResponse_ItemBuilder { value: __value };
+    }
+
+    pub fn _authorization_required<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["_authorizationRequired"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _authorization_url<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["_authorizationUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _excluded<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["_excluded"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authorization_required<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["authorizationRequired"] = json!(val);
+        return self;
+    }
+
+    pub fn authorization_supporting<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["authorizationSupporting"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn authorization_url<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["authorizationUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn benefit<'a>(
+        &'a mut self,
+        val: Vec<CoverageEligibilityResponse_Benefit>,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["benefit"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn excluded<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["excluded"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["modifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn network<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["network"] = json!(val.value);
+        return self;
+    }
+
+    pub fn product_or_service<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["productOrService"] = json!(val.value);
+        return self;
+    }
+
+    pub fn provider<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["provider"] = json!(val.value);
+        return self;
+    }
+
+    pub fn term<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["term"] = json!(val.value);
+        return self;
+    }
+
+    pub fn unit<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponse_ItemBuilder {
+        self.value["unit"] = json!(val.value);
+        return self;
     }
 }

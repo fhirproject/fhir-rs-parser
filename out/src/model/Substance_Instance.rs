@@ -16,6 +16,16 @@ pub struct Substance_Instance<'a> {
 }
 
 impl Substance_Instance<'_> {
+    pub fn new(value: &Value) -> Substance_Instance {
+        Substance_Instance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for expiry
     pub fn _expiry(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expiry") {
@@ -141,7 +151,7 @@ impl Substance_Instance<'_> {
 
 #[derive(Debug)]
 pub struct Substance_InstanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Substance_InstanceBuilder {
@@ -151,8 +161,53 @@ impl Substance_InstanceBuilder {
         }
     }
 
+    pub fn with(existing: Substance_Instance) -> Substance_InstanceBuilder {
+        Substance_InstanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Substance_InstanceBuilder {
         let mut __value: Value = json!({});
         return Substance_InstanceBuilder { value: __value };
+    }
+
+    pub fn _expiry<'a>(&'a mut self, val: Element) -> &'a mut Substance_InstanceBuilder {
+        self.value["_expiry"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expiry<'a>(&'a mut self, val: &str) -> &'a mut Substance_InstanceBuilder {
+        self.value["expiry"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Substance_InstanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Substance_InstanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut Substance_InstanceBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Substance_InstanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Substance_InstanceBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
     }
 }

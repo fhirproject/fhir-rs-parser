@@ -15,6 +15,16 @@ pub struct SearchParameter_Component<'a> {
 }
 
 impl SearchParameter_Component<'_> {
+    pub fn new(value: &Value) -> SearchParameter_Component {
+        SearchParameter_Component {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
@@ -114,7 +124,7 @@ impl SearchParameter_Component<'_> {
 
 #[derive(Debug)]
 pub struct SearchParameter_ComponentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SearchParameter_ComponentBuilder {
@@ -124,9 +134,47 @@ impl SearchParameter_ComponentBuilder {
         }
     }
 
+    pub fn with(existing: SearchParameter_Component) -> SearchParameter_ComponentBuilder {
+        SearchParameter_ComponentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(definition: &str) -> SearchParameter_ComponentBuilder {
         let mut __value: Value = json!({});
         __value["definition"] = json!(definition);
         return SearchParameter_ComponentBuilder { value: __value };
+    }
+
+    pub fn _expression<'a>(&'a mut self, val: Element) -> &'a mut SearchParameter_ComponentBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut SearchParameter_ComponentBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SearchParameter_ComponentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SearchParameter_ComponentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SearchParameter_ComponentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

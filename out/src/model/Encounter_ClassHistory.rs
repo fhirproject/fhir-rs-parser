@@ -16,6 +16,16 @@ pub struct Encounter_ClassHistory<'a> {
 }
 
 impl Encounter_ClassHistory<'_> {
+    pub fn new(value: &Value) -> Encounter_ClassHistory {
+        Encounter_ClassHistory {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// inpatient | outpatient | ambulatory | emergency +.
     pub fn class(&self) -> Coding {
         Coding {
@@ -105,7 +115,7 @@ impl Encounter_ClassHistory<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_ClassHistoryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_ClassHistoryBuilder {
@@ -115,10 +125,38 @@ impl Encounter_ClassHistoryBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_ClassHistory) -> Encounter_ClassHistoryBuilder {
+        Encounter_ClassHistoryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(class: Coding, period: Period) -> Encounter_ClassHistoryBuilder {
         let mut __value: Value = json!({});
         __value["class"] = json!(class.value);
         __value["period"] = json!(period.value);
         return Encounter_ClassHistoryBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_ClassHistoryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_ClassHistoryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_ClassHistoryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

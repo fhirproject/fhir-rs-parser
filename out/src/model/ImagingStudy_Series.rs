@@ -22,6 +22,16 @@ pub struct ImagingStudy_Series<'a> {
 }
 
 impl ImagingStudy_Series<'_> {
+    pub fn new(value: &Value) -> ImagingStudy_Series {
+        ImagingStudy_Series {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -339,7 +349,7 @@ impl ImagingStudy_Series<'_> {
 
 #[derive(Debug)]
 pub struct ImagingStudy_SeriesBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImagingStudy_SeriesBuilder {
@@ -349,9 +359,123 @@ impl ImagingStudy_SeriesBuilder {
         }
     }
 
+    pub fn with(existing: ImagingStudy_Series) -> ImagingStudy_SeriesBuilder {
+        ImagingStudy_SeriesBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(modality: Coding) -> ImagingStudy_SeriesBuilder {
         let mut __value: Value = json!({});
         __value["modality"] = json!(modality.value);
         return ImagingStudy_SeriesBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["_number"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_instances<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["_numberOfInstances"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _started<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["_started"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _uid<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["_uid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: Coding) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn instance<'a>(
+        &'a mut self,
+        val: Vec<ImagingStudy_Instance>,
+    ) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["instance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn laterality<'a>(&'a mut self, val: Coding) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["laterality"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: u64) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["number"] = json!(val);
+        return self;
+    }
+
+    pub fn number_of_instances<'a>(&'a mut self, val: u64) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["numberOfInstances"] = json!(val);
+        return self;
+    }
+
+    pub fn performer<'a>(
+        &'a mut self,
+        val: Vec<ImagingStudy_Performer>,
+    ) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["specimen"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn started<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["started"] = json!(val);
+        return self;
+    }
+
+    pub fn uid<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_SeriesBuilder {
+        self.value["uid"] = json!(val);
+        return self;
     }
 }

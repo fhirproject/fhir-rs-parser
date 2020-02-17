@@ -14,6 +14,16 @@ pub struct Age<'a> {
 }
 
 impl Age<'_> {
+    pub fn new(value: &Value) -> Age {
+        Age {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -177,7 +187,7 @@ impl Age<'_> {
 
 #[derive(Debug)]
 pub struct AgeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AgeBuilder {
@@ -187,9 +197,75 @@ impl AgeBuilder {
         }
     }
 
+    pub fn with(existing: Age) -> AgeBuilder {
+        AgeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AgeBuilder {
         let mut __value: Value = json!({});
         return AgeBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut AgeBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comparator<'a>(&'a mut self, val: Element) -> &'a mut AgeBuilder {
+        self.value["_comparator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut AgeBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _unit<'a>(&'a mut self, val: Element) -> &'a mut AgeBuilder {
+        self.value["_unit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut AgeBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut AgeBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn comparator<'a>(&'a mut self, val: AgeComparator) -> &'a mut AgeBuilder {
+        self.value["comparator"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AgeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AgeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut AgeBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn unit<'a>(&'a mut self, val: &str) -> &'a mut AgeBuilder {
+        self.value["unit"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: f64) -> &'a mut AgeBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

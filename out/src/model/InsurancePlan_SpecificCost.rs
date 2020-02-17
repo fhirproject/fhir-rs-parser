@@ -15,6 +15,16 @@ pub struct InsurancePlan_SpecificCost<'a> {
 }
 
 impl InsurancePlan_SpecificCost<'_> {
+    pub fn new(value: &Value) -> InsurancePlan_SpecificCost {
+        InsurancePlan_SpecificCost {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// List of the specific benefits under this category of benefit.
     pub fn benefit(&self) -> Option<Vec<InsurancePlan_Benefit1>> {
         if let Some(Value::Array(val)) = self.value.get("benefit") {
@@ -114,7 +124,7 @@ impl InsurancePlan_SpecificCost<'_> {
 
 #[derive(Debug)]
 pub struct InsurancePlan_SpecificCostBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InsurancePlan_SpecificCostBuilder {
@@ -124,9 +134,45 @@ impl InsurancePlan_SpecificCostBuilder {
         }
     }
 
+    pub fn with(existing: InsurancePlan_SpecificCost) -> InsurancePlan_SpecificCostBuilder {
+        InsurancePlan_SpecificCostBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(category: CodeableConcept) -> InsurancePlan_SpecificCostBuilder {
         let mut __value: Value = json!({});
         __value["category"] = json!(category.value);
         return InsurancePlan_SpecificCostBuilder { value: __value };
+    }
+
+    pub fn benefit<'a>(
+        &'a mut self,
+        val: Vec<InsurancePlan_Benefit1>,
+    ) -> &'a mut InsurancePlan_SpecificCostBuilder {
+        self.value["benefit"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_SpecificCostBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlan_SpecificCostBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_SpecificCostBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

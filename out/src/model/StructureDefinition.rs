@@ -28,6 +28,16 @@ pub struct StructureDefinition<'a> {
 }
 
 impl StructureDefinition<'_> {
+    pub fn new(value: &Value) -> StructureDefinition {
+        StructureDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for abstract
     pub fn _abstract(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_abstract") {
@@ -847,7 +857,7 @@ impl StructureDefinition<'_> {
 
 #[derive(Debug)]
 pub struct StructureDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureDefinitionBuilder {
@@ -857,9 +867,335 @@ impl StructureDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: StructureDefinition) -> StructureDefinitionBuilder {
+        StructureDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureDefinitionBuilder {
         let mut __value: Value = json!({});
         return StructureDefinitionBuilder { value: __value };
+    }
+
+    pub fn _abstract<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_abstract"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _context_invariant<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["_contextInvariant"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _derivation<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_derivation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fhir_version<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_fhirVersion"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_abstract<'a>(&'a mut self, val: bool) -> &'a mut StructureDefinitionBuilder {
+        self.value["abstract"] = json!(val);
+        return self;
+    }
+
+    pub fn base_definition<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["baseDefinition"] = json!(val);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn context<'a>(
+        &'a mut self,
+        val: Vec<StructureDefinition_Context>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["context"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn context_invariant<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["contextInvariant"] = json!(val);
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn derivation<'a>(
+        &'a mut self,
+        val: StructureDefinitionDerivation,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["derivation"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn differential<'a>(
+        &'a mut self,
+        val: StructureDefinition_Differential,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["differential"] = json!(val.value);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut StructureDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_version<'a>(
+        &'a mut self,
+        val: StructureDefinitionFhirVersion,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["fhirVersion"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn keyword<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut StructureDefinitionBuilder {
+        self.value["keyword"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kind<'a>(
+        &'a mut self,
+        val: StructureDefinitionKind,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["kind"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn mapping<'a>(
+        &'a mut self,
+        val: Vec<StructureDefinition_Mapping>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["mapping"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut StructureDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn snapshot<'a>(
+        &'a mut self,
+        val: StructureDefinition_Snapshot,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["snapshot"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: StructureDefinitionStatus,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut StructureDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut StructureDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

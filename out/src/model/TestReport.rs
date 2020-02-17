@@ -23,6 +23,16 @@ pub struct TestReport<'a> {
 }
 
 impl TestReport<'_> {
+    pub fn new(value: &Value) -> TestReport {
+        TestReport {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -445,7 +455,7 @@ impl TestReport<'_> {
 
 #[derive(Debug)]
 pub struct TestReportBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestReportBuilder {
@@ -455,10 +465,155 @@ impl TestReportBuilder {
         }
     }
 
+    pub fn with(existing: TestReport) -> TestReportBuilder {
+        TestReportBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(test_script: Reference) -> TestReportBuilder {
         let mut __value: Value = json!({});
         __value["testScript"] = json!(test_script.value);
         return TestReportBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issued<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_issued"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _result<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_result"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _score<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_score"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _tester<'a>(&'a mut self, val: Element) -> &'a mut TestReportBuilder {
+        self.value["_tester"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut TestReportBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReportBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut TestReportBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn issued<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["issued"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut TestReportBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReportBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn participant<'a>(
+        &'a mut self,
+        val: Vec<TestReport_Participant>,
+    ) -> &'a mut TestReportBuilder {
+        self.value["participant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn result<'a>(&'a mut self, val: TestReportResult) -> &'a mut TestReportBuilder {
+        self.value["result"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn score<'a>(&'a mut self, val: f64) -> &'a mut TestReportBuilder {
+        self.value["score"] = json!(val);
+        return self;
+    }
+
+    pub fn setup<'a>(&'a mut self, val: TestReport_Setup) -> &'a mut TestReportBuilder {
+        self.value["setup"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: TestReportStatus) -> &'a mut TestReportBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn teardown<'a>(&'a mut self, val: TestReport_Teardown) -> &'a mut TestReportBuilder {
+        self.value["teardown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn test<'a>(&'a mut self, val: Vec<TestReport_Test>) -> &'a mut TestReportBuilder {
+        self.value["test"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn tester<'a>(&'a mut self, val: &str) -> &'a mut TestReportBuilder {
+        self.value["tester"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut TestReportBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

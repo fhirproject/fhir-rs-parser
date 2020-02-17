@@ -31,6 +31,16 @@ pub struct Provenance<'a> {
 }
 
 impl Provenance<'_> {
+    pub fn new(value: &Value) -> Provenance {
+        Provenance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -446,7 +456,7 @@ impl Provenance<'_> {
 
 #[derive(Debug)]
 pub struct ProvenanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ProvenanceBuilder {
@@ -456,10 +466,127 @@ impl ProvenanceBuilder {
         }
     }
 
+    pub fn with(existing: Provenance) -> ProvenanceBuilder {
+        ProvenanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(agent: Vec<Provenance_Agent>, target: Vec<Reference>) -> ProvenanceBuilder {
         let mut __value: Value = json!({});
         __value["agent"] = json!(agent.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["target"] = json!(target.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return ProvenanceBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ProvenanceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ProvenanceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurred_date_time<'a>(&'a mut self, val: Element) -> &'a mut ProvenanceBuilder {
+        self.value["_occurredDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _policy<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ProvenanceBuilder {
+        self.value["_policy"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _recorded<'a>(&'a mut self, val: Element) -> &'a mut ProvenanceBuilder {
+        self.value["_recorded"] = json!(val.value);
+        return self;
+    }
+
+    pub fn activity<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProvenanceBuilder {
+        self.value["activity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ProvenanceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn entity<'a>(&'a mut self, val: Vec<Provenance_Entity>) -> &'a mut ProvenanceBuilder {
+        self.value["entity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProvenanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ProvenanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ProvenanceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ProvenanceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut ProvenanceBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ProvenanceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProvenanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurred_date_time<'a>(&'a mut self, val: &str) -> &'a mut ProvenanceBuilder {
+        self.value["occurredDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurred_period<'a>(&'a mut self, val: Period) -> &'a mut ProvenanceBuilder {
+        self.value["occurredPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn policy<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ProvenanceBuilder {
+        self.value["policy"] = json!(val);
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProvenanceBuilder {
+        self.value["reason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recorded<'a>(&'a mut self, val: &str) -> &'a mut ProvenanceBuilder {
+        self.value["recorded"] = json!(val);
+        return self;
+    }
+
+    pub fn signature<'a>(&'a mut self, val: Vec<Signature>) -> &'a mut ProvenanceBuilder {
+        self.value["signature"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ProvenanceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

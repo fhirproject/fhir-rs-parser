@@ -20,6 +20,16 @@ pub struct Slot<'a> {
 }
 
 impl Slot<'_> {
+    pub fn new(value: &Value) -> Slot {
+        Slot {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -428,7 +438,7 @@ impl Slot<'_> {
 
 #[derive(Debug)]
 pub struct SlotBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SlotBuilder {
@@ -438,10 +448,142 @@ impl SlotBuilder {
         }
     }
 
+    pub fn with(existing: Slot) -> SlotBuilder {
+        SlotBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(schedule: Reference) -> SlotBuilder {
         let mut __value: Value = json!({});
         __value["schedule"] = json!(schedule.value);
         return SlotBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _overbooked<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_overbooked"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SlotBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn appointment_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SlotBuilder {
+        self.value["appointmentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SlotBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SlotBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut SlotBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SlotBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SlotBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn overbooked<'a>(&'a mut self, val: bool) -> &'a mut SlotBuilder {
+        self.value["overbooked"] = json!(val);
+        return self;
+    }
+
+    pub fn service_category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut SlotBuilder {
+        self.value["serviceCategory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn service_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut SlotBuilder {
+        self.value["serviceType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specialty<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut SlotBuilder {
+        self.value["specialty"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: &str) -> &'a mut SlotBuilder {
+        self.value["start"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SlotStatus) -> &'a mut SlotBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SlotBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

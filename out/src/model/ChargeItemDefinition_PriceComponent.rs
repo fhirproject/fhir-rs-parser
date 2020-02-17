@@ -19,6 +19,16 @@ pub struct ChargeItemDefinition_PriceComponent<'a> {
 }
 
 impl ChargeItemDefinition_PriceComponent<'_> {
+    pub fn new(value: &Value) -> ChargeItemDefinition_PriceComponent {
+        ChargeItemDefinition_PriceComponent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for factor
     pub fn _factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_factor") {
@@ -168,7 +178,7 @@ impl ChargeItemDefinition_PriceComponent<'_> {
 
 #[derive(Debug)]
 pub struct ChargeItemDefinition_PriceComponentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ChargeItemDefinition_PriceComponentBuilder {
@@ -178,8 +188,86 @@ impl ChargeItemDefinition_PriceComponentBuilder {
         }
     }
 
+    pub fn with(
+        existing: ChargeItemDefinition_PriceComponent,
+    ) -> ChargeItemDefinition_PriceComponentBuilder {
+        ChargeItemDefinition_PriceComponentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ChargeItemDefinition_PriceComponentBuilder {
         let mut __value: Value = json!({});
         return ChargeItemDefinition_PriceComponentBuilder { value: __value };
+    }
+
+    pub fn _factor<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ChargeItemDefinition_PriceComponentBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

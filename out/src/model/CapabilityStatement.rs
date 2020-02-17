@@ -28,6 +28,16 @@ pub struct CapabilityStatement<'a> {
 }
 
 impl CapabilityStatement<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement {
+        CapabilityStatement {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -826,7 +836,7 @@ impl CapabilityStatement<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatementBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatementBuilder {
@@ -836,9 +846,316 @@ impl CapabilityStatementBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement) -> CapabilityStatementBuilder {
+        CapabilityStatementBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatementBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatementBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fhir_version<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_fhirVersion"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _format<'a>(&'a mut self, val: Vec<Element>) -> &'a mut CapabilityStatementBuilder {
+        self.value["_format"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _patch_format<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["_patchFormat"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatementBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn document<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Document>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["document"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut CapabilityStatementBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CapabilityStatementBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_version<'a>(
+        &'a mut self,
+        val: CapabilityStatementFhirVersion,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["fhirVersion"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn format<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CapabilityStatementBuilder {
+        self.value["format"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implementation<'a>(
+        &'a mut self,
+        val: CapabilityStatement_Implementation,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["implementation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implementation_guide<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["implementationGuide"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn imports<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CapabilityStatementBuilder {
+        self.value["imports"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CapabilityStatementBuilder {
+        self.value["instantiates"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kind<'a>(
+        &'a mut self,
+        val: CapabilityStatementKind,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["kind"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn messaging<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Messaging>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["messaging"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CapabilityStatementBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn patch_format<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CapabilityStatementBuilder {
+        self.value["patchFormat"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn rest<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Rest>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["rest"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn software<'a>(
+        &'a mut self,
+        val: CapabilityStatement_Software,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["software"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CapabilityStatementStatus,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CapabilityStatementBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut CapabilityStatementBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatementBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

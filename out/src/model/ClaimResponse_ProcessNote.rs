@@ -16,6 +16,16 @@ pub struct ClaimResponse_ProcessNote<'a> {
 }
 
 impl ClaimResponse_ProcessNote<'_> {
+    pub fn new(value: &Value) -> ClaimResponse_ProcessNote {
+        ClaimResponse_ProcessNote {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
@@ -172,7 +182,7 @@ impl ClaimResponse_ProcessNote<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponse_ProcessNoteBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponse_ProcessNoteBuilder {
@@ -182,9 +192,78 @@ impl ClaimResponse_ProcessNoteBuilder {
         }
     }
 
+    pub fn with(existing: ClaimResponse_ProcessNote) -> ClaimResponse_ProcessNoteBuilder {
+        ClaimResponse_ProcessNoteBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ClaimResponse_ProcessNoteBuilder {
         let mut __value: Value = json!({});
         return ClaimResponse_ProcessNoteBuilder { value: __value };
+    }
+
+    pub fn _number<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["_number"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: i64) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["number"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: ClaimResponse_ProcessNoteType,
+    ) -> &'a mut ClaimResponse_ProcessNoteBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

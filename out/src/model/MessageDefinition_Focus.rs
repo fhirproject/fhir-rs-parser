@@ -16,6 +16,16 @@ pub struct MessageDefinition_Focus<'a> {
 }
 
 impl MessageDefinition_Focus<'_> {
+    pub fn new(value: &Value) -> MessageDefinition_Focus {
+        MessageDefinition_Focus {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -169,7 +179,7 @@ impl MessageDefinition_Focus<'_> {
 
 #[derive(Debug)]
 pub struct MessageDefinition_FocusBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageDefinition_FocusBuilder {
@@ -179,8 +189,71 @@ impl MessageDefinition_FocusBuilder {
         }
     }
 
+    pub fn with(existing: MessageDefinition_Focus) -> MessageDefinition_FocusBuilder {
+        MessageDefinition_FocusBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MessageDefinition_FocusBuilder {
         let mut __value: Value = json!({});
         return MessageDefinition_FocusBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: u64) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinition_FocusBuilder {
+        self.value["profile"] = json!(val);
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct Bundle_Response<'a> {
 }
 
 impl Bundle_Response<'_> {
+    pub fn new(value: &Value) -> Bundle_Response {
+        Bundle_Response {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for etag
     pub fn _etag(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_etag") {
@@ -201,7 +211,7 @@ impl Bundle_Response<'_> {
 
 #[derive(Debug)]
 pub struct Bundle_ResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Bundle_ResponseBuilder {
@@ -211,8 +221,78 @@ impl Bundle_ResponseBuilder {
         }
     }
 
+    pub fn with(existing: Bundle_Response) -> Bundle_ResponseBuilder {
+        Bundle_ResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Bundle_ResponseBuilder {
         let mut __value: Value = json!({});
         return Bundle_ResponseBuilder { value: __value };
+    }
+
+    pub fn _etag<'a>(&'a mut self, val: Element) -> &'a mut Bundle_ResponseBuilder {
+        self.value["_etag"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_modified<'a>(&'a mut self, val: Element) -> &'a mut Bundle_ResponseBuilder {
+        self.value["_lastModified"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _location<'a>(&'a mut self, val: Element) -> &'a mut Bundle_ResponseBuilder {
+        self.value["_location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut Bundle_ResponseBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn etag<'a>(&'a mut self, val: &str) -> &'a mut Bundle_ResponseBuilder {
+        self.value["etag"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Bundle_ResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Bundle_ResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn last_modified<'a>(&'a mut self, val: &str) -> &'a mut Bundle_ResponseBuilder {
+        self.value["lastModified"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: &str) -> &'a mut Bundle_ResponseBuilder {
+        self.value["location"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Bundle_ResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: ResourceList) -> &'a mut Bundle_ResponseBuilder {
+        self.value["outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut Bundle_ResponseBuilder {
+        self.value["status"] = json!(val);
+        return self;
     }
 }

@@ -14,6 +14,16 @@ pub struct Range<'a> {
 }
 
 impl Range<'_> {
+    pub fn new(value: &Value) -> Range {
+        Range {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -84,7 +94,7 @@ impl Range<'_> {
 
 #[derive(Debug)]
 pub struct RangeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RangeBuilder {
@@ -94,8 +104,34 @@ impl RangeBuilder {
         }
     }
 
+    pub fn with(existing: Range) -> RangeBuilder {
+        RangeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RangeBuilder {
         let mut __value: Value = json!({});
         return RangeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RangeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn high<'a>(&'a mut self, val: Quantity) -> &'a mut RangeBuilder {
+        self.value["high"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RangeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn low<'a>(&'a mut self, val: Quantity) -> &'a mut RangeBuilder {
+        self.value["low"] = json!(val.value);
+        return self;
     }
 }

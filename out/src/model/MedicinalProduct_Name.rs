@@ -17,6 +17,16 @@ pub struct MedicinalProduct_Name<'a> {
 }
 
 impl MedicinalProduct_Name<'_> {
+    pub fn new(value: &Value) -> MedicinalProduct_Name {
+        MedicinalProduct_Name {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for productName
     pub fn _product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_productName") {
@@ -148,7 +158,7 @@ impl MedicinalProduct_Name<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProduct_NameBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProduct_NameBuilder {
@@ -158,8 +168,62 @@ impl MedicinalProduct_NameBuilder {
         }
     }
 
+    pub fn with(existing: MedicinalProduct_Name) -> MedicinalProduct_NameBuilder {
+        MedicinalProduct_NameBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProduct_NameBuilder {
         let mut __value: Value = json!({});
         return MedicinalProduct_NameBuilder { value: __value };
+    }
+
+    pub fn _product_name<'a>(&'a mut self, val: Element) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["_productName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn country_language<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProduct_CountryLanguage>,
+    ) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["countryLanguage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name_part<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProduct_NamePart>,
+    ) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["namePart"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn product_name<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_NameBuilder {
+        self.value["productName"] = json!(val);
+        return self;
     }
 }

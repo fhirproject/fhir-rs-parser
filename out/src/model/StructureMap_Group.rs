@@ -16,6 +16,16 @@ pub struct StructureMap_Group<'a> {
 }
 
 impl StructureMap_Group<'_> {
+    pub fn new(value: &Value) -> StructureMap_Group {
+        StructureMap_Group {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -228,13 +238,19 @@ impl StructureMap_Group<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_GroupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_GroupBuilder {
     pub fn build(&self) -> StructureMap_Group {
         StructureMap_Group {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: StructureMap_Group) -> StructureMap_GroupBuilder {
+        StructureMap_GroupBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -246,6 +262,68 @@ impl StructureMap_GroupBuilder {
         __value["input"] = json!(input.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["rule"] = json!(rule.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return StructureMap_GroupBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_GroupBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _extends<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_GroupBuilder {
+        self.value["_extends"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_GroupBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type_mode<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_GroupBuilder {
+        self.value["_typeMode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_GroupBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extends<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_GroupBuilder {
+        self.value["extends"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureMap_GroupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_GroupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_GroupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_GroupBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn type_mode<'a>(
+        &'a mut self,
+        val: StructureMap_GroupTypeMode,
+    ) -> &'a mut StructureMap_GroupBuilder {
+        self.value["typeMode"] = json!(val.to_string());
+        return self;
     }
 }
 

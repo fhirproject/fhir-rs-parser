@@ -17,6 +17,16 @@ pub struct ProductShelfLife<'a> {
 }
 
 impl ProductShelfLife<'_> {
+    pub fn new(value: &Value) -> ProductShelfLife {
+        ProductShelfLife {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -150,7 +160,7 @@ impl ProductShelfLife<'_> {
 
 #[derive(Debug)]
 pub struct ProductShelfLifeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ProductShelfLifeBuilder {
@@ -160,10 +170,49 @@ impl ProductShelfLifeBuilder {
         }
     }
 
+    pub fn with(existing: ProductShelfLife) -> ProductShelfLifeBuilder {
+        ProductShelfLifeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(period: Quantity, fhir_type: CodeableConcept) -> ProductShelfLifeBuilder {
         let mut __value: Value = json!({});
         __value["period"] = json!(period.value);
         __value["type"] = json!(fhir_type.value);
         return ProductShelfLifeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProductShelfLifeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ProductShelfLifeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut ProductShelfLifeBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ProductShelfLifeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn special_precautions_for_storage<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ProductShelfLifeBuilder {
+        self.value["specialPrecautionsForStorage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

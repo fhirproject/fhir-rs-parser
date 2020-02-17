@@ -18,6 +18,16 @@ pub struct RiskEvidenceSynthesis_RiskEstimate<'a> {
 }
 
 impl RiskEvidenceSynthesis_RiskEstimate<'_> {
+    pub fn new(value: &Value) -> RiskEvidenceSynthesis_RiskEstimate {
+        RiskEvidenceSynthesis_RiskEstimate {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for denominatorCount
     pub fn _denominator_count(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_denominatorCount") {
@@ -232,7 +242,7 @@ impl RiskEvidenceSynthesis_RiskEstimate<'_> {
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_RiskEstimateBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RiskEvidenceSynthesis_RiskEstimateBuilder {
@@ -242,8 +252,124 @@ impl RiskEvidenceSynthesis_RiskEstimateBuilder {
         }
     }
 
+    pub fn with(
+        existing: RiskEvidenceSynthesis_RiskEstimate,
+    ) -> RiskEvidenceSynthesis_RiskEstimateBuilder {
+        RiskEvidenceSynthesis_RiskEstimateBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RiskEvidenceSynthesis_RiskEstimateBuilder {
         let mut __value: Value = json!({});
         return RiskEvidenceSynthesis_RiskEstimateBuilder { value: __value };
+    }
+
+    pub fn _denominator_count<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["_denominatorCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _numerator_count<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["_numeratorCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn denominator_count<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["denominatorCount"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn numerator_count<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["numeratorCount"] = json!(val);
+        return self;
+    }
+
+    pub fn precision_estimate<'a>(
+        &'a mut self,
+        val: Vec<RiskEvidenceSynthesis_PrecisionEstimate>,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["precisionEstimate"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn unit_of_measure<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["unitOfMeasure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: f64) -> &'a mut RiskEvidenceSynthesis_RiskEstimateBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

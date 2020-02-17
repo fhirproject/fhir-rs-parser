@@ -17,6 +17,16 @@ pub struct StructureMap_Rule<'a> {
 }
 
 impl StructureMap_Rule<'_> {
+    pub fn new(value: &Value) -> StructureMap_Rule {
+        StructureMap_Rule {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -213,7 +223,7 @@ impl StructureMap_Rule<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_RuleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_RuleBuilder {
@@ -223,9 +233,75 @@ impl StructureMap_RuleBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Rule) -> StructureMap_RuleBuilder {
+        StructureMap_RuleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(source: Vec<StructureMap_Source>) -> StructureMap_RuleBuilder {
         let mut __value: Value = json!({});
         __value["source"] = json!(source.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return StructureMap_RuleBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_RuleBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_RuleBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dependent<'a>(
+        &'a mut self,
+        val: Vec<StructureMap_Dependent>,
+    ) -> &'a mut StructureMap_RuleBuilder {
+        self.value["dependent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn documentation<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_RuleBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureMap_RuleBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_RuleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_RuleBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_RuleBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn rule<'a>(&'a mut self, val: Vec<StructureMap_Rule>) -> &'a mut StructureMap_RuleBuilder {
+        self.value["rule"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target<'a>(
+        &'a mut self,
+        val: Vec<StructureMap_Target>,
+    ) -> &'a mut StructureMap_RuleBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

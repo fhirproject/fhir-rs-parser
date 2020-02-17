@@ -17,6 +17,16 @@ pub struct TerminologyCapabilities_Expansion<'a> {
 }
 
 impl TerminologyCapabilities_Expansion<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Expansion {
+        TerminologyCapabilities_Expansion {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for hierarchical
     pub fn _hierarchical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_hierarchical") {
@@ -201,7 +211,7 @@ impl TerminologyCapabilities_Expansion<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_ExpansionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_ExpansionBuilder {
@@ -211,8 +221,107 @@ impl TerminologyCapabilities_ExpansionBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Expansion,
+    ) -> TerminologyCapabilities_ExpansionBuilder {
+        TerminologyCapabilities_ExpansionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_ExpansionBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_ExpansionBuilder { value: __value };
+    }
+
+    pub fn _hierarchical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["_hierarchical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _incomplete<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["_incomplete"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _paging<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["_paging"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text_filter<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["_textFilter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hierarchical<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["hierarchical"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn incomplete<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["incomplete"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn paging<'a>(&'a mut self, val: bool) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["paging"] = json!(val);
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<TerminologyCapabilities_Parameter>,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text_filter<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut TerminologyCapabilities_ExpansionBuilder {
+        self.value["textFilter"] = json!(val);
+        return self;
     }
 }

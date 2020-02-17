@@ -31,6 +31,16 @@ pub struct EffectEvidenceSynthesis<'a> {
 }
 
 impl EffectEvidenceSynthesis<'_> {
+    pub fn new(value: &Value) -> EffectEvidenceSynthesis {
+        EffectEvidenceSynthesis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for approvalDate
     pub fn _approval_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_approvalDate") {
@@ -884,13 +894,19 @@ impl EffectEvidenceSynthesis<'_> {
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EffectEvidenceSynthesisBuilder {
     pub fn build(&self) -> EffectEvidenceSynthesis {
         EffectEvidenceSynthesis {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: EffectEvidenceSynthesis) -> EffectEvidenceSynthesisBuilder {
+        EffectEvidenceSynthesisBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -906,6 +922,330 @@ impl EffectEvidenceSynthesisBuilder {
         __value["outcome"] = json!(outcome.value);
         __value["population"] = json!(population.value);
         return EffectEvidenceSynthesisBuilder { value: __value };
+    }
+
+    pub fn _approval_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_approvalDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_review_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_lastReviewDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn approval_date<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["approvalDate"] = json!(val);
+        return self;
+    }
+
+    pub fn author<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn certainty<'a>(
+        &'a mut self,
+        val: Vec<EffectEvidenceSynthesis_Certainty>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["certainty"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn editor<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["editor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effect_estimate<'a>(
+        &'a mut self,
+        val: Vec<EffectEvidenceSynthesis_EffectEstimate>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["effectEstimate"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endorser<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["endorser"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_review_date<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["lastReviewDate"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn related_artifact<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["relatedArtifact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn results_by_exposure<'a>(
+        &'a mut self,
+        val: Vec<EffectEvidenceSynthesis_ResultsByExposure>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["resultsByExposure"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reviewer<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["reviewer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sample_size<'a>(
+        &'a mut self,
+        val: EffectEvidenceSynthesis_SampleSize,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["sampleSize"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: EffectEvidenceSynthesisStatus,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn study_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["studyType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn synthesis_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["synthesisType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn topic<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["topic"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesisBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

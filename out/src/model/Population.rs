@@ -15,6 +15,16 @@ pub struct Population<'a> {
 }
 
 impl Population<'_> {
+    pub fn new(value: &Value) -> Population {
+        Population {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The age of the specific population.
     pub fn age_codeable_concept(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("ageCodeableConcept") {
@@ -160,7 +170,7 @@ impl Population<'_> {
 
 #[derive(Debug)]
 pub struct PopulationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PopulationBuilder {
@@ -170,8 +180,61 @@ impl PopulationBuilder {
         }
     }
 
+    pub fn with(existing: Population) -> PopulationBuilder {
+        PopulationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PopulationBuilder {
         let mut __value: Value = json!({});
         return PopulationBuilder { value: __value };
+    }
+
+    pub fn age_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut PopulationBuilder {
+        self.value["ageCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age_range<'a>(&'a mut self, val: Range) -> &'a mut PopulationBuilder {
+        self.value["ageRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PopulationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gender<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PopulationBuilder {
+        self.value["gender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PopulationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PopulationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn physiological_condition<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut PopulationBuilder {
+        self.value["physiologicalCondition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn race<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PopulationBuilder {
+        self.value["race"] = json!(val.value);
+        return self;
     }
 }

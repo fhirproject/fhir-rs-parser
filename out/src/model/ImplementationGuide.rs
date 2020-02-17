@@ -27,6 +27,16 @@ pub struct ImplementationGuide<'a> {
 }
 
 impl ImplementationGuide<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide {
+        ImplementationGuide {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -676,7 +686,7 @@ impl ImplementationGuide<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuideBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuideBuilder {
@@ -686,9 +696,262 @@ impl ImplementationGuideBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide) -> ImplementationGuideBuilder {
+        ImplementationGuideBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ImplementationGuideBuilder {
         let mut __value: Value = json!({});
         return ImplementationGuideBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fhir_version<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["_fhirVersion"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _license<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_license"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _package_id<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_packageId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuideBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn definition<'a>(
+        &'a mut self,
+        val: ImplementationGuide_Definition,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["definition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn depends_on<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_DependsOn>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["dependsOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut ImplementationGuideBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ImplementationGuideBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn global<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Global>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["global"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn license<'a>(
+        &'a mut self,
+        val: ImplementationGuideLicense,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["license"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn manifest<'a>(
+        &'a mut self,
+        val: ImplementationGuide_Manifest,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["manifest"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ImplementationGuideBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn package_id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["packageId"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: ImplementationGuideStatus,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ImplementationGuideBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut ImplementationGuideBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuideBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

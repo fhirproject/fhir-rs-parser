@@ -15,6 +15,16 @@ pub struct SubstancePolymer_DegreeOfPolymerisation<'a> {
 }
 
 impl SubstancePolymer_DegreeOfPolymerisation<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_DegreeOfPolymerisation {
+        SubstancePolymer_DegreeOfPolymerisation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Todo.
     pub fn amount(&self) -> Option<SubstanceAmount> {
         if let Some(val) = self.value.get("amount") {
@@ -114,7 +124,7 @@ impl SubstancePolymer_DegreeOfPolymerisation<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_DegreeOfPolymerisationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_DegreeOfPolymerisationBuilder {
@@ -124,8 +134,57 @@ impl SubstancePolymer_DegreeOfPolymerisationBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstancePolymer_DegreeOfPolymerisation,
+    ) -> SubstancePolymer_DegreeOfPolymerisationBuilder {
+        SubstancePolymer_DegreeOfPolymerisationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_DegreeOfPolymerisationBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_DegreeOfPolymerisationBuilder { value: __value };
+    }
+
+    pub fn amount<'a>(
+        &'a mut self,
+        val: SubstanceAmount,
+    ) -> &'a mut SubstancePolymer_DegreeOfPolymerisationBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn degree<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_DegreeOfPolymerisationBuilder {
+        self.value["degree"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_DegreeOfPolymerisationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstancePolymer_DegreeOfPolymerisationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_DegreeOfPolymerisationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

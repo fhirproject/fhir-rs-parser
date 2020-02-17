@@ -17,6 +17,16 @@ pub struct Contract_ContentDefinition<'a> {
 }
 
 impl Contract_ContentDefinition<'_> {
+    pub fn new(value: &Value) -> Contract_ContentDefinition {
+        Contract_ContentDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -207,7 +217,7 @@ impl Contract_ContentDefinition<'_> {
 
 #[derive(Debug)]
 pub struct Contract_ContentDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_ContentDefinitionBuilder {
@@ -217,9 +227,95 @@ impl Contract_ContentDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: Contract_ContentDefinition) -> Contract_ContentDefinitionBuilder {
+        Contract_ContentDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> Contract_ContentDefinitionBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return Contract_ContentDefinitionBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publication_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["_publicationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publication_status<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["_publicationStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publication_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["publicationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn publication_status<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["publicationStatus"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sub_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Contract_ContentDefinitionBuilder {
+        self.value["subType"] = json!(val.value);
+        return self;
     }
 }

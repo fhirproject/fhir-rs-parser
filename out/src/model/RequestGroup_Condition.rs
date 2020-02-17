@@ -16,6 +16,16 @@ pub struct RequestGroup_Condition<'a> {
 }
 
 impl RequestGroup_Condition<'_> {
+    pub fn new(value: &Value) -> RequestGroup_Condition {
+        RequestGroup_Condition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for kind
     pub fn _kind(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_kind") {
@@ -125,7 +135,7 @@ impl RequestGroup_Condition<'_> {
 
 #[derive(Debug)]
 pub struct RequestGroup_ConditionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RequestGroup_ConditionBuilder {
@@ -135,8 +145,51 @@ impl RequestGroup_ConditionBuilder {
         }
     }
 
+    pub fn with(existing: RequestGroup_Condition) -> RequestGroup_ConditionBuilder {
+        RequestGroup_ConditionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RequestGroup_ConditionBuilder {
         let mut __value: Value = json!({});
         return RequestGroup_ConditionBuilder { value: __value };
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: Expression) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn kind<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["kind"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RequestGroup_ConditionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

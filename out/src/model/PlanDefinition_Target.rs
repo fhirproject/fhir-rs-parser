@@ -20,6 +20,16 @@ pub struct PlanDefinition_Target<'a> {
 }
 
 impl PlanDefinition_Target<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_Target {
+        PlanDefinition_Target {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The target value of the measure to be achieved to signify fulfillment of the
     /// goal, e.g. 150 pounds or 7.0%. Either the high or low or both values of the
     /// range can be specified. When a low value is missing, it indicates that the goal
@@ -181,7 +191,7 @@ impl PlanDefinition_Target<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_TargetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_TargetBuilder {
@@ -191,8 +201,67 @@ impl PlanDefinition_TargetBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_Target) -> PlanDefinition_TargetBuilder {
+        PlanDefinition_TargetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinition_TargetBuilder {
         let mut __value: Value = json!({});
         return PlanDefinition_TargetBuilder { value: __value };
+    }
+
+    pub fn detail_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["detailCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["detailQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail_range<'a>(&'a mut self, val: Range) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["detailRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn due<'a>(&'a mut self, val: Duration) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["due"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn measure<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["measure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_TargetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

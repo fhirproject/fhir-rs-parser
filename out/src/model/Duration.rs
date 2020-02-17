@@ -14,6 +14,16 @@ pub struct Duration<'a> {
 }
 
 impl Duration<'_> {
+    pub fn new(value: &Value) -> Duration {
+        Duration {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -177,7 +187,7 @@ impl Duration<'_> {
 
 #[derive(Debug)]
 pub struct DurationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DurationBuilder {
@@ -187,9 +197,75 @@ impl DurationBuilder {
         }
     }
 
+    pub fn with(existing: Duration) -> DurationBuilder {
+        DurationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DurationBuilder {
         let mut __value: Value = json!({});
         return DurationBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut DurationBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comparator<'a>(&'a mut self, val: Element) -> &'a mut DurationBuilder {
+        self.value["_comparator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut DurationBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _unit<'a>(&'a mut self, val: Element) -> &'a mut DurationBuilder {
+        self.value["_unit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut DurationBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut DurationBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn comparator<'a>(&'a mut self, val: DurationComparator) -> &'a mut DurationBuilder {
+        self.value["comparator"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DurationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DurationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut DurationBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn unit<'a>(&'a mut self, val: &str) -> &'a mut DurationBuilder {
+        self.value["unit"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: f64) -> &'a mut DurationBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

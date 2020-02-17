@@ -25,6 +25,16 @@ pub struct HealthcareService<'a> {
 }
 
 impl HealthcareService<'_> {
+    pub fn new(value: &Value) -> HealthcareService {
+        HealthcareService {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -702,7 +712,7 @@ impl HealthcareService<'_> {
 
 #[derive(Debug)]
 pub struct HealthcareServiceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl HealthcareServiceBuilder {
@@ -712,8 +722,264 @@ impl HealthcareServiceBuilder {
         }
     }
 
+    pub fn with(existing: HealthcareService) -> HealthcareServiceBuilder {
+        HealthcareServiceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> HealthcareServiceBuilder {
         let mut __value: Value = json!({});
         return HealthcareServiceBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _appointment_required<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["_appointmentRequired"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _availability_exceptions<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["_availabilityExceptions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _extra_details<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_extraDetails"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut HealthcareServiceBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut HealthcareServiceBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn appointment_required<'a>(&'a mut self, val: bool) -> &'a mut HealthcareServiceBuilder {
+        self.value["appointmentRequired"] = json!(val);
+        return self;
+    }
+
+    pub fn availability_exceptions<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["availabilityExceptions"] = json!(val);
+        return self;
+    }
+
+    pub fn available_time<'a>(
+        &'a mut self,
+        val: Vec<HealthcareService_AvailableTime>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["availableTime"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn characteristic<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["characteristic"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn communication<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["communication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut HealthcareServiceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coverage_area<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["coverageArea"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn eligibility<'a>(
+        &'a mut self,
+        val: Vec<HealthcareService_Eligibility>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["eligibility"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut HealthcareServiceBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut HealthcareServiceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extra_details<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["extraDetails"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut HealthcareServiceBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut HealthcareServiceBuilder {
+        self.value["location"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut HealthcareServiceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut HealthcareServiceBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn not_available<'a>(
+        &'a mut self,
+        val: Vec<HealthcareService_NotAvailable>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["notAvailable"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn photo<'a>(&'a mut self, val: Attachment) -> &'a mut HealthcareServiceBuilder {
+        self.value["photo"] = json!(val.value);
+        return self;
+    }
+
+    pub fn program<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["program"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn provided_by<'a>(&'a mut self, val: Reference) -> &'a mut HealthcareServiceBuilder {
+        self.value["providedBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn referral_method<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["referralMethod"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn service_provision_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["serviceProvisionCode"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specialty<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["specialty"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut HealthcareServiceBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut HealthcareServiceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut HealthcareServiceBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

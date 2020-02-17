@@ -16,6 +16,16 @@ pub struct CodeSystem_Filter<'a> {
 }
 
 impl CodeSystem_Filter<'_> {
+    pub fn new(value: &Value) -> CodeSystem_Filter {
+        CodeSystem_Filter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -192,7 +202,7 @@ impl CodeSystem_Filter<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystem_FilterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystem_FilterBuilder {
@@ -202,8 +212,73 @@ impl CodeSystem_FilterBuilder {
         }
     }
 
+    pub fn with(existing: CodeSystem_Filter) -> CodeSystem_FilterBuilder {
+        CodeSystem_FilterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystem_FilterBuilder {
         let mut __value: Value = json!({});
         return CodeSystem_FilterBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _operator<'a>(&'a mut self, val: Vec<Element>) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["_operator"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operator<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["operator"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_FilterBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

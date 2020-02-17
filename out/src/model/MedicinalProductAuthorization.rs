@@ -23,6 +23,16 @@ pub struct MedicinalProductAuthorization<'a> {
 }
 
 impl MedicinalProductAuthorization<'_> {
+    pub fn new(value: &Value) -> MedicinalProductAuthorization {
+        MedicinalProductAuthorization {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for dateOfFirstAuthorization
     pub fn _date_of_first_authorization(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateOfFirstAuthorization") {
@@ -504,7 +514,7 @@ impl MedicinalProductAuthorization<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorizationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductAuthorizationBuilder {
@@ -514,8 +524,244 @@ impl MedicinalProductAuthorizationBuilder {
         }
     }
 
+    pub fn with(existing: MedicinalProductAuthorization) -> MedicinalProductAuthorizationBuilder {
+        MedicinalProductAuthorizationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProductAuthorizationBuilder {
         let mut __value: Value = json!({});
         return MedicinalProductAuthorizationBuilder { value: __value };
+    }
+
+    pub fn _date_of_first_authorization<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_dateOfFirstAuthorization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _international_birth_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_internationalBirthDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _restore_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_restoreDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["_statusDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn country<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["country"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data_exclusivity_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["dataExclusivityPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date_of_first_authorization<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["dateOfFirstAuthorization"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn holder<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["holder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn international_birth_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["internationalBirthDate"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn jurisdictional_authorization<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductAuthorization_JurisdictionalAuthorization>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["jurisdictionalAuthorization"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn legal_basis<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["legalBasis"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn procedure<'a>(
+        &'a mut self,
+        val: MedicinalProductAuthorization_Procedure,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["procedure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn regulator<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["regulator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn restore_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["restoreDate"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["statusDate"] = json!(val);
+        return self;
+    }
+
+    pub fn subject<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn validity_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicinalProductAuthorizationBuilder {
+        self.value["validityPeriod"] = json!(val.value);
+        return self;
     }
 }

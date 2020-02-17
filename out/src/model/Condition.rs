@@ -27,6 +27,16 @@ pub struct Condition<'a> {
 }
 
 impl Condition<'_> {
+    pub fn new(value: &Value) -> Condition {
+        Condition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for abatementDateTime
     pub fn _abatement_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_abatementDateTime") {
@@ -672,7 +682,7 @@ impl Condition<'_> {
 
 #[derive(Debug)]
 pub struct ConditionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConditionBuilder {
@@ -682,9 +692,211 @@ impl ConditionBuilder {
         }
     }
 
+    pub fn with(existing: Condition) -> ConditionBuilder {
+        ConditionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> ConditionBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return ConditionBuilder { value: __value };
+    }
+
+    pub fn _abatement_date_time<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_abatementDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _abatement_string<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_abatementString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset_date_time<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_onsetDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset_string<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_onsetString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recorded_date<'a>(&'a mut self, val: Element) -> &'a mut ConditionBuilder {
+        self.value["_recordedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn abatement_age<'a>(&'a mut self, val: Age) -> &'a mut ConditionBuilder {
+        self.value["abatementAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn abatement_date_time<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["abatementDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn abatement_period<'a>(&'a mut self, val: Period) -> &'a mut ConditionBuilder {
+        self.value["abatementPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn abatement_range<'a>(&'a mut self, val: Range) -> &'a mut ConditionBuilder {
+        self.value["abatementRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn abatement_string<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["abatementString"] = json!(val);
+        return self;
+    }
+
+    pub fn asserter<'a>(&'a mut self, val: Reference) -> &'a mut ConditionBuilder {
+        self.value["asserter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ConditionBuilder {
+        self.value["bodySite"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ConditionBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn clinical_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ConditionBuilder {
+        self.value["clinicalStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ConditionBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ConditionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ConditionBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn evidence<'a>(&'a mut self, val: Vec<Condition_Evidence>) -> &'a mut ConditionBuilder {
+        self.value["evidence"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConditionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ConditionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ConditionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConditionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ConditionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn onset_age<'a>(&'a mut self, val: Age) -> &'a mut ConditionBuilder {
+        self.value["onsetAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_date_time<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["onsetDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn onset_period<'a>(&'a mut self, val: Period) -> &'a mut ConditionBuilder {
+        self.value["onsetPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_range<'a>(&'a mut self, val: Range) -> &'a mut ConditionBuilder {
+        self.value["onsetRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_string<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["onsetString"] = json!(val);
+        return self;
+    }
+
+    pub fn recorded_date<'a>(&'a mut self, val: &str) -> &'a mut ConditionBuilder {
+        self.value["recordedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn recorder<'a>(&'a mut self, val: Reference) -> &'a mut ConditionBuilder {
+        self.value["recorder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn severity<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ConditionBuilder {
+        self.value["severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn stage<'a>(&'a mut self, val: Vec<Condition_Stage>) -> &'a mut ConditionBuilder {
+        self.value["stage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ConditionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn verification_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ConditionBuilder {
+        self.value["verificationStatus"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Device_UdiCarrier<'a> {
 }
 
 impl Device_UdiCarrier<'_> {
+    pub fn new(value: &Value) -> Device_UdiCarrier {
+        Device_UdiCarrier {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for carrierAIDC
     pub fn _carrier_a_i_d_c(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_carrierAIDC") {
@@ -242,7 +252,7 @@ impl Device_UdiCarrier<'_> {
 
 #[derive(Debug)]
 pub struct Device_UdiCarrierBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Device_UdiCarrierBuilder {
@@ -252,9 +262,97 @@ impl Device_UdiCarrierBuilder {
         }
     }
 
+    pub fn with(existing: Device_UdiCarrier) -> Device_UdiCarrierBuilder {
+        Device_UdiCarrierBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Device_UdiCarrierBuilder {
         let mut __value: Value = json!({});
         return Device_UdiCarrierBuilder { value: __value };
+    }
+
+    pub fn _carrier_a_i_d_c<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_carrierAIDC"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _carrier_h_r_f<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_carrierHRF"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _device_identifier<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_deviceIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _entry_type<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_entryType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issuer<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_issuer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _jurisdiction<'a>(&'a mut self, val: Element) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["_jurisdiction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn carrier_a_i_d_c<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["carrierAIDC"] = json!(val);
+        return self;
+    }
+
+    pub fn carrier_h_r_f<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["carrierHRF"] = json!(val);
+        return self;
+    }
+
+    pub fn device_identifier<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["deviceIdentifier"] = json!(val);
+        return self;
+    }
+
+    pub fn entry_type<'a>(
+        &'a mut self,
+        val: Device_UdiCarrierEntryType,
+    ) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["entryType"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn issuer<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["issuer"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(&'a mut self, val: &str) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["jurisdiction"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Device_UdiCarrierBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

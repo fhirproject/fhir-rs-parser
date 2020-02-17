@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_Substitution<'a> {
 }
 
 impl MedicationKnowledge_Substitution<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Substitution {
+        MedicationKnowledge_Substitution {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allowed
     pub fn _allowed(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowed") {
@@ -118,7 +128,7 @@ impl MedicationKnowledge_Substitution<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_SubstitutionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_SubstitutionBuilder {
@@ -128,9 +138,52 @@ impl MedicationKnowledge_SubstitutionBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_Substitution,
+    ) -> MedicationKnowledge_SubstitutionBuilder {
+        MedicationKnowledge_SubstitutionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> MedicationKnowledge_SubstitutionBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return MedicationKnowledge_SubstitutionBuilder { value: __value };
+    }
+
+    pub fn _allowed<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationKnowledge_SubstitutionBuilder {
+        self.value["_allowed"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed<'a>(&'a mut self, val: bool) -> &'a mut MedicationKnowledge_SubstitutionBuilder {
+        self.value["allowed"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_SubstitutionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_SubstitutionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_SubstitutionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

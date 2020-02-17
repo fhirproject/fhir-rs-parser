@@ -17,6 +17,16 @@ pub struct CoverageEligibilityResponse_Benefit<'a> {
 }
 
 impl CoverageEligibilityResponse_Benefit<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityResponse_Benefit {
+        CoverageEligibilityResponse_Benefit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allowedString
     pub fn _allowed_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowedString") {
@@ -222,7 +232,7 @@ impl CoverageEligibilityResponse_Benefit<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse_BenefitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityResponse_BenefitBuilder {
@@ -232,9 +242,119 @@ impl CoverageEligibilityResponse_BenefitBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityResponse_Benefit,
+    ) -> CoverageEligibilityResponse_BenefitBuilder {
+        CoverageEligibilityResponse_BenefitBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> CoverageEligibilityResponse_BenefitBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return CoverageEligibilityResponse_BenefitBuilder { value: __value };
+    }
+
+    pub fn _allowed_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["_allowedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _allowed_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["_allowedUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _used_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["_usedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _used_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["_usedUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_money<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["allowedMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["allowedString"] = json!(val);
+        return self;
+    }
+
+    pub fn allowed_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["allowedUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn used_money<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["usedMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn used_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["usedString"] = json!(val);
+        return self;
+    }
+
+    pub fn used_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut CoverageEligibilityResponse_BenefitBuilder {
+        self.value["usedUnsignedInt"] = json!(val);
+        return self;
     }
 }

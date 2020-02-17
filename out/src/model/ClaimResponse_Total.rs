@@ -16,6 +16,16 @@ pub struct ClaimResponse_Total<'a> {
 }
 
 impl ClaimResponse_Total<'_> {
+    pub fn new(value: &Value) -> ClaimResponse_Total {
+        ClaimResponse_Total {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Monetary total amount associated with the category.
     pub fn amount(&self) -> Money {
         Money {
@@ -109,7 +119,7 @@ impl ClaimResponse_Total<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponse_TotalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponse_TotalBuilder {
@@ -119,10 +129,35 @@ impl ClaimResponse_TotalBuilder {
         }
     }
 
+    pub fn with(existing: ClaimResponse_Total) -> ClaimResponse_TotalBuilder {
+        ClaimResponse_TotalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(amount: Money, category: CodeableConcept) -> ClaimResponse_TotalBuilder {
         let mut __value: Value = json!({});
         __value["amount"] = json!(amount.value);
         __value["category"] = json!(category.value);
         return ClaimResponse_TotalBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ClaimResponse_TotalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_TotalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_TotalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

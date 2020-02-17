@@ -18,6 +18,16 @@ pub struct Practitioner_Qualification<'a> {
 }
 
 impl Practitioner_Qualification<'_> {
+    pub fn new(value: &Value) -> Practitioner_Qualification {
+        Practitioner_Qualification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Coded representation of the qualification.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -146,7 +156,7 @@ impl Practitioner_Qualification<'_> {
 
 #[derive(Debug)]
 pub struct Practitioner_QualificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Practitioner_QualificationBuilder {
@@ -156,9 +166,55 @@ impl Practitioner_QualificationBuilder {
         }
     }
 
+    pub fn with(existing: Practitioner_Qualification) -> Practitioner_QualificationBuilder {
+        Practitioner_QualificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> Practitioner_QualificationBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return Practitioner_QualificationBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn issuer<'a>(&'a mut self, val: Reference) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["issuer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Practitioner_QualificationBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct Account_Guarantor<'a> {
 }
 
 impl Account_Guarantor<'_> {
+    pub fn new(value: &Value) -> Account_Guarantor {
+        Account_Guarantor {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for onHold
     pub fn _on_hold(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_onHold") {
@@ -136,7 +146,7 @@ impl Account_Guarantor<'_> {
 
 #[derive(Debug)]
 pub struct Account_GuarantorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Account_GuarantorBuilder {
@@ -146,9 +156,49 @@ impl Account_GuarantorBuilder {
         }
     }
 
+    pub fn with(existing: Account_Guarantor) -> Account_GuarantorBuilder {
+        Account_GuarantorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(party: Reference) -> Account_GuarantorBuilder {
         let mut __value: Value = json!({});
         __value["party"] = json!(party.value);
         return Account_GuarantorBuilder { value: __value };
+    }
+
+    pub fn _on_hold<'a>(&'a mut self, val: Element) -> &'a mut Account_GuarantorBuilder {
+        self.value["_onHold"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Account_GuarantorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Account_GuarantorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Account_GuarantorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_hold<'a>(&'a mut self, val: bool) -> &'a mut Account_GuarantorBuilder {
+        self.value["onHold"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Account_GuarantorBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

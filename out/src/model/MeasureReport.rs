@@ -23,6 +23,16 @@ pub struct MeasureReport<'a> {
 }
 
 impl MeasureReport<'_> {
+    pub fn new(value: &Value) -> MeasureReport {
+        MeasureReport {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -401,7 +411,7 @@ impl MeasureReport<'_> {
 
 #[derive(Debug)]
 pub struct MeasureReportBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MeasureReportBuilder {
@@ -411,11 +421,138 @@ impl MeasureReportBuilder {
         }
     }
 
+    pub fn with(existing: MeasureReport) -> MeasureReportBuilder {
+        MeasureReportBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(measure: &str, period: Period) -> MeasureReportBuilder {
         let mut __value: Value = json!({});
         __value["measure"] = json!(measure);
         __value["period"] = json!(period.value);
         return MeasureReportBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut MeasureReportBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MeasureReportBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MeasureReportBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut MeasureReportBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut MeasureReportBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut MeasureReportBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut MeasureReportBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn evaluated_resource<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MeasureReportBuilder {
+        self.value["evaluatedResource"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MeasureReportBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group<'a>(&'a mut self, val: Vec<MeasureReport_Group>) -> &'a mut MeasureReportBuilder {
+        self.value["group"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MeasureReportBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut MeasureReportBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MeasureReportBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn improvement_notation<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MeasureReportBuilder {
+        self.value["improvementNotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MeasureReportBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MeasureReportBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReportBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reporter<'a>(&'a mut self, val: Reference) -> &'a mut MeasureReportBuilder {
+        self.value["reporter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: MeasureReportStatus) -> &'a mut MeasureReportBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut MeasureReportBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MeasureReportBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: MeasureReportType) -> &'a mut MeasureReportBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

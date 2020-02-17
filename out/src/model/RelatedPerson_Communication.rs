@@ -17,6 +17,16 @@ pub struct RelatedPerson_Communication<'a> {
 }
 
 impl RelatedPerson_Communication<'_> {
+    pub fn new(value: &Value) -> RelatedPerson_Communication {
+        RelatedPerson_Communication {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for preferred
     pub fn _preferred(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferred") {
@@ -124,7 +134,7 @@ impl RelatedPerson_Communication<'_> {
 
 #[derive(Debug)]
 pub struct RelatedPerson_CommunicationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RelatedPerson_CommunicationBuilder {
@@ -134,9 +144,50 @@ impl RelatedPerson_CommunicationBuilder {
         }
     }
 
+    pub fn with(existing: RelatedPerson_Communication) -> RelatedPerson_CommunicationBuilder {
+        RelatedPerson_CommunicationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(language: CodeableConcept) -> RelatedPerson_CommunicationBuilder {
         let mut __value: Value = json!({});
         __value["language"] = json!(language.value);
         return RelatedPerson_CommunicationBuilder { value: __value };
+    }
+
+    pub fn _preferred<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RelatedPerson_CommunicationBuilder {
+        self.value["_preferred"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RelatedPerson_CommunicationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RelatedPerson_CommunicationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RelatedPerson_CommunicationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn preferred<'a>(&'a mut self, val: bool) -> &'a mut RelatedPerson_CommunicationBuilder {
+        self.value["preferred"] = json!(val);
+        return self;
     }
 }

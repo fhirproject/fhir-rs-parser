@@ -21,6 +21,16 @@ pub struct Substance<'a> {
 }
 
 impl Substance<'_> {
+    pub fn new(value: &Value) -> Substance {
+        Substance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -337,7 +347,7 @@ impl Substance<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceBuilder {
@@ -347,10 +357,110 @@ impl SubstanceBuilder {
         }
     }
 
+    pub fn with(existing: Substance) -> SubstanceBuilder {
+        SubstanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> SubstanceBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return SubstanceBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut SubstanceBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SubstanceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubstanceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SubstanceBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut SubstanceBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SubstanceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut SubstanceBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubstanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut SubstanceBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubstanceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn ingredient<'a>(
+        &'a mut self,
+        val: Vec<Substance_Ingredient>,
+    ) -> &'a mut SubstanceBuilder {
+        self.value["ingredient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn instance<'a>(&'a mut self, val: Vec<Substance_Instance>) -> &'a mut SubstanceBuilder {
+        self.value["instance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstanceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstanceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubstanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SubstanceStatus) -> &'a mut SubstanceBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstanceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

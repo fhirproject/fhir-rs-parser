@@ -17,6 +17,16 @@ pub struct Encounter_Hospitalization<'a> {
 }
 
 impl Encounter_Hospitalization<'_> {
+    pub fn new(value: &Value) -> Encounter_Hospitalization {
+        Encounter_Hospitalization {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// From where patient was admitted (physician referral, transfer).
     pub fn admit_source(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("admitSource") {
@@ -234,7 +244,7 @@ impl Encounter_Hospitalization<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_HospitalizationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_HospitalizationBuilder {
@@ -244,8 +254,106 @@ impl Encounter_HospitalizationBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_Hospitalization) -> Encounter_HospitalizationBuilder {
+        Encounter_HospitalizationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Encounter_HospitalizationBuilder {
         let mut __value: Value = json!({});
         return Encounter_HospitalizationBuilder { value: __value };
+    }
+
+    pub fn admit_source<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["admitSource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn destination<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["destination"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diet_preference<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["dietPreference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn discharge_disposition<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["dischargeDisposition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn origin<'a>(&'a mut self, val: Reference) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["origin"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pre_admission_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["preAdmissionIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn re_admission<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["reAdmission"] = json!(val.value);
+        return self;
+    }
+
+    pub fn special_arrangement<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["specialArrangement"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn special_courtesy<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Encounter_HospitalizationBuilder {
+        self.value["specialCourtesy"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

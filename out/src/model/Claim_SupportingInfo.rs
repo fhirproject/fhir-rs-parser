@@ -21,6 +21,16 @@ pub struct Claim_SupportingInfo<'a> {
 }
 
 impl Claim_SupportingInfo<'_> {
+    pub fn new(value: &Value) -> Claim_SupportingInfo {
+        Claim_SupportingInfo {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
@@ -295,7 +305,7 @@ impl Claim_SupportingInfo<'_> {
 
 #[derive(Debug)]
 pub struct Claim_SupportingInfoBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_SupportingInfoBuilder {
@@ -305,9 +315,110 @@ impl Claim_SupportingInfoBuilder {
         }
     }
 
+    pub fn with(existing: Claim_SupportingInfo) -> Claim_SupportingInfoBuilder {
+        Claim_SupportingInfoBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(category: CodeableConcept) -> Claim_SupportingInfoBuilder {
         let mut __value: Value = json!({});
         __value["category"] = json!(category.value);
         return Claim_SupportingInfoBuilder { value: __value };
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date<'a>(&'a mut self, val: Element) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["_timingDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["reason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_date<'a>(&'a mut self, val: &str) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["timingDate"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_period<'a>(&'a mut self, val: Period) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["timingPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut Claim_SupportingInfoBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

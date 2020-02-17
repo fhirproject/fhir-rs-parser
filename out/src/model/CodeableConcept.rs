@@ -16,6 +16,16 @@ pub struct CodeableConcept<'a> {
 }
 
 impl CodeableConcept<'_> {
+    pub fn new(value: &Value) -> CodeableConcept {
+        CodeableConcept {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
@@ -101,7 +111,7 @@ impl CodeableConcept<'_> {
 
 #[derive(Debug)]
 pub struct CodeableConceptBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeableConceptBuilder {
@@ -111,8 +121,39 @@ impl CodeableConceptBuilder {
         }
     }
 
+    pub fn with(existing: CodeableConcept) -> CodeableConceptBuilder {
+        CodeableConceptBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeableConceptBuilder {
         let mut __value: Value = json!({});
         return CodeableConceptBuilder { value: __value };
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut CodeableConceptBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn coding<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut CodeableConceptBuilder {
+        self.value["coding"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeableConceptBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeableConceptBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut CodeableConceptBuilder {
+        self.value["text"] = json!(val);
+        return self;
     }
 }

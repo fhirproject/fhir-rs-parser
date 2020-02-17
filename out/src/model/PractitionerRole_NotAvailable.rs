@@ -16,6 +16,16 @@ pub struct PractitionerRole_NotAvailable<'a> {
 }
 
 impl PractitionerRole_NotAvailable<'_> {
+    pub fn new(value: &Value) -> PractitionerRole_NotAvailable {
+        PractitionerRole_NotAvailable {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -125,7 +135,7 @@ impl PractitionerRole_NotAvailable<'_> {
 
 #[derive(Debug)]
 pub struct PractitionerRole_NotAvailableBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PractitionerRole_NotAvailableBuilder {
@@ -135,8 +145,57 @@ impl PractitionerRole_NotAvailableBuilder {
         }
     }
 
+    pub fn with(existing: PractitionerRole_NotAvailable) -> PractitionerRole_NotAvailableBuilder {
+        PractitionerRole_NotAvailableBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PractitionerRole_NotAvailableBuilder {
         let mut __value: Value = json!({});
         return PractitionerRole_NotAvailableBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn during<'a>(&'a mut self, val: Period) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["during"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PractitionerRole_NotAvailableBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -14,6 +14,16 @@ pub struct Money<'a> {
 }
 
 impl Money<'_> {
+    pub fn new(value: &Value) -> Money {
+        Money {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for currency
     pub fn _currency(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_currency") {
@@ -102,7 +112,7 @@ impl Money<'_> {
 
 #[derive(Debug)]
 pub struct MoneyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MoneyBuilder {
@@ -112,8 +122,44 @@ impl MoneyBuilder {
         }
     }
 
+    pub fn with(existing: Money) -> MoneyBuilder {
+        MoneyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MoneyBuilder {
         let mut __value: Value = json!({});
         return MoneyBuilder { value: __value };
+    }
+
+    pub fn _currency<'a>(&'a mut self, val: Element) -> &'a mut MoneyBuilder {
+        self.value["_currency"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut MoneyBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn currency<'a>(&'a mut self, val: &str) -> &'a mut MoneyBuilder {
+        self.value["currency"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MoneyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MoneyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: f64) -> &'a mut MoneyBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

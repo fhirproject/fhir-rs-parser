@@ -17,6 +17,16 @@ pub struct SpecimenDefinition_Handling<'a> {
 }
 
 impl SpecimenDefinition_Handling<'_> {
+    pub fn new(value: &Value) -> SpecimenDefinition_Handling {
+        SpecimenDefinition_Handling {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for instruction
     pub fn _instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_instruction") {
@@ -158,7 +168,7 @@ impl SpecimenDefinition_Handling<'_> {
 
 #[derive(Debug)]
 pub struct SpecimenDefinition_HandlingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SpecimenDefinition_HandlingBuilder {
@@ -168,8 +178,73 @@ impl SpecimenDefinition_HandlingBuilder {
         }
     }
 
+    pub fn with(existing: SpecimenDefinition_Handling) -> SpecimenDefinition_HandlingBuilder {
+        SpecimenDefinition_HandlingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SpecimenDefinition_HandlingBuilder {
         let mut __value: Value = json!({});
         return SpecimenDefinition_HandlingBuilder { value: __value };
+    }
+
+    pub fn _instruction<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["_instruction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn instruction<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["instruction"] = json!(val);
+        return self;
+    }
+
+    pub fn max_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["maxDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn temperature_qualifier<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["temperatureQualifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn temperature_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut SpecimenDefinition_HandlingBuilder {
+        self.value["temperatureRange"] = json!(val.value);
+        return self;
     }
 }

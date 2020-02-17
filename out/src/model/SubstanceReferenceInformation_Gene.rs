@@ -15,6 +15,16 @@ pub struct SubstanceReferenceInformation_Gene<'a> {
 }
 
 impl SubstanceReferenceInformation_Gene<'_> {
+    pub fn new(value: &Value) -> SubstanceReferenceInformation_Gene {
+        SubstanceReferenceInformation_Gene {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -133,7 +143,7 @@ impl SubstanceReferenceInformation_Gene<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_GeneBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceReferenceInformation_GeneBuilder {
@@ -143,8 +153,62 @@ impl SubstanceReferenceInformation_GeneBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceReferenceInformation_Gene,
+    ) -> SubstanceReferenceInformation_GeneBuilder {
+        SubstanceReferenceInformation_GeneBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceReferenceInformation_GeneBuilder {
         let mut __value: Value = json!({});
         return SubstanceReferenceInformation_GeneBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gene<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["gene"] = json!(val.value);
+        return self;
+    }
+
+    pub fn gene_sequence_origin<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["geneSequenceOrigin"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

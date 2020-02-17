@@ -17,6 +17,16 @@ pub struct CapabilityStatement_SupportedMessage<'a> {
 }
 
 impl CapabilityStatement_SupportedMessage<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_SupportedMessage {
+        CapabilityStatement_SupportedMessage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
@@ -116,7 +126,7 @@ impl CapabilityStatement_SupportedMessage<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_SupportedMessageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_SupportedMessageBuilder {
@@ -126,10 +136,56 @@ impl CapabilityStatement_SupportedMessageBuilder {
         }
     }
 
+    pub fn with(
+        existing: CapabilityStatement_SupportedMessage,
+    ) -> CapabilityStatement_SupportedMessageBuilder {
+        CapabilityStatement_SupportedMessageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(definition: &str) -> CapabilityStatement_SupportedMessageBuilder {
         let mut __value: Value = json!({});
         __value["definition"] = json!(definition);
         return CapabilityStatement_SupportedMessageBuilder { value: __value };
+    }
+
+    pub fn _mode<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_SupportedMessageBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SupportedMessageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_SupportedMessageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(
+        &'a mut self,
+        val: CapabilityStatement_SupportedMessageMode,
+    ) -> &'a mut CapabilityStatement_SupportedMessageBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SupportedMessageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

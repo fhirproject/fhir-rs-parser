@@ -21,6 +21,16 @@ pub struct ClinicalImpression_Investigation<'a> {
 }
 
 impl ClinicalImpression_Investigation<'_> {
+    pub fn new(value: &Value) -> ClinicalImpression_Investigation {
+        ClinicalImpression_Investigation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A name/code for the group ("set") of investigations. Typically, this will be
     /// something like "signs", "symptoms", "clinical", "diagnostic", but the list is
     /// not constrained, and others such groups such as
@@ -122,7 +132,7 @@ impl ClinicalImpression_Investigation<'_> {
 
 #[derive(Debug)]
 pub struct ClinicalImpression_InvestigationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClinicalImpression_InvestigationBuilder {
@@ -132,9 +142,47 @@ impl ClinicalImpression_InvestigationBuilder {
         }
     }
 
+    pub fn with(
+        existing: ClinicalImpression_Investigation,
+    ) -> ClinicalImpression_InvestigationBuilder {
+        ClinicalImpression_InvestigationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> ClinicalImpression_InvestigationBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return ClinicalImpression_InvestigationBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClinicalImpression_InvestigationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpression_InvestigationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ClinicalImpression_InvestigationBuilder {
+        self.value["item"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClinicalImpression_InvestigationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

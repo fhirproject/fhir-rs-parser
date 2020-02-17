@@ -16,6 +16,16 @@ pub struct Expression<'a> {
 }
 
 impl Expression<'_> {
+    pub fn new(value: &Value) -> Expression {
+        Expression {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -178,7 +188,7 @@ impl Expression<'_> {
 
 #[derive(Debug)]
 pub struct ExpressionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExpressionBuilder {
@@ -188,9 +198,75 @@ impl ExpressionBuilder {
         }
     }
 
+    pub fn with(existing: Expression) -> ExpressionBuilder {
+        ExpressionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExpressionBuilder {
         let mut __value: Value = json!({});
         return ExpressionBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ExpressionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(&'a mut self, val: Element) -> &'a mut ExpressionBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ExpressionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ExpressionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference<'a>(&'a mut self, val: Element) -> &'a mut ExpressionBuilder {
+        self.value["_reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExpressionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut ExpressionBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ExpressionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExpressionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: ExpressionLanguage) -> &'a mut ExpressionBuilder {
+        self.value["language"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ExpressionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: &str) -> &'a mut ExpressionBuilder {
+        self.value["reference"] = json!(val);
+        return self;
     }
 }
 

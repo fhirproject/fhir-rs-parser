@@ -16,6 +16,16 @@ pub struct ObservationDefinition_QuantitativeDetails<'a> {
 }
 
 impl ObservationDefinition_QuantitativeDetails<'_> {
+    pub fn new(value: &Value) -> ObservationDefinition_QuantitativeDetails {
+        ObservationDefinition_QuantitativeDetails {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for conversionFactor
     pub fn _conversion_factor(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_conversionFactor") {
@@ -167,7 +177,7 @@ impl ObservationDefinition_QuantitativeDetails<'_> {
 
 #[derive(Debug)]
 pub struct ObservationDefinition_QuantitativeDetailsBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ObservationDefinition_QuantitativeDetailsBuilder {
@@ -177,8 +187,89 @@ impl ObservationDefinition_QuantitativeDetailsBuilder {
         }
     }
 
+    pub fn with(
+        existing: ObservationDefinition_QuantitativeDetails,
+    ) -> ObservationDefinition_QuantitativeDetailsBuilder {
+        ObservationDefinition_QuantitativeDetailsBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ObservationDefinition_QuantitativeDetailsBuilder {
         let mut __value: Value = json!({});
         return ObservationDefinition_QuantitativeDetailsBuilder { value: __value };
+    }
+
+    pub fn _conversion_factor<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["_conversionFactor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _decimal_precision<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["_decimalPrecision"] = json!(val.value);
+        return self;
+    }
+
+    pub fn conversion_factor<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["conversionFactor"] = json!(val);
+        return self;
+    }
+
+    pub fn customary_unit<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["customaryUnit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn decimal_precision<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["decimalPrecision"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn unit<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ObservationDefinition_QuantitativeDetailsBuilder {
+        self.value["unit"] = json!(val.value);
+        return self;
     }
 }

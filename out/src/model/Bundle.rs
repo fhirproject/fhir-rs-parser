@@ -18,6 +18,16 @@ pub struct Bundle<'a> {
 }
 
 impl Bundle<'_> {
+    pub fn new(value: &Value) -> Bundle {
+        Bundle {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -249,7 +259,7 @@ impl Bundle<'_> {
 
 #[derive(Debug)]
 pub struct BundleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BundleBuilder {
@@ -259,9 +269,95 @@ impl BundleBuilder {
         }
     }
 
+    pub fn with(existing: Bundle) -> BundleBuilder {
+        BundleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BundleBuilder {
         let mut __value: Value = json!({});
         return BundleBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut BundleBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut BundleBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timestamp<'a>(&'a mut self, val: Element) -> &'a mut BundleBuilder {
+        self.value["_timestamp"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _total<'a>(&'a mut self, val: Element) -> &'a mut BundleBuilder {
+        self.value["_total"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut BundleBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn entry<'a>(&'a mut self, val: Vec<Bundle_Entry>) -> &'a mut BundleBuilder {
+        self.value["entry"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut BundleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut BundleBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut BundleBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut BundleBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(&'a mut self, val: Vec<Bundle_Link>) -> &'a mut BundleBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut BundleBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn signature<'a>(&'a mut self, val: Signature) -> &'a mut BundleBuilder {
+        self.value["signature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timestamp<'a>(&'a mut self, val: &str) -> &'a mut BundleBuilder {
+        self.value["timestamp"] = json!(val);
+        return self;
+    }
+
+    pub fn total<'a>(&'a mut self, val: u64) -> &'a mut BundleBuilder {
+        self.value["total"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: BundleType) -> &'a mut BundleBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

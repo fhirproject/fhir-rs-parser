@@ -17,6 +17,16 @@ pub struct VerificationResult_PrimarySource<'a> {
 }
 
 impl VerificationResult_PrimarySource<'_> {
+    pub fn new(value: &Value) -> VerificationResult_PrimarySource {
+        VerificationResult_PrimarySource {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for validationDate
     pub fn _validation_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_validationDate") {
@@ -216,7 +226,7 @@ impl VerificationResult_PrimarySource<'_> {
 
 #[derive(Debug)]
 pub struct VerificationResult_PrimarySourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VerificationResult_PrimarySourceBuilder {
@@ -226,8 +236,104 @@ impl VerificationResult_PrimarySourceBuilder {
         }
     }
 
+    pub fn with(
+        existing: VerificationResult_PrimarySource,
+    ) -> VerificationResult_PrimarySourceBuilder {
+        VerificationResult_PrimarySourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> VerificationResult_PrimarySourceBuilder {
         let mut __value: Value = json!({});
         return VerificationResult_PrimarySourceBuilder { value: __value };
+    }
+
+    pub fn _validation_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["_validationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn can_push_updates<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["canPushUpdates"] = json!(val.value);
+        return self;
+    }
+
+    pub fn communication_method<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["communicationMethod"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn push_type_available<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["pushTypeAvailable"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn validation_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["validationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn validation_status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["validationStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn who<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut VerificationResult_PrimarySourceBuilder {
+        self.value["who"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct MedicinalProductAuthorization_JurisdictionalAuthorization<'a> {
 }
 
 impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
+    pub fn new(value: &Value) -> MedicinalProductAuthorization_JurisdictionalAuthorization {
+        MedicinalProductAuthorization_JurisdictionalAuthorization {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Country of authorization.
     pub fn country(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("country") {
@@ -168,7 +178,7 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorization<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
@@ -178,8 +188,81 @@ impl MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductAuthorization_JurisdictionalAuthorization,
+    ) -> MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
         let mut __value: Value = json!({});
         return MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder { value: __value };
+    }
+
+    pub fn country<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["country"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn legal_status_of_supply<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["legalStatusOfSupply"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn validity_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicinalProductAuthorization_JurisdictionalAuthorizationBuilder {
+        self.value["validityPeriod"] = json!(val.value);
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct TestReport_Action<'a> {
 }
 
 impl TestReport_Action<'_> {
+    pub fn new(value: &Value) -> TestReport_Action {
+        TestReport_Action {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The results of the assertion performed on the previous operations.
     pub fn assert(&self) -> Option<TestReport_Assert> {
         if let Some(val) = self.value.get("assert") {
@@ -114,7 +124,7 @@ impl TestReport_Action<'_> {
 
 #[derive(Debug)]
 pub struct TestReport_ActionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestReport_ActionBuilder {
@@ -124,8 +134,46 @@ impl TestReport_ActionBuilder {
         }
     }
 
+    pub fn with(existing: TestReport_Action) -> TestReport_ActionBuilder {
+        TestReport_ActionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestReport_ActionBuilder {
         let mut __value: Value = json!({});
         return TestReport_ActionBuilder { value: __value };
+    }
+
+    pub fn assert<'a>(&'a mut self, val: TestReport_Assert) -> &'a mut TestReport_ActionBuilder {
+        self.value["assert"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReport_ActionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestReport_ActionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestReport_ActionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation<'a>(
+        &'a mut self,
+        val: TestReport_Operation,
+    ) -> &'a mut TestReport_ActionBuilder {
+        self.value["operation"] = json!(val.value);
+        return self;
     }
 }

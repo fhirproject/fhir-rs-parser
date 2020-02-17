@@ -18,6 +18,16 @@ pub struct ExplanationOfBenefit_Diagnosis<'a> {
 }
 
 impl ExplanationOfBenefit_Diagnosis<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Diagnosis {
+        ExplanationOfBenefit_Diagnosis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
@@ -194,7 +204,7 @@ impl ExplanationOfBenefit_Diagnosis<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_DiagnosisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_DiagnosisBuilder {
@@ -204,8 +214,89 @@ impl ExplanationOfBenefit_DiagnosisBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Diagnosis) -> ExplanationOfBenefit_DiagnosisBuilder {
+        ExplanationOfBenefit_DiagnosisBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExplanationOfBenefit_DiagnosisBuilder {
         let mut __value: Value = json!({});
         return ExplanationOfBenefit_DiagnosisBuilder { value: __value };
+    }
+
+    pub fn _sequence<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnosis_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["diagnosisCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnosis_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["diagnosisReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_admission<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["onAdmission"] = json!(val.value);
+        return self;
+    }
+
+    pub fn package_code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["packageCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ExplanationOfBenefit_DiagnosisBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

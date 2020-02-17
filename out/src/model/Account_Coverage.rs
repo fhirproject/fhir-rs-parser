@@ -16,6 +16,16 @@ pub struct Account_Coverage<'a> {
 }
 
 impl Account_Coverage<'_> {
+    pub fn new(value: &Value) -> Account_Coverage {
+        Account_Coverage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for priority
     pub fn _priority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_priority") {
@@ -122,7 +132,7 @@ impl Account_Coverage<'_> {
 
 #[derive(Debug)]
 pub struct Account_CoverageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Account_CoverageBuilder {
@@ -132,9 +142,44 @@ impl Account_CoverageBuilder {
         }
     }
 
+    pub fn with(existing: Account_Coverage) -> Account_CoverageBuilder {
+        Account_CoverageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(coverage: Reference) -> Account_CoverageBuilder {
         let mut __value: Value = json!({});
         __value["coverage"] = json!(coverage.value);
         return Account_CoverageBuilder { value: __value };
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut Account_CoverageBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Account_CoverageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Account_CoverageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Account_CoverageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: i64) -> &'a mut Account_CoverageBuilder {
+        self.value["priority"] = json!(val);
+        return self;
     }
 }

@@ -19,6 +19,16 @@ pub struct ExplanationOfBenefit_Accident<'a> {
 }
 
 impl ExplanationOfBenefit_Accident<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Accident {
+        ExplanationOfBenefit_Accident {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -160,7 +170,7 @@ impl ExplanationOfBenefit_Accident<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_AccidentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_AccidentBuilder {
@@ -170,8 +180,70 @@ impl ExplanationOfBenefit_AccidentBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Accident) -> ExplanationOfBenefit_AccidentBuilder {
+        ExplanationOfBenefit_AccidentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExplanationOfBenefit_AccidentBuilder {
         let mut __value: Value = json!({});
         return ExplanationOfBenefit_AccidentBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn location_address<'a>(
+        &'a mut self,
+        val: Address,
+    ) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["locationAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn location_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["locationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_AccidentBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

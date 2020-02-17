@@ -18,6 +18,16 @@ pub struct ChargeItemDefinition_PropertyGroup<'a> {
 }
 
 impl ChargeItemDefinition_PropertyGroup<'_> {
+    pub fn new(value: &Value) -> ChargeItemDefinition_PropertyGroup {
+        ChargeItemDefinition_PropertyGroup {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Expressions that describe applicability criteria for the priceComponent.
     pub fn applicability(&self) -> Option<Vec<ChargeItemDefinition_Applicability>> {
         if let Some(Value::Array(val)) = self.value.get("applicability") {
@@ -130,7 +140,7 @@ impl ChargeItemDefinition_PropertyGroup<'_> {
 
 #[derive(Debug)]
 pub struct ChargeItemDefinition_PropertyGroupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ChargeItemDefinition_PropertyGroupBuilder {
@@ -140,8 +150,54 @@ impl ChargeItemDefinition_PropertyGroupBuilder {
         }
     }
 
+    pub fn with(
+        existing: ChargeItemDefinition_PropertyGroup,
+    ) -> ChargeItemDefinition_PropertyGroupBuilder {
+        ChargeItemDefinition_PropertyGroupBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ChargeItemDefinition_PropertyGroupBuilder {
         let mut __value: Value = json!({});
         return ChargeItemDefinition_PropertyGroupBuilder { value: __value };
+    }
+
+    pub fn applicability<'a>(
+        &'a mut self,
+        val: Vec<ChargeItemDefinition_Applicability>,
+    ) -> &'a mut ChargeItemDefinition_PropertyGroupBuilder {
+        self.value["applicability"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_PropertyGroupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemDefinition_PropertyGroupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_PropertyGroupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn price_component<'a>(
+        &'a mut self,
+        val: Vec<ChargeItemDefinition_PriceComponent>,
+    ) -> &'a mut ChargeItemDefinition_PropertyGroupBuilder {
+        self.value["priceComponent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

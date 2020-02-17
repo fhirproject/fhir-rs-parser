@@ -19,6 +19,16 @@ pub struct MedicationDispense_Substitution<'a> {
 }
 
 impl MedicationDispense_Substitution<'_> {
+    pub fn new(value: &Value) -> MedicationDispense_Substitution {
+        MedicationDispense_Substitution {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for wasSubstituted
     pub fn _was_substituted(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_wasSubstituted") {
@@ -168,7 +178,7 @@ impl MedicationDispense_Substitution<'_> {
 
 #[derive(Debug)]
 pub struct MedicationDispense_SubstitutionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationDispense_SubstitutionBuilder {
@@ -178,8 +188,79 @@ impl MedicationDispense_SubstitutionBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationDispense_Substitution,
+    ) -> MedicationDispense_SubstitutionBuilder {
+        MedicationDispense_SubstitutionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationDispense_SubstitutionBuilder {
         let mut __value: Value = json!({});
         return MedicationDispense_SubstitutionBuilder { value: __value };
+    }
+
+    pub fn _was_substituted<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["_wasSubstituted"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["reason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn responsible_party<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["responsibleParty"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn was_substituted<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut MedicationDispense_SubstitutionBuilder {
+        self.value["wasSubstituted"] = json!(val);
+        return self;
     }
 }

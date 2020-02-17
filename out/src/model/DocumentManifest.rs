@@ -22,6 +22,16 @@ pub struct DocumentManifest<'a> {
 }
 
 impl DocumentManifest<'_> {
+    pub fn new(value: &Value) -> DocumentManifest {
+        DocumentManifest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -453,7 +463,7 @@ impl DocumentManifest<'_> {
 
 #[derive(Debug)]
 pub struct DocumentManifestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DocumentManifestBuilder {
@@ -463,10 +473,151 @@ impl DocumentManifestBuilder {
         }
     }
 
+    pub fn with(existing: DocumentManifest) -> DocumentManifestBuilder {
+        DocumentManifestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(content: Vec<Reference>) -> DocumentManifestBuilder {
         let mut __value: Value = json!({});
         __value["content"] = json!(content.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return DocumentManifestBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut DocumentManifestBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DocumentManifestBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut DocumentManifestBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DocumentManifestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DocumentManifestBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn master_identifier<'a>(&'a mut self, val: Identifier) -> &'a mut DocumentManifestBuilder {
+        self.value["masterIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DocumentManifestBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentManifestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recipient<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DocumentManifestBuilder {
+        self.value["recipient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn related<'a>(
+        &'a mut self,
+        val: Vec<DocumentManifest_Related>,
+    ) -> &'a mut DocumentManifestBuilder {
+        self.value["related"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut DocumentManifestBuilder {
+        self.value["source"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: DocumentManifestStatus,
+    ) -> &'a mut DocumentManifestBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut DocumentManifestBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DocumentManifestBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DocumentManifestBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }
 

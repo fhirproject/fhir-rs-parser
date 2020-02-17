@@ -16,6 +16,16 @@ pub struct TestScript_Metadata<'a> {
 }
 
 impl TestScript_Metadata<'_> {
+    pub fn new(value: &Value) -> TestScript_Metadata {
+        TestScript_Metadata {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Capabilities that must exist and are assumed to function correctly on the FHIR
     /// server being tested.
     pub fn capability(&self) -> Vec<TestScript_Capability> {
@@ -127,7 +137,7 @@ impl TestScript_Metadata<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_MetadataBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_MetadataBuilder {
@@ -137,9 +147,39 @@ impl TestScript_MetadataBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Metadata) -> TestScript_MetadataBuilder {
+        TestScript_MetadataBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(capability: Vec<TestScript_Capability>) -> TestScript_MetadataBuilder {
         let mut __value: Value = json!({});
         __value["capability"] = json!(capability.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return TestScript_MetadataBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_MetadataBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_MetadataBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(&'a mut self, val: Vec<TestScript_Link>) -> &'a mut TestScript_MetadataBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_MetadataBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

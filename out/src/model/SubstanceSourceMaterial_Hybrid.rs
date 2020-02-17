@@ -27,6 +27,16 @@ pub struct SubstanceSourceMaterial_Hybrid<'a> {
 }
 
 impl SubstanceSourceMaterial_Hybrid<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_Hybrid {
+        SubstanceSourceMaterial_Hybrid {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for maternalOrganismId
     pub fn _maternal_organism_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_maternalOrganismId") {
@@ -214,7 +224,7 @@ impl SubstanceSourceMaterial_Hybrid<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_HybridBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_HybridBuilder {
@@ -224,8 +234,108 @@ impl SubstanceSourceMaterial_HybridBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSourceMaterial_Hybrid) -> SubstanceSourceMaterial_HybridBuilder {
+        SubstanceSourceMaterial_HybridBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_HybridBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_HybridBuilder { value: __value };
+    }
+
+    pub fn _maternal_organism_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["_maternalOrganismId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _maternal_organism_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["_maternalOrganismName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _paternal_organism_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["_paternalOrganismId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _paternal_organism_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["_paternalOrganismName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hybrid_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["hybridType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn maternal_organism_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["maternalOrganismId"] = json!(val);
+        return self;
+    }
+
+    pub fn maternal_organism_name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["maternalOrganismName"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn paternal_organism_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["paternalOrganismId"] = json!(val);
+        return self;
+    }
+
+    pub fn paternal_organism_name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_HybridBuilder {
+        self.value["paternalOrganismName"] = json!(val);
+        return self;
     }
 }

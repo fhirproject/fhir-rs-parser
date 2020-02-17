@@ -17,6 +17,16 @@ pub struct Contract_Context<'a> {
 }
 
 impl Contract_Context<'_> {
+    pub fn new(value: &Value) -> Contract_Context {
+        Contract_Context {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
@@ -147,7 +157,7 @@ impl Contract_Context<'_> {
 
 #[derive(Debug)]
 pub struct Contract_ContextBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_ContextBuilder {
@@ -157,8 +167,53 @@ impl Contract_ContextBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Context) -> Contract_ContextBuilder {
+        Contract_ContextBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_ContextBuilder {
         let mut __value: Value = json!({});
         return Contract_ContextBuilder { value: __value };
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut Contract_ContextBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Contract_ContextBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_ContextBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_ContextBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_ContextBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: Reference) -> &'a mut Contract_ContextBuilder {
+        self.value["reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut Contract_ContextBuilder {
+        self.value["text"] = json!(val);
+        return self;
     }
 }

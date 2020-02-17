@@ -19,6 +19,16 @@ pub struct CoverageEligibilityRequest_Insurance<'a> {
 }
 
 impl CoverageEligibilityRequest_Insurance<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityRequest_Insurance {
+        CoverageEligibilityRequest_Insurance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for businessArrangement
     pub fn _business_arrangement(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_businessArrangement") {
@@ -150,7 +160,7 @@ impl CoverageEligibilityRequest_Insurance<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_InsuranceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityRequest_InsuranceBuilder {
@@ -160,9 +170,71 @@ impl CoverageEligibilityRequest_InsuranceBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityRequest_Insurance,
+    ) -> CoverageEligibilityRequest_InsuranceBuilder {
+        CoverageEligibilityRequest_InsuranceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(coverage: Reference) -> CoverageEligibilityRequest_InsuranceBuilder {
         let mut __value: Value = json!({});
         __value["coverage"] = json!(coverage.value);
         return CoverageEligibilityRequest_InsuranceBuilder { value: __value };
+    }
+
+    pub fn _business_arrangement<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["_businessArrangement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _focal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["_focal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn business_arrangement<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["businessArrangement"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focal<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["focal"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_InsuranceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

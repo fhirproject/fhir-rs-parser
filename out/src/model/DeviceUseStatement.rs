@@ -24,6 +24,16 @@ pub struct DeviceUseStatement<'a> {
 }
 
 impl DeviceUseStatement<'_> {
+    pub fn new(value: &Value) -> DeviceUseStatement {
+        DeviceUseStatement {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -476,7 +486,7 @@ impl DeviceUseStatement<'_> {
 
 #[derive(Debug)]
 pub struct DeviceUseStatementBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceUseStatementBuilder {
@@ -486,11 +496,166 @@ impl DeviceUseStatementBuilder {
         }
     }
 
+    pub fn with(existing: DeviceUseStatement) -> DeviceUseStatementBuilder {
+        DeviceUseStatementBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(device: Reference, subject: Reference) -> DeviceUseStatementBuilder {
         let mut __value: Value = json!({});
         __value["device"] = json!(device.value);
         __value["subject"] = json!(subject.value);
         return DeviceUseStatementBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DeviceUseStatementBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DeviceUseStatementBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recorded_on<'a>(&'a mut self, val: Element) -> &'a mut DeviceUseStatementBuilder {
+        self.value["_recordedOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut DeviceUseStatementBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date_time<'a>(&'a mut self, val: Element) -> &'a mut DeviceUseStatementBuilder {
+        self.value["_timingDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DeviceUseStatementBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DeviceUseStatementBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn derived_from<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["derivedFrom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DeviceUseStatementBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceUseStatementBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DeviceUseStatementBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DeviceUseStatementBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DeviceUseStatementBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DeviceUseStatementBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut DeviceUseStatementBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recorded_on<'a>(&'a mut self, val: &str) -> &'a mut DeviceUseStatementBuilder {
+        self.value["recordedOn"] = json!(val);
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: Reference) -> &'a mut DeviceUseStatementBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: DeviceUseStatementStatus,
+    ) -> &'a mut DeviceUseStatementBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DeviceUseStatementBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_date_time<'a>(&'a mut self, val: &str) -> &'a mut DeviceUseStatementBuilder {
+        self.value["timingDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_period<'a>(&'a mut self, val: Period) -> &'a mut DeviceUseStatementBuilder {
+        self.value["timingPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_timing<'a>(&'a mut self, val: Timing) -> &'a mut DeviceUseStatementBuilder {
+        self.value["timingTiming"] = json!(val.value);
+        return self;
     }
 }
 

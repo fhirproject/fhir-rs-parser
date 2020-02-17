@@ -14,6 +14,16 @@ pub struct Bundle_Link<'a> {
 }
 
 impl Bundle_Link<'_> {
+    pub fn new(value: &Value) -> Bundle_Link {
+        Bundle_Link {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for relation
     pub fn _relation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_relation") {
@@ -134,7 +144,7 @@ impl Bundle_Link<'_> {
 
 #[derive(Debug)]
 pub struct Bundle_LinkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Bundle_LinkBuilder {
@@ -144,8 +154,50 @@ impl Bundle_LinkBuilder {
         }
     }
 
+    pub fn with(existing: Bundle_Link) -> Bundle_LinkBuilder {
+        Bundle_LinkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Bundle_LinkBuilder {
         let mut __value: Value = json!({});
         return Bundle_LinkBuilder { value: __value };
+    }
+
+    pub fn _relation<'a>(&'a mut self, val: Element) -> &'a mut Bundle_LinkBuilder {
+        self.value["_relation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut Bundle_LinkBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Bundle_LinkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Bundle_LinkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Bundle_LinkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relation<'a>(&'a mut self, val: &str) -> &'a mut Bundle_LinkBuilder {
+        self.value["relation"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut Bundle_LinkBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }

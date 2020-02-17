@@ -19,6 +19,16 @@ pub struct CapabilityStatement_Messaging<'a> {
 }
 
 impl CapabilityStatement_Messaging<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Messaging {
+        CapabilityStatement_Messaging {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -178,7 +188,7 @@ impl CapabilityStatement_Messaging<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_MessagingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_MessagingBuilder {
@@ -188,8 +198,85 @@ impl CapabilityStatement_MessagingBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement_Messaging) -> CapabilityStatement_MessagingBuilder {
+        CapabilityStatement_MessagingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_MessagingBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_MessagingBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reliable_cache<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["_reliableCache"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn endpoint<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Endpoint>,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reliable_cache<'a>(
+        &'a mut self,
+        val: u64,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["reliableCache"] = json!(val);
+        return self;
+    }
+
+    pub fn supported_message<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_SupportedMessage>,
+    ) -> &'a mut CapabilityStatement_MessagingBuilder {
+        self.value["supportedMessage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

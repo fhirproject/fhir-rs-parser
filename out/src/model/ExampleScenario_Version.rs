@@ -14,6 +14,16 @@ pub struct ExampleScenario_Version<'a> {
 }
 
 impl ExampleScenario_Version<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Version {
+        ExampleScenario_Version {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -131,7 +141,7 @@ impl ExampleScenario_Version<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_VersionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_VersionBuilder {
@@ -141,8 +151,56 @@ impl ExampleScenario_VersionBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Version) -> ExampleScenario_VersionBuilder {
+        ExampleScenario_VersionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_VersionBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_VersionBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version_id<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["_versionId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version_id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_VersionBuilder {
+        self.value["versionId"] = json!(val);
+        return self;
     }
 }

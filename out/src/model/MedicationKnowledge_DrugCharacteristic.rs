@@ -16,6 +16,16 @@ pub struct MedicationKnowledge_DrugCharacteristic<'a> {
 }
 
 impl MedicationKnowledge_DrugCharacteristic<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_DrugCharacteristic {
+        MedicationKnowledge_DrugCharacteristic {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBase64Binary
     pub fn _value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBase64Binary") {
@@ -179,7 +189,7 @@ impl MedicationKnowledge_DrugCharacteristic<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_DrugCharacteristicBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_DrugCharacteristicBuilder {
@@ -189,8 +199,97 @@ impl MedicationKnowledge_DrugCharacteristicBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_DrugCharacteristic,
+    ) -> MedicationKnowledge_DrugCharacteristicBuilder {
+        MedicationKnowledge_DrugCharacteristicBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledge_DrugCharacteristicBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledge_DrugCharacteristicBuilder { value: __value };
+    }
+
+    pub fn _value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["_valueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["valueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_DrugCharacteristicBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

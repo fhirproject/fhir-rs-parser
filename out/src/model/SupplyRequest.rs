@@ -25,6 +25,16 @@ pub struct SupplyRequest<'a> {
 }
 
 impl SupplyRequest<'_> {
+    pub fn new(value: &Value) -> SupplyRequest {
+        SupplyRequest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
@@ -534,7 +544,7 @@ impl SupplyRequest<'_> {
 
 #[derive(Debug)]
 pub struct SupplyRequestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SupplyRequestBuilder {
@@ -544,10 +554,184 @@ impl SupplyRequestBuilder {
         }
     }
 
+    pub fn with(existing: SupplyRequest) -> SupplyRequestBuilder {
+        SupplyRequestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(quantity: Quantity) -> SupplyRequestBuilder {
         let mut __value: Value = json!({});
         __value["quantity"] = json!(quantity.value);
         return SupplyRequestBuilder { value: __value };
+    }
+
+    pub fn _authored_on<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_authoredOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SupplyRequestBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authored_on<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["authoredOn"] = json!(val);
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SupplyRequestBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SupplyRequestBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn deliver_from<'a>(&'a mut self, val: Reference) -> &'a mut SupplyRequestBuilder {
+        self.value["deliverFrom"] = json!(val.value);
+        return self;
+    }
+
+    pub fn deliver_to<'a>(&'a mut self, val: Reference) -> &'a mut SupplyRequestBuilder {
+        self.value["deliverTo"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SupplyRequestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut SupplyRequestBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SupplyRequestBuilder {
+        self.value["itemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn item_reference<'a>(&'a mut self, val: Reference) -> &'a mut SupplyRequestBuilder {
+        self.value["itemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SupplyRequestBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SupplyRequestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut SupplyRequestBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn occurrence_timing<'a>(&'a mut self, val: Timing) -> &'a mut SupplyRequestBuilder {
+        self.value["occurrenceTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<SupplyRequest_Parameter>,
+    ) -> &'a mut SupplyRequestBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut SupplyRequestBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SupplyRequestBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SupplyRequestBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requester<'a>(&'a mut self, val: Reference) -> &'a mut SupplyRequestBuilder {
+        self.value["requester"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SupplyRequestStatus) -> &'a mut SupplyRequestBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn supplier<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SupplyRequestBuilder {
+        self.value["supplier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SupplyRequestBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

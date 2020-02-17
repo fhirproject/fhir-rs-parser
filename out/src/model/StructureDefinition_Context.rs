@@ -16,6 +16,16 @@ pub struct StructureDefinition_Context<'a> {
 }
 
 impl StructureDefinition_Context<'_> {
+    pub fn new(value: &Value) -> StructureDefinition_Context {
+        StructureDefinition_Context {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
@@ -134,7 +144,7 @@ impl StructureDefinition_Context<'_> {
 
 #[derive(Debug)]
 pub struct StructureDefinition_ContextBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureDefinition_ContextBuilder {
@@ -144,9 +154,63 @@ impl StructureDefinition_ContextBuilder {
         }
     }
 
+    pub fn with(existing: StructureDefinition_Context) -> StructureDefinition_ContextBuilder {
+        StructureDefinition_ContextBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureDefinition_ContextBuilder {
         let mut __value: Value = json!({});
         return StructureDefinition_ContextBuilder { value: __value };
+    }
+
+    pub fn _expression<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: StructureDefinition_ContextType,
+    ) -> &'a mut StructureDefinition_ContextBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

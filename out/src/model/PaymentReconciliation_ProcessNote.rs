@@ -15,6 +15,16 @@ pub struct PaymentReconciliation_ProcessNote<'a> {
 }
 
 impl PaymentReconciliation_ProcessNote<'_> {
+    pub fn new(value: &Value) -> PaymentReconciliation_ProcessNote {
+        PaymentReconciliation_ProcessNote {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
@@ -132,7 +142,7 @@ impl PaymentReconciliation_ProcessNote<'_> {
 
 #[derive(Debug)]
 pub struct PaymentReconciliation_ProcessNoteBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PaymentReconciliation_ProcessNoteBuilder {
@@ -142,9 +152,68 @@ impl PaymentReconciliation_ProcessNoteBuilder {
         }
     }
 
+    pub fn with(
+        existing: PaymentReconciliation_ProcessNote,
+    ) -> PaymentReconciliation_ProcessNoteBuilder {
+        PaymentReconciliation_ProcessNoteBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PaymentReconciliation_ProcessNoteBuilder {
         let mut __value: Value = json!({});
         return PaymentReconciliation_ProcessNoteBuilder { value: __value };
+    }
+
+    pub fn _text<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: PaymentReconciliation_ProcessNoteType,
+    ) -> &'a mut PaymentReconciliation_ProcessNoteBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

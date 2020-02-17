@@ -20,6 +20,16 @@ pub struct ResearchStudy_Objective<'a> {
 }
 
 impl ResearchStudy_Objective<'_> {
+    pub fn new(value: &Value) -> ResearchStudy_Objective {
+        ResearchStudy_Objective {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -128,7 +138,7 @@ impl ResearchStudy_Objective<'_> {
 
 #[derive(Debug)]
 pub struct ResearchStudy_ObjectiveBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ResearchStudy_ObjectiveBuilder {
@@ -138,8 +148,54 @@ impl ResearchStudy_ObjectiveBuilder {
         }
     }
 
+    pub fn with(existing: ResearchStudy_Objective) -> ResearchStudy_ObjectiveBuilder {
+        ResearchStudy_ObjectiveBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ResearchStudy_ObjectiveBuilder {
         let mut __value: Value = json!({});
         return ResearchStudy_ObjectiveBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ResearchStudy_ObjectiveBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

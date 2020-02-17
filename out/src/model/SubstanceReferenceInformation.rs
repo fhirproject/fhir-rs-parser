@@ -21,6 +21,16 @@ pub struct SubstanceReferenceInformation<'a> {
 }
 
 impl SubstanceReferenceInformation<'_> {
+    pub fn new(value: &Value) -> SubstanceReferenceInformation {
+        SubstanceReferenceInformation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -300,7 +310,7 @@ impl SubstanceReferenceInformation<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceReferenceInformationBuilder {
@@ -310,8 +320,128 @@ impl SubstanceReferenceInformationBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceReferenceInformation) -> SubstanceReferenceInformationBuilder {
+        SubstanceReferenceInformationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceReferenceInformationBuilder {
         let mut __value: Value = json!({});
         return SubstanceReferenceInformationBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn classification<'a>(
+        &'a mut self,
+        val: Vec<SubstanceReferenceInformation_Classification>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["classification"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gene<'a>(
+        &'a mut self,
+        val: Vec<SubstanceReferenceInformation_Gene>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["gene"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gene_element<'a>(
+        &'a mut self,
+        val: Vec<SubstanceReferenceInformation_GeneElement>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["geneElement"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target<'a>(
+        &'a mut self,
+        val: Vec<SubstanceReferenceInformation_Target>,
+    ) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstanceReferenceInformationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

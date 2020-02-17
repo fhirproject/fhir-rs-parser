@@ -18,6 +18,16 @@ pub struct EffectEvidenceSynthesis_ResultsByExposure<'a> {
 }
 
 impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
+    pub fn new(value: &Value) -> EffectEvidenceSynthesis_ResultsByExposure {
+        EffectEvidenceSynthesis_ResultsByExposure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -162,7 +172,7 @@ impl EffectEvidenceSynthesis_ResultsByExposure<'_> {
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_ResultsByExposureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EffectEvidenceSynthesis_ResultsByExposureBuilder {
@@ -172,12 +182,85 @@ impl EffectEvidenceSynthesis_ResultsByExposureBuilder {
         }
     }
 
+    pub fn with(
+        existing: EffectEvidenceSynthesis_ResultsByExposure,
+    ) -> EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        EffectEvidenceSynthesis_ResultsByExposureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         risk_evidence_synthesis: Reference,
     ) -> EffectEvidenceSynthesis_ResultsByExposureBuilder {
         let mut __value: Value = json!({});
         __value["riskEvidenceSynthesis"] = json!(risk_evidence_synthesis.value);
         return EffectEvidenceSynthesis_ResultsByExposureBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _exposure_state<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["_exposureState"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn exposure_state<'a>(
+        &'a mut self,
+        val: EffectEvidenceSynthesis_ResultsByExposureExposureState,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["exposureState"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn variant_state<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EffectEvidenceSynthesis_ResultsByExposureBuilder {
+        self.value["variantState"] = json!(val.value);
+        return self;
     }
 }
 

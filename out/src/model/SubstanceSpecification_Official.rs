@@ -16,6 +16,16 @@ pub struct SubstanceSpecification_Official<'a> {
 }
 
 impl SubstanceSpecification_Official<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Official {
+        SubstanceSpecification_Official {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -139,7 +149,7 @@ impl SubstanceSpecification_Official<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_OfficialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_OfficialBuilder {
@@ -149,8 +159,64 @@ impl SubstanceSpecification_OfficialBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_Official,
+    ) -> SubstanceSpecification_OfficialBuilder {
+        SubstanceSpecification_OfficialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_OfficialBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_OfficialBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authority<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["authority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_OfficialBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
     }
 }

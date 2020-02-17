@@ -15,6 +15,16 @@ pub struct InsurancePlan_Limit<'a> {
 }
 
 impl InsurancePlan_Limit<'_> {
+    pub fn new(value: &Value) -> InsurancePlan_Limit {
+        InsurancePlan_Limit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The specific limit on the benefit.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
@@ -115,7 +125,7 @@ impl InsurancePlan_Limit<'_> {
 
 #[derive(Debug)]
 pub struct InsurancePlan_LimitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InsurancePlan_LimitBuilder {
@@ -125,8 +135,43 @@ impl InsurancePlan_LimitBuilder {
         }
     }
 
+    pub fn with(existing: InsurancePlan_Limit) -> InsurancePlan_LimitBuilder {
+        InsurancePlan_LimitBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> InsurancePlan_LimitBuilder {
         let mut __value: Value = json!({});
         return InsurancePlan_LimitBuilder { value: __value };
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut InsurancePlan_LimitBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut InsurancePlan_LimitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlan_LimitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_LimitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: Quantity) -> &'a mut InsurancePlan_LimitBuilder {
+        self.value["value"] = json!(val.value);
+        return self;
     }
 }

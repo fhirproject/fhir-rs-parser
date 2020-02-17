@@ -24,6 +24,16 @@ pub struct Provenance_Entity<'a> {
 }
 
 impl Provenance_Entity<'_> {
+    pub fn new(value: &Value) -> Provenance_Entity {
+        Provenance_Entity {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for role
     pub fn _role(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_role") {
@@ -150,7 +160,7 @@ impl Provenance_Entity<'_> {
 
 #[derive(Debug)]
 pub struct Provenance_EntityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Provenance_EntityBuilder {
@@ -160,10 +170,50 @@ impl Provenance_EntityBuilder {
         }
     }
 
+    pub fn with(existing: Provenance_Entity) -> Provenance_EntityBuilder {
+        Provenance_EntityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(what: Reference) -> Provenance_EntityBuilder {
         let mut __value: Value = json!({});
         __value["what"] = json!(what.value);
         return Provenance_EntityBuilder { value: __value };
+    }
+
+    pub fn _role<'a>(&'a mut self, val: Element) -> &'a mut Provenance_EntityBuilder {
+        self.value["_role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn agent<'a>(&'a mut self, val: Vec<Provenance_Agent>) -> &'a mut Provenance_EntityBuilder {
+        self.value["agent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Provenance_EntityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Provenance_EntityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Provenance_EntityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: Provenance_EntityRole) -> &'a mut Provenance_EntityBuilder {
+        self.value["role"] = json!(val.to_string());
+        return self;
     }
 }
 

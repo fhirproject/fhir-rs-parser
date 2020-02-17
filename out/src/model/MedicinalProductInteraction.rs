@@ -21,6 +21,16 @@ pub struct MedicinalProductInteraction<'a> {
 }
 
 impl MedicinalProductInteraction<'_> {
+    pub fn new(value: &Value) -> MedicinalProductInteraction {
+        MedicinalProductInteraction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -324,7 +334,7 @@ impl MedicinalProductInteraction<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductInteractionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductInteractionBuilder {
@@ -334,8 +344,141 @@ impl MedicinalProductInteractionBuilder {
         }
     }
 
+    pub fn with(existing: MedicinalProductInteraction) -> MedicinalProductInteractionBuilder {
+        MedicinalProductInteractionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProductInteractionBuilder {
         let mut __value: Value = json!({});
         return MedicinalProductInteractionBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn effect<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["effect"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn incidence<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["incidence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn interactant<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductInteraction_Interactant>,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["interactant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn management<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["management"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["subject"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductInteractionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

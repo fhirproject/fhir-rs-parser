@@ -14,6 +14,16 @@ pub struct MedicinalProductPackaged_BatchIdentifier<'a> {
 }
 
 impl MedicinalProductPackaged_BatchIdentifier<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPackaged_BatchIdentifier {
+        MedicinalProductPackaged_BatchIdentifier {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -108,7 +118,7 @@ impl MedicinalProductPackaged_BatchIdentifier<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPackaged_BatchIdentifierBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPackaged_BatchIdentifierBuilder {
@@ -118,9 +128,50 @@ impl MedicinalProductPackaged_BatchIdentifierBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductPackaged_BatchIdentifier,
+    ) -> MedicinalProductPackaged_BatchIdentifierBuilder {
+        MedicinalProductPackaged_BatchIdentifierBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(outer_packaging: Identifier) -> MedicinalProductPackaged_BatchIdentifierBuilder {
         let mut __value: Value = json!({});
         __value["outerPackaging"] = json!(outer_packaging.value);
         return MedicinalProductPackaged_BatchIdentifierBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPackaged_BatchIdentifierBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPackaged_BatchIdentifierBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn immediate_packaging<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut MedicinalProductPackaged_BatchIdentifierBuilder {
+        self.value["immediatePackaging"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPackaged_BatchIdentifierBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -23,6 +23,16 @@ pub struct RequestGroup<'a> {
 }
 
 impl RequestGroup<'_> {
+    pub fn new(value: &Value) -> RequestGroup {
+        RequestGroup {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
@@ -581,7 +591,7 @@ impl RequestGroup<'_> {
 
 #[derive(Debug)]
 pub struct RequestGroupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RequestGroupBuilder {
@@ -591,8 +601,193 @@ impl RequestGroupBuilder {
         }
     }
 
+    pub fn with(existing: RequestGroup) -> RequestGroupBuilder {
+        RequestGroupBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RequestGroupBuilder {
         let mut __value: Value = json!({});
         return RequestGroupBuilder { value: __value };
+    }
+
+    pub fn _authored_on<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_authoredOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_canonical<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut RequestGroupBuilder {
+        self.value["_instantiatesCanonical"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Vec<Element>) -> &'a mut RequestGroupBuilder {
+        self.value["_instantiatesUri"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _intent<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_intent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut RequestGroupBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action<'a>(&'a mut self, val: Vec<RequestGroup_Action>) -> &'a mut RequestGroupBuilder {
+        self.value["action"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut RequestGroupBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authored_on<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["authoredOn"] = json!(val);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut RequestGroupBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut RequestGroupBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut RequestGroupBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut RequestGroupBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RequestGroupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group_identifier<'a>(&'a mut self, val: Identifier) -> &'a mut RequestGroupBuilder {
+        self.value["groupIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut RequestGroupBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(&'a mut self, val: Vec<&str>) -> &'a mut RequestGroupBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: Vec<&str>) -> &'a mut RequestGroupBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn intent<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["intent"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut RequestGroupBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RequestGroupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut RequestGroupBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut RequestGroupBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut RequestGroupBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn replaces<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut RequestGroupBuilder {
+        self.value["replaces"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut RequestGroupBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut RequestGroupBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut RequestGroupBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

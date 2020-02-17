@@ -17,6 +17,16 @@ pub struct CapabilityStatement_SearchParam<'a> {
 }
 
 impl CapabilityStatement_SearchParam<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_SearchParam {
+        CapabilityStatement_SearchParam {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -173,7 +183,7 @@ impl CapabilityStatement_SearchParam<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_SearchParamBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_SearchParamBuilder {
@@ -183,9 +193,86 @@ impl CapabilityStatement_SearchParamBuilder {
         }
     }
 
+    pub fn with(
+        existing: CapabilityStatement_SearchParam,
+    ) -> CapabilityStatement_SearchParamBuilder {
+        CapabilityStatement_SearchParamBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_SearchParamBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_SearchParamBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["definition"] = json!(val);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CapabilityStatement_SearchParamType,
+    ) -> &'a mut CapabilityStatement_SearchParamBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

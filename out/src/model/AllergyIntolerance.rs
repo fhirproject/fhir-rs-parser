@@ -26,6 +26,16 @@ pub struct AllergyIntolerance<'a> {
 }
 
 impl AllergyIntolerance<'_> {
+    pub fn new(value: &Value) -> AllergyIntolerance {
+        AllergyIntolerance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for category
     pub fn _category(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_category") {
@@ -597,7 +607,7 @@ impl AllergyIntolerance<'_> {
 
 #[derive(Debug)]
 pub struct AllergyIntoleranceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AllergyIntoleranceBuilder {
@@ -607,10 +617,213 @@ impl AllergyIntoleranceBuilder {
         }
     }
 
+    pub fn with(existing: AllergyIntolerance) -> AllergyIntoleranceBuilder {
+        AllergyIntoleranceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(patient: Reference) -> AllergyIntoleranceBuilder {
         let mut __value: Value = json!({});
         __value["patient"] = json!(patient.value);
         return AllergyIntoleranceBuilder { value: __value };
+    }
+
+    pub fn _category<'a>(&'a mut self, val: Vec<Element>) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _criticality<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_criticality"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_occurrence<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_lastOccurrence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset_date_time<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_onsetDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset_string<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_onsetString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recorded_date<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_recordedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn asserter<'a>(&'a mut self, val: Reference) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["asserter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn clinical_status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["clinicalStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn criticality<'a>(
+        &'a mut self,
+        val: AllergyIntoleranceCriticality,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["criticality"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_occurrence<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["lastOccurrence"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn onset_age<'a>(&'a mut self, val: Age) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["onsetAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_date_time<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["onsetDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn onset_period<'a>(&'a mut self, val: Period) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["onsetPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_range<'a>(&'a mut self, val: Range) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["onsetRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_string<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["onsetString"] = json!(val);
+        return self;
+    }
+
+    pub fn reaction<'a>(
+        &'a mut self,
+        val: Vec<AllergyIntolerance_Reaction>,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["reaction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recorded_date<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["recordedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn recorder<'a>(&'a mut self, val: Reference) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["recorder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: AllergyIntoleranceType,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn verification_status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut AllergyIntoleranceBuilder {
+        self.value["verificationStatus"] = json!(val.value);
+        return self;
     }
 }
 

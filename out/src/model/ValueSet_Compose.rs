@@ -18,6 +18,16 @@ pub struct ValueSet_Compose<'a> {
 }
 
 impl ValueSet_Compose<'_> {
+    pub fn new(value: &Value) -> ValueSet_Compose {
+        ValueSet_Compose {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for inactive
     pub fn _inactive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_inactive") {
@@ -184,7 +194,7 @@ impl ValueSet_Compose<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_ComposeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_ComposeBuilder {
@@ -194,9 +204,62 @@ impl ValueSet_ComposeBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Compose) -> ValueSet_ComposeBuilder {
+        ValueSet_ComposeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(include: Vec<ValueSet_Include>) -> ValueSet_ComposeBuilder {
         let mut __value: Value = json!({});
         __value["include"] = json!(include.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return ValueSet_ComposeBuilder { value: __value };
+    }
+
+    pub fn _inactive<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["_inactive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _locked_date<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["_lockedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn exclude<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Include>,
+    ) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["exclude"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn inactive<'a>(&'a mut self, val: bool) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["inactive"] = json!(val);
+        return self;
+    }
+
+    pub fn locked_date<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["lockedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_ComposeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

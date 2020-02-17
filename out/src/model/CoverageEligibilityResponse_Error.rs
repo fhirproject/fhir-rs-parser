@@ -15,6 +15,16 @@ pub struct CoverageEligibilityResponse_Error<'a> {
 }
 
 impl CoverageEligibilityResponse_Error<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityResponse_Error {
+        CoverageEligibilityResponse_Error {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// An error code,from a specified code system, which details why the eligibility
     /// check could not be performed.
     pub fn code(&self) -> CodeableConcept {
@@ -95,7 +105,7 @@ impl CoverageEligibilityResponse_Error<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponse_ErrorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityResponse_ErrorBuilder {
@@ -105,9 +115,39 @@ impl CoverageEligibilityResponse_ErrorBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityResponse_Error,
+    ) -> CoverageEligibilityResponse_ErrorBuilder {
+        CoverageEligibilityResponse_ErrorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> CoverageEligibilityResponse_ErrorBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return CoverageEligibilityResponse_ErrorBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_ErrorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponse_ErrorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponse_ErrorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

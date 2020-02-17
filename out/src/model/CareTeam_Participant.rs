@@ -17,6 +17,16 @@ pub struct CareTeam_Participant<'a> {
 }
 
 impl CareTeam_Participant<'_> {
+    pub fn new(value: &Value) -> CareTeam_Participant {
+        CareTeam_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -153,7 +163,7 @@ impl CareTeam_Participant<'_> {
 
 #[derive(Debug)]
 pub struct CareTeam_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CareTeam_ParticipantBuilder {
@@ -163,8 +173,56 @@ impl CareTeam_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: CareTeam_Participant) -> CareTeam_ParticipantBuilder {
+        CareTeam_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CareTeam_ParticipantBuilder {
         let mut __value: Value = json!({});
         return CareTeam_ParticipantBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn member<'a>(&'a mut self, val: Reference) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["member"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_behalf_of<'a>(&'a mut self, val: Reference) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["onBehalfOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn role<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CareTeam_ParticipantBuilder {
+        self.value["role"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

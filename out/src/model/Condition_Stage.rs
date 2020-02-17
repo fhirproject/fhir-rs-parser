@@ -16,6 +16,16 @@ pub struct Condition_Stage<'a> {
 }
 
 impl Condition_Stage<'_> {
+    pub fn new(value: &Value) -> Condition_Stage {
+        Condition_Stage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Reference to a formal record of the evidence on which the staging assessment is
     /// based.
     pub fn assessment(&self) -> Option<Vec<Reference>> {
@@ -136,7 +146,7 @@ impl Condition_Stage<'_> {
 
 #[derive(Debug)]
 pub struct Condition_StageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Condition_StageBuilder {
@@ -146,8 +156,48 @@ impl Condition_StageBuilder {
         }
     }
 
+    pub fn with(existing: Condition_Stage) -> Condition_StageBuilder {
+        Condition_StageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Condition_StageBuilder {
         let mut __value: Value = json!({});
         return Condition_StageBuilder { value: __value };
+    }
+
+    pub fn assessment<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Condition_StageBuilder {
+        self.value["assessment"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Condition_StageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Condition_StageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Condition_StageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn summary<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Condition_StageBuilder {
+        self.value["summary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Condition_StageBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

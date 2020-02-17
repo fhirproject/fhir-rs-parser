@@ -17,6 +17,16 @@ pub struct Procedure_Performer<'a> {
 }
 
 impl Procedure_Performer<'_> {
+    pub fn new(value: &Value) -> Procedure_Performer {
+        Procedure_Performer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The practitioner who was involved in the procedure.
     pub fn actor(&self) -> Reference {
         Reference {
@@ -127,7 +137,7 @@ impl Procedure_Performer<'_> {
 
 #[derive(Debug)]
 pub struct Procedure_PerformerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Procedure_PerformerBuilder {
@@ -137,9 +147,44 @@ impl Procedure_PerformerBuilder {
         }
     }
 
+    pub fn with(existing: Procedure_Performer) -> Procedure_PerformerBuilder {
+        Procedure_PerformerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> Procedure_PerformerBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return Procedure_PerformerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Procedure_PerformerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn function<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Procedure_PerformerBuilder {
+        self.value["function"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Procedure_PerformerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Procedure_PerformerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_behalf_of<'a>(&'a mut self, val: Reference) -> &'a mut Procedure_PerformerBuilder {
+        self.value["onBehalfOf"] = json!(val.value);
+        return self;
     }
 }

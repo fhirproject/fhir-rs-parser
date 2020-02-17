@@ -18,6 +18,16 @@ pub struct ValueSet_Contains<'a> {
 }
 
 impl ValueSet_Contains<'_> {
+    pub fn new(value: &Value) -> ValueSet_Contains {
+        ValueSet_Contains {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for abstract
     pub fn _abstract(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_abstract") {
@@ -282,7 +292,7 @@ impl ValueSet_Contains<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_ContainsBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_ContainsBuilder {
@@ -292,8 +302,109 @@ impl ValueSet_ContainsBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Contains) -> ValueSet_ContainsBuilder {
+        ValueSet_ContainsBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_ContainsBuilder {
         let mut __value: Value = json!({});
         return ValueSet_ContainsBuilder { value: __value };
+    }
+
+    pub fn _abstract<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_abstract"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _inactive<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_inactive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_abstract<'a>(&'a mut self, val: bool) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["abstract"] = json!(val);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn contains<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Contains>,
+    ) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["contains"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn designation<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Designation>,
+    ) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["designation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn inactive<'a>(&'a mut self, val: bool) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["inactive"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ContainsBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

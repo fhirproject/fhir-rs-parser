@@ -26,6 +26,16 @@ pub struct Organization<'a> {
 }
 
 impl Organization<'_> {
+    pub fn new(value: &Value) -> Organization {
+        Organization {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -418,7 +428,7 @@ impl Organization<'_> {
 
 #[derive(Debug)]
 pub struct OrganizationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OrganizationBuilder {
@@ -428,8 +438,136 @@ impl OrganizationBuilder {
         }
     }
 
+    pub fn with(existing: Organization) -> OrganizationBuilder {
+        OrganizationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OrganizationBuilder {
         let mut __value: Value = json!({});
         return OrganizationBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut OrganizationBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _alias<'a>(&'a mut self, val: Vec<Element>) -> &'a mut OrganizationBuilder {
+        self.value["_alias"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut OrganizationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut OrganizationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut OrganizationBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut OrganizationBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: Vec<Address>) -> &'a mut OrganizationBuilder {
+        self.value["address"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn alias<'a>(&'a mut self, val: Vec<&str>) -> &'a mut OrganizationBuilder {
+        self.value["alias"] = json!(val);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<Organization_Contact>,
+    ) -> &'a mut OrganizationBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut OrganizationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut OrganizationBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut OrganizationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OrganizationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut OrganizationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut OrganizationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut OrganizationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut OrganizationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OrganizationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut OrganizationBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Reference) -> &'a mut OrganizationBuilder {
+        self.value["partOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut OrganizationBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut OrganizationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut OrganizationBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

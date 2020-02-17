@@ -20,6 +20,16 @@ pub struct SpecimenDefinition<'a> {
 }
 
 impl SpecimenDefinition<'_> {
+    pub fn new(value: &Value) -> SpecimenDefinition {
+        SpecimenDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -310,7 +320,7 @@ impl SpecimenDefinition<'_> {
 
 #[derive(Debug)]
 pub struct SpecimenDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SpecimenDefinitionBuilder {
@@ -320,8 +330,119 @@ impl SpecimenDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: SpecimenDefinition) -> SpecimenDefinitionBuilder {
+        SpecimenDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SpecimenDefinitionBuilder {
         let mut __value: Value = json!({});
         return SpecimenDefinitionBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time_aspect<'a>(&'a mut self, val: Element) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["_timeAspect"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collection<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["collection"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient_preparation<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["patientPreparation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn time_aspect<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["timeAspect"] = json!(val);
+        return self;
+    }
+
+    pub fn type_collected<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["typeCollected"] = json!(val.value);
+        return self;
+    }
+
+    pub fn type_tested<'a>(
+        &'a mut self,
+        val: Vec<SpecimenDefinition_TypeTested>,
+    ) -> &'a mut SpecimenDefinitionBuilder {
+        self.value["typeTested"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct MolecularSequence_StructureVariant<'a> {
 }
 
 impl MolecularSequence_StructureVariant<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_StructureVariant {
+        MolecularSequence_StructureVariant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for exact
     pub fn _exact(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exact") {
@@ -179,7 +189,7 @@ impl MolecularSequence_StructureVariant<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_StructureVariantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_StructureVariantBuilder {
@@ -189,8 +199,88 @@ impl MolecularSequence_StructureVariantBuilder {
         }
     }
 
+    pub fn with(
+        existing: MolecularSequence_StructureVariant,
+    ) -> MolecularSequence_StructureVariantBuilder {
+        MolecularSequence_StructureVariantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_StructureVariantBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_StructureVariantBuilder { value: __value };
+    }
+
+    pub fn _exact<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["_exact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _length<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["_length"] = json!(val.value);
+        return self;
+    }
+
+    pub fn exact<'a>(&'a mut self, val: bool) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["exact"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn inner<'a>(
+        &'a mut self,
+        val: MolecularSequence_Inner,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["inner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn length<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["length"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outer<'a>(
+        &'a mut self,
+        val: MolecularSequence_Outer,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["outer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn variant_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MolecularSequence_StructureVariantBuilder {
+        self.value["variantType"] = json!(val.value);
+        return self;
     }
 }

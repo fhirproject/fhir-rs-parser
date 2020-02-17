@@ -16,6 +16,16 @@ pub struct Immunization_Performer<'a> {
 }
 
 impl Immunization_Performer<'_> {
+    pub fn new(value: &Value) -> Immunization_Performer {
+        Immunization_Performer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The practitioner or organization who performed the action.
     pub fn actor(&self) -> Reference {
         Reference {
@@ -111,7 +121,7 @@ impl Immunization_Performer<'_> {
 
 #[derive(Debug)]
 pub struct Immunization_PerformerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Immunization_PerformerBuilder {
@@ -121,9 +131,45 @@ impl Immunization_PerformerBuilder {
         }
     }
 
+    pub fn with(existing: Immunization_Performer) -> Immunization_PerformerBuilder {
+        Immunization_PerformerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> Immunization_PerformerBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return Immunization_PerformerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_PerformerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn function<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Immunization_PerformerBuilder {
+        self.value["function"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Immunization_PerformerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_PerformerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

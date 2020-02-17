@@ -19,6 +19,16 @@ pub struct ImagingStudy_Performer<'a> {
 }
 
 impl ImagingStudy_Performer<'_> {
+    pub fn new(value: &Value) -> ImagingStudy_Performer {
+        ImagingStudy_Performer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Indicates who or what performed the series.
     pub fn actor(&self) -> Reference {
         Reference {
@@ -113,7 +123,7 @@ impl ImagingStudy_Performer<'_> {
 
 #[derive(Debug)]
 pub struct ImagingStudy_PerformerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImagingStudy_PerformerBuilder {
@@ -123,9 +133,45 @@ impl ImagingStudy_PerformerBuilder {
         }
     }
 
+    pub fn with(existing: ImagingStudy_Performer) -> ImagingStudy_PerformerBuilder {
+        ImagingStudy_PerformerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> ImagingStudy_PerformerBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return ImagingStudy_PerformerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudy_PerformerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn function<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ImagingStudy_PerformerBuilder {
+        self.value["function"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_PerformerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudy_PerformerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

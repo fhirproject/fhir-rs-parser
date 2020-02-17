@@ -17,6 +17,16 @@ pub struct DetectedIssue_Evidence<'a> {
 }
 
 impl DetectedIssue_Evidence<'_> {
+    pub fn new(value: &Value) -> DetectedIssue_Evidence {
+        DetectedIssue_Evidence {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A manifestation that led to the recording of this detected issue.
     pub fn code(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("code") {
@@ -125,7 +135,7 @@ impl DetectedIssue_Evidence<'_> {
 
 #[derive(Debug)]
 pub struct DetectedIssue_EvidenceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DetectedIssue_EvidenceBuilder {
@@ -135,8 +145,49 @@ impl DetectedIssue_EvidenceBuilder {
         }
     }
 
+    pub fn with(existing: DetectedIssue_Evidence) -> DetectedIssue_EvidenceBuilder {
+        DetectedIssue_EvidenceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DetectedIssue_EvidenceBuilder {
         let mut __value: Value = json!({});
         return DetectedIssue_EvidenceBuilder { value: __value };
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DetectedIssue_EvidenceBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DetectedIssue_EvidenceBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DetectedIssue_EvidenceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssue_EvidenceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DetectedIssue_EvidenceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

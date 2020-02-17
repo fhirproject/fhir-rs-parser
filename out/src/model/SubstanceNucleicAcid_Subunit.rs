@@ -20,6 +20,16 @@ pub struct SubstanceNucleicAcid_Subunit<'a> {
 }
 
 impl SubstanceNucleicAcid_Subunit<'_> {
+    pub fn new(value: &Value) -> SubstanceNucleicAcid_Subunit {
+        SubstanceNucleicAcid_Subunit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for length
     pub fn _length(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_length") {
@@ -254,7 +264,7 @@ impl SubstanceNucleicAcid_Subunit<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceNucleicAcid_SubunitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceNucleicAcid_SubunitBuilder {
@@ -264,8 +274,109 @@ impl SubstanceNucleicAcid_SubunitBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceNucleicAcid_Subunit) -> SubstanceNucleicAcid_SubunitBuilder {
+        SubstanceNucleicAcid_SubunitBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceNucleicAcid_SubunitBuilder {
         let mut __value: Value = json!({});
         return SubstanceNucleicAcid_SubunitBuilder { value: __value };
+    }
+
+    pub fn _length<'a>(&'a mut self, val: Element) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["_length"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subunit<'a>(&'a mut self, val: Element) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["_subunit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn five_prime<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["fivePrime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn length<'a>(&'a mut self, val: i64) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["length"] = json!(val);
+        return self;
+    }
+
+    pub fn linkage<'a>(
+        &'a mut self,
+        val: Vec<SubstanceNucleicAcid_Linkage>,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["linkage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn sequence_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["sequenceAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subunit<'a>(&'a mut self, val: i64) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["subunit"] = json!(val);
+        return self;
+    }
+
+    pub fn sugar<'a>(
+        &'a mut self,
+        val: Vec<SubstanceNucleicAcid_Sugar>,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["sugar"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn three_prime<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceNucleicAcid_SubunitBuilder {
+        self.value["threePrime"] = json!(val.value);
+        return self;
     }
 }

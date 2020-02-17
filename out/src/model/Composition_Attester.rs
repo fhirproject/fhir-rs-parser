@@ -23,6 +23,16 @@ pub struct Composition_Attester<'a> {
 }
 
 impl Composition_Attester<'_> {
+    pub fn new(value: &Value) -> Composition_Attester {
+        Composition_Attester {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
@@ -155,7 +165,7 @@ impl Composition_Attester<'_> {
 
 #[derive(Debug)]
 pub struct Composition_AttesterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Composition_AttesterBuilder {
@@ -165,9 +175,62 @@ impl Composition_AttesterBuilder {
         }
     }
 
+    pub fn with(existing: Composition_Attester) -> Composition_AttesterBuilder {
+        Composition_AttesterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Composition_AttesterBuilder {
         let mut __value: Value = json!({});
         return Composition_AttesterBuilder { value: __value };
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut Composition_AttesterBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time<'a>(&'a mut self, val: Element) -> &'a mut Composition_AttesterBuilder {
+        self.value["_time"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Composition_AttesterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Composition_AttesterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(
+        &'a mut self,
+        val: Composition_AttesterMode,
+    ) -> &'a mut Composition_AttesterBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Composition_AttesterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn party<'a>(&'a mut self, val: Reference) -> &'a mut Composition_AttesterBuilder {
+        self.value["party"] = json!(val.value);
+        return self;
+    }
+
+    pub fn time<'a>(&'a mut self, val: &str) -> &'a mut Composition_AttesterBuilder {
+        self.value["time"] = json!(val);
+        return self;
     }
 }
 

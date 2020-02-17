@@ -18,6 +18,16 @@ pub struct ClaimResponse_Payment<'a> {
 }
 
 impl ClaimResponse_Payment<'_> {
+    pub fn new(value: &Value) -> ClaimResponse_Payment {
+        ClaimResponse_Payment {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -177,7 +187,7 @@ impl ClaimResponse_Payment<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponse_PaymentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponse_PaymentBuilder {
@@ -187,10 +197,66 @@ impl ClaimResponse_PaymentBuilder {
         }
     }
 
+    pub fn with(existing: ClaimResponse_Payment) -> ClaimResponse_PaymentBuilder {
+        ClaimResponse_PaymentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(amount: Money, fhir_type: CodeableConcept) -> ClaimResponse_PaymentBuilder {
         let mut __value: Value = json!({});
         __value["amount"] = json!(amount.value);
         __value["type"] = json!(fhir_type.value);
         return ClaimResponse_PaymentBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn adjustment<'a>(&'a mut self, val: Money) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["adjustment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn adjustment_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["adjustmentReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_PaymentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

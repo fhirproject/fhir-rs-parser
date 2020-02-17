@@ -15,6 +15,16 @@ pub struct ContactDetail<'a> {
 }
 
 impl ContactDetail<'_> {
+    pub fn new(value: &Value) -> ContactDetail {
+        ContactDetail {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -99,7 +109,7 @@ impl ContactDetail<'_> {
 
 #[derive(Debug)]
 pub struct ContactDetailBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ContactDetailBuilder {
@@ -109,8 +119,39 @@ impl ContactDetailBuilder {
         }
     }
 
+    pub fn with(existing: ContactDetail) -> ContactDetailBuilder {
+        ContactDetailBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ContactDetailBuilder {
         let mut __value: Value = json!({});
         return ContactDetailBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ContactDetailBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ContactDetailBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ContactDetailBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ContactDetailBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut ContactDetailBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

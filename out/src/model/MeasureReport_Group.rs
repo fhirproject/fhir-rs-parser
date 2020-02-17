@@ -18,6 +18,16 @@ pub struct MeasureReport_Group<'a> {
 }
 
 impl MeasureReport_Group<'_> {
+    pub fn new(value: &Value) -> MeasureReport_Group {
+        MeasureReport_Group {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The meaning of the population group as defined in the measure definition.
     pub fn code(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("code") {
@@ -159,7 +169,7 @@ impl MeasureReport_Group<'_> {
 
 #[derive(Debug)]
 pub struct MeasureReport_GroupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MeasureReport_GroupBuilder {
@@ -169,8 +179,59 @@ impl MeasureReport_GroupBuilder {
         }
     }
 
+    pub fn with(existing: MeasureReport_Group) -> MeasureReport_GroupBuilder {
+        MeasureReport_GroupBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MeasureReport_GroupBuilder {
         let mut __value: Value = json!({});
         return MeasureReport_GroupBuilder { value: __value };
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn measure_score<'a>(&'a mut self, val: Quantity) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["measureScore"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn population<'a>(
+        &'a mut self,
+        val: Vec<MeasureReport_Population>,
+    ) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["population"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn stratifier<'a>(
+        &'a mut self,
+        val: Vec<MeasureReport_Stratifier>,
+    ) -> &'a mut MeasureReport_GroupBuilder {
+        self.value["stratifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

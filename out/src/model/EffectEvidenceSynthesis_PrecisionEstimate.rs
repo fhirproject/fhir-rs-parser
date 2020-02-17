@@ -17,6 +17,16 @@ pub struct EffectEvidenceSynthesis_PrecisionEstimate<'a> {
 }
 
 impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
+    pub fn new(value: &Value) -> EffectEvidenceSynthesis_PrecisionEstimate {
+        EffectEvidenceSynthesis_PrecisionEstimate {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for from
     pub fn _from(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_from") {
@@ -173,7 +183,7 @@ impl EffectEvidenceSynthesis_PrecisionEstimate<'_> {
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_PrecisionEstimateBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EffectEvidenceSynthesis_PrecisionEstimateBuilder {
@@ -183,8 +193,97 @@ impl EffectEvidenceSynthesis_PrecisionEstimateBuilder {
         }
     }
 
+    pub fn with(
+        existing: EffectEvidenceSynthesis_PrecisionEstimate,
+    ) -> EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> EffectEvidenceSynthesis_PrecisionEstimateBuilder {
         let mut __value: Value = json!({});
         return EffectEvidenceSynthesis_PrecisionEstimateBuilder { value: __value };
+    }
+
+    pub fn _from<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["_from"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _level<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["_level"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _to<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["_to"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn from<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["from"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn level<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["level"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn to<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["to"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EffectEvidenceSynthesis_PrecisionEstimateBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

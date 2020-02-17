@@ -20,6 +20,16 @@ pub struct Linkage<'a> {
 }
 
 impl Linkage<'_> {
+    pub fn new(value: &Value) -> Linkage {
+        Linkage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -264,7 +274,7 @@ impl Linkage<'_> {
 
 #[derive(Debug)]
 pub struct LinkageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl LinkageBuilder {
@@ -274,9 +284,81 @@ impl LinkageBuilder {
         }
     }
 
+    pub fn with(existing: Linkage) -> LinkageBuilder {
+        LinkageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(item: Vec<Linkage_Item>) -> LinkageBuilder {
         let mut __value: Value = json!({});
         __value["item"] = json!(item.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return LinkageBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut LinkageBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut LinkageBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut LinkageBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut LinkageBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut LinkageBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut LinkageBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut LinkageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut LinkageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut LinkageBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut LinkageBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut LinkageBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut LinkageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut LinkageBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

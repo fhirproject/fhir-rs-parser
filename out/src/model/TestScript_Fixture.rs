@@ -16,6 +16,16 @@ pub struct TestScript_Fixture<'a> {
 }
 
 impl TestScript_Fixture<'_> {
+    pub fn new(value: &Value) -> TestScript_Fixture {
+        TestScript_Fixture {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for autocreate
     pub fn _autocreate(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_autocreate") {
@@ -155,7 +165,7 @@ impl TestScript_Fixture<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_FixtureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_FixtureBuilder {
@@ -165,8 +175,58 @@ impl TestScript_FixtureBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Fixture) -> TestScript_FixtureBuilder {
+        TestScript_FixtureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_FixtureBuilder {
         let mut __value: Value = json!({});
         return TestScript_FixtureBuilder { value: __value };
+    }
+
+    pub fn _autocreate<'a>(&'a mut self, val: Element) -> &'a mut TestScript_FixtureBuilder {
+        self.value["_autocreate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _autodelete<'a>(&'a mut self, val: Element) -> &'a mut TestScript_FixtureBuilder {
+        self.value["_autodelete"] = json!(val.value);
+        return self;
+    }
+
+    pub fn autocreate<'a>(&'a mut self, val: bool) -> &'a mut TestScript_FixtureBuilder {
+        self.value["autocreate"] = json!(val);
+        return self;
+    }
+
+    pub fn autodelete<'a>(&'a mut self, val: bool) -> &'a mut TestScript_FixtureBuilder {
+        self.value["autodelete"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_FixtureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_FixtureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_FixtureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: Reference) -> &'a mut TestScript_FixtureBuilder {
+        self.value["resource"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct DeviceDefinition_Property<'a> {
 }
 
 impl DeviceDefinition_Property<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition_Property {
+        DeviceDefinition_Property {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -133,7 +143,7 @@ impl DeviceDefinition_Property<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinition_PropertyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinition_PropertyBuilder {
@@ -143,9 +153,53 @@ impl DeviceDefinition_PropertyBuilder {
         }
     }
 
+    pub fn with(existing: DeviceDefinition_Property) -> DeviceDefinition_PropertyBuilder {
+        DeviceDefinition_PropertyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> DeviceDefinition_PropertyBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return DeviceDefinition_PropertyBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_PropertyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_PropertyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_PropertyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DeviceDefinition_PropertyBuilder {
+        self.value["valueCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Vec<Quantity>,
+    ) -> &'a mut DeviceDefinition_PropertyBuilder {
+        self.value["valueQuantity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

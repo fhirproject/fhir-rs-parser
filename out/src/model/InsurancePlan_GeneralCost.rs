@@ -16,6 +16,16 @@ pub struct InsurancePlan_GeneralCost<'a> {
 }
 
 impl InsurancePlan_GeneralCost<'_> {
+    pub fn new(value: &Value) -> InsurancePlan_GeneralCost {
+        InsurancePlan_GeneralCost {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -163,7 +173,7 @@ impl InsurancePlan_GeneralCost<'_> {
 
 #[derive(Debug)]
 pub struct InsurancePlan_GeneralCostBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InsurancePlan_GeneralCostBuilder {
@@ -173,8 +183,69 @@ impl InsurancePlan_GeneralCostBuilder {
         }
     }
 
+    pub fn with(existing: InsurancePlan_GeneralCost) -> InsurancePlan_GeneralCostBuilder {
+        InsurancePlan_GeneralCostBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> InsurancePlan_GeneralCostBuilder {
         let mut __value: Value = json!({});
         return InsurancePlan_GeneralCostBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _group_size<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["_groupSize"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn cost<'a>(&'a mut self, val: Money) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["cost"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group_size<'a>(&'a mut self, val: i64) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["groupSize"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut InsurancePlan_GeneralCostBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

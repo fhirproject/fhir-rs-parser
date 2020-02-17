@@ -18,6 +18,16 @@ pub struct MedicinalProduct_SpecialDesignation<'a> {
 }
 
 impl MedicinalProduct_SpecialDesignation<'_> {
+    pub fn new(value: &Value) -> MedicinalProduct_SpecialDesignation {
+        MedicinalProduct_SpecialDesignation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -220,7 +230,7 @@ impl MedicinalProduct_SpecialDesignation<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProduct_SpecialDesignationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProduct_SpecialDesignationBuilder {
@@ -230,8 +240,107 @@ impl MedicinalProduct_SpecialDesignationBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProduct_SpecialDesignation,
+    ) -> MedicinalProduct_SpecialDesignationBuilder {
+        MedicinalProduct_SpecialDesignationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProduct_SpecialDesignationBuilder {
         let mut __value: Value = json!({});
         return MedicinalProduct_SpecialDesignationBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn indication_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["indicationCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn indication_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["indicationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn intended_use<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["intendedUse"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn species<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["species"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_SpecialDesignationBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Coverage_Exception<'a> {
 }
 
 impl Coverage_Exception<'_> {
+    pub fn new(value: &Value) -> Coverage_Exception {
+        Coverage_Exception {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -110,7 +120,7 @@ impl Coverage_Exception<'_> {
 
 #[derive(Debug)]
 pub struct Coverage_ExceptionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Coverage_ExceptionBuilder {
@@ -120,9 +130,39 @@ impl Coverage_ExceptionBuilder {
         }
     }
 
+    pub fn with(existing: Coverage_Exception) -> Coverage_ExceptionBuilder {
+        Coverage_ExceptionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> Coverage_ExceptionBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return Coverage_ExceptionBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Coverage_ExceptionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Coverage_ExceptionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Coverage_ExceptionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Coverage_ExceptionBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

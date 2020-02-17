@@ -16,6 +16,16 @@ pub struct Annotation<'a> {
 }
 
 impl Annotation<'_> {
+    pub fn new(value: &Value) -> Annotation {
+        Annotation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authorString
     pub fn _author_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorString") {
@@ -143,7 +153,7 @@ impl Annotation<'_> {
 
 #[derive(Debug)]
 pub struct AnnotationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AnnotationBuilder {
@@ -153,8 +163,59 @@ impl AnnotationBuilder {
         }
     }
 
+    pub fn with(existing: Annotation) -> AnnotationBuilder {
+        AnnotationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AnnotationBuilder {
         let mut __value: Value = json!({});
         return AnnotationBuilder { value: __value };
+    }
+
+    pub fn _author_string<'a>(&'a mut self, val: Element) -> &'a mut AnnotationBuilder {
+        self.value["_authorString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut AnnotationBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time<'a>(&'a mut self, val: Element) -> &'a mut AnnotationBuilder {
+        self.value["_time"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author_reference<'a>(&'a mut self, val: Reference) -> &'a mut AnnotationBuilder {
+        self.value["authorReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author_string<'a>(&'a mut self, val: &str) -> &'a mut AnnotationBuilder {
+        self.value["authorString"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AnnotationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AnnotationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut AnnotationBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn time<'a>(&'a mut self, val: &str) -> &'a mut AnnotationBuilder {
+        self.value["time"] = json!(val);
+        return self;
     }
 }

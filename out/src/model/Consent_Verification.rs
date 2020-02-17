@@ -17,6 +17,16 @@ pub struct Consent_Verification<'a> {
 }
 
 impl Consent_Verification<'_> {
+    pub fn new(value: &Value) -> Consent_Verification {
+        Consent_Verification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for verificationDate
     pub fn _verification_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_verificationDate") {
@@ -149,7 +159,7 @@ impl Consent_Verification<'_> {
 
 #[derive(Debug)]
 pub struct Consent_VerificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Consent_VerificationBuilder {
@@ -159,8 +169,61 @@ impl Consent_VerificationBuilder {
         }
     }
 
+    pub fn with(existing: Consent_Verification) -> Consent_VerificationBuilder {
+        Consent_VerificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Consent_VerificationBuilder {
         let mut __value: Value = json!({});
         return Consent_VerificationBuilder { value: __value };
+    }
+
+    pub fn _verification_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Consent_VerificationBuilder {
+        self.value["_verificationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _verified<'a>(&'a mut self, val: Element) -> &'a mut Consent_VerificationBuilder {
+        self.value["_verified"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Consent_VerificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Consent_VerificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Consent_VerificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn verification_date<'a>(&'a mut self, val: &str) -> &'a mut Consent_VerificationBuilder {
+        self.value["verificationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn verified<'a>(&'a mut self, val: bool) -> &'a mut Consent_VerificationBuilder {
+        self.value["verified"] = json!(val);
+        return self;
+    }
+
+    pub fn verified_with<'a>(&'a mut self, val: Reference) -> &'a mut Consent_VerificationBuilder {
+        self.value["verifiedWith"] = json!(val.value);
+        return self;
     }
 }

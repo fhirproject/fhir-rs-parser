@@ -19,6 +19,16 @@ pub struct PlanDefinition_RelatedAction<'a> {
 }
 
 impl PlanDefinition_RelatedAction<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_RelatedAction {
+        PlanDefinition_RelatedAction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for actionId
     pub fn _action_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actionId") {
@@ -168,7 +178,7 @@ impl PlanDefinition_RelatedAction<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_RelatedActionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_RelatedActionBuilder {
@@ -178,9 +188,82 @@ impl PlanDefinition_RelatedActionBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_RelatedAction) -> PlanDefinition_RelatedActionBuilder {
+        PlanDefinition_RelatedActionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinition_RelatedActionBuilder {
         let mut __value: Value = json!({});
         return PlanDefinition_RelatedActionBuilder { value: __value };
+    }
+
+    pub fn _action_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["_actionId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _relationship<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["_relationship"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action_id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["actionId"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn offset_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["offsetDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn offset_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["offsetRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: PlanDefinition_RelatedActionRelationship,
+    ) -> &'a mut PlanDefinition_RelatedActionBuilder {
+        self.value["relationship"] = json!(val.to_string());
+        return self;
     }
 }
 

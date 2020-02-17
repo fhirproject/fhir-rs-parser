@@ -16,6 +16,16 @@ pub struct Contract_Legal<'a> {
 }
 
 impl Contract_Legal<'_> {
+    pub fn new(value: &Value) -> Contract_Legal {
+        Contract_Legal {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Contract legal text in human renderable form.
     pub fn content_attachment(&self) -> Option<Attachment> {
         if let Some(val) = self.value.get("contentAttachment") {
@@ -115,7 +125,7 @@ impl Contract_Legal<'_> {
 
 #[derive(Debug)]
 pub struct Contract_LegalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_LegalBuilder {
@@ -125,8 +135,43 @@ impl Contract_LegalBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Legal) -> Contract_LegalBuilder {
+        Contract_LegalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_LegalBuilder {
         let mut __value: Value = json!({});
         return Contract_LegalBuilder { value: __value };
+    }
+
+    pub fn content_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut Contract_LegalBuilder {
+        self.value["contentAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_reference<'a>(&'a mut self, val: Reference) -> &'a mut Contract_LegalBuilder {
+        self.value["contentReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_LegalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_LegalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_LegalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

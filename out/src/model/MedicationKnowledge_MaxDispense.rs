@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_MaxDispense<'a> {
 }
 
 impl MedicationKnowledge_MaxDispense<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_MaxDispense {
+        MedicationKnowledge_MaxDispense {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -109,7 +119,7 @@ impl MedicationKnowledge_MaxDispense<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_MaxDispenseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_MaxDispenseBuilder {
@@ -119,9 +129,47 @@ impl MedicationKnowledge_MaxDispenseBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_MaxDispense,
+    ) -> MedicationKnowledge_MaxDispenseBuilder {
+        MedicationKnowledge_MaxDispenseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(quantity: Quantity) -> MedicationKnowledge_MaxDispenseBuilder {
         let mut __value: Value = json!({});
         __value["quantity"] = json!(quantity.value);
         return MedicationKnowledge_MaxDispenseBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MaxDispenseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_MaxDispenseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MaxDispenseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicationKnowledge_MaxDispenseBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

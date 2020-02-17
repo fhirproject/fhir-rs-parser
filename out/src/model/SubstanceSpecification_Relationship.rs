@@ -20,6 +20,16 @@ pub struct SubstanceSpecification_Relationship<'a> {
 }
 
 impl SubstanceSpecification_Relationship<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Relationship {
+        SubstanceSpecification_Relationship {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -286,7 +296,7 @@ impl SubstanceSpecification_Relationship<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_RelationshipBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_RelationshipBuilder {
@@ -296,8 +306,142 @@ impl SubstanceSpecification_RelationshipBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_Relationship,
+    ) -> SubstanceSpecification_RelationshipBuilder {
+        SubstanceSpecification_RelationshipBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_RelationshipBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_RelationshipBuilder { value: __value };
+    }
+
+    pub fn _amount_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["_amountString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _is_defining<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["_isDefining"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_ratio<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_ratio_low_limit<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountRatioLowLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountString"] = json!(val);
+        return self;
+    }
+
+    pub fn amount_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["amountType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_defining<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["isDefining"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["relationship"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn substance_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["substanceCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn substance_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SubstanceSpecification_RelationshipBuilder {
+        self.value["substanceReference"] = json!(val.value);
+        return self;
     }
 }

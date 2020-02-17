@@ -20,6 +20,16 @@ pub struct DataRequirement<'a> {
 }
 
 impl DataRequirement<'_> {
+    pub fn new(value: &Value) -> DataRequirement {
+        DataRequirement {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for limit
     pub fn _limit(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_limit") {
@@ -260,7 +270,7 @@ impl DataRequirement<'_> {
 
 #[derive(Debug)]
 pub struct DataRequirementBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DataRequirementBuilder {
@@ -270,8 +280,96 @@ impl DataRequirementBuilder {
         }
     }
 
+    pub fn with(existing: DataRequirement) -> DataRequirementBuilder {
+        DataRequirementBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DataRequirementBuilder {
         let mut __value: Value = json!({});
         return DataRequirementBuilder { value: __value };
+    }
+
+    pub fn _limit<'a>(&'a mut self, val: Element) -> &'a mut DataRequirementBuilder {
+        self.value["_limit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _must_support<'a>(&'a mut self, val: Vec<Element>) -> &'a mut DataRequirementBuilder {
+        self.value["_mustSupport"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut DataRequirementBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code_filter<'a>(
+        &'a mut self,
+        val: Vec<DataRequirement_CodeFilter>,
+    ) -> &'a mut DataRequirementBuilder {
+        self.value["codeFilter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date_filter<'a>(
+        &'a mut self,
+        val: Vec<DataRequirement_DateFilter>,
+    ) -> &'a mut DataRequirementBuilder {
+        self.value["dateFilter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DataRequirementBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DataRequirementBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn limit<'a>(&'a mut self, val: i64) -> &'a mut DataRequirementBuilder {
+        self.value["limit"] = json!(val);
+        return self;
+    }
+
+    pub fn must_support<'a>(&'a mut self, val: Vec<&str>) -> &'a mut DataRequirementBuilder {
+        self.value["mustSupport"] = json!(val);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: Vec<&str>) -> &'a mut DataRequirementBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn sort<'a>(
+        &'a mut self,
+        val: Vec<DataRequirement_Sort>,
+    ) -> &'a mut DataRequirementBuilder {
+        self.value["sort"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut DataRequirementBuilder {
+        self.value["subjectCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subject_reference<'a>(&'a mut self, val: Reference) -> &'a mut DataRequirementBuilder {
+        self.value["subjectReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut DataRequirementBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

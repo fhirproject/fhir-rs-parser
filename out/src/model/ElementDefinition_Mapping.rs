@@ -14,6 +14,16 @@ pub struct ElementDefinition_Mapping<'a> {
 }
 
 impl ElementDefinition_Mapping<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Mapping {
+        ElementDefinition_Mapping {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -179,7 +189,7 @@ impl ElementDefinition_Mapping<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_MappingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_MappingBuilder {
@@ -189,8 +199,76 @@ impl ElementDefinition_MappingBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Mapping) -> ElementDefinition_MappingBuilder {
+        ElementDefinition_MappingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_MappingBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_MappingBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _identity<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["_identity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _map<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["_map"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identity<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["identity"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn map<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["map"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_MappingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct SpecimenDefinition_Additive<'a> {
 }
 
 impl SpecimenDefinition_Additive<'_> {
+    pub fn new(value: &Value) -> SpecimenDefinition_Additive {
+        SpecimenDefinition_Additive {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Substance introduced in the kind of container to preserve, maintain or enhance
     /// the specimen. Examples: Formalin, Citrate, EDTA.
     pub fn additive_codeable_concept(&self) -> Option<CodeableConcept> {
@@ -116,7 +126,7 @@ impl SpecimenDefinition_Additive<'_> {
 
 #[derive(Debug)]
 pub struct SpecimenDefinition_AdditiveBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SpecimenDefinition_AdditiveBuilder {
@@ -126,8 +136,52 @@ impl SpecimenDefinition_AdditiveBuilder {
         }
     }
 
+    pub fn with(existing: SpecimenDefinition_Additive) -> SpecimenDefinition_AdditiveBuilder {
+        SpecimenDefinition_AdditiveBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SpecimenDefinition_AdditiveBuilder {
         let mut __value: Value = json!({});
         return SpecimenDefinition_AdditiveBuilder { value: __value };
+    }
+
+    pub fn additive_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_AdditiveBuilder {
+        self.value["additiveCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SpecimenDefinition_AdditiveBuilder {
+        self.value["additiveReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_AdditiveBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_AdditiveBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_AdditiveBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

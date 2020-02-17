@@ -18,6 +18,16 @@ pub struct VerificationResult_Attestation<'a> {
 }
 
 impl VerificationResult_Attestation<'_> {
+    pub fn new(value: &Value) -> VerificationResult_Attestation {
+        VerificationResult_Attestation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -238,7 +248,7 @@ impl VerificationResult_Attestation<'_> {
 
 #[derive(Debug)]
 pub struct VerificationResult_AttestationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VerificationResult_AttestationBuilder {
@@ -248,8 +258,115 @@ impl VerificationResult_AttestationBuilder {
         }
     }
 
+    pub fn with(existing: VerificationResult_Attestation) -> VerificationResult_AttestationBuilder {
+        VerificationResult_AttestationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> VerificationResult_AttestationBuilder {
         let mut __value: Value = json!({});
         return VerificationResult_AttestationBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _proxy_identity_certificate<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["_proxyIdentityCertificate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_identity_certificate<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["_sourceIdentityCertificate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn communication_method<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["communicationMethod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_behalf_of<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["onBehalfOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn proxy_identity_certificate<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["proxyIdentityCertificate"] = json!(val);
+        return self;
+    }
+
+    pub fn proxy_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["proxySignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source_identity_certificate<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["sourceIdentityCertificate"] = json!(val);
+        return self;
+    }
+
+    pub fn source_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["sourceSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn who<'a>(&'a mut self, val: Reference) -> &'a mut VerificationResult_AttestationBuilder {
+        self.value["who"] = json!(val.value);
+        return self;
     }
 }

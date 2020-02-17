@@ -16,6 +16,16 @@ pub struct AuditEvent_Detail<'a> {
 }
 
 impl AuditEvent_Detail<'_> {
+    pub fn new(value: &Value) -> AuditEvent_Detail {
+        AuditEvent_Detail {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -157,7 +167,7 @@ impl AuditEvent_Detail<'_> {
 
 #[derive(Debug)]
 pub struct AuditEvent_DetailBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEvent_DetailBuilder {
@@ -167,8 +177,66 @@ impl AuditEvent_DetailBuilder {
         }
     }
 
+    pub fn with(existing: AuditEvent_Detail) -> AuditEvent_DetailBuilder {
+        AuditEvent_DetailBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AuditEvent_DetailBuilder {
         let mut __value: Value = json!({});
         return AuditEvent_DetailBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["_valueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn value_base_6_4_binary<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["valueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_DetailBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

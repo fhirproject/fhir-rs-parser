@@ -16,6 +16,16 @@ pub struct TestScript_Action<'a> {
 }
 
 impl TestScript_Action<'_> {
+    pub fn new(value: &Value) -> TestScript_Action {
+        TestScript_Action {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Evaluates the results of previous operations to determine if the server under
     /// test behaves appropriately.
     pub fn assert(&self) -> Option<TestScript_Assert> {
@@ -116,7 +126,7 @@ impl TestScript_Action<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_ActionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_ActionBuilder {
@@ -126,8 +136,46 @@ impl TestScript_ActionBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Action) -> TestScript_ActionBuilder {
+        TestScript_ActionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_ActionBuilder {
         let mut __value: Value = json!({});
         return TestScript_ActionBuilder { value: __value };
+    }
+
+    pub fn assert<'a>(&'a mut self, val: TestScript_Assert) -> &'a mut TestScript_ActionBuilder {
+        self.value["assert"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_ActionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_ActionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_ActionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation<'a>(
+        &'a mut self,
+        val: TestScript_Operation,
+    ) -> &'a mut TestScript_ActionBuilder {
+        self.value["operation"] = json!(val.value);
+        return self;
     }
 }

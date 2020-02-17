@@ -15,6 +15,16 @@ pub struct ElementDefinition_Slicing<'a> {
 }
 
 impl ElementDefinition_Slicing<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Slicing {
+        ElementDefinition_Slicing {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -183,7 +193,7 @@ impl ElementDefinition_Slicing<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_SlicingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_SlicingBuilder {
@@ -193,9 +203,81 @@ impl ElementDefinition_SlicingBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Slicing) -> ElementDefinition_SlicingBuilder {
+        ElementDefinition_SlicingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_SlicingBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_SlicingBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _ordered<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["_ordered"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _rules<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["_rules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn discriminator<'a>(
+        &'a mut self,
+        val: Vec<ElementDefinition_Discriminator>,
+    ) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["discriminator"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn ordered<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["ordered"] = json!(val);
+        return self;
+    }
+
+    pub fn rules<'a>(
+        &'a mut self,
+        val: ElementDefinition_SlicingRules,
+    ) -> &'a mut ElementDefinition_SlicingBuilder {
+        self.value["rules"] = json!(val.to_string());
+        return self;
     }
 }
 

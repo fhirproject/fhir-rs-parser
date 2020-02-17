@@ -27,6 +27,16 @@ pub struct Location<'a> {
 }
 
 impl Location<'_> {
+    pub fn new(value: &Value) -> Location {
+        Location {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for alias
     pub fn _alias(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
@@ -557,7 +567,7 @@ impl Location<'_> {
 
 #[derive(Debug)]
 pub struct LocationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl LocationBuilder {
@@ -567,9 +577,185 @@ impl LocationBuilder {
         }
     }
 
+    pub fn with(existing: Location) -> LocationBuilder {
+        LocationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> LocationBuilder {
         let mut __value: Value = json!({});
         return LocationBuilder { value: __value };
+    }
+
+    pub fn _alias<'a>(&'a mut self, val: Vec<Element>) -> &'a mut LocationBuilder {
+        self.value["_alias"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _availability_exceptions<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_availabilityExceptions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut LocationBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: Address) -> &'a mut LocationBuilder {
+        self.value["address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alias<'a>(&'a mut self, val: Vec<&str>) -> &'a mut LocationBuilder {
+        self.value["alias"] = json!(val);
+        return self;
+    }
+
+    pub fn availability_exceptions<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["availabilityExceptions"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut LocationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut LocationBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut LocationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hours_of_operation<'a>(
+        &'a mut self,
+        val: Vec<Location_HoursOfOperation>,
+    ) -> &'a mut LocationBuilder {
+        self.value["hoursOfOperation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut LocationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn managing_organization<'a>(&'a mut self, val: Reference) -> &'a mut LocationBuilder {
+        self.value["managingOrganization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut LocationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn mode<'a>(&'a mut self, val: LocationMode) -> &'a mut LocationBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut LocationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut LocationBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn operational_status<'a>(&'a mut self, val: Coding) -> &'a mut LocationBuilder {
+        self.value["operationalStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Reference) -> &'a mut LocationBuilder {
+        self.value["partOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn physical_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut LocationBuilder {
+        self.value["physicalType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn position<'a>(&'a mut self, val: Location_Position) -> &'a mut LocationBuilder {
+        self.value["position"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: LocationStatus) -> &'a mut LocationBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut LocationBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut LocationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut LocationBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

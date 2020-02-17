@@ -32,6 +32,16 @@ pub struct DeviceDefinition<'a> {
 }
 
 impl DeviceDefinition<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition {
+        DeviceDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -671,7 +681,7 @@ impl DeviceDefinition<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinitionBuilder {
@@ -681,8 +691,240 @@ impl DeviceDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: DeviceDefinition) -> DeviceDefinitionBuilder {
+        DeviceDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DeviceDefinitionBuilder {
         let mut __value: Value = json!({});
         return DeviceDefinitionBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _manufacturer_string<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_manufacturerString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _model_number<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_modelNumber"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _online_information<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_onlineInformation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Vec<Element>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["_version"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn capability<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_Capability>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["capability"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn device_name<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_DeviceName>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["deviceName"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn language_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["languageCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn manufacturer_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["manufacturerReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn manufacturer_string<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["manufacturerString"] = json!(val);
+        return self;
+    }
+
+    pub fn material<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_Material>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["material"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DeviceDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn model_number<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["modelNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn online_information<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["onlineInformation"] = json!(val);
+        return self;
+    }
+
+    pub fn owner<'a>(&'a mut self, val: Reference) -> &'a mut DeviceDefinitionBuilder {
+        self.value["owner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn parent_device<'a>(&'a mut self, val: Reference) -> &'a mut DeviceDefinitionBuilder {
+        self.value["parentDevice"] = json!(val.value);
+        return self;
+    }
+
+    pub fn physical_characteristics<'a>(
+        &'a mut self,
+        val: ProdCharacteristic,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["physicalCharacteristics"] = json!(val.value);
+        return self;
+    }
+
+    pub fn property<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_Property>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["property"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut DeviceDefinitionBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn safety<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["safety"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn shelf_life_storage<'a>(
+        &'a mut self,
+        val: Vec<ProductShelfLife>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["shelfLifeStorage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specialization<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_Specialization>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["specialization"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DeviceDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DeviceDefinitionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn udi_device_identifier<'a>(
+        &'a mut self,
+        val: Vec<DeviceDefinition_UdiDeviceIdentifier>,
+    ) -> &'a mut DeviceDefinitionBuilder {
+        self.value["udiDeviceIdentifier"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: Vec<&str>) -> &'a mut DeviceDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

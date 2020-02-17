@@ -18,6 +18,16 @@ pub struct Claim_Procedure<'a> {
 }
 
 impl Claim_Procedure<'_> {
+    pub fn new(value: &Value) -> Claim_Procedure {
+        Claim_Procedure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -205,7 +215,7 @@ impl Claim_Procedure<'_> {
 
 #[derive(Debug)]
 pub struct Claim_ProcedureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_ProcedureBuilder {
@@ -215,8 +225,79 @@ impl Claim_ProcedureBuilder {
         }
     }
 
+    pub fn with(existing: Claim_Procedure) -> Claim_ProcedureBuilder {
+        Claim_ProcedureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Claim_ProcedureBuilder {
         let mut __value: Value = json!({});
         return Claim_ProcedureBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut Claim_ProcedureBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_ProcedureBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut Claim_ProcedureBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_ProcedureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_ProcedureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_ProcedureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn procedure_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Claim_ProcedureBuilder {
+        self.value["procedureCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn procedure_reference<'a>(&'a mut self, val: Reference) -> &'a mut Claim_ProcedureBuilder {
+        self.value["procedureReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_ProcedureBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Claim_ProcedureBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn udi<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Claim_ProcedureBuilder {
+        self.value["udi"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

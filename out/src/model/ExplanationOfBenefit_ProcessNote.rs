@@ -17,6 +17,16 @@ pub struct ExplanationOfBenefit_ProcessNote<'a> {
 }
 
 impl ExplanationOfBenefit_ProcessNote<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_ProcessNote {
+        ExplanationOfBenefit_ProcessNote {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
@@ -173,7 +183,7 @@ impl ExplanationOfBenefit_ProcessNote<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_ProcessNoteBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_ProcessNoteBuilder {
@@ -183,9 +193,89 @@ impl ExplanationOfBenefit_ProcessNoteBuilder {
         }
     }
 
+    pub fn with(
+        existing: ExplanationOfBenefit_ProcessNote,
+    ) -> ExplanationOfBenefit_ProcessNoteBuilder {
+        ExplanationOfBenefit_ProcessNoteBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExplanationOfBenefit_ProcessNoteBuilder {
         let mut __value: Value = json!({});
         return ExplanationOfBenefit_ProcessNoteBuilder { value: __value };
+    }
+
+    pub fn _number<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["_number"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: i64) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["number"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: ExplanationOfBenefit_ProcessNoteType,
+    ) -> &'a mut ExplanationOfBenefit_ProcessNoteBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

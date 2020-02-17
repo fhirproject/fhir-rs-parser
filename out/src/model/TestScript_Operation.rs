@@ -17,6 +17,16 @@ pub struct TestScript_Operation<'a> {
 }
 
 impl TestScript_Operation<'_> {
+    pub fn new(value: &Value) -> TestScript_Operation {
+        TestScript_Operation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for accept
     pub fn _accept(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_accept") {
@@ -487,7 +497,7 @@ impl TestScript_Operation<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_OperationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_OperationBuilder {
@@ -497,9 +507,203 @@ impl TestScript_OperationBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Operation) -> TestScript_OperationBuilder {
+        TestScript_OperationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_OperationBuilder {
         let mut __value: Value = json!({});
         return TestScript_OperationBuilder { value: __value };
+    }
+
+    pub fn _accept<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_accept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _content_type<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_contentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _destination<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_destination"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _encode_request_url<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TestScript_OperationBuilder {
+        self.value["_encodeRequestUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _label<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_label"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _method<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _origin<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_origin"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _params<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_params"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _request_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_requestId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _resource<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_resource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _response_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_responseId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_sourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_targetId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OperationBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn accept<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["accept"] = json!(val);
+        return self;
+    }
+
+    pub fn content_type<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["contentType"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn destination<'a>(&'a mut self, val: i64) -> &'a mut TestScript_OperationBuilder {
+        self.value["destination"] = json!(val);
+        return self;
+    }
+
+    pub fn encode_request_url<'a>(&'a mut self, val: bool) -> &'a mut TestScript_OperationBuilder {
+        self.value["encodeRequestUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_OperationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn label<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["label"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(
+        &'a mut self,
+        val: TestScript_OperationMethod,
+    ) -> &'a mut TestScript_OperationBuilder {
+        self.value["method"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_OperationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn origin<'a>(&'a mut self, val: i64) -> &'a mut TestScript_OperationBuilder {
+        self.value["origin"] = json!(val);
+        return self;
+    }
+
+    pub fn params<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["params"] = json!(val);
+        return self;
+    }
+
+    pub fn request_header<'a>(
+        &'a mut self,
+        val: Vec<TestScript_RequestHeader>,
+    ) -> &'a mut TestScript_OperationBuilder {
+        self.value["requestHeader"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn request_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["requestId"] = json!(val);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["resource"] = json!(val);
+        return self;
+    }
+
+    pub fn response_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["responseId"] = json!(val);
+        return self;
+    }
+
+    pub fn source_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["sourceId"] = json!(val);
+        return self;
+    }
+
+    pub fn target_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["targetId"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Coding) -> &'a mut TestScript_OperationBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OperationBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }
 

@@ -15,6 +15,16 @@ pub struct HumanName<'a> {
 }
 
 impl HumanName<'_> {
+    pub fn new(value: &Value) -> HumanName {
+        HumanName {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for family
     pub fn _family(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_family") {
@@ -248,7 +258,7 @@ impl HumanName<'_> {
 
 #[derive(Debug)]
 pub struct HumanNameBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl HumanNameBuilder {
@@ -258,9 +268,90 @@ impl HumanNameBuilder {
         }
     }
 
+    pub fn with(existing: HumanName) -> HumanNameBuilder {
+        HumanNameBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> HumanNameBuilder {
         let mut __value: Value = json!({});
         return HumanNameBuilder { value: __value };
+    }
+
+    pub fn _family<'a>(&'a mut self, val: Element) -> &'a mut HumanNameBuilder {
+        self.value["_family"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _given<'a>(&'a mut self, val: Vec<Element>) -> &'a mut HumanNameBuilder {
+        self.value["_given"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _prefix<'a>(&'a mut self, val: Vec<Element>) -> &'a mut HumanNameBuilder {
+        self.value["_prefix"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _suffix<'a>(&'a mut self, val: Vec<Element>) -> &'a mut HumanNameBuilder {
+        self.value["_suffix"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut HumanNameBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut HumanNameBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut HumanNameBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn family<'a>(&'a mut self, val: &str) -> &'a mut HumanNameBuilder {
+        self.value["family"] = json!(val);
+        return self;
+    }
+
+    pub fn given<'a>(&'a mut self, val: Vec<&str>) -> &'a mut HumanNameBuilder {
+        self.value["given"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut HumanNameBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut HumanNameBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn prefix<'a>(&'a mut self, val: Vec<&str>) -> &'a mut HumanNameBuilder {
+        self.value["prefix"] = json!(val);
+        return self;
+    }
+
+    pub fn suffix<'a>(&'a mut self, val: Vec<&str>) -> &'a mut HumanNameBuilder {
+        self.value["suffix"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut HumanNameBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: HumanNameUse) -> &'a mut HumanNameBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
     }
 }
 

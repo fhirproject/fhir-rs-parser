@@ -17,6 +17,16 @@ pub struct Procedure_FocalDevice<'a> {
 }
 
 impl Procedure_FocalDevice<'_> {
+    pub fn new(value: &Value) -> Procedure_FocalDevice {
+        Procedure_FocalDevice {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The kind of change that happened to the device during the procedure.
     pub fn action(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("action") {
@@ -111,7 +121,7 @@ impl Procedure_FocalDevice<'_> {
 
 #[derive(Debug)]
 pub struct Procedure_FocalDeviceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Procedure_FocalDeviceBuilder {
@@ -121,9 +131,42 @@ impl Procedure_FocalDeviceBuilder {
         }
     }
 
+    pub fn with(existing: Procedure_FocalDevice) -> Procedure_FocalDeviceBuilder {
+        Procedure_FocalDeviceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(manipulated: Reference) -> Procedure_FocalDeviceBuilder {
         let mut __value: Value = json!({});
         __value["manipulated"] = json!(manipulated.value);
         return Procedure_FocalDeviceBuilder { value: __value };
+    }
+
+    pub fn action<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Procedure_FocalDeviceBuilder {
+        self.value["action"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Procedure_FocalDeviceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Procedure_FocalDeviceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Procedure_FocalDeviceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

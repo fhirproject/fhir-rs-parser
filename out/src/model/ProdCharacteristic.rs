@@ -18,6 +18,16 @@ pub struct ProdCharacteristic<'a> {
 }
 
 impl ProdCharacteristic<'_> {
+    pub fn new(value: &Value) -> ProdCharacteristic {
+        ProdCharacteristic {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for color
     pub fn _color(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_color") {
@@ -325,7 +335,7 @@ impl ProdCharacteristic<'_> {
 
 #[derive(Debug)]
 pub struct ProdCharacteristicBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ProdCharacteristicBuilder {
@@ -335,8 +345,103 @@ impl ProdCharacteristicBuilder {
         }
     }
 
+    pub fn with(existing: ProdCharacteristic) -> ProdCharacteristicBuilder {
+        ProdCharacteristicBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ProdCharacteristicBuilder {
         let mut __value: Value = json!({});
         return ProdCharacteristicBuilder { value: __value };
+    }
+
+    pub fn _color<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["_color"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _imprint<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["_imprint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _shape<'a>(&'a mut self, val: Element) -> &'a mut ProdCharacteristicBuilder {
+        self.value["_shape"] = json!(val.value);
+        return self;
+    }
+
+    pub fn color<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["color"] = json!(val);
+        return self;
+    }
+
+    pub fn depth<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["depth"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn external_diameter<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["externalDiameter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn height<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["height"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ProdCharacteristicBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn image<'a>(&'a mut self, val: Vec<Attachment>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["image"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn imprint<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ProdCharacteristicBuilder {
+        self.value["imprint"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ProdCharacteristicBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn nominal_volume<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["nominalVolume"] = json!(val.value);
+        return self;
+    }
+
+    pub fn scoring<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProdCharacteristicBuilder {
+        self.value["scoring"] = json!(val.value);
+        return self;
+    }
+
+    pub fn shape<'a>(&'a mut self, val: &str) -> &'a mut ProdCharacteristicBuilder {
+        self.value["shape"] = json!(val);
+        return self;
+    }
+
+    pub fn weight<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["weight"] = json!(val.value);
+        return self;
+    }
+
+    pub fn width<'a>(&'a mut self, val: Quantity) -> &'a mut ProdCharacteristicBuilder {
+        self.value["width"] = json!(val.value);
+        return self;
     }
 }

@@ -24,6 +24,16 @@ pub struct Media<'a> {
 }
 
 impl Media<'_> {
+    pub fn new(value: &Value) -> Media {
+        Media {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for createdDateTime
     pub fn _created_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_createdDateTime") {
@@ -648,7 +658,7 @@ impl Media<'_> {
 
 #[derive(Debug)]
 pub struct MediaBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MediaBuilder {
@@ -658,9 +668,216 @@ impl MediaBuilder {
         }
     }
 
+    pub fn with(existing: Media) -> MediaBuilder {
+        MediaBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(content: Attachment) -> MediaBuilder {
         let mut __value: Value = json!({});
         __value["content"] = json!(content.value);
         return MediaBuilder { value: __value };
+    }
+
+    pub fn _created_date_time<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_createdDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _device_name<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_deviceName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _duration<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _frames<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_frames"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _height<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_height"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issued<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_issued"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _width<'a>(&'a mut self, val: Element) -> &'a mut MediaBuilder {
+        self.value["_width"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut MediaBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MediaBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut MediaBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created_date_time<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["createdDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn created_period<'a>(&'a mut self, val: Period) -> &'a mut MediaBuilder {
+        self.value["createdPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn device<'a>(&'a mut self, val: Reference) -> &'a mut MediaBuilder {
+        self.value["device"] = json!(val.value);
+        return self;
+    }
+
+    pub fn device_name<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["deviceName"] = json!(val);
+        return self;
+    }
+
+    pub fn duration<'a>(&'a mut self, val: f64) -> &'a mut MediaBuilder {
+        self.value["duration"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut MediaBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MediaBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn frames<'a>(&'a mut self, val: i64) -> &'a mut MediaBuilder {
+        self.value["frames"] = json!(val);
+        return self;
+    }
+
+    pub fn height<'a>(&'a mut self, val: i64) -> &'a mut MediaBuilder {
+        self.value["height"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut MediaBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn issued<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["issued"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MediaBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modality<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MediaBuilder {
+        self.value["modality"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MediaBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut MediaBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operator<'a>(&'a mut self, val: Reference) -> &'a mut MediaBuilder {
+        self.value["operator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut MediaBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut MediaBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut MediaBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut MediaBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MediaBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MediaBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn view<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MediaBuilder {
+        self.value["view"] = json!(val.value);
+        return self;
+    }
+
+    pub fn width<'a>(&'a mut self, val: i64) -> &'a mut MediaBuilder {
+        self.value["width"] = json!(val);
+        return self;
     }
 }

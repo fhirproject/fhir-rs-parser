@@ -15,6 +15,16 @@ pub struct OperationDefinition_Overload<'a> {
 }
 
 impl OperationDefinition_Overload<'_> {
+    pub fn new(value: &Value) -> OperationDefinition_Overload {
+        OperationDefinition_Overload {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -142,7 +152,7 @@ impl OperationDefinition_Overload<'_> {
 
 #[derive(Debug)]
 pub struct OperationDefinition_OverloadBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationDefinition_OverloadBuilder {
@@ -152,8 +162,62 @@ impl OperationDefinition_OverloadBuilder {
         }
     }
 
+    pub fn with(existing: OperationDefinition_Overload) -> OperationDefinition_OverloadBuilder {
+        OperationDefinition_OverloadBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OperationDefinition_OverloadBuilder {
         let mut __value: Value = json!({});
         return OperationDefinition_OverloadBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _parameter_name<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["_parameterName"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parameter_name<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut OperationDefinition_OverloadBuilder {
+        self.value["parameterName"] = json!(val);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_ValidateCode<'a> {
 }
 
 impl TerminologyCapabilities_ValidateCode<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_ValidateCode {
+        TerminologyCapabilities_ValidateCode {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for translations
     pub fn _translations(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_translations") {
@@ -109,7 +119,7 @@ impl TerminologyCapabilities_ValidateCode<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_ValidateCodeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_ValidateCodeBuilder {
@@ -119,8 +129,54 @@ impl TerminologyCapabilities_ValidateCodeBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_ValidateCode,
+    ) -> TerminologyCapabilities_ValidateCodeBuilder {
+        TerminologyCapabilities_ValidateCodeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_ValidateCodeBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_ValidateCodeBuilder { value: __value };
+    }
+
+    pub fn _translations<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ValidateCodeBuilder {
+        self.value["_translations"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ValidateCodeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_ValidateCodeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ValidateCodeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn translations<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_ValidateCodeBuilder {
+        self.value["translations"] = json!(val);
+        return self;
     }
 }

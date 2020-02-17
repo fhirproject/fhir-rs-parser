@@ -14,6 +14,16 @@ pub struct MedicationKnowledge_MedicineClassification<'a> {
 }
 
 impl MedicationKnowledge_MedicineClassification<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_MedicineClassification {
+        MedicationKnowledge_MedicineClassification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Specific category assigned to the medication (e.g. anti-infective, anti-
     /// hypertensive, antibiotic, etc.).
     pub fn classification(&self) -> Option<Vec<CodeableConcept>> {
@@ -114,7 +124,7 @@ impl MedicationKnowledge_MedicineClassification<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_MedicineClassificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_MedicineClassificationBuilder {
@@ -124,9 +134,50 @@ impl MedicationKnowledge_MedicineClassificationBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_MedicineClassification,
+    ) -> MedicationKnowledge_MedicineClassificationBuilder {
+        MedicationKnowledge_MedicineClassificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> MedicationKnowledge_MedicineClassificationBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return MedicationKnowledge_MedicineClassificationBuilder { value: __value };
+    }
+
+    pub fn classification<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationKnowledge_MedicineClassificationBuilder {
+        self.value["classification"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MedicineClassificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_MedicineClassificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MedicineClassificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

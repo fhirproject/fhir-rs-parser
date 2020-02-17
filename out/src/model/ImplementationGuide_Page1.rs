@@ -17,6 +17,16 @@ pub struct ImplementationGuide_Page1<'a> {
 }
 
 impl ImplementationGuide_Page1<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Page1 {
+        ImplementationGuide_Page1 {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for anchor
     pub fn _anchor(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_anchor") {
@@ -168,7 +178,7 @@ impl ImplementationGuide_Page1<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Page1Builder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_Page1Builder {
@@ -178,8 +188,69 @@ impl ImplementationGuide_Page1Builder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Page1) -> ImplementationGuide_Page1Builder {
+        ImplementationGuide_Page1Builder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ImplementationGuide_Page1Builder {
         let mut __value: Value = json!({});
         return ImplementationGuide_Page1Builder { value: __value };
+    }
+
+    pub fn _anchor<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["_anchor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn anchor<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["anchor"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_Page1Builder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }

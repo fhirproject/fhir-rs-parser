@@ -16,6 +16,16 @@ pub struct RelatedArtifact<'a> {
 }
 
 impl RelatedArtifact<'_> {
+    pub fn new(value: &Value) -> RelatedArtifact {
+        RelatedArtifact {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for citation
     pub fn _citation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_citation") {
@@ -205,7 +215,7 @@ impl RelatedArtifact<'_> {
 
 #[derive(Debug)]
 pub struct RelatedArtifactBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RelatedArtifactBuilder {
@@ -215,9 +225,85 @@ impl RelatedArtifactBuilder {
         }
     }
 
+    pub fn with(existing: RelatedArtifact) -> RelatedArtifactBuilder {
+        RelatedArtifactBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RelatedArtifactBuilder {
         let mut __value: Value = json!({});
         return RelatedArtifactBuilder { value: __value };
+    }
+
+    pub fn _citation<'a>(&'a mut self, val: Element) -> &'a mut RelatedArtifactBuilder {
+        self.value["_citation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut RelatedArtifactBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _label<'a>(&'a mut self, val: Element) -> &'a mut RelatedArtifactBuilder {
+        self.value["_label"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut RelatedArtifactBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut RelatedArtifactBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn citation<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["citation"] = json!(val);
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn document<'a>(&'a mut self, val: Attachment) -> &'a mut RelatedArtifactBuilder {
+        self.value["document"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RelatedArtifactBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn label<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["label"] = json!(val);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["resource"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: RelatedArtifactType) -> &'a mut RelatedArtifactBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut RelatedArtifactBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }
 

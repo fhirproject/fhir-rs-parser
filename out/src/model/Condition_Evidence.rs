@@ -16,6 +16,16 @@ pub struct Condition_Evidence<'a> {
 }
 
 impl Condition_Evidence<'_> {
+    pub fn new(value: &Value) -> Condition_Evidence {
+        Condition_Evidence {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A manifestation or symptom that led to the recording of this condition.
     pub fn code(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("code") {
@@ -123,7 +133,7 @@ impl Condition_Evidence<'_> {
 
 #[derive(Debug)]
 pub struct Condition_EvidenceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Condition_EvidenceBuilder {
@@ -133,8 +143,43 @@ impl Condition_EvidenceBuilder {
         }
     }
 
+    pub fn with(existing: Condition_Evidence) -> Condition_EvidenceBuilder {
+        Condition_EvidenceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Condition_EvidenceBuilder {
         let mut __value: Value = json!({});
         return Condition_EvidenceBuilder { value: __value };
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Condition_EvidenceBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Condition_EvidenceBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Condition_EvidenceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Condition_EvidenceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Condition_EvidenceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

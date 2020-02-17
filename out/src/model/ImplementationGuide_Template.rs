@@ -17,6 +17,16 @@ pub struct ImplementationGuide_Template<'a> {
 }
 
 impl ImplementationGuide_Template<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Template {
+        ImplementationGuide_Template {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -158,7 +168,7 @@ impl ImplementationGuide_Template<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_TemplateBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_TemplateBuilder {
@@ -168,8 +178,66 @@ impl ImplementationGuide_TemplateBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Template) -> ImplementationGuide_TemplateBuilder {
+        ImplementationGuide_TemplateBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ImplementationGuide_TemplateBuilder {
         let mut __value: Value = json!({});
         return ImplementationGuide_TemplateBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _scope<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["_scope"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn scope<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["scope"] = json!(val);
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_TemplateBuilder {
+        self.value["source"] = json!(val);
+        return self;
     }
 }

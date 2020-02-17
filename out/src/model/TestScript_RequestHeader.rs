@@ -15,6 +15,16 @@ pub struct TestScript_RequestHeader<'a> {
 }
 
 impl TestScript_RequestHeader<'_> {
+    pub fn new(value: &Value) -> TestScript_RequestHeader {
+        TestScript_RequestHeader {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for field
     pub fn _field(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_field") {
@@ -132,7 +142,7 @@ impl TestScript_RequestHeader<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_RequestHeaderBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_RequestHeaderBuilder {
@@ -142,8 +152,56 @@ impl TestScript_RequestHeaderBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_RequestHeader) -> TestScript_RequestHeaderBuilder {
+        TestScript_RequestHeaderBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_RequestHeaderBuilder {
         let mut __value: Value = json!({});
         return TestScript_RequestHeaderBuilder { value: __value };
+    }
+
+    pub fn _field<'a>(&'a mut self, val: Element) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["_field"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn field<'a>(&'a mut self, val: &str) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["field"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut TestScript_RequestHeaderBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

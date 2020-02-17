@@ -18,6 +18,16 @@ pub struct SubstanceSpecification_Isotope<'a> {
 }
 
 impl SubstanceSpecification_Isotope<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Isotope {
+        SubstanceSpecification_Isotope {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -162,7 +172,7 @@ impl SubstanceSpecification_Isotope<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_IsotopeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_IsotopeBuilder {
@@ -172,8 +182,76 @@ impl SubstanceSpecification_IsotopeBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSpecification_Isotope) -> SubstanceSpecification_IsotopeBuilder {
+        SubstanceSpecification_IsotopeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_IsotopeBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_IsotopeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn half_life<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["halfLife"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn molecular_weight<'a>(
+        &'a mut self,
+        val: SubstanceSpecification_MolecularWeight,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["molecularWeight"] = json!(val.value);
+        return self;
+    }
+
+    pub fn name<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn substitution<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_IsotopeBuilder {
+        self.value["substitution"] = json!(val.value);
+        return self;
     }
 }

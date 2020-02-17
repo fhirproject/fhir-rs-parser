@@ -14,6 +14,16 @@ pub struct MolecularSequence_Inner<'a> {
 }
 
 impl MolecularSequence_Inner<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_Inner {
+        MolecularSequence_Inner {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for end
     pub fn _end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_end") {
@@ -134,7 +144,7 @@ impl MolecularSequence_Inner<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_InnerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_InnerBuilder {
@@ -144,8 +154,56 @@ impl MolecularSequence_InnerBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_Inner) -> MolecularSequence_InnerBuilder {
+        MolecularSequence_InnerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_InnerBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_InnerBuilder { value: __value };
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_InnerBuilder {
+        self.value["start"] = json!(val);
+        return self;
     }
 }

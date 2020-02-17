@@ -21,6 +21,16 @@ pub struct ImmunizationRecommendation<'a> {
 }
 
 impl ImmunizationRecommendation<'_> {
+    pub fn new(value: &Value) -> ImmunizationRecommendation {
+        ImmunizationRecommendation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -290,13 +300,19 @@ impl ImmunizationRecommendation<'_> {
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImmunizationRecommendationBuilder {
     pub fn build(&self) -> ImmunizationRecommendation {
         ImmunizationRecommendation {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: ImmunizationRecommendation) -> ImmunizationRecommendationBuilder {
+        ImmunizationRecommendationBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -311,5 +327,97 @@ impl ImmunizationRecommendationBuilder {
             .map(|e| e.value)
             .collect::<Vec<_>>());
         return ImmunizationRecommendationBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authority<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["authority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ImmunizationRecommendationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

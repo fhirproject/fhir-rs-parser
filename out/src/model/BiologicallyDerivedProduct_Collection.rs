@@ -18,6 +18,16 @@ pub struct BiologicallyDerivedProduct_Collection<'a> {
 }
 
 impl BiologicallyDerivedProduct_Collection<'_> {
+    pub fn new(value: &Value) -> BiologicallyDerivedProduct_Collection {
+        BiologicallyDerivedProduct_Collection {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for collectedDateTime
     pub fn _collected_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_collectedDateTime") {
@@ -157,7 +167,7 @@ impl BiologicallyDerivedProduct_Collection<'_> {
 
 #[derive(Debug)]
 pub struct BiologicallyDerivedProduct_CollectionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BiologicallyDerivedProduct_CollectionBuilder {
@@ -167,8 +177,78 @@ impl BiologicallyDerivedProduct_CollectionBuilder {
         }
     }
 
+    pub fn with(
+        existing: BiologicallyDerivedProduct_Collection,
+    ) -> BiologicallyDerivedProduct_CollectionBuilder {
+        BiologicallyDerivedProduct_CollectionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BiologicallyDerivedProduct_CollectionBuilder {
         let mut __value: Value = json!({});
         return BiologicallyDerivedProduct_CollectionBuilder { value: __value };
+    }
+
+    pub fn _collected_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["_collectedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collected_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["collectedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn collected_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["collectedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collector<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["collector"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut BiologicallyDerivedProduct_CollectionBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
     }
 }

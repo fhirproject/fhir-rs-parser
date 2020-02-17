@@ -15,6 +15,16 @@ pub struct DeviceDefinition_Specialization<'a> {
 }
 
 impl DeviceDefinition_Specialization<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition_Specialization {
+        DeviceDefinition_Specialization {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for systemType
     pub fn _system_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_systemType") {
@@ -132,7 +142,7 @@ impl DeviceDefinition_Specialization<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinition_SpecializationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinition_SpecializationBuilder {
@@ -142,8 +152,67 @@ impl DeviceDefinition_SpecializationBuilder {
         }
     }
 
+    pub fn with(
+        existing: DeviceDefinition_Specialization,
+    ) -> DeviceDefinition_SpecializationBuilder {
+        DeviceDefinition_SpecializationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DeviceDefinition_SpecializationBuilder {
         let mut __value: Value = json!({});
         return DeviceDefinition_SpecializationBuilder { value: __value };
+    }
+
+    pub fn _system_type<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["_systemType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn system_type<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["systemType"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_SpecializationBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

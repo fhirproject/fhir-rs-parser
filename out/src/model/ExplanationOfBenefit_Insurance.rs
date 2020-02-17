@@ -17,6 +17,16 @@ pub struct ExplanationOfBenefit_Insurance<'a> {
 }
 
 impl ExplanationOfBenefit_Insurance<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Insurance {
+        ExplanationOfBenefit_Insurance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for focal
     pub fn _focal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_focal") {
@@ -159,7 +169,7 @@ impl ExplanationOfBenefit_Insurance<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_InsuranceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_InsuranceBuilder {
@@ -169,9 +179,63 @@ impl ExplanationOfBenefit_InsuranceBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Insurance) -> ExplanationOfBenefit_InsuranceBuilder {
+        ExplanationOfBenefit_InsuranceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(coverage: Reference) -> ExplanationOfBenefit_InsuranceBuilder {
         let mut __value: Value = json!({});
         __value["coverage"] = json!(coverage.value);
         return ExplanationOfBenefit_InsuranceBuilder { value: __value };
+    }
+
+    pub fn _focal<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["_focal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_auth_ref<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["_preAuthRef"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focal<'a>(&'a mut self, val: bool) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["focal"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn pre_auth_ref<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut ExplanationOfBenefit_InsuranceBuilder {
+        self.value["preAuthRef"] = json!(val);
+        return self;
     }
 }

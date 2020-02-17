@@ -17,6 +17,16 @@ pub struct DataRequirement_DateFilter<'a> {
 }
 
 impl DataRequirement_DateFilter<'_> {
+    pub fn new(value: &Value) -> DataRequirement_DateFilter {
+        DataRequirement_DateFilter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
@@ -212,7 +222,7 @@ impl DataRequirement_DateFilter<'_> {
 
 #[derive(Debug)]
 pub struct DataRequirement_DateFilterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DataRequirement_DateFilterBuilder {
@@ -222,8 +232,91 @@ impl DataRequirement_DateFilterBuilder {
         }
     }
 
+    pub fn with(existing: DataRequirement_DateFilter) -> DataRequirement_DateFilterBuilder {
+        DataRequirement_DateFilterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DataRequirement_DateFilterBuilder {
         let mut __value: Value = json!({});
         return DataRequirement_DateFilterBuilder { value: __value };
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _search_param<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["_searchParam"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn search_param<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["searchParam"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["valueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut DataRequirement_DateFilterBuilder {
+        self.value["valuePeriod"] = json!(val.value);
+        return self;
     }
 }

@@ -25,6 +25,16 @@ pub struct NutritionOrder<'a> {
 }
 
 impl NutritionOrder<'_> {
+    pub fn new(value: &Value) -> NutritionOrder {
+        NutritionOrder {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for dateTime
     pub fn _date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateTime") {
@@ -566,7 +576,7 @@ impl NutritionOrder<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrderBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrderBuilder {
@@ -576,9 +586,199 @@ impl NutritionOrderBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder) -> NutritionOrderBuilder {
+        NutritionOrderBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(patient: Reference) -> NutritionOrderBuilder {
         let mut __value: Value = json!({});
         __value["patient"] = json!(patient.value);
         return NutritionOrderBuilder { value: __value };
+    }
+
+    pub fn _date_time<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrderBuilder {
+        self.value["_dateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrderBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates<'a>(&'a mut self, val: Vec<Element>) -> &'a mut NutritionOrderBuilder {
+        self.value["_instantiates"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Vec<Element>) -> &'a mut NutritionOrderBuilder {
+        self.value["_instantiatesUri"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _intent<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrderBuilder {
+        self.value["_intent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrderBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrderBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allergy_intolerance<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["allergyIntolerance"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut NutritionOrderBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date_time<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["dateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut NutritionOrderBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn enteral_formula<'a>(
+        &'a mut self,
+        val: NutritionOrder_EnteralFormula,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["enteralFormula"] = json!(val.value);
+        return self;
+    }
+
+    pub fn exclude_food_modifier<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["excludeFoodModifier"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut NutritionOrderBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn food_preference_modifier<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["foodPreferenceModifier"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut NutritionOrderBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates<'a>(&'a mut self, val: Vec<&str>) -> &'a mut NutritionOrderBuilder {
+        self.value["instantiates"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: Vec<&str>) -> &'a mut NutritionOrderBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn intent<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["intent"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut NutritionOrderBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut NutritionOrderBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn oral_diet<'a>(
+        &'a mut self,
+        val: NutritionOrder_OralDiet,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["oralDiet"] = json!(val.value);
+        return self;
+    }
+
+    pub fn orderer<'a>(&'a mut self, val: Reference) -> &'a mut NutritionOrderBuilder {
+        self.value["orderer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrderBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn supplement<'a>(
+        &'a mut self,
+        val: Vec<NutritionOrder_Supplement>,
+    ) -> &'a mut NutritionOrderBuilder {
+        self.value["supplement"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut NutritionOrderBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

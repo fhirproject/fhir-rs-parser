@@ -16,6 +16,16 @@ pub struct List_Entry<'a> {
 }
 
 impl List_Entry<'_> {
+    pub fn new(value: &Value) -> List_Entry {
+        List_Entry {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -159,7 +169,7 @@ impl List_Entry<'_> {
 
 #[derive(Debug)]
 pub struct List_EntryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl List_EntryBuilder {
@@ -169,9 +179,56 @@ impl List_EntryBuilder {
         }
     }
 
+    pub fn with(existing: List_Entry) -> List_EntryBuilder {
+        List_EntryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(item: Reference) -> List_EntryBuilder {
         let mut __value: Value = json!({});
         __value["item"] = json!(item.value);
         return List_EntryBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut List_EntryBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deleted<'a>(&'a mut self, val: Element) -> &'a mut List_EntryBuilder {
+        self.value["_deleted"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut List_EntryBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn deleted<'a>(&'a mut self, val: bool) -> &'a mut List_EntryBuilder {
+        self.value["deleted"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut List_EntryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn flag<'a>(&'a mut self, val: CodeableConcept) -> &'a mut List_EntryBuilder {
+        self.value["flag"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut List_EntryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut List_EntryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

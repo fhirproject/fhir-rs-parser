@@ -17,6 +17,16 @@ pub struct NutritionOrder_Administration<'a> {
 }
 
 impl NutritionOrder_Administration<'_> {
+    pub fn new(value: &Value) -> NutritionOrder_Administration {
+        NutritionOrder_Administration {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -150,7 +160,7 @@ impl NutritionOrder_Administration<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrder_AdministrationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrder_AdministrationBuilder {
@@ -160,8 +170,65 @@ impl NutritionOrder_AdministrationBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder_Administration) -> NutritionOrder_AdministrationBuilder {
+        NutritionOrder_AdministrationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NutritionOrder_AdministrationBuilder {
         let mut __value: Value = json!({});
         return NutritionOrder_AdministrationBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rate_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["rateQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rate_ratio<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["rateRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn schedule<'a>(&'a mut self, val: Timing) -> &'a mut NutritionOrder_AdministrationBuilder {
+        self.value["schedule"] = json!(val.value);
+        return self;
     }
 }

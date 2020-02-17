@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_Closure<'a> {
 }
 
 impl TerminologyCapabilities_Closure<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Closure {
+        TerminologyCapabilities_Closure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for translation
     pub fn _translation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_translation") {
@@ -109,7 +119,7 @@ impl TerminologyCapabilities_Closure<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_ClosureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_ClosureBuilder {
@@ -119,8 +129,54 @@ impl TerminologyCapabilities_ClosureBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Closure,
+    ) -> TerminologyCapabilities_ClosureBuilder {
+        TerminologyCapabilities_ClosureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_ClosureBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_ClosureBuilder { value: __value };
+    }
+
+    pub fn _translation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ClosureBuilder {
+        self.value["_translation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ClosureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_ClosureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ClosureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn translation<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_ClosureBuilder {
+        self.value["translation"] = json!(val);
+        return self;
     }
 }

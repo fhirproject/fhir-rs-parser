@@ -23,6 +23,16 @@ pub struct GraphDefinition<'a> {
 }
 
 impl GraphDefinition<'_> {
+    pub fn new(value: &Value) -> GraphDefinition {
+        GraphDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -553,7 +563,7 @@ impl GraphDefinition<'_> {
 
 #[derive(Debug)]
 pub struct GraphDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GraphDefinitionBuilder {
@@ -563,9 +573,200 @@ impl GraphDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: GraphDefinition) -> GraphDefinitionBuilder {
+        GraphDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> GraphDefinitionBuilder {
         let mut __value: Value = json!({});
         return GraphDefinitionBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut GraphDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut GraphDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut GraphDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut GraphDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut GraphDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(
+        &'a mut self,
+        val: Vec<GraphDefinition_Link>,
+    ) -> &'a mut GraphDefinitionBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut GraphDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["start"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: GraphDefinitionStatus) -> &'a mut GraphDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut GraphDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut GraphDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

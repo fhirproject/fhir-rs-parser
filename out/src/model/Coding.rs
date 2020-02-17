@@ -14,6 +14,16 @@ pub struct Coding<'a> {
 }
 
 impl Coding<'_> {
+    pub fn new(value: &Value) -> Coding {
+        Coding {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -182,7 +192,7 @@ impl Coding<'_> {
 
 #[derive(Debug)]
 pub struct CodingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodingBuilder {
@@ -192,8 +202,74 @@ impl CodingBuilder {
         }
     }
 
+    pub fn with(existing: Coding) -> CodingBuilder {
+        CodingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodingBuilder {
         let mut __value: Value = json!({});
         return CodingBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CodingBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut CodingBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut CodingBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _user_selected<'a>(&'a mut self, val: Element) -> &'a mut CodingBuilder {
+        self.value["_userSelected"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut CodingBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CodingBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut CodingBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut CodingBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn user_selected<'a>(&'a mut self, val: bool) -> &'a mut CodingBuilder {
+        self.value["userSelected"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut CodingBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

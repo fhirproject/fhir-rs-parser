@@ -25,6 +25,16 @@ pub struct MolecularSequence<'a> {
 }
 
 impl MolecularSequence<'_> {
+    pub fn new(value: &Value) -> MolecularSequence {
+        MolecularSequence {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for coordinateSystem
     pub fn _coordinate_system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_coordinateSystem") {
@@ -519,7 +529,7 @@ impl MolecularSequence<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequenceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequenceBuilder {
@@ -529,9 +539,188 @@ impl MolecularSequenceBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence) -> MolecularSequenceBuilder {
+        MolecularSequenceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequenceBuilder {
         let mut __value: Value = json!({});
         return MolecularSequenceBuilder { value: __value };
+    }
+
+    pub fn _coordinate_system<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_coordinateSystem"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _observed_seq<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_observedSeq"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _read_coverage<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_readCoverage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequenceBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut MolecularSequenceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coordinate_system<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequenceBuilder {
+        self.value["coordinateSystem"] = json!(val);
+        return self;
+    }
+
+    pub fn device<'a>(&'a mut self, val: Reference) -> &'a mut MolecularSequenceBuilder {
+        self.value["device"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MolecularSequenceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequenceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut MolecularSequenceBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequenceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequenceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MolecularSequenceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn observed_seq<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequenceBuilder {
+        self.value["observedSeq"] = json!(val);
+        return self;
+    }
+
+    pub fn patient<'a>(&'a mut self, val: Reference) -> &'a mut MolecularSequenceBuilder {
+        self.value["patient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Reference) -> &'a mut MolecularSequenceBuilder {
+        self.value["performer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pointer<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut MolecularSequenceBuilder {
+        self.value["pointer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quality<'a>(
+        &'a mut self,
+        val: Vec<MolecularSequence_Quality>,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["quality"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut MolecularSequenceBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn read_coverage<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequenceBuilder {
+        self.value["readCoverage"] = json!(val);
+        return self;
+    }
+
+    pub fn reference_seq<'a>(
+        &'a mut self,
+        val: MolecularSequence_ReferenceSeq,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["referenceSeq"] = json!(val.value);
+        return self;
+    }
+
+    pub fn repository<'a>(
+        &'a mut self,
+        val: Vec<MolecularSequence_Repository>,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["repository"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen<'a>(&'a mut self, val: Reference) -> &'a mut MolecularSequenceBuilder {
+        self.value["specimen"] = json!(val.value);
+        return self;
+    }
+
+    pub fn structure_variant<'a>(
+        &'a mut self,
+        val: Vec<MolecularSequence_StructureVariant>,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["structureVariant"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MolecularSequenceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: MolecularSequenceType,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn variant<'a>(
+        &'a mut self,
+        val: Vec<MolecularSequence_Variant>,
+    ) -> &'a mut MolecularSequenceBuilder {
+        self.value["variant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

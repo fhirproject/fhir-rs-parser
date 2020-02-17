@@ -19,6 +19,16 @@ pub struct Contract_Answer<'a> {
 }
 
 impl Contract_Answer<'_> {
+    pub fn new(value: &Value) -> Contract_Answer {
+        Contract_Answer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
@@ -376,7 +386,7 @@ impl Contract_Answer<'_> {
 
 #[derive(Debug)]
 pub struct Contract_AnswerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_AnswerBuilder {
@@ -386,8 +396,133 @@ impl Contract_AnswerBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Answer) -> Contract_AnswerBuilder {
+        Contract_AnswerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_AnswerBuilder {
         let mut __value: Value = json!({});
         return Contract_AnswerBuilder { value: __value };
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut Contract_AnswerBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_AnswerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_AnswerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(&'a mut self, val: Reference) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut Contract_AnswerBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
     }
 }

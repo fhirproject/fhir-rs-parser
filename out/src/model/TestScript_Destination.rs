@@ -16,6 +16,16 @@ pub struct TestScript_Destination<'a> {
 }
 
 impl TestScript_Destination<'_> {
+    pub fn new(value: &Value) -> TestScript_Destination {
+        TestScript_Destination {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for index
     pub fn _index(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_index") {
@@ -120,7 +130,7 @@ impl TestScript_Destination<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_DestinationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_DestinationBuilder {
@@ -130,9 +140,47 @@ impl TestScript_DestinationBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Destination) -> TestScript_DestinationBuilder {
+        TestScript_DestinationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(profile: Coding) -> TestScript_DestinationBuilder {
         let mut __value: Value = json!({});
         __value["profile"] = json!(profile.value);
         return TestScript_DestinationBuilder { value: __value };
+    }
+
+    pub fn _index<'a>(&'a mut self, val: Element) -> &'a mut TestScript_DestinationBuilder {
+        self.value["_index"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_DestinationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_DestinationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn index<'a>(&'a mut self, val: i64) -> &'a mut TestScript_DestinationBuilder {
+        self.value["index"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_DestinationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

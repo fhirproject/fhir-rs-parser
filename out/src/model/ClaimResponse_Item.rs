@@ -17,6 +17,16 @@ pub struct ClaimResponse_Item<'a> {
 }
 
 impl ClaimResponse_Item<'_> {
+    pub fn new(value: &Value) -> ClaimResponse_Item {
+        ClaimResponse_Item {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for itemSequence
     pub fn _item_sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_itemSequence") {
@@ -189,13 +199,19 @@ impl ClaimResponse_Item<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponse_ItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponse_ItemBuilder {
     pub fn build(&self) -> ClaimResponse_Item {
         ClaimResponse_Item {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: ClaimResponse_Item) -> ClaimResponse_ItemBuilder {
+        ClaimResponse_ItemBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -206,5 +222,52 @@ impl ClaimResponse_ItemBuilder {
             .map(|e| e.value)
             .collect::<Vec<_>>());
         return ClaimResponse_ItemBuilder { value: __value };
+    }
+
+    pub fn _item_sequence<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["_itemSequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _note_number<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["_noteNumber"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail<'a>(
+        &'a mut self,
+        val: Vec<ClaimResponse_Detail>,
+    ) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_sequence<'a>(&'a mut self, val: i64) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["itemSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note_number<'a>(&'a mut self, val: Vec<i64>) -> &'a mut ClaimResponse_ItemBuilder {
+        self.value["noteNumber"] = json!(val);
+        return self;
     }
 }

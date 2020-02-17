@@ -25,6 +25,16 @@ pub struct Endpoint<'a> {
 }
 
 impl Endpoint<'_> {
+    pub fn new(value: &Value) -> Endpoint {
+        Endpoint {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for address
     pub fn _address(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_address") {
@@ -453,13 +463,19 @@ impl Endpoint<'_> {
 
 #[derive(Debug)]
 pub struct EndpointBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EndpointBuilder {
     pub fn build(&self) -> Endpoint {
         Endpoint {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: Endpoint) -> EndpointBuilder {
+        EndpointBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -471,6 +487,128 @@ impl EndpointBuilder {
             .map(|e| e.value)
             .collect::<Vec<_>>());
         return EndpointBuilder { value: __value };
+    }
+
+    pub fn _address<'a>(&'a mut self, val: Element) -> &'a mut EndpointBuilder {
+        self.value["_address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _header<'a>(&'a mut self, val: Vec<Element>) -> &'a mut EndpointBuilder {
+        self.value["_header"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut EndpointBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut EndpointBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut EndpointBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _payload_mime_type<'a>(&'a mut self, val: Vec<Element>) -> &'a mut EndpointBuilder {
+        self.value["_payloadMimeType"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut EndpointBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: &str) -> &'a mut EndpointBuilder {
+        self.value["address"] = json!(val);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut EndpointBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut EndpointBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EndpointBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn header<'a>(&'a mut self, val: Vec<&str>) -> &'a mut EndpointBuilder {
+        self.value["header"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EndpointBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut EndpointBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut EndpointBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut EndpointBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn managing_organization<'a>(&'a mut self, val: Reference) -> &'a mut EndpointBuilder {
+        self.value["managingOrganization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut EndpointBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EndpointBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut EndpointBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn payload_mime_type<'a>(&'a mut self, val: Vec<&str>) -> &'a mut EndpointBuilder {
+        self.value["payloadMimeType"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut EndpointBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: EndpointStatus) -> &'a mut EndpointBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut EndpointBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

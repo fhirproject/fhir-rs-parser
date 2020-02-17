@@ -22,6 +22,16 @@ pub struct Contract_Asset<'a> {
 }
 
 impl Contract_Asset<'_> {
+    pub fn new(value: &Value) -> Contract_Asset {
+        Contract_Asset {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for condition
     pub fn _condition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_condition") {
@@ -413,7 +423,7 @@ impl Contract_Asset<'_> {
 
 #[derive(Debug)]
 pub struct Contract_AssetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_AssetBuilder {
@@ -423,8 +433,138 @@ impl Contract_AssetBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Asset) -> Contract_AssetBuilder {
+        Contract_AssetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_AssetBuilder {
         let mut __value: Value = json!({});
         return Contract_AssetBuilder { value: __value };
+    }
+
+    pub fn _condition<'a>(&'a mut self, val: Element) -> &'a mut Contract_AssetBuilder {
+        self.value["_condition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _link_id<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_AssetBuilder {
+        self.value["_linkId"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _security_label_number<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Contract_AssetBuilder {
+        self.value["_securityLabelNumber"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut Contract_AssetBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer<'a>(&'a mut self, val: Vec<Contract_Answer>) -> &'a mut Contract_AssetBuilder {
+        self.value["answer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: &str) -> &'a mut Contract_AssetBuilder {
+        self.value["condition"] = json!(val);
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: Vec<Contract_Context>) -> &'a mut Contract_AssetBuilder {
+        self.value["context"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_AssetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_AssetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_AssetBuilder {
+        self.value["linkId"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_AssetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Vec<Period>) -> &'a mut Contract_AssetBuilder {
+        self.value["period"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Contract_AssetBuilder {
+        self.value["periodType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relationship<'a>(&'a mut self, val: Coding) -> &'a mut Contract_AssetBuilder {
+        self.value["relationship"] = json!(val.value);
+        return self;
+    }
+
+    pub fn scope<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Contract_AssetBuilder {
+        self.value["scope"] = json!(val.value);
+        return self;
+    }
+
+    pub fn security_label_number<'a>(&'a mut self, val: Vec<u64>) -> &'a mut Contract_AssetBuilder {
+        self.value["securityLabelNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn subtype<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Contract_AssetBuilder {
+        self.value["subtype"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut Contract_AssetBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Contract_AssetBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn type_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Contract_AssetBuilder {
+        self.value["typeReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn use_period<'a>(&'a mut self, val: Vec<Period>) -> &'a mut Contract_AssetBuilder {
+        self.value["usePeriod"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn valued_item<'a>(
+        &'a mut self,
+        val: Vec<Contract_ValuedItem>,
+    ) -> &'a mut Contract_AssetBuilder {
+        self.value["valuedItem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

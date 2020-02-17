@@ -17,6 +17,16 @@ pub struct Measure_Stratifier<'a> {
 }
 
 impl Measure_Stratifier<'_> {
+    pub fn new(value: &Value) -> Measure_Stratifier {
+        Measure_Stratifier {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -165,7 +175,7 @@ impl Measure_Stratifier<'_> {
 
 #[derive(Debug)]
 pub struct Measure_StratifierBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Measure_StratifierBuilder {
@@ -175,8 +185,61 @@ impl Measure_StratifierBuilder {
         }
     }
 
+    pub fn with(existing: Measure_Stratifier) -> Measure_StratifierBuilder {
+        Measure_StratifierBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Measure_StratifierBuilder {
         let mut __value: Value = json!({});
         return Measure_StratifierBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut Measure_StratifierBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Measure_StratifierBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn component<'a>(
+        &'a mut self,
+        val: Vec<Measure_Component>,
+    ) -> &'a mut Measure_StratifierBuilder {
+        self.value["component"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn criteria<'a>(&'a mut self, val: Expression) -> &'a mut Measure_StratifierBuilder {
+        self.value["criteria"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut Measure_StratifierBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Measure_StratifierBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Measure_StratifierBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Measure_StratifierBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

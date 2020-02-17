@@ -17,6 +17,16 @@ pub struct VerificationResult_Validator<'a> {
 }
 
 impl VerificationResult_Validator<'_> {
+    pub fn new(value: &Value) -> VerificationResult_Validator {
+        VerificationResult_Validator {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for identityCertificate
     pub fn _identity_certificate(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identityCertificate") {
@@ -135,7 +145,7 @@ impl VerificationResult_Validator<'_> {
 
 #[derive(Debug)]
 pub struct VerificationResult_ValidatorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VerificationResult_ValidatorBuilder {
@@ -145,9 +155,61 @@ impl VerificationResult_ValidatorBuilder {
         }
     }
 
+    pub fn with(existing: VerificationResult_Validator) -> VerificationResult_ValidatorBuilder {
+        VerificationResult_ValidatorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(organization: Reference) -> VerificationResult_ValidatorBuilder {
         let mut __value: Value = json!({});
         __value["organization"] = json!(organization.value);
         return VerificationResult_ValidatorBuilder { value: __value };
+    }
+
+    pub fn _identity_certificate<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["_identityCertificate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn attestation_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["attestationSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identity_certificate<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["identityCertificate"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResult_ValidatorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

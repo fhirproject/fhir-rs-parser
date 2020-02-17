@@ -14,6 +14,16 @@ pub struct ElementDefinition_Type<'a> {
 }
 
 impl ElementDefinition_Type<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Type {
+        ElementDefinition_Type {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for aggregation
     pub fn _aggregation(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_aggregation") {
@@ -197,7 +207,7 @@ impl ElementDefinition_Type<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_TypeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_TypeBuilder {
@@ -207,9 +217,81 @@ impl ElementDefinition_TypeBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Type) -> ElementDefinition_TypeBuilder {
+        ElementDefinition_TypeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_TypeBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_TypeBuilder { value: __value };
+    }
+
+    pub fn _aggregation<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["_aggregation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _versioning<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["_versioning"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn target_profile<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["targetProfile"] = json!(val);
+        return self;
+    }
+
+    pub fn versioning<'a>(
+        &'a mut self,
+        val: ElementDefinition_TypeVersioning,
+    ) -> &'a mut ElementDefinition_TypeBuilder {
+        self.value["versioning"] = json!(val.to_string());
+        return self;
     }
 }
 

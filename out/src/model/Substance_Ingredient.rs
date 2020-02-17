@@ -16,6 +16,16 @@ pub struct Substance_Ingredient<'a> {
 }
 
 impl Substance_Ingredient<'_> {
+    pub fn new(value: &Value) -> Substance_Ingredient {
+        Substance_Ingredient {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -130,7 +140,7 @@ impl Substance_Ingredient<'_> {
 
 #[derive(Debug)]
 pub struct Substance_IngredientBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Substance_IngredientBuilder {
@@ -140,8 +150,54 @@ impl Substance_IngredientBuilder {
         }
     }
 
+    pub fn with(existing: Substance_Ingredient) -> Substance_IngredientBuilder {
+        Substance_IngredientBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Substance_IngredientBuilder {
         let mut __value: Value = json!({});
         return Substance_IngredientBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Substance_IngredientBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Substance_IngredientBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Substance_IngredientBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Ratio) -> &'a mut Substance_IngredientBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn substance_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Substance_IngredientBuilder {
+        self.value["substanceCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn substance_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Substance_IngredientBuilder {
+        self.value["substanceReference"] = json!(val.value);
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct Claim_Payee<'a> {
 }
 
 impl Claim_Payee<'_> {
+    pub fn new(value: &Value) -> Claim_Payee {
+        Claim_Payee {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -111,7 +121,7 @@ impl Claim_Payee<'_> {
 
 #[derive(Debug)]
 pub struct Claim_PayeeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_PayeeBuilder {
@@ -121,9 +131,36 @@ impl Claim_PayeeBuilder {
         }
     }
 
+    pub fn with(existing: Claim_Payee) -> Claim_PayeeBuilder {
+        Claim_PayeeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> Claim_PayeeBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return Claim_PayeeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_PayeeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_PayeeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_PayeeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn party<'a>(&'a mut self, val: Reference) -> &'a mut Claim_PayeeBuilder {
+        self.value["party"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Person_Link<'a> {
 }
 
 impl Person_Link<'_> {
+    pub fn new(value: &Value) -> Person_Link {
+        Person_Link {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for assurance
     pub fn _assurance(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_assurance") {
@@ -119,7 +129,7 @@ impl Person_Link<'_> {
 
 #[derive(Debug)]
 pub struct Person_LinkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Person_LinkBuilder {
@@ -129,10 +139,42 @@ impl Person_LinkBuilder {
         }
     }
 
+    pub fn with(existing: Person_Link) -> Person_LinkBuilder {
+        Person_LinkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(target: Reference) -> Person_LinkBuilder {
         let mut __value: Value = json!({});
         __value["target"] = json!(target.value);
         return Person_LinkBuilder { value: __value };
+    }
+
+    pub fn _assurance<'a>(&'a mut self, val: Element) -> &'a mut Person_LinkBuilder {
+        self.value["_assurance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn assurance<'a>(&'a mut self, val: Person_LinkAssurance) -> &'a mut Person_LinkBuilder {
+        self.value["assurance"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Person_LinkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Person_LinkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Person_LinkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

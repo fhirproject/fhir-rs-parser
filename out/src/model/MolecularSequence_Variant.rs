@@ -15,6 +15,16 @@ pub struct MolecularSequence_Variant<'a> {
 }
 
 impl MolecularSequence_Variant<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_Variant {
+        MolecularSequence_Variant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for cigar
     pub fn _cigar(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cigar") {
@@ -236,7 +246,7 @@ impl MolecularSequence_Variant<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_VariantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_VariantBuilder {
@@ -246,8 +256,106 @@ impl MolecularSequence_VariantBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_Variant) -> MolecularSequence_VariantBuilder {
+        MolecularSequence_VariantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_VariantBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_VariantBuilder { value: __value };
+    }
+
+    pub fn _cigar<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["_cigar"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _observed_allele<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["_observedAllele"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference_allele<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["_referenceAllele"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn cigar<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["cigar"] = json!(val);
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn observed_allele<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["observedAllele"] = json!(val);
+        return self;
+    }
+
+    pub fn reference_allele<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["referenceAllele"] = json!(val);
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["start"] = json!(val);
+        return self;
+    }
+
+    pub fn variant_pointer<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MolecularSequence_VariantBuilder {
+        self.value["variantPointer"] = json!(val.value);
+        return self;
     }
 }

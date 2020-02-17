@@ -16,6 +16,16 @@ pub struct MedicinalProductInteraction_Interactant<'a> {
 }
 
 impl MedicinalProductInteraction_Interactant<'_> {
+    pub fn new(value: &Value) -> MedicinalProductInteraction_Interactant {
+        MedicinalProductInteraction_Interactant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -115,7 +125,7 @@ impl MedicinalProductInteraction_Interactant<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductInteraction_InteractantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductInteraction_InteractantBuilder {
@@ -125,8 +135,57 @@ impl MedicinalProductInteraction_InteractantBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductInteraction_Interactant,
+    ) -> MedicinalProductInteraction_InteractantBuilder {
+        MedicinalProductInteraction_InteractantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProductInteraction_InteractantBuilder {
         let mut __value: Value = json!({});
         return MedicinalProductInteraction_InteractantBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductInteraction_InteractantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductInteraction_InteractantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductInteraction_InteractantBuilder {
+        self.value["itemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn item_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProductInteraction_InteractantBuilder {
+        self.value["itemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductInteraction_InteractantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

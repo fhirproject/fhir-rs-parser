@@ -32,6 +32,16 @@ pub struct Composition<'a> {
 }
 
 impl Composition<'_> {
+    pub fn new(value: &Value) -> Composition {
+        Composition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for confidentiality
     pub fn _confidentiality(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_confidentiality") {
@@ -509,7 +519,7 @@ impl Composition<'_> {
 
 #[derive(Debug)]
 pub struct CompositionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CompositionBuilder {
@@ -519,11 +529,159 @@ impl CompositionBuilder {
         }
     }
 
+    pub fn with(existing: Composition) -> CompositionBuilder {
+        CompositionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(author: Vec<Reference>, fhir_type: CodeableConcept) -> CompositionBuilder {
         let mut __value: Value = json!({});
         __value["author"] = json!(author.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["type"] = json!(fhir_type.value);
         return CompositionBuilder { value: __value };
+    }
+
+    pub fn _confidentiality<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_confidentiality"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut CompositionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn attester<'a>(
+        &'a mut self,
+        val: Vec<Composition_Attester>,
+    ) -> &'a mut CompositionBuilder {
+        self.value["attester"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut CompositionBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn confidentiality<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["confidentiality"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut CompositionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn custodian<'a>(&'a mut self, val: Reference) -> &'a mut CompositionBuilder {
+        self.value["custodian"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut CompositionBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event<'a>(&'a mut self, val: Vec<Composition_Event>) -> &'a mut CompositionBuilder {
+        self.value["event"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CompositionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut CompositionBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CompositionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CompositionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relates_to<'a>(
+        &'a mut self,
+        val: Vec<Composition_RelatesTo>,
+    ) -> &'a mut CompositionBuilder {
+        self.value["relatesTo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn section<'a>(&'a mut self, val: Vec<Composition_Section>) -> &'a mut CompositionBuilder {
+        self.value["section"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: CompositionStatus) -> &'a mut CompositionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut CompositionBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CompositionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut CompositionBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }
 

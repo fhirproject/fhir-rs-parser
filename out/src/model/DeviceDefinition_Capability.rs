@@ -15,6 +15,16 @@ pub struct DeviceDefinition_Capability<'a> {
 }
 
 impl DeviceDefinition_Capability<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition_Capability {
+        DeviceDefinition_Capability {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Description of capability.
     pub fn description(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("description") {
@@ -113,7 +123,7 @@ impl DeviceDefinition_Capability<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinition_CapabilityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinition_CapabilityBuilder {
@@ -123,9 +133,45 @@ impl DeviceDefinition_CapabilityBuilder {
         }
     }
 
+    pub fn with(existing: DeviceDefinition_Capability) -> DeviceDefinition_CapabilityBuilder {
+        DeviceDefinition_CapabilityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> DeviceDefinition_CapabilityBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return DeviceDefinition_CapabilityBuilder { value: __value };
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DeviceDefinition_CapabilityBuilder {
+        self.value["description"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_CapabilityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_CapabilityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_CapabilityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

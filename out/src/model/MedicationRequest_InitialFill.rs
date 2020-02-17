@@ -19,6 +19,16 @@ pub struct MedicationRequest_InitialFill<'a> {
 }
 
 impl MedicationRequest_InitialFill<'_> {
+    pub fn new(value: &Value) -> MedicationRequest_InitialFill {
+        MedicationRequest_InitialFill {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The length of time that the first dispense is expected to last.
     pub fn duration(&self) -> Option<Duration> {
         if let Some(val) = self.value.get("duration") {
@@ -118,7 +128,7 @@ impl MedicationRequest_InitialFill<'_> {
 
 #[derive(Debug)]
 pub struct MedicationRequest_InitialFillBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationRequest_InitialFillBuilder {
@@ -128,8 +138,52 @@ impl MedicationRequest_InitialFillBuilder {
         }
     }
 
+    pub fn with(existing: MedicationRequest_InitialFill) -> MedicationRequest_InitialFillBuilder {
+        MedicationRequest_InitialFillBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationRequest_InitialFillBuilder {
         let mut __value: Value = json!({});
         return MedicationRequest_InitialFillBuilder { value: __value };
+    }
+
+    pub fn duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicationRequest_InitialFillBuilder {
+        self.value["duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_InitialFillBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationRequest_InitialFillBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_InitialFillBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicationRequest_InitialFillBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
     }
 }

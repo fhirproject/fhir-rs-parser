@@ -18,6 +18,16 @@ pub struct MedicinalProductPharmaceutical_RouteOfAdministration<'a> {
 }
 
 impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPharmaceutical_RouteOfAdministration {
+        MedicinalProductPharmaceutical_RouteOfAdministration {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Coded expression for the route.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -200,7 +210,7 @@ impl MedicinalProductPharmaceutical_RouteOfAdministration<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
@@ -210,11 +220,92 @@ impl MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductPharmaceutical_RouteOfAdministration,
+    ) -> MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         code: CodeableConcept,
     ) -> MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return MedicinalProductPharmaceutical_RouteOfAdministrationBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn first_dose<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["firstDose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max_dose_per_day<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["maxDosePerDay"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_dose_per_treatment_period<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["maxDosePerTreatmentPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_single_dose<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["maxSingleDose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_treatment_period<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["maxTreatmentPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target_species<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductPharmaceutical_TargetSpecies>,
+    ) -> &'a mut MedicinalProductPharmaceutical_RouteOfAdministrationBuilder {
+        self.value["targetSpecies"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

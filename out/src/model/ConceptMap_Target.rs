@@ -17,6 +17,16 @@ pub struct ConceptMap_Target<'a> {
 }
 
 impl ConceptMap_Target<'_> {
+    pub fn new(value: &Value) -> ConceptMap_Target {
+        ConceptMap_Target {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -229,7 +239,7 @@ impl ConceptMap_Target<'_> {
 
 #[derive(Debug)]
 pub struct ConceptMap_TargetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConceptMap_TargetBuilder {
@@ -239,9 +249,93 @@ impl ConceptMap_TargetBuilder {
         }
     }
 
+    pub fn with(existing: ConceptMap_Target) -> ConceptMap_TargetBuilder {
+        ConceptMap_TargetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ConceptMap_TargetBuilder {
         let mut __value: Value = json!({});
         return ConceptMap_TargetBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _equivalence<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["_equivalence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn depends_on<'a>(
+        &'a mut self,
+        val: Vec<ConceptMap_DependsOn>,
+    ) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["dependsOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn equivalence<'a>(
+        &'a mut self,
+        val: ConceptMap_TargetEquivalence,
+    ) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["equivalence"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn product<'a>(
+        &'a mut self,
+        val: Vec<ConceptMap_DependsOn>,
+    ) -> &'a mut ConceptMap_TargetBuilder {
+        self.value["product"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

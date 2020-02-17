@@ -17,6 +17,16 @@ pub struct ExampleScenario_Step<'a> {
 }
 
 impl ExampleScenario_Step<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Step {
+        ExampleScenario_Step {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for pause
     pub fn _pause(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_pause") {
@@ -164,7 +174,7 @@ impl ExampleScenario_Step<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_StepBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_StepBuilder {
@@ -174,8 +184,67 @@ impl ExampleScenario_StepBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Step) -> ExampleScenario_StepBuilder {
+        ExampleScenario_StepBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_StepBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_StepBuilder { value: __value };
+    }
+
+    pub fn _pause<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["_pause"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alternative<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Alternative>,
+    ) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["alternative"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation<'a>(
+        &'a mut self,
+        val: ExampleScenario_Operation,
+    ) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["operation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pause<'a>(&'a mut self, val: bool) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["pause"] = json!(val);
+        return self;
+    }
+
+    pub fn process<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Process>,
+    ) -> &'a mut ExampleScenario_StepBuilder {
+        self.value["process"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -21,6 +21,16 @@ pub struct Patient_Contact<'a> {
 }
 
 impl Patient_Contact<'_> {
+    pub fn new(value: &Value) -> Patient_Contact {
+        Patient_Contact {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for gender
     pub fn _gender(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_gender") {
@@ -215,7 +225,7 @@ impl Patient_Contact<'_> {
 
 #[derive(Debug)]
 pub struct Patient_ContactBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Patient_ContactBuilder {
@@ -225,9 +235,77 @@ impl Patient_ContactBuilder {
         }
     }
 
+    pub fn with(existing: Patient_Contact) -> Patient_ContactBuilder {
+        Patient_ContactBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Patient_ContactBuilder {
         let mut __value: Value = json!({});
         return Patient_ContactBuilder { value: __value };
+    }
+
+    pub fn _gender<'a>(&'a mut self, val: Element) -> &'a mut Patient_ContactBuilder {
+        self.value["_gender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: Address) -> &'a mut Patient_ContactBuilder {
+        self.value["address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Patient_ContactBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gender<'a>(&'a mut self, val: Patient_ContactGender) -> &'a mut Patient_ContactBuilder {
+        self.value["gender"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Patient_ContactBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Patient_ContactBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: HumanName) -> &'a mut Patient_ContactBuilder {
+        self.value["name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn organization<'a>(&'a mut self, val: Reference) -> &'a mut Patient_ContactBuilder {
+        self.value["organization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Patient_ContactBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Patient_ContactBuilder {
+        self.value["relationship"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut Patient_ContactBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

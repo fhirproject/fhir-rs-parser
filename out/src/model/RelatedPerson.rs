@@ -28,6 +28,16 @@ pub struct RelatedPerson<'a> {
 }
 
 impl RelatedPerson<'_> {
+    pub fn new(value: &Value) -> RelatedPerson {
+        RelatedPerson {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -439,7 +449,7 @@ impl RelatedPerson<'_> {
 
 #[derive(Debug)]
 pub struct RelatedPersonBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RelatedPersonBuilder {
@@ -449,10 +459,146 @@ impl RelatedPersonBuilder {
         }
     }
 
+    pub fn with(existing: RelatedPerson) -> RelatedPersonBuilder {
+        RelatedPersonBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(patient: Reference) -> RelatedPersonBuilder {
         let mut __value: Value = json!({});
         __value["patient"] = json!(patient.value);
         return RelatedPersonBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut RelatedPersonBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _birth_date<'a>(&'a mut self, val: Element) -> &'a mut RelatedPersonBuilder {
+        self.value["_birthDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _gender<'a>(&'a mut self, val: Element) -> &'a mut RelatedPersonBuilder {
+        self.value["_gender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut RelatedPersonBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut RelatedPersonBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut RelatedPersonBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: Vec<Address>) -> &'a mut RelatedPersonBuilder {
+        self.value["address"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn birth_date<'a>(&'a mut self, val: &str) -> &'a mut RelatedPersonBuilder {
+        self.value["birthDate"] = json!(val);
+        return self;
+    }
+
+    pub fn communication<'a>(
+        &'a mut self,
+        val: Vec<RelatedPerson_Communication>,
+    ) -> &'a mut RelatedPersonBuilder {
+        self.value["communication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut RelatedPersonBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RelatedPersonBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gender<'a>(&'a mut self, val: RelatedPersonGender) -> &'a mut RelatedPersonBuilder {
+        self.value["gender"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RelatedPersonBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut RelatedPersonBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut RelatedPersonBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut RelatedPersonBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut RelatedPersonBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RelatedPersonBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: Vec<HumanName>) -> &'a mut RelatedPersonBuilder {
+        self.value["name"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut RelatedPersonBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn photo<'a>(&'a mut self, val: Vec<Attachment>) -> &'a mut RelatedPersonBuilder {
+        self.value["photo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut RelatedPersonBuilder {
+        self.value["relationship"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut RelatedPersonBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut RelatedPersonBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

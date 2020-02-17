@@ -14,6 +14,16 @@ pub struct ExampleScenario_ContainedInstance<'a> {
 }
 
 impl ExampleScenario_ContainedInstance<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_ContainedInstance {
+        ExampleScenario_ContainedInstance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for resourceId
     pub fn _resource_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_resourceId") {
@@ -131,7 +141,7 @@ impl ExampleScenario_ContainedInstance<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_ContainedInstanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_ContainedInstanceBuilder {
@@ -141,8 +151,70 @@ impl ExampleScenario_ContainedInstanceBuilder {
         }
     }
 
+    pub fn with(
+        existing: ExampleScenario_ContainedInstance,
+    ) -> ExampleScenario_ContainedInstanceBuilder {
+        ExampleScenario_ContainedInstanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_ContainedInstanceBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_ContainedInstanceBuilder { value: __value };
+    }
+
+    pub fn _resource_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["_resourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["_versionId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn resource_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["resourceId"] = json!(val);
+        return self;
+    }
+
+    pub fn version_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExampleScenario_ContainedInstanceBuilder {
+        self.value["versionId"] = json!(val);
+        return self;
     }
 }

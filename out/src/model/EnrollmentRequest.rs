@@ -20,6 +20,16 @@ pub struct EnrollmentRequest<'a> {
 }
 
 impl EnrollmentRequest<'_> {
+    pub fn new(value: &Value) -> EnrollmentRequest {
+        EnrollmentRequest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -326,7 +336,7 @@ impl EnrollmentRequest<'_> {
 
 #[derive(Debug)]
 pub struct EnrollmentRequestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EnrollmentRequestBuilder {
@@ -336,8 +346,113 @@ impl EnrollmentRequestBuilder {
         }
     }
 
+    pub fn with(existing: EnrollmentRequest) -> EnrollmentRequestBuilder {
+        EnrollmentRequestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> EnrollmentRequestBuilder {
         let mut __value: Value = json!({});
         return EnrollmentRequestBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut EnrollmentRequestBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut EnrollmentRequestBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut EnrollmentRequestBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut EnrollmentRequestBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn candidate<'a>(&'a mut self, val: Reference) -> &'a mut EnrollmentRequestBuilder {
+        self.value["candidate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut EnrollmentRequestBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coverage<'a>(&'a mut self, val: Reference) -> &'a mut EnrollmentRequestBuilder {
+        self.value["coverage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut EnrollmentRequestBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EnrollmentRequestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EnrollmentRequestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut EnrollmentRequestBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut EnrollmentRequestBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn insurer<'a>(&'a mut self, val: Reference) -> &'a mut EnrollmentRequestBuilder {
+        self.value["insurer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut EnrollmentRequestBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut EnrollmentRequestBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EnrollmentRequestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn provider<'a>(&'a mut self, val: Reference) -> &'a mut EnrollmentRequestBuilder {
+        self.value["provider"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut EnrollmentRequestBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut EnrollmentRequestBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

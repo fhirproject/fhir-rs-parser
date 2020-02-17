@@ -16,6 +16,16 @@ pub struct SubstancePolymer_StructuralRepresentation<'a> {
 }
 
 impl SubstancePolymer_StructuralRepresentation<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_StructuralRepresentation {
+        SubstancePolymer_StructuralRepresentation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for representation
     pub fn _representation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_representation") {
@@ -139,7 +149,7 @@ impl SubstancePolymer_StructuralRepresentation<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_StructuralRepresentationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_StructuralRepresentationBuilder {
@@ -149,8 +159,73 @@ impl SubstancePolymer_StructuralRepresentationBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstancePolymer_StructuralRepresentation,
+    ) -> SubstancePolymer_StructuralRepresentationBuilder {
+        SubstancePolymer_StructuralRepresentationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_StructuralRepresentationBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_StructuralRepresentationBuilder { value: __value };
+    }
+
+    pub fn _representation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["_representation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["attachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn representation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["representation"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_StructuralRepresentationBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

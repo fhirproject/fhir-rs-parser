@@ -18,6 +18,16 @@ pub struct PlanDefinition_Participant<'a> {
 }
 
 impl PlanDefinition_Participant<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_Participant {
+        PlanDefinition_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -126,7 +136,7 @@ impl PlanDefinition_Participant<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_ParticipantBuilder {
@@ -136,9 +146,58 @@ impl PlanDefinition_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_Participant) -> PlanDefinition_ParticipantBuilder {
+        PlanDefinition_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinition_ParticipantBuilder {
         let mut __value: Value = json!({});
         return PlanDefinition_ParticipantBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn role<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: PlanDefinition_ParticipantType,
+    ) -> &'a mut PlanDefinition_ParticipantBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

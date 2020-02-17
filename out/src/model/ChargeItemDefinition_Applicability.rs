@@ -17,6 +17,16 @@ pub struct ChargeItemDefinition_Applicability<'a> {
 }
 
 impl ChargeItemDefinition_Applicability<'_> {
+    pub fn new(value: &Value) -> ChargeItemDefinition_Applicability {
+        ChargeItemDefinition_Applicability {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -163,7 +173,7 @@ impl ChargeItemDefinition_Applicability<'_> {
 
 #[derive(Debug)]
 pub struct ChargeItemDefinition_ApplicabilityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ChargeItemDefinition_ApplicabilityBuilder {
@@ -173,8 +183,86 @@ impl ChargeItemDefinition_ApplicabilityBuilder {
         }
     }
 
+    pub fn with(
+        existing: ChargeItemDefinition_Applicability,
+    ) -> ChargeItemDefinition_ApplicabilityBuilder {
+        ChargeItemDefinition_ApplicabilityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ChargeItemDefinition_ApplicabilityBuilder {
         let mut __value: Value = json!({});
         return ChargeItemDefinition_ApplicabilityBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItemDefinition_ApplicabilityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -27,6 +27,16 @@ pub struct ImagingStudy<'a> {
 }
 
 impl ImagingStudy<'_> {
+    pub fn new(value: &Value) -> ImagingStudy {
+        ImagingStudy {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -603,7 +613,7 @@ impl ImagingStudy<'_> {
 
 #[derive(Debug)]
 pub struct ImagingStudyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImagingStudyBuilder {
@@ -613,10 +623,193 @@ impl ImagingStudyBuilder {
         }
     }
 
+    pub fn with(existing: ImagingStudy) -> ImagingStudyBuilder {
+        ImagingStudyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> ImagingStudyBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return ImagingStudyBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_instances<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_numberOfInstances"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_series<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_numberOfSeries"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _started<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_started"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudyBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudyBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ImagingStudyBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudyBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ImagingStudyBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudyBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ImagingStudyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ImagingStudyBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudyBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn interpreter<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudyBuilder {
+        self.value["interpreter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudyBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut ImagingStudyBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ImagingStudyBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modality<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut ImagingStudyBuilder {
+        self.value["modality"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ImagingStudyBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number_of_instances<'a>(&'a mut self, val: u64) -> &'a mut ImagingStudyBuilder {
+        self.value["numberOfInstances"] = json!(val);
+        return self;
+    }
+
+    pub fn number_of_series<'a>(&'a mut self, val: u64) -> &'a mut ImagingStudyBuilder {
+        self.value["numberOfSeries"] = json!(val);
+        return self;
+    }
+
+    pub fn procedure_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ImagingStudyBuilder {
+        self.value["procedureCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn procedure_reference<'a>(&'a mut self, val: Reference) -> &'a mut ImagingStudyBuilder {
+        self.value["procedureReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ImagingStudyBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ImagingStudyBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn referrer<'a>(&'a mut self, val: Reference) -> &'a mut ImagingStudyBuilder {
+        self.value["referrer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn series<'a>(&'a mut self, val: Vec<ImagingStudy_Series>) -> &'a mut ImagingStudyBuilder {
+        self.value["series"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn started<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudyBuilder {
+        self.value["started"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ImagingStudyStatus) -> &'a mut ImagingStudyBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ImagingStudyBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

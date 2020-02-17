@@ -28,6 +28,16 @@ pub struct SubstanceSpecification<'a> {
 }
 
 impl SubstanceSpecification<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification {
+        SubstanceSpecification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -539,7 +549,7 @@ impl SubstanceSpecification<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecificationBuilder {
@@ -549,8 +559,212 @@ impl SubstanceSpecificationBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSpecification) -> SubstanceSpecificationBuilder {
+        SubstanceSpecificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecificationBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecificationBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Code>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn domain<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["domain"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn moiety<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Moiety>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["moiety"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn molecular_weight<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_MolecularWeight>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["molecularWeight"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Name>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["name"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn nucleic_acid<'a>(&'a mut self, val: Reference) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["nucleicAcid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn polymer<'a>(&'a mut self, val: Reference) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["polymer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn property<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Property>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["property"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn protein<'a>(&'a mut self, val: Reference) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["protein"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference_information<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["referenceInformation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Relationship>,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["relationship"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source_material<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["sourceMaterial"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn structure<'a>(
+        &'a mut self,
+        val: SubstanceSpecification_Structure,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["structure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecificationBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

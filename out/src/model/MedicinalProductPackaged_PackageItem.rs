@@ -19,6 +19,16 @@ pub struct MedicinalProductPackaged_PackageItem<'a> {
 }
 
 impl MedicinalProductPackaged_PackageItem<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPackaged_PackageItem {
+        MedicinalProductPackaged_PackageItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A possible alternate material for the packaging.
     pub fn alternate_material(&self) -> Option<Vec<CodeableConcept>> {
         if let Some(Value::Array(val)) = self.value.get("alternateMaterial") {
@@ -295,13 +305,21 @@ impl MedicinalProductPackaged_PackageItem<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPackaged_PackageItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPackaged_PackageItemBuilder {
     pub fn build(&self) -> MedicinalProductPackaged_PackageItem {
         MedicinalProductPackaged_PackageItem {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(
+        existing: MedicinalProductPackaged_PackageItem,
+    ) -> MedicinalProductPackaged_PackageItemBuilder {
+        MedicinalProductPackaged_PackageItemBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -313,5 +331,111 @@ impl MedicinalProductPackaged_PackageItemBuilder {
         __value["quantity"] = json!(quantity.value);
         __value["type"] = json!(fhir_type.value);
         return MedicinalProductPackaged_PackageItemBuilder { value: __value };
+    }
+
+    pub fn alternate_material<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["alternateMaterial"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn device<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["device"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn manufactured_item<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["manufacturedItem"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn manufacturer<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["manufacturer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn material<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["material"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn other_characteristics<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["otherCharacteristics"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn package_item<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductPackaged_PackageItem>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["packageItem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn physical_characteristics<'a>(
+        &'a mut self,
+        val: ProdCharacteristic,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["physicalCharacteristics"] = json!(val.value);
+        return self;
+    }
+
+    pub fn shelf_life_storage<'a>(
+        &'a mut self,
+        val: Vec<ProductShelfLife>,
+    ) -> &'a mut MedicinalProductPackaged_PackageItemBuilder {
+        self.value["shelfLifeStorage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

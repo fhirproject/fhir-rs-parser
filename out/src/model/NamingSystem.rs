@@ -23,6 +23,16 @@ pub struct NamingSystem<'a> {
 }
 
 impl NamingSystem<'_> {
+    pub fn new(value: &Value) -> NamingSystem {
+        NamingSystem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -506,7 +516,7 @@ impl NamingSystem<'_> {
 
 #[derive(Debug)]
 pub struct NamingSystemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NamingSystemBuilder {
@@ -516,10 +526,173 @@ impl NamingSystemBuilder {
         }
     }
 
+    pub fn with(existing: NamingSystem) -> NamingSystemBuilder {
+        NamingSystemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(unique_id: Vec<NamingSystem_UniqueId>) -> NamingSystemBuilder {
         let mut __value: Value = json!({});
         __value["uniqueId"] = json!(unique_id.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return NamingSystemBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _responsible<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_responsible"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _usage<'a>(&'a mut self, val: Element) -> &'a mut NamingSystemBuilder {
+        self.value["_usage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut NamingSystemBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut NamingSystemBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut NamingSystemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut NamingSystemBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kind<'a>(&'a mut self, val: NamingSystemKind) -> &'a mut NamingSystemBuilder {
+        self.value["kind"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut NamingSystemBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NamingSystemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn responsible<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["responsible"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: NamingSystemStatus) -> &'a mut NamingSystemBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut NamingSystemBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut NamingSystemBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn usage<'a>(&'a mut self, val: &str) -> &'a mut NamingSystemBuilder {
+        self.value["usage"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut NamingSystemBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

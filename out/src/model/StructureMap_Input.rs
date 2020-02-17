@@ -14,6 +14,16 @@ pub struct StructureMap_Input<'a> {
 }
 
 impl StructureMap_Input<'_> {
+    pub fn new(value: &Value) -> StructureMap_Input {
+        StructureMap_Input {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -179,7 +189,7 @@ impl StructureMap_Input<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_InputBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_InputBuilder {
@@ -189,9 +199,77 @@ impl StructureMap_InputBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Input) -> StructureMap_InputBuilder {
+        StructureMap_InputBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureMap_InputBuilder {
         let mut __value: Value = json!({});
         return StructureMap_InputBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_InputBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_InputBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_InputBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_InputBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_InputBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureMap_InputBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_InputBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(
+        &'a mut self,
+        val: StructureMap_InputMode,
+    ) -> &'a mut StructureMap_InputBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_InputBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_InputBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_InputBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }
 

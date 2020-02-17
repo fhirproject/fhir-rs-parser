@@ -19,6 +19,16 @@ pub struct DocumentReference_RelatesTo<'a> {
 }
 
 impl DocumentReference_RelatesTo<'_> {
+    pub fn new(value: &Value) -> DocumentReference_RelatesTo {
+        DocumentReference_RelatesTo {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -122,7 +132,7 @@ impl DocumentReference_RelatesTo<'_> {
 
 #[derive(Debug)]
 pub struct DocumentReference_RelatesToBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DocumentReference_RelatesToBuilder {
@@ -132,10 +142,51 @@ impl DocumentReference_RelatesToBuilder {
         }
     }
 
+    pub fn with(existing: DocumentReference_RelatesTo) -> DocumentReference_RelatesToBuilder {
+        DocumentReference_RelatesToBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(target: Reference) -> DocumentReference_RelatesToBuilder {
         let mut __value: Value = json!({});
         __value["target"] = json!(target.value);
         return DocumentReference_RelatesToBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut DocumentReference_RelatesToBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: DocumentReference_RelatesToCode,
+    ) -> &'a mut DocumentReference_RelatesToBuilder {
+        self.value["code"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_RelatesToBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DocumentReference_RelatesToBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_RelatesToBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

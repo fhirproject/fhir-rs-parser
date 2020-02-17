@@ -17,6 +17,16 @@ pub struct MarketingStatus<'a> {
 }
 
 impl MarketingStatus<'_> {
+    pub fn new(value: &Value) -> MarketingStatus {
+        MarketingStatus {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for restoreDate
     pub fn _restore_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_restoreDate") {
@@ -170,13 +180,19 @@ impl MarketingStatus<'_> {
 
 #[derive(Debug)]
 pub struct MarketingStatusBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MarketingStatusBuilder {
     pub fn build(&self) -> MarketingStatus {
         MarketingStatus {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: MarketingStatus) -> MarketingStatusBuilder {
+        MarketingStatusBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -190,5 +206,39 @@ impl MarketingStatusBuilder {
         __value["dateRange"] = json!(date_range.value);
         __value["status"] = json!(status.value);
         return MarketingStatusBuilder { value: __value };
+    }
+
+    pub fn _restore_date<'a>(&'a mut self, val: Element) -> &'a mut MarketingStatusBuilder {
+        self.value["_restoreDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MarketingStatusBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MarketingStatusBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MarketingStatusBuilder {
+        self.value["jurisdiction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MarketingStatusBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn restore_date<'a>(&'a mut self, val: &str) -> &'a mut MarketingStatusBuilder {
+        self.value["restoreDate"] = json!(val);
+        return self;
     }
 }

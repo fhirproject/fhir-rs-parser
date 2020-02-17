@@ -25,6 +25,16 @@ pub struct CommunicationRequest<'a> {
 }
 
 impl CommunicationRequest<'_> {
+    pub fn new(value: &Value) -> CommunicationRequest {
+        CommunicationRequest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
@@ -652,7 +662,7 @@ impl CommunicationRequest<'_> {
 
 #[derive(Debug)]
 pub struct CommunicationRequestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CommunicationRequestBuilder {
@@ -662,8 +672,241 @@ impl CommunicationRequestBuilder {
         }
     }
 
+    pub fn with(existing: CommunicationRequest) -> CommunicationRequestBuilder {
+        CommunicationRequestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CommunicationRequestBuilder {
         let mut __value: Value = json!({});
         return CommunicationRequestBuilder { value: __value };
+    }
+
+    pub fn _authored_on<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_authoredOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _do_not_perform<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_doNotPerform"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CommunicationRequestBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn about<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CommunicationRequestBuilder {
+        self.value["about"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn authored_on<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["authoredOn"] = json!(val);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CommunicationRequestBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn do_not_perform<'a>(&'a mut self, val: bool) -> &'a mut CommunicationRequestBuilder {
+        self.value["doNotPerform"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut CommunicationRequestBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CommunicationRequestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["groupIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn medium<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["medium"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CommunicationRequestBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut CommunicationRequestBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut CommunicationRequestBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn payload<'a>(
+        &'a mut self,
+        val: Vec<CommunicationRequest_Payload>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["payload"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recipient<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CommunicationRequestBuilder {
+        self.value["recipient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn replaces<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CommunicationRequestBuilder {
+        self.value["replaces"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requester<'a>(&'a mut self, val: Reference) -> &'a mut CommunicationRequestBuilder {
+        self.value["requester"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sender<'a>(&'a mut self, val: Reference) -> &'a mut CommunicationRequestBuilder {
+        self.value["sender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut CommunicationRequestBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn status_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CommunicationRequestBuilder {
+        self.value["statusReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut CommunicationRequestBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CommunicationRequestBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

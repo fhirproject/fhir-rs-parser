@@ -18,6 +18,16 @@ pub struct ImplementationGuide_Resource<'a> {
 }
 
 impl ImplementationGuide_Resource<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Resource {
+        ImplementationGuide_Resource {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -242,7 +252,7 @@ impl ImplementationGuide_Resource<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_ResourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_ResourceBuilder {
@@ -252,9 +262,113 @@ impl ImplementationGuide_ResourceBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Resource) -> ImplementationGuide_ResourceBuilder {
+        ImplementationGuide_ResourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(reference: Reference) -> ImplementationGuide_ResourceBuilder {
         let mut __value: Value = json!({});
         __value["reference"] = json!(reference.value);
         return ImplementationGuide_ResourceBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _example_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_exampleBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _example_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_exampleCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fhir_version<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_fhirVersion"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _grouping_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_groupingId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn example_boolean<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["exampleBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn example_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["exampleCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn grouping_id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["groupingId"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_ResourceBuilder {
+        self.value["name"] = json!(val);
+        return self;
     }
 }

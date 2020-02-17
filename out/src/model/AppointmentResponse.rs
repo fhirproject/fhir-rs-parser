@@ -21,6 +21,16 @@ pub struct AppointmentResponse<'a> {
 }
 
 impl AppointmentResponse<'_> {
+    pub fn new(value: &Value) -> AppointmentResponse {
+        AppointmentResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -368,7 +378,7 @@ impl AppointmentResponse<'_> {
 
 #[derive(Debug)]
 pub struct AppointmentResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AppointmentResponseBuilder {
@@ -378,9 +388,136 @@ impl AppointmentResponseBuilder {
         }
     }
 
+    pub fn with(existing: AppointmentResponse) -> AppointmentResponseBuilder {
+        AppointmentResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(appointment: Reference) -> AppointmentResponseBuilder {
         let mut __value: Value = json!({});
         __value["appointment"] = json!(appointment.value);
         return AppointmentResponseBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut AppointmentResponseBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut AppointmentResponseBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut AppointmentResponseBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AppointmentResponseBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _participant_status<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut AppointmentResponseBuilder {
+        self.value["_participantStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut AppointmentResponseBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actor<'a>(&'a mut self, val: Reference) -> &'a mut AppointmentResponseBuilder {
+        self.value["actor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut AppointmentResponseBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AppointmentResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut AppointmentResponseBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut AppointmentResponseBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AppointmentResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn participant_status<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["participantStatus"] = json!(val);
+        return self;
+    }
+
+    pub fn participant_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut AppointmentResponseBuilder {
+        self.value["participantType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: &str) -> &'a mut AppointmentResponseBuilder {
+        self.value["start"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut AppointmentResponseBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

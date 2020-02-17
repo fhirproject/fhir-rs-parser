@@ -17,6 +17,16 @@ pub struct SubstanceSpecification_Representation<'a> {
 }
 
 impl SubstanceSpecification_Representation<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Representation {
+        SubstanceSpecification_Representation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for representation
     pub fn _representation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_representation") {
@@ -141,7 +151,7 @@ impl SubstanceSpecification_Representation<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_RepresentationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_RepresentationBuilder {
@@ -151,8 +161,70 @@ impl SubstanceSpecification_RepresentationBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_Representation,
+    ) -> SubstanceSpecification_RepresentationBuilder {
+        SubstanceSpecification_RepresentationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_RepresentationBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_RepresentationBuilder { value: __value };
+    }
+
+    pub fn _representation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["_representation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["attachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn representation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["representation"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_RepresentationBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

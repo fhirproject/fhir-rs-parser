@@ -16,6 +16,16 @@ pub struct Encounter_StatusHistory<'a> {
 }
 
 impl Encounter_StatusHistory<'_> {
+    pub fn new(value: &Value) -> Encounter_StatusHistory {
+        Encounter_StatusHistory {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
@@ -119,7 +129,7 @@ impl Encounter_StatusHistory<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_StatusHistoryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_StatusHistoryBuilder {
@@ -129,10 +139,51 @@ impl Encounter_StatusHistoryBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_StatusHistory) -> Encounter_StatusHistoryBuilder {
+        Encounter_StatusHistoryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(period: Period) -> Encounter_StatusHistoryBuilder {
         let mut __value: Value = json!({});
         __value["period"] = json!(period.value);
         return Encounter_StatusHistoryBuilder { value: __value };
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut Encounter_StatusHistoryBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_StatusHistoryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_StatusHistoryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_StatusHistoryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: Encounter_StatusHistoryStatus,
+    ) -> &'a mut Encounter_StatusHistoryBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
     }
 }
 

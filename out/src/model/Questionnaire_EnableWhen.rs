@@ -19,6 +19,16 @@ pub struct Questionnaire_EnableWhen<'a> {
 }
 
 impl Questionnaire_EnableWhen<'_> {
+    pub fn new(value: &Value) -> Questionnaire_EnableWhen {
+        Questionnaire_EnableWhen {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for answerBoolean
     pub fn _answer_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_answerBoolean") {
@@ -360,7 +370,7 @@ impl Questionnaire_EnableWhen<'_> {
 
 #[derive(Debug)]
 pub struct Questionnaire_EnableWhenBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Questionnaire_EnableWhenBuilder {
@@ -370,9 +380,169 @@ impl Questionnaire_EnableWhenBuilder {
         }
     }
 
+    pub fn with(existing: Questionnaire_EnableWhen) -> Questionnaire_EnableWhenBuilder {
+        Questionnaire_EnableWhenBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Questionnaire_EnableWhenBuilder {
         let mut __value: Value = json!({});
         return Questionnaire_EnableWhenBuilder { value: __value };
+    }
+
+    pub fn _answer_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_date<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_decimal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_integer<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _answer_time<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_answerTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _operator<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_operator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _question<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["_question"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer_boolean<'a>(&'a mut self, val: bool) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_coding<'a>(&'a mut self, val: Coding) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer_date<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerDate"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_decimal<'a>(&'a mut self, val: f64) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_integer<'a>(&'a mut self, val: f64) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer_string<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerString"] = json!(val);
+        return self;
+    }
+
+    pub fn answer_time<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["answerTime"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operator<'a>(
+        &'a mut self,
+        val: Questionnaire_EnableWhenOperator,
+    ) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["operator"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn question<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_EnableWhenBuilder {
+        self.value["question"] = json!(val);
+        return self;
     }
 }
 

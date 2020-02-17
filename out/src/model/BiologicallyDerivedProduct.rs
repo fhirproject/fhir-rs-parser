@@ -26,6 +26,16 @@ pub struct BiologicallyDerivedProduct<'a> {
 }
 
 impl BiologicallyDerivedProduct<'_> {
+    pub fn new(value: &Value) -> BiologicallyDerivedProduct {
+        BiologicallyDerivedProduct {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -425,7 +435,7 @@ impl BiologicallyDerivedProduct<'_> {
 
 #[derive(Debug)]
 pub struct BiologicallyDerivedProductBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BiologicallyDerivedProductBuilder {
@@ -435,9 +445,184 @@ impl BiologicallyDerivedProductBuilder {
         }
     }
 
+    pub fn with(existing: BiologicallyDerivedProduct) -> BiologicallyDerivedProductBuilder {
+        BiologicallyDerivedProductBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BiologicallyDerivedProductBuilder {
         let mut __value: Value = json!({});
         return BiologicallyDerivedProductBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _product_category<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["_productCategory"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _quantity<'a>(&'a mut self, val: Element) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["_quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collection<'a>(
+        &'a mut self,
+        val: BiologicallyDerivedProduct_Collection,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["collection"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn manipulation<'a>(
+        &'a mut self,
+        val: BiologicallyDerivedProduct_Manipulation,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["manipulation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parent<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["parent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn processing<'a>(
+        &'a mut self,
+        val: Vec<BiologicallyDerivedProduct_Processing>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["processing"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn product_category<'a>(
+        &'a mut self,
+        val: BiologicallyDerivedProductProductCategory,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["productCategory"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn product_code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["productCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: i64) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["quantity"] = json!(val);
+        return self;
+    }
+
+    pub fn request<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["request"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: BiologicallyDerivedProductStatus,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn storage<'a>(
+        &'a mut self,
+        val: Vec<BiologicallyDerivedProduct_Storage>,
+    ) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["storage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut BiologicallyDerivedProductBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

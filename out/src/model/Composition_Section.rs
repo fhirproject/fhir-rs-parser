@@ -25,6 +25,16 @@ pub struct Composition_Section<'a> {
 }
 
 impl Composition_Section<'_> {
+    pub fn new(value: &Value) -> Composition_Section {
+        Composition_Section {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
@@ -292,7 +302,7 @@ impl Composition_Section<'_> {
 
 #[derive(Debug)]
 pub struct Composition_SectionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Composition_SectionBuilder {
@@ -302,8 +312,102 @@ impl Composition_SectionBuilder {
         }
     }
 
+    pub fn with(existing: Composition_Section) -> Composition_SectionBuilder {
+        Composition_SectionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Composition_SectionBuilder {
         let mut __value: Value = json!({});
         return Composition_SectionBuilder { value: __value };
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut Composition_SectionBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut Composition_SectionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Composition_SectionBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Composition_SectionBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn empty_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Composition_SectionBuilder {
+        self.value["emptyReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn entry<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Composition_SectionBuilder {
+        self.value["entry"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Composition_SectionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(&'a mut self, val: Reference) -> &'a mut Composition_SectionBuilder {
+        self.value["focus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Composition_SectionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(&'a mut self, val: &str) -> &'a mut Composition_SectionBuilder {
+        self.value["mode"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Composition_SectionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn ordered_by<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Composition_SectionBuilder {
+        self.value["orderedBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn section<'a>(
+        &'a mut self,
+        val: Vec<Composition_Section>,
+    ) -> &'a mut Composition_SectionBuilder {
+        self.value["section"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut Composition_SectionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut Composition_SectionBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }

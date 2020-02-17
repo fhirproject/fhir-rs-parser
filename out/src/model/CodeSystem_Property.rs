@@ -16,6 +16,16 @@ pub struct CodeSystem_Property<'a> {
 }
 
 impl CodeSystem_Property<'_> {
+    pub fn new(value: &Value) -> CodeSystem_Property {
+        CodeSystem_Property {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -186,7 +196,7 @@ impl CodeSystem_Property<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystem_PropertyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystem_PropertyBuilder {
@@ -196,9 +206,77 @@ impl CodeSystem_PropertyBuilder {
         }
     }
 
+    pub fn with(existing: CodeSystem_Property) -> CodeSystem_PropertyBuilder {
+        CodeSystem_PropertyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystem_PropertyBuilder {
         let mut __value: Value = json!({});
         return CodeSystem_PropertyBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _uri<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["_uri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeSystem_PropertyType,
+    ) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn uri<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_PropertyBuilder {
+        self.value["uri"] = json!(val);
+        return self;
     }
 }
 

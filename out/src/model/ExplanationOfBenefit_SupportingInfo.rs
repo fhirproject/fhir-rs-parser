@@ -22,6 +22,16 @@ pub struct ExplanationOfBenefit_SupportingInfo<'a> {
 }
 
 impl ExplanationOfBenefit_SupportingInfo<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_SupportingInfo {
+        ExplanationOfBenefit_SupportingInfo {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
@@ -296,7 +306,7 @@ impl ExplanationOfBenefit_SupportingInfo<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_SupportingInfoBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_SupportingInfoBuilder {
@@ -306,9 +316,151 @@ impl ExplanationOfBenefit_SupportingInfoBuilder {
         }
     }
 
+    pub fn with(
+        existing: ExplanationOfBenefit_SupportingInfo,
+    ) -> ExplanationOfBenefit_SupportingInfoBuilder {
+        ExplanationOfBenefit_SupportingInfoBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(category: CodeableConcept) -> ExplanationOfBenefit_SupportingInfoBuilder {
         let mut __value: Value = json!({});
         __value["category"] = json!(category.value);
         return ExplanationOfBenefit_SupportingInfoBuilder { value: __value };
+    }
+
+    pub fn _sequence<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["_timingDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(
+        &'a mut self,
+        val: Coding,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["reason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["timingDate"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["timingPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExplanationOfBenefit_SupportingInfoBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

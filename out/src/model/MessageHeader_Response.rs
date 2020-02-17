@@ -18,6 +18,16 @@ pub struct MessageHeader_Response<'a> {
 }
 
 impl MessageHeader_Response<'_> {
+    pub fn new(value: &Value) -> MessageHeader_Response {
+        MessageHeader_Response {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -151,7 +161,7 @@ impl MessageHeader_Response<'_> {
 
 #[derive(Debug)]
 pub struct MessageHeader_ResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageHeader_ResponseBuilder {
@@ -161,9 +171,65 @@ impl MessageHeader_ResponseBuilder {
         }
     }
 
+    pub fn with(existing: MessageHeader_Response) -> MessageHeader_ResponseBuilder {
+        MessageHeader_ResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MessageHeader_ResponseBuilder {
         let mut __value: Value = json!({});
         return MessageHeader_ResponseBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _identifier<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["_identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: MessageHeader_ResponseCode,
+    ) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["code"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn details<'a>(&'a mut self, val: Reference) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["details"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["identifier"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageHeader_ResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

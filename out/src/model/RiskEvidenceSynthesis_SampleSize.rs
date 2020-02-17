@@ -16,6 +16,16 @@ pub struct RiskEvidenceSynthesis_SampleSize<'a> {
 }
 
 impl RiskEvidenceSynthesis_SampleSize<'_> {
+    pub fn new(value: &Value) -> RiskEvidenceSynthesis_SampleSize {
+        RiskEvidenceSynthesis_SampleSize {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -157,7 +167,7 @@ impl RiskEvidenceSynthesis_SampleSize<'_> {
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_SampleSizeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RiskEvidenceSynthesis_SampleSizeBuilder {
@@ -167,8 +177,86 @@ impl RiskEvidenceSynthesis_SampleSizeBuilder {
         }
     }
 
+    pub fn with(
+        existing: RiskEvidenceSynthesis_SampleSize,
+    ) -> RiskEvidenceSynthesis_SampleSizeBuilder {
+        RiskEvidenceSynthesis_SampleSizeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RiskEvidenceSynthesis_SampleSizeBuilder {
         let mut __value: Value = json!({});
         return RiskEvidenceSynthesis_SampleSizeBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_participants<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["_numberOfParticipants"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_studies<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["_numberOfStudies"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number_of_participants<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["numberOfParticipants"] = json!(val);
+        return self;
+    }
+
+    pub fn number_of_studies<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut RiskEvidenceSynthesis_SampleSizeBuilder {
+        self.value["numberOfStudies"] = json!(val);
+        return self;
     }
 }

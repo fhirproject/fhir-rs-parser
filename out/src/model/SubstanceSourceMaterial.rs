@@ -34,6 +34,16 @@ pub struct SubstanceSourceMaterial<'a> {
 }
 
 impl SubstanceSourceMaterial<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial {
+        SubstanceSourceMaterial {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for geographicalLocation
     pub fn _geographical_location(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_geographicalLocation") {
@@ -494,7 +504,7 @@ impl SubstanceSourceMaterial<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterialBuilder {
@@ -504,8 +514,206 @@ impl SubstanceSourceMaterialBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSourceMaterial) -> SubstanceSourceMaterialBuilder {
+        SubstanceSourceMaterialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterialBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterialBuilder { value: __value };
+    }
+
+    pub fn _geographical_location<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["_geographicalLocation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _organism_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["_organismName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _parent_substance_name<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["_parentSubstanceName"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn country_of_origin<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["countryOfOrigin"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn development_stage<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["developmentStage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fraction_description<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSourceMaterial_FractionDescription>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["fractionDescription"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn geographical_location<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["geographicalLocation"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn organism<'a>(
+        &'a mut self,
+        val: SubstanceSourceMaterial_Organism,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["organism"] = json!(val.value);
+        return self;
+    }
+
+    pub fn organism_id<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["organismId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn organism_name<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["organismName"] = json!(val);
+        return self;
+    }
+
+    pub fn parent_substance_id<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["parentSubstanceId"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parent_substance_name<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["parentSubstanceName"] = json!(val);
+        return self;
+    }
+
+    pub fn part_description<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSourceMaterial_PartDescription>,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["partDescription"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source_material_class<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["sourceMaterialClass"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source_material_state<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["sourceMaterialState"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source_material_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["sourceMaterialType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstanceSourceMaterialBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

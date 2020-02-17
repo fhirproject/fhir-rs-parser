@@ -28,6 +28,16 @@ pub struct Procedure<'a> {
 }
 
 impl Procedure<'_> {
+    pub fn new(value: &Value) -> Procedure {
+        Procedure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -820,7 +830,7 @@ impl Procedure<'_> {
 
 #[derive(Debug)]
 pub struct ProcedureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ProcedureBuilder {
@@ -830,9 +840,246 @@ impl ProcedureBuilder {
         }
     }
 
+    pub fn with(existing: Procedure) -> ProcedureBuilder {
+        ProcedureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> ProcedureBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return ProcedureBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ProcedureBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ProcedureBuilder {
+        self.value["_instantiatesUri"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ProcedureBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _performed_date_time<'a>(&'a mut self, val: Element) -> &'a mut ProcedureBuilder {
+        self.value["_performedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _performed_string<'a>(&'a mut self, val: Element) -> &'a mut ProcedureBuilder {
+        self.value["_performedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ProcedureBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn asserter<'a>(&'a mut self, val: Reference) -> &'a mut ProcedureBuilder {
+        self.value["asserter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProcedureBuilder {
+        self.value["bodySite"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProcedureBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProcedureBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn complication<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProcedureBuilder {
+        self.value["complication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn complication_detail<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["complicationDetail"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ProcedureBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ProcedureBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProcedureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focal_device<'a>(
+        &'a mut self,
+        val: Vec<Procedure_FocalDevice>,
+    ) -> &'a mut ProcedureBuilder {
+        self.value["focalDevice"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn follow_up<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProcedureBuilder {
+        self.value["followUp"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ProcedureBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ProcedureBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ProcedureBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut ProcedureBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ProcedureBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ProcedureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ProcedureBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProcedureBuilder {
+        self.value["outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performed_age<'a>(&'a mut self, val: Age) -> &'a mut ProcedureBuilder {
+        self.value["performedAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performed_date_time<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["performedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn performed_period<'a>(&'a mut self, val: Period) -> &'a mut ProcedureBuilder {
+        self.value["performedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performed_range<'a>(&'a mut self, val: Range) -> &'a mut ProcedureBuilder {
+        self.value["performedRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performed_string<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["performedString"] = json!(val);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Vec<Procedure_Performer>) -> &'a mut ProcedureBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProcedureBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recorder<'a>(&'a mut self, val: Reference) -> &'a mut ProcedureBuilder {
+        self.value["recorder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn report<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["report"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut ProcedureBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn status_reason<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ProcedureBuilder {
+        self.value["statusReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ProcedureBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn used_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ProcedureBuilder {
+        self.value["usedCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn used_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ProcedureBuilder {
+        self.value["usedReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

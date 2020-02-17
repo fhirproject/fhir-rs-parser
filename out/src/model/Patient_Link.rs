@@ -16,6 +16,16 @@ pub struct Patient_Link<'a> {
 }
 
 impl Patient_Link<'_> {
+    pub fn new(value: &Value) -> Patient_Link {
+        Patient_Link {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -119,7 +129,7 @@ impl Patient_Link<'_> {
 
 #[derive(Debug)]
 pub struct Patient_LinkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Patient_LinkBuilder {
@@ -129,10 +139,45 @@ impl Patient_LinkBuilder {
         }
     }
 
+    pub fn with(existing: Patient_Link) -> Patient_LinkBuilder {
+        Patient_LinkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(other: Reference) -> Patient_LinkBuilder {
         let mut __value: Value = json!({});
         __value["other"] = json!(other.value);
         return Patient_LinkBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Patient_LinkBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Patient_LinkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Patient_LinkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Patient_LinkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Patient_LinkType) -> &'a mut Patient_LinkBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

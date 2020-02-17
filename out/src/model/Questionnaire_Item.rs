@@ -20,6 +20,16 @@ pub struct Questionnaire_Item<'a> {
 }
 
 impl Questionnaire_Item<'_> {
+    pub fn new(value: &Value) -> Questionnaire_Item {
+        Questionnaire_Item {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for definition
     pub fn _definition(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definition") {
@@ -459,7 +469,7 @@ impl Questionnaire_Item<'_> {
 
 #[derive(Debug)]
 pub struct Questionnaire_ItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Questionnaire_ItemBuilder {
@@ -469,9 +479,182 @@ impl Questionnaire_ItemBuilder {
         }
     }
 
+    pub fn with(existing: Questionnaire_Item) -> Questionnaire_ItemBuilder {
+        Questionnaire_ItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Questionnaire_ItemBuilder {
         let mut __value: Value = json!({});
         return Questionnaire_ItemBuilder { value: __value };
+    }
+
+    pub fn _definition<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_definition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _enable_behavior<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_enableBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _link_id<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_linkId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_length<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_maxLength"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _prefix<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_prefix"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _read_only<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_readOnly"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _repeats<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_repeats"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _required<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_required"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn answer_option<'a>(
+        &'a mut self,
+        val: Vec<Questionnaire_AnswerOption>,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["answerOption"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn answer_value_set<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["answerValueSet"] = json!(val);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn definition<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["definition"] = json!(val);
+        return self;
+    }
+
+    pub fn enable_behavior<'a>(
+        &'a mut self,
+        val: Questionnaire_ItemEnableBehavior,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["enableBehavior"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn enable_when<'a>(
+        &'a mut self,
+        val: Vec<Questionnaire_EnableWhen>,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["enableWhen"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn initial<'a>(
+        &'a mut self,
+        val: Vec<Questionnaire_Initial>,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["initial"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn item<'a>(
+        &'a mut self,
+        val: Vec<Questionnaire_Item>,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["item"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn link_id<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["linkId"] = json!(val);
+        return self;
+    }
+
+    pub fn max_length<'a>(&'a mut self, val: i64) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["maxLength"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn prefix<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["prefix"] = json!(val);
+        return self;
+    }
+
+    pub fn read_only<'a>(&'a mut self, val: bool) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["readOnly"] = json!(val);
+        return self;
+    }
+
+    pub fn repeats<'a>(&'a mut self, val: bool) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["repeats"] = json!(val);
+        return self;
+    }
+
+    pub fn required<'a>(&'a mut self, val: bool) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["required"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Questionnaire_ItemType,
+    ) -> &'a mut Questionnaire_ItemBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

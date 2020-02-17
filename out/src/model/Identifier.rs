@@ -18,6 +18,16 @@ pub struct Identifier<'a> {
 }
 
 impl Identifier<'_> {
+    pub fn new(value: &Value) -> Identifier {
+        Identifier {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
@@ -178,7 +188,7 @@ impl Identifier<'_> {
 
 #[derive(Debug)]
 pub struct IdentifierBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl IdentifierBuilder {
@@ -188,9 +198,70 @@ impl IdentifierBuilder {
         }
     }
 
+    pub fn with(existing: Identifier) -> IdentifierBuilder {
+        IdentifierBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> IdentifierBuilder {
         let mut __value: Value = json!({});
         return IdentifierBuilder { value: __value };
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut IdentifierBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut IdentifierBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut IdentifierBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn assigner<'a>(&'a mut self, val: Reference) -> &'a mut IdentifierBuilder {
+        self.value["assigner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut IdentifierBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut IdentifierBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut IdentifierBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut IdentifierBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut IdentifierBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: IdentifierUse) -> &'a mut IdentifierBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut IdentifierBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

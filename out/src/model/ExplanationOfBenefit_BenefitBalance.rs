@@ -18,6 +18,16 @@ pub struct ExplanationOfBenefit_BenefitBalance<'a> {
 }
 
 impl ExplanationOfBenefit_BenefitBalance<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_BenefitBalance {
+        ExplanationOfBenefit_BenefitBalance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -237,7 +247,7 @@ impl ExplanationOfBenefit_BenefitBalance<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_BenefitBalanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_BenefitBalanceBuilder {
@@ -247,9 +257,116 @@ impl ExplanationOfBenefit_BenefitBalanceBuilder {
         }
     }
 
+    pub fn with(
+        existing: ExplanationOfBenefit_BenefitBalance,
+    ) -> ExplanationOfBenefit_BenefitBalanceBuilder {
+        ExplanationOfBenefit_BenefitBalanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(category: CodeableConcept) -> ExplanationOfBenefit_BenefitBalanceBuilder {
         let mut __value: Value = json!({});
         __value["category"] = json!(category.value);
         return ExplanationOfBenefit_BenefitBalanceBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _excluded<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["_excluded"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn excluded<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["excluded"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn financial<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Financial>,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["financial"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn network<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["network"] = json!(val.value);
+        return self;
+    }
+
+    pub fn term<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["term"] = json!(val.value);
+        return self;
+    }
+
+    pub fn unit<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_BenefitBalanceBuilder {
+        self.value["unit"] = json!(val.value);
+        return self;
     }
 }

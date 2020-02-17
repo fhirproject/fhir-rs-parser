@@ -18,6 +18,16 @@ pub struct MeasureReport_Stratum<'a> {
 }
 
 impl MeasureReport_Stratum<'_> {
+    pub fn new(value: &Value) -> MeasureReport_Stratum {
+        MeasureReport_Stratum {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A stratifier component value.
     pub fn component(&self) -> Option<Vec<MeasureReport_Component>> {
         if let Some(Value::Array(val)) = self.value.get("component") {
@@ -159,7 +169,7 @@ impl MeasureReport_Stratum<'_> {
 
 #[derive(Debug)]
 pub struct MeasureReport_StratumBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MeasureReport_StratumBuilder {
@@ -169,8 +179,62 @@ impl MeasureReport_StratumBuilder {
         }
     }
 
+    pub fn with(existing: MeasureReport_Stratum) -> MeasureReport_StratumBuilder {
+        MeasureReport_StratumBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MeasureReport_StratumBuilder {
         let mut __value: Value = json!({});
         return MeasureReport_StratumBuilder { value: __value };
+    }
+
+    pub fn component<'a>(
+        &'a mut self,
+        val: Vec<MeasureReport_Component>,
+    ) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["component"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn measure_score<'a>(&'a mut self, val: Quantity) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["measureScore"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn population<'a>(
+        &'a mut self,
+        val: Vec<MeasureReport_Population1>,
+    ) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["population"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MeasureReport_StratumBuilder {
+        self.value["value"] = json!(val.value);
+        return self;
     }
 }

@@ -23,6 +23,16 @@ pub struct SupplyDelivery<'a> {
 }
 
 impl SupplyDelivery<'_> {
+    pub fn new(value: &Value) -> SupplyDelivery {
+        SupplyDelivery {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -434,7 +444,7 @@ impl SupplyDelivery<'_> {
 
 #[derive(Debug)]
 pub struct SupplyDeliveryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SupplyDeliveryBuilder {
@@ -444,9 +454,147 @@ impl SupplyDeliveryBuilder {
         }
     }
 
+    pub fn with(existing: SupplyDelivery) -> SupplyDeliveryBuilder {
+        SupplyDeliveryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SupplyDeliveryBuilder {
         let mut __value: Value = json!({});
         return SupplyDeliveryBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SupplyDeliveryBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SupplyDeliveryBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(&'a mut self, val: Element) -> &'a mut SupplyDeliveryBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SupplyDeliveryBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn destination<'a>(&'a mut self, val: Reference) -> &'a mut SupplyDeliveryBuilder {
+        self.value["destination"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SupplyDeliveryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SupplyDeliveryBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SupplyDeliveryBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SupplyDeliveryBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SupplyDeliveryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut SupplyDeliveryBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut SupplyDeliveryBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn occurrence_timing<'a>(&'a mut self, val: Timing) -> &'a mut SupplyDeliveryBuilder {
+        self.value["occurrenceTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient<'a>(&'a mut self, val: Reference) -> &'a mut SupplyDeliveryBuilder {
+        self.value["patient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn receiver<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut SupplyDeliveryBuilder {
+        self.value["receiver"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SupplyDeliveryStatus) -> &'a mut SupplyDeliveryBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn supplied_item<'a>(
+        &'a mut self,
+        val: SupplyDelivery_SuppliedItem,
+    ) -> &'a mut SupplyDeliveryBuilder {
+        self.value["suppliedItem"] = json!(val.value);
+        return self;
+    }
+
+    pub fn supplier<'a>(&'a mut self, val: Reference) -> &'a mut SupplyDeliveryBuilder {
+        self.value["supplier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SupplyDeliveryBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SupplyDeliveryBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }
 

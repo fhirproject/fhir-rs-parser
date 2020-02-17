@@ -21,6 +21,16 @@ pub struct VisionPrescription<'a> {
 }
 
 impl VisionPrescription<'_> {
+    pub fn new(value: &Value) -> VisionPrescription {
+        VisionPrescription {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -351,13 +361,19 @@ impl VisionPrescription<'_> {
 
 #[derive(Debug)]
 pub struct VisionPrescriptionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VisionPrescriptionBuilder {
     pub fn build(&self) -> VisionPrescription {
         VisionPrescription {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: VisionPrescription) -> VisionPrescriptionBuilder {
+        VisionPrescriptionBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -374,5 +390,102 @@ impl VisionPrescriptionBuilder {
         __value["patient"] = json!(patient.value);
         __value["prescriber"] = json!(prescriber.value);
         return VisionPrescriptionBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescriptionBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date_written<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescriptionBuilder {
+        self.value["_dateWritten"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescriptionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescriptionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescriptionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut VisionPrescriptionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn date_written<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["dateWritten"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut VisionPrescriptionBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut VisionPrescriptionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut VisionPrescriptionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut VisionPrescriptionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VisionPrescriptionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescriptionBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut VisionPrescriptionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

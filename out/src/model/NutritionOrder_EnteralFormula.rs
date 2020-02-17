@@ -18,6 +18,16 @@ pub struct NutritionOrder_EnteralFormula<'a> {
 }
 
 impl NutritionOrder_EnteralFormula<'_> {
+    pub fn new(value: &Value) -> NutritionOrder_EnteralFormula {
+        NutritionOrder_EnteralFormula {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for additiveProductName
     pub fn _additive_product_name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_additiveProductName") {
@@ -267,7 +277,7 @@ impl NutritionOrder_EnteralFormula<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrder_EnteralFormulaBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrder_EnteralFormulaBuilder {
@@ -277,8 +287,132 @@ impl NutritionOrder_EnteralFormulaBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder_EnteralFormula) -> NutritionOrder_EnteralFormulaBuilder {
+        NutritionOrder_EnteralFormulaBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NutritionOrder_EnteralFormulaBuilder {
         let mut __value: Value = json!({});
         return NutritionOrder_EnteralFormulaBuilder { value: __value };
+    }
+
+    pub fn _additive_product_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["_additiveProductName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _administration_instruction<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["_administrationInstruction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _base_formula_product_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["_baseFormulaProductName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive_product_name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["additiveProductName"] = json!(val);
+        return self;
+    }
+
+    pub fn additive_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["additiveType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn administration<'a>(
+        &'a mut self,
+        val: Vec<NutritionOrder_Administration>,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["administration"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn administration_instruction<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["administrationInstruction"] = json!(val);
+        return self;
+    }
+
+    pub fn base_formula_product_name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["baseFormulaProductName"] = json!(val);
+        return self;
+    }
+
+    pub fn base_formula_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["baseFormulaType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn caloric_density<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["caloricDensity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max_volume_to_deliver<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["maxVolumeToDeliver"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn routeof_administration<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_EnteralFormulaBuilder {
+        self.value["routeofAdministration"] = json!(val.value);
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct StructureMap_Target<'a> {
 }
 
 impl StructureMap_Target<'_> {
+    pub fn new(value: &Value) -> StructureMap_Target {
+        StructureMap_Target {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for context
     pub fn _context(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_context") {
@@ -266,7 +276,7 @@ impl StructureMap_Target<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_TargetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_TargetBuilder {
@@ -276,9 +286,113 @@ impl StructureMap_TargetBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Target) -> StructureMap_TargetBuilder {
+        StructureMap_TargetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureMap_TargetBuilder {
         let mut __value: Value = json!({});
         return StructureMap_TargetBuilder { value: __value };
+    }
+
+    pub fn _context<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _context_type<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_contextType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _element<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_element"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _list_mode<'a>(&'a mut self, val: Vec<Element>) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_listMode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _list_rule_id<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_listRuleId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _transform<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_transform"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _variable<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_TargetBuilder {
+        self.value["_variable"] = json!(val.value);
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_TargetBuilder {
+        self.value["context"] = json!(val);
+        return self;
+    }
+
+    pub fn context_type<'a>(
+        &'a mut self,
+        val: StructureMap_TargetContextType,
+    ) -> &'a mut StructureMap_TargetBuilder {
+        self.value["contextType"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn element<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_TargetBuilder {
+        self.value["element"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureMap_TargetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_TargetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn list_rule_id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_TargetBuilder {
+        self.value["listRuleId"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_TargetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<StructureMap_Parameter>,
+    ) -> &'a mut StructureMap_TargetBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn transform<'a>(
+        &'a mut self,
+        val: StructureMap_TargetTransform,
+    ) -> &'a mut StructureMap_TargetBuilder {
+        self.value["transform"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn variable<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_TargetBuilder {
+        self.value["variable"] = json!(val);
+        return self;
     }
 }
 

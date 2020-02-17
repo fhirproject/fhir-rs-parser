@@ -18,6 +18,16 @@ pub struct PlanDefinition_DynamicValue<'a> {
 }
 
 impl PlanDefinition_DynamicValue<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_DynamicValue {
+        PlanDefinition_DynamicValue {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
@@ -133,7 +143,7 @@ impl PlanDefinition_DynamicValue<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_DynamicValueBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_DynamicValueBuilder {
@@ -143,8 +153,54 @@ impl PlanDefinition_DynamicValueBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_DynamicValue) -> PlanDefinition_DynamicValueBuilder {
+        PlanDefinition_DynamicValueBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PlanDefinition_DynamicValueBuilder {
         let mut __value: Value = json!({});
         return PlanDefinition_DynamicValueBuilder { value: __value };
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_DynamicValueBuilder {
+        self.value["path"] = json!(val);
+        return self;
     }
 }

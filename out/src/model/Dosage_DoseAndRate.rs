@@ -17,6 +17,16 @@ pub struct Dosage_DoseAndRate<'a> {
 }
 
 impl Dosage_DoseAndRate<'_> {
+    pub fn new(value: &Value) -> Dosage_DoseAndRate {
+        Dosage_DoseAndRate {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Amount of medication per dose.
     pub fn dose_quantity(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("doseQuantity") {
@@ -176,7 +186,7 @@ impl Dosage_DoseAndRate<'_> {
 
 #[derive(Debug)]
 pub struct Dosage_DoseAndRateBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Dosage_DoseAndRateBuilder {
@@ -186,8 +196,63 @@ impl Dosage_DoseAndRateBuilder {
         }
     }
 
+    pub fn with(existing: Dosage_DoseAndRate) -> Dosage_DoseAndRateBuilder {
+        Dosage_DoseAndRateBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Dosage_DoseAndRateBuilder {
         let mut __value: Value = json!({});
         return Dosage_DoseAndRateBuilder { value: __value };
+    }
+
+    pub fn dose_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["doseQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dose_range<'a>(&'a mut self, val: Range) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["doseRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rate_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["rateQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rate_range<'a>(&'a mut self, val: Range) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["rateRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rate_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["rateRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Dosage_DoseAndRateBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

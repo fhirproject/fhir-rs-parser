@@ -19,6 +19,16 @@ pub struct Dosage<'a> {
 }
 
 impl Dosage<'_> {
+    pub fn new(value: &Value) -> Dosage {
+        Dosage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for asNeededBoolean
     pub fn _as_needed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_asNeededBoolean") {
@@ -350,7 +360,7 @@ impl Dosage<'_> {
 
 #[derive(Debug)]
 pub struct DosageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DosageBuilder {
@@ -360,8 +370,127 @@ impl DosageBuilder {
         }
     }
 
+    pub fn with(existing: Dosage) -> DosageBuilder {
+        DosageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DosageBuilder {
         let mut __value: Value = json!({});
         return DosageBuilder { value: __value };
+    }
+
+    pub fn _as_needed_boolean<'a>(&'a mut self, val: Element) -> &'a mut DosageBuilder {
+        self.value["_asNeededBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _patient_instruction<'a>(&'a mut self, val: Element) -> &'a mut DosageBuilder {
+        self.value["_patientInstruction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut DosageBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut DosageBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additional_instruction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DosageBuilder {
+        self.value["additionalInstruction"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn as_needed_boolean<'a>(&'a mut self, val: bool) -> &'a mut DosageBuilder {
+        self.value["asNeededBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn as_needed_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut DosageBuilder {
+        self.value["asNeededCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dose_and_rate<'a>(&'a mut self, val: Vec<Dosage_DoseAndRate>) -> &'a mut DosageBuilder {
+        self.value["doseAndRate"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DosageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DosageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max_dose_per_administration<'a>(&'a mut self, val: Quantity) -> &'a mut DosageBuilder {
+        self.value["maxDosePerAdministration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_dose_per_lifetime<'a>(&'a mut self, val: Quantity) -> &'a mut DosageBuilder {
+        self.value["maxDosePerLifetime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_dose_per_period<'a>(&'a mut self, val: Ratio) -> &'a mut DosageBuilder {
+        self.value["maxDosePerPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DosageBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DosageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient_instruction<'a>(&'a mut self, val: &str) -> &'a mut DosageBuilder {
+        self.value["patientInstruction"] = json!(val);
+        return self;
+    }
+
+    pub fn route<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DosageBuilder {
+        self.value["route"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut DosageBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn site<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DosageBuilder {
+        self.value["site"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut DosageBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn timing<'a>(&'a mut self, val: Timing) -> &'a mut DosageBuilder {
+        self.value["timing"] = json!(val.value);
+        return self;
     }
 }

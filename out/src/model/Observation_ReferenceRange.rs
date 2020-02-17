@@ -18,6 +18,16 @@ pub struct Observation_ReferenceRange<'a> {
 }
 
 impl Observation_ReferenceRange<'_> {
+    pub fn new(value: &Value) -> Observation_ReferenceRange {
+        Observation_ReferenceRange {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for text
     pub fn _text(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_text") {
@@ -204,7 +214,7 @@ impl Observation_ReferenceRange<'_> {
 
 #[derive(Debug)]
 pub struct Observation_ReferenceRangeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Observation_ReferenceRangeBuilder {
@@ -214,8 +224,77 @@ impl Observation_ReferenceRangeBuilder {
         }
     }
 
+    pub fn with(existing: Observation_ReferenceRange) -> Observation_ReferenceRangeBuilder {
+        Observation_ReferenceRangeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Observation_ReferenceRangeBuilder {
         let mut __value: Value = json!({});
         return Observation_ReferenceRangeBuilder { value: __value };
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age<'a>(&'a mut self, val: Range) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["age"] = json!(val.value);
+        return self;
+    }
+
+    pub fn applies_to<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["appliesTo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn high<'a>(&'a mut self, val: Quantity) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["high"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn low<'a>(&'a mut self, val: Quantity) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["low"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Observation_ReferenceRangeBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

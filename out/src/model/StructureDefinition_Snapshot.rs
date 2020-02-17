@@ -16,6 +16,16 @@ pub struct StructureDefinition_Snapshot<'a> {
 }
 
 impl StructureDefinition_Snapshot<'_> {
+    pub fn new(value: &Value) -> StructureDefinition_Snapshot {
+        StructureDefinition_Snapshot {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Captures constraints on each element within the resource.
     pub fn element(&self) -> Vec<ElementDefinition> {
         self.value
@@ -107,7 +117,7 @@ impl StructureDefinition_Snapshot<'_> {
 
 #[derive(Debug)]
 pub struct StructureDefinition_SnapshotBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureDefinition_SnapshotBuilder {
@@ -117,9 +127,37 @@ impl StructureDefinition_SnapshotBuilder {
         }
     }
 
+    pub fn with(existing: StructureDefinition_Snapshot) -> StructureDefinition_SnapshotBuilder {
+        StructureDefinition_SnapshotBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(element: Vec<ElementDefinition>) -> StructureDefinition_SnapshotBuilder {
         let mut __value: Value = json!({});
         __value["element"] = json!(element.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return StructureDefinition_SnapshotBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_SnapshotBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_SnapshotBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_SnapshotBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

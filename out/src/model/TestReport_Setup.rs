@@ -14,6 +14,16 @@ pub struct TestReport_Setup<'a> {
 }
 
 impl TestReport_Setup<'_> {
+    pub fn new(value: &Value) -> TestReport_Setup {
+        TestReport_Setup {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Action would contain either an operation or an assertion.
     pub fn action(&self) -> Vec<TestReport_Action> {
         self.value
@@ -105,7 +115,7 @@ impl TestReport_Setup<'_> {
 
 #[derive(Debug)]
 pub struct TestReport_SetupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestReport_SetupBuilder {
@@ -115,9 +125,34 @@ impl TestReport_SetupBuilder {
         }
     }
 
+    pub fn with(existing: TestReport_Setup) -> TestReport_SetupBuilder {
+        TestReport_SetupBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(action: Vec<TestReport_Action>) -> TestReport_SetupBuilder {
         let mut __value: Value = json!({});
         __value["action"] = json!(action.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return TestReport_SetupBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReport_SetupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestReport_SetupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestReport_SetupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

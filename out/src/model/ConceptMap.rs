@@ -24,6 +24,16 @@ pub struct ConceptMap<'a> {
 }
 
 impl ConceptMap<'_> {
+    pub fn new(value: &Value) -> ConceptMap {
+        ConceptMap {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -688,7 +698,7 @@ impl ConceptMap<'_> {
 
 #[derive(Debug)]
 pub struct ConceptMapBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConceptMapBuilder {
@@ -698,9 +708,241 @@ impl ConceptMapBuilder {
         }
     }
 
+    pub fn with(existing: ConceptMap) -> ConceptMapBuilder {
+        ConceptMapBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ConceptMapBuilder {
         let mut __value: Value = json!({});
         return ConceptMapBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_canonical<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_sourceCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_uri<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_sourceUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_canonical<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_targetCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_uri<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_targetUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ConceptMapBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ConceptMapBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ConceptMapBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut ConceptMapBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConceptMapBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group<'a>(&'a mut self, val: Vec<ConceptMap_Group>) -> &'a mut ConceptMapBuilder {
+        self.value["group"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut ConceptMapBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ConceptMapBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ConceptMapBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConceptMapBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn source_canonical<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["sourceCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn source_uri<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["sourceUri"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ConceptMapStatus) -> &'a mut ConceptMapBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn target_canonical<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["targetCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn target_uri<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["targetUri"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ConceptMapBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut ConceptMapBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ConceptMapBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

@@ -16,6 +16,16 @@ pub struct OperationOutcome_Issue<'a> {
 }
 
 impl OperationOutcome_Issue<'_> {
+    pub fn new(value: &Value) -> OperationOutcome_Issue {
+        OperationOutcome_Issue {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -250,7 +260,7 @@ impl OperationOutcome_Issue<'_> {
 
 #[derive(Debug)]
 pub struct OperationOutcome_IssueBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationOutcome_IssueBuilder {
@@ -260,9 +270,104 @@ impl OperationOutcome_IssueBuilder {
         }
     }
 
+    pub fn with(existing: OperationOutcome_Issue) -> OperationOutcome_IssueBuilder {
+        OperationOutcome_IssueBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OperationOutcome_IssueBuilder {
         let mut __value: Value = json!({});
         return OperationOutcome_IssueBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _diagnostics<'a>(&'a mut self, val: Element) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["_diagnostics"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["_expression"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _location<'a>(&'a mut self, val: Vec<Element>) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["_location"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _severity<'a>(&'a mut self, val: Element) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["_severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: OperationOutcome_IssueCode,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["code"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn details<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["details"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnostics<'a>(&'a mut self, val: &str) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["diagnostics"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: Vec<&str>) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Vec<&str>) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["location"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn severity<'a>(
+        &'a mut self,
+        val: OperationOutcome_IssueSeverity,
+    ) -> &'a mut OperationOutcome_IssueBuilder {
+        self.value["severity"] = json!(val.to_string());
+        return self;
     }
 }
 

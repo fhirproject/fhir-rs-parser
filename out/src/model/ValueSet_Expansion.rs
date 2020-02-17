@@ -19,6 +19,16 @@ pub struct ValueSet_Expansion<'a> {
 }
 
 impl ValueSet_Expansion<'_> {
+    pub fn new(value: &Value) -> ValueSet_Expansion {
+        ValueSet_Expansion {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for identifier
     pub fn _identifier(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_identifier") {
@@ -232,7 +242,7 @@ impl ValueSet_Expansion<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_ExpansionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_ExpansionBuilder {
@@ -242,8 +252,89 @@ impl ValueSet_ExpansionBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Expansion) -> ValueSet_ExpansionBuilder {
+        ValueSet_ExpansionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_ExpansionBuilder {
         let mut __value: Value = json!({});
         return ValueSet_ExpansionBuilder { value: __value };
+    }
+
+    pub fn _identifier<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["_identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _offset<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["_offset"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timestamp<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["_timestamp"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _total<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["_total"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contains<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Contains>,
+    ) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["contains"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["identifier"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn offset<'a>(&'a mut self, val: i64) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["offset"] = json!(val);
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Parameter>,
+    ) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn timestamp<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["timestamp"] = json!(val);
+        return self;
+    }
+
+    pub fn total<'a>(&'a mut self, val: i64) -> &'a mut ValueSet_ExpansionBuilder {
+        self.value["total"] = json!(val);
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct ExplanationOfBenefit_Payee<'a> {
 }
 
 impl ExplanationOfBenefit_Payee<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Payee {
+        ExplanationOfBenefit_Payee {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -116,7 +126,7 @@ impl ExplanationOfBenefit_Payee<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_PayeeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_PayeeBuilder {
@@ -126,8 +136,49 @@ impl ExplanationOfBenefit_PayeeBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Payee) -> ExplanationOfBenefit_PayeeBuilder {
+        ExplanationOfBenefit_PayeeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExplanationOfBenefit_PayeeBuilder {
         let mut __value: Value = json!({});
         return ExplanationOfBenefit_PayeeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_PayeeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_PayeeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_PayeeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn party<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefit_PayeeBuilder {
+        self.value["party"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_PayeeBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

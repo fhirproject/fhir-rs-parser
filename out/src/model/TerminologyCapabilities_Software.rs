@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_Software<'a> {
 }
 
 impl TerminologyCapabilities_Software<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Software {
+        TerminologyCapabilities_Software {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -133,7 +143,7 @@ impl TerminologyCapabilities_Software<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_SoftwareBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_SoftwareBuilder {
@@ -143,8 +153,64 @@ impl TerminologyCapabilities_SoftwareBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Software,
+    ) -> TerminologyCapabilities_SoftwareBuilder {
+        TerminologyCapabilities_SoftwareBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_SoftwareBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_SoftwareBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_SoftwareBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

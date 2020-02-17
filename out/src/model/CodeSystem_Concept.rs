@@ -18,6 +18,16 @@ pub struct CodeSystem_Concept<'a> {
 }
 
 impl CodeSystem_Concept<'_> {
+    pub fn new(value: &Value) -> CodeSystem_Concept {
+        CodeSystem_Concept {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -224,7 +234,7 @@ impl CodeSystem_Concept<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystem_ConceptBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystem_ConceptBuilder {
@@ -234,8 +244,87 @@ impl CodeSystem_ConceptBuilder {
         }
     }
 
+    pub fn with(existing: CodeSystem_Concept) -> CodeSystem_ConceptBuilder {
+        CodeSystem_ConceptBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystem_ConceptBuilder {
         let mut __value: Value = json!({});
         return CodeSystem_ConceptBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _definition<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["_definition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn concept<'a>(
+        &'a mut self,
+        val: Vec<CodeSystem_Concept>,
+    ) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["concept"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn definition<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["definition"] = json!(val);
+        return self;
+    }
+
+    pub fn designation<'a>(
+        &'a mut self,
+        val: Vec<CodeSystem_Designation>,
+    ) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["designation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn property<'a>(
+        &'a mut self,
+        val: Vec<CodeSystem_Property1>,
+    ) -> &'a mut CodeSystem_ConceptBuilder {
+        self.value["property"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

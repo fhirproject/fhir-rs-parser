@@ -15,6 +15,16 @@ pub struct MedicinalProductPharmaceutical_TargetSpecies<'a> {
 }
 
 impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPharmaceutical_TargetSpecies {
+        MedicinalProductPharmaceutical_TargetSpecies {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Coded expression for the species.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -116,7 +126,7 @@ impl MedicinalProductPharmaceutical_TargetSpecies<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_TargetSpeciesBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPharmaceutical_TargetSpeciesBuilder {
@@ -126,9 +136,51 @@ impl MedicinalProductPharmaceutical_TargetSpeciesBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductPharmaceutical_TargetSpecies,
+    ) -> MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> MedicinalProductPharmaceutical_TargetSpeciesBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return MedicinalProductPharmaceutical_TargetSpeciesBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn withdrawal_period<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductPharmaceutical_WithdrawalPeriod>,
+    ) -> &'a mut MedicinalProductPharmaceutical_TargetSpeciesBuilder {
+        self.value["withdrawalPeriod"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

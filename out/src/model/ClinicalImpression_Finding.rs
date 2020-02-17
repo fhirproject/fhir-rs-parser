@@ -22,6 +22,16 @@ pub struct ClinicalImpression_Finding<'a> {
 }
 
 impl ClinicalImpression_Finding<'_> {
+    pub fn new(value: &Value) -> ClinicalImpression_Finding {
+        ClinicalImpression_Finding {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for basis
     pub fn _basis(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_basis") {
@@ -147,7 +157,7 @@ impl ClinicalImpression_Finding<'_> {
 
 #[derive(Debug)]
 pub struct ClinicalImpression_FindingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClinicalImpression_FindingBuilder {
@@ -157,8 +167,62 @@ impl ClinicalImpression_FindingBuilder {
         }
     }
 
+    pub fn with(existing: ClinicalImpression_Finding) -> ClinicalImpression_FindingBuilder {
+        ClinicalImpression_FindingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ClinicalImpression_FindingBuilder {
         let mut __value: Value = json!({});
         return ClinicalImpression_FindingBuilder { value: __value };
+    }
+
+    pub fn _basis<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["_basis"] = json!(val.value);
+        return self;
+    }
+
+    pub fn basis<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["basis"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["itemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn item_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["itemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClinicalImpression_FindingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -24,6 +24,16 @@ pub struct RiskAssessment<'a> {
 }
 
 impl RiskAssessment<'_> {
+    pub fn new(value: &Value) -> RiskAssessment {
+        RiskAssessment {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -522,7 +532,7 @@ impl RiskAssessment<'_> {
 
 #[derive(Debug)]
 pub struct RiskAssessmentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RiskAssessmentBuilder {
@@ -532,9 +542,178 @@ impl RiskAssessmentBuilder {
         }
     }
 
+    pub fn with(existing: RiskAssessment) -> RiskAssessmentBuilder {
+        RiskAssessmentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> RiskAssessmentBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return RiskAssessmentBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessmentBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessmentBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mitigation<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessmentBuilder {
+        self.value["_mitigation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessmentBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessmentBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Reference) -> &'a mut RiskAssessmentBuilder {
+        self.value["basedOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn basis<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut RiskAssessmentBuilder {
+        self.value["basis"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut RiskAssessmentBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: Reference) -> &'a mut RiskAssessmentBuilder {
+        self.value["condition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut RiskAssessmentBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut RiskAssessmentBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RiskAssessmentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut RiskAssessmentBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut RiskAssessmentBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut RiskAssessmentBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn mitigation<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["mitigation"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskAssessmentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut RiskAssessmentBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut RiskAssessmentBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn parent<'a>(&'a mut self, val: Reference) -> &'a mut RiskAssessmentBuilder {
+        self.value["parent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Reference) -> &'a mut RiskAssessmentBuilder {
+        self.value["performer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn prediction<'a>(
+        &'a mut self,
+        val: Vec<RiskAssessment_Prediction>,
+    ) -> &'a mut RiskAssessmentBuilder {
+        self.value["prediction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut RiskAssessmentBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut RiskAssessmentBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessmentBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut RiskAssessmentBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

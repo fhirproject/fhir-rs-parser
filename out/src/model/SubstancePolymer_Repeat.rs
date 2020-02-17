@@ -16,6 +16,16 @@ pub struct SubstancePolymer_Repeat<'a> {
 }
 
 impl SubstancePolymer_Repeat<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_Repeat {
+        SubstancePolymer_Repeat {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for averageMolecularFormula
     pub fn _average_molecular_formula(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_averageMolecularFormula") {
@@ -167,7 +177,7 @@ impl SubstancePolymer_Repeat<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_RepeatBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_RepeatBuilder {
@@ -177,8 +187,81 @@ impl SubstancePolymer_RepeatBuilder {
         }
     }
 
+    pub fn with(existing: SubstancePolymer_Repeat) -> SubstancePolymer_RepeatBuilder {
+        SubstancePolymer_RepeatBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_RepeatBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_RepeatBuilder { value: __value };
+    }
+
+    pub fn _average_molecular_formula<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["_averageMolecularFormula"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_units<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["_numberOfUnits"] = json!(val.value);
+        return self;
+    }
+
+    pub fn average_molecular_formula<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["averageMolecularFormula"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number_of_units<'a>(&'a mut self, val: i64) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["numberOfUnits"] = json!(val);
+        return self;
+    }
+
+    pub fn repeat_unit<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_RepeatUnit>,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["repeatUnit"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn repeat_unit_amount_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_RepeatBuilder {
+        self.value["repeatUnitAmountType"] = json!(val.value);
+        return self;
     }
 }

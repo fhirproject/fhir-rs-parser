@@ -16,6 +16,16 @@ pub struct Count<'a> {
 }
 
 impl Count<'_> {
+    pub fn new(value: &Value) -> Count {
+        Count {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -179,7 +189,7 @@ impl Count<'_> {
 
 #[derive(Debug)]
 pub struct CountBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CountBuilder {
@@ -189,9 +199,75 @@ impl CountBuilder {
         }
     }
 
+    pub fn with(existing: Count) -> CountBuilder {
+        CountBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CountBuilder {
         let mut __value: Value = json!({});
         return CountBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CountBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comparator<'a>(&'a mut self, val: Element) -> &'a mut CountBuilder {
+        self.value["_comparator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut CountBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _unit<'a>(&'a mut self, val: Element) -> &'a mut CountBuilder {
+        self.value["_unit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut CountBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CountBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn comparator<'a>(&'a mut self, val: CountComparator) -> &'a mut CountBuilder {
+        self.value["comparator"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CountBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CountBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut CountBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn unit<'a>(&'a mut self, val: &str) -> &'a mut CountBuilder {
+        self.value["unit"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: f64) -> &'a mut CountBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

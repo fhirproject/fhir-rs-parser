@@ -31,6 +31,16 @@ pub struct TestScript<'a> {
 }
 
 impl TestScript<'_> {
+    pub fn new(value: &Value) -> TestScript {
+        TestScript {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -739,7 +749,7 @@ impl TestScript<'_> {
 
 #[derive(Debug)]
 pub struct TestScriptBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScriptBuilder {
@@ -749,9 +759,244 @@ impl TestScriptBuilder {
         }
     }
 
+    pub fn with(existing: TestScript) -> TestScriptBuilder {
+        TestScriptBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScriptBuilder {
         let mut __value: Value = json!({});
         return TestScriptBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut TestScriptBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut TestScriptBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut TestScriptBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn destination<'a>(
+        &'a mut self,
+        val: Vec<TestScript_Destination>,
+    ) -> &'a mut TestScriptBuilder {
+        self.value["destination"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut TestScriptBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScriptBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fixture<'a>(&'a mut self, val: Vec<TestScript_Fixture>) -> &'a mut TestScriptBuilder {
+        self.value["fixture"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut TestScriptBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut TestScriptBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut TestScriptBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn metadata<'a>(&'a mut self, val: TestScript_Metadata) -> &'a mut TestScriptBuilder {
+        self.value["metadata"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScriptBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn origin<'a>(&'a mut self, val: Vec<TestScript_Origin>) -> &'a mut TestScriptBuilder {
+        self.value["origin"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut TestScriptBuilder {
+        self.value["profile"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn setup<'a>(&'a mut self, val: TestScript_Setup) -> &'a mut TestScriptBuilder {
+        self.value["setup"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: TestScriptStatus) -> &'a mut TestScriptBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn teardown<'a>(&'a mut self, val: TestScript_Teardown) -> &'a mut TestScriptBuilder {
+        self.value["teardown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn test<'a>(&'a mut self, val: Vec<TestScript_Test>) -> &'a mut TestScriptBuilder {
+        self.value["test"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut TestScriptBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut TestScriptBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn variable<'a>(&'a mut self, val: Vec<TestScript_Variable>) -> &'a mut TestScriptBuilder {
+        self.value["variable"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut TestScriptBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

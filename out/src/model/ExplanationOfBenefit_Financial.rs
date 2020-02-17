@@ -18,6 +18,16 @@ pub struct ExplanationOfBenefit_Financial<'a> {
 }
 
 impl ExplanationOfBenefit_Financial<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Financial {
+        ExplanationOfBenefit_Financial {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allowedString
     pub fn _allowed_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowedString") {
@@ -199,7 +209,7 @@ impl ExplanationOfBenefit_Financial<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_FinancialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_FinancialBuilder {
@@ -209,9 +219,101 @@ impl ExplanationOfBenefit_FinancialBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Financial) -> ExplanationOfBenefit_FinancialBuilder {
+        ExplanationOfBenefit_FinancialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> ExplanationOfBenefit_FinancialBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return ExplanationOfBenefit_FinancialBuilder { value: __value };
+    }
+
+    pub fn _allowed_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["_allowedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _allowed_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["_allowedUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _used_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["_usedUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_money<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["allowedMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["allowedString"] = json!(val);
+        return self;
+    }
+
+    pub fn allowed_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["allowedUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn used_money<'a>(
+        &'a mut self,
+        val: Money,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["usedMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn used_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ExplanationOfBenefit_FinancialBuilder {
+        self.value["usedUnsignedInt"] = json!(val);
+        return self;
     }
 }

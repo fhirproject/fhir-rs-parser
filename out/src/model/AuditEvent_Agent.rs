@@ -20,6 +20,16 @@ pub struct AuditEvent_Agent<'a> {
 }
 
 impl AuditEvent_Agent<'_> {
+    pub fn new(value: &Value) -> AuditEvent_Agent {
+        AuditEvent_Agent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for altId
     pub fn _alt_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_altId") {
@@ -319,7 +329,7 @@ impl AuditEvent_Agent<'_> {
 
 #[derive(Debug)]
 pub struct AuditEvent_AgentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEvent_AgentBuilder {
@@ -329,8 +339,111 @@ impl AuditEvent_AgentBuilder {
         }
     }
 
+    pub fn with(existing: AuditEvent_Agent) -> AuditEvent_AgentBuilder {
+        AuditEvent_AgentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AuditEvent_AgentBuilder {
         let mut __value: Value = json!({});
         return AuditEvent_AgentBuilder { value: __value };
+    }
+
+    pub fn _alt_id<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["_altId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _policy<'a>(&'a mut self, val: Vec<Element>) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["_policy"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _requestor<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["_requestor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alt_id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["altId"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn media<'a>(&'a mut self, val: Coding) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["media"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn network<'a>(&'a mut self, val: AuditEvent_Network) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["network"] = json!(val.value);
+        return self;
+    }
+
+    pub fn policy<'a>(&'a mut self, val: Vec<&str>) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["policy"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose_of_use<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["purposeOfUse"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requestor<'a>(&'a mut self, val: bool) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["requestor"] = json!(val);
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["role"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn who<'a>(&'a mut self, val: Reference) -> &'a mut AuditEvent_AgentBuilder {
+        self.value["who"] = json!(val.value);
+        return self;
     }
 }

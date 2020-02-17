@@ -16,6 +16,16 @@ pub struct Measure_Component<'a> {
 }
 
 impl Measure_Component<'_> {
+    pub fn new(value: &Value) -> Measure_Component {
+        Measure_Component {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -138,7 +148,7 @@ impl Measure_Component<'_> {
 
 #[derive(Debug)]
 pub struct Measure_ComponentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Measure_ComponentBuilder {
@@ -148,9 +158,49 @@ impl Measure_ComponentBuilder {
         }
     }
 
+    pub fn with(existing: Measure_Component) -> Measure_ComponentBuilder {
+        Measure_ComponentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(criteria: Expression) -> Measure_ComponentBuilder {
         let mut __value: Value = json!({});
         __value["criteria"] = json!(criteria.value);
         return Measure_ComponentBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut Measure_ComponentBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Measure_ComponentBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut Measure_ComponentBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Measure_ComponentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Measure_ComponentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Measure_ComponentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

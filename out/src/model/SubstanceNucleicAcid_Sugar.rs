@@ -17,6 +17,16 @@ pub struct SubstanceNucleicAcid_Sugar<'a> {
 }
 
 impl SubstanceNucleicAcid_Sugar<'_> {
+    pub fn new(value: &Value) -> SubstanceNucleicAcid_Sugar {
+        SubstanceNucleicAcid_Sugar {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -152,7 +162,7 @@ impl SubstanceNucleicAcid_Sugar<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceNucleicAcid_SugarBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceNucleicAcid_SugarBuilder {
@@ -162,8 +172,67 @@ impl SubstanceNucleicAcid_SugarBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceNucleicAcid_Sugar) -> SubstanceNucleicAcid_SugarBuilder {
+        SubstanceNucleicAcid_SugarBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceNucleicAcid_SugarBuilder {
         let mut __value: Value = json!({});
         return SubstanceNucleicAcid_SugarBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _residue_site<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["_residueSite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn residue_site<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_SugarBuilder {
+        self.value["residueSite"] = json!(val);
+        return self;
     }
 }

@@ -18,6 +18,16 @@ pub struct ExplanationOfBenefit_Related<'a> {
 }
 
 impl ExplanationOfBenefit_Related<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Related {
+        ExplanationOfBenefit_Related {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Reference to a related claim.
     pub fn claim(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("claim") {
@@ -133,7 +143,7 @@ impl ExplanationOfBenefit_Related<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_RelatedBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_RelatedBuilder {
@@ -143,8 +153,57 @@ impl ExplanationOfBenefit_RelatedBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Related) -> ExplanationOfBenefit_RelatedBuilder {
+        ExplanationOfBenefit_RelatedBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExplanationOfBenefit_RelatedBuilder {
         let mut __value: Value = json!({});
         return ExplanationOfBenefit_RelatedBuilder { value: __value };
+    }
+
+    pub fn claim<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["claim"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relationship<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_RelatedBuilder {
+        self.value["relationship"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_Parameter<'a> {
 }
 
 impl TerminologyCapabilities_Parameter<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Parameter {
+        TerminologyCapabilities_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -133,7 +143,7 @@ impl TerminologyCapabilities_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_ParameterBuilder {
@@ -143,8 +153,67 @@ impl TerminologyCapabilities_ParameterBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Parameter,
+    ) -> TerminologyCapabilities_ParameterBuilder {
+        TerminologyCapabilities_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_ParameterBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_ParameterBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_ParameterBuilder {
+        self.value["name"] = json!(val);
+        return self;
     }
 }

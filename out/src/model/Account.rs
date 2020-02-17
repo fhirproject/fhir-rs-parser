@@ -24,6 +24,16 @@ pub struct Account<'a> {
 }
 
 impl Account<'_> {
+    pub fn new(value: &Value) -> Account {
+        Account {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -418,7 +428,7 @@ impl Account<'_> {
 
 #[derive(Debug)]
 pub struct AccountBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AccountBuilder {
@@ -428,9 +438,136 @@ impl AccountBuilder {
         }
     }
 
+    pub fn with(existing: Account) -> AccountBuilder {
+        AccountBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AccountBuilder {
         let mut __value: Value = json!({});
         return AccountBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut AccountBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut AccountBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AccountBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut AccountBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut AccountBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut AccountBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coverage<'a>(&'a mut self, val: Vec<Account_Coverage>) -> &'a mut AccountBuilder {
+        self.value["coverage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut AccountBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AccountBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn guarantor<'a>(&'a mut self, val: Vec<Account_Guarantor>) -> &'a mut AccountBuilder {
+        self.value["guarantor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AccountBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut AccountBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut AccountBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AccountBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut AccountBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AccountBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut AccountBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn owner<'a>(&'a mut self, val: Reference) -> &'a mut AccountBuilder {
+        self.value["owner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Reference) -> &'a mut AccountBuilder {
+        self.value["partOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn service_period<'a>(&'a mut self, val: Period) -> &'a mut AccountBuilder {
+        self.value["servicePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: AccountStatus) -> &'a mut AccountBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut AccountBuilder {
+        self.value["subject"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut AccountBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AccountBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }
 

@@ -17,6 +17,16 @@ pub struct GraphDefinition_Link<'a> {
 }
 
 impl GraphDefinition_Link<'_> {
+    pub fn new(value: &Value) -> GraphDefinition_Link {
+        GraphDefinition_Link {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -225,7 +235,7 @@ impl GraphDefinition_Link<'_> {
 
 #[derive(Debug)]
 pub struct GraphDefinition_LinkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GraphDefinition_LinkBuilder {
@@ -235,8 +245,91 @@ impl GraphDefinition_LinkBuilder {
         }
     }
 
+    pub fn with(existing: GraphDefinition_Link) -> GraphDefinition_LinkBuilder {
+        GraphDefinition_LinkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> GraphDefinition_LinkBuilder {
         let mut __value: Value = json!({});
         return GraphDefinition_LinkBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _slice_name<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["_sliceName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: i64) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn slice_name<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["sliceName"] = json!(val);
+        return self;
+    }
+
+    pub fn target<'a>(
+        &'a mut self,
+        val: Vec<GraphDefinition_Target>,
+    ) -> &'a mut GraphDefinition_LinkBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

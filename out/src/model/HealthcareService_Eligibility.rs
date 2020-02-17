@@ -15,6 +15,16 @@ pub struct HealthcareService_Eligibility<'a> {
 }
 
 impl HealthcareService_Eligibility<'_> {
+    pub fn new(value: &Value) -> HealthcareService_Eligibility {
+        HealthcareService_Eligibility {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -123,7 +133,7 @@ impl HealthcareService_Eligibility<'_> {
 
 #[derive(Debug)]
 pub struct HealthcareService_EligibilityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl HealthcareService_EligibilityBuilder {
@@ -133,8 +143,57 @@ impl HealthcareService_EligibilityBuilder {
         }
     }
 
+    pub fn with(existing: HealthcareService_Eligibility) -> HealthcareService_EligibilityBuilder {
+        HealthcareService_EligibilityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> HealthcareService_EligibilityBuilder {
         let mut __value: Value = json!({});
         return HealthcareService_EligibilityBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut HealthcareService_EligibilityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

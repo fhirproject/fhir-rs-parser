@@ -18,6 +18,16 @@ pub struct Encounter_Location<'a> {
 }
 
 impl Encounter_Location<'_> {
+    pub fn new(value: &Value) -> Encounter_Location {
+        Encounter_Location {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
@@ -154,7 +164,7 @@ impl Encounter_Location<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_LocationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_LocationBuilder {
@@ -164,10 +174,61 @@ impl Encounter_LocationBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_Location) -> Encounter_LocationBuilder {
+        Encounter_LocationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(location: Reference) -> Encounter_LocationBuilder {
         let mut __value: Value = json!({});
         __value["location"] = json!(location.value);
         return Encounter_LocationBuilder { value: __value };
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut Encounter_LocationBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Encounter_LocationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_LocationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_LocationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Encounter_LocationBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn physical_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Encounter_LocationBuilder {
+        self.value["physicalType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: Encounter_LocationStatus,
+    ) -> &'a mut Encounter_LocationBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
     }
 }
 

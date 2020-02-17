@@ -18,6 +18,16 @@ pub struct AuditEvent_Source<'a> {
 }
 
 impl AuditEvent_Source<'_> {
+    pub fn new(value: &Value) -> AuditEvent_Source {
+        AuditEvent_Source {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for site
     pub fn _site(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_site") {
@@ -141,7 +151,7 @@ impl AuditEvent_Source<'_> {
 
 #[derive(Debug)]
 pub struct AuditEvent_SourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEvent_SourceBuilder {
@@ -151,9 +161,49 @@ impl AuditEvent_SourceBuilder {
         }
     }
 
+    pub fn with(existing: AuditEvent_Source) -> AuditEvent_SourceBuilder {
+        AuditEvent_SourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(observer: Reference) -> AuditEvent_SourceBuilder {
         let mut __value: Value = json!({});
         __value["observer"] = json!(observer.value);
         return AuditEvent_SourceBuilder { value: __value };
+    }
+
+    pub fn _site<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["_site"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn site<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["site"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut AuditEvent_SourceBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

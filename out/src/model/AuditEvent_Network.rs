@@ -16,6 +16,16 @@ pub struct AuditEvent_Network<'a> {
 }
 
 impl AuditEvent_Network<'_> {
+    pub fn new(value: &Value) -> AuditEvent_Network {
+        AuditEvent_Network {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for address
     pub fn _address(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_address") {
@@ -135,7 +145,7 @@ impl AuditEvent_Network<'_> {
 
 #[derive(Debug)]
 pub struct AuditEvent_NetworkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEvent_NetworkBuilder {
@@ -145,9 +155,57 @@ impl AuditEvent_NetworkBuilder {
         }
     }
 
+    pub fn with(existing: AuditEvent_Network) -> AuditEvent_NetworkBuilder {
+        AuditEvent_NetworkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AuditEvent_NetworkBuilder {
         let mut __value: Value = json!({});
         return AuditEvent_NetworkBuilder { value: __value };
+    }
+
+    pub fn _address<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["_address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["address"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: AuditEvent_NetworkType,
+    ) -> &'a mut AuditEvent_NetworkBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

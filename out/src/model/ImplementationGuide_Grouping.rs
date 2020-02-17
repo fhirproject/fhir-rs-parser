@@ -17,6 +17,16 @@ pub struct ImplementationGuide_Grouping<'a> {
 }
 
 impl ImplementationGuide_Grouping<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Grouping {
+        ImplementationGuide_Grouping {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -135,7 +145,7 @@ impl ImplementationGuide_Grouping<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_GroupingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_GroupingBuilder {
@@ -145,8 +155,59 @@ impl ImplementationGuide_GroupingBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Grouping) -> ImplementationGuide_GroupingBuilder {
+        ImplementationGuide_GroupingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ImplementationGuide_GroupingBuilder {
         let mut __value: Value = json!({});
         return ImplementationGuide_GroupingBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_GroupingBuilder {
+        self.value["name"] = json!(val);
+        return self;
     }
 }

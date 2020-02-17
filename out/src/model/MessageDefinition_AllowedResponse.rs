@@ -16,6 +16,16 @@ pub struct MessageDefinition_AllowedResponse<'a> {
 }
 
 impl MessageDefinition_AllowedResponse<'_> {
+    pub fn new(value: &Value) -> MessageDefinition_AllowedResponse {
+        MessageDefinition_AllowedResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for situation
     pub fn _situation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_situation") {
@@ -116,7 +126,7 @@ impl MessageDefinition_AllowedResponse<'_> {
 
 #[derive(Debug)]
 pub struct MessageDefinition_AllowedResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageDefinition_AllowedResponseBuilder {
@@ -126,9 +136,55 @@ impl MessageDefinition_AllowedResponseBuilder {
         }
     }
 
+    pub fn with(
+        existing: MessageDefinition_AllowedResponse,
+    ) -> MessageDefinition_AllowedResponseBuilder {
+        MessageDefinition_AllowedResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(message: &str) -> MessageDefinition_AllowedResponseBuilder {
         let mut __value: Value = json!({});
         __value["message"] = json!(message);
         return MessageDefinition_AllowedResponseBuilder { value: __value };
+    }
+
+    pub fn _situation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MessageDefinition_AllowedResponseBuilder {
+        self.value["_situation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageDefinition_AllowedResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinition_AllowedResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageDefinition_AllowedResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn situation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MessageDefinition_AllowedResponseBuilder {
+        self.value["situation"] = json!(val);
+        return self;
     }
 }

@@ -22,6 +22,16 @@ pub struct CapabilityStatement_Rest<'a> {
 }
 
 impl CapabilityStatement_Rest<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Rest {
+        CapabilityStatement_Rest {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -255,7 +265,7 @@ impl CapabilityStatement_Rest<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_RestBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_RestBuilder {
@@ -265,9 +275,111 @@ impl CapabilityStatement_RestBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement_Rest) -> CapabilityStatement_RestBuilder {
+        CapabilityStatement_RestBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_RestBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_RestBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn compartment<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["compartment"] = json!(val);
+        return self;
+    }
+
+    pub fn documentation<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn interaction<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Interaction1>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["interaction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn mode<'a>(
+        &'a mut self,
+        val: CapabilityStatement_RestMode,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Operation>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["operation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn resource<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_Resource>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["resource"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn search_param<'a>(
+        &'a mut self,
+        val: Vec<CapabilityStatement_SearchParam>,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["searchParam"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn security<'a>(
+        &'a mut self,
+        val: CapabilityStatement_Security,
+    ) -> &'a mut CapabilityStatement_RestBuilder {
+        self.value["security"] = json!(val.value);
+        return self;
     }
 }
 

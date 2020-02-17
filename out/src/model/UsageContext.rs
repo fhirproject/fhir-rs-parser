@@ -21,6 +21,16 @@ pub struct UsageContext<'a> {
 }
 
 impl UsageContext<'_> {
+    pub fn new(value: &Value) -> UsageContext {
+        UsageContext {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A code that identifies the type of context being specified by this usage
     /// context.
     pub fn code(&self) -> Coding {
@@ -136,7 +146,7 @@ impl UsageContext<'_> {
 
 #[derive(Debug)]
 pub struct UsageContextBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl UsageContextBuilder {
@@ -146,9 +156,48 @@ impl UsageContextBuilder {
         }
     }
 
+    pub fn with(existing: UsageContext) -> UsageContextBuilder {
+        UsageContextBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: Coding) -> UsageContextBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return UsageContextBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut UsageContextBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut UsageContextBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut UsageContextBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut UsageContextBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut UsageContextBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(&'a mut self, val: Reference) -> &'a mut UsageContextBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
     }
 }

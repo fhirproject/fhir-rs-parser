@@ -22,6 +22,16 @@ pub struct CatalogEntry<'a> {
 }
 
 impl CatalogEntry<'_> {
+    pub fn new(value: &Value) -> CatalogEntry {
+        CatalogEntry {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -455,7 +465,7 @@ impl CatalogEntry<'_> {
 
 #[derive(Debug)]
 pub struct CatalogEntryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CatalogEntryBuilder {
@@ -465,10 +475,168 @@ impl CatalogEntryBuilder {
         }
     }
 
+    pub fn with(existing: CatalogEntry) -> CatalogEntryBuilder {
+        CatalogEntryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(referenced_item: Reference) -> CatalogEntryBuilder {
         let mut __value: Value = json!({});
         __value["referencedItem"] = json!(referenced_item.value);
         return CatalogEntryBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_updated<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_lastUpdated"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _orderable<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_orderable"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _valid_to<'a>(&'a mut self, val: Element) -> &'a mut CatalogEntryBuilder {
+        self.value["_validTo"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additional_characteristic<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["additionalCharacteristic"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn additional_classification<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["additionalClassification"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn additional_identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["additionalIdentifier"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn classification<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["classification"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut CatalogEntryBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CatalogEntryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut CatalogEntryBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntryBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntryBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_updated<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntryBuilder {
+        self.value["lastUpdated"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CatalogEntryBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn orderable<'a>(&'a mut self, val: bool) -> &'a mut CatalogEntryBuilder {
+        self.value["orderable"] = json!(val);
+        return self;
+    }
+
+    pub fn related_entry<'a>(
+        &'a mut self,
+        val: Vec<CatalogEntry_RelatedEntry>,
+    ) -> &'a mut CatalogEntryBuilder {
+        self.value["relatedEntry"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: CatalogEntryStatus) -> &'a mut CatalogEntryBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CatalogEntryBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut CatalogEntryBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn valid_to<'a>(&'a mut self, val: &str) -> &'a mut CatalogEntryBuilder {
+        self.value["validTo"] = json!(val);
+        return self;
+    }
+
+    pub fn validity_period<'a>(&'a mut self, val: Period) -> &'a mut CatalogEntryBuilder {
+        self.value["validityPeriod"] = json!(val.value);
+        return self;
     }
 }
 

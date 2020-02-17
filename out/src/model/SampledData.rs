@@ -16,6 +16,16 @@ pub struct SampledData<'a> {
 }
 
 impl SampledData<'_> {
+    pub fn new(value: &Value) -> SampledData {
+        SampledData {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
@@ -218,7 +228,7 @@ impl SampledData<'_> {
 
 #[derive(Debug)]
 pub struct SampledDataBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SampledDataBuilder {
@@ -228,9 +238,85 @@ impl SampledDataBuilder {
         }
     }
 
+    pub fn with(existing: SampledData) -> SampledDataBuilder {
+        SampledDataBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(origin: Quantity) -> SampledDataBuilder {
         let mut __value: Value = json!({});
         __value["origin"] = json!(origin.value);
         return SampledDataBuilder { value: __value };
+    }
+
+    pub fn _data<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_data"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _dimensions<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_dimensions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _factor<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _lower_limit<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_lowerLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _period<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _upper_limit<'a>(&'a mut self, val: Element) -> &'a mut SampledDataBuilder {
+        self.value["_upperLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: &str) -> &'a mut SampledDataBuilder {
+        self.value["data"] = json!(val);
+        return self;
+    }
+
+    pub fn dimensions<'a>(&'a mut self, val: i64) -> &'a mut SampledDataBuilder {
+        self.value["dimensions"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SampledDataBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(&'a mut self, val: f64) -> &'a mut SampledDataBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SampledDataBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn lower_limit<'a>(&'a mut self, val: f64) -> &'a mut SampledDataBuilder {
+        self.value["lowerLimit"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: f64) -> &'a mut SampledDataBuilder {
+        self.value["period"] = json!(val);
+        return self;
+    }
+
+    pub fn upper_limit<'a>(&'a mut self, val: f64) -> &'a mut SampledDataBuilder {
+        self.value["upperLimit"] = json!(val);
+        return self;
     }
 }

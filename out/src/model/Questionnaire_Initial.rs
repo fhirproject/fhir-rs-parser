@@ -20,6 +20,16 @@ pub struct Questionnaire_Initial<'a> {
 }
 
 impl Questionnaire_Initial<'_> {
+    pub fn new(value: &Value) -> Questionnaire_Initial {
+        Questionnaire_Initial {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
@@ -341,7 +351,7 @@ impl Questionnaire_Initial<'_> {
 
 #[derive(Debug)]
 pub struct Questionnaire_InitialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Questionnaire_InitialBuilder {
@@ -351,8 +361,145 @@ impl Questionnaire_InitialBuilder {
         }
     }
 
+    pub fn with(existing: Questionnaire_Initial) -> Questionnaire_InitialBuilder {
+        Questionnaire_InitialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Questionnaire_InitialBuilder {
         let mut __value: Value = json!({});
         return Questionnaire_InitialBuilder { value: __value };
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut Questionnaire_InitialBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
     }
 }

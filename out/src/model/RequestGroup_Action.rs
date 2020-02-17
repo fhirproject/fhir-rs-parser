@@ -25,6 +25,16 @@ pub struct RequestGroup_Action<'a> {
 }
 
 impl RequestGroup_Action<'_> {
+    pub fn new(value: &Value) -> RequestGroup_Action {
+        RequestGroup_Action {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for cardinalityBehavior
     pub fn _cardinality_behavior(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cardinalityBehavior") {
@@ -586,7 +596,7 @@ impl RequestGroup_Action<'_> {
 
 #[derive(Debug)]
 pub struct RequestGroup_ActionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RequestGroup_ActionBuilder {
@@ -596,8 +606,238 @@ impl RequestGroup_ActionBuilder {
         }
     }
 
+    pub fn with(existing: RequestGroup_Action) -> RequestGroup_ActionBuilder {
+        RequestGroup_ActionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RequestGroup_ActionBuilder {
         let mut __value: Value = json!({});
         return RequestGroup_ActionBuilder { value: __value };
+    }
+
+    pub fn _cardinality_behavior<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_cardinalityBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _grouping_behavior<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_groupingBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _precheck_behavior<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_precheckBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _prefix<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_prefix"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _required_behavior<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_requiredBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _selection_behavior<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_selectionBehavior"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text_equivalent<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_textEquivalent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date_time<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_timingDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action<'a>(
+        &'a mut self,
+        val: Vec<RequestGroup_Action>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["action"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn cardinality_behavior<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["cardinalityBehavior"] = json!(val);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn condition<'a>(
+        &'a mut self,
+        val: Vec<RequestGroup_Condition>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["condition"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["documentation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn grouping_behavior<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["groupingBehavior"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn participant<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["participant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn precheck_behavior<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["precheckBehavior"] = json!(val);
+        return self;
+    }
+
+    pub fn prefix<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["prefix"] = json!(val);
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn related_action<'a>(
+        &'a mut self,
+        val: Vec<RequestGroup_RelatedAction>,
+    ) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["relatedAction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn required_behavior<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["requiredBehavior"] = json!(val);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: Reference) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["resource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn selection_behavior<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["selectionBehavior"] = json!(val);
+        return self;
+    }
+
+    pub fn text_equivalent<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["textEquivalent"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_age<'a>(&'a mut self, val: Age) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_date_time<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_duration<'a>(&'a mut self, val: Duration) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_period<'a>(&'a mut self, val: Period) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_range<'a>(&'a mut self, val: Range) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_timing<'a>(&'a mut self, val: Timing) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["timingTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut RequestGroup_ActionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

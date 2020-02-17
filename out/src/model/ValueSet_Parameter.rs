@@ -17,6 +17,16 @@ pub struct ValueSet_Parameter<'a> {
 }
 
 impl ValueSet_Parameter<'_> {
+    pub fn new(value: &Value) -> ValueSet_Parameter {
+        ValueSet_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -280,7 +290,7 @@ impl ValueSet_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_ParameterBuilder {
@@ -290,8 +300,113 @@ impl ValueSet_ParameterBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Parameter) -> ValueSet_ParameterBuilder {
+        ValueSet_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_ParameterBuilder {
         let mut __value: Value = json!({});
         return ValueSet_ParameterBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_code<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_code<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_ParameterBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
     }
 }

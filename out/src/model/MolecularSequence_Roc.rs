@@ -14,6 +14,16 @@ pub struct MolecularSequence_Roc<'a> {
 }
 
 impl MolecularSequence_Roc<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_Roc {
+        MolecularSequence_Roc {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for fMeasure
     pub fn _f_measure(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_fMeasure") {
@@ -324,7 +334,7 @@ impl MolecularSequence_Roc<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_RocBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_RocBuilder {
@@ -334,8 +344,109 @@ impl MolecularSequence_RocBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_Roc) -> MolecularSequence_RocBuilder {
+        MolecularSequence_RocBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_RocBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_RocBuilder { value: __value };
+    }
+
+    pub fn _f_measure<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_fMeasure"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _num_f_n<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_numFN"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _num_f_p<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_numFP"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _num_t_p<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_numTP"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _precision<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_precision"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _score<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_score"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _sensitivity<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["_sensitivity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn f_measure<'a>(&'a mut self, val: Vec<f64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["fMeasure"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn num_f_n<'a>(&'a mut self, val: Vec<i64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["numFN"] = json!(val);
+        return self;
+    }
+
+    pub fn num_f_p<'a>(&'a mut self, val: Vec<i64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["numFP"] = json!(val);
+        return self;
+    }
+
+    pub fn num_t_p<'a>(&'a mut self, val: Vec<i64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["numTP"] = json!(val);
+        return self;
+    }
+
+    pub fn precision<'a>(&'a mut self, val: Vec<f64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["precision"] = json!(val);
+        return self;
+    }
+
+    pub fn score<'a>(&'a mut self, val: Vec<i64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["score"] = json!(val);
+        return self;
+    }
+
+    pub fn sensitivity<'a>(&'a mut self, val: Vec<f64>) -> &'a mut MolecularSequence_RocBuilder {
+        self.value["sensitivity"] = json!(val);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Location_Position<'a> {
 }
 
 impl Location_Position<'_> {
+    pub fn new(value: &Value) -> Location_Position {
+        Location_Position {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for altitude
     pub fn _altitude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_altitude") {
@@ -160,7 +170,7 @@ impl Location_Position<'_> {
 
 #[derive(Debug)]
 pub struct Location_PositionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Location_PositionBuilder {
@@ -170,8 +180,63 @@ impl Location_PositionBuilder {
         }
     }
 
+    pub fn with(existing: Location_Position) -> Location_PositionBuilder {
+        Location_PositionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Location_PositionBuilder {
         let mut __value: Value = json!({});
         return Location_PositionBuilder { value: __value };
+    }
+
+    pub fn _altitude<'a>(&'a mut self, val: Element) -> &'a mut Location_PositionBuilder {
+        self.value["_altitude"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _latitude<'a>(&'a mut self, val: Element) -> &'a mut Location_PositionBuilder {
+        self.value["_latitude"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _longitude<'a>(&'a mut self, val: Element) -> &'a mut Location_PositionBuilder {
+        self.value["_longitude"] = json!(val.value);
+        return self;
+    }
+
+    pub fn altitude<'a>(&'a mut self, val: f64) -> &'a mut Location_PositionBuilder {
+        self.value["altitude"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Location_PositionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Location_PositionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn latitude<'a>(&'a mut self, val: f64) -> &'a mut Location_PositionBuilder {
+        self.value["latitude"] = json!(val);
+        return self;
+    }
+
+    pub fn longitude<'a>(&'a mut self, val: f64) -> &'a mut Location_PositionBuilder {
+        self.value["longitude"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Location_PositionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

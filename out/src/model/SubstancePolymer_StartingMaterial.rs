@@ -16,6 +16,16 @@ pub struct SubstancePolymer_StartingMaterial<'a> {
 }
 
 impl SubstancePolymer_StartingMaterial<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_StartingMaterial {
+        SubstancePolymer_StartingMaterial {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for isDefining
     pub fn _is_defining(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isDefining") {
@@ -154,7 +164,7 @@ impl SubstancePolymer_StartingMaterial<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_StartingMaterialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_StartingMaterialBuilder {
@@ -164,8 +174,78 @@ impl SubstancePolymer_StartingMaterialBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstancePolymer_StartingMaterial,
+    ) -> SubstancePolymer_StartingMaterialBuilder {
+        SubstancePolymer_StartingMaterialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_StartingMaterialBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_StartingMaterialBuilder { value: __value };
+    }
+
+    pub fn _is_defining<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["_isDefining"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(
+        &'a mut self,
+        val: SubstanceAmount,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_defining<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["isDefining"] = json!(val);
+        return self;
+    }
+
+    pub fn material<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["material"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_StartingMaterialBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

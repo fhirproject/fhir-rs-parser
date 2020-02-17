@@ -19,6 +19,16 @@ pub struct Medication_Ingredient<'a> {
 }
 
 impl Medication_Ingredient<'_> {
+    pub fn new(value: &Value) -> Medication_Ingredient {
+        Medication_Ingredient {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for isActive
     pub fn _is_active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isActive") {
@@ -162,7 +172,7 @@ impl Medication_Ingredient<'_> {
 
 #[derive(Debug)]
 pub struct Medication_IngredientBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Medication_IngredientBuilder {
@@ -172,8 +182,67 @@ impl Medication_IngredientBuilder {
         }
     }
 
+    pub fn with(existing: Medication_Ingredient) -> Medication_IngredientBuilder {
+        Medication_IngredientBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Medication_IngredientBuilder {
         let mut __value: Value = json!({});
         return Medication_IngredientBuilder { value: __value };
+    }
+
+    pub fn _is_active<'a>(&'a mut self, val: Element) -> &'a mut Medication_IngredientBuilder {
+        self.value["_isActive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Medication_IngredientBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Medication_IngredientBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_active<'a>(&'a mut self, val: bool) -> &'a mut Medication_IngredientBuilder {
+        self.value["isActive"] = json!(val);
+        return self;
+    }
+
+    pub fn item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Medication_IngredientBuilder {
+        self.value["itemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn item_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Medication_IngredientBuilder {
+        self.value["itemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Medication_IngredientBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn strength<'a>(&'a mut self, val: Ratio) -> &'a mut Medication_IngredientBuilder {
+        self.value["strength"] = json!(val.value);
+        return self;
     }
 }

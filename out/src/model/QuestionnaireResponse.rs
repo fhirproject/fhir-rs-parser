@@ -22,6 +22,16 @@ pub struct QuestionnaireResponse<'a> {
 }
 
 impl QuestionnaireResponse<'_> {
+    pub fn new(value: &Value) -> QuestionnaireResponse {
+        QuestionnaireResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authored
     pub fn _authored(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authored") {
@@ -401,7 +411,7 @@ impl QuestionnaireResponse<'_> {
 
 #[derive(Debug)]
 pub struct QuestionnaireResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl QuestionnaireResponseBuilder {
@@ -411,9 +421,146 @@ impl QuestionnaireResponseBuilder {
         }
     }
 
+    pub fn with(existing: QuestionnaireResponse) -> QuestionnaireResponseBuilder {
+        QuestionnaireResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> QuestionnaireResponseBuilder {
         let mut __value: Value = json!({});
         return QuestionnaireResponseBuilder { value: __value };
+    }
+
+    pub fn _authored<'a>(&'a mut self, val: Element) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["_authored"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authored<'a>(&'a mut self, val: &str) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["authored"] = json!(val);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn item<'a>(
+        &'a mut self,
+        val: Vec<QuestionnaireResponse_Item>,
+    ) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["item"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn questionnaire<'a>(&'a mut self, val: &str) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["questionnaire"] = json!(val);
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: Reference) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: QuestionnaireResponseStatus,
+    ) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut QuestionnaireResponseBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

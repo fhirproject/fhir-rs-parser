@@ -16,6 +16,16 @@ pub struct SubstanceReferenceInformation_GeneElement<'a> {
 }
 
 impl SubstanceReferenceInformation_GeneElement<'_> {
+    pub fn new(value: &Value) -> SubstanceReferenceInformation_GeneElement {
+        SubstanceReferenceInformation_GeneElement {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Todo.
     pub fn element(&self) -> Option<Identifier> {
         if let Some(val) = self.value.get("element") {
@@ -134,7 +144,7 @@ impl SubstanceReferenceInformation_GeneElement<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_GeneElementBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceReferenceInformation_GeneElementBuilder {
@@ -144,8 +154,65 @@ impl SubstanceReferenceInformation_GeneElementBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceReferenceInformation_GeneElement,
+    ) -> SubstanceReferenceInformation_GeneElementBuilder {
+        SubstanceReferenceInformation_GeneElementBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceReferenceInformation_GeneElementBuilder {
         let mut __value: Value = json!({});
         return SubstanceReferenceInformation_GeneElementBuilder { value: __value };
+    }
+
+    pub fn element<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["element"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_GeneElementBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

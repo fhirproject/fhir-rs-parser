@@ -27,6 +27,16 @@ pub struct SubstanceSourceMaterial_Author<'a> {
 }
 
 impl SubstanceSourceMaterial_Author<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_Author {
+        SubstanceSourceMaterial_Author {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authorDescription
     pub fn _author_description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authorDescription") {
@@ -140,7 +150,7 @@ impl SubstanceSourceMaterial_Author<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_AuthorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_AuthorBuilder {
@@ -150,8 +160,60 @@ impl SubstanceSourceMaterial_AuthorBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSourceMaterial_Author) -> SubstanceSourceMaterial_AuthorBuilder {
+        SubstanceSourceMaterial_AuthorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_AuthorBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_AuthorBuilder { value: __value };
+    }
+
+    pub fn _author_description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["_authorDescription"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author_description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["authorDescription"] = json!(val);
+        return self;
+    }
+
+    pub fn author_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["authorType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_AuthorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

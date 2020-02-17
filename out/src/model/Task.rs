@@ -25,6 +25,16 @@ pub struct Task<'a> {
 }
 
 impl Task<'_> {
+    pub fn new(value: &Value) -> Task {
+        Task {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authoredOn
     pub fn _authored_on(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authoredOn") {
@@ -782,7 +792,7 @@ impl Task<'_> {
 
 #[derive(Debug)]
 pub struct TaskBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TaskBuilder {
@@ -792,9 +802,256 @@ impl TaskBuilder {
         }
     }
 
+    pub fn with(existing: Task) -> TaskBuilder {
+        TaskBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TaskBuilder {
         let mut __value: Value = json!({});
         return TaskBuilder { value: __value };
+    }
+
+    pub fn _authored_on<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_authoredOn"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_instantiatesUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _intent<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_intent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_modified<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_lastModified"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut TaskBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authored_on<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["authoredOn"] = json!(val);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut TaskBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn business_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut TaskBuilder {
+        self.value["businessStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut TaskBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut TaskBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn execution_period<'a>(&'a mut self, val: Period) -> &'a mut TaskBuilder {
+        self.value["executionPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TaskBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["focus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_for<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["for"] = json!(val.value);
+        return self;
+    }
+
+    pub fn group_identifier<'a>(&'a mut self, val: Identifier) -> &'a mut TaskBuilder {
+        self.value["groupIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut TaskBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn input<'a>(&'a mut self, val: Vec<Task_Input>) -> &'a mut TaskBuilder {
+        self.value["input"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn insurance<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut TaskBuilder {
+        self.value["insurance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn intent<'a>(&'a mut self, val: TaskIntent) -> &'a mut TaskBuilder {
+        self.value["intent"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_modified<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["lastModified"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut TaskBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TaskBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut TaskBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn output<'a>(&'a mut self, val: Vec<Task_Output>) -> &'a mut TaskBuilder {
+        self.value["output"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn owner<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["owner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut TaskBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performer_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut TaskBuilder {
+        self.value["performerType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut TaskBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut TaskBuilder {
+        self.value["reasonCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["reasonReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relevant_history<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut TaskBuilder {
+        self.value["relevantHistory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requester<'a>(&'a mut self, val: Reference) -> &'a mut TaskBuilder {
+        self.value["requester"] = json!(val.value);
+        return self;
+    }
+
+    pub fn restriction<'a>(&'a mut self, val: Task_Restriction) -> &'a mut TaskBuilder {
+        self.value["restriction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: TaskStatus) -> &'a mut TaskBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn status_reason<'a>(&'a mut self, val: CodeableConcept) -> &'a mut TaskBuilder {
+        self.value["statusReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut TaskBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

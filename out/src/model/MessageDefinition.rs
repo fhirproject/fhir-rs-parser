@@ -26,6 +26,16 @@ pub struct MessageDefinition<'a> {
 }
 
 impl MessageDefinition<'_> {
+    pub fn new(value: &Value) -> MessageDefinition {
+        MessageDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for category
     pub fn _category(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_category") {
@@ -759,7 +769,7 @@ impl MessageDefinition<'_> {
 
 #[derive(Debug)]
 pub struct MessageDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageDefinitionBuilder {
@@ -769,9 +779,285 @@ impl MessageDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: MessageDefinition) -> MessageDefinitionBuilder {
+        MessageDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MessageDefinitionBuilder {
         let mut __value: Value = json!({});
         return MessageDefinitionBuilder { value: __value };
+    }
+
+    pub fn _category<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _event_uri<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_eventUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _response_required<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_responseRequired"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut MessageDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_response<'a>(
+        &'a mut self,
+        val: Vec<MessageDefinition_AllowedResponse>,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["allowedResponse"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn base<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["base"] = json!(val);
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: MessageDefinitionCategory,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["category"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut MessageDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut MessageDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn event_coding<'a>(&'a mut self, val: Coding) -> &'a mut MessageDefinitionBuilder {
+        self.value["eventCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event_uri<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["eventUri"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut MessageDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MessageDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(
+        &'a mut self,
+        val: Vec<MessageDefinition_Focus>,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["focus"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn graph<'a>(&'a mut self, val: Vec<&str>) -> &'a mut MessageDefinitionBuilder {
+        self.value["graph"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut MessageDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MessageDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn parent<'a>(&'a mut self, val: Vec<&str>) -> &'a mut MessageDefinitionBuilder {
+        self.value["parent"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn replaces<'a>(&'a mut self, val: Vec<&str>) -> &'a mut MessageDefinitionBuilder {
+        self.value["replaces"] = json!(val);
+        return self;
+    }
+
+    pub fn response_required<'a>(
+        &'a mut self,
+        val: MessageDefinitionResponseRequired,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["responseRequired"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: MessageDefinitionStatus,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MessageDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut MessageDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut MessageDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

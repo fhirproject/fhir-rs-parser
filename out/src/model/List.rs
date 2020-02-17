@@ -22,6 +22,16 @@ pub struct List<'a> {
 }
 
 impl List<'_> {
+    pub fn new(value: &Value) -> List {
+        List {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -450,7 +460,7 @@ impl List<'_> {
 
 #[derive(Debug)]
 pub struct ListBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ListBuilder {
@@ -460,9 +470,151 @@ impl ListBuilder {
         }
     }
 
+    pub fn with(existing: List) -> ListBuilder {
+        ListBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ListBuilder {
         let mut __value: Value = json!({});
         return ListBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ListBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ListBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ListBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ListBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn empty_reason<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ListBuilder {
+        self.value["emptyReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ListBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn entry<'a>(&'a mut self, val: Vec<List_Entry>) -> &'a mut ListBuilder {
+        self.value["entry"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ListBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ListBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ListBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ListBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ListBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ListBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn mode<'a>(&'a mut self, val: ListMode) -> &'a mut ListBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ListBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ListBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn ordered_by<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ListBuilder {
+        self.value["orderedBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: Reference) -> &'a mut ListBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ListStatus) -> &'a mut ListBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut ListBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ListBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ListBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }
 

@@ -18,6 +18,16 @@ pub struct SubstanceSpecification_Name<'a> {
 }
 
 impl SubstanceSpecification_Name<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Name {
+        SubstanceSpecification_Name {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -299,7 +309,7 @@ impl SubstanceSpecification_Name<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_NameBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_NameBuilder {
@@ -309,8 +319,131 @@ impl SubstanceSpecification_NameBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceSpecification_Name) -> SubstanceSpecification_NameBuilder {
+        SubstanceSpecification_NameBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_NameBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_NameBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _preferred<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["_preferred"] = json!(val.value);
+        return self;
+    }
+
+    pub fn domain<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["domain"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["language"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn official<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Official>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["official"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn preferred<'a>(&'a mut self, val: bool) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["preferred"] = json!(val);
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn synonym<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Name>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["synonym"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn translation<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Name>,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["translation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_NameBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

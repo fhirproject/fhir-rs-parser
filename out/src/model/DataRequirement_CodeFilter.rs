@@ -16,6 +16,16 @@ pub struct DataRequirement_CodeFilter<'a> {
 }
 
 impl DataRequirement_CodeFilter<'_> {
+    pub fn new(value: &Value) -> DataRequirement_CodeFilter {
+        DataRequirement_CodeFilter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
@@ -177,7 +187,7 @@ impl DataRequirement_CodeFilter<'_> {
 
 #[derive(Debug)]
 pub struct DataRequirement_CodeFilterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DataRequirement_CodeFilterBuilder {
@@ -187,8 +197,69 @@ impl DataRequirement_CodeFilterBuilder {
         }
     }
 
+    pub fn with(existing: DataRequirement_CodeFilter) -> DataRequirement_CodeFilterBuilder {
+        DataRequirement_CodeFilterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DataRequirement_CodeFilterBuilder {
         let mut __value: Value = json!({});
         return DataRequirement_CodeFilterBuilder { value: __value };
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _search_param<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["_searchParam"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn search_param<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["searchParam"] = json!(val);
+        return self;
+    }
+
+    pub fn value_set<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_CodeFilterBuilder {
+        self.value["valueSet"] = json!(val);
+        return self;
     }
 }

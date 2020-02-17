@@ -17,6 +17,16 @@ pub struct Encounter_Participant<'a> {
 }
 
 impl Encounter_Participant<'_> {
+    pub fn new(value: &Value) -> Encounter_Participant {
+        Encounter_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -136,7 +146,7 @@ impl Encounter_Participant<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_ParticipantBuilder {
@@ -146,8 +156,54 @@ impl Encounter_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_Participant) -> Encounter_ParticipantBuilder {
+        Encounter_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Encounter_ParticipantBuilder {
         let mut __value: Value = json!({});
         return Encounter_ParticipantBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn individual<'a>(&'a mut self, val: Reference) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["individual"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Encounter_ParticipantBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

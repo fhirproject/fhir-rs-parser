@@ -18,6 +18,16 @@ pub struct RiskAssessment_Prediction<'a> {
 }
 
 impl RiskAssessment_Prediction<'_> {
+    pub fn new(value: &Value) -> RiskAssessment_Prediction {
+        RiskAssessment_Prediction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for probabilityDecimal
     pub fn _probability_decimal(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_probabilityDecimal") {
@@ -241,7 +251,7 @@ impl RiskAssessment_Prediction<'_> {
 
 #[derive(Debug)]
 pub struct RiskAssessment_PredictionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RiskAssessment_PredictionBuilder {
@@ -251,8 +261,109 @@ impl RiskAssessment_PredictionBuilder {
         }
     }
 
+    pub fn with(existing: RiskAssessment_Prediction) -> RiskAssessment_PredictionBuilder {
+        RiskAssessment_PredictionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RiskAssessment_PredictionBuilder {
         let mut __value: Value = json!({});
         return RiskAssessment_PredictionBuilder { value: __value };
+    }
+
+    pub fn _probability_decimal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["_probabilityDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _rationale<'a>(&'a mut self, val: Element) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["_rationale"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _relative_risk<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["_relativeRisk"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn probability_decimal<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["probabilityDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn probability_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["probabilityRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn qualitative_risk<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["qualitativeRisk"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rationale<'a>(&'a mut self, val: &str) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["rationale"] = json!(val);
+        return self;
+    }
+
+    pub fn relative_risk<'a>(&'a mut self, val: f64) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["relativeRisk"] = json!(val);
+        return self;
+    }
+
+    pub fn when_period<'a>(&'a mut self, val: Period) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["whenPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn when_range<'a>(&'a mut self, val: Range) -> &'a mut RiskAssessment_PredictionBuilder {
+        self.value["whenRange"] = json!(val.value);
+        return self;
     }
 }

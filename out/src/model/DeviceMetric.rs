@@ -22,6 +22,16 @@ pub struct DeviceMetric<'a> {
 }
 
 impl DeviceMetric<'_> {
+    pub fn new(value: &Value) -> DeviceMetric {
+        DeviceMetric {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for category
     pub fn _category(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_category") {
@@ -404,7 +414,7 @@ impl DeviceMetric<'_> {
 
 #[derive(Debug)]
 pub struct DeviceMetricBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceMetricBuilder {
@@ -414,10 +424,136 @@ impl DeviceMetricBuilder {
         }
     }
 
+    pub fn with(existing: DeviceMetric) -> DeviceMetricBuilder {
+        DeviceMetricBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> DeviceMetricBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return DeviceMetricBuilder { value: __value };
+    }
+
+    pub fn _category<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetricBuilder {
+        self.value["_category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _color<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetricBuilder {
+        self.value["_color"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetricBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetricBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _operational_status<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetricBuilder {
+        self.value["_operationalStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn calibration<'a>(
+        &'a mut self,
+        val: Vec<DeviceMetric_Calibration>,
+    ) -> &'a mut DeviceMetricBuilder {
+        self.value["calibration"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: DeviceMetricCategory) -> &'a mut DeviceMetricBuilder {
+        self.value["category"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn color<'a>(&'a mut self, val: DeviceMetricColor) -> &'a mut DeviceMetricBuilder {
+        self.value["color"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut DeviceMetricBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DeviceMetricBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceMetricBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DeviceMetricBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DeviceMetricBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DeviceMetricBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn measurement_period<'a>(&'a mut self, val: Timing) -> &'a mut DeviceMetricBuilder {
+        self.value["measurementPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DeviceMetricBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceMetricBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operational_status<'a>(
+        &'a mut self,
+        val: DeviceMetricOperationalStatus,
+    ) -> &'a mut DeviceMetricBuilder {
+        self.value["operationalStatus"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn parent<'a>(&'a mut self, val: Reference) -> &'a mut DeviceMetricBuilder {
+        self.value["parent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: Reference) -> &'a mut DeviceMetricBuilder {
+        self.value["source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DeviceMetricBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn unit<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DeviceMetricBuilder {
+        self.value["unit"] = json!(val.value);
+        return self;
     }
 }
 

@@ -17,6 +17,16 @@ pub struct SpecimenDefinition_Container<'a> {
 }
 
 impl SpecimenDefinition_Container<'_> {
+    pub fn new(value: &Value) -> SpecimenDefinition_Container {
+        SpecimenDefinition_Container {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -254,7 +264,7 @@ impl SpecimenDefinition_Container<'_> {
 
 #[derive(Debug)]
 pub struct SpecimenDefinition_ContainerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SpecimenDefinition_ContainerBuilder {
@@ -264,8 +274,126 @@ impl SpecimenDefinition_ContainerBuilder {
         }
     }
 
+    pub fn with(existing: SpecimenDefinition_Container) -> SpecimenDefinition_ContainerBuilder {
+        SpecimenDefinition_ContainerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SpecimenDefinition_ContainerBuilder {
         let mut __value: Value = json!({});
         return SpecimenDefinition_ContainerBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _minimum_volume_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["_minimumVolumeString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _preparation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["_preparation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive<'a>(
+        &'a mut self,
+        val: Vec<SpecimenDefinition_Additive>,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["additive"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn cap<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["cap"] = json!(val.value);
+        return self;
+    }
+
+    pub fn capacity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["capacity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn material<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["material"] = json!(val.value);
+        return self;
+    }
+
+    pub fn minimum_volume_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["minimumVolumeQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn minimum_volume_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["minimumVolumeString"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn preparation<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["preparation"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_ContainerBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

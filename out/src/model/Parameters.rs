@@ -17,6 +17,16 @@ pub struct Parameters<'a> {
 }
 
 impl Parameters<'_> {
+    pub fn new(value: &Value) -> Parameters {
+        Parameters {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -121,7 +131,7 @@ impl Parameters<'_> {
 
 #[derive(Debug)]
 pub struct ParametersBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ParametersBuilder {
@@ -131,8 +141,52 @@ impl ParametersBuilder {
         }
     }
 
+    pub fn with(existing: Parameters) -> ParametersBuilder {
+        ParametersBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ParametersBuilder {
         let mut __value: Value = json!({});
         return ParametersBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ParametersBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ParametersBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ParametersBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ParametersBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ParametersBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ParametersBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<Parameters_Parameter>,
+    ) -> &'a mut ParametersBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

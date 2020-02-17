@@ -15,6 +15,16 @@ pub struct MedicinalProductIngredient_Substance<'a> {
 }
 
 impl MedicinalProductIngredient_Substance<'_> {
+    pub fn new(value: &Value) -> MedicinalProductIngredient_Substance {
+        MedicinalProductIngredient_Substance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The ingredient substance.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -114,7 +124,7 @@ impl MedicinalProductIngredient_Substance<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductIngredient_SubstanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductIngredient_SubstanceBuilder {
@@ -124,9 +134,47 @@ impl MedicinalProductIngredient_SubstanceBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductIngredient_Substance,
+    ) -> MedicinalProductIngredient_SubstanceBuilder {
+        MedicinalProductIngredient_SubstanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> MedicinalProductIngredient_SubstanceBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return MedicinalProductIngredient_SubstanceBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_SubstanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductIngredient_SubstanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_SubstanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn strength<'a>(
+        &'a mut self,
+        val: Vec<MedicinalProductIngredient_Strength>,
+    ) -> &'a mut MedicinalProductIngredient_SubstanceBuilder {
+        self.value["strength"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

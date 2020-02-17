@@ -28,6 +28,16 @@ pub struct MedicationAdministration<'a> {
 }
 
 impl MedicationAdministration<'_> {
+    pub fn new(value: &Value) -> MedicationAdministration {
+        MedicationAdministration {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for effectiveDateTime
     pub fn _effective_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveDateTime") {
@@ -619,7 +629,7 @@ impl MedicationAdministration<'_> {
 
 #[derive(Debug)]
 pub struct MedicationAdministrationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationAdministrationBuilder {
@@ -629,9 +639,248 @@ impl MedicationAdministrationBuilder {
         }
     }
 
+    pub fn with(existing: MedicationAdministration) -> MedicationAdministrationBuilder {
+        MedicationAdministrationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> MedicationAdministrationBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return MedicationAdministrationBuilder { value: __value };
+    }
+
+    pub fn _effective_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["_effectiveDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["_instantiates"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MedicationAdministrationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut MedicationAdministrationBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: Reference) -> &'a mut MedicationAdministrationBuilder {
+        self.value["context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn device<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["device"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn dosage<'a>(
+        &'a mut self,
+        val: MedicationAdministration_Dosage,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["dosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn effective_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["effectiveDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event_history<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["eventHistory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministrationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministrationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["instantiates"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministrationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn medication_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["medicationCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn medication_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["medicationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicationAdministrationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut MedicationAdministrationBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performer<'a>(
+        &'a mut self,
+        val: Vec<MedicationAdministration_Performer>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn request<'a>(&'a mut self, val: Reference) -> &'a mut MedicationAdministrationBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut MedicationAdministrationBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn status_reason<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["statusReason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn supporting_information<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationAdministrationBuilder {
+        self.value["supportingInformation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MedicationAdministrationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

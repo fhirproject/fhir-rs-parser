@@ -18,6 +18,16 @@ pub struct Claim_Diagnosis<'a> {
 }
 
 impl Claim_Diagnosis<'_> {
+    pub fn new(value: &Value) -> Claim_Diagnosis {
+        Claim_Diagnosis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
@@ -194,7 +204,7 @@ impl Claim_Diagnosis<'_> {
 
 #[derive(Debug)]
 pub struct Claim_DiagnosisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_DiagnosisBuilder {
@@ -204,8 +214,74 @@ impl Claim_DiagnosisBuilder {
         }
     }
 
+    pub fn with(existing: Claim_Diagnosis) -> Claim_DiagnosisBuilder {
+        Claim_DiagnosisBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Claim_DiagnosisBuilder {
         let mut __value: Value = json!({});
         return Claim_DiagnosisBuilder { value: __value };
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnosis_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["diagnosisCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnosis_reference<'a>(&'a mut self, val: Reference) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["diagnosisReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_admission<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["onAdmission"] = json!(val.value);
+        return self;
+    }
+
+    pub fn package_code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["packageCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Claim_DiagnosisBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -24,6 +24,16 @@ pub struct CoverageEligibilityResponse<'a> {
 }
 
 impl CoverageEligibilityResponse<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityResponse {
+        CoverageEligibilityResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -504,13 +514,19 @@ impl CoverageEligibilityResponse<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityResponseBuilder {
     pub fn build(&self) -> CoverageEligibilityResponse {
         CoverageEligibilityResponse {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: CoverageEligibilityResponse) -> CoverageEligibilityResponseBuilder {
+        CoverageEligibilityResponseBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -524,6 +540,203 @@ impl CoverageEligibilityResponseBuilder {
         __value["patient"] = json!(patient.value);
         __value["request"] = json!(request.value);
         return CoverageEligibilityResponseBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _disposition<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_disposition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _outcome<'a>(&'a mut self, val: Element) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_auth_ref<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_preAuthRef"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_purpose"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _serviced_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_servicedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn disposition<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["disposition"] = json!(val);
+        return self;
+    }
+
+    pub fn error<'a>(
+        &'a mut self,
+        val: Vec<CoverageEligibilityResponse_Error>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["error"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn form<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["form"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn insurance<'a>(
+        &'a mut self,
+        val: Vec<CoverageEligibilityResponse_Insurance>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["insurance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(
+        &'a mut self,
+        val: CoverageEligibilityResponseOutcome,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["outcome"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn pre_auth_ref<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["preAuthRef"] = json!(val);
+        return self;
+    }
+
+    pub fn requestor<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["requestor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn serviced_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["servicedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn serviced_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["servicedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CoverageEligibilityResponseBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

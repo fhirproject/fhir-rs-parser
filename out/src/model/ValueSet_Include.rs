@@ -19,6 +19,16 @@ pub struct ValueSet_Include<'a> {
 }
 
 impl ValueSet_Include<'_> {
+    pub fn new(value: &Value) -> ValueSet_Include {
+        ValueSet_Include {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for system
     pub fn _system(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_system") {
@@ -196,7 +206,7 @@ impl ValueSet_Include<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_IncludeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_IncludeBuilder {
@@ -206,8 +216,71 @@ impl ValueSet_IncludeBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Include) -> ValueSet_IncludeBuilder {
+        ValueSet_IncludeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_IncludeBuilder {
         let mut __value: Value = json!({});
         return ValueSet_IncludeBuilder { value: __value };
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn concept<'a>(
+        &'a mut self,
+        val: Vec<ValueSet_Concept>,
+    ) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["concept"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn filter<'a>(&'a mut self, val: Vec<ValueSet_Filter>) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["filter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn value_set<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["valueSet"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_IncludeBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

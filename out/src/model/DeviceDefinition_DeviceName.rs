@@ -15,6 +15,16 @@ pub struct DeviceDefinition_DeviceName<'a> {
 }
 
 impl DeviceDefinition_DeviceName<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition_DeviceName {
+        DeviceDefinition_DeviceName {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -133,7 +143,7 @@ impl DeviceDefinition_DeviceName<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinition_DeviceNameBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinition_DeviceNameBuilder {
@@ -143,9 +153,60 @@ impl DeviceDefinition_DeviceNameBuilder {
         }
     }
 
+    pub fn with(existing: DeviceDefinition_DeviceName) -> DeviceDefinition_DeviceNameBuilder {
+        DeviceDefinition_DeviceNameBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DeviceDefinition_DeviceNameBuilder {
         let mut __value: Value = json!({});
         return DeviceDefinition_DeviceNameBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: DeviceDefinition_DeviceNameType,
+    ) -> &'a mut DeviceDefinition_DeviceNameBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

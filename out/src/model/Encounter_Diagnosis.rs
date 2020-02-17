@@ -17,6 +17,16 @@ pub struct Encounter_Diagnosis<'a> {
 }
 
 impl Encounter_Diagnosis<'_> {
+    pub fn new(value: &Value) -> Encounter_Diagnosis {
+        Encounter_Diagnosis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for rank
     pub fn _rank(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rank") {
@@ -139,7 +149,7 @@ impl Encounter_Diagnosis<'_> {
 
 #[derive(Debug)]
 pub struct Encounter_DiagnosisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Encounter_DiagnosisBuilder {
@@ -149,9 +159,49 @@ impl Encounter_DiagnosisBuilder {
         }
     }
 
+    pub fn with(existing: Encounter_Diagnosis) -> Encounter_DiagnosisBuilder {
+        Encounter_DiagnosisBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(condition: Reference) -> Encounter_DiagnosisBuilder {
         let mut __value: Value = json!({});
         __value["condition"] = json!(condition.value);
         return Encounter_DiagnosisBuilder { value: __value };
+    }
+
+    pub fn _rank<'a>(&'a mut self, val: Element) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["_rank"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rank<'a>(&'a mut self, val: i64) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["rank"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Encounter_DiagnosisBuilder {
+        self.value["use"] = json!(val.value);
+        return self;
     }
 }

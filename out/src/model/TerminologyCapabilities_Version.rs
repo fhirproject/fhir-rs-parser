@@ -17,6 +17,16 @@ pub struct TerminologyCapabilities_Version<'a> {
 }
 
 impl TerminologyCapabilities_Version<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Version {
+        TerminologyCapabilities_Version {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -246,7 +256,7 @@ impl TerminologyCapabilities_Version<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_VersionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_VersionBuilder {
@@ -256,8 +266,120 @@ impl TerminologyCapabilities_VersionBuilder {
         }
     }
 
+    pub fn with(
+        existing: TerminologyCapabilities_Version,
+    ) -> TerminologyCapabilities_VersionBuilder {
+        TerminologyCapabilities_VersionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_VersionBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_VersionBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _compositional<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["_compositional"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _is_default<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["_isDefault"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["_language"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _property<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["_property"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn compositional<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["compositional"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn filter<'a>(
+        &'a mut self,
+        val: Vec<TerminologyCapabilities_Filter>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["filter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_default<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["isDefault"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn property<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut TerminologyCapabilities_VersionBuilder {
+        self.value["property"] = json!(val);
+        return self;
     }
 }

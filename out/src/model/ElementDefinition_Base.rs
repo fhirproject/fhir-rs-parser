@@ -14,6 +14,16 @@ pub struct ElementDefinition_Base<'a> {
 }
 
 impl ElementDefinition_Base<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Base {
+        ElementDefinition_Base {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for max
     pub fn _max(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_max") {
@@ -158,7 +168,7 @@ impl ElementDefinition_Base<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_BaseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_BaseBuilder {
@@ -168,8 +178,66 @@ impl ElementDefinition_BaseBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Base) -> ElementDefinition_BaseBuilder {
+        ElementDefinition_BaseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_BaseBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_BaseBuilder { value: __value };
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: u64) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BaseBuilder {
+        self.value["path"] = json!(val);
+        return self;
     }
 }

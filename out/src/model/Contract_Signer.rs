@@ -17,6 +17,16 @@ pub struct Contract_Signer<'a> {
 }
 
 impl Contract_Signer<'_> {
+    pub fn new(value: &Value) -> Contract_Signer {
+        Contract_Signer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -128,13 +138,19 @@ impl Contract_Signer<'_> {
 
 #[derive(Debug)]
 pub struct Contract_SignerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_SignerBuilder {
     pub fn build(&self) -> Contract_Signer {
         Contract_Signer {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: Contract_Signer) -> Contract_SignerBuilder {
+        Contract_SignerBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -148,5 +164,24 @@ impl Contract_SignerBuilder {
         __value["signature"] = json!(signature.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["type"] = json!(fhir_type.value);
         return Contract_SignerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_SignerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_SignerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_SignerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

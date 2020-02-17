@@ -19,6 +19,16 @@ pub struct MedicationRequest_Substitution<'a> {
 }
 
 impl MedicationRequest_Substitution<'_> {
+    pub fn new(value: &Value) -> MedicationRequest_Substitution {
+        MedicationRequest_Substitution {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allowedBoolean
     pub fn _allowed_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allowedBoolean") {
@@ -145,7 +155,7 @@ impl MedicationRequest_Substitution<'_> {
 
 #[derive(Debug)]
 pub struct MedicationRequest_SubstitutionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationRequest_SubstitutionBuilder {
@@ -155,8 +165,68 @@ impl MedicationRequest_SubstitutionBuilder {
         }
     }
 
+    pub fn with(existing: MedicationRequest_Substitution) -> MedicationRequest_SubstitutionBuilder {
+        MedicationRequest_SubstitutionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationRequest_SubstitutionBuilder {
         let mut __value: Value = json!({});
         return MedicationRequest_SubstitutionBuilder { value: __value };
+    }
+
+    pub fn _allowed_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["_allowedBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allowed_boolean<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["allowedBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn allowed_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["allowedCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationRequest_SubstitutionBuilder {
+        self.value["reason"] = json!(val.value);
+        return self;
     }
 }

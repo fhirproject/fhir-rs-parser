@@ -18,6 +18,16 @@ pub struct ImplementationGuide_Resource1<'a> {
 }
 
 impl ImplementationGuide_Resource1<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Resource1 {
+        ImplementationGuide_Resource1 {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for exampleBoolean
     pub fn _example_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exampleBoolean") {
@@ -173,7 +183,7 @@ impl ImplementationGuide_Resource1<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_Resource1Builder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_Resource1Builder {
@@ -183,9 +193,85 @@ impl ImplementationGuide_Resource1Builder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Resource1) -> ImplementationGuide_Resource1Builder {
+        ImplementationGuide_Resource1Builder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(reference: Reference) -> ImplementationGuide_Resource1Builder {
         let mut __value: Value = json!({});
         __value["reference"] = json!(reference.value);
         return ImplementationGuide_Resource1Builder { value: __value };
+    }
+
+    pub fn _example_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["_exampleBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _example_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["_exampleCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _relative_path<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["_relativePath"] = json!(val.value);
+        return self;
+    }
+
+    pub fn example_boolean<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["exampleBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn example_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["exampleCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn relative_path<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImplementationGuide_Resource1Builder {
+        self.value["relativePath"] = json!(val);
+        return self;
     }
 }

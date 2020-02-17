@@ -15,6 +15,16 @@ pub struct TestScript_Assert<'a> {
 }
 
 impl TestScript_Assert<'_> {
+    pub fn new(value: &Value) -> TestScript_Assert {
+        TestScript_Assert {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for compareToSourceExpression
     pub fn _compare_to_source_expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_compareToSourceExpression") {
@@ -627,7 +637,7 @@ impl TestScript_Assert<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_AssertBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_AssertBuilder {
@@ -637,9 +647,281 @@ impl TestScript_AssertBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Assert) -> TestScript_AssertBuilder {
+        TestScript_AssertBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_AssertBuilder {
         let mut __value: Value = json!({});
         return TestScript_AssertBuilder { value: __value };
+    }
+
+    pub fn _compare_to_source_expression<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["_compareToSourceExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _compare_to_source_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["_compareToSourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _compare_to_source_path<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["_compareToSourcePath"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _content_type<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_contentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _direction<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_direction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _header_field<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_headerField"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _label<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_label"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _minimum_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_minimumId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _navigation_links<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_navigationLinks"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _operator<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_operator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _request_method<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_requestMethod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _request_u_r_l<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_requestURL"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _resource<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_resource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _response<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _response_code<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_responseCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_sourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _validate_profile_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["_validateProfileId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _warning_only<'a>(&'a mut self, val: Element) -> &'a mut TestScript_AssertBuilder {
+        self.value["_warningOnly"] = json!(val.value);
+        return self;
+    }
+
+    pub fn compare_to_source_expression<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["compareToSourceExpression"] = json!(val);
+        return self;
+    }
+
+    pub fn compare_to_source_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["compareToSourceId"] = json!(val);
+        return self;
+    }
+
+    pub fn compare_to_source_path<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["compareToSourcePath"] = json!(val);
+        return self;
+    }
+
+    pub fn content_type<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["contentType"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn direction<'a>(
+        &'a mut self,
+        val: TestScript_AssertDirection,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["direction"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_AssertBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn header_field<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["headerField"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn label<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["label"] = json!(val);
+        return self;
+    }
+
+    pub fn minimum_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["minimumId"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn navigation_links<'a>(&'a mut self, val: bool) -> &'a mut TestScript_AssertBuilder {
+        self.value["navigationLinks"] = json!(val);
+        return self;
+    }
+
+    pub fn operator<'a>(
+        &'a mut self,
+        val: TestScript_AssertOperator,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["operator"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn request_method<'a>(
+        &'a mut self,
+        val: TestScript_AssertRequestMethod,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["requestMethod"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn request_u_r_l<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["requestURL"] = json!(val);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["resource"] = json!(val);
+        return self;
+    }
+
+    pub fn response<'a>(
+        &'a mut self,
+        val: TestScript_AssertResponse,
+    ) -> &'a mut TestScript_AssertBuilder {
+        self.value["response"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn response_code<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["responseCode"] = json!(val);
+        return self;
+    }
+
+    pub fn source_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["sourceId"] = json!(val);
+        return self;
+    }
+
+    pub fn validate_profile_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["validateProfileId"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut TestScript_AssertBuilder {
+        self.value["value"] = json!(val);
+        return self;
+    }
+
+    pub fn warning_only<'a>(&'a mut self, val: bool) -> &'a mut TestScript_AssertBuilder {
+        self.value["warningOnly"] = json!(val);
+        return self;
     }
 }
 

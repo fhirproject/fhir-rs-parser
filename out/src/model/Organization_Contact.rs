@@ -20,6 +20,16 @@ pub struct Organization_Contact<'a> {
 }
 
 impl Organization_Contact<'_> {
+    pub fn new(value: &Value) -> Organization_Contact {
+        Organization_Contact {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Visiting or postal addresses for the contact.
     pub fn address(&self) -> Option<Address> {
         if let Some(val) = self.value.get("address") {
@@ -154,7 +164,7 @@ impl Organization_Contact<'_> {
 
 #[derive(Debug)]
 pub struct Organization_ContactBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Organization_ContactBuilder {
@@ -164,8 +174,56 @@ impl Organization_ContactBuilder {
         }
     }
 
+    pub fn with(existing: Organization_Contact) -> Organization_ContactBuilder {
+        Organization_ContactBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Organization_ContactBuilder {
         let mut __value: Value = json!({});
         return Organization_ContactBuilder { value: __value };
+    }
+
+    pub fn address<'a>(&'a mut self, val: Address) -> &'a mut Organization_ContactBuilder {
+        self.value["address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Organization_ContactBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Organization_ContactBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Organization_ContactBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: HumanName) -> &'a mut Organization_ContactBuilder {
+        self.value["name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Organization_ContactBuilder {
+        self.value["purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn telecom<'a>(
+        &'a mut self,
+        val: Vec<ContactPoint>,
+    ) -> &'a mut Organization_ContactBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

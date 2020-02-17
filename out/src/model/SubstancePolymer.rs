@@ -20,6 +20,16 @@ pub struct SubstancePolymer<'a> {
 }
 
 impl SubstancePolymer<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer {
+        SubstancePolymer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -320,7 +330,7 @@ impl SubstancePolymer<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymerBuilder {
@@ -330,8 +340,113 @@ impl SubstancePolymerBuilder {
         }
     }
 
+    pub fn with(existing: SubstancePolymer) -> SubstancePolymerBuilder {
+        SubstancePolymerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymerBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymerBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SubstancePolymerBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubstancePolymerBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _modification<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SubstancePolymerBuilder {
+        self.value["_modification"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn class<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SubstancePolymerBuilder {
+        self.value["class"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SubstancePolymerBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copolymer_connectivity<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstancePolymerBuilder {
+        self.value["copolymerConnectivity"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubstancePolymerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn geometry<'a>(&'a mut self, val: CodeableConcept) -> &'a mut SubstancePolymerBuilder {
+        self.value["geometry"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymerBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymerBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstancePolymerBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modification<'a>(&'a mut self, val: Vec<&str>) -> &'a mut SubstancePolymerBuilder {
+        self.value["modification"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn monomer_set<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_MonomerSet>,
+    ) -> &'a mut SubstancePolymerBuilder {
+        self.value["monomerSet"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn repeat<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_Repeat>,
+    ) -> &'a mut SubstancePolymerBuilder {
+        self.value["repeat"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstancePolymerBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

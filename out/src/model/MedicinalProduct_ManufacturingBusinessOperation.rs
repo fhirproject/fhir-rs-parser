@@ -18,6 +18,16 @@ pub struct MedicinalProduct_ManufacturingBusinessOperation<'a> {
 }
 
 impl MedicinalProduct_ManufacturingBusinessOperation<'_> {
+    pub fn new(value: &Value) -> MedicinalProduct_ManufacturingBusinessOperation {
+        MedicinalProduct_ManufacturingBusinessOperation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for effectiveDate
     pub fn _effective_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveDate") {
@@ -190,7 +200,7 @@ impl MedicinalProduct_ManufacturingBusinessOperation<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProduct_ManufacturingBusinessOperationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProduct_ManufacturingBusinessOperationBuilder {
@@ -200,8 +210,97 @@ impl MedicinalProduct_ManufacturingBusinessOperationBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProduct_ManufacturingBusinessOperation,
+    ) -> MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        MedicinalProduct_ManufacturingBusinessOperationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProduct_ManufacturingBusinessOperationBuilder {
         let mut __value: Value = json!({});
         return MedicinalProduct_ManufacturingBusinessOperationBuilder { value: __value };
+    }
+
+    pub fn _effective_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["_effectiveDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authorisation_reference_number<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["authorisationReferenceNumber"] = json!(val.value);
+        return self;
+    }
+
+    pub fn confidentiality_indicator<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["confidentialityIndicator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn effective_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["effectiveDate"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn manufacturer<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["manufacturer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn operation_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["operationType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn regulator<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProduct_ManufacturingBusinessOperationBuilder {
+        self.value["regulator"] = json!(val.value);
+        return self;
     }
 }

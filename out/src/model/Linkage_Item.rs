@@ -16,6 +16,16 @@ pub struct Linkage_Item<'a> {
 }
 
 impl Linkage_Item<'_> {
+    pub fn new(value: &Value) -> Linkage_Item {
+        Linkage_Item {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -120,7 +130,7 @@ impl Linkage_Item<'_> {
 
 #[derive(Debug)]
 pub struct Linkage_ItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Linkage_ItemBuilder {
@@ -130,10 +140,45 @@ impl Linkage_ItemBuilder {
         }
     }
 
+    pub fn with(existing: Linkage_Item) -> Linkage_ItemBuilder {
+        Linkage_ItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(resource: Reference) -> Linkage_ItemBuilder {
         let mut __value: Value = json!({});
         __value["resource"] = json!(resource.value);
         return Linkage_ItemBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Linkage_ItemBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Linkage_ItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Linkage_ItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Linkage_ItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Linkage_ItemType) -> &'a mut Linkage_ItemBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

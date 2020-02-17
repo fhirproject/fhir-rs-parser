@@ -18,6 +18,16 @@ pub struct RiskEvidenceSynthesis_Certainty<'a> {
 }
 
 impl RiskEvidenceSynthesis_Certainty<'_> {
+    pub fn new(value: &Value) -> RiskEvidenceSynthesis_Certainty {
+        RiskEvidenceSynthesis_Certainty {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A description of a component of the overall certainty.
     pub fn certainty_subcomponent(
         &self,
@@ -146,7 +156,7 @@ impl RiskEvidenceSynthesis_Certainty<'_> {
 
 #[derive(Debug)]
 pub struct RiskEvidenceSynthesis_CertaintyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RiskEvidenceSynthesis_CertaintyBuilder {
@@ -156,8 +166,63 @@ impl RiskEvidenceSynthesis_CertaintyBuilder {
         }
     }
 
+    pub fn with(
+        existing: RiskEvidenceSynthesis_Certainty,
+    ) -> RiskEvidenceSynthesis_CertaintyBuilder {
+        RiskEvidenceSynthesis_CertaintyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RiskEvidenceSynthesis_CertaintyBuilder {
         let mut __value: Value = json!({});
         return RiskEvidenceSynthesis_CertaintyBuilder { value: __value };
+    }
+
+    pub fn certainty_subcomponent<'a>(
+        &'a mut self,
+        val: Vec<RiskEvidenceSynthesis_CertaintySubcomponent>,
+    ) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["certaintySubcomponent"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(
+        &'a mut self,
+        val: Vec<Annotation>,
+    ) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rating<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut RiskEvidenceSynthesis_CertaintyBuilder {
+        self.value["rating"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

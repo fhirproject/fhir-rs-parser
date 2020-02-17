@@ -20,6 +20,16 @@ pub struct FamilyMemberHistory_Condition<'a> {
 }
 
 impl FamilyMemberHistory_Condition<'_> {
+    pub fn new(value: &Value) -> FamilyMemberHistory_Condition {
+        FamilyMemberHistory_Condition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for contributedToDeath
     pub fn _contributed_to_death(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contributedToDeath") {
@@ -238,7 +248,7 @@ impl FamilyMemberHistory_Condition<'_> {
 
 #[derive(Debug)]
 pub struct FamilyMemberHistory_ConditionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl FamilyMemberHistory_ConditionBuilder {
@@ -248,9 +258,106 @@ impl FamilyMemberHistory_ConditionBuilder {
         }
     }
 
+    pub fn with(existing: FamilyMemberHistory_Condition) -> FamilyMemberHistory_ConditionBuilder {
+        FamilyMemberHistory_ConditionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> FamilyMemberHistory_ConditionBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return FamilyMemberHistory_ConditionBuilder { value: __value };
+    }
+
+    pub fn _contributed_to_death<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["_contributedToDeath"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["_onsetString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contributed_to_death<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["contributedToDeath"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(
+        &'a mut self,
+        val: Vec<Annotation>,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn onset_age<'a>(&'a mut self, val: Age) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["onsetAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["onsetPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["onsetRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn onset_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["onsetString"] = json!(val);
+        return self;
+    }
+
+    pub fn outcome<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut FamilyMemberHistory_ConditionBuilder {
+        self.value["outcome"] = json!(val.value);
+        return self;
     }
 }

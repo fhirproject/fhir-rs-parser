@@ -24,6 +24,16 @@ pub struct ExampleScenario<'a> {
 }
 
 impl ExampleScenario<'_> {
+    pub fn new(value: &Value) -> ExampleScenario {
+        ExampleScenario {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for copyright
     pub fn _copyright(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_copyright") {
@@ -597,7 +607,7 @@ impl ExampleScenario<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenarioBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenarioBuilder {
@@ -607,9 +617,211 @@ impl ExampleScenarioBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario) -> ExampleScenarioBuilder {
+        ExampleScenarioBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenarioBuilder {
         let mut __value: Value = json!({});
         return ExampleScenarioBuilder { value: __value };
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenarioBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actor<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Actor>,
+    ) -> &'a mut ExampleScenarioBuilder {
+        self.value["actor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ExampleScenarioBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ExampleScenarioBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut ExampleScenarioBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ExampleScenarioBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ExampleScenarioBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instance<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Instance>,
+    ) -> &'a mut ExampleScenarioBuilder {
+        self.value["instance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ExampleScenarioBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ExampleScenarioBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenarioBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn process<'a>(
+        &'a mut self,
+        val: Vec<ExampleScenario_Process>,
+    ) -> &'a mut ExampleScenarioBuilder {
+        self.value["process"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ExampleScenarioStatus) -> &'a mut ExampleScenarioBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ExampleScenarioBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut ExampleScenarioBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenarioBuilder {
+        self.value["version"] = json!(val);
+        return self;
+    }
+
+    pub fn workflow<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ExampleScenarioBuilder {
+        self.value["workflow"] = json!(val);
+        return self;
     }
 }
 

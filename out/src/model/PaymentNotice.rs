@@ -22,6 +22,16 @@ pub struct PaymentNotice<'a> {
 }
 
 impl PaymentNotice<'_> {
+    pub fn new(value: &Value) -> PaymentNotice {
+        PaymentNotice {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -398,7 +408,7 @@ impl PaymentNotice<'_> {
 
 #[derive(Debug)]
 pub struct PaymentNoticeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PaymentNoticeBuilder {
@@ -408,11 +418,131 @@ impl PaymentNoticeBuilder {
         }
     }
 
+    pub fn with(existing: PaymentNotice) -> PaymentNoticeBuilder {
+        PaymentNoticeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(amount: Money, payment: Reference, recipient: Reference) -> PaymentNoticeBuilder {
         let mut __value: Value = json!({});
         __value["amount"] = json!(amount.value);
         __value["payment"] = json!(payment.value);
         __value["recipient"] = json!(recipient.value);
         return PaymentNoticeBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut PaymentNoticeBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut PaymentNoticeBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut PaymentNoticeBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _payment_date<'a>(&'a mut self, val: Element) -> &'a mut PaymentNoticeBuilder {
+        self.value["_paymentDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut PaymentNoticeBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut PaymentNoticeBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PaymentNoticeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut PaymentNoticeBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut PaymentNoticeBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PaymentNoticeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn payee<'a>(&'a mut self, val: Reference) -> &'a mut PaymentNoticeBuilder {
+        self.value["payee"] = json!(val.value);
+        return self;
+    }
+
+    pub fn payment_date<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["paymentDate"] = json!(val);
+        return self;
+    }
+
+    pub fn payment_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PaymentNoticeBuilder {
+        self.value["paymentStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn provider<'a>(&'a mut self, val: Reference) -> &'a mut PaymentNoticeBuilder {
+        self.value["provider"] = json!(val.value);
+        return self;
+    }
+
+    pub fn request<'a>(&'a mut self, val: Reference) -> &'a mut PaymentNoticeBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn response<'a>(&'a mut self, val: Reference) -> &'a mut PaymentNoticeBuilder {
+        self.value["response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut PaymentNoticeBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut PaymentNoticeBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

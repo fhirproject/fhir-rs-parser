@@ -19,6 +19,16 @@ pub struct Appointment_Participant<'a> {
 }
 
 impl Appointment_Participant<'_> {
+    pub fn new(value: &Value) -> Appointment_Participant {
+        Appointment_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for required
     pub fn _required(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_required") {
@@ -188,7 +198,7 @@ impl Appointment_Participant<'_> {
 
 #[derive(Debug)]
 pub struct Appointment_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Appointment_ParticipantBuilder {
@@ -198,9 +208,81 @@ impl Appointment_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: Appointment_Participant) -> Appointment_ParticipantBuilder {
+        Appointment_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Appointment_ParticipantBuilder {
         let mut __value: Value = json!({});
         return Appointment_ParticipantBuilder { value: __value };
+    }
+
+    pub fn _required<'a>(&'a mut self, val: Element) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["_required"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actor<'a>(&'a mut self, val: Reference) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["actor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn required<'a>(
+        &'a mut self,
+        val: Appointment_ParticipantRequired,
+    ) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["required"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: Appointment_ParticipantStatus,
+    ) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Appointment_ParticipantBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

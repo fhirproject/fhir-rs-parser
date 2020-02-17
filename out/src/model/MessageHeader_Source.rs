@@ -18,6 +18,16 @@ pub struct MessageHeader_Source<'a> {
 }
 
 impl MessageHeader_Source<'_> {
+    pub fn new(value: &Value) -> MessageHeader_Source {
+        MessageHeader_Source {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for endpoint
     pub fn _endpoint(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_endpoint") {
@@ -200,7 +210,7 @@ impl MessageHeader_Source<'_> {
 
 #[derive(Debug)]
 pub struct MessageHeader_SourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageHeader_SourceBuilder {
@@ -210,8 +220,78 @@ impl MessageHeader_SourceBuilder {
         }
     }
 
+    pub fn with(existing: MessageHeader_Source) -> MessageHeader_SourceBuilder {
+        MessageHeader_SourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MessageHeader_SourceBuilder {
         let mut __value: Value = json!({});
         return MessageHeader_SourceBuilder { value: __value };
+    }
+
+    pub fn _endpoint<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["_endpoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _software<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["_software"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: ContactPoint) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["contact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["endpoint"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn software<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["software"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut MessageHeader_SourceBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

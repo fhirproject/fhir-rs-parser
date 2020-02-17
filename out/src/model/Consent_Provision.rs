@@ -21,6 +21,16 @@ pub struct Consent_Provision<'a> {
 }
 
 impl Consent_Provision<'_> {
+    pub fn new(value: &Value) -> Consent_Provision {
+        Consent_Provision {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -303,7 +313,7 @@ impl Consent_Provision<'_> {
 
 #[derive(Debug)]
 pub struct Consent_ProvisionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Consent_ProvisionBuilder {
@@ -313,9 +323,100 @@ impl Consent_ProvisionBuilder {
         }
     }
 
+    pub fn with(existing: Consent_Provision) -> Consent_ProvisionBuilder {
+        Consent_ProvisionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Consent_ProvisionBuilder {
         let mut __value: Value = json!({});
         return Consent_ProvisionBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut Consent_ProvisionBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["action"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn actor<'a>(&'a mut self, val: Vec<Consent_Actor>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["actor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn class<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["class"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: Vec<Consent_Data>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["data"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data_period<'a>(&'a mut self, val: Period) -> &'a mut Consent_ProvisionBuilder {
+        self.value["dataPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Consent_ProvisionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Consent_ProvisionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Consent_ProvisionBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn provision<'a>(
+        &'a mut self,
+        val: Vec<Consent_Provision>,
+    ) -> &'a mut Consent_ProvisionBuilder {
+        self.value["provision"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["purpose"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn security_label<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Consent_ProvisionBuilder {
+        self.value["securityLabel"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Consent_ProvisionType,
+    ) -> &'a mut Consent_ProvisionBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

@@ -24,6 +24,16 @@ pub struct InsurancePlan<'a> {
 }
 
 impl InsurancePlan<'_> {
+    pub fn new(value: &Value) -> InsurancePlan {
+        InsurancePlan {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for alias
     pub fn _alias(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
@@ -489,7 +499,7 @@ impl InsurancePlan<'_> {
 
 #[derive(Debug)]
 pub struct InsurancePlanBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InsurancePlanBuilder {
@@ -499,9 +509,160 @@ impl InsurancePlanBuilder {
         }
     }
 
+    pub fn with(existing: InsurancePlan) -> InsurancePlanBuilder {
+        InsurancePlanBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> InsurancePlanBuilder {
         let mut __value: Value = json!({});
         return InsurancePlanBuilder { value: __value };
+    }
+
+    pub fn _alias<'a>(&'a mut self, val: Vec<Element>) -> &'a mut InsurancePlanBuilder {
+        self.value["_alias"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlanBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlanBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlanBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut InsurancePlanBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn administered_by<'a>(&'a mut self, val: Reference) -> &'a mut InsurancePlanBuilder {
+        self.value["administeredBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alias<'a>(&'a mut self, val: Vec<&str>) -> &'a mut InsurancePlanBuilder {
+        self.value["alias"] = json!(val);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<InsurancePlan_Contact>,
+    ) -> &'a mut InsurancePlanBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut InsurancePlanBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coverage<'a>(
+        &'a mut self,
+        val: Vec<InsurancePlan_Coverage>,
+    ) -> &'a mut InsurancePlanBuilder {
+        self.value["coverage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn coverage_area<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut InsurancePlanBuilder {
+        self.value["coverageArea"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut InsurancePlanBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut InsurancePlanBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlanBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut InsurancePlanBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlanBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlanBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut InsurancePlanBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlanBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlanBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn network<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut InsurancePlanBuilder {
+        self.value["network"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn owned_by<'a>(&'a mut self, val: Reference) -> &'a mut InsurancePlanBuilder {
+        self.value["ownedBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut InsurancePlanBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn plan<'a>(&'a mut self, val: Vec<InsurancePlan_Plan>) -> &'a mut InsurancePlanBuilder {
+        self.value["plan"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: InsurancePlanStatus) -> &'a mut InsurancePlanBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut InsurancePlanBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut InsurancePlanBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

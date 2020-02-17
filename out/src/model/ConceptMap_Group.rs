@@ -18,6 +18,16 @@ pub struct ConceptMap_Group<'a> {
 }
 
 impl ConceptMap_Group<'_> {
+    pub fn new(value: &Value) -> ConceptMap_Group {
+        ConceptMap_Group {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
@@ -227,7 +237,7 @@ impl ConceptMap_Group<'_> {
 
 #[derive(Debug)]
 pub struct ConceptMap_GroupBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConceptMap_GroupBuilder {
@@ -237,9 +247,79 @@ impl ConceptMap_GroupBuilder {
         }
     }
 
+    pub fn with(existing: ConceptMap_Group) -> ConceptMap_GroupBuilder {
+        ConceptMap_GroupBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(element: Vec<ConceptMap_Element>) -> ConceptMap_GroupBuilder {
         let mut __value: Value = json!({});
         __value["element"] = json!(element.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return ConceptMap_GroupBuilder { value: __value };
+    }
+
+    pub fn _source<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_version<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["_sourceVersion"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["_target"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_version<'a>(&'a mut self, val: Element) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["_targetVersion"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["source"] = json!(val);
+        return self;
+    }
+
+    pub fn source_version<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["sourceVersion"] = json!(val);
+        return self;
+    }
+
+    pub fn target<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["target"] = json!(val);
+        return self;
+    }
+
+    pub fn target_version<'a>(&'a mut self, val: &str) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["targetVersion"] = json!(val);
+        return self;
+    }
+
+    pub fn unmapped<'a>(&'a mut self, val: ConceptMap_Unmapped) -> &'a mut ConceptMap_GroupBuilder {
+        self.value["unmapped"] = json!(val.value);
+        return self;
     }
 }

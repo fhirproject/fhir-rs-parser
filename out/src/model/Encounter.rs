@@ -30,6 +30,16 @@ pub struct Encounter<'a> {
 }
 
 impl Encounter<'_> {
+    pub fn new(value: &Value) -> Encounter {
+        Encounter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -637,7 +647,7 @@ impl Encounter<'_> {
 
 #[derive(Debug)]
 pub struct EncounterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EncounterBuilder {
@@ -647,10 +657,194 @@ impl EncounterBuilder {
         }
     }
 
+    pub fn with(existing: Encounter) -> EncounterBuilder {
+        EncounterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(class: Coding) -> EncounterBuilder {
         let mut __value: Value = json!({});
         __value["class"] = json!(class.value);
         return EncounterBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut EncounterBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut EncounterBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut EncounterBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn account<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut EncounterBuilder {
+        self.value["account"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn appointment<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut EncounterBuilder {
+        self.value["appointment"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut EncounterBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn class_history<'a>(
+        &'a mut self,
+        val: Vec<Encounter_ClassHistory>,
+    ) -> &'a mut EncounterBuilder {
+        self.value["classHistory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut EncounterBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn diagnosis<'a>(&'a mut self, val: Vec<Encounter_Diagnosis>) -> &'a mut EncounterBuilder {
+        self.value["diagnosis"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn episode_of_care<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut EncounterBuilder {
+        self.value["episodeOfCare"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EncounterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hospitalization<'a>(
+        &'a mut self,
+        val: Encounter_Hospitalization,
+    ) -> &'a mut EncounterBuilder {
+        self.value["hospitalization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EncounterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut EncounterBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut EncounterBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut EncounterBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn length<'a>(&'a mut self, val: Duration) -> &'a mut EncounterBuilder {
+        self.value["length"] = json!(val.value);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Vec<Encounter_Location>) -> &'a mut EncounterBuilder {
+        self.value["location"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut EncounterBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EncounterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Reference) -> &'a mut EncounterBuilder {
+        self.value["partOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn participant<'a>(
+        &'a mut self,
+        val: Vec<Encounter_Participant>,
+    ) -> &'a mut EncounterBuilder {
+        self.value["participant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut EncounterBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: CodeableConcept) -> &'a mut EncounterBuilder {
+        self.value["priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reason_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut EncounterBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut EncounterBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn service_provider<'a>(&'a mut self, val: Reference) -> &'a mut EncounterBuilder {
+        self.value["serviceProvider"] = json!(val.value);
+        return self;
+    }
+
+    pub fn service_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut EncounterBuilder {
+        self.value["serviceType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: EncounterStatus) -> &'a mut EncounterBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn status_history<'a>(
+        &'a mut self,
+        val: Vec<Encounter_StatusHistory>,
+    ) -> &'a mut EncounterBuilder {
+        self.value["statusHistory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut EncounterBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut EncounterBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut EncounterBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

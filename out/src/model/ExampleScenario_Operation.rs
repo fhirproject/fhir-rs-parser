@@ -15,6 +15,16 @@ pub struct ExampleScenario_Operation<'a> {
 }
 
 impl ExampleScenario_Operation<'_> {
+    pub fn new(value: &Value) -> ExampleScenario_Operation {
+        ExampleScenario_Operation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -306,7 +316,7 @@ impl ExampleScenario_Operation<'_> {
 
 #[derive(Debug)]
 pub struct ExampleScenario_OperationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExampleScenario_OperationBuilder {
@@ -316,8 +326,147 @@ impl ExampleScenario_OperationBuilder {
         }
     }
 
+    pub fn with(existing: ExampleScenario_Operation) -> ExampleScenario_OperationBuilder {
+        ExampleScenario_OperationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ExampleScenario_OperationBuilder {
         let mut __value: Value = json!({});
         return ExampleScenario_OperationBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _initiator<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_initiator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _initiator_active<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_initiatorActive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_number"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _receiver<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_receiver"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _receiver_active<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_receiverActive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn initiator<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["initiator"] = json!(val);
+        return self;
+    }
+
+    pub fn initiator_active<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["initiatorActive"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["number"] = json!(val);
+        return self;
+    }
+
+    pub fn receiver<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["receiver"] = json!(val);
+        return self;
+    }
+
+    pub fn receiver_active<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["receiverActive"] = json!(val);
+        return self;
+    }
+
+    pub fn request<'a>(
+        &'a mut self,
+        val: ExampleScenario_ContainedInstance,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn response<'a>(
+        &'a mut self,
+        val: ExampleScenario_ContainedInstance,
+    ) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut ExampleScenario_OperationBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

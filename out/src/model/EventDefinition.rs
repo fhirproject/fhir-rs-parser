@@ -26,6 +26,16 @@ pub struct EventDefinition<'a> {
 }
 
 impl EventDefinition<'_> {
+    pub fn new(value: &Value) -> EventDefinition {
+        EventDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for approvalDate
     pub fn _approval_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_approvalDate") {
@@ -867,7 +877,7 @@ impl EventDefinition<'_> {
 
 #[derive(Debug)]
 pub struct EventDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EventDefinitionBuilder {
@@ -877,10 +887,294 @@ impl EventDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: EventDefinition) -> EventDefinitionBuilder {
+        EventDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(trigger: Vec<TriggerDefinition>) -> EventDefinitionBuilder {
         let mut __value: Value = json!({});
         __value["trigger"] = json!(trigger.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return EventDefinitionBuilder { value: __value };
+    }
+
+    pub fn _approval_date<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_approvalDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_review_date<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_lastReviewDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subtitle<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_subtitle"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _usage<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_usage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut EventDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn approval_date<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["approvalDate"] = json!(val);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut EventDefinitionBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut EventDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut EventDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn editor<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut EventDefinitionBuilder {
+        self.value["editor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut EventDefinitionBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endorser<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut EventDefinitionBuilder {
+        self.value["endorser"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut EventDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut EventDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut EventDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut EventDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_review_date<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["lastReviewDate"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut EventDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EventDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn related_artifact<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut EventDefinitionBuilder {
+        self.value["relatedArtifact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reviewer<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut EventDefinitionBuilder {
+        self.value["reviewer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: EventDefinitionStatus) -> &'a mut EventDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EventDefinitionBuilder {
+        self.value["subjectCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subject_reference<'a>(&'a mut self, val: Reference) -> &'a mut EventDefinitionBuilder {
+        self.value["subjectReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subtitle<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["subtitle"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut EventDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn topic<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut EventDefinitionBuilder {
+        self.value["topic"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn usage<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["usage"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut EventDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut EventDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

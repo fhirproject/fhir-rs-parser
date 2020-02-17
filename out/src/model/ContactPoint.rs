@@ -16,6 +16,16 @@ pub struct ContactPoint<'a> {
 }
 
 impl ContactPoint<'_> {
+    pub fn new(value: &Value) -> ContactPoint {
+        ContactPoint {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for rank
     pub fn _rank(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rank") {
@@ -170,7 +180,7 @@ impl ContactPoint<'_> {
 
 #[derive(Debug)]
 pub struct ContactPointBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ContactPointBuilder {
@@ -180,9 +190,70 @@ impl ContactPointBuilder {
         }
     }
 
+    pub fn with(existing: ContactPoint) -> ContactPointBuilder {
+        ContactPointBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ContactPointBuilder {
         let mut __value: Value = json!({});
         return ContactPointBuilder { value: __value };
+    }
+
+    pub fn _rank<'a>(&'a mut self, val: Element) -> &'a mut ContactPointBuilder {
+        self.value["_rank"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut ContactPointBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut ContactPointBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut ContactPointBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ContactPointBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ContactPointBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut ContactPointBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn rank<'a>(&'a mut self, val: i64) -> &'a mut ContactPointBuilder {
+        self.value["rank"] = json!(val);
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: ContactPointSystem) -> &'a mut ContactPointBuilder {
+        self.value["system"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: ContactPointUse) -> &'a mut ContactPointBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut ContactPointBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

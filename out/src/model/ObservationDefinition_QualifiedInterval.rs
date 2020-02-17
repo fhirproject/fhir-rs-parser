@@ -17,6 +17,16 @@ pub struct ObservationDefinition_QualifiedInterval<'a> {
 }
 
 impl ObservationDefinition_QualifiedInterval<'_> {
+    pub fn new(value: &Value) -> ObservationDefinition_QualifiedInterval {
+        ObservationDefinition_QualifiedInterval {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for category
     pub fn _category(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_category") {
@@ -244,7 +254,7 @@ impl ObservationDefinition_QualifiedInterval<'_> {
 
 #[derive(Debug)]
 pub struct ObservationDefinition_QualifiedIntervalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ObservationDefinition_QualifiedIntervalBuilder {
@@ -254,9 +264,130 @@ impl ObservationDefinition_QualifiedIntervalBuilder {
         }
     }
 
+    pub fn with(
+        existing: ObservationDefinition_QualifiedInterval,
+    ) -> ObservationDefinition_QualifiedIntervalBuilder {
+        ObservationDefinition_QualifiedIntervalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ObservationDefinition_QualifiedIntervalBuilder {
         let mut __value: Value = json!({});
         return ObservationDefinition_QualifiedIntervalBuilder { value: __value };
+    }
+
+    pub fn _category<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["_category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _condition<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["_condition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _gender<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["_gender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["age"] = json!(val.value);
+        return self;
+    }
+
+    pub fn applies_to<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["appliesTo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: ObservationDefinition_QualifiedIntervalCategory,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["category"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn condition<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["condition"] = json!(val);
+        return self;
+    }
+
+    pub fn context<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn gender<'a>(
+        &'a mut self,
+        val: ObservationDefinition_QualifiedIntervalGender,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["gender"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn gestational_age<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["gestationalAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut ObservationDefinition_QualifiedIntervalBuilder {
+        self.value["range"] = json!(val.value);
+        return self;
     }
 }
 

@@ -13,6 +13,16 @@ pub struct Element<'a> {
 }
 
 impl Element<'_> {
+    pub fn new(value: &Value) -> Element {
+        Element {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -53,7 +63,7 @@ impl Element<'_> {
 
 #[derive(Debug)]
 pub struct ElementBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementBuilder {
@@ -63,8 +73,24 @@ impl ElementBuilder {
         }
     }
 
+    pub fn with(existing: Element) -> ElementBuilder {
+        ElementBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementBuilder {
         let mut __value: Value = json!({});
         return ElementBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ElementBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementBuilder {
+        self.value["id"] = json!(val);
+        return self;
     }
 }

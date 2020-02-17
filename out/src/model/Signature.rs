@@ -20,6 +20,16 @@ pub struct Signature<'a> {
 }
 
 impl Signature<'_> {
+    pub fn new(value: &Value) -> Signature {
+        Signature {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for data
     pub fn _data(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_data") {
@@ -211,7 +221,7 @@ impl Signature<'_> {
 
 #[derive(Debug)]
 pub struct SignatureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SignatureBuilder {
@@ -221,10 +231,71 @@ impl SignatureBuilder {
         }
     }
 
+    pub fn with(existing: Signature) -> SignatureBuilder {
+        SignatureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: Vec<Coding>, who: Reference) -> SignatureBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["who"] = json!(who.value);
         return SignatureBuilder { value: __value };
+    }
+
+    pub fn _data<'a>(&'a mut self, val: Element) -> &'a mut SignatureBuilder {
+        self.value["_data"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sig_format<'a>(&'a mut self, val: Element) -> &'a mut SignatureBuilder {
+        self.value["_sigFormat"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_format<'a>(&'a mut self, val: Element) -> &'a mut SignatureBuilder {
+        self.value["_targetFormat"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _when<'a>(&'a mut self, val: Element) -> &'a mut SignatureBuilder {
+        self.value["_when"] = json!(val.value);
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: &str) -> &'a mut SignatureBuilder {
+        self.value["data"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SignatureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SignatureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn on_behalf_of<'a>(&'a mut self, val: Reference) -> &'a mut SignatureBuilder {
+        self.value["onBehalfOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sig_format<'a>(&'a mut self, val: &str) -> &'a mut SignatureBuilder {
+        self.value["sigFormat"] = json!(val);
+        return self;
+    }
+
+    pub fn target_format<'a>(&'a mut self, val: &str) -> &'a mut SignatureBuilder {
+        self.value["targetFormat"] = json!(val);
+        return self;
+    }
+
+    pub fn when<'a>(&'a mut self, val: &str) -> &'a mut SignatureBuilder {
+        self.value["when"] = json!(val);
+        return self;
     }
 }

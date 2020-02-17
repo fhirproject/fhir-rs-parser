@@ -14,6 +14,16 @@ pub struct ElementDefinition_Discriminator<'a> {
 }
 
 impl ElementDefinition_Discriminator<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Discriminator {
+        ElementDefinition_Discriminator {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for path
     pub fn _path(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_path") {
@@ -133,7 +143,7 @@ impl ElementDefinition_Discriminator<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_DiscriminatorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_DiscriminatorBuilder {
@@ -143,9 +153,62 @@ impl ElementDefinition_DiscriminatorBuilder {
         }
     }
 
+    pub fn with(
+        existing: ElementDefinition_Discriminator,
+    ) -> ElementDefinition_DiscriminatorBuilder {
+        ElementDefinition_DiscriminatorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_DiscriminatorBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_DiscriminatorBuilder { value: __value };
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: ElementDefinition_DiscriminatorType,
+    ) -> &'a mut ElementDefinition_DiscriminatorBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

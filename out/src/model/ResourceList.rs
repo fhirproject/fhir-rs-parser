@@ -305,6 +305,16 @@ pub enum ResourceListEnum<'a> {
 }
 
 impl ResourceList<'_> {
+    pub fn new(value: &Value) -> ResourceList {
+        ResourceList {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     pub fn resource(&self) -> Option<ResourceListEnum> {
         let fhir_type = self.value["resourceType"].as_str().unwrap();
         match fhir_type {

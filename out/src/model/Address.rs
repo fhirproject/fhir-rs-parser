@@ -19,6 +19,16 @@ pub struct Address<'a> {
 }
 
 impl Address<'_> {
+    pub fn new(value: &Value) -> Address {
+        Address {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for city
     pub fn _city(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_city") {
@@ -305,7 +315,7 @@ impl Address<'_> {
 
 #[derive(Debug)]
 pub struct AddressBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AddressBuilder {
@@ -315,9 +325,120 @@ impl AddressBuilder {
         }
     }
 
+    pub fn with(existing: Address) -> AddressBuilder {
+        AddressBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AddressBuilder {
         let mut __value: Value = json!({});
         return AddressBuilder { value: __value };
+    }
+
+    pub fn _city<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_city"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _country<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_country"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _district<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_district"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _line<'a>(&'a mut self, val: Vec<Element>) -> &'a mut AddressBuilder {
+        self.value["_line"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _postal_code<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_postalCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _state<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_state"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _text<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut AddressBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn city<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["city"] = json!(val);
+        return self;
+    }
+
+    pub fn country<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["country"] = json!(val);
+        return self;
+    }
+
+    pub fn district<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["district"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AddressBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn line<'a>(&'a mut self, val: Vec<&str>) -> &'a mut AddressBuilder {
+        self.value["line"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut AddressBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn postal_code<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["postalCode"] = json!(val);
+        return self;
+    }
+
+    pub fn state<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["state"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: &str) -> &'a mut AddressBuilder {
+        self.value["text"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: AddressType) -> &'a mut AddressBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: AddressUse) -> &'a mut AddressBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
     }
 }
 

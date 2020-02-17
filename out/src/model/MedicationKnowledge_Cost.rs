@@ -16,6 +16,16 @@ pub struct MedicationKnowledge_Cost<'a> {
 }
 
 impl MedicationKnowledge_Cost<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Cost {
+        MedicationKnowledge_Cost {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
@@ -130,7 +140,7 @@ impl MedicationKnowledge_Cost<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_CostBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_CostBuilder {
@@ -140,10 +150,48 @@ impl MedicationKnowledge_CostBuilder {
         }
     }
 
+    pub fn with(existing: MedicationKnowledge_Cost) -> MedicationKnowledge_CostBuilder {
+        MedicationKnowledge_CostBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(cost: Money, fhir_type: CodeableConcept) -> MedicationKnowledge_CostBuilder {
         let mut __value: Value = json!({});
         __value["cost"] = json!(cost.value);
         __value["type"] = json!(fhir_type.value);
         return MedicationKnowledge_CostBuilder { value: __value };
+    }
+
+    pub fn _source<'a>(&'a mut self, val: Element) -> &'a mut MedicationKnowledge_CostBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_CostBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_CostBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_CostBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_CostBuilder {
+        self.value["source"] = json!(val);
+        return self;
     }
 }

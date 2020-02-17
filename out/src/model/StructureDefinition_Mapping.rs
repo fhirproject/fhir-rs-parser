@@ -16,6 +16,16 @@ pub struct StructureDefinition_Mapping<'a> {
 }
 
 impl StructureDefinition_Mapping<'_> {
+    pub fn new(value: &Value) -> StructureDefinition_Mapping {
+        StructureDefinition_Mapping {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -184,7 +194,7 @@ impl StructureDefinition_Mapping<'_> {
 
 #[derive(Debug)]
 pub struct StructureDefinition_MappingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureDefinition_MappingBuilder {
@@ -194,8 +204,76 @@ impl StructureDefinition_MappingBuilder {
         }
     }
 
+    pub fn with(existing: StructureDefinition_Mapping) -> StructureDefinition_MappingBuilder {
+        StructureDefinition_MappingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureDefinition_MappingBuilder {
         let mut __value: Value = json!({});
         return StructureDefinition_MappingBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _identity<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["_identity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _uri<'a>(&'a mut self, val: Element) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["_uri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identity<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["identity"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn uri<'a>(&'a mut self, val: &str) -> &'a mut StructureDefinition_MappingBuilder {
+        self.value["uri"] = json!(val);
+        return self;
     }
 }

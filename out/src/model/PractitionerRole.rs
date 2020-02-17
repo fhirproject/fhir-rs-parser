@@ -25,6 +25,16 @@ pub struct PractitionerRole<'a> {
 }
 
 impl PractitionerRole<'_> {
+    pub fn new(value: &Value) -> PractitionerRole {
+        PractitionerRole {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for active
     pub fn _active(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_active") {
@@ -475,7 +485,7 @@ impl PractitionerRole<'_> {
 
 #[derive(Debug)]
 pub struct PractitionerRoleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PractitionerRoleBuilder {
@@ -485,8 +495,164 @@ impl PractitionerRoleBuilder {
         }
     }
 
+    pub fn with(existing: PractitionerRole) -> PractitionerRoleBuilder {
+        PractitionerRoleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> PractitionerRoleBuilder {
         let mut __value: Value = json!({});
         return PractitionerRoleBuilder { value: __value };
+    }
+
+    pub fn _active<'a>(&'a mut self, val: Element) -> &'a mut PractitionerRoleBuilder {
+        self.value["_active"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _availability_exceptions<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["_availabilityExceptions"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut PractitionerRoleBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut PractitionerRoleBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn active<'a>(&'a mut self, val: bool) -> &'a mut PractitionerRoleBuilder {
+        self.value["active"] = json!(val);
+        return self;
+    }
+
+    pub fn availability_exceptions<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRoleBuilder {
+        self.value["availabilityExceptions"] = json!(val);
+        return self;
+    }
+
+    pub fn available_time<'a>(
+        &'a mut self,
+        val: Vec<PractitionerRole_AvailableTime>,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["availableTime"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut PractitionerRoleBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut PractitionerRoleBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn endpoint<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut PractitionerRoleBuilder {
+        self.value["endpoint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PractitionerRoleBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn healthcare_service<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["healthcareService"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRoleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut PractitionerRoleBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRoleBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut PractitionerRoleBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut PractitionerRoleBuilder {
+        self.value["location"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut PractitionerRoleBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn not_available<'a>(
+        &'a mut self,
+        val: Vec<PractitionerRole_NotAvailable>,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["notAvailable"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn organization<'a>(&'a mut self, val: Reference) -> &'a mut PractitionerRoleBuilder {
+        self.value["organization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut PractitionerRoleBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn practitioner<'a>(&'a mut self, val: Reference) -> &'a mut PractitionerRoleBuilder {
+        self.value["practitioner"] = json!(val.value);
+        return self;
+    }
+
+    pub fn specialty<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut PractitionerRoleBuilder {
+        self.value["specialty"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn telecom<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut PractitionerRoleBuilder {
+        self.value["telecom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut PractitionerRoleBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

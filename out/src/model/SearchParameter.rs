@@ -22,6 +22,16 @@ pub struct SearchParameter<'a> {
 }
 
 impl SearchParameter<'_> {
+    pub fn new(value: &Value) -> SearchParameter {
+        SearchParameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for base
     pub fn _base(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_base") {
@@ -849,7 +859,7 @@ impl SearchParameter<'_> {
 
 #[derive(Debug)]
 pub struct SearchParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SearchParameterBuilder {
@@ -859,9 +869,303 @@ impl SearchParameterBuilder {
         }
     }
 
+    pub fn with(existing: SearchParameter) -> SearchParameterBuilder {
+        SearchParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SearchParameterBuilder {
         let mut __value: Value = json!({});
         return SearchParameterBuilder { value: __value };
+    }
+
+    pub fn _base<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SearchParameterBuilder {
+        self.value["_base"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _chain<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SearchParameterBuilder {
+        self.value["_chain"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comparator<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SearchParameterBuilder {
+        self.value["_comparator"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _modifier<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SearchParameterBuilder {
+        self.value["_modifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _multiple_and<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_multipleAnd"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _multiple_or<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_multipleOr"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target<'a>(&'a mut self, val: Vec<Element>) -> &'a mut SearchParameterBuilder {
+        self.value["_target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _xpath<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_xpath"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _xpath_usage<'a>(&'a mut self, val: Element) -> &'a mut SearchParameterBuilder {
+        self.value["_xpathUsage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn base<'a>(&'a mut self, val: Vec<&str>) -> &'a mut SearchParameterBuilder {
+        self.value["base"] = json!(val);
+        return self;
+    }
+
+    pub fn chain<'a>(&'a mut self, val: Vec<&str>) -> &'a mut SearchParameterBuilder {
+        self.value["chain"] = json!(val);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn component<'a>(
+        &'a mut self,
+        val: Vec<SearchParameter_Component>,
+    ) -> &'a mut SearchParameterBuilder {
+        self.value["component"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut SearchParameterBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SearchParameterBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn derived_from<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["derivedFrom"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut SearchParameterBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SearchParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SearchParameterBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SearchParameterBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SearchParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn multiple_and<'a>(&'a mut self, val: bool) -> &'a mut SearchParameterBuilder {
+        self.value["multipleAnd"] = json!(val);
+        return self;
+    }
+
+    pub fn multiple_or<'a>(&'a mut self, val: bool) -> &'a mut SearchParameterBuilder {
+        self.value["multipleOr"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SearchParameterStatus) -> &'a mut SearchParameterBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn target<'a>(&'a mut self, val: Vec<&str>) -> &'a mut SearchParameterBuilder {
+        self.value["target"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SearchParameterBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: SearchParameterType) -> &'a mut SearchParameterBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut SearchParameterBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["version"] = json!(val);
+        return self;
+    }
+
+    pub fn xpath<'a>(&'a mut self, val: &str) -> &'a mut SearchParameterBuilder {
+        self.value["xpath"] = json!(val);
+        return self;
+    }
+
+    pub fn xpath_usage<'a>(
+        &'a mut self,
+        val: SearchParameterXpathUsage,
+    ) -> &'a mut SearchParameterBuilder {
+        self.value["xpathUsage"] = json!(val.to_string());
+        return self;
     }
 }
 

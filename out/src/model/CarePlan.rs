@@ -25,6 +25,16 @@ pub struct CarePlan<'a> {
 }
 
 impl CarePlan<'_> {
+    pub fn new(value: &Value) -> CarePlan {
+        CarePlan {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -673,7 +683,7 @@ impl CarePlan<'_> {
 
 #[derive(Debug)]
 pub struct CarePlanBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CarePlanBuilder {
@@ -683,9 +693,207 @@ impl CarePlanBuilder {
         }
     }
 
+    pub fn with(existing: CarePlan) -> CarePlanBuilder {
+        CarePlanBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> CarePlanBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return CarePlanBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Vec<Element>) -> &'a mut CarePlanBuilder {
+        self.value["_instantiatesUri"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _intent<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_intent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut CarePlanBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn activity<'a>(&'a mut self, val: Vec<CarePlan_Activity>) -> &'a mut CarePlanBuilder {
+        self.value["activity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn addresses<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["addresses"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut CarePlanBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn care_team<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["careTeam"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut CarePlanBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut CarePlanBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contributor<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["contributor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut CarePlanBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CarePlanBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn goal<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["goal"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut CarePlanBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CarePlanBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: Vec<&str>) -> &'a mut CarePlanBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn intent<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["intent"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CarePlanBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CarePlanBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut CarePlanBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut CarePlanBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn replaces<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["replaces"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn supporting_info<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut CarePlanBuilder {
+        self.value["supportingInfo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CarePlanBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut CarePlanBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }

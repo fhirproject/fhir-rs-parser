@@ -14,6 +14,16 @@ pub struct ElementDefinition_Binding<'a> {
 }
 
 impl ElementDefinition_Binding<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Binding {
+        ElementDefinition_Binding {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -142,7 +152,7 @@ impl ElementDefinition_Binding<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_BindingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_BindingBuilder {
@@ -152,9 +162,68 @@ impl ElementDefinition_BindingBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Binding) -> ElementDefinition_BindingBuilder {
+        ElementDefinition_BindingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_BindingBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_BindingBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _strength<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["_strength"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn strength<'a>(
+        &'a mut self,
+        val: ElementDefinition_BindingStrength,
+    ) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["strength"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn value_set<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_BindingBuilder {
+        self.value["valueSet"] = json!(val);
+        return self;
     }
 }
 

@@ -18,6 +18,16 @@ pub struct Claim_Insurance<'a> {
 }
 
 impl Claim_Insurance<'_> {
+    pub fn new(value: &Value) -> Claim_Insurance {
+        Claim_Insurance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for businessArrangement
     pub fn _business_arrangement(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_businessArrangement") {
@@ -242,7 +252,7 @@ impl Claim_Insurance<'_> {
 
 #[derive(Debug)]
 pub struct Claim_InsuranceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_InsuranceBuilder {
@@ -252,9 +262,84 @@ impl Claim_InsuranceBuilder {
         }
     }
 
+    pub fn with(existing: Claim_Insurance) -> Claim_InsuranceBuilder {
+        Claim_InsuranceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(coverage: Reference) -> Claim_InsuranceBuilder {
         let mut __value: Value = json!({});
         __value["coverage"] = json!(coverage.value);
         return Claim_InsuranceBuilder { value: __value };
+    }
+
+    pub fn _business_arrangement<'a>(&'a mut self, val: Element) -> &'a mut Claim_InsuranceBuilder {
+        self.value["_businessArrangement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _focal<'a>(&'a mut self, val: Element) -> &'a mut Claim_InsuranceBuilder {
+        self.value["_focal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_auth_ref<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Claim_InsuranceBuilder {
+        self.value["_preAuthRef"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_InsuranceBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn business_arrangement<'a>(&'a mut self, val: &str) -> &'a mut Claim_InsuranceBuilder {
+        self.value["businessArrangement"] = json!(val);
+        return self;
+    }
+
+    pub fn claim_response<'a>(&'a mut self, val: Reference) -> &'a mut Claim_InsuranceBuilder {
+        self.value["claimResponse"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_InsuranceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focal<'a>(&'a mut self, val: bool) -> &'a mut Claim_InsuranceBuilder {
+        self.value["focal"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_InsuranceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut Claim_InsuranceBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_InsuranceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn pre_auth_ref<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Claim_InsuranceBuilder {
+        self.value["preAuthRef"] = json!(val);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_InsuranceBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
     }
 }

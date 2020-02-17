@@ -23,6 +23,16 @@ pub struct SubstanceProtein_Subunit<'a> {
 }
 
 impl SubstanceProtein_Subunit<'_> {
+    pub fn new(value: &Value) -> SubstanceProtein_Subunit {
+        SubstanceProtein_Subunit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for cTerminalModification
     pub fn _c_terminal_modification(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cTerminalModification") {
@@ -275,7 +285,7 @@ impl SubstanceProtein_Subunit<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceProtein_SubunitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceProtein_SubunitBuilder {
@@ -285,8 +295,122 @@ impl SubstanceProtein_SubunitBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceProtein_Subunit) -> SubstanceProtein_SubunitBuilder {
+        SubstanceProtein_SubunitBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceProtein_SubunitBuilder {
         let mut __value: Value = json!({});
         return SubstanceProtein_SubunitBuilder { value: __value };
+    }
+
+    pub fn _c_terminal_modification<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["_cTerminalModification"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _length<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["_length"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _n_terminal_modification<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["_nTerminalModification"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subunit<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["_subunit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn c_terminal_modification<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["cTerminalModification"] = json!(val);
+        return self;
+    }
+
+    pub fn c_terminal_modification_id<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["cTerminalModificationId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn length<'a>(&'a mut self, val: i64) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["length"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn n_terminal_modification<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["nTerminalModification"] = json!(val);
+        return self;
+    }
+
+    pub fn n_terminal_modification_id<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["nTerminalModificationId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: &str) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
+    }
+
+    pub fn sequence_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["sequenceAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subunit<'a>(&'a mut self, val: i64) -> &'a mut SubstanceProtein_SubunitBuilder {
+        self.value["subunit"] = json!(val);
+        return self;
     }
 }

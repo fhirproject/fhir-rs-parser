@@ -15,6 +15,16 @@ pub struct SubstanceReferenceInformation_Classification<'a> {
 }
 
 impl SubstanceReferenceInformation_Classification<'_> {
+    pub fn new(value: &Value) -> SubstanceReferenceInformation_Classification {
+        SubstanceReferenceInformation_Classification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Todo.
     pub fn classification(&self) -> Option<CodeableConcept> {
         if let Some(val) = self.value.get("classification") {
@@ -152,7 +162,7 @@ impl SubstanceReferenceInformation_Classification<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_ClassificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceReferenceInformation_ClassificationBuilder {
@@ -162,8 +172,73 @@ impl SubstanceReferenceInformation_ClassificationBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceReferenceInformation_Classification,
+    ) -> SubstanceReferenceInformation_ClassificationBuilder {
+        SubstanceReferenceInformation_ClassificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceReferenceInformation_ClassificationBuilder {
         let mut __value: Value = json!({});
         return SubstanceReferenceInformation_ClassificationBuilder { value: __value };
+    }
+
+    pub fn classification<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["classification"] = json!(val.value);
+        return self;
+    }
+
+    pub fn domain<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["domain"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subtype<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SubstanceReferenceInformation_ClassificationBuilder {
+        self.value["subtype"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

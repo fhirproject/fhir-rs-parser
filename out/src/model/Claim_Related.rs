@@ -18,6 +18,16 @@ pub struct Claim_Related<'a> {
 }
 
 impl Claim_Related<'_> {
+    pub fn new(value: &Value) -> Claim_Related {
+        Claim_Related {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Reference to a related claim.
     pub fn claim(&self) -> Option<Reference> {
         if let Some(val) = self.value.get("claim") {
@@ -133,7 +143,7 @@ impl Claim_Related<'_> {
 
 #[derive(Debug)]
 pub struct Claim_RelatedBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_RelatedBuilder {
@@ -143,8 +153,48 @@ impl Claim_RelatedBuilder {
         }
     }
 
+    pub fn with(existing: Claim_Related) -> Claim_RelatedBuilder {
+        Claim_RelatedBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Claim_RelatedBuilder {
         let mut __value: Value = json!({});
         return Claim_RelatedBuilder { value: __value };
+    }
+
+    pub fn claim<'a>(&'a mut self, val: Reference) -> &'a mut Claim_RelatedBuilder {
+        self.value["claim"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_RelatedBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_RelatedBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_RelatedBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: Identifier) -> &'a mut Claim_RelatedBuilder {
+        self.value["reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn relationship<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_RelatedBuilder {
+        self.value["relationship"] = json!(val.value);
+        return self;
     }
 }

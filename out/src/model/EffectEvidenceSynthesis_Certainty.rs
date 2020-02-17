@@ -18,6 +18,16 @@ pub struct EffectEvidenceSynthesis_Certainty<'a> {
 }
 
 impl EffectEvidenceSynthesis_Certainty<'_> {
+    pub fn new(value: &Value) -> EffectEvidenceSynthesis_Certainty {
+        EffectEvidenceSynthesis_Certainty {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A description of a component of the overall certainty.
     pub fn certainty_subcomponent(
         &self,
@@ -146,7 +156,7 @@ impl EffectEvidenceSynthesis_Certainty<'_> {
 
 #[derive(Debug)]
 pub struct EffectEvidenceSynthesis_CertaintyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EffectEvidenceSynthesis_CertaintyBuilder {
@@ -156,8 +166,63 @@ impl EffectEvidenceSynthesis_CertaintyBuilder {
         }
     }
 
+    pub fn with(
+        existing: EffectEvidenceSynthesis_Certainty,
+    ) -> EffectEvidenceSynthesis_CertaintyBuilder {
+        EffectEvidenceSynthesis_CertaintyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> EffectEvidenceSynthesis_CertaintyBuilder {
         let mut __value: Value = json!({});
         return EffectEvidenceSynthesis_CertaintyBuilder { value: __value };
+    }
+
+    pub fn certainty_subcomponent<'a>(
+        &'a mut self,
+        val: Vec<EffectEvidenceSynthesis_CertaintySubcomponent>,
+    ) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["certaintySubcomponent"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(
+        &'a mut self,
+        val: Vec<Annotation>,
+    ) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rating<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut EffectEvidenceSynthesis_CertaintyBuilder {
+        self.value["rating"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

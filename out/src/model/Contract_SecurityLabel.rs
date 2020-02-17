@@ -16,6 +16,16 @@ pub struct Contract_SecurityLabel<'a> {
 }
 
 impl Contract_SecurityLabel<'_> {
+    pub fn new(value: &Value) -> Contract_SecurityLabel {
+        Contract_SecurityLabel {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for number
     pub fn _number(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_number") {
@@ -170,7 +180,7 @@ impl Contract_SecurityLabel<'_> {
 
 #[derive(Debug)]
 pub struct Contract_SecurityLabelBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_SecurityLabelBuilder {
@@ -180,9 +190,57 @@ impl Contract_SecurityLabelBuilder {
         }
     }
 
+    pub fn with(existing: Contract_SecurityLabel) -> Contract_SecurityLabelBuilder {
+        Contract_SecurityLabelBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(classification: Coding) -> Contract_SecurityLabelBuilder {
         let mut __value: Value = json!({});
         __value["classification"] = json!(classification.value);
         return Contract_SecurityLabelBuilder { value: __value };
+    }
+
+    pub fn _number<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["_number"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn control<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["control"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: Vec<u64>) -> &'a mut Contract_SecurityLabelBuilder {
+        self.value["number"] = json!(val);
+        return self;
     }
 }

@@ -45,6 +45,16 @@ pub struct StructureMap_Source<'a> {
 }
 
 impl StructureMap_Source<'_> {
+    pub fn new(value: &Value) -> StructureMap_Source {
+        StructureMap_Source {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for check
     pub fn _check(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_check") {
@@ -1281,7 +1291,7 @@ impl StructureMap_Source<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_SourceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_SourceBuilder {
@@ -1291,9 +1301,635 @@ impl StructureMap_SourceBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Source) -> StructureMap_SourceBuilder {
+        StructureMap_SourceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureMap_SourceBuilder {
         let mut __value: Value = json!({});
         return StructureMap_SourceBuilder { value: __value };
+    }
+
+    pub fn _check<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_check"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _condition<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_condition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _context<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_code<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_decimal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_id<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_instant<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_integer<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_markdown<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_oid<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_uri<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_url<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_uuid<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_defaultValueUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _element<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_element"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _list_mode<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_listMode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _log_message<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_logMessage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _variable<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_SourceBuilder {
+        self.value["_variable"] = json!(val.value);
+        return self;
+    }
+
+    pub fn check<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["check"] = json!(val);
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["condition"] = json!(val);
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["context"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_address<'a>(
+        &'a mut self,
+        val: Address,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_age<'a>(&'a mut self, val: Age) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_annotation<'a>(
+        &'a mut self,
+        val: Annotation,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_boolean<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_code<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_coding<'a>(
+        &'a mut self,
+        val: Coding,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_count<'a>(&'a mut self, val: Count) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_date<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_decimal<'a>(&'a mut self, val: f64) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_distance<'a>(
+        &'a mut self,
+        val: Distance,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_dosage<'a>(
+        &'a mut self,
+        val: Dosage,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_human_name<'a>(
+        &'a mut self,
+        val: HumanName,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueId"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_instant<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_integer<'a>(&'a mut self, val: f64) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_markdown<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_meta<'a>(&'a mut self, val: Meta) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_money<'a>(&'a mut self, val: Money) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_oid<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueOid"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_range<'a>(&'a mut self, val: Range) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_string<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueString"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_time<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_timing<'a>(
+        &'a mut self,
+        val: Timing,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_uri<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueUri"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_url<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_uuid<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["defaultValueUuid"] = json!(val);
+        return self;
+    }
+
+    pub fn element<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["element"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut StructureMap_SourceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn list_mode<'a>(
+        &'a mut self,
+        val: StructureMap_SourceListMode,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["listMode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn log_message<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["logMessage"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: i64) -> &'a mut StructureMap_SourceBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_SourceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn variable<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_SourceBuilder {
+        self.value["variable"] = json!(val);
+        return self;
     }
 }
 

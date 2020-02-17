@@ -21,6 +21,16 @@ pub struct ResearchSubject<'a> {
 }
 
 impl ResearchSubject<'_> {
+    pub fn new(value: &Value) -> ResearchSubject {
+        ResearchSubject {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for actualArm
     pub fn _actual_arm(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actualArm") {
@@ -343,7 +353,7 @@ impl ResearchSubject<'_> {
 
 #[derive(Debug)]
 pub struct ResearchSubjectBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ResearchSubjectBuilder {
@@ -353,11 +363,116 @@ impl ResearchSubjectBuilder {
         }
     }
 
+    pub fn with(existing: ResearchSubject) -> ResearchSubjectBuilder {
+        ResearchSubjectBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(individual: Reference, study: Reference) -> ResearchSubjectBuilder {
         let mut __value: Value = json!({});
         __value["individual"] = json!(individual.value);
         __value["study"] = json!(study.value);
         return ResearchSubjectBuilder { value: __value };
+    }
+
+    pub fn _actual_arm<'a>(&'a mut self, val: Element) -> &'a mut ResearchSubjectBuilder {
+        self.value["_actualArm"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _assigned_arm<'a>(&'a mut self, val: Element) -> &'a mut ResearchSubjectBuilder {
+        self.value["_assignedArm"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ResearchSubjectBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ResearchSubjectBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ResearchSubjectBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actual_arm<'a>(&'a mut self, val: &str) -> &'a mut ResearchSubjectBuilder {
+        self.value["actualArm"] = json!(val);
+        return self;
+    }
+
+    pub fn assigned_arm<'a>(&'a mut self, val: &str) -> &'a mut ResearchSubjectBuilder {
+        self.value["assignedArm"] = json!(val);
+        return self;
+    }
+
+    pub fn consent<'a>(&'a mut self, val: Reference) -> &'a mut ResearchSubjectBuilder {
+        self.value["consent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ResearchSubjectBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ResearchSubjectBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ResearchSubjectBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ResearchSubjectBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ResearchSubjectBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ResearchSubjectBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ResearchSubjectBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ResearchSubjectBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut ResearchSubjectBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ResearchSubjectStatus) -> &'a mut ResearchSubjectBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ResearchSubjectBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

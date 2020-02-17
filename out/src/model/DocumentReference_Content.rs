@@ -19,6 +19,16 @@ pub struct DocumentReference_Content<'a> {
 }
 
 impl DocumentReference_Content<'_> {
+    pub fn new(value: &Value) -> DocumentReference_Content {
+        DocumentReference_Content {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The document or URL of the document along with critical metadata to prove
     /// content has integrity.
     pub fn attachment(&self) -> Attachment {
@@ -115,7 +125,7 @@ impl DocumentReference_Content<'_> {
 
 #[derive(Debug)]
 pub struct DocumentReference_ContentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DocumentReference_ContentBuilder {
@@ -125,9 +135,42 @@ impl DocumentReference_ContentBuilder {
         }
     }
 
+    pub fn with(existing: DocumentReference_Content) -> DocumentReference_ContentBuilder {
+        DocumentReference_ContentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(attachment: Attachment) -> DocumentReference_ContentBuilder {
         let mut __value: Value = json!({});
         __value["attachment"] = json!(attachment.value);
         return DocumentReference_ContentBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_ContentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn format<'a>(&'a mut self, val: Coding) -> &'a mut DocumentReference_ContentBuilder {
+        self.value["format"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DocumentReference_ContentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DocumentReference_ContentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

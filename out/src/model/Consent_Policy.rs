@@ -16,6 +16,16 @@ pub struct Consent_Policy<'a> {
 }
 
 impl Consent_Policy<'_> {
+    pub fn new(value: &Value) -> Consent_Policy {
+        Consent_Policy {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for authority
     pub fn _authority(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_authority") {
@@ -135,7 +145,7 @@ impl Consent_Policy<'_> {
 
 #[derive(Debug)]
 pub struct Consent_PolicyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Consent_PolicyBuilder {
@@ -145,8 +155,53 @@ impl Consent_PolicyBuilder {
         }
     }
 
+    pub fn with(existing: Consent_Policy) -> Consent_PolicyBuilder {
+        Consent_PolicyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Consent_PolicyBuilder {
         let mut __value: Value = json!({});
         return Consent_PolicyBuilder { value: __value };
+    }
+
+    pub fn _authority<'a>(&'a mut self, val: Element) -> &'a mut Consent_PolicyBuilder {
+        self.value["_authority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _uri<'a>(&'a mut self, val: Element) -> &'a mut Consent_PolicyBuilder {
+        self.value["_uri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authority<'a>(&'a mut self, val: &str) -> &'a mut Consent_PolicyBuilder {
+        self.value["authority"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Consent_PolicyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Consent_PolicyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Consent_PolicyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn uri<'a>(&'a mut self, val: &str) -> &'a mut Consent_PolicyBuilder {
+        self.value["uri"] = json!(val);
+        return self;
     }
 }

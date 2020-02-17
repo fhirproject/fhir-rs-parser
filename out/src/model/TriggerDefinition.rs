@@ -19,6 +19,16 @@ pub struct TriggerDefinition<'a> {
 }
 
 impl TriggerDefinition<'_> {
+    pub fn new(value: &Value) -> TriggerDefinition {
+        TriggerDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -223,7 +233,7 @@ impl TriggerDefinition<'_> {
 
 #[derive(Debug)]
 pub struct TriggerDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TriggerDefinitionBuilder {
@@ -233,9 +243,88 @@ impl TriggerDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: TriggerDefinition) -> TriggerDefinitionBuilder {
+        TriggerDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TriggerDefinitionBuilder {
         let mut __value: Value = json!({});
         return TriggerDefinitionBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut TriggerDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date<'a>(&'a mut self, val: Element) -> &'a mut TriggerDefinitionBuilder {
+        self.value["_timingDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date_time<'a>(&'a mut self, val: Element) -> &'a mut TriggerDefinitionBuilder {
+        self.value["_timingDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut TriggerDefinitionBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: Expression) -> &'a mut TriggerDefinitionBuilder {
+        self.value["condition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: Vec<DataRequirement>) -> &'a mut TriggerDefinitionBuilder {
+        self.value["data"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TriggerDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TriggerDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TriggerDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_date<'a>(&'a mut self, val: &str) -> &'a mut TriggerDefinitionBuilder {
+        self.value["timingDate"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_date_time<'a>(&'a mut self, val: &str) -> &'a mut TriggerDefinitionBuilder {
+        self.value["timingDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_reference<'a>(&'a mut self, val: Reference) -> &'a mut TriggerDefinitionBuilder {
+        self.value["timingReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_timing<'a>(&'a mut self, val: Timing) -> &'a mut TriggerDefinitionBuilder {
+        self.value["timingTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: TriggerDefinitionType,
+    ) -> &'a mut TriggerDefinitionBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

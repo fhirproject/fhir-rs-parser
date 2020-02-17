@@ -18,6 +18,16 @@ pub struct GraphDefinition_Target<'a> {
 }
 
 impl GraphDefinition_Target<'_> {
+    pub fn new(value: &Value) -> GraphDefinition_Target {
+        GraphDefinition_Target {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for params
     pub fn _params(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_params") {
@@ -182,7 +192,7 @@ impl GraphDefinition_Target<'_> {
 
 #[derive(Debug)]
 pub struct GraphDefinition_TargetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GraphDefinition_TargetBuilder {
@@ -192,8 +202,77 @@ impl GraphDefinition_TargetBuilder {
         }
     }
 
+    pub fn with(existing: GraphDefinition_Target) -> GraphDefinition_TargetBuilder {
+        GraphDefinition_TargetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> GraphDefinition_TargetBuilder {
         let mut __value: Value = json!({});
         return GraphDefinition_TargetBuilder { value: __value };
+    }
+
+    pub fn _params<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["_params"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn compartment<'a>(
+        &'a mut self,
+        val: Vec<GraphDefinition_Compartment>,
+    ) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["compartment"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(
+        &'a mut self,
+        val: Vec<GraphDefinition_Link>,
+    ) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn params<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["params"] = json!(val);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_TargetBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

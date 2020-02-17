@@ -18,6 +18,16 @@ pub struct EpisodeOfCare_Diagnosis<'a> {
 }
 
 impl EpisodeOfCare_Diagnosis<'_> {
+    pub fn new(value: &Value) -> EpisodeOfCare_Diagnosis {
+        EpisodeOfCare_Diagnosis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for rank
     pub fn _rank(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_rank") {
@@ -138,7 +148,7 @@ impl EpisodeOfCare_Diagnosis<'_> {
 
 #[derive(Debug)]
 pub struct EpisodeOfCare_DiagnosisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EpisodeOfCare_DiagnosisBuilder {
@@ -148,9 +158,52 @@ impl EpisodeOfCare_DiagnosisBuilder {
         }
     }
 
+    pub fn with(existing: EpisodeOfCare_Diagnosis) -> EpisodeOfCare_DiagnosisBuilder {
+        EpisodeOfCare_DiagnosisBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(condition: Reference) -> EpisodeOfCare_DiagnosisBuilder {
         let mut __value: Value = json!({});
         __value["condition"] = json!(condition.value);
         return EpisodeOfCare_DiagnosisBuilder { value: __value };
+    }
+
+    pub fn _rank<'a>(&'a mut self, val: Element) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["_rank"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rank<'a>(&'a mut self, val: i64) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["rank"] = json!(val);
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: CodeableConcept) -> &'a mut EpisodeOfCare_DiagnosisBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
     }
 }

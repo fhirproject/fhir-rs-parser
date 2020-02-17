@@ -15,6 +15,16 @@ pub struct SubstancePolymer_MonomerSet<'a> {
 }
 
 impl SubstancePolymer_MonomerSet<'_> {
+    pub fn new(value: &Value) -> SubstancePolymer_MonomerSet {
+        SubstancePolymer_MonomerSet {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -118,7 +128,7 @@ impl SubstancePolymer_MonomerSet<'_> {
 
 #[derive(Debug)]
 pub struct SubstancePolymer_MonomerSetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstancePolymer_MonomerSetBuilder {
@@ -128,8 +138,53 @@ impl SubstancePolymer_MonomerSetBuilder {
         }
     }
 
+    pub fn with(existing: SubstancePolymer_MonomerSet) -> SubstancePolymer_MonomerSetBuilder {
+        SubstancePolymer_MonomerSetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstancePolymer_MonomerSetBuilder {
         let mut __value: Value = json!({});
         return SubstancePolymer_MonomerSetBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_MonomerSetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstancePolymer_MonomerSetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstancePolymer_MonomerSetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn ratio_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstancePolymer_MonomerSetBuilder {
+        self.value["ratioType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn starting_material<'a>(
+        &'a mut self,
+        val: Vec<SubstancePolymer_StartingMaterial>,
+    ) -> &'a mut SubstancePolymer_MonomerSetBuilder {
+        self.value["startingMaterial"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

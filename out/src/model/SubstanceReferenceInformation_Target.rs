@@ -19,6 +19,16 @@ pub struct SubstanceReferenceInformation_Target<'a> {
 }
 
 impl SubstanceReferenceInformation_Target<'_> {
+    pub fn new(value: &Value) -> SubstanceReferenceInformation_Target {
+        SubstanceReferenceInformation_Target {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -251,7 +261,7 @@ impl SubstanceReferenceInformation_Target<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceReferenceInformation_TargetBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceReferenceInformation_TargetBuilder {
@@ -261,8 +271,126 @@ impl SubstanceReferenceInformation_TargetBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceReferenceInformation_Target,
+    ) -> SubstanceReferenceInformation_TargetBuilder {
+        SubstanceReferenceInformation_TargetBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceReferenceInformation_TargetBuilder {
         let mut __value: Value = json!({});
         return SubstanceReferenceInformation_TargetBuilder { value: __value };
+    }
+
+    pub fn _amount_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["_amountString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["amountQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_range<'a>(
+        &'a mut self,
+        val: Range,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["amountRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["amountString"] = json!(val);
+        return self;
+    }
+
+    pub fn amount_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["amountType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn interaction<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["interaction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn organism<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["organism"] = json!(val.value);
+        return self;
+    }
+
+    pub fn organism_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["organismType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["target"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceReferenceInformation_TargetBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

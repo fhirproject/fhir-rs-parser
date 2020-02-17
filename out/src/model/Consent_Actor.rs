@@ -17,6 +17,16 @@ pub struct Consent_Actor<'a> {
 }
 
 impl Consent_Actor<'_> {
+    pub fn new(value: &Value) -> Consent_Actor {
+        Consent_Actor {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -109,7 +119,7 @@ impl Consent_Actor<'_> {
 
 #[derive(Debug)]
 pub struct Consent_ActorBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Consent_ActorBuilder {
@@ -119,10 +129,35 @@ impl Consent_ActorBuilder {
         }
     }
 
+    pub fn with(existing: Consent_Actor) -> Consent_ActorBuilder {
+        Consent_ActorBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(reference: Reference, role: CodeableConcept) -> Consent_ActorBuilder {
         let mut __value: Value = json!({});
         __value["reference"] = json!(reference.value);
         __value["role"] = json!(role.value);
         return Consent_ActorBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Consent_ActorBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Consent_ActorBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Consent_ActorBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

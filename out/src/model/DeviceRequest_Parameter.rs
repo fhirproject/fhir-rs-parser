@@ -18,6 +18,16 @@ pub struct DeviceRequest_Parameter<'a> {
 }
 
 impl DeviceRequest_Parameter<'_> {
+    pub fn new(value: &Value) -> DeviceRequest_Parameter {
+        DeviceRequest_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBoolean
     pub fn _value_boolean(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBoolean") {
@@ -171,7 +181,7 @@ impl DeviceRequest_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct DeviceRequest_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceRequest_ParameterBuilder {
@@ -181,8 +191,75 @@ impl DeviceRequest_ParameterBuilder {
         }
     }
 
+    pub fn with(existing: DeviceRequest_Parameter) -> DeviceRequest_ParameterBuilder {
+        DeviceRequest_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DeviceRequest_ParameterBuilder {
         let mut __value: Value = json!({});
         return DeviceRequest_ParameterBuilder { value: __value };
+    }
+
+    pub fn _value_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut DeviceRequest_ParameterBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
     }
 }

@@ -18,6 +18,16 @@ pub struct MedicationDispense_Performer<'a> {
 }
 
 impl MedicationDispense_Performer<'_> {
+    pub fn new(value: &Value) -> MedicationDispense_Performer {
+        MedicationDispense_Performer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The device, practitioner, etc. who performed the action.  It should be assumed
     /// that the actor is the dispenser of the medication.
     pub fn actor(&self) -> Reference {
@@ -114,7 +124,7 @@ impl MedicationDispense_Performer<'_> {
 
 #[derive(Debug)]
 pub struct MedicationDispense_PerformerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationDispense_PerformerBuilder {
@@ -124,9 +134,45 @@ impl MedicationDispense_PerformerBuilder {
         }
     }
 
+    pub fn with(existing: MedicationDispense_Performer) -> MedicationDispense_PerformerBuilder {
+        MedicationDispense_PerformerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> MedicationDispense_PerformerBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return MedicationDispense_PerformerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationDispense_PerformerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn function<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationDispense_PerformerBuilder {
+        self.value["function"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationDispense_PerformerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationDispense_PerformerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

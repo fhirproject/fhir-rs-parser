@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_Dosage<'a> {
 }
 
 impl MedicationKnowledge_Dosage<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Dosage {
+        MedicationKnowledge_Dosage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Dosage for the medication for the specific guidelines.
     pub fn dosage(&self) -> Vec<Dosage> {
         self.value
@@ -116,13 +126,19 @@ impl MedicationKnowledge_Dosage<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_DosageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_DosageBuilder {
     pub fn build(&self) -> MedicationKnowledge_Dosage {
         MedicationKnowledge_Dosage {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: MedicationKnowledge_Dosage) -> MedicationKnowledge_DosageBuilder {
+        MedicationKnowledge_DosageBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -134,5 +150,27 @@ impl MedicationKnowledge_DosageBuilder {
         __value["dosage"] = json!(dosage.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["type"] = json!(fhir_type.value);
         return MedicationKnowledge_DosageBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_DosageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_DosageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_DosageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

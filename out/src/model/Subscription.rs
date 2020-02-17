@@ -23,6 +23,16 @@ pub struct Subscription<'a> {
 }
 
 impl Subscription<'_> {
+    pub fn new(value: &Value) -> Subscription {
+        Subscription {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for criteria
     pub fn _criteria(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_criteria") {
@@ -356,7 +366,7 @@ impl Subscription<'_> {
 
 #[derive(Debug)]
 pub struct SubscriptionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubscriptionBuilder {
@@ -366,10 +376,125 @@ impl SubscriptionBuilder {
         }
     }
 
+    pub fn with(existing: Subscription) -> SubscriptionBuilder {
+        SubscriptionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(channel: Subscription_Channel) -> SubscriptionBuilder {
         let mut __value: Value = json!({});
         __value["channel"] = json!(channel.value);
         return SubscriptionBuilder { value: __value };
+    }
+
+    pub fn _criteria<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_criteria"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _error<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_error"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reason<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_reason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut SubscriptionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactPoint>) -> &'a mut SubscriptionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SubscriptionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn criteria<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["criteria"] = json!(val);
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn error<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["error"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubscriptionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubscriptionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubscriptionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: &str) -> &'a mut SubscriptionBuilder {
+        self.value["reason"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: SubscriptionStatus) -> &'a mut SubscriptionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubscriptionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

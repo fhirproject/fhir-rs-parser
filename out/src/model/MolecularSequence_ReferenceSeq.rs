@@ -16,6 +16,16 @@ pub struct MolecularSequence_ReferenceSeq<'a> {
 }
 
 impl MolecularSequence_ReferenceSeq<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_ReferenceSeq {
+        MolecularSequence_ReferenceSeq {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for genomeBuild
     pub fn _genome_build(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_genomeBuild") {
@@ -291,7 +301,7 @@ impl MolecularSequence_ReferenceSeq<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_ReferenceSeqBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_ReferenceSeqBuilder {
@@ -301,9 +311,154 @@ impl MolecularSequence_ReferenceSeqBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_ReferenceSeq) -> MolecularSequence_ReferenceSeqBuilder {
+        MolecularSequence_ReferenceSeqBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_ReferenceSeqBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_ReferenceSeqBuilder { value: __value };
+    }
+
+    pub fn _genome_build<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_genomeBuild"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _orientation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_orientation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference_seq_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_referenceSeqString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _strand<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_strand"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _window_end<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_windowEnd"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _window_start<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["_windowStart"] = json!(val.value);
+        return self;
+    }
+
+    pub fn chromosome<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["chromosome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn genome_build<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["genomeBuild"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn orientation<'a>(
+        &'a mut self,
+        val: MolecularSequence_ReferenceSeqOrientation,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["orientation"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn reference_seq_id<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["referenceSeqId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference_seq_pointer<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["referenceSeqPointer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference_seq_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["referenceSeqString"] = json!(val);
+        return self;
+    }
+
+    pub fn strand<'a>(
+        &'a mut self,
+        val: MolecularSequence_ReferenceSeqStrand,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["strand"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn window_end<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["windowEnd"] = json!(val);
+        return self;
+    }
+
+    pub fn window_start<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut MolecularSequence_ReferenceSeqBuilder {
+        self.value["windowStart"] = json!(val);
+        return self;
     }
 }
 

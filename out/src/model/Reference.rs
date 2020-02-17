@@ -15,6 +15,16 @@ pub struct Reference<'a> {
 }
 
 impl Reference<'_> {
+    pub fn new(value: &Value) -> Reference {
+        Reference {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for display
     pub fn _display(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_display") {
@@ -162,7 +172,7 @@ impl Reference<'_> {
 
 #[derive(Debug)]
 pub struct ReferenceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ReferenceBuilder {
@@ -172,8 +182,59 @@ impl ReferenceBuilder {
         }
     }
 
+    pub fn with(existing: Reference) -> ReferenceBuilder {
+        ReferenceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ReferenceBuilder {
         let mut __value: Value = json!({});
         return ReferenceBuilder { value: __value };
+    }
+
+    pub fn _display<'a>(&'a mut self, val: Element) -> &'a mut ReferenceBuilder {
+        self.value["_display"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference<'a>(&'a mut self, val: Element) -> &'a mut ReferenceBuilder {
+        self.value["_reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ReferenceBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn display<'a>(&'a mut self, val: &str) -> &'a mut ReferenceBuilder {
+        self.value["display"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ReferenceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ReferenceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut ReferenceBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: &str) -> &'a mut ReferenceBuilder {
+        self.value["reference"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut ReferenceBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

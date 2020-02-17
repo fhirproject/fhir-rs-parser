@@ -24,6 +24,16 @@ pub struct EvidenceVariable_Characteristic<'a> {
 }
 
 impl EvidenceVariable_Characteristic<'_> {
+    pub fn new(value: &Value) -> EvidenceVariable_Characteristic {
+        EvidenceVariable_Characteristic {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for definitionCanonical
     pub fn _definition_canonical(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_definitionCanonical") {
@@ -387,7 +397,7 @@ impl EvidenceVariable_Characteristic<'_> {
 
 #[derive(Debug)]
 pub struct EvidenceVariable_CharacteristicBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl EvidenceVariable_CharacteristicBuilder {
@@ -397,9 +407,196 @@ impl EvidenceVariable_CharacteristicBuilder {
         }
     }
 
+    pub fn with(
+        existing: EvidenceVariable_Characteristic,
+    ) -> EvidenceVariable_CharacteristicBuilder {
+        EvidenceVariable_CharacteristicBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> EvidenceVariable_CharacteristicBuilder {
         let mut __value: Value = json!({});
         return EvidenceVariable_CharacteristicBuilder { value: __value };
+    }
+
+    pub fn _definition_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["_definitionCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _exclude<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["_exclude"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _group_measure<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["_groupMeasure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _participant_effective_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["_participantEffectiveDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn definition_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["definitionTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn exclude<'a>(&'a mut self, val: bool) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["exclude"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn group_measure<'a>(
+        &'a mut self,
+        val: EvidenceVariable_CharacteristicGroupMeasure,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["groupMeasure"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn participant_effective_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["participantEffectiveDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn participant_effective_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["participantEffectiveDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn participant_effective_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["participantEffectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn participant_effective_timing<'a>(
+        &'a mut self,
+        val: Timing,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["participantEffectiveTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn time_from_start<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["timeFromStart"] = json!(val.value);
+        return self;
+    }
+
+    pub fn usage_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut EvidenceVariable_CharacteristicBuilder {
+        self.value["usageContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

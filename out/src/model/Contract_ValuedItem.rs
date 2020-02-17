@@ -20,6 +20,16 @@ pub struct Contract_ValuedItem<'a> {
 }
 
 impl Contract_ValuedItem<'_> {
+    pub fn new(value: &Value) -> Contract_ValuedItem {
+        Contract_ValuedItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for effectiveTime
     pub fn _effective_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveTime") {
@@ -409,7 +419,7 @@ impl Contract_ValuedItem<'_> {
 
 #[derive(Debug)]
 pub struct Contract_ValuedItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_ValuedItemBuilder {
@@ -419,8 +429,156 @@ impl Contract_ValuedItemBuilder {
         }
     }
 
+    pub fn with(existing: Contract_ValuedItem) -> Contract_ValuedItemBuilder {
+        Contract_ValuedItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Contract_ValuedItemBuilder {
         let mut __value: Value = json!({});
         return Contract_ValuedItemBuilder { value: __value };
+    }
+
+    pub fn _effective_time<'a>(&'a mut self, val: Element) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_effectiveTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _factor<'a>(&'a mut self, val: Element) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _link_id<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_linkId"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _payment<'a>(&'a mut self, val: Element) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_payment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _payment_date<'a>(&'a mut self, val: Element) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_paymentDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _points<'a>(&'a mut self, val: Element) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_points"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _security_label_number<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["_securityLabelNumber"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_time<'a>(&'a mut self, val: &str) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["effectiveTime"] = json!(val);
+        return self;
+    }
+
+    pub fn entity_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["entityCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn entity_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["entityReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(&'a mut self, val: f64) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["linkId"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn net<'a>(&'a mut self, val: Money) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["net"] = json!(val.value);
+        return self;
+    }
+
+    pub fn payment<'a>(&'a mut self, val: &str) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["payment"] = json!(val);
+        return self;
+    }
+
+    pub fn payment_date<'a>(&'a mut self, val: &str) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["paymentDate"] = json!(val);
+        return self;
+    }
+
+    pub fn points<'a>(&'a mut self, val: f64) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["points"] = json!(val);
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn recipient<'a>(&'a mut self, val: Reference) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["recipient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn responsible<'a>(&'a mut self, val: Reference) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["responsible"] = json!(val.value);
+        return self;
+    }
+
+    pub fn security_label_number<'a>(
+        &'a mut self,
+        val: Vec<u64>,
+    ) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["securityLabelNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn unit_price<'a>(&'a mut self, val: Money) -> &'a mut Contract_ValuedItemBuilder {
+        self.value["unitPrice"] = json!(val.value);
+        return self;
     }
 }

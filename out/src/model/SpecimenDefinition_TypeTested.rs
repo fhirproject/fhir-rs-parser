@@ -18,6 +18,16 @@ pub struct SpecimenDefinition_TypeTested<'a> {
 }
 
 impl SpecimenDefinition_TypeTested<'_> {
+    pub fn new(value: &Value) -> SpecimenDefinition_TypeTested {
+        SpecimenDefinition_TypeTested {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for isDerived
     pub fn _is_derived(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_isDerived") {
@@ -245,7 +255,7 @@ impl SpecimenDefinition_TypeTested<'_> {
 
 #[derive(Debug)]
 pub struct SpecimenDefinition_TypeTestedBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SpecimenDefinition_TypeTestedBuilder {
@@ -255,9 +265,123 @@ impl SpecimenDefinition_TypeTestedBuilder {
         }
     }
 
+    pub fn with(existing: SpecimenDefinition_TypeTested) -> SpecimenDefinition_TypeTestedBuilder {
+        SpecimenDefinition_TypeTestedBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SpecimenDefinition_TypeTestedBuilder {
         let mut __value: Value = json!({});
         return SpecimenDefinition_TypeTestedBuilder { value: __value };
+    }
+
+    pub fn _is_derived<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["_isDerived"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _preference<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["_preference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _requirement<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["_requirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn container<'a>(
+        &'a mut self,
+        val: SpecimenDefinition_Container,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["container"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn handling<'a>(
+        &'a mut self,
+        val: Vec<SpecimenDefinition_Handling>,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["handling"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_derived<'a>(&'a mut self, val: bool) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["isDerived"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn preference<'a>(
+        &'a mut self,
+        val: SpecimenDefinition_TypeTestedPreference,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["preference"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn rejection_criterion<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["rejectionCriterion"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requirement<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["requirement"] = json!(val);
+        return self;
+    }
+
+    pub fn retention_time<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["retentionTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SpecimenDefinition_TypeTestedBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }
 

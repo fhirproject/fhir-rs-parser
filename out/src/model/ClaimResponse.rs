@@ -31,6 +31,16 @@ pub struct ClaimResponse<'a> {
 }
 
 impl ClaimResponse<'_> {
+    pub fn new(value: &Value) -> ClaimResponse {
+        ClaimResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -703,13 +713,19 @@ impl ClaimResponse<'_> {
 
 #[derive(Debug)]
 pub struct ClaimResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClaimResponseBuilder {
     pub fn build(&self) -> ClaimResponse {
         ClaimResponse {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: ClaimResponse) -> ClaimResponseBuilder {
+        ClaimResponseBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -723,5 +739,225 @@ impl ClaimResponseBuilder {
         __value["patient"] = json!(patient.value);
         __value["type"] = json!(fhir_type.value);
         return ClaimResponseBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _disposition<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_disposition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _outcome<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_auth_ref<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_preAuthRef"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut ClaimResponseBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn add_item<'a>(
+        &'a mut self,
+        val: Vec<ClaimResponse_AddItem>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["addItem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn adjudication<'a>(
+        &'a mut self,
+        val: Vec<ClaimResponse_Adjudication>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["adjudication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn communication_request<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["communicationRequest"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ClaimResponseBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn disposition<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["disposition"] = json!(val);
+        return self;
+    }
+
+    pub fn error<'a>(&'a mut self, val: Vec<ClaimResponse_Error>) -> &'a mut ClaimResponseBuilder {
+        self.value["error"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ClaimResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn form<'a>(&'a mut self, val: Attachment) -> &'a mut ClaimResponseBuilder {
+        self.value["form"] = json!(val.value);
+        return self;
+    }
+
+    pub fn form_code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ClaimResponseBuilder {
+        self.value["formCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn funds_reserve<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ClaimResponseBuilder {
+        self.value["fundsReserve"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ClaimResponseBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn insurance<'a>(
+        &'a mut self,
+        val: Vec<ClaimResponse_Insurance>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["insurance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn item<'a>(&'a mut self, val: Vec<ClaimResponse_Item>) -> &'a mut ClaimResponseBuilder {
+        self.value["item"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ClaimResponseBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["outcome"] = json!(val);
+        return self;
+    }
+
+    pub fn payee_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ClaimResponseBuilder {
+        self.value["payeeType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn payment<'a>(&'a mut self, val: ClaimResponse_Payment) -> &'a mut ClaimResponseBuilder {
+        self.value["payment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pre_auth_period<'a>(&'a mut self, val: Period) -> &'a mut ClaimResponseBuilder {
+        self.value["preAuthPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pre_auth_ref<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["preAuthRef"] = json!(val);
+        return self;
+    }
+
+    pub fn process_note<'a>(
+        &'a mut self,
+        val: Vec<ClaimResponse_ProcessNote>,
+    ) -> &'a mut ClaimResponseBuilder {
+        self.value["processNote"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn request<'a>(&'a mut self, val: Reference) -> &'a mut ClaimResponseBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn requestor<'a>(&'a mut self, val: Reference) -> &'a mut ClaimResponseBuilder {
+        self.value["requestor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn sub_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ClaimResponseBuilder {
+        self.value["subType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ClaimResponseBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn total<'a>(&'a mut self, val: Vec<ClaimResponse_Total>) -> &'a mut ClaimResponseBuilder {
+        self.value["total"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: &str) -> &'a mut ClaimResponseBuilder {
+        self.value["use"] = json!(val);
+        return self;
     }
 }

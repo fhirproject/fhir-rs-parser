@@ -16,6 +16,16 @@ pub struct Medication_Batch<'a> {
 }
 
 impl Medication_Batch<'_> {
+    pub fn new(value: &Value) -> Medication_Batch {
+        Medication_Batch {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for expirationDate
     pub fn _expiration_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expirationDate") {
@@ -133,7 +143,7 @@ impl Medication_Batch<'_> {
 
 #[derive(Debug)]
 pub struct Medication_BatchBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Medication_BatchBuilder {
@@ -143,8 +153,53 @@ impl Medication_BatchBuilder {
         }
     }
 
+    pub fn with(existing: Medication_Batch) -> Medication_BatchBuilder {
+        Medication_BatchBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Medication_BatchBuilder {
         let mut __value: Value = json!({});
         return Medication_BatchBuilder { value: __value };
+    }
+
+    pub fn _expiration_date<'a>(&'a mut self, val: Element) -> &'a mut Medication_BatchBuilder {
+        self.value["_expirationDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _lot_number<'a>(&'a mut self, val: Element) -> &'a mut Medication_BatchBuilder {
+        self.value["_lotNumber"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expiration_date<'a>(&'a mut self, val: &str) -> &'a mut Medication_BatchBuilder {
+        self.value["expirationDate"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Medication_BatchBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Medication_BatchBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn lot_number<'a>(&'a mut self, val: &str) -> &'a mut Medication_BatchBuilder {
+        self.value["lotNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Medication_BatchBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

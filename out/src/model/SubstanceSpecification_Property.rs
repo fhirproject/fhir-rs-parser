@@ -18,6 +18,16 @@ pub struct SubstanceSpecification_Property<'a> {
 }
 
 impl SubstanceSpecification_Property<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Property {
+        SubstanceSpecification_Property {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amountString
     pub fn _amount_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amountString") {
@@ -213,7 +223,7 @@ impl SubstanceSpecification_Property<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_PropertyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_PropertyBuilder {
@@ -223,8 +233,110 @@ impl SubstanceSpecification_PropertyBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_Property,
+    ) -> SubstanceSpecification_PropertyBuilder {
+        SubstanceSpecification_PropertyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_PropertyBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_PropertyBuilder { value: __value };
+    }
+
+    pub fn _amount_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["_amountString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _parameters<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["_parameters"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["amountQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["amountString"] = json!(val);
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn defining_substance_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["definingSubstanceCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn defining_substance_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["definingSubstanceReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parameters<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_PropertyBuilder {
+        self.value["parameters"] = json!(val);
+        return self;
     }
 }

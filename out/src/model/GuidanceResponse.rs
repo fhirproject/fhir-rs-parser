@@ -24,6 +24,16 @@ pub struct GuidanceResponse<'a> {
 }
 
 impl GuidanceResponse<'_> {
+    pub fn new(value: &Value) -> GuidanceResponse {
+        GuidanceResponse {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -543,7 +553,7 @@ impl GuidanceResponse<'_> {
 
 #[derive(Debug)]
 pub struct GuidanceResponseBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GuidanceResponseBuilder {
@@ -553,9 +563,199 @@ impl GuidanceResponseBuilder {
         }
     }
 
+    pub fn with(existing: GuidanceResponse) -> GuidanceResponseBuilder {
+        GuidanceResponseBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> GuidanceResponseBuilder {
         let mut __value: Value = json!({});
         return GuidanceResponseBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut GuidanceResponseBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut GuidanceResponseBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _module_canonical<'a>(&'a mut self, val: Element) -> &'a mut GuidanceResponseBuilder {
+        self.value["_moduleCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _module_uri<'a>(&'a mut self, val: Element) -> &'a mut GuidanceResponseBuilder {
+        self.value["_moduleUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut GuidanceResponseBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut GuidanceResponseBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data_requirement<'a>(
+        &'a mut self,
+        val: Vec<DataRequirement>,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["dataRequirement"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut GuidanceResponseBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn evaluation_message<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["evaluationMessage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut GuidanceResponseBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut GuidanceResponseBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut GuidanceResponseBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn module_canonical<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["moduleCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn module_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["moduleCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn module_uri<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["moduleUri"] = json!(val);
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut GuidanceResponseBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut GuidanceResponseBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn output_parameters<'a>(&'a mut self, val: Reference) -> &'a mut GuidanceResponseBuilder {
+        self.value["outputParameters"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Reference) -> &'a mut GuidanceResponseBuilder {
+        self.value["performer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn request_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["requestIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn result<'a>(&'a mut self, val: Reference) -> &'a mut GuidanceResponseBuilder {
+        self.value["result"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: GuidanceResponseStatus,
+    ) -> &'a mut GuidanceResponseBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut GuidanceResponseBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut GuidanceResponseBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

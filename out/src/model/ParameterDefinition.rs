@@ -16,6 +16,16 @@ pub struct ParameterDefinition<'a> {
 }
 
 impl ParameterDefinition<'_> {
+    pub fn new(value: &Value) -> ParameterDefinition {
+        ParameterDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -214,7 +224,7 @@ impl ParameterDefinition<'_> {
 
 #[derive(Debug)]
 pub struct ParameterDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ParameterDefinitionBuilder {
@@ -224,8 +234,89 @@ impl ParameterDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: ParameterDefinition) -> ParameterDefinitionBuilder {
+        ParameterDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ParameterDefinitionBuilder {
         let mut __value: Value = json!({});
         return ParameterDefinitionBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut ParameterDefinitionBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ParameterDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: i64) -> &'a mut ParameterDefinitionBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: &str) -> &'a mut ParameterDefinitionBuilder {
+        self.value["use"] = json!(val);
+        return self;
     }
 }

@@ -18,6 +18,16 @@ pub struct Device_Version<'a> {
 }
 
 impl Device_Version<'_> {
+    pub fn new(value: &Value) -> Device_Version {
+        Device_Version {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
@@ -141,7 +151,7 @@ impl Device_Version<'_> {
 
 #[derive(Debug)]
 pub struct Device_VersionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Device_VersionBuilder {
@@ -151,8 +161,53 @@ impl Device_VersionBuilder {
         }
     }
 
+    pub fn with(existing: Device_Version) -> Device_VersionBuilder {
+        Device_VersionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Device_VersionBuilder {
         let mut __value: Value = json!({});
         return Device_VersionBuilder { value: __value };
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut Device_VersionBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn component<'a>(&'a mut self, val: Identifier) -> &'a mut Device_VersionBuilder {
+        self.value["component"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Device_VersionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Device_VersionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Device_VersionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Device_VersionBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut Device_VersionBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

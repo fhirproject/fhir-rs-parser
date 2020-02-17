@@ -14,6 +14,16 @@ pub struct Attachment<'a> {
 }
 
 impl Attachment<'_> {
+    pub fn new(value: &Value) -> Attachment {
+        Attachment {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
@@ -250,7 +260,7 @@ impl Attachment<'_> {
 
 #[derive(Debug)]
 pub struct AttachmentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AttachmentBuilder {
@@ -260,8 +270,104 @@ impl AttachmentBuilder {
         }
     }
 
+    pub fn with(existing: Attachment) -> AttachmentBuilder {
+        AttachmentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> AttachmentBuilder {
         let mut __value: Value = json!({});
         return AttachmentBuilder { value: __value };
+    }
+
+    pub fn _content_type<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_contentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _creation<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_creation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _data<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_data"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _hash<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_hash"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _size<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_size"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut AttachmentBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_type<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["contentType"] = json!(val);
+        return self;
+    }
+
+    pub fn creation<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["creation"] = json!(val);
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["data"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AttachmentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hash<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["hash"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn size<'a>(&'a mut self, val: u64) -> &'a mut AttachmentBuilder {
+        self.value["size"] = json!(val);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut AttachmentBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct BiologicallyDerivedProduct_Manipulation<'a> {
 }
 
 impl BiologicallyDerivedProduct_Manipulation<'_> {
+    pub fn new(value: &Value) -> BiologicallyDerivedProduct_Manipulation {
+        BiologicallyDerivedProduct_Manipulation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -149,7 +159,7 @@ impl BiologicallyDerivedProduct_Manipulation<'_> {
 
 #[derive(Debug)]
 pub struct BiologicallyDerivedProduct_ManipulationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BiologicallyDerivedProduct_ManipulationBuilder {
@@ -159,8 +169,81 @@ impl BiologicallyDerivedProduct_ManipulationBuilder {
         }
     }
 
+    pub fn with(
+        existing: BiologicallyDerivedProduct_Manipulation,
+    ) -> BiologicallyDerivedProduct_ManipulationBuilder {
+        BiologicallyDerivedProduct_ManipulationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BiologicallyDerivedProduct_ManipulationBuilder {
         let mut __value: Value = json!({});
         return BiologicallyDerivedProduct_ManipulationBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["_timeDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn time_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["timeDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn time_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut BiologicallyDerivedProduct_ManipulationBuilder {
+        self.value["timePeriod"] = json!(val.value);
+        return self;
     }
 }

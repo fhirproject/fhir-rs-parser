@@ -45,6 +45,16 @@ pub struct Task_Output<'a> {
 }
 
 impl Task_Output<'_> {
+    pub fn new(value: &Value) -> Task_Output {
+        Task_Output {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for valueBase64Binary
     pub fn _value_base_6_4_binary(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_valueBase64Binary") {
@@ -1045,7 +1055,7 @@ impl Task_Output<'_> {
 
 #[derive(Debug)]
 pub struct Task_OutputBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Task_OutputBuilder {
@@ -1055,9 +1065,394 @@ impl Task_OutputBuilder {
         }
     }
 
+    pub fn with(existing: Task_Output) -> Task_OutputBuilder {
+        Task_OutputBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> Task_OutputBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return Task_OutputBuilder { value: __value };
+    }
+
+    pub fn _value_base_6_4_binary<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_canonical<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_code<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_id<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_instant<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_markdown<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_oid<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_positive_int<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_unsigned_int<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_url<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uuid<'a>(&'a mut self, val: Element) -> &'a mut Task_OutputBuilder {
+        self.value["_valueUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Task_OutputBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Task_OutputBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_address<'a>(&'a mut self, val: Address) -> &'a mut Task_OutputBuilder {
+        self.value["valueAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_age<'a>(&'a mut self, val: Age) -> &'a mut Task_OutputBuilder {
+        self.value["valueAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_annotation<'a>(&'a mut self, val: Annotation) -> &'a mut Task_OutputBuilder {
+        self.value["valueAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut Task_OutputBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_base_6_4_binary<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Task_OutputBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_canonical<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn value_code<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut Task_OutputBuilder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_point<'a>(&'a mut self, val: ContactPoint) -> &'a mut Task_OutputBuilder {
+        self.value["valueContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contributor<'a>(&'a mut self, val: Contributor) -> &'a mut Task_OutputBuilder {
+        self.value["valueContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_count<'a>(&'a mut self, val: Count) -> &'a mut Task_OutputBuilder {
+        self.value["valueCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut Task_OutputBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_distance<'a>(&'a mut self, val: Distance) -> &'a mut Task_OutputBuilder {
+        self.value["valueDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut Task_OutputBuilder {
+        self.value["valueDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_duration<'a>(&'a mut self, val: Duration) -> &'a mut Task_OutputBuilder {
+        self.value["valueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_expression<'a>(&'a mut self, val: Expression) -> &'a mut Task_OutputBuilder {
+        self.value["valueExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_human_name<'a>(&'a mut self, val: HumanName) -> &'a mut Task_OutputBuilder {
+        self.value["valueHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_id<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueId"] = json!(val);
+        return self;
+    }
+
+    pub fn value_identifier<'a>(&'a mut self, val: Identifier) -> &'a mut Task_OutputBuilder {
+        self.value["valueIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_instant<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut Task_OutputBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_markdown<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn value_meta<'a>(&'a mut self, val: Meta) -> &'a mut Task_OutputBuilder {
+        self.value["valueMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_money<'a>(&'a mut self, val: Money) -> &'a mut Task_OutputBuilder {
+        self.value["valueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_oid<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueOid"] = json!(val);
+        return self;
+    }
+
+    pub fn value_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_period<'a>(&'a mut self, val: Period) -> &'a mut Task_OutputBuilder {
+        self.value["valuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_positive_int<'a>(&'a mut self, val: f64) -> &'a mut Task_OutputBuilder {
+        self.value["valuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Task_OutputBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut Task_OutputBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut Task_OutputBuilder {
+        self.value["valueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(&'a mut self, val: Reference) -> &'a mut Task_OutputBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_sampled_data<'a>(&'a mut self, val: SampledData) -> &'a mut Task_OutputBuilder {
+        self.value["valueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_signature<'a>(&'a mut self, val: Signature) -> &'a mut Task_OutputBuilder {
+        self.value["valueSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_timing<'a>(&'a mut self, val: Timing) -> &'a mut Task_OutputBuilder {
+        self.value["valueTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut Task_OutputBuilder {
+        self.value["valueTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut Task_OutputBuilder {
+        self.value["valueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
+    }
+
+    pub fn value_url<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn value_usage_context<'a>(&'a mut self, val: UsageContext) -> &'a mut Task_OutputBuilder {
+        self.value["valueUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_uuid<'a>(&'a mut self, val: &str) -> &'a mut Task_OutputBuilder {
+        self.value["valueUuid"] = json!(val);
+        return self;
     }
 }

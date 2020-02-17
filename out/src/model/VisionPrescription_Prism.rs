@@ -15,6 +15,16 @@ pub struct VisionPrescription_Prism<'a> {
 }
 
 impl VisionPrescription_Prism<'_> {
+    pub fn new(value: &Value) -> VisionPrescription_Prism {
+        VisionPrescription_Prism {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for amount
     pub fn _amount(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_amount") {
@@ -132,7 +142,7 @@ impl VisionPrescription_Prism<'_> {
 
 #[derive(Debug)]
 pub struct VisionPrescription_PrismBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VisionPrescription_PrismBuilder {
@@ -142,9 +152,60 @@ impl VisionPrescription_PrismBuilder {
         }
     }
 
+    pub fn with(existing: VisionPrescription_Prism) -> VisionPrescription_PrismBuilder {
+        VisionPrescription_PrismBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> VisionPrescription_PrismBuilder {
         let mut __value: Value = json!({});
         return VisionPrescription_PrismBuilder { value: __value };
+    }
+
+    pub fn _amount<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["_amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _base<'a>(&'a mut self, val: Element) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["_base"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(&'a mut self, val: f64) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["amount"] = json!(val);
+        return self;
+    }
+
+    pub fn base<'a>(
+        &'a mut self,
+        val: VisionPrescription_PrismBase,
+    ) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["base"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VisionPrescription_PrismBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

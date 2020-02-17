@@ -24,6 +24,16 @@ pub struct Goal<'a> {
 }
 
 impl Goal<'_> {
+    pub fn new(value: &Value) -> Goal {
+        Goal {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -521,7 +531,7 @@ impl Goal<'_> {
 
 #[derive(Debug)]
 pub struct GoalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GoalBuilder {
@@ -531,11 +541,164 @@ impl GoalBuilder {
         }
     }
 
+    pub fn with(existing: Goal) -> GoalBuilder {
+        GoalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(description: CodeableConcept, subject: Reference) -> GoalBuilder {
         let mut __value: Value = json!({});
         __value["description"] = json!(description.value);
         __value["subject"] = json!(subject.value);
         return GoalBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _lifecycle_status<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_lifecycleStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start_date<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_startDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status_date<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_statusDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status_reason<'a>(&'a mut self, val: Element) -> &'a mut GoalBuilder {
+        self.value["_statusReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn achievement_status<'a>(&'a mut self, val: CodeableConcept) -> &'a mut GoalBuilder {
+        self.value["achievementStatus"] = json!(val.value);
+        return self;
+    }
+
+    pub fn addresses<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut GoalBuilder {
+        self.value["addresses"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut GoalBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut GoalBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn expressed_by<'a>(&'a mut self, val: Reference) -> &'a mut GoalBuilder {
+        self.value["expressedBy"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut GoalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut GoalBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn lifecycle_status<'a>(&'a mut self, val: GoalLifecycleStatus) -> &'a mut GoalBuilder {
+        self.value["lifecycleStatus"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut GoalBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut GoalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut GoalBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome_code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut GoalBuilder {
+        self.value["outcomeCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome_reference<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut GoalBuilder {
+        self.value["outcomeReference"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: CodeableConcept) -> &'a mut GoalBuilder {
+        self.value["priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn start_codeable_concept<'a>(&'a mut self, val: CodeableConcept) -> &'a mut GoalBuilder {
+        self.value["startCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn start_date<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["startDate"] = json!(val);
+        return self;
+    }
+
+    pub fn status_date<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["statusDate"] = json!(val);
+        return self;
+    }
+
+    pub fn status_reason<'a>(&'a mut self, val: &str) -> &'a mut GoalBuilder {
+        self.value["statusReason"] = json!(val);
+        return self;
+    }
+
+    pub fn target<'a>(&'a mut self, val: Vec<Goal_Target>) -> &'a mut GoalBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut GoalBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

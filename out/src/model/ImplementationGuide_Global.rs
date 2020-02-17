@@ -17,6 +17,16 @@ pub struct ImplementationGuide_Global<'a> {
 }
 
 impl ImplementationGuide_Global<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Global {
+        ImplementationGuide_Global {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for type
     pub fn _type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_type") {
@@ -115,7 +125,7 @@ impl ImplementationGuide_Global<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_GlobalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_GlobalBuilder {
@@ -125,9 +135,47 @@ impl ImplementationGuide_GlobalBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Global) -> ImplementationGuide_GlobalBuilder {
+        ImplementationGuide_GlobalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(profile: &str) -> ImplementationGuide_GlobalBuilder {
         let mut __value: Value = json!({});
         __value["profile"] = json!(profile);
         return ImplementationGuide_GlobalBuilder { value: __value };
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_GlobalBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_GlobalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_GlobalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_GlobalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_GlobalBuilder {
+        self.value["type"] = json!(val);
+        return self;
     }
 }

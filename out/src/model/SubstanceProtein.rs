@@ -26,6 +26,16 @@ pub struct SubstanceProtein<'a> {
 }
 
 impl SubstanceProtein<'_> {
+    pub fn new(value: &Value) -> SubstanceProtein {
+        SubstanceProtein {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for disulfideLinkage
     pub fn _disulfide_linkage(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_disulfideLinkage") {
@@ -313,7 +323,7 @@ impl SubstanceProtein<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceProteinBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceProteinBuilder {
@@ -323,8 +333,108 @@ impl SubstanceProteinBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceProtein) -> SubstanceProteinBuilder {
+        SubstanceProteinBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceProteinBuilder {
         let mut __value: Value = json!({});
         return SubstanceProteinBuilder { value: __value };
+    }
+
+    pub fn _disulfide_linkage<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut SubstanceProteinBuilder {
+        self.value["_disulfideLinkage"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProteinBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProteinBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _number_of_subunits<'a>(&'a mut self, val: Element) -> &'a mut SubstanceProteinBuilder {
+        self.value["_numberOfSubunits"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut SubstanceProteinBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn disulfide_linkage<'a>(&'a mut self, val: Vec<&str>) -> &'a mut SubstanceProteinBuilder {
+        self.value["disulfideLinkage"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut SubstanceProteinBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceProteinBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut SubstanceProteinBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut SubstanceProteinBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut SubstanceProteinBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceProteinBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number_of_subunits<'a>(&'a mut self, val: i64) -> &'a mut SubstanceProteinBuilder {
+        self.value["numberOfSubunits"] = json!(val);
+        return self;
+    }
+
+    pub fn sequence_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceProteinBuilder {
+        self.value["sequenceType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subunit<'a>(
+        &'a mut self,
+        val: Vec<SubstanceProtein_Subunit>,
+    ) -> &'a mut SubstanceProteinBuilder {
+        self.value["subunit"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut SubstanceProteinBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

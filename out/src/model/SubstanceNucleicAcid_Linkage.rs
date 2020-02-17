@@ -17,6 +17,16 @@ pub struct SubstanceNucleicAcid_Linkage<'a> {
 }
 
 impl SubstanceNucleicAcid_Linkage<'_> {
+    pub fn new(value: &Value) -> SubstanceNucleicAcid_Linkage {
+        SubstanceNucleicAcid_Linkage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for connectivity
     pub fn _connectivity(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_connectivity") {
@@ -178,7 +188,7 @@ impl SubstanceNucleicAcid_Linkage<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceNucleicAcid_LinkageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceNucleicAcid_LinkageBuilder {
@@ -188,8 +198,86 @@ impl SubstanceNucleicAcid_LinkageBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceNucleicAcid_Linkage) -> SubstanceNucleicAcid_LinkageBuilder {
+        SubstanceNucleicAcid_LinkageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceNucleicAcid_LinkageBuilder {
         let mut __value: Value = json!({});
         return SubstanceNucleicAcid_LinkageBuilder { value: __value };
+    }
+
+    pub fn _connectivity<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["_connectivity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _residue_site<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["_residueSite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn connectivity<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["connectivity"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn residue_site<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceNucleicAcid_LinkageBuilder {
+        self.value["residueSite"] = json!(val);
+        return self;
     }
 }

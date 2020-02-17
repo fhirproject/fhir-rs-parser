@@ -16,6 +16,16 @@ pub struct ImmunizationRecommendation_DateCriterion<'a> {
 }
 
 impl ImmunizationRecommendation_DateCriterion<'_> {
+    pub fn new(value: &Value) -> ImmunizationRecommendation_DateCriterion {
+        ImmunizationRecommendation_DateCriterion {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for value
     pub fn _value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_value") {
@@ -120,7 +130,7 @@ impl ImmunizationRecommendation_DateCriterion<'_> {
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendation_DateCriterionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImmunizationRecommendation_DateCriterionBuilder {
@@ -130,9 +140,58 @@ impl ImmunizationRecommendation_DateCriterionBuilder {
         }
     }
 
+    pub fn with(
+        existing: ImmunizationRecommendation_DateCriterion,
+    ) -> ImmunizationRecommendation_DateCriterionBuilder {
+        ImmunizationRecommendation_DateCriterionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> ImmunizationRecommendation_DateCriterionBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return ImmunizationRecommendation_DateCriterionBuilder { value: __value };
+    }
+
+    pub fn _value<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_DateCriterionBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendation_DateCriterionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_DateCriterionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendation_DateCriterionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_DateCriterionBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

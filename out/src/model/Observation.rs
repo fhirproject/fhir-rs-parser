@@ -30,6 +30,16 @@ pub struct Observation<'a> {
 }
 
 impl Observation<'_> {
+    pub fn new(value: &Value) -> Observation {
+        Observation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for effectiveDateTime
     pub fn _effective_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_effectiveDateTime") {
@@ -945,7 +955,7 @@ impl Observation<'_> {
 
 #[derive(Debug)]
 pub struct ObservationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ObservationBuilder {
@@ -955,10 +965,307 @@ impl ObservationBuilder {
         }
     }
 
+    pub fn with(existing: Observation) -> ObservationBuilder {
+        ObservationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> ObservationBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return ObservationBuilder { value: __value };
+    }
+
+    pub fn _effective_date_time<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_effectiveDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _effective_instant<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_effectiveInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issued<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_issued"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut ObservationBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ObservationBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ObservationBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn component<'a>(
+        &'a mut self,
+        val: Vec<Observation_Component>,
+    ) -> &'a mut ObservationBuilder {
+        self.value["component"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ObservationBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data_absent_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ObservationBuilder {
+        self.value["dataAbsentReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn derived_from<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["derivedFrom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn device<'a>(&'a mut self, val: Reference) -> &'a mut ObservationBuilder {
+        self.value["device"] = json!(val.value);
+        return self;
+    }
+
+    pub fn effective_date_time<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["effectiveDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_instant<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["effectiveInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut ObservationBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn effective_timing<'a>(&'a mut self, val: Timing) -> &'a mut ObservationBuilder {
+        self.value["effectiveTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ObservationBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ObservationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["focus"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn has_member<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["hasMember"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ObservationBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn interpretation<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ObservationBuilder {
+        self.value["interpretation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn issued<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["issued"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ObservationBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ObservationBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ObservationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ObservationBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ObservationBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reference_range<'a>(
+        &'a mut self,
+        val: Vec<Observation_ReferenceRange>,
+    ) -> &'a mut ObservationBuilder {
+        self.value["referenceRange"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen<'a>(&'a mut self, val: Reference) -> &'a mut ObservationBuilder {
+        self.value["specimen"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ObservationStatus) -> &'a mut ObservationBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut ObservationBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ObservationBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut ObservationBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ObservationBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut ObservationBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_period<'a>(&'a mut self, val: Period) -> &'a mut ObservationBuilder {
+        self.value["valuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ObservationBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut ObservationBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut ObservationBuilder {
+        self.value["valueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_sampled_data<'a>(&'a mut self, val: SampledData) -> &'a mut ObservationBuilder {
+        self.value["valueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut ObservationBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
     }
 }
 

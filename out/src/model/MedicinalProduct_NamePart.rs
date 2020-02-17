@@ -16,6 +16,16 @@ pub struct MedicinalProduct_NamePart<'a> {
 }
 
 impl MedicinalProduct_NamePart<'_> {
+    pub fn new(value: &Value) -> MedicinalProduct_NamePart {
+        MedicinalProduct_NamePart {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for part
     pub fn _part(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_part") {
@@ -119,7 +129,7 @@ impl MedicinalProduct_NamePart<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProduct_NamePartBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProduct_NamePartBuilder {
@@ -129,9 +139,47 @@ impl MedicinalProduct_NamePartBuilder {
         }
     }
 
+    pub fn with(existing: MedicinalProduct_NamePart) -> MedicinalProduct_NamePartBuilder {
+        MedicinalProduct_NamePartBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: Coding) -> MedicinalProduct_NamePartBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return MedicinalProduct_NamePartBuilder { value: __value };
+    }
+
+    pub fn _part<'a>(&'a mut self, val: Element) -> &'a mut MedicinalProduct_NamePartBuilder {
+        self.value["_part"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_NamePartBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_NamePartBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_NamePartBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_NamePartBuilder {
+        self.value["part"] = json!(val);
+        return self;
     }
 }

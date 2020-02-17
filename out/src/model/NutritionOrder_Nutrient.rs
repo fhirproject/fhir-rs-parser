@@ -16,6 +16,16 @@ pub struct NutritionOrder_Nutrient<'a> {
 }
 
 impl NutritionOrder_Nutrient<'_> {
+    pub fn new(value: &Value) -> NutritionOrder_Nutrient {
+        NutritionOrder_Nutrient {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The quantity of the specified nutrient to include in diet.
     pub fn amount(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("amount") {
@@ -115,7 +125,7 @@ impl NutritionOrder_Nutrient<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrder_NutrientBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrder_NutrientBuilder {
@@ -125,8 +135,49 @@ impl NutritionOrder_NutrientBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder_Nutrient) -> NutritionOrder_NutrientBuilder {
+        NutritionOrder_NutrientBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NutritionOrder_NutrientBuilder {
         let mut __value: Value = json!({});
         return NutritionOrder_NutrientBuilder { value: __value };
+    }
+
+    pub fn amount<'a>(&'a mut self, val: Quantity) -> &'a mut NutritionOrder_NutrientBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_NutrientBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_NutrientBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_NutrientBuilder {
+        self.value["modifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_NutrientBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

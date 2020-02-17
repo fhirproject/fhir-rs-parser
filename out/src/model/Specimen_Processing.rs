@@ -17,6 +17,16 @@ pub struct Specimen_Processing<'a> {
 }
 
 impl Specimen_Processing<'_> {
+    pub fn new(value: &Value) -> Specimen_Processing {
+        Specimen_Processing {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -187,7 +197,7 @@ impl Specimen_Processing<'_> {
 
 #[derive(Debug)]
 pub struct Specimen_ProcessingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Specimen_ProcessingBuilder {
@@ -197,8 +207,68 @@ impl Specimen_ProcessingBuilder {
         }
     }
 
+    pub fn with(existing: Specimen_Processing) -> Specimen_ProcessingBuilder {
+        Specimen_ProcessingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Specimen_ProcessingBuilder {
         let mut __value: Value = json!({});
         return Specimen_ProcessingBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time_date_time<'a>(&'a mut self, val: Element) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["_timeDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["additive"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn procedure<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["procedure"] = json!(val.value);
+        return self;
+    }
+
+    pub fn time_date_time<'a>(&'a mut self, val: &str) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["timeDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn time_period<'a>(&'a mut self, val: Period) -> &'a mut Specimen_ProcessingBuilder {
+        self.value["timePeriod"] = json!(val.value);
+        return self;
     }
 }

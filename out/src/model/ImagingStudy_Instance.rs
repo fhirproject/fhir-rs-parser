@@ -19,6 +19,16 @@ pub struct ImagingStudy_Instance<'a> {
 }
 
 impl ImagingStudy_Instance<'_> {
+    pub fn new(value: &Value) -> ImagingStudy_Instance {
+        ImagingStudy_Instance {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for number
     pub fn _number(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_number") {
@@ -170,7 +180,7 @@ impl ImagingStudy_Instance<'_> {
 
 #[derive(Debug)]
 pub struct ImagingStudy_InstanceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImagingStudy_InstanceBuilder {
@@ -180,9 +190,67 @@ impl ImagingStudy_InstanceBuilder {
         }
     }
 
+    pub fn with(existing: ImagingStudy_Instance) -> ImagingStudy_InstanceBuilder {
+        ImagingStudy_InstanceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(sop_class: Coding) -> ImagingStudy_InstanceBuilder {
         let mut __value: Value = json!({});
         __value["sopClass"] = json!(sop_class.value);
         return ImagingStudy_InstanceBuilder { value: __value };
+    }
+
+    pub fn _number<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["_number"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _uid<'a>(&'a mut self, val: Element) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["_uid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn number<'a>(&'a mut self, val: u64) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["number"] = json!(val);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn uid<'a>(&'a mut self, val: &str) -> &'a mut ImagingStudy_InstanceBuilder {
+        self.value["uid"] = json!(val);
+        return self;
     }
 }

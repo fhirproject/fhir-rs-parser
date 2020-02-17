@@ -15,6 +15,16 @@ pub struct Narrative<'a> {
 }
 
 impl Narrative<'_> {
+    pub fn new(value: &Value) -> Narrative {
+        Narrative {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for status
     pub fn _status(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_status") {
@@ -86,7 +96,7 @@ impl Narrative<'_> {
 
 #[derive(Debug)]
 pub struct NarrativeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NarrativeBuilder {
@@ -96,10 +106,36 @@ impl NarrativeBuilder {
         }
     }
 
+    pub fn with(existing: Narrative) -> NarrativeBuilder {
+        NarrativeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(div: &str) -> NarrativeBuilder {
         let mut __value: Value = json!({});
         __value["div"] = json!(div);
         return NarrativeBuilder { value: __value };
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut NarrativeBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut NarrativeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NarrativeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: NarrativeStatus) -> &'a mut NarrativeBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
     }
 }
 

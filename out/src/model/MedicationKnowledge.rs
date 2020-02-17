@@ -31,6 +31,16 @@ pub struct MedicationKnowledge<'a> {
 }
 
 impl MedicationKnowledge<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge {
+        MedicationKnowledge {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -657,7 +667,7 @@ impl MedicationKnowledge<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledgeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledgeBuilder {
@@ -667,8 +677,254 @@ impl MedicationKnowledgeBuilder {
         }
     }
 
+    pub fn with(existing: MedicationKnowledge) -> MedicationKnowledgeBuilder {
+        MedicationKnowledgeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledgeBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledgeBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _preparation_instruction<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["_preparationInstruction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _synonym<'a>(&'a mut self, val: Vec<Element>) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["_synonym"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn administration_guidelines<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_AdministrationGuidelines>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["administrationGuidelines"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn amount<'a>(&'a mut self, val: Quantity) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn associated_medication<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["associatedMedication"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contraindication<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["contraindication"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn cost<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Cost>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["cost"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn dose_form<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["doseForm"] = json!(val.value);
+        return self;
+    }
+
+    pub fn drug_characteristic<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_DrugCharacteristic>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["drugCharacteristic"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn ingredient<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Ingredient>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["ingredient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn intended_route<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["intendedRoute"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kinetics<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Kinetics>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["kinetics"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn manufacturer<'a>(&'a mut self, val: Reference) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["manufacturer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn medicine_classification<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_MedicineClassification>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["medicineClassification"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn monitoring_program<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_MonitoringProgram>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["monitoringProgram"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn monograph<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Monograph>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["monograph"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn packaging<'a>(
+        &'a mut self,
+        val: MedicationKnowledge_Packaging,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["packaging"] = json!(val.value);
+        return self;
+    }
+
+    pub fn preparation_instruction<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["preparationInstruction"] = json!(val);
+        return self;
+    }
+
+    pub fn product_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["productType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn regulatory<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Regulatory>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["regulatory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn related_medication_knowledge<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_RelatedMedicationKnowledge>,
+    ) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["relatedMedicationKnowledge"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn synonym<'a>(&'a mut self, val: Vec<&str>) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["synonym"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MedicationKnowledgeBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

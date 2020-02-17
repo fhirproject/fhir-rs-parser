@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_RelatedMedicationKnowledge<'a> {
 }
 
 impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_RelatedMedicationKnowledge {
+        MedicationKnowledge_RelatedMedicationKnowledge {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -116,13 +126,21 @@ impl MedicationKnowledge_RelatedMedicationKnowledge<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
     pub fn build(&self) -> MedicationKnowledge_RelatedMedicationKnowledge {
         MedicationKnowledge_RelatedMedicationKnowledge {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(
+        existing: MedicationKnowledge_RelatedMedicationKnowledge,
+    ) -> MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
+        MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -134,5 +152,30 @@ impl MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
         __value["reference"] = json!(reference.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["type"] = json!(fhir_type.value);
         return MedicationKnowledge_RelatedMedicationKnowledgeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_RelatedMedicationKnowledgeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

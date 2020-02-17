@@ -18,6 +18,16 @@ pub struct ImmunizationRecommendation_Recommendation<'a> {
 }
 
 impl ImmunizationRecommendation_Recommendation<'_> {
+    pub fn new(value: &Value) -> ImmunizationRecommendation_Recommendation {
+        ImmunizationRecommendation_Recommendation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -378,7 +388,7 @@ impl ImmunizationRecommendation_Recommendation<'_> {
 
 #[derive(Debug)]
 pub struct ImmunizationRecommendation_RecommendationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImmunizationRecommendation_RecommendationBuilder {
@@ -388,11 +398,199 @@ impl ImmunizationRecommendation_RecommendationBuilder {
         }
     }
 
+    pub fn with(
+        existing: ImmunizationRecommendation_Recommendation,
+    ) -> ImmunizationRecommendation_RecommendationBuilder {
+        ImmunizationRecommendation_RecommendationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         forecast_status: CodeableConcept,
     ) -> ImmunizationRecommendation_RecommendationBuilder {
         let mut __value: Value = json!({});
         __value["forecastStatus"] = json!(forecast_status.value);
         return ImmunizationRecommendation_RecommendationBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _dose_number_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_doseNumberPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _dose_number_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_doseNumberString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_series"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series_doses_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_seriesDosesPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series_doses_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["_seriesDosesString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contraindicated_vaccine_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["contraindicatedVaccineCode"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date_criterion<'a>(
+        &'a mut self,
+        val: Vec<ImmunizationRecommendation_DateCriterion>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["dateCriterion"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn dose_number_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["doseNumberPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn dose_number_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["doseNumberString"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn forecast_reason<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["forecastReason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn series<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["series"] = json!(val);
+        return self;
+    }
+
+    pub fn series_doses_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["seriesDosesPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn series_doses_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["seriesDosesString"] = json!(val);
+        return self;
+    }
+
+    pub fn supporting_immunization<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["supportingImmunization"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn supporting_patient_information<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["supportingPatientInformation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target_disease<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["targetDisease"] = json!(val.value);
+        return self;
+    }
+
+    pub fn vaccine_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ImmunizationRecommendation_RecommendationBuilder {
+        self.value["vaccineCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

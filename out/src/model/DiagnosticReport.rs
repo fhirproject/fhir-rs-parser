@@ -27,6 +27,16 @@ pub struct DiagnosticReport<'a> {
 }
 
 impl DiagnosticReport<'_> {
+    pub fn new(value: &Value) -> DiagnosticReport {
+        DiagnosticReport {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for conclusion
     pub fn _conclusion(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_conclusion") {
@@ -587,7 +597,7 @@ impl DiagnosticReport<'_> {
 
 #[derive(Debug)]
 pub struct DiagnosticReportBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DiagnosticReportBuilder {
@@ -597,10 +607,199 @@ impl DiagnosticReportBuilder {
         }
     }
 
+    pub fn with(existing: DiagnosticReport) -> DiagnosticReportBuilder {
+        DiagnosticReportBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> DiagnosticReportBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return DiagnosticReportBuilder { value: __value };
+    }
+
+    pub fn _conclusion<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_conclusion"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _effective_date_time<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_effectiveDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issued<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_issued"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReportBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn based_on<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DiagnosticReportBuilder {
+        self.value["basedOn"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn conclusion<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["conclusion"] = json!(val);
+        return self;
+    }
+
+    pub fn conclusion_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["conclusionCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut DiagnosticReportBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_date_time<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["effectiveDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut DiagnosticReportBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut DiagnosticReportBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DiagnosticReportBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DiagnosticReportBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn imaging_study<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DiagnosticReportBuilder {
+        self.value["imagingStudy"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn issued<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["issued"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReportBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn media<'a>(
+        &'a mut self,
+        val: Vec<DiagnosticReport_Media>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["media"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DiagnosticReportBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DiagnosticReportBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn presented_form<'a>(
+        &'a mut self,
+        val: Vec<Attachment>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["presentedForm"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn result<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DiagnosticReportBuilder {
+        self.value["result"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn results_interpreter<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["resultsInterpreter"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DiagnosticReportBuilder {
+        self.value["specimen"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: DiagnosticReportStatus,
+    ) -> &'a mut DiagnosticReportBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut DiagnosticReportBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DiagnosticReportBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

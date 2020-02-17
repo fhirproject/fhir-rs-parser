@@ -16,6 +16,16 @@ pub struct Patient_Communication<'a> {
 }
 
 impl Patient_Communication<'_> {
+    pub fn new(value: &Value) -> Patient_Communication {
+        Patient_Communication {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for preferred
     pub fn _preferred(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_preferred") {
@@ -123,7 +133,7 @@ impl Patient_Communication<'_> {
 
 #[derive(Debug)]
 pub struct Patient_CommunicationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Patient_CommunicationBuilder {
@@ -133,9 +143,47 @@ impl Patient_CommunicationBuilder {
         }
     }
 
+    pub fn with(existing: Patient_Communication) -> Patient_CommunicationBuilder {
+        Patient_CommunicationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(language: CodeableConcept) -> Patient_CommunicationBuilder {
         let mut __value: Value = json!({});
         __value["language"] = json!(language.value);
         return Patient_CommunicationBuilder { value: __value };
+    }
+
+    pub fn _preferred<'a>(&'a mut self, val: Element) -> &'a mut Patient_CommunicationBuilder {
+        self.value["_preferred"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Patient_CommunicationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Patient_CommunicationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Patient_CommunicationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn preferred<'a>(&'a mut self, val: bool) -> &'a mut Patient_CommunicationBuilder {
+        self.value["preferred"] = json!(val);
+        return self;
     }
 }

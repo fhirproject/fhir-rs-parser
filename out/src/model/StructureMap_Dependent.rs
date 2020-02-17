@@ -14,6 +14,16 @@ pub struct StructureMap_Dependent<'a> {
 }
 
 impl StructureMap_Dependent<'_> {
+    pub fn new(value: &Value) -> StructureMap_Dependent {
+        StructureMap_Dependent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -141,7 +151,7 @@ impl StructureMap_Dependent<'_> {
 
 #[derive(Debug)]
 pub struct StructureMap_DependentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl StructureMap_DependentBuilder {
@@ -151,8 +161,56 @@ impl StructureMap_DependentBuilder {
         }
     }
 
+    pub fn with(existing: StructureMap_Dependent) -> StructureMap_DependentBuilder {
+        StructureMap_DependentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> StructureMap_DependentBuilder {
         let mut __value: Value = json!({});
         return StructureMap_DependentBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut StructureMap_DependentBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _variable<'a>(&'a mut self, val: Vec<Element>) -> &'a mut StructureMap_DependentBuilder {
+        self.value["_variable"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_DependentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_DependentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut StructureMap_DependentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut StructureMap_DependentBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn variable<'a>(&'a mut self, val: Vec<&str>) -> &'a mut StructureMap_DependentBuilder {
+        self.value["variable"] = json!(val);
+        return self;
     }
 }

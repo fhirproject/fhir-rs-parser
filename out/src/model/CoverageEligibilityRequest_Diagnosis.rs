@@ -19,6 +19,16 @@ pub struct CoverageEligibilityRequest_Diagnosis<'a> {
 }
 
 impl CoverageEligibilityRequest_Diagnosis<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityRequest_Diagnosis {
+        CoverageEligibilityRequest_Diagnosis {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The nature of illness or problem in a coded form or as a reference to an
     /// external defined Condition.
     pub fn diagnosis_codeable_concept(&self) -> Option<CodeableConcept> {
@@ -120,7 +130,7 @@ impl CoverageEligibilityRequest_Diagnosis<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_DiagnosisBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityRequest_DiagnosisBuilder {
@@ -130,8 +140,54 @@ impl CoverageEligibilityRequest_DiagnosisBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityRequest_Diagnosis,
+    ) -> CoverageEligibilityRequest_DiagnosisBuilder {
+        CoverageEligibilityRequest_DiagnosisBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CoverageEligibilityRequest_DiagnosisBuilder {
         let mut __value: Value = json!({});
         return CoverageEligibilityRequest_DiagnosisBuilder { value: __value };
+    }
+
+    pub fn diagnosis_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut CoverageEligibilityRequest_DiagnosisBuilder {
+        self.value["diagnosisCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn diagnosis_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut CoverageEligibilityRequest_DiagnosisBuilder {
+        self.value["diagnosisReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_DiagnosisBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CoverageEligibilityRequest_DiagnosisBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_DiagnosisBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

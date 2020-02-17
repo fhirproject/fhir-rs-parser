@@ -14,6 +14,16 @@ pub struct DeviceMetric_Calibration<'a> {
 }
 
 impl DeviceMetric_Calibration<'_> {
+    pub fn new(value: &Value) -> DeviceMetric_Calibration {
+        DeviceMetric_Calibration {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for state
     pub fn _state(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_state") {
@@ -155,7 +165,7 @@ impl DeviceMetric_Calibration<'_> {
 
 #[derive(Debug)]
 pub struct DeviceMetric_CalibrationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceMetric_CalibrationBuilder {
@@ -165,9 +175,73 @@ impl DeviceMetric_CalibrationBuilder {
         }
     }
 
+    pub fn with(existing: DeviceMetric_Calibration) -> DeviceMetric_CalibrationBuilder {
+        DeviceMetric_CalibrationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DeviceMetric_CalibrationBuilder {
         let mut __value: Value = json!({});
         return DeviceMetric_CalibrationBuilder { value: __value };
+    }
+
+    pub fn _state<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["_state"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _time<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["_time"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn state<'a>(
+        &'a mut self,
+        val: DeviceMetric_CalibrationState,
+    ) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["state"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn time<'a>(&'a mut self, val: &str) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["time"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: DeviceMetric_CalibrationType,
+    ) -> &'a mut DeviceMetric_CalibrationBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

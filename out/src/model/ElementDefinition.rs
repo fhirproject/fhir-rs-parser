@@ -52,6 +52,16 @@ pub struct ElementDefinition<'a> {
 }
 
 impl ElementDefinition<'_> {
+    pub fn new(value: &Value) -> ElementDefinition {
+        ElementDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for alias
     pub fn _alias(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
@@ -4798,7 +4808,7 @@ impl ElementDefinition<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinitionBuilder {
@@ -4808,8 +4818,1729 @@ impl ElementDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition) -> ElementDefinitionBuilder {
+        ElementDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinitionBuilder {
         let mut __value: Value = json!({});
         return ElementDefinitionBuilder { value: __value };
+    }
+
+    pub fn _alias<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ElementDefinitionBuilder {
+        self.value["_alias"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _condition<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ElementDefinitionBuilder {
+        self.value["_condition"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _content_reference<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_contentReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_boolean<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_canonical<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_code<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_decimal<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_id<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_instant<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_integer<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_markdown<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_oid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_uri<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_url<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _default_value_uuid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_defaultValueUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _definition<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_definition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_boolean<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_canonical<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_code<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_date_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_decimal<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_id<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_instant<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_integer<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_markdown<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_oid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_positive_int<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_string<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_unsigned_int<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_uri<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_url<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _fixed_uuid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_fixedUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _is_modifier<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_isModifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _is_modifier_reason<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_isModifierReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _is_summary<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_isSummary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _label<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_label"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_length<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxLength"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_decimal<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_instant<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_integer<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max_value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_maxValueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _meaning_when_missing<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_meaningWhenMissing"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_decimal<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_instant<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_integer<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min_value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_minValueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _must_support<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_mustSupport"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _order_meaning<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_orderMeaning"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_boolean<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_canonical<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_code<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_date<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_date_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_decimal<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_id<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_instant<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_integer<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_markdown<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_oid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_string<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_time<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_uri<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_url<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pattern_uuid<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_patternUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _representation<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_representation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _requirements<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_requirements"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _short<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_short"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _slice_is_constraining<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["_sliceIsConstraining"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _slice_name<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinitionBuilder {
+        self.value["_sliceName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alias<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ElementDefinitionBuilder {
+        self.value["alias"] = json!(val);
+        return self;
+    }
+
+    pub fn base<'a>(&'a mut self, val: ElementDefinition_Base) -> &'a mut ElementDefinitionBuilder {
+        self.value["base"] = json!(val.value);
+        return self;
+    }
+
+    pub fn binding<'a>(
+        &'a mut self,
+        val: ElementDefinition_Binding,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["binding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut ElementDefinitionBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn condition<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ElementDefinitionBuilder {
+        self.value["condition"] = json!(val);
+        return self;
+    }
+
+    pub fn constraint<'a>(
+        &'a mut self,
+        val: Vec<ElementDefinition_Constraint>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["constraint"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn content_reference<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["contentReference"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_address<'a>(
+        &'a mut self,
+        val: Address,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_age<'a>(&'a mut self, val: Age) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_annotation<'a>(
+        &'a mut self,
+        val: Annotation,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_boolean<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_canonical<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_code<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_coding<'a>(&'a mut self, val: Coding) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_count<'a>(&'a mut self, val: Count) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_date_time<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_distance<'a>(
+        &'a mut self,
+        val: Distance,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_human_name<'a>(
+        &'a mut self,
+        val: HumanName,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueId"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_markdown<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_meta<'a>(&'a mut self, val: Meta) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_money<'a>(&'a mut self, val: Money) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_oid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueOid"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_period<'a>(&'a mut self, val: Period) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_range<'a>(&'a mut self, val: Range) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_string<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueString"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_timing<'a>(&'a mut self, val: Timing) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_unsigned_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_uri<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueUri"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_url<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn default_value_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value_uuid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["defaultValueUuid"] = json!(val);
+        return self;
+    }
+
+    pub fn definition<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["definition"] = json!(val);
+        return self;
+    }
+
+    pub fn example<'a>(
+        &'a mut self,
+        val: Vec<ElementDefinition_Example>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["example"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ElementDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fixed_address<'a>(&'a mut self, val: Address) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_age<'a>(&'a mut self, val: Age) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_annotation<'a>(&'a mut self, val: Annotation) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_base_6_4_binary<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_boolean<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_canonical<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_code<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedCode"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_coding<'a>(&'a mut self, val: Coding) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_count<'a>(&'a mut self, val: Count) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_date_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_distance<'a>(&'a mut self, val: Distance) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_duration<'a>(&'a mut self, val: Duration) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_expression<'a>(&'a mut self, val: Expression) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_human_name<'a>(&'a mut self, val: HumanName) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedId"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_identifier<'a>(&'a mut self, val: Identifier) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_markdown<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_meta<'a>(&'a mut self, val: Meta) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_money<'a>(&'a mut self, val: Money) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_oid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedOid"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_period<'a>(&'a mut self, val: Period) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_positive_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_range<'a>(&'a mut self, val: Range) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_reference<'a>(&'a mut self, val: Reference) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_signature<'a>(&'a mut self, val: Signature) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_string<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedString"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedTime"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_timing<'a>(&'a mut self, val: Timing) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_uri<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedUri"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_url<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn fixed_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fixed_uuid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["fixedUuid"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn is_modifier<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["isModifier"] = json!(val);
+        return self;
+    }
+
+    pub fn is_modifier_reason<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["isModifierReason"] = json!(val);
+        return self;
+    }
+
+    pub fn is_summary<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["isSummary"] = json!(val);
+        return self;
+    }
+
+    pub fn label<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["label"] = json!(val);
+        return self;
+    }
+
+    pub fn mapping<'a>(
+        &'a mut self,
+        val: Vec<ElementDefinition_Mapping>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["mapping"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn max_length<'a>(&'a mut self, val: i64) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxLength"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_date_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_positive_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn max_value_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn max_value_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["maxValueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn meaning_when_missing<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["meaningWhenMissing"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: u64) -> &'a mut ElementDefinitionBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_date_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_positive_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn min_value_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn min_value_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["minValueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn must_support<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["mustSupport"] = json!(val);
+        return self;
+    }
+
+    pub fn order_meaning<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["orderMeaning"] = json!(val);
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_address<'a>(&'a mut self, val: Address) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_age<'a>(&'a mut self, val: Age) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_annotation<'a>(
+        &'a mut self,
+        val: Annotation,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_boolean<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_canonical<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_code<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternCode"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_coding<'a>(&'a mut self, val: Coding) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_count<'a>(&'a mut self, val: Count) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_date<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDate"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_date_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_decimal<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_distance<'a>(&'a mut self, val: Distance) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_duration<'a>(&'a mut self, val: Duration) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_human_name<'a>(
+        &'a mut self,
+        val: HumanName,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternId"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_instant<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_integer<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_markdown<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_meta<'a>(&'a mut self, val: Meta) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_money<'a>(&'a mut self, val: Money) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_oid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternOid"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_period<'a>(&'a mut self, val: Period) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_positive_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_range<'a>(&'a mut self, val: Range) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_reference<'a>(&'a mut self, val: Reference) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_signature<'a>(&'a mut self, val: Signature) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_string<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternString"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_time<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternTime"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_timing<'a>(&'a mut self, val: Timing) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_uri<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternUri"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_url<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn pattern_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pattern_uuid<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["patternUuid"] = json!(val);
+        return self;
+    }
+
+    pub fn requirements<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["requirements"] = json!(val);
+        return self;
+    }
+
+    pub fn short<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["short"] = json!(val);
+        return self;
+    }
+
+    pub fn slice_is_constraining<'a>(&'a mut self, val: bool) -> &'a mut ElementDefinitionBuilder {
+        self.value["sliceIsConstraining"] = json!(val);
+        return self;
+    }
+
+    pub fn slice_name<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinitionBuilder {
+        self.value["sliceName"] = json!(val);
+        return self;
+    }
+
+    pub fn slicing<'a>(
+        &'a mut self,
+        val: ElementDefinition_Slicing,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["slicing"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<ElementDefinition_Type>,
+    ) -> &'a mut ElementDefinitionBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

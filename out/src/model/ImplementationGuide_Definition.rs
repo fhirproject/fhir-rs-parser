@@ -21,6 +21,16 @@ pub struct ImplementationGuide_Definition<'a> {
 }
 
 impl ImplementationGuide_Definition<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Definition {
+        ImplementationGuide_Definition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -188,7 +198,7 @@ impl ImplementationGuide_Definition<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_DefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_DefinitionBuilder {
@@ -198,11 +208,71 @@ impl ImplementationGuide_DefinitionBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Definition) -> ImplementationGuide_DefinitionBuilder {
+        ImplementationGuide_DefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         resource: Vec<ImplementationGuide_Resource>,
     ) -> ImplementationGuide_DefinitionBuilder {
         let mut __value: Value = json!({});
         __value["resource"] = json!(resource.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return ImplementationGuide_DefinitionBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn grouping<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Grouping>,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["grouping"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn page<'a>(
+        &'a mut self,
+        val: ImplementationGuide_Page,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["page"] = json!(val.value);
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Parameter>,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn template<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Template>,
+    ) -> &'a mut ImplementationGuide_DefinitionBuilder {
+        self.value["template"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct MedicinalProductIngredient_ReferenceStrength<'a> {
 }
 
 impl MedicinalProductIngredient_ReferenceStrength<'_> {
+    pub fn new(value: &Value) -> MedicinalProductIngredient_ReferenceStrength {
+        MedicinalProductIngredient_ReferenceStrength {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for measurementPoint
     pub fn _measurement_point(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_measurementPoint") {
@@ -168,7 +178,7 @@ impl MedicinalProductIngredient_ReferenceStrength<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductIngredient_ReferenceStrengthBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductIngredient_ReferenceStrengthBuilder {
@@ -178,9 +188,82 @@ impl MedicinalProductIngredient_ReferenceStrengthBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductIngredient_ReferenceStrength,
+    ) -> MedicinalProductIngredient_ReferenceStrengthBuilder {
+        MedicinalProductIngredient_ReferenceStrengthBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(strength: Ratio) -> MedicinalProductIngredient_ReferenceStrengthBuilder {
         let mut __value: Value = json!({});
         __value["strength"] = json!(strength.value);
         return MedicinalProductIngredient_ReferenceStrengthBuilder { value: __value };
+    }
+
+    pub fn _measurement_point<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["_measurementPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn country<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["country"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn measurement_point<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["measurementPoint"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn strength_low_limit<'a>(
+        &'a mut self,
+        val: Ratio,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["strengthLowLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn substance<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductIngredient_ReferenceStrengthBuilder {
+        self.value["substance"] = json!(val.value);
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct MolecularSequence_Quality<'a> {
 }
 
 impl MolecularSequence_Quality<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_Quality {
+        MolecularSequence_Quality {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for end
     pub fn _end(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_end") {
@@ -430,7 +440,7 @@ impl MolecularSequence_Quality<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_QualityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_QualityBuilder {
@@ -440,9 +450,179 @@ impl MolecularSequence_QualityBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_Quality) -> MolecularSequence_QualityBuilder {
+        MolecularSequence_QualityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_QualityBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_QualityBuilder { value: __value };
+    }
+
+    pub fn _end<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_end"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _f_score<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_fScore"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _gt_f_p<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_gtFP"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _precision<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_precision"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _query_f_p<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_queryFP"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _query_t_p<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_queryTP"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recall<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_recall"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _start<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _truth_f_n<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_truthFN"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _truth_t_p<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_truthTP"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn end<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["end"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn f_score<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["fScore"] = json!(val);
+        return self;
+    }
+
+    pub fn gt_f_p<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["gtFP"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn precision<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["precision"] = json!(val);
+        return self;
+    }
+
+    pub fn query_f_p<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["queryFP"] = json!(val);
+        return self;
+    }
+
+    pub fn query_t_p<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["queryTP"] = json!(val);
+        return self;
+    }
+
+    pub fn recall<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["recall"] = json!(val);
+        return self;
+    }
+
+    pub fn roc<'a>(
+        &'a mut self,
+        val: MolecularSequence_Roc,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["roc"] = json!(val.value);
+        return self;
+    }
+
+    pub fn score<'a>(&'a mut self, val: Quantity) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["score"] = json!(val.value);
+        return self;
+    }
+
+    pub fn standard_sequence<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["standardSequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: i64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["start"] = json!(val);
+        return self;
+    }
+
+    pub fn truth_f_n<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["truthFN"] = json!(val);
+        return self;
+    }
+
+    pub fn truth_t_p<'a>(&'a mut self, val: f64) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["truthTP"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: MolecularSequence_QualityType,
+    ) -> &'a mut MolecularSequence_QualityBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
     }
 }
 

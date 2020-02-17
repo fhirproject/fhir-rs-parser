@@ -14,6 +14,16 @@ pub struct MolecularSequence_Repository<'a> {
 }
 
 impl MolecularSequence_Repository<'_> {
+    pub fn new(value: &Value) -> MolecularSequence_Repository {
+        MolecularSequence_Repository {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for datasetId
     pub fn _dataset_id(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_datasetId") {
@@ -232,7 +242,7 @@ impl MolecularSequence_Repository<'_> {
 
 #[derive(Debug)]
 pub struct MolecularSequence_RepositoryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MolecularSequence_RepositoryBuilder {
@@ -242,9 +252,112 @@ impl MolecularSequence_RepositoryBuilder {
         }
     }
 
+    pub fn with(existing: MolecularSequence_Repository) -> MolecularSequence_RepositoryBuilder {
+        MolecularSequence_RepositoryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MolecularSequence_RepositoryBuilder {
         let mut __value: Value = json!({});
         return MolecularSequence_RepositoryBuilder { value: __value };
+    }
+
+    pub fn _dataset_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_datasetId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _readset_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_readsetId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _variantset_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["_variantsetId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dataset_id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["datasetId"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn readset_id<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["readsetId"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: MolecularSequence_RepositoryType,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn variantset_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MolecularSequence_RepositoryBuilder {
+        self.value["variantsetId"] = json!(val);
+        return self;
     }
 }
 

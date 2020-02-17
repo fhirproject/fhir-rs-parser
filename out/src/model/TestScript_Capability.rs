@@ -15,6 +15,16 @@ pub struct TestScript_Capability<'a> {
 }
 
 impl TestScript_Capability<'_> {
+    pub fn new(value: &Value) -> TestScript_Capability {
+        TestScript_Capability {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -259,7 +269,7 @@ impl TestScript_Capability<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_CapabilityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_CapabilityBuilder {
@@ -269,9 +279,97 @@ impl TestScript_CapabilityBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Capability) -> TestScript_CapabilityBuilder {
+        TestScript_CapabilityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(capabilities: &str) -> TestScript_CapabilityBuilder {
         let mut __value: Value = json!({});
         __value["capabilities"] = json!(capabilities);
         return TestScript_CapabilityBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _destination<'a>(&'a mut self, val: Element) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_destination"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _link<'a>(&'a mut self, val: Vec<Element>) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _origin<'a>(&'a mut self, val: Vec<Element>) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_origin"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _required<'a>(&'a mut self, val: Element) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_required"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _validated<'a>(&'a mut self, val: Element) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["_validated"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn destination<'a>(&'a mut self, val: i64) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["destination"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(&'a mut self, val: Vec<&str>) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["link"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn origin<'a>(&'a mut self, val: Vec<i64>) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["origin"] = json!(val);
+        return self;
+    }
+
+    pub fn required<'a>(&'a mut self, val: bool) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["required"] = json!(val);
+        return self;
+    }
+
+    pub fn validated<'a>(&'a mut self, val: bool) -> &'a mut TestScript_CapabilityBuilder {
+        self.value["validated"] = json!(val);
+        return self;
     }
 }

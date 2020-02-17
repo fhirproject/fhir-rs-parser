@@ -23,6 +23,16 @@ pub struct OperationDefinition<'a> {
 }
 
 impl OperationDefinition<'_> {
+    pub fn new(value: &Value) -> OperationDefinition {
+        OperationDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for affectsState
     pub fn _affects_state(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_affectsState") {
@@ -805,7 +815,7 @@ impl OperationDefinition<'_> {
 
 #[derive(Debug)]
 pub struct OperationDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationDefinitionBuilder {
@@ -815,9 +825,313 @@ impl OperationDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: OperationDefinition) -> OperationDefinitionBuilder {
+        OperationDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OperationDefinitionBuilder {
         let mut __value: Value = json!({});
         return OperationDefinitionBuilder { value: __value };
+    }
+
+    pub fn _affects_state<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_affectsState"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instance<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_instance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _resource<'a>(&'a mut self, val: Vec<Element>) -> &'a mut OperationDefinitionBuilder {
+        self.value["_resource"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _system<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_system"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn affects_state<'a>(&'a mut self, val: bool) -> &'a mut OperationDefinitionBuilder {
+        self.value["affectsState"] = json!(val);
+        return self;
+    }
+
+    pub fn base<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["base"] = json!(val);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn contact<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut OperationDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut OperationDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn input_profile<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["inputProfile"] = json!(val);
+        return self;
+    }
+
+    pub fn instance<'a>(&'a mut self, val: bool) -> &'a mut OperationDefinitionBuilder {
+        self.value["instance"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kind<'a>(
+        &'a mut self,
+        val: OperationDefinitionKind,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["kind"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut OperationDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn output_profile<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["outputProfile"] = json!(val);
+        return self;
+    }
+
+    pub fn overload<'a>(
+        &'a mut self,
+        val: Vec<OperationDefinition_Overload>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["overload"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn parameter<'a>(
+        &'a mut self,
+        val: Vec<OperationDefinition_Parameter>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["parameter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: Vec<&str>) -> &'a mut OperationDefinitionBuilder {
+        self.value["resource"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: OperationDefinitionStatus,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn system<'a>(&'a mut self, val: bool) -> &'a mut OperationDefinitionBuilder {
+        self.value["system"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut OperationDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: bool) -> &'a mut OperationDefinitionBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut OperationDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

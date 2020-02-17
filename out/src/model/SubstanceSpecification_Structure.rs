@@ -20,6 +20,16 @@ pub struct SubstanceSpecification_Structure<'a> {
 }
 
 impl SubstanceSpecification_Structure<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_Structure {
+        SubstanceSpecification_Structure {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for molecularFormula
     pub fn _molecular_formula(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_molecularFormula") {
@@ -241,7 +251,7 @@ impl SubstanceSpecification_Structure<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_StructureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_StructureBuilder {
@@ -251,8 +261,118 @@ impl SubstanceSpecification_StructureBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_Structure,
+    ) -> SubstanceSpecification_StructureBuilder {
+        SubstanceSpecification_StructureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_StructureBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_StructureBuilder { value: __value };
+    }
+
+    pub fn _molecular_formula<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["_molecularFormula"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _molecular_formula_by_moiety<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["_molecularFormulaByMoiety"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn isotope<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Isotope>,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["isotope"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn molecular_formula<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["molecularFormula"] = json!(val);
+        return self;
+    }
+
+    pub fn molecular_formula_by_moiety<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["molecularFormulaByMoiety"] = json!(val);
+        return self;
+    }
+
+    pub fn molecular_weight<'a>(
+        &'a mut self,
+        val: SubstanceSpecification_MolecularWeight,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["molecularWeight"] = json!(val.value);
+        return self;
+    }
+
+    pub fn optical_activity<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["opticalActivity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn representation<'a>(
+        &'a mut self,
+        val: Vec<SubstanceSpecification_Representation>,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["representation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["source"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn stereochemistry<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_StructureBuilder {
+        self.value["stereochemistry"] = json!(val.value);
+        return self;
     }
 }

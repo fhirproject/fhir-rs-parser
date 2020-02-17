@@ -14,6 +14,16 @@ pub struct Bundle_Search<'a> {
 }
 
 impl Bundle_Search<'_> {
+    pub fn new(value: &Value) -> Bundle_Search {
+        Bundle_Search {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for mode
     pub fn _mode(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_mode") {
@@ -133,7 +143,7 @@ impl Bundle_Search<'_> {
 
 #[derive(Debug)]
 pub struct Bundle_SearchBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Bundle_SearchBuilder {
@@ -143,9 +153,54 @@ impl Bundle_SearchBuilder {
         }
     }
 
+    pub fn with(existing: Bundle_Search) -> Bundle_SearchBuilder {
+        Bundle_SearchBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Bundle_SearchBuilder {
         let mut __value: Value = json!({});
         return Bundle_SearchBuilder { value: __value };
+    }
+
+    pub fn _mode<'a>(&'a mut self, val: Element) -> &'a mut Bundle_SearchBuilder {
+        self.value["_mode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _score<'a>(&'a mut self, val: Element) -> &'a mut Bundle_SearchBuilder {
+        self.value["_score"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Bundle_SearchBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Bundle_SearchBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn mode<'a>(&'a mut self, val: Bundle_SearchMode) -> &'a mut Bundle_SearchBuilder {
+        self.value["mode"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Bundle_SearchBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn score<'a>(&'a mut self, val: f64) -> &'a mut Bundle_SearchBuilder {
+        self.value["score"] = json!(val);
+        return self;
     }
 }
 

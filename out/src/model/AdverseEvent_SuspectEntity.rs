@@ -18,6 +18,16 @@ pub struct AdverseEvent_SuspectEntity<'a> {
 }
 
 impl AdverseEvent_SuspectEntity<'_> {
+    pub fn new(value: &Value) -> AdverseEvent_SuspectEntity {
+        AdverseEvent_SuspectEntity {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Information on the possible cause of the event.
     pub fn causality(&self) -> Option<Vec<AdverseEvent_Causality>> {
         if let Some(Value::Array(val)) = self.value.get("causality") {
@@ -118,7 +128,7 @@ impl AdverseEvent_SuspectEntity<'_> {
 
 #[derive(Debug)]
 pub struct AdverseEvent_SuspectEntityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AdverseEvent_SuspectEntityBuilder {
@@ -128,9 +138,45 @@ impl AdverseEvent_SuspectEntityBuilder {
         }
     }
 
+    pub fn with(existing: AdverseEvent_SuspectEntity) -> AdverseEvent_SuspectEntityBuilder {
+        AdverseEvent_SuspectEntityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(instance: Reference) -> AdverseEvent_SuspectEntityBuilder {
         let mut __value: Value = json!({});
         __value["instance"] = json!(instance.value);
         return AdverseEvent_SuspectEntityBuilder { value: __value };
+    }
+
+    pub fn causality<'a>(
+        &'a mut self,
+        val: Vec<AdverseEvent_Causality>,
+    ) -> &'a mut AdverseEvent_SuspectEntityBuilder {
+        self.value["causality"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AdverseEvent_SuspectEntityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AdverseEvent_SuspectEntityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AdverseEvent_SuspectEntityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

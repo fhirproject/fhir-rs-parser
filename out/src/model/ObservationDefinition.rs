@@ -23,6 +23,16 @@ pub struct ObservationDefinition<'a> {
 }
 
 impl ObservationDefinition<'_> {
+    pub fn new(value: &Value) -> ObservationDefinition {
+        ObservationDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -434,7 +444,7 @@ impl ObservationDefinition<'_> {
 
 #[derive(Debug)]
 pub struct ObservationDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ObservationDefinitionBuilder {
@@ -444,9 +454,186 @@ impl ObservationDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: ObservationDefinition) -> ObservationDefinitionBuilder {
+        ObservationDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> ObservationDefinitionBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return ObservationDefinitionBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ObservationDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ObservationDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _multiple_results_allowed<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["_multipleResultsAllowed"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _permitted_data_type<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["_permittedDataType"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _preferred_report_name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["_preferredReportName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn abnormal_coded_value_set<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["abnormalCodedValueSet"] = json!(val.value);
+        return self;
+    }
+
+    pub fn category<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn critical_coded_value_set<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["criticalCodedValueSet"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ObservationDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ObservationDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ObservationDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ObservationDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ObservationDefinitionBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn multiple_results_allowed<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["multipleResultsAllowed"] = json!(val);
+        return self;
+    }
+
+    pub fn normal_coded_value_set<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["normalCodedValueSet"] = json!(val.value);
+        return self;
+    }
+
+    pub fn preferred_report_name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["preferredReportName"] = json!(val);
+        return self;
+    }
+
+    pub fn qualified_interval<'a>(
+        &'a mut self,
+        val: Vec<ObservationDefinition_QualifiedInterval>,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["qualifiedInterval"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantitative_details<'a>(
+        &'a mut self,
+        val: ObservationDefinition_QuantitativeDetails,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["quantitativeDetails"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ObservationDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn valid_coded_value_set<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ObservationDefinitionBuilder {
+        self.value["validCodedValueSet"] = json!(val.value);
+        return self;
     }
 }

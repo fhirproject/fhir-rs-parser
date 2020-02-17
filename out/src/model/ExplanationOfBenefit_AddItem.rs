@@ -24,6 +24,16 @@ pub struct ExplanationOfBenefit_AddItem<'a> {
 }
 
 impl ExplanationOfBenefit_AddItem<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_AddItem {
+        ExplanationOfBenefit_AddItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for detailSequence
     pub fn _detail_sequence(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_detailSequence") {
@@ -533,7 +543,7 @@ impl ExplanationOfBenefit_AddItem<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_AddItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_AddItemBuilder {
@@ -543,9 +553,234 @@ impl ExplanationOfBenefit_AddItemBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_AddItem) -> ExplanationOfBenefit_AddItemBuilder {
+        ExplanationOfBenefit_AddItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(product_or_service: CodeableConcept) -> ExplanationOfBenefit_AddItemBuilder {
         let mut __value: Value = json!({});
         __value["productOrService"] = json!(product_or_service.value);
         return ExplanationOfBenefit_AddItemBuilder { value: __value };
+    }
+
+    pub fn _detail_sequence<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_detailSequence"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _factor<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_factor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _item_sequence<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_itemSequence"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _note_number<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_noteNumber"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _serviced_date<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_servicedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sub_detail_sequence<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["_subDetailSequence"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn adjudication<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Adjudication>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["adjudication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn detail<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Detail1>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail_sequence<'a>(
+        &'a mut self,
+        val: Vec<i64>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["detailSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor<'a>(&'a mut self, val: f64) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["factor"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_sequence<'a>(
+        &'a mut self,
+        val: Vec<i64>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["itemSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn location_address<'a>(
+        &'a mut self,
+        val: Address,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["locationAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn location_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["locationCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn location_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["locationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["modifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn net<'a>(&'a mut self, val: Money) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["net"] = json!(val.value);
+        return self;
+    }
+
+    pub fn note_number<'a>(
+        &'a mut self,
+        val: Vec<i64>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["noteNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn program_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["programCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn provider<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["provider"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn serviced_date<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["servicedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn serviced_period<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["servicedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sub_detail_sequence<'a>(
+        &'a mut self,
+        val: Vec<i64>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["subDetailSequence"] = json!(val);
+        return self;
+    }
+
+    pub fn sub_site<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["subSite"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn unit_price<'a>(&'a mut self, val: Money) -> &'a mut ExplanationOfBenefit_AddItemBuilder {
+        self.value["unitPrice"] = json!(val.value);
+        return self;
     }
 }

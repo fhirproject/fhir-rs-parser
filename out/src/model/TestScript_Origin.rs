@@ -16,6 +16,16 @@ pub struct TestScript_Origin<'a> {
 }
 
 impl TestScript_Origin<'_> {
+    pub fn new(value: &Value) -> TestScript_Origin {
+        TestScript_Origin {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for index
     pub fn _index(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_index") {
@@ -120,7 +130,7 @@ impl TestScript_Origin<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_OriginBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_OriginBuilder {
@@ -130,9 +140,44 @@ impl TestScript_OriginBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Origin) -> TestScript_OriginBuilder {
+        TestScript_OriginBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(profile: Coding) -> TestScript_OriginBuilder {
         let mut __value: Value = json!({});
         __value["profile"] = json!(profile.value);
         return TestScript_OriginBuilder { value: __value };
+    }
+
+    pub fn _index<'a>(&'a mut self, val: Element) -> &'a mut TestScript_OriginBuilder {
+        self.value["_index"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_OriginBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_OriginBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn index<'a>(&'a mut self, val: i64) -> &'a mut TestScript_OriginBuilder {
+        self.value["index"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_OriginBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

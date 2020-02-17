@@ -29,6 +29,16 @@ pub struct Contract<'a> {
 }
 
 impl Contract<'_> {
+    pub fn new(value: &Value) -> Contract {
+        Contract {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for alias
     pub fn _alias(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_alias") {
@@ -931,7 +941,7 @@ impl Contract<'_> {
 
 #[derive(Debug)]
 pub struct ContractBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ContractBuilder {
@@ -941,8 +951,294 @@ impl ContractBuilder {
         }
     }
 
+    pub fn with(existing: Contract) -> ContractBuilder {
+        ContractBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ContractBuilder {
         let mut __value: Value = json!({});
         return ContractBuilder { value: __value };
+    }
+
+    pub fn _alias<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ContractBuilder {
+        self.value["_alias"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_instantiatesUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _issued<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_issued"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subtitle<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_subtitle"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ContractBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn alias<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ContractBuilder {
+        self.value["alias"] = json!(val);
+        return self;
+    }
+
+    pub fn applies<'a>(&'a mut self, val: Period) -> &'a mut ContractBuilder {
+        self.value["applies"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut ContractBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authority<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["authority"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ContractBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn content_definition<'a>(
+        &'a mut self,
+        val: Contract_ContentDefinition,
+    ) -> &'a mut ContractBuilder {
+        self.value["contentDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_derivative<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ContractBuilder {
+        self.value["contentDerivative"] = json!(val.value);
+        return self;
+    }
+
+    pub fn domain<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["domain"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn expiration_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ContractBuilder {
+        self.value["expirationType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ContractBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn friendly<'a>(&'a mut self, val: Vec<Contract_Friendly>) -> &'a mut ContractBuilder {
+        self.value["friendly"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ContractBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(&'a mut self, val: Reference) -> &'a mut ContractBuilder {
+        self.value["instantiatesCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn issued<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["issued"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn legal<'a>(&'a mut self, val: Vec<Contract_Legal>) -> &'a mut ContractBuilder {
+        self.value["legal"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn legal_state<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ContractBuilder {
+        self.value["legalState"] = json!(val.value);
+        return self;
+    }
+
+    pub fn legally_binding_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut ContractBuilder {
+        self.value["legallyBindingAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn legally_binding_reference<'a>(&'a mut self, val: Reference) -> &'a mut ContractBuilder {
+        self.value["legallyBindingReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ContractBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ContractBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn relevant_history<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["relevantHistory"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rule<'a>(&'a mut self, val: Vec<Contract_Rule>) -> &'a mut ContractBuilder {
+        self.value["rule"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn scope<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ContractBuilder {
+        self.value["scope"] = json!(val.value);
+        return self;
+    }
+
+    pub fn signer<'a>(&'a mut self, val: Vec<Contract_Signer>) -> &'a mut ContractBuilder {
+        self.value["signer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn site<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["site"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn sub_type<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ContractBuilder {
+        self.value["subType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["subject"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subtitle<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["subtitle"] = json!(val);
+        return self;
+    }
+
+    pub fn supporting_info<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ContractBuilder {
+        self.value["supportingInfo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn term<'a>(&'a mut self, val: Vec<Contract_Term>) -> &'a mut ContractBuilder {
+        self.value["term"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ContractBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn topic_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ContractBuilder {
+        self.value["topicCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn topic_reference<'a>(&'a mut self, val: Reference) -> &'a mut ContractBuilder {
+        self.value["topicReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ContractBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ContractBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }

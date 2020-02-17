@@ -19,6 +19,16 @@ pub struct CoverageEligibilityRequest_SupportingInfo<'a> {
 }
 
 impl CoverageEligibilityRequest_SupportingInfo<'_> {
+    pub fn new(value: &Value) -> CoverageEligibilityRequest_SupportingInfo {
+        CoverageEligibilityRequest_SupportingInfo {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for appliesToAll
     pub fn _applies_to_all(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_appliesToAll") {
@@ -148,7 +158,7 @@ impl CoverageEligibilityRequest_SupportingInfo<'_> {
 
 #[derive(Debug)]
 pub struct CoverageEligibilityRequest_SupportingInfoBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CoverageEligibilityRequest_SupportingInfoBuilder {
@@ -158,9 +168,74 @@ impl CoverageEligibilityRequest_SupportingInfoBuilder {
         }
     }
 
+    pub fn with(
+        existing: CoverageEligibilityRequest_SupportingInfo,
+    ) -> CoverageEligibilityRequest_SupportingInfoBuilder {
+        CoverageEligibilityRequest_SupportingInfoBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(information: Reference) -> CoverageEligibilityRequest_SupportingInfoBuilder {
         let mut __value: Value = json!({});
         __value["information"] = json!(information.value);
         return CoverageEligibilityRequest_SupportingInfoBuilder { value: __value };
+    }
+
+    pub fn _applies_to_all<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["_appliesToAll"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn applies_to_all<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["appliesToAll"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sequence<'a>(
+        &'a mut self,
+        val: i64,
+    ) -> &'a mut CoverageEligibilityRequest_SupportingInfoBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
     }
 }

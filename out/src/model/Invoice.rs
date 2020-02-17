@@ -26,6 +26,16 @@ pub struct Invoice<'a> {
 }
 
 impl Invoice<'_> {
+    pub fn new(value: &Value) -> Invoice {
+        Invoice {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for cancelledReason
     pub fn _cancelled_reason(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cancelledReason") {
@@ -510,7 +520,7 @@ impl Invoice<'_> {
 
 #[derive(Debug)]
 pub struct InvoiceBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InvoiceBuilder {
@@ -520,9 +530,170 @@ impl InvoiceBuilder {
         }
     }
 
+    pub fn with(existing: Invoice) -> InvoiceBuilder {
+        InvoiceBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> InvoiceBuilder {
         let mut __value: Value = json!({});
         return InvoiceBuilder { value: __value };
+    }
+
+    pub fn _cancelled_reason<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_cancelledReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _payment_terms<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_paymentTerms"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut InvoiceBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn account<'a>(&'a mut self, val: Reference) -> &'a mut InvoiceBuilder {
+        self.value["account"] = json!(val.value);
+        return self;
+    }
+
+    pub fn cancelled_reason<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["cancelledReason"] = json!(val);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut InvoiceBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut InvoiceBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut InvoiceBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn issuer<'a>(&'a mut self, val: Reference) -> &'a mut InvoiceBuilder {
+        self.value["issuer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn line_item<'a>(&'a mut self, val: Vec<Invoice_LineItem>) -> &'a mut InvoiceBuilder {
+        self.value["lineItem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut InvoiceBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut InvoiceBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut InvoiceBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn participant<'a>(&'a mut self, val: Vec<Invoice_Participant>) -> &'a mut InvoiceBuilder {
+        self.value["participant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn payment_terms<'a>(&'a mut self, val: &str) -> &'a mut InvoiceBuilder {
+        self.value["paymentTerms"] = json!(val);
+        return self;
+    }
+
+    pub fn recipient<'a>(&'a mut self, val: Reference) -> &'a mut InvoiceBuilder {
+        self.value["recipient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: InvoiceStatus) -> &'a mut InvoiceBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Reference) -> &'a mut InvoiceBuilder {
+        self.value["subject"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut InvoiceBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn total_gross<'a>(&'a mut self, val: Money) -> &'a mut InvoiceBuilder {
+        self.value["totalGross"] = json!(val.value);
+        return self;
+    }
+
+    pub fn total_net<'a>(&'a mut self, val: Money) -> &'a mut InvoiceBuilder {
+        self.value["totalNet"] = json!(val.value);
+        return self;
+    }
+
+    pub fn total_price_component<'a>(
+        &'a mut self,
+        val: Vec<Invoice_PriceComponent>,
+    ) -> &'a mut InvoiceBuilder {
+        self.value["totalPriceComponent"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut InvoiceBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }
 

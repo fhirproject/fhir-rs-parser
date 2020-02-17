@@ -18,6 +18,16 @@ pub struct CapabilityStatement_Endpoint<'a> {
 }
 
 impl CapabilityStatement_Endpoint<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Endpoint {
+        CapabilityStatement_Endpoint {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for address
     pub fn _address(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_address") {
@@ -123,7 +133,7 @@ impl CapabilityStatement_Endpoint<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_EndpointBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_EndpointBuilder {
@@ -133,9 +143,47 @@ impl CapabilityStatement_EndpointBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement_Endpoint) -> CapabilityStatement_EndpointBuilder {
+        CapabilityStatement_EndpointBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(protocol: Coding) -> CapabilityStatement_EndpointBuilder {
         let mut __value: Value = json!({});
         __value["protocol"] = json!(protocol.value);
         return CapabilityStatement_EndpointBuilder { value: __value };
+    }
+
+    pub fn _address<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_EndpointBuilder {
+        self.value["_address"] = json!(val.value);
+        return self;
+    }
+
+    pub fn address<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_EndpointBuilder {
+        self.value["address"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_EndpointBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_EndpointBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_EndpointBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

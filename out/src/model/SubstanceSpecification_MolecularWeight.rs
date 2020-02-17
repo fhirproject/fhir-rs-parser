@@ -16,6 +16,16 @@ pub struct SubstanceSpecification_MolecularWeight<'a> {
 }
 
 impl SubstanceSpecification_MolecularWeight<'_> {
+    pub fn new(value: &Value) -> SubstanceSpecification_MolecularWeight {
+        SubstanceSpecification_MolecularWeight {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Used to capture quantitative values for a variety of elements. If only limits
     /// are given, the arithmetic mean would be the average. If only a single definite
     /// value for a given element is given, it would be captured in this field.
@@ -133,7 +143,7 @@ impl SubstanceSpecification_MolecularWeight<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSpecification_MolecularWeightBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSpecification_MolecularWeightBuilder {
@@ -143,8 +153,65 @@ impl SubstanceSpecification_MolecularWeightBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSpecification_MolecularWeight,
+    ) -> SubstanceSpecification_MolecularWeightBuilder {
+        SubstanceSpecification_MolecularWeightBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSpecification_MolecularWeightBuilder {
         let mut __value: Value = json!({});
         return SubstanceSpecification_MolecularWeightBuilder { value: __value };
+    }
+
+    pub fn amount<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSpecification_MolecularWeightBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

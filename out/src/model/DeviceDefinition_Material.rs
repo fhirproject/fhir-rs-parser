@@ -16,6 +16,16 @@ pub struct DeviceDefinition_Material<'a> {
 }
 
 impl DeviceDefinition_Material<'_> {
+    pub fn new(value: &Value) -> DeviceDefinition_Material {
+        DeviceDefinition_Material {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allergenicIndicator
     pub fn _allergenic_indicator(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allergenicIndicator") {
@@ -143,7 +153,7 @@ impl DeviceDefinition_Material<'_> {
 
 #[derive(Debug)]
 pub struct DeviceDefinition_MaterialBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DeviceDefinition_MaterialBuilder {
@@ -153,9 +163,63 @@ impl DeviceDefinition_MaterialBuilder {
         }
     }
 
+    pub fn with(existing: DeviceDefinition_Material) -> DeviceDefinition_MaterialBuilder {
+        DeviceDefinition_MaterialBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(substance: CodeableConcept) -> DeviceDefinition_MaterialBuilder {
         let mut __value: Value = json!({});
         __value["substance"] = json!(substance.value);
         return DeviceDefinition_MaterialBuilder { value: __value };
+    }
+
+    pub fn _allergenic_indicator<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["_allergenicIndicator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _alternate<'a>(&'a mut self, val: Element) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["_alternate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn allergenic_indicator<'a>(
+        &'a mut self,
+        val: bool,
+    ) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["allergenicIndicator"] = json!(val);
+        return self;
+    }
+
+    pub fn alternate<'a>(&'a mut self, val: bool) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["alternate"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DeviceDefinition_MaterialBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -19,6 +19,16 @@ pub struct ChargeItem_Performer<'a> {
 }
 
 impl ChargeItem_Performer<'_> {
+    pub fn new(value: &Value) -> ChargeItem_Performer {
+        ChargeItem_Performer {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The device, practitioner, etc. who performed or participated in the service.
     pub fn actor(&self) -> Reference {
         Reference {
@@ -114,7 +124,7 @@ impl ChargeItem_Performer<'_> {
 
 #[derive(Debug)]
 pub struct ChargeItem_PerformerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ChargeItem_PerformerBuilder {
@@ -124,9 +134,39 @@ impl ChargeItem_PerformerBuilder {
         }
     }
 
+    pub fn with(existing: ChargeItem_Performer) -> ChargeItem_PerformerBuilder {
+        ChargeItem_PerformerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> ChargeItem_PerformerBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return ChargeItem_PerformerBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ChargeItem_PerformerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn function<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ChargeItem_PerformerBuilder {
+        self.value["function"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ChargeItem_PerformerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ChargeItem_PerformerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

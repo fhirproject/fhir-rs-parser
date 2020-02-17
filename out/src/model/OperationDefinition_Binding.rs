@@ -15,6 +15,16 @@ pub struct OperationDefinition_Binding<'a> {
 }
 
 impl OperationDefinition_Binding<'_> {
+    pub fn new(value: &Value) -> OperationDefinition_Binding {
+        OperationDefinition_Binding {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for strength
     pub fn _strength(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_strength") {
@@ -116,7 +126,7 @@ impl OperationDefinition_Binding<'_> {
 
 #[derive(Debug)]
 pub struct OperationDefinition_BindingBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationDefinition_BindingBuilder {
@@ -126,10 +136,51 @@ impl OperationDefinition_BindingBuilder {
         }
     }
 
+    pub fn with(existing: OperationDefinition_Binding) -> OperationDefinition_BindingBuilder {
+        OperationDefinition_BindingBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(value_set: &str) -> OperationDefinition_BindingBuilder {
         let mut __value: Value = json!({});
         __value["valueSet"] = json!(value_set);
         return OperationDefinition_BindingBuilder { value: __value };
+    }
+
+    pub fn _strength<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_BindingBuilder {
+        self.value["_strength"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_BindingBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_BindingBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_BindingBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn strength<'a>(
+        &'a mut self,
+        val: OperationDefinition_BindingStrength,
+    ) -> &'a mut OperationDefinition_BindingBuilder {
+        self.value["strength"] = json!(val.to_string());
+        return self;
     }
 }
 

@@ -30,6 +30,16 @@ pub struct ClinicalImpression<'a> {
 }
 
 impl ClinicalImpression<'_> {
+    pub fn new(value: &Value) -> ClinicalImpression {
+        ClinicalImpression {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -629,7 +639,7 @@ impl ClinicalImpression<'_> {
 
 #[derive(Debug)]
 pub struct ClinicalImpressionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ClinicalImpressionBuilder {
@@ -639,9 +649,225 @@ impl ClinicalImpressionBuilder {
         }
     }
 
+    pub fn with(existing: ClinicalImpression) -> ClinicalImpressionBuilder {
+        ClinicalImpressionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> ClinicalImpressionBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return ClinicalImpressionBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _effective_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_effectiveDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _protocol<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_protocol"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _summary<'a>(&'a mut self, val: Element) -> &'a mut ClinicalImpressionBuilder {
+        self.value["_summary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn assessor<'a>(&'a mut self, val: Reference) -> &'a mut ClinicalImpressionBuilder {
+        self.value["assessor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ClinicalImpressionBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_date_time<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["effectiveDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut ClinicalImpressionBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut ClinicalImpressionBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn finding<'a>(
+        &'a mut self,
+        val: Vec<ClinicalImpression_Finding>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["finding"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn investigation<'a>(
+        &'a mut self,
+        val: Vec<ClinicalImpression_Investigation>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["investigation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ClinicalImpressionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn previous<'a>(&'a mut self, val: Reference) -> &'a mut ClinicalImpressionBuilder {
+        self.value["previous"] = json!(val.value);
+        return self;
+    }
+
+    pub fn problem<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["problem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn prognosis_codeable_concept<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["prognosisCodeableConcept"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn prognosis_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["prognosisReference"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn protocol<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ClinicalImpressionBuilder {
+        self.value["protocol"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn status_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["statusReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn summary<'a>(&'a mut self, val: &str) -> &'a mut ClinicalImpressionBuilder {
+        self.value["summary"] = json!(val);
+        return self;
+    }
+
+    pub fn supporting_info<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ClinicalImpressionBuilder {
+        self.value["supportingInfo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ClinicalImpressionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

@@ -15,6 +15,16 @@ pub struct InsurancePlan_Benefit1<'a> {
 }
 
 impl InsurancePlan_Benefit1<'_> {
+    pub fn new(value: &Value) -> InsurancePlan_Benefit1 {
+        InsurancePlan_Benefit1 {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// List of the costs associated with a specific benefit.
     pub fn cost(&self) -> Option<Vec<InsurancePlan_Cost>> {
         if let Some(Value::Array(val)) = self.value.get("cost") {
@@ -114,7 +124,7 @@ impl InsurancePlan_Benefit1<'_> {
 
 #[derive(Debug)]
 pub struct InsurancePlan_Benefit1Builder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl InsurancePlan_Benefit1Builder {
@@ -124,9 +134,45 @@ impl InsurancePlan_Benefit1Builder {
         }
     }
 
+    pub fn with(existing: InsurancePlan_Benefit1) -> InsurancePlan_Benefit1Builder {
+        InsurancePlan_Benefit1Builder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> InsurancePlan_Benefit1Builder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return InsurancePlan_Benefit1Builder { value: __value };
+    }
+
+    pub fn cost<'a>(
+        &'a mut self,
+        val: Vec<InsurancePlan_Cost>,
+    ) -> &'a mut InsurancePlan_Benefit1Builder {
+        self.value["cost"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_Benefit1Builder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut InsurancePlan_Benefit1Builder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut InsurancePlan_Benefit1Builder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

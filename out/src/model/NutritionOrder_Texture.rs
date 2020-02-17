@@ -15,6 +15,16 @@ pub struct NutritionOrder_Texture<'a> {
 }
 
 impl NutritionOrder_Texture<'_> {
+    pub fn new(value: &Value) -> NutritionOrder_Texture {
+        NutritionOrder_Texture {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -116,7 +126,7 @@ impl NutritionOrder_Texture<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrder_TextureBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrder_TextureBuilder {
@@ -126,8 +136,52 @@ impl NutritionOrder_TextureBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder_Texture) -> NutritionOrder_TextureBuilder {
+        NutritionOrder_TextureBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NutritionOrder_TextureBuilder {
         let mut __value: Value = json!({});
         return NutritionOrder_TextureBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_TextureBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn food_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_TextureBuilder {
+        self.value["foodType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_TextureBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut NutritionOrder_TextureBuilder {
+        self.value["modifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_TextureBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

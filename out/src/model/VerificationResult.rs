@@ -24,6 +24,16 @@ pub struct VerificationResult<'a> {
 }
 
 impl VerificationResult<'_> {
+    pub fn new(value: &Value) -> VerificationResult {
+        VerificationResult {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -487,7 +497,7 @@ impl VerificationResult<'_> {
 
 #[derive(Debug)]
 pub struct VerificationResultBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VerificationResultBuilder {
@@ -497,8 +507,188 @@ impl VerificationResultBuilder {
         }
     }
 
+    pub fn with(existing: VerificationResult) -> VerificationResultBuilder {
+        VerificationResultBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> VerificationResultBuilder {
         let mut __value: Value = json!({});
         return VerificationResultBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_performed<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_lastPerformed"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _next_scheduled<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_nextScheduled"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status_date<'a>(&'a mut self, val: Element) -> &'a mut VerificationResultBuilder {
+        self.value["_statusDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _target_location<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["_targetLocation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn attestation<'a>(
+        &'a mut self,
+        val: VerificationResult_Attestation,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["attestation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut VerificationResultBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn failure_action<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["failureAction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn frequency<'a>(&'a mut self, val: Timing) -> &'a mut VerificationResultBuilder {
+        self.value["frequency"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_performed<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["lastPerformed"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut VerificationResultBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn need<'a>(&'a mut self, val: CodeableConcept) -> &'a mut VerificationResultBuilder {
+        self.value["need"] = json!(val.value);
+        return self;
+    }
+
+    pub fn next_scheduled<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["nextScheduled"] = json!(val);
+        return self;
+    }
+
+    pub fn primary_source<'a>(
+        &'a mut self,
+        val: Vec<VerificationResult_PrimarySource>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["primarySource"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn status_date<'a>(&'a mut self, val: &str) -> &'a mut VerificationResultBuilder {
+        self.value["statusDate"] = json!(val);
+        return self;
+    }
+
+    pub fn target<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut VerificationResultBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target_location<'a>(&'a mut self, val: Vec<&str>) -> &'a mut VerificationResultBuilder {
+        self.value["targetLocation"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut VerificationResultBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn validation_process<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["validationProcess"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn validation_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["validationType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn validator<'a>(
+        &'a mut self,
+        val: Vec<VerificationResult_Validator>,
+    ) -> &'a mut VerificationResultBuilder {
+        self.value["validator"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct NamingSystem_UniqueId<'a> {
 }
 
 impl NamingSystem_UniqueId<'_> {
+    pub fn new(value: &Value) -> NamingSystem_UniqueId {
+        NamingSystem_UniqueId {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -200,7 +210,7 @@ impl NamingSystem_UniqueId<'_> {
 
 #[derive(Debug)]
 pub struct NamingSystem_UniqueIdBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NamingSystem_UniqueIdBuilder {
@@ -210,9 +220,85 @@ impl NamingSystem_UniqueIdBuilder {
         }
     }
 
+    pub fn with(existing: NamingSystem_UniqueId) -> NamingSystem_UniqueIdBuilder {
+        NamingSystem_UniqueIdBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NamingSystem_UniqueIdBuilder {
         let mut __value: Value = json!({});
         return NamingSystem_UniqueIdBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _preferred<'a>(&'a mut self, val: Element) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["_preferred"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn preferred<'a>(&'a mut self, val: bool) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["preferred"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: NamingSystem_UniqueIdType,
+    ) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["type"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut NamingSystem_UniqueIdBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

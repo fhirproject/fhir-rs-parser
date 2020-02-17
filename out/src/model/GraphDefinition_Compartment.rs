@@ -16,6 +16,16 @@ pub struct GraphDefinition_Compartment<'a> {
 }
 
 impl GraphDefinition_Compartment<'_> {
+    pub fn new(value: &Value) -> GraphDefinition_Compartment {
+        GraphDefinition_Compartment {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -207,7 +217,7 @@ impl GraphDefinition_Compartment<'_> {
 
 #[derive(Debug)]
 pub struct GraphDefinition_CompartmentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl GraphDefinition_CompartmentBuilder {
@@ -217,9 +227,99 @@ impl GraphDefinition_CompartmentBuilder {
         }
     }
 
+    pub fn with(existing: GraphDefinition_Compartment) -> GraphDefinition_CompartmentBuilder {
+        GraphDefinition_CompartmentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> GraphDefinition_CompartmentBuilder {
         let mut __value: Value = json!({});
         return GraphDefinition_CompartmentBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _rule<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["_rule"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn rule<'a>(
+        &'a mut self,
+        val: GraphDefinition_CompartmentRule,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["rule"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(
+        &'a mut self,
+        val: GraphDefinition_CompartmentUse,
+    ) -> &'a mut GraphDefinition_CompartmentBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
     }
 }
 

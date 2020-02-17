@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_MonitoringProgram<'a> {
 }
 
 impl MedicationKnowledge_MonitoringProgram<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_MonitoringProgram {
+        MedicationKnowledge_MonitoringProgram {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -123,7 +133,7 @@ impl MedicationKnowledge_MonitoringProgram<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_MonitoringProgramBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_MonitoringProgramBuilder {
@@ -133,8 +143,62 @@ impl MedicationKnowledge_MonitoringProgramBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_MonitoringProgram,
+    ) -> MedicationKnowledge_MonitoringProgramBuilder {
+        MedicationKnowledge_MonitoringProgramBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledge_MonitoringProgramBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledge_MonitoringProgramBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationKnowledge_MonitoringProgramBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct MedicinalProductContraindication_OtherTherapy<'a> {
 }
 
 impl MedicinalProductContraindication_OtherTherapy<'_> {
+    pub fn new(value: &Value) -> MedicinalProductContraindication_OtherTherapy {
+        MedicinalProductContraindication_OtherTherapy {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -128,7 +138,7 @@ impl MedicinalProductContraindication_OtherTherapy<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductContraindication_OtherTherapyBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductContraindication_OtherTherapyBuilder {
@@ -138,11 +148,60 @@ impl MedicinalProductContraindication_OtherTherapyBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductContraindication_OtherTherapy,
+    ) -> MedicinalProductContraindication_OtherTherapyBuilder {
+        MedicinalProductContraindication_OtherTherapyBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(
         therapy_relationship_type: CodeableConcept,
     ) -> MedicinalProductContraindication_OtherTherapyBuilder {
         let mut __value: Value = json!({});
         __value["therapyRelationshipType"] = json!(therapy_relationship_type.value);
         return MedicinalProductContraindication_OtherTherapyBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductContraindication_OtherTherapyBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductContraindication_OtherTherapyBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn medication_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductContraindication_OtherTherapyBuilder {
+        self.value["medicationCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn medication_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicinalProductContraindication_OtherTherapyBuilder {
+        self.value["medicationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductContraindication_OtherTherapyBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

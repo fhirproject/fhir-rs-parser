@@ -26,6 +26,16 @@ pub struct SubstanceSourceMaterial_PartDescription<'a> {
 }
 
 impl SubstanceSourceMaterial_PartDescription<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_PartDescription {
+        SubstanceSourceMaterial_PartDescription {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -126,7 +136,7 @@ impl SubstanceSourceMaterial_PartDescription<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_PartDescriptionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_PartDescriptionBuilder {
@@ -136,8 +146,57 @@ impl SubstanceSourceMaterial_PartDescriptionBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSourceMaterial_PartDescription,
+    ) -> SubstanceSourceMaterial_PartDescriptionBuilder {
+        SubstanceSourceMaterial_PartDescriptionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_PartDescriptionBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_PartDescriptionBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_PartDescriptionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_PartDescriptionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_PartDescriptionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn part<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_PartDescriptionBuilder {
+        self.value["part"] = json!(val.value);
+        return self;
+    }
+
+    pub fn part_location<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_PartDescriptionBuilder {
+        self.value["partLocation"] = json!(val.value);
+        return self;
     }
 }

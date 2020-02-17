@@ -19,6 +19,16 @@ pub struct VisionPrescription_LensSpecification<'a> {
 }
 
 impl VisionPrescription_LensSpecification<'_> {
+    pub fn new(value: &Value) -> VisionPrescription_LensSpecification {
+        VisionPrescription_LensSpecification {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for add
     pub fn _add(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_add") {
@@ -392,7 +402,7 @@ impl VisionPrescription_LensSpecification<'_> {
 
 #[derive(Debug)]
 pub struct VisionPrescription_LensSpecificationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl VisionPrescription_LensSpecificationBuilder {
@@ -402,10 +412,218 @@ impl VisionPrescription_LensSpecificationBuilder {
         }
     }
 
+    pub fn with(
+        existing: VisionPrescription_LensSpecification,
+    ) -> VisionPrescription_LensSpecificationBuilder {
+        VisionPrescription_LensSpecificationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(product: CodeableConcept) -> VisionPrescription_LensSpecificationBuilder {
         let mut __value: Value = json!({});
         __value["product"] = json!(product.value);
         return VisionPrescription_LensSpecificationBuilder { value: __value };
+    }
+
+    pub fn _add<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_add"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _axis<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_axis"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _back_curve<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_backCurve"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _brand<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_brand"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _color<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_color"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _cylinder<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_cylinder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _diameter<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_diameter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _eye<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_eye"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _power<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_power"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sphere<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["_sphere"] = json!(val.value);
+        return self;
+    }
+
+    pub fn add<'a>(&'a mut self, val: f64) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["add"] = json!(val);
+        return self;
+    }
+
+    pub fn axis<'a>(&'a mut self, val: i64) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["axis"] = json!(val);
+        return self;
+    }
+
+    pub fn back_curve<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["backCurve"] = json!(val);
+        return self;
+    }
+
+    pub fn brand<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["brand"] = json!(val);
+        return self;
+    }
+
+    pub fn color<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["color"] = json!(val);
+        return self;
+    }
+
+    pub fn cylinder<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["cylinder"] = json!(val);
+        return self;
+    }
+
+    pub fn diameter<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["diameter"] = json!(val);
+        return self;
+    }
+
+    pub fn duration<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn eye<'a>(
+        &'a mut self,
+        val: VisionPrescription_LensSpecificationEye,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["eye"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(
+        &'a mut self,
+        val: Vec<Annotation>,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn power<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["power"] = json!(val);
+        return self;
+    }
+
+    pub fn prism<'a>(
+        &'a mut self,
+        val: Vec<VisionPrescription_Prism>,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["prism"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sphere<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut VisionPrescription_LensSpecificationBuilder {
+        self.value["sphere"] = json!(val);
+        return self;
     }
 }
 

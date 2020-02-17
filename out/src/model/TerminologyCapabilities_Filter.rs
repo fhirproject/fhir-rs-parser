@@ -16,6 +16,16 @@ pub struct TerminologyCapabilities_Filter<'a> {
 }
 
 impl TerminologyCapabilities_Filter<'_> {
+    pub fn new(value: &Value) -> TerminologyCapabilities_Filter {
+        TerminologyCapabilities_Filter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -143,7 +153,7 @@ impl TerminologyCapabilities_Filter<'_> {
 
 #[derive(Debug)]
 pub struct TerminologyCapabilities_FilterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TerminologyCapabilities_FilterBuilder {
@@ -153,8 +163,59 @@ impl TerminologyCapabilities_FilterBuilder {
         }
     }
 
+    pub fn with(existing: TerminologyCapabilities_Filter) -> TerminologyCapabilities_FilterBuilder {
+        TerminologyCapabilities_FilterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TerminologyCapabilities_FilterBuilder {
         let mut __value: Value = json!({});
         return TerminologyCapabilities_FilterBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _op<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["_op"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn op<'a>(&'a mut self, val: Vec<&str>) -> &'a mut TerminologyCapabilities_FilterBuilder {
+        self.value["op"] = json!(val);
+        return self;
     }
 }

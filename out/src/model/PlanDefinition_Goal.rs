@@ -19,6 +19,16 @@ pub struct PlanDefinition_Goal<'a> {
 }
 
 impl PlanDefinition_Goal<'_> {
+    pub fn new(value: &Value) -> PlanDefinition_Goal {
+        PlanDefinition_Goal {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Identifies problems, conditions, issues, or concerns the goal is intended to
     /// address.
     pub fn addresses(&self) -> Option<Vec<CodeableConcept>> {
@@ -206,7 +216,7 @@ impl PlanDefinition_Goal<'_> {
 
 #[derive(Debug)]
 pub struct PlanDefinition_GoalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PlanDefinition_GoalBuilder {
@@ -216,9 +226,73 @@ impl PlanDefinition_GoalBuilder {
         }
     }
 
+    pub fn with(existing: PlanDefinition_Goal) -> PlanDefinition_GoalBuilder {
+        PlanDefinition_GoalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(description: CodeableConcept) -> PlanDefinition_GoalBuilder {
         let mut __value: Value = json!({});
         __value["description"] = json!(description.value);
         return PlanDefinition_GoalBuilder { value: __value };
+    }
+
+    pub fn addresses<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["addresses"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["category"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["documentation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn start<'a>(&'a mut self, val: CodeableConcept) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["start"] = json!(val.value);
+        return self;
+    }
+
+    pub fn target<'a>(
+        &'a mut self,
+        val: Vec<PlanDefinition_Target>,
+    ) -> &'a mut PlanDefinition_GoalBuilder {
+        self.value["target"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

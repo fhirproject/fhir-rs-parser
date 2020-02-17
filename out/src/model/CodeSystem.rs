@@ -26,6 +26,16 @@ pub struct CodeSystem<'a> {
 }
 
 impl CodeSystem<'_> {
+    pub fn new(value: &Value) -> CodeSystem {
+        CodeSystem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for caseSensitive
     pub fn _case_sensitive(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_caseSensitive") {
@@ -806,7 +816,7 @@ impl CodeSystem<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystemBuilder {
@@ -816,9 +826,284 @@ impl CodeSystemBuilder {
         }
     }
 
+    pub fn with(existing: CodeSystem) -> CodeSystemBuilder {
+        CodeSystemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystemBuilder {
         let mut __value: Value = json!({});
         return CodeSystemBuilder { value: __value };
+    }
+
+    pub fn _case_sensitive<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_caseSensitive"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _compositional<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_compositional"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _content<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_content"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _count<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_count"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _hierarchy_meaning<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_hierarchyMeaning"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version_needed<'a>(&'a mut self, val: Element) -> &'a mut CodeSystemBuilder {
+        self.value["_versionNeeded"] = json!(val.value);
+        return self;
+    }
+
+    pub fn case_sensitive<'a>(&'a mut self, val: bool) -> &'a mut CodeSystemBuilder {
+        self.value["caseSensitive"] = json!(val);
+        return self;
+    }
+
+    pub fn compositional<'a>(&'a mut self, val: bool) -> &'a mut CodeSystemBuilder {
+        self.value["compositional"] = json!(val);
+        return self;
+    }
+
+    pub fn concept<'a>(&'a mut self, val: Vec<CodeSystem_Concept>) -> &'a mut CodeSystemBuilder {
+        self.value["concept"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut CodeSystemBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut CodeSystemBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn content<'a>(&'a mut self, val: CodeSystemContent) -> &'a mut CodeSystemBuilder {
+        self.value["content"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn count<'a>(&'a mut self, val: u64) -> &'a mut CodeSystemBuilder {
+        self.value["count"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut CodeSystemBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn filter<'a>(&'a mut self, val: Vec<CodeSystem_Filter>) -> &'a mut CodeSystemBuilder {
+        self.value["filter"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn hierarchy_meaning<'a>(
+        &'a mut self,
+        val: CodeSystemHierarchyMeaning,
+    ) -> &'a mut CodeSystemBuilder {
+        self.value["hierarchyMeaning"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut CodeSystemBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut CodeSystemBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut CodeSystemBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn property<'a>(&'a mut self, val: Vec<CodeSystem_Property>) -> &'a mut CodeSystemBuilder {
+        self.value["property"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: CodeSystemStatus) -> &'a mut CodeSystemBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn supplements<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["supplements"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut CodeSystemBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(&'a mut self, val: Vec<UsageContext>) -> &'a mut CodeSystemBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_set<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["valueSet"] = json!(val);
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut CodeSystemBuilder {
+        self.value["version"] = json!(val);
+        return self;
+    }
+
+    pub fn version_needed<'a>(&'a mut self, val: bool) -> &'a mut CodeSystemBuilder {
+        self.value["versionNeeded"] = json!(val);
+        return self;
     }
 }
 

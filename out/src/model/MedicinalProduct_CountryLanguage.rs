@@ -15,6 +15,16 @@ pub struct MedicinalProduct_CountryLanguage<'a> {
 }
 
 impl MedicinalProduct_CountryLanguage<'_> {
+    pub fn new(value: &Value) -> MedicinalProduct_CountryLanguage {
+        MedicinalProduct_CountryLanguage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Country code for where this name applies.
     pub fn country(&self) -> CodeableConcept {
         CodeableConcept {
@@ -119,13 +129,21 @@ impl MedicinalProduct_CountryLanguage<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProduct_CountryLanguageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProduct_CountryLanguageBuilder {
     pub fn build(&self) -> MedicinalProduct_CountryLanguage {
         MedicinalProduct_CountryLanguage {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(
+        existing: MedicinalProduct_CountryLanguage,
+    ) -> MedicinalProduct_CountryLanguageBuilder {
+        MedicinalProduct_CountryLanguageBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -137,5 +155,35 @@ impl MedicinalProduct_CountryLanguageBuilder {
         __value["country"] = json!(country.value);
         __value["language"] = json!(language.value);
         return MedicinalProduct_CountryLanguageBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_CountryLanguageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProduct_CountryLanguageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProduct_CountryLanguageBuilder {
+        self.value["jurisdiction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProduct_CountryLanguageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

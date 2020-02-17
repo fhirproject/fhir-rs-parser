@@ -15,6 +15,16 @@ pub struct MedicationKnowledge_Kinetics<'a> {
 }
 
 impl MedicationKnowledge_Kinetics<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Kinetics {
+        MedicationKnowledge_Kinetics {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The drug concentration measured at certain discrete points in time.
     pub fn area_under_curve(&self) -> Option<Vec<Quantity>> {
         if let Some(Value::Array(val)) = self.value.get("areaUnderCurve") {
@@ -138,7 +148,7 @@ impl MedicationKnowledge_Kinetics<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_KineticsBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_KineticsBuilder {
@@ -148,8 +158,60 @@ impl MedicationKnowledge_KineticsBuilder {
         }
     }
 
+    pub fn with(existing: MedicationKnowledge_Kinetics) -> MedicationKnowledge_KineticsBuilder {
+        MedicationKnowledge_KineticsBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledge_KineticsBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledge_KineticsBuilder { value: __value };
+    }
+
+    pub fn area_under_curve<'a>(
+        &'a mut self,
+        val: Vec<Quantity>,
+    ) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["areaUnderCurve"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn half_life_period<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["halfLifePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn lethal_dose_5_0<'a>(
+        &'a mut self,
+        val: Vec<Quantity>,
+    ) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["lethalDose50"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_KineticsBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

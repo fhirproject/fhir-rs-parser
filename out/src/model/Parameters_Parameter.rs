@@ -48,6 +48,16 @@ pub struct Parameters_Parameter<'a> {
 }
 
 impl Parameters_Parameter<'_> {
+    pub fn new(value: &Value) -> Parameters_Parameter {
+        Parameters_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -1096,7 +1106,7 @@ impl Parameters_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct Parameters_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Parameters_ParameterBuilder {
@@ -1106,8 +1116,464 @@ impl Parameters_ParameterBuilder {
         }
     }
 
+    pub fn with(existing: Parameters_Parameter) -> Parameters_ParameterBuilder {
+        Parameters_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Parameters_ParameterBuilder {
         let mut __value: Value = json!({});
         return Parameters_ParameterBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueBase64Binary"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_canonical<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueCanonical"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_code<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_id<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_instant<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueInstant"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_markdown<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueMarkdown"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_oid<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueOid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valuePositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_time<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_unsigned_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueUnsignedInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uri<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_url<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_uuid<'a>(&'a mut self, val: Element) -> &'a mut Parameters_ParameterBuilder {
+        self.value["_valueUuid"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Parameters_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn part<'a>(
+        &'a mut self,
+        val: Vec<Parameters_Parameter>,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["part"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: ResourceList) -> &'a mut Parameters_ParameterBuilder {
+        self.value["resource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_address<'a>(&'a mut self, val: Address) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueAddress"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_age<'a>(&'a mut self, val: Age) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_annotation<'a>(
+        &'a mut self,
+        val: Annotation,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueAnnotation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_base_6_4_binary<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueBase64Binary"] = json!(val);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_canonical<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn value_code<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_detail<'a>(
+        &'a mut self,
+        val: ContactDetail,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueContactDetail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contact_point<'a>(
+        &'a mut self,
+        val: ContactPoint,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueContactPoint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_contributor<'a>(
+        &'a mut self,
+        val: Contributor,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueContributor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_count<'a>(&'a mut self, val: Count) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueCount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_data_requirement<'a>(
+        &'a mut self,
+        val: DataRequirement,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDataRequirement"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDate"] = json!(val);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_distance<'a>(&'a mut self, val: Distance) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDistance"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_dosage<'a>(&'a mut self, val: Dosage) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDosage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_duration<'a>(&'a mut self, val: Duration) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_expression<'a>(
+        &'a mut self,
+        val: Expression,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueExpression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_human_name<'a>(
+        &'a mut self,
+        val: HumanName,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueHumanName"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_id<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueId"] = json!(val);
+        return self;
+    }
+
+    pub fn value_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_instant<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueInstant"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_markdown<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueMarkdown"] = json!(val);
+        return self;
+    }
+
+    pub fn value_meta<'a>(&'a mut self, val: Meta) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueMeta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_money<'a>(&'a mut self, val: Money) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_oid<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueOid"] = json!(val);
+        return self;
+    }
+
+    pub fn value_parameter_definition<'a>(
+        &'a mut self,
+        val: ParameterDefinition,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueParameterDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_period<'a>(&'a mut self, val: Period) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valuePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_positive_int<'a>(&'a mut self, val: f64) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valuePositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_ratio<'a>(&'a mut self, val: Ratio) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueRatio"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_related_artifact<'a>(
+        &'a mut self,
+        val: RelatedArtifact,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueRelatedArtifact"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_sampled_data<'a>(
+        &'a mut self,
+        val: SampledData,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueSampledData"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_signature<'a>(
+        &'a mut self,
+        val: Signature,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueSignature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueString"] = json!(val);
+        return self;
+    }
+
+    pub fn value_time<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_timing<'a>(&'a mut self, val: Timing) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_trigger_definition<'a>(
+        &'a mut self,
+        val: TriggerDefinition,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueTriggerDefinition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_unsigned_int<'a>(&'a mut self, val: f64) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueUnsignedInt"] = json!(val);
+        return self;
+    }
+
+    pub fn value_uri<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueUri"] = json!(val);
+        return self;
+    }
+
+    pub fn value_url<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn value_usage_context<'a>(
+        &'a mut self,
+        val: UsageContext,
+    ) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueUsageContext"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_uuid<'a>(&'a mut self, val: &str) -> &'a mut Parameters_ParameterBuilder {
+        self.value["valueUuid"] = json!(val);
+        return self;
     }
 }

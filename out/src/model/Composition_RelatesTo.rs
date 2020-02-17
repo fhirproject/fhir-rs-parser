@@ -24,6 +24,16 @@ pub struct Composition_RelatesTo<'a> {
 }
 
 impl Composition_RelatesTo<'_> {
+    pub fn new(value: &Value) -> Composition_RelatesTo {
+        Composition_RelatesTo {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -148,7 +158,7 @@ impl Composition_RelatesTo<'_> {
 
 #[derive(Debug)]
 pub struct Composition_RelatesToBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Composition_RelatesToBuilder {
@@ -158,8 +168,62 @@ impl Composition_RelatesToBuilder {
         }
     }
 
+    pub fn with(existing: Composition_RelatesTo) -> Composition_RelatesToBuilder {
+        Composition_RelatesToBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Composition_RelatesToBuilder {
         let mut __value: Value = json!({});
         return Composition_RelatesToBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut Composition_RelatesToBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut Composition_RelatesToBuilder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Composition_RelatesToBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Composition_RelatesToBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Composition_RelatesToBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn target_identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut Composition_RelatesToBuilder {
+        self.value["targetIdentifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn target_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Composition_RelatesToBuilder {
+        self.value["targetReference"] = json!(val.value);
+        return self;
     }
 }

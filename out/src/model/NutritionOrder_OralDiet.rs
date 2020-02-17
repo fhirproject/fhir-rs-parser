@@ -19,6 +19,16 @@ pub struct NutritionOrder_OralDiet<'a> {
 }
 
 impl NutritionOrder_OralDiet<'_> {
+    pub fn new(value: &Value) -> NutritionOrder_OralDiet {
+        NutritionOrder_OralDiet {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for instruction
     pub fn _instruction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_instruction") {
@@ -213,7 +223,7 @@ impl NutritionOrder_OralDiet<'_> {
 
 #[derive(Debug)]
 pub struct NutritionOrder_OralDietBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl NutritionOrder_OralDietBuilder {
@@ -223,8 +233,84 @@ impl NutritionOrder_OralDietBuilder {
         }
     }
 
+    pub fn with(existing: NutritionOrder_OralDiet) -> NutritionOrder_OralDietBuilder {
+        NutritionOrder_OralDietBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> NutritionOrder_OralDietBuilder {
         let mut __value: Value = json!({});
         return NutritionOrder_OralDietBuilder { value: __value };
+    }
+
+    pub fn _instruction<'a>(&'a mut self, val: Element) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["_instruction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fluid_consistency_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["fluidConsistencyType"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn instruction<'a>(&'a mut self, val: &str) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["instruction"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn nutrient<'a>(
+        &'a mut self,
+        val: Vec<NutritionOrder_Nutrient>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["nutrient"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn schedule<'a>(&'a mut self, val: Vec<Timing>) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["schedule"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn texture<'a>(
+        &'a mut self,
+        val: Vec<NutritionOrder_Texture>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["texture"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut NutritionOrder_OralDietBuilder {
+        self.value["type"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

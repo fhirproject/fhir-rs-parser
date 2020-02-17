@@ -16,6 +16,16 @@ pub struct Location_HoursOfOperation<'a> {
 }
 
 impl Location_HoursOfOperation<'_> {
+    pub fn new(value: &Value) -> Location_HoursOfOperation {
+        Location_HoursOfOperation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for allDay
     pub fn _all_day(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_allDay") {
@@ -191,7 +201,7 @@ impl Location_HoursOfOperation<'_> {
 
 #[derive(Debug)]
 pub struct Location_HoursOfOperationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Location_HoursOfOperationBuilder {
@@ -201,8 +211,88 @@ impl Location_HoursOfOperationBuilder {
         }
     }
 
+    pub fn with(existing: Location_HoursOfOperation) -> Location_HoursOfOperationBuilder {
+        Location_HoursOfOperationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Location_HoursOfOperationBuilder {
         let mut __value: Value = json!({});
         return Location_HoursOfOperationBuilder { value: __value };
+    }
+
+    pub fn _all_day<'a>(&'a mut self, val: Element) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["_allDay"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _closing_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["_closingTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _days_of_week<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["_daysOfWeek"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _opening_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["_openingTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn all_day<'a>(&'a mut self, val: bool) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["allDay"] = json!(val);
+        return self;
+    }
+
+    pub fn closing_time<'a>(&'a mut self, val: &str) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["closingTime"] = json!(val);
+        return self;
+    }
+
+    pub fn days_of_week<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["daysOfWeek"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn opening_time<'a>(&'a mut self, val: &str) -> &'a mut Location_HoursOfOperationBuilder {
+        self.value["openingTime"] = json!(val);
+        return self;
     }
 }

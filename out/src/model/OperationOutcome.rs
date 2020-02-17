@@ -19,6 +19,16 @@ pub struct OperationOutcome<'a> {
 }
 
 impl OperationOutcome<'_> {
+    pub fn new(value: &Value) -> OperationOutcome {
+        OperationOutcome {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -220,7 +230,7 @@ impl OperationOutcome<'_> {
 
 #[derive(Debug)]
 pub struct OperationOutcomeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationOutcomeBuilder {
@@ -230,9 +240,69 @@ impl OperationOutcomeBuilder {
         }
     }
 
+    pub fn with(existing: OperationOutcome) -> OperationOutcomeBuilder {
+        OperationOutcomeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(issue: Vec<OperationOutcome_Issue>) -> OperationOutcomeBuilder {
         let mut __value: Value = json!({});
         __value["issue"] = json!(issue.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return OperationOutcomeBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut OperationOutcomeBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut OperationOutcomeBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut OperationOutcomeBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut OperationOutcomeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationOutcomeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut OperationOutcomeBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut OperationOutcomeBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut OperationOutcomeBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationOutcomeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut OperationOutcomeBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

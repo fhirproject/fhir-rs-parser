@@ -18,6 +18,16 @@ pub struct Claim_CareTeam<'a> {
 }
 
 impl Claim_CareTeam<'_> {
+    pub fn new(value: &Value) -> Claim_CareTeam {
+        Claim_CareTeam {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for responsible
     pub fn _responsible(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_responsible") {
@@ -177,7 +187,7 @@ impl Claim_CareTeam<'_> {
 
 #[derive(Debug)]
 pub struct Claim_CareTeamBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Claim_CareTeamBuilder {
@@ -187,9 +197,64 @@ impl Claim_CareTeamBuilder {
         }
     }
 
+    pub fn with(existing: Claim_CareTeam) -> Claim_CareTeamBuilder {
+        Claim_CareTeamBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(provider: Reference) -> Claim_CareTeamBuilder {
         let mut __value: Value = json!({});
         __value["provider"] = json!(provider.value);
         return Claim_CareTeamBuilder { value: __value };
+    }
+
+    pub fn _responsible<'a>(&'a mut self, val: Element) -> &'a mut Claim_CareTeamBuilder {
+        self.value["_responsible"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Claim_CareTeamBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Claim_CareTeamBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Claim_CareTeamBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Claim_CareTeamBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn qualification<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_CareTeamBuilder {
+        self.value["qualification"] = json!(val.value);
+        return self;
+    }
+
+    pub fn responsible<'a>(&'a mut self, val: bool) -> &'a mut Claim_CareTeamBuilder {
+        self.value["responsible"] = json!(val);
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Claim_CareTeamBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Claim_CareTeamBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
     }
 }

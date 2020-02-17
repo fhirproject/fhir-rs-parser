@@ -270,6 +270,14 @@ fn generate_trait(
     impl_string.push_str("impl ");
     impl_string.push_str(name);
     impl_string.push_str("<'_> {\n");
+    impl_string.push_str("  pub fn new(value: &Value) -> ");
+    impl_string.push_str(name);
+    impl_string.push_str(" {\n    ");
+    impl_string.push_str(name);
+    impl_string.push_str(" { value: Cow::Borrowed(value) }\n  }\n\n");
+
+    impl_string.push_str("  pub fn to_json(&self) -> Value { (*self.value).clone() }\n\n");
+
     impl_string.push_str("  pub fn resource(&self) -> Option<");
     impl_string.push_str(name);
     impl_string.push_str("Enum> {\n");
@@ -343,6 +351,13 @@ fn generate_trait(
     inner_string.push_str("impl ");
     inner_string.push_str(name);
     inner_string.push_str("<'_> {\n");
+    inner_string.push_str("  pub fn new(value: &Value) -> ");
+    inner_string.push_str(name);
+    inner_string.push_str(" {\n    ");
+    inner_string.push_str(name);
+    inner_string.push_str(" { value: Cow::Borrowed(value) }\n  }\n\n");
+
+    inner_string.push_str("  pub fn to_json(&self) -> Value { (*self.value).clone() }\n\n");
 
     validation_string.push_str("  pub fn validate(&self) -> bool {\n");
 
@@ -360,16 +375,27 @@ fn generate_trait(
     builder_constructor_definition.push_str("pub struct ");
     builder_constructor_definition.push_str(name);
     builder_constructor_definition.push_str("Builder {\n");
-    builder_constructor_definition.push_str("  pub value: Value,\n}\n\n");
+    builder_constructor_definition.push_str("  pub(crate) value: Value,\n}\n\n");
     builder_constructor_definition.push_str("impl ");
     builder_constructor_definition.push_str(name);
     builder_constructor_definition.push_str("Builder {\n");
     builder_constructor_definition.push_str("  pub fn build(&self) -> ");
     builder_constructor_definition.push_str(name);
-    builder_constructor_definition.push_str("{\n");
+    builder_constructor_definition.push_str(" {\n");
     builder_constructor_definition.push_str("    ");
     builder_constructor_definition.push_str(name);
     builder_constructor_definition.push_str(" { value: Cow::Owned(self.value.clone()) }\n  }\n\n");
+
+    builder_constructor_definition.push_str("  pub fn with(existing: ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str(") -> ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition.push_str("Builder {\n");
+    builder_constructor_definition.push_str("    ");
+    builder_constructor_definition.push_str(name);
+    builder_constructor_definition
+      .push_str("Builder { value: (*existing.value).clone() }\n  }\n\n");
+
     builder_constructor_definition.push_str("  pub fn new(");
 
     let mut builder_constructor_impl = String::new();
@@ -378,6 +404,8 @@ fn generate_trait(
     builder_constructor_impl.push_str("Builder {\n");
     builder_constructor_impl.push_str("    let mut __value: Value = json!({});\n");
     pending_imports.insert("serde_json::json".to_string());
+
+    let mut builder_body = String::new();
 
     for (property_name, property) in properties {
       let required = required_property_names.contains(&property_name[..]);
@@ -401,9 +429,11 @@ fn generate_trait(
             &mut validation_string,
             &mut builder_constructor_definition,
             &mut builder_constructor_impl,
+            &mut builder_body,
             &property_name,
             &type_definition,
             &description,
+            &name,
             None,
             required,
             false,
@@ -431,9 +461,11 @@ fn generate_trait(
             &mut validation_string,
             &mut builder_constructor_definition,
             &mut builder_constructor_impl,
+            &mut builder_body,
             &property_name,
             &type_definition,
             &description,
+            &name,
             Some(pattern.to_string()),
             required,
             false,
@@ -461,9 +493,11 @@ fn generate_trait(
               &mut validation_string,
               &mut builder_constructor_definition,
               &mut builder_constructor_impl,
+              &mut builder_body,
               &property_name,
               &type_definition,
               &description,
+              &name,
               None,
               required,
               true,
@@ -483,9 +517,11 @@ fn generate_trait(
               &mut validation_string,
               &mut builder_constructor_definition,
               &mut builder_constructor_impl,
+              &mut builder_body,
               &property_name,
               &type_definition,
               &description,
+              &name,
               None,
               required,
               false,
@@ -511,9 +547,11 @@ fn generate_trait(
             &mut validation_string,
             &mut builder_constructor_definition,
             &mut builder_constructor_impl,
+            &mut builder_body,
             &property_name,
             &type_definition,
             &description,
+            &name,
             None,
             required,
             false,
@@ -537,9 +575,11 @@ fn generate_trait(
             &mut validation_string,
             &mut builder_constructor_definition,
             &mut builder_constructor_impl,
+            &mut builder_body,
             &property_name,
             &type_definition,
             &description,
+            &name,
             None,
             required,
             false,
@@ -564,7 +604,9 @@ fn generate_trait(
     inner_string.push_str(&builder_constructor_impl);
     inner_string.push_str("    return ");
     inner_string.push_str(name);
-    inner_string.push_str("Builder { value: __value };\n  }\n}\n\n");
+    inner_string.push_str("Builder { value: __value };\n  }\n\n");
+    inner_string.push_str(&builder_body);
+    inner_string.push_str("\n}\n\n");
   }
 
   for (enum_name, values) in pending_enums {
@@ -632,9 +674,11 @@ fn write_property(
   validation_string: &mut String,
   builder_constructor_definition: &mut String,
   builder_constructor_impl: &mut String,
+  builder_body: &mut String,
   property_name: &str,
   type_definition: &TypeDefinition,
   description: &str,
+  self_name: &str,
   _pattern: Option<String>,
   required: bool,
   array: bool,
@@ -644,24 +688,27 @@ fn write_property(
   let sanitized_name = sanitize_property_name(property_name, &property_replacement_map);
 
   let mut type_name = String::new();
+  let mut non_optional_type_name = String::new();
   {
+    if array {
+      non_optional_type_name.push_str("Vec<")
+    }
+    non_optional_type_name.push_str(&type_definition.name);
+    if array {
+      non_optional_type_name.push_str(">")
+    }
     if !required {
       type_name.push_str("Option<");
     }
-    if array {
-      type_name.push_str("Vec<")
-    }
-    type_name.push_str(&type_definition.name);
-    if array {
-      type_name.push_str(">")
-    }
+    type_name.push_str(&non_optional_type_name);
     if !required {
       type_name.push_str(">");
     }
   }
 
-  // Builder constructor
+  // Builder
   if required {
+    // Builder constructor (required props)
     builder_constructor_definition.push_str(&sanitized_name);
     builder_constructor_definition.push_str(": ");
     builder_constructor_definition.push_str(&type_name);
@@ -696,8 +743,38 @@ fn write_property(
         builder_constructor_impl.push_str(".value);\n");
       }
     }
+  } else {
+    // End Builder constructor
+    // Builder body begin
+    builder_body.push_str("  pub fn ");
+    builder_body.push_str(&sanitized_name);
+    builder_body.push_str("<'a>(&'a mut self, val: ");
+    builder_body.push_str(&non_optional_type_name);
+    builder_body.push_str(") -> &'a mut ");
+    builder_body.push_str(self_name);
+    builder_body.push_str("Builder {\n");
+    builder_body.push_str("    self.value[\"");
+    builder_body.push_str(&property_name);
+    builder_body.push_str("\"] = ");
+    if type_definition.builtin {
+      builder_body.push_str("json!(val);\n");
+    } else if type_definition.string_enum {
+      if array {
+        builder_body
+          .push_str("json!(val.into_iter().map(|e| e.to_string()).collect::<Vec<_>>());\n")
+      } else {
+        builder_body.push_str("json!(val.to_string());\n");
+      }
+    } else {
+      if array {
+        builder_body.push_str("json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());\n")
+      } else {
+        builder_body.push_str("json!(val.value);\n");
+      }
+    }
+    builder_body.push_str("    return self;\n  }\n\n");
   }
-  // End Builder constructor
+  // End Builder
 
   // Validation
   if required {

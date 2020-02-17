@@ -15,6 +15,16 @@ pub struct TestScript_Variable<'a> {
 }
 
 impl TestScript_Variable<'_> {
+    pub fn new(value: &Value) -> TestScript_Variable {
+        TestScript_Variable {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for defaultValue
     pub fn _default_value(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_defaultValue") {
@@ -281,7 +291,7 @@ impl TestScript_Variable<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_VariableBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_VariableBuilder {
@@ -291,8 +301,113 @@ impl TestScript_VariableBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Variable) -> TestScript_VariableBuilder {
+        TestScript_VariableBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_VariableBuilder {
         let mut __value: Value = json!({});
         return TestScript_VariableBuilder { value: __value };
+    }
+
+    pub fn _default_value<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_defaultValue"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _expression<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _header_field<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_headerField"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _hint<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_hint"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_id<'a>(&'a mut self, val: Element) -> &'a mut TestScript_VariableBuilder {
+        self.value["_sourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn default_value<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["defaultValue"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_VariableBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn header_field<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["headerField"] = json!(val);
+        return self;
+    }
+
+    pub fn hint<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["hint"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_VariableBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["path"] = json!(val);
+        return self;
+    }
+
+    pub fn source_id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_VariableBuilder {
+        self.value["sourceId"] = json!(val);
+        return self;
     }
 }

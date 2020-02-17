@@ -19,6 +19,16 @@ pub struct PaymentReconciliation_Detail<'a> {
 }
 
 impl PaymentReconciliation_Detail<'_> {
+    pub fn new(value: &Value) -> PaymentReconciliation_Detail {
+        PaymentReconciliation_Detail {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for date
     pub fn _date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_date") {
@@ -243,7 +253,7 @@ impl PaymentReconciliation_Detail<'_> {
 
 #[derive(Debug)]
 pub struct PaymentReconciliation_DetailBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl PaymentReconciliation_DetailBuilder {
@@ -253,9 +263,105 @@ impl PaymentReconciliation_DetailBuilder {
         }
     }
 
+    pub fn with(existing: PaymentReconciliation_Detail) -> PaymentReconciliation_DetailBuilder {
+        PaymentReconciliation_DetailBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> PaymentReconciliation_DetailBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return PaymentReconciliation_DetailBuilder { value: __value };
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn amount<'a>(&'a mut self, val: Money) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["amount"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn payee<'a>(&'a mut self, val: Reference) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["payee"] = json!(val.value);
+        return self;
+    }
+
+    pub fn predecessor<'a>(
+        &'a mut self,
+        val: Identifier,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["predecessor"] = json!(val.value);
+        return self;
+    }
+
+    pub fn request<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn response<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn responsible<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["responsible"] = json!(val.value);
+        return self;
+    }
+
+    pub fn submitter<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut PaymentReconciliation_DetailBuilder {
+        self.value["submitter"] = json!(val.value);
+        return self;
     }
 }

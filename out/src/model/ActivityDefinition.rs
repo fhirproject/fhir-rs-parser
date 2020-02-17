@@ -33,6 +33,16 @@ pub struct ActivityDefinition<'a> {
 }
 
 impl ActivityDefinition<'_> {
+    pub fn new(value: &Value) -> ActivityDefinition {
+        ActivityDefinition {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for approvalDate
     pub fn _approval_date(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_approvalDate") {
@@ -1316,7 +1326,7 @@ impl ActivityDefinition<'_> {
 
 #[derive(Debug)]
 pub struct ActivityDefinitionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ActivityDefinitionBuilder {
@@ -1326,9 +1336,488 @@ impl ActivityDefinitionBuilder {
         }
     }
 
+    pub fn with(existing: ActivityDefinition) -> ActivityDefinitionBuilder {
+        ActivityDefinitionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ActivityDefinitionBuilder {
         let mut __value: Value = json!({});
         return ActivityDefinitionBuilder { value: __value };
+    }
+
+    pub fn _approval_date<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_approvalDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _copyright<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_copyright"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _do_not_perform<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_doNotPerform"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _experimental<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_experimental"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _intent<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_intent"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _kind<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_kind"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _last_review_date<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_lastReviewDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _priority<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _publisher<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_publisher"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _purpose<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_purpose"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _subtitle<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_subtitle"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _timing_date_time<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_timingDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _usage<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_usage"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _version<'a>(&'a mut self, val: Element) -> &'a mut ActivityDefinitionBuilder {
+        self.value["_version"] = json!(val.value);
+        return self;
+    }
+
+    pub fn approval_date<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["approvalDate"] = json!(val);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["author"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn body_site<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["bodySite"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ActivityDefinitionBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contact<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["contact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn copyright<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["copyright"] = json!(val);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn do_not_perform<'a>(&'a mut self, val: bool) -> &'a mut ActivityDefinitionBuilder {
+        self.value["doNotPerform"] = json!(val);
+        return self;
+    }
+
+    pub fn dosage<'a>(&'a mut self, val: Vec<Dosage>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["dosage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn dynamic_value<'a>(
+        &'a mut self,
+        val: Vec<ActivityDefinition_DynamicValue>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["dynamicValue"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn editor<'a>(&'a mut self, val: Vec<ContactDetail>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["editor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn effective_period<'a>(&'a mut self, val: Period) -> &'a mut ActivityDefinitionBuilder {
+        self.value["effectivePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn endorser<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["endorser"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn experimental<'a>(&'a mut self, val: bool) -> &'a mut ActivityDefinitionBuilder {
+        self.value["experimental"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn intent<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["intent"] = json!(val);
+        return self;
+    }
+
+    pub fn jurisdiction<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["jurisdiction"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn kind<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["kind"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn last_review_date<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["lastReviewDate"] = json!(val);
+        return self;
+    }
+
+    pub fn library<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["library"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut ActivityDefinitionBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ActivityDefinitionBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn observation_requirement<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["observationRequirement"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn observation_result_requirement<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["observationResultRequirement"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn participant<'a>(
+        &'a mut self,
+        val: Vec<ActivityDefinition_Participant>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["participant"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["priority"] = json!(val);
+        return self;
+    }
+
+    pub fn product_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["productCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn product_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["productReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn profile<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["profile"] = json!(val);
+        return self;
+    }
+
+    pub fn publisher<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["publisher"] = json!(val);
+        return self;
+    }
+
+    pub fn purpose<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["purpose"] = json!(val);
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ActivityDefinitionBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn related_artifact<'a>(
+        &'a mut self,
+        val: Vec<RelatedArtifact>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["relatedArtifact"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reviewer<'a>(
+        &'a mut self,
+        val: Vec<ContactDetail>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["reviewer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen_requirement<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["specimenRequirement"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: ActivityDefinitionStatus,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn subject_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["subjectCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subject_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["subjectReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn subtitle<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["subtitle"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ActivityDefinitionBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_age<'a>(&'a mut self, val: Age) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_date_time<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn timing_duration<'a>(&'a mut self, val: Duration) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_period<'a>(&'a mut self, val: Period) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_range<'a>(&'a mut self, val: Range) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn timing_timing<'a>(&'a mut self, val: Timing) -> &'a mut ActivityDefinitionBuilder {
+        self.value["timingTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["title"] = json!(val);
+        return self;
+    }
+
+    pub fn topic<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ActivityDefinitionBuilder {
+        self.value["topic"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn transform<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["transform"] = json!(val);
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["url"] = json!(val);
+        return self;
+    }
+
+    pub fn usage<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["usage"] = json!(val);
+        return self;
+    }
+
+    pub fn use_context<'a>(
+        &'a mut self,
+        val: Vec<UsageContext>,
+    ) -> &'a mut ActivityDefinitionBuilder {
+        self.value["useContext"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn version<'a>(&'a mut self, val: &str) -> &'a mut ActivityDefinitionBuilder {
+        self.value["version"] = json!(val);
+        return self;
     }
 }
 

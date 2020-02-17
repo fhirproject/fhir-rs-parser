@@ -21,6 +21,16 @@ pub struct Contract_Action<'a> {
 }
 
 impl Contract_Action<'_> {
+    pub fn new(value: &Value) -> Contract_Action {
+        Contract_Action {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for contextLinkId
     pub fn _context_link_id(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_contextLinkId") {
@@ -606,13 +616,19 @@ impl Contract_Action<'_> {
 
 #[derive(Debug)]
 pub struct Contract_ActionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_ActionBuilder {
     pub fn build(&self) -> Contract_Action {
         Contract_Action {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: Contract_Action) -> Contract_ActionBuilder {
+        Contract_ActionBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -626,5 +642,196 @@ impl Contract_ActionBuilder {
         __value["status"] = json!(status.value);
         __value["type"] = json!(fhir_type.value);
         return Contract_ActionBuilder { value: __value };
+    }
+
+    pub fn _context_link_id<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_ActionBuilder {
+        self.value["_contextLinkId"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _do_not_perform<'a>(&'a mut self, val: Element) -> &'a mut Contract_ActionBuilder {
+        self.value["_doNotPerform"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _link_id<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_ActionBuilder {
+        self.value["_linkId"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(&'a mut self, val: Element) -> &'a mut Contract_ActionBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _performer_link_id<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["_performerLinkId"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _reason<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_ActionBuilder {
+        self.value["_reason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _reason_link_id<'a>(&'a mut self, val: Vec<Element>) -> &'a mut Contract_ActionBuilder {
+        self.value["_reasonLinkId"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _requester_link_id<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["_requesterLinkId"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _security_label_number<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["_securityLabelNumber"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: Reference) -> &'a mut Contract_ActionBuilder {
+        self.value["context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn context_link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["contextLinkId"] = json!(val);
+        return self;
+    }
+
+    pub fn do_not_perform<'a>(&'a mut self, val: bool) -> &'a mut Contract_ActionBuilder {
+        self.value["doNotPerform"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_ActionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_ActionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["linkId"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut Contract_ActionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut Contract_ActionBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut Contract_ActionBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn occurrence_timing<'a>(&'a mut self, val: Timing) -> &'a mut Contract_ActionBuilder {
+        self.value["occurrenceTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Reference) -> &'a mut Contract_ActionBuilder {
+        self.value["performer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer_link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["performerLinkId"] = json!(val);
+        return self;
+    }
+
+    pub fn performer_role<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["performerRole"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer_type<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["performerType"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["reason"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["reasonLinkId"] = json!(val);
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requester<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Contract_ActionBuilder {
+        self.value["requester"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requester_link_id<'a>(&'a mut self, val: Vec<&str>) -> &'a mut Contract_ActionBuilder {
+        self.value["requesterLinkId"] = json!(val);
+        return self;
+    }
+
+    pub fn security_label_number<'a>(
+        &'a mut self,
+        val: Vec<u64>,
+    ) -> &'a mut Contract_ActionBuilder {
+        self.value["securityLabelNumber"] = json!(val);
+        return self;
+    }
+
+    pub fn subject<'a>(&'a mut self, val: Vec<Contract_Subject>) -> &'a mut Contract_ActionBuilder {
+        self.value["subject"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

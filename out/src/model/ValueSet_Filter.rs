@@ -17,6 +17,16 @@ pub struct ValueSet_Filter<'a> {
 }
 
 impl ValueSet_Filter<'_> {
+    pub fn new(value: &Value) -> ValueSet_Filter {
+        ValueSet_Filter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for op
     pub fn _op(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_op") {
@@ -163,7 +173,7 @@ impl ValueSet_Filter<'_> {
 
 #[derive(Debug)]
 pub struct ValueSet_FilterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ValueSet_FilterBuilder {
@@ -173,9 +183,64 @@ impl ValueSet_FilterBuilder {
         }
     }
 
+    pub fn with(existing: ValueSet_Filter) -> ValueSet_FilterBuilder {
+        ValueSet_FilterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ValueSet_FilterBuilder {
         let mut __value: Value = json!({});
         return ValueSet_FilterBuilder { value: __value };
+    }
+
+    pub fn _op<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_FilterBuilder {
+        self.value["_op"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _property<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_FilterBuilder {
+        self.value["_property"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut ValueSet_FilterBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ValueSet_FilterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_FilterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ValueSet_FilterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn op<'a>(&'a mut self, val: ValueSet_FilterOp) -> &'a mut ValueSet_FilterBuilder {
+        self.value["op"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn property<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_FilterBuilder {
+        self.value["property"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut ValueSet_FilterBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }
 

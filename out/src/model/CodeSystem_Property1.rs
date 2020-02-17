@@ -17,6 +17,16 @@ pub struct CodeSystem_Property1<'a> {
 }
 
 impl CodeSystem_Property1<'_> {
+    pub fn new(value: &Value) -> CodeSystem_Property1 {
+        CodeSystem_Property1 {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -269,7 +279,7 @@ impl CodeSystem_Property1<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystem_Property1Builder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystem_Property1Builder {
@@ -279,8 +289,108 @@ impl CodeSystem_Property1Builder {
         }
     }
 
+    pub fn with(existing: CodeSystem_Property1) -> CodeSystem_Property1Builder {
+        CodeSystem_Property1Builder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystem_Property1Builder {
         let mut __value: Value = json!({});
         return CodeSystem_Property1Builder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_code<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_date_time<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_decimal<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueDecimal"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_integer<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueInteger"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_string<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_Property1Builder {
+        self.value["_valueString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_Property1Builder {
+        self.value["code"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut CodeSystem_Property1Builder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_Property1Builder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_Property1Builder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_code<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueCode"] = json!(val);
+        return self;
+    }
+
+    pub fn value_coding<'a>(&'a mut self, val: Coding) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_date_time<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn value_decimal<'a>(&'a mut self, val: f64) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueDecimal"] = json!(val);
+        return self;
+    }
+
+    pub fn value_integer<'a>(&'a mut self, val: f64) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueInteger"] = json!(val);
+        return self;
+    }
+
+    pub fn value_string<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_Property1Builder {
+        self.value["valueString"] = json!(val);
+        return self;
     }
 }

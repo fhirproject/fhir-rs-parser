@@ -17,6 +17,16 @@ pub struct OperationDefinition_Parameter<'a> {
 }
 
 impl OperationDefinition_Parameter<'_> {
+    pub fn new(value: &Value) -> OperationDefinition_Parameter {
+        OperationDefinition_Parameter {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for documentation
     pub fn _documentation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_documentation") {
@@ -333,7 +343,7 @@ impl OperationDefinition_Parameter<'_> {
 
 #[derive(Debug)]
 pub struct OperationDefinition_ParameterBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationDefinition_ParameterBuilder {
@@ -343,9 +353,154 @@ impl OperationDefinition_ParameterBuilder {
         }
     }
 
+    pub fn with(existing: OperationDefinition_Parameter) -> OperationDefinition_ParameterBuilder {
+        OperationDefinition_ParameterBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OperationDefinition_ParameterBuilder {
         let mut __value: Value = json!({});
         return OperationDefinition_ParameterBuilder { value: __value };
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _max<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_max"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _min<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_min"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _search_type<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_searchType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _type<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn binding<'a>(
+        &'a mut self,
+        val: OperationDefinition_Binding,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["binding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn max<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["max"] = json!(val);
+        return self;
+    }
+
+    pub fn min<'a>(&'a mut self, val: i64) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["min"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn part<'a>(
+        &'a mut self,
+        val: Vec<OperationDefinition_Parameter>,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["part"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn referenced_from<'a>(
+        &'a mut self,
+        val: Vec<OperationDefinition_ReferencedFrom>,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["referencedFrom"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn search_type<'a>(
+        &'a mut self,
+        val: OperationDefinition_ParameterSearchType,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["searchType"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn target_profile<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["targetProfile"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["type"] = json!(val);
+        return self;
+    }
+
+    pub fn fhir_use<'a>(
+        &'a mut self,
+        val: OperationDefinition_ParameterUse,
+    ) -> &'a mut OperationDefinition_ParameterBuilder {
+        self.value["use"] = json!(val.to_string());
+        return self;
     }
 }
 

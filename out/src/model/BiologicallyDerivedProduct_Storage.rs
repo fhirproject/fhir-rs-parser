@@ -17,6 +17,16 @@ pub struct BiologicallyDerivedProduct_Storage<'a> {
 }
 
 impl BiologicallyDerivedProduct_Storage<'_> {
+    pub fn new(value: &Value) -> BiologicallyDerivedProduct_Storage {
+        BiologicallyDerivedProduct_Storage {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -173,7 +183,7 @@ impl BiologicallyDerivedProduct_Storage<'_> {
 
 #[derive(Debug)]
 pub struct BiologicallyDerivedProduct_StorageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BiologicallyDerivedProduct_StorageBuilder {
@@ -183,9 +193,95 @@ impl BiologicallyDerivedProduct_StorageBuilder {
         }
     }
 
+    pub fn with(
+        existing: BiologicallyDerivedProduct_Storage,
+    ) -> BiologicallyDerivedProduct_StorageBuilder {
+        BiologicallyDerivedProduct_StorageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BiologicallyDerivedProduct_StorageBuilder {
         let mut __value: Value = json!({});
         return BiologicallyDerivedProduct_StorageBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _scale<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["_scale"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _temperature<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["_temperature"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn duration<'a>(
+        &'a mut self,
+        val: Period,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn scale<'a>(
+        &'a mut self,
+        val: BiologicallyDerivedProduct_StorageScale,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["scale"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn temperature<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut BiologicallyDerivedProduct_StorageBuilder {
+        self.value["temperature"] = json!(val);
+        return self;
     }
 }
 

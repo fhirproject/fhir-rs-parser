@@ -15,6 +15,16 @@ pub struct OperationDefinition_ReferencedFrom<'a> {
 }
 
 impl OperationDefinition_ReferencedFrom<'_> {
+    pub fn new(value: &Value) -> OperationDefinition_ReferencedFrom {
+        OperationDefinition_ReferencedFrom {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for source
     pub fn _source(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_source") {
@@ -134,7 +144,7 @@ impl OperationDefinition_ReferencedFrom<'_> {
 
 #[derive(Debug)]
 pub struct OperationDefinition_ReferencedFromBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl OperationDefinition_ReferencedFromBuilder {
@@ -144,8 +154,70 @@ impl OperationDefinition_ReferencedFromBuilder {
         }
     }
 
+    pub fn with(
+        existing: OperationDefinition_ReferencedFrom,
+    ) -> OperationDefinition_ReferencedFromBuilder {
+        OperationDefinition_ReferencedFromBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> OperationDefinition_ReferencedFromBuilder {
         let mut __value: Value = json!({});
         return OperationDefinition_ReferencedFromBuilder { value: __value };
+    }
+
+    pub fn _source<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["_source"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _source_id<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["_sourceId"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn source<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["source"] = json!(val);
+        return self;
+    }
+
+    pub fn source_id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut OperationDefinition_ReferencedFromBuilder {
+        self.value["sourceId"] = json!(val);
+        return self;
     }
 }

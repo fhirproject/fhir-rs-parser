@@ -17,6 +17,16 @@ pub struct AllergyIntolerance_Reaction<'a> {
 }
 
 impl AllergyIntolerance_Reaction<'_> {
+    pub fn new(value: &Value) -> AllergyIntolerance_Reaction {
+        AllergyIntolerance_Reaction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -241,13 +251,19 @@ impl AllergyIntolerance_Reaction<'_> {
 
 #[derive(Debug)]
 pub struct AllergyIntolerance_ReactionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AllergyIntolerance_ReactionBuilder {
     pub fn build(&self) -> AllergyIntolerance_Reaction {
         AllergyIntolerance_Reaction {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: AllergyIntolerance_Reaction) -> AllergyIntolerance_ReactionBuilder {
+        AllergyIntolerance_ReactionBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -258,6 +274,88 @@ impl AllergyIntolerance_ReactionBuilder {
             .map(|e| e.value)
             .collect::<Vec<_>>());
         return AllergyIntolerance_ReactionBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _onset<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["_onset"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _severity<'a>(&'a mut self, val: Element) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["_severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn exposure_route<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["exposureRoute"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(
+        &'a mut self,
+        val: Vec<Annotation>,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn onset<'a>(&'a mut self, val: &str) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["onset"] = json!(val);
+        return self;
+    }
+
+    pub fn severity<'a>(
+        &'a mut self,
+        val: AllergyIntolerance_ReactionSeverity,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["severity"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn substance<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut AllergyIntolerance_ReactionBuilder {
+        self.value["substance"] = json!(val.value);
+        return self;
     }
 }
 

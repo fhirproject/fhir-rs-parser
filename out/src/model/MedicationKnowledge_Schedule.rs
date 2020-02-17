@@ -14,6 +14,16 @@ pub struct MedicationKnowledge_Schedule<'a> {
 }
 
 impl MedicationKnowledge_Schedule<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_Schedule {
+        MedicationKnowledge_Schedule {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -93,7 +103,7 @@ impl MedicationKnowledge_Schedule<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_ScheduleBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_ScheduleBuilder {
@@ -103,9 +113,37 @@ impl MedicationKnowledge_ScheduleBuilder {
         }
     }
 
+    pub fn with(existing: MedicationKnowledge_Schedule) -> MedicationKnowledge_ScheduleBuilder {
+        MedicationKnowledge_ScheduleBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(schedule: CodeableConcept) -> MedicationKnowledge_ScheduleBuilder {
         let mut __value: Value = json!({});
         __value["schedule"] = json!(schedule.value);
         return MedicationKnowledge_ScheduleBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_ScheduleBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicationKnowledge_ScheduleBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_ScheduleBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

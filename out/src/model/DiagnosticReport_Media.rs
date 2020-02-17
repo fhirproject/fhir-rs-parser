@@ -19,6 +19,16 @@ pub struct DiagnosticReport_Media<'a> {
 }
 
 impl DiagnosticReport_Media<'_> {
+    pub fn new(value: &Value) -> DiagnosticReport_Media {
+        DiagnosticReport_Media {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for comment
     pub fn _comment(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_comment") {
@@ -124,7 +134,7 @@ impl DiagnosticReport_Media<'_> {
 
 #[derive(Debug)]
 pub struct DiagnosticReport_MediaBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DiagnosticReport_MediaBuilder {
@@ -134,9 +144,47 @@ impl DiagnosticReport_MediaBuilder {
         }
     }
 
+    pub fn with(existing: DiagnosticReport_Media) -> DiagnosticReport_MediaBuilder {
+        DiagnosticReport_MediaBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(link: Reference) -> DiagnosticReport_MediaBuilder {
         let mut __value: Value = json!({});
         __value["link"] = json!(link.value);
         return DiagnosticReport_MediaBuilder { value: __value };
+    }
+
+    pub fn _comment<'a>(&'a mut self, val: Element) -> &'a mut DiagnosticReport_MediaBuilder {
+        self.value["_comment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn comment<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReport_MediaBuilder {
+        self.value["comment"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DiagnosticReport_MediaBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DiagnosticReport_MediaBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DiagnosticReport_MediaBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

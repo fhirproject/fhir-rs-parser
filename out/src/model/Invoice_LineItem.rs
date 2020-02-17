@@ -18,6 +18,16 @@ pub struct Invoice_LineItem<'a> {
 }
 
 impl Invoice_LineItem<'_> {
+    pub fn new(value: &Value) -> Invoice_LineItem {
+        Invoice_LineItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for sequence
     pub fn _sequence(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_sequence") {
@@ -169,7 +179,7 @@ impl Invoice_LineItem<'_> {
 
 #[derive(Debug)]
 pub struct Invoice_LineItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Invoice_LineItemBuilder {
@@ -179,8 +189,67 @@ impl Invoice_LineItemBuilder {
         }
     }
 
+    pub fn with(existing: Invoice_LineItem) -> Invoice_LineItemBuilder {
+        Invoice_LineItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Invoice_LineItemBuilder {
         let mut __value: Value = json!({});
         return Invoice_LineItemBuilder { value: __value };
+    }
+
+    pub fn _sequence<'a>(&'a mut self, val: Element) -> &'a mut Invoice_LineItemBuilder {
+        self.value["_sequence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn charge_item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Invoice_LineItemBuilder {
+        self.value["chargeItemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn charge_item_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Invoice_LineItemBuilder {
+        self.value["chargeItemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Invoice_LineItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Invoice_LineItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Invoice_LineItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn price_component<'a>(
+        &'a mut self,
+        val: Vec<Invoice_PriceComponent>,
+    ) -> &'a mut Invoice_LineItemBuilder {
+        self.value["priceComponent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sequence<'a>(&'a mut self, val: i64) -> &'a mut Invoice_LineItemBuilder {
+        self.value["sequence"] = json!(val);
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Invoice_Participant<'a> {
 }
 
 impl Invoice_Participant<'_> {
+    pub fn new(value: &Value) -> Invoice_Participant {
+        Invoice_Participant {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The device, practitioner, etc. who performed or participated in the service.
     pub fn actor(&self) -> Reference {
         Reference {
@@ -112,7 +122,7 @@ impl Invoice_Participant<'_> {
 
 #[derive(Debug)]
 pub struct Invoice_ParticipantBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Invoice_ParticipantBuilder {
@@ -122,9 +132,39 @@ impl Invoice_ParticipantBuilder {
         }
     }
 
+    pub fn with(existing: Invoice_Participant) -> Invoice_ParticipantBuilder {
+        Invoice_ParticipantBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(actor: Reference) -> Invoice_ParticipantBuilder {
         let mut __value: Value = json!({});
         __value["actor"] = json!(actor.value);
         return Invoice_ParticipantBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Invoice_ParticipantBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Invoice_ParticipantBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Invoice_ParticipantBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Invoice_ParticipantBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
     }
 }

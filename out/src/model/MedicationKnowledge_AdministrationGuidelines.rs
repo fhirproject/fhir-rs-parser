@@ -17,6 +17,16 @@ pub struct MedicationKnowledge_AdministrationGuidelines<'a> {
 }
 
 impl MedicationKnowledge_AdministrationGuidelines<'_> {
+    pub fn new(value: &Value) -> MedicationKnowledge_AdministrationGuidelines {
+        MedicationKnowledge_AdministrationGuidelines {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Dosage for the medication for the specific guidelines.
     pub fn dosage(&self) -> Option<Vec<MedicationKnowledge_Dosage>> {
         if let Some(Value::Array(val)) = self.value.get("dosage") {
@@ -157,7 +167,7 @@ impl MedicationKnowledge_AdministrationGuidelines<'_> {
 
 #[derive(Debug)]
 pub struct MedicationKnowledge_AdministrationGuidelinesBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicationKnowledge_AdministrationGuidelinesBuilder {
@@ -167,8 +177,74 @@ impl MedicationKnowledge_AdministrationGuidelinesBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicationKnowledge_AdministrationGuidelines,
+    ) -> MedicationKnowledge_AdministrationGuidelinesBuilder {
+        MedicationKnowledge_AdministrationGuidelinesBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicationKnowledge_AdministrationGuidelinesBuilder {
         let mut __value: Value = json!({});
         return MedicationKnowledge_AdministrationGuidelinesBuilder { value: __value };
+    }
+
+    pub fn dosage<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_Dosage>,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["dosage"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn indication_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["indicationCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn indication_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["indicationReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient_characteristics<'a>(
+        &'a mut self,
+        val: Vec<MedicationKnowledge_PatientCharacteristics>,
+    ) -> &'a mut MedicationKnowledge_AdministrationGuidelinesBuilder {
+        self.value["patientCharacteristics"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

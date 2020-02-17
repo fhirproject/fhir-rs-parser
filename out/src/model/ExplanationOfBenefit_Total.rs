@@ -17,6 +17,16 @@ pub struct ExplanationOfBenefit_Total<'a> {
 }
 
 impl ExplanationOfBenefit_Total<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit_Total {
+        ExplanationOfBenefit_Total {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Monetary total amount associated with the category.
     pub fn amount(&self) -> Money {
         Money {
@@ -110,7 +120,7 @@ impl ExplanationOfBenefit_Total<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefit_TotalBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefit_TotalBuilder {
@@ -120,10 +130,38 @@ impl ExplanationOfBenefit_TotalBuilder {
         }
     }
 
+    pub fn with(existing: ExplanationOfBenefit_Total) -> ExplanationOfBenefit_TotalBuilder {
+        ExplanationOfBenefit_TotalBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(amount: Money, category: CodeableConcept) -> ExplanationOfBenefit_TotalBuilder {
         let mut __value: Value = json!({});
         __value["amount"] = json!(amount.value);
         __value["category"] = json!(category.value);
         return ExplanationOfBenefit_TotalBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_TotalBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefit_TotalBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefit_TotalBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

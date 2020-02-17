@@ -20,6 +20,16 @@ pub struct MedicinalProductUndesirableEffect<'a> {
 }
 
 impl MedicinalProductUndesirableEffect<'_> {
+    pub fn new(value: &Value) -> MedicinalProductUndesirableEffect {
+        MedicinalProductUndesirableEffect {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for implicitRules
     pub fn _implicit_rules(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_implicitRules") {
@@ -282,7 +292,7 @@ impl MedicinalProductUndesirableEffect<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductUndesirableEffectBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductUndesirableEffectBuilder {
@@ -292,8 +302,131 @@ impl MedicinalProductUndesirableEffectBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductUndesirableEffect,
+    ) -> MedicinalProductUndesirableEffectBuilder {
+        MedicinalProductUndesirableEffectBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> MedicinalProductUndesirableEffectBuilder {
         let mut __value: Value = json!({});
         return MedicinalProductUndesirableEffectBuilder { value: __value };
+    }
+
+    pub fn _implicit_rules<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn classification<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["classification"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn frequency_of_occurrence<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["frequencyOfOccurrence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn population<'a>(
+        &'a mut self,
+        val: Vec<Population>,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["population"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["subject"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn symptom_condition_effect<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["symptomConditionEffect"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(
+        &'a mut self,
+        val: Narrative,
+    ) -> &'a mut MedicinalProductUndesirableEffectBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

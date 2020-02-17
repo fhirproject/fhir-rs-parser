@@ -15,6 +15,16 @@ pub struct TestScript_Link<'a> {
 }
 
 impl TestScript_Link<'_> {
+    pub fn new(value: &Value) -> TestScript_Link {
+        TestScript_Link {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -132,7 +142,7 @@ impl TestScript_Link<'_> {
 
 #[derive(Debug)]
 pub struct TestScript_LinkBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestScript_LinkBuilder {
@@ -142,8 +152,53 @@ impl TestScript_LinkBuilder {
         }
     }
 
+    pub fn with(existing: TestScript_Link) -> TestScript_LinkBuilder {
+        TestScript_LinkBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> TestScript_LinkBuilder {
         let mut __value: Value = json!({});
         return TestScript_LinkBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut TestScript_LinkBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _url<'a>(&'a mut self, val: Element) -> &'a mut TestScript_LinkBuilder {
+        self.value["_url"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut TestScript_LinkBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestScript_LinkBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestScript_LinkBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestScript_LinkBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn url<'a>(&'a mut self, val: &str) -> &'a mut TestScript_LinkBuilder {
+        self.value["url"] = json!(val);
+        return self;
     }
 }

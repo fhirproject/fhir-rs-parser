@@ -25,6 +25,16 @@ pub struct AuditEvent<'a> {
 }
 
 impl AuditEvent<'_> {
+    pub fn new(value: &Value) -> AuditEvent {
+        AuditEvent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for action
     pub fn _action(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_action") {
@@ -417,13 +427,19 @@ impl AuditEvent<'_> {
 
 #[derive(Debug)]
 pub struct AuditEventBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AuditEventBuilder {
     pub fn build(&self) -> AuditEvent {
         AuditEvent {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: AuditEvent) -> AuditEventBuilder {
+        AuditEventBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -437,6 +453,120 @@ impl AuditEventBuilder {
         __value["source"] = json!(source.value);
         __value["type"] = json!(fhir_type.value);
         return AuditEventBuilder { value: __value };
+    }
+
+    pub fn _action<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_action"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _outcome<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _outcome_desc<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_outcomeDesc"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recorded<'a>(&'a mut self, val: Element) -> &'a mut AuditEventBuilder {
+        self.value["_recorded"] = json!(val.value);
+        return self;
+    }
+
+    pub fn action<'a>(&'a mut self, val: AuditEventAction) -> &'a mut AuditEventBuilder {
+        self.value["action"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut AuditEventBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn entity<'a>(&'a mut self, val: Vec<AuditEvent_Entity>) -> &'a mut AuditEventBuilder {
+        self.value["entity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEventBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AuditEventBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut AuditEventBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AuditEventBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut AuditEventBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AuditEventBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: AuditEventOutcome) -> &'a mut AuditEventBuilder {
+        self.value["outcome"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn outcome_desc<'a>(&'a mut self, val: &str) -> &'a mut AuditEventBuilder {
+        self.value["outcomeDesc"] = json!(val);
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut AuditEventBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn purpose_of_event<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut AuditEventBuilder {
+        self.value["purposeOfEvent"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn recorded<'a>(&'a mut self, val: &str) -> &'a mut AuditEventBuilder {
+        self.value["recorded"] = json!(val);
+        return self;
+    }
+
+    pub fn subtype<'a>(&'a mut self, val: Vec<Coding>) -> &'a mut AuditEventBuilder {
+        self.value["subtype"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut AuditEventBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

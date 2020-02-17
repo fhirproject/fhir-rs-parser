@@ -15,6 +15,16 @@ pub struct Ratio<'a> {
 }
 
 impl Ratio<'_> {
+    pub fn new(value: &Value) -> Ratio {
+        Ratio {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// The value of the denominator.
     pub fn denominator(&self) -> Option<Quantity> {
         if let Some(val) = self.value.get("denominator") {
@@ -85,7 +95,7 @@ impl Ratio<'_> {
 
 #[derive(Debug)]
 pub struct RatioBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl RatioBuilder {
@@ -95,8 +105,34 @@ impl RatioBuilder {
         }
     }
 
+    pub fn with(existing: Ratio) -> RatioBuilder {
+        RatioBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> RatioBuilder {
         let mut __value: Value = json!({});
         return RatioBuilder { value: __value };
+    }
+
+    pub fn denominator<'a>(&'a mut self, val: Quantity) -> &'a mut RatioBuilder {
+        self.value["denominator"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut RatioBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut RatioBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn numerator<'a>(&'a mut self, val: Quantity) -> &'a mut RatioBuilder {
+        self.value["numerator"] = json!(val.value);
+        return self;
     }
 }

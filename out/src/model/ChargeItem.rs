@@ -30,6 +30,16 @@ pub struct ChargeItem<'a> {
 }
 
 impl ChargeItem<'_> {
+    pub fn new(value: &Value) -> ChargeItem {
+        ChargeItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for definitionUri
     pub fn _definition_uri(&self) -> Option<Vec<Element>> {
         if let Some(Value::Array(val)) = self.value.get("_definitionUri") {
@@ -740,7 +750,7 @@ impl ChargeItem<'_> {
 
 #[derive(Debug)]
 pub struct ChargeItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ChargeItemBuilder {
@@ -750,11 +760,243 @@ impl ChargeItemBuilder {
         }
     }
 
+    pub fn with(existing: ChargeItem) -> ChargeItemBuilder {
+        ChargeItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept, subject: Reference) -> ChargeItemBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         __value["subject"] = json!(subject.value);
         return ChargeItemBuilder { value: __value };
+    }
+
+    pub fn _definition_uri<'a>(&'a mut self, val: Vec<Element>) -> &'a mut ChargeItemBuilder {
+        self.value["_definitionUri"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _entered_date<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_enteredDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _factor_override<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_factorOverride"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _occurrence_date_time<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_occurrenceDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _override_reason<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_overrideReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ChargeItemBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn account<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ChargeItemBuilder {
+        self.value["account"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn bodysite<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ChargeItemBuilder {
+        self.value["bodysite"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ChargeItemBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn context<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["context"] = json!(val.value);
+        return self;
+    }
+
+    pub fn cost_center<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["costCenter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn definition_canonical<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ChargeItemBuilder {
+        self.value["definitionCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn definition_uri<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ChargeItemBuilder {
+        self.value["definitionUri"] = json!(val);
+        return self;
+    }
+
+    pub fn entered_date<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["enteredDate"] = json!(val);
+        return self;
+    }
+
+    pub fn enterer<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["enterer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ChargeItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn factor_override<'a>(&'a mut self, val: f64) -> &'a mut ChargeItemBuilder {
+        self.value["factorOverride"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ChargeItemBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ChargeItemBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ChargeItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut ChargeItemBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn occurrence_date_time<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["occurrenceDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn occurrence_period<'a>(&'a mut self, val: Period) -> &'a mut ChargeItemBuilder {
+        self.value["occurrencePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn occurrence_timing<'a>(&'a mut self, val: Timing) -> &'a mut ChargeItemBuilder {
+        self.value["occurrenceTiming"] = json!(val.value);
+        return self;
+    }
+
+    pub fn override_reason<'a>(&'a mut self, val: &str) -> &'a mut ChargeItemBuilder {
+        self.value["overrideReason"] = json!(val);
+        return self;
+    }
+
+    pub fn part_of<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ChargeItemBuilder {
+        self.value["partOf"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performer<'a>(
+        &'a mut self,
+        val: Vec<ChargeItem_Performer>,
+    ) -> &'a mut ChargeItemBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn performing_organization<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["performingOrganization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn price_override<'a>(&'a mut self, val: Money) -> &'a mut ChargeItemBuilder {
+        self.value["priceOverride"] = json!(val.value);
+        return self;
+    }
+
+    pub fn product_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ChargeItemBuilder {
+        self.value["productCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn product_reference<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["productReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut ChargeItemBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut ChargeItemBuilder {
+        self.value["reason"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requesting_organization<'a>(&'a mut self, val: Reference) -> &'a mut ChargeItemBuilder {
+        self.value["requestingOrganization"] = json!(val.value);
+        return self;
+    }
+
+    pub fn service<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ChargeItemBuilder {
+        self.value["service"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ChargeItemStatus) -> &'a mut ChargeItemBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn supporting_information<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut ChargeItemBuilder {
+        self.value["supportingInformation"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ChargeItemBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

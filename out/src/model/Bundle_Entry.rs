@@ -19,6 +19,16 @@ pub struct Bundle_Entry<'a> {
 }
 
 impl Bundle_Entry<'_> {
+    pub fn new(value: &Value) -> Bundle_Entry {
+        Bundle_Entry {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for fullUrl
     pub fn _full_url(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fullUrl") {
@@ -202,7 +212,7 @@ impl Bundle_Entry<'_> {
 
 #[derive(Debug)]
 pub struct Bundle_EntryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Bundle_EntryBuilder {
@@ -212,8 +222,68 @@ impl Bundle_EntryBuilder {
         }
     }
 
+    pub fn with(existing: Bundle_Entry) -> Bundle_EntryBuilder {
+        Bundle_EntryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Bundle_EntryBuilder {
         let mut __value: Value = json!({});
         return Bundle_EntryBuilder { value: __value };
+    }
+
+    pub fn _full_url<'a>(&'a mut self, val: Element) -> &'a mut Bundle_EntryBuilder {
+        self.value["_fullUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Bundle_EntryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn full_url<'a>(&'a mut self, val: &str) -> &'a mut Bundle_EntryBuilder {
+        self.value["fullUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Bundle_EntryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn link<'a>(&'a mut self, val: Vec<Bundle_Link>) -> &'a mut Bundle_EntryBuilder {
+        self.value["link"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Bundle_EntryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn request<'a>(&'a mut self, val: Bundle_Request) -> &'a mut Bundle_EntryBuilder {
+        self.value["request"] = json!(val.value);
+        return self;
+    }
+
+    pub fn resource<'a>(&'a mut self, val: ResourceList) -> &'a mut Bundle_EntryBuilder {
+        self.value["resource"] = json!(val.value);
+        return self;
+    }
+
+    pub fn response<'a>(&'a mut self, val: Bundle_Response) -> &'a mut Bundle_EntryBuilder {
+        self.value["response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn search<'a>(&'a mut self, val: Bundle_Search) -> &'a mut Bundle_EntryBuilder {
+        self.value["search"] = json!(val.value);
+        return self;
     }
 }

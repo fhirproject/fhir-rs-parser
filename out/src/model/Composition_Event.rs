@@ -24,6 +24,16 @@ pub struct Composition_Event<'a> {
 }
 
 impl Composition_Event<'_> {
+    pub fn new(value: &Value) -> Composition_Event {
+        Composition_Event {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// This list of codes represents the main clinical acts, such as a colonoscopy or
     /// an appendectomy, being documented. In some cases, the event is inherent in the
     /// typeCode, such as a "History and Physical Report" in which the procedure being
@@ -152,7 +162,7 @@ impl Composition_Event<'_> {
 
 #[derive(Debug)]
 pub struct Composition_EventBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Composition_EventBuilder {
@@ -162,8 +172,48 @@ impl Composition_EventBuilder {
         }
     }
 
+    pub fn with(existing: Composition_Event) -> Composition_EventBuilder {
+        Composition_EventBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Composition_EventBuilder {
         let mut __value: Value = json!({});
         return Composition_EventBuilder { value: __value };
+    }
+
+    pub fn code<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Composition_EventBuilder {
+        self.value["code"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut Composition_EventBuilder {
+        self.value["detail"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Composition_EventBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Composition_EventBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Composition_EventBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Composition_EventBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
     }
 }

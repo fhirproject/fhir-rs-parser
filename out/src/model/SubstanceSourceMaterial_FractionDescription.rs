@@ -27,6 +27,16 @@ pub struct SubstanceSourceMaterial_FractionDescription<'a> {
 }
 
 impl SubstanceSourceMaterial_FractionDescription<'_> {
+    pub fn new(value: &Value) -> SubstanceSourceMaterial_FractionDescription {
+        SubstanceSourceMaterial_FractionDescription {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for fraction
     pub fn _fraction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_fraction") {
@@ -138,7 +148,7 @@ impl SubstanceSourceMaterial_FractionDescription<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceSourceMaterial_FractionDescriptionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceSourceMaterial_FractionDescriptionBuilder {
@@ -148,8 +158,65 @@ impl SubstanceSourceMaterial_FractionDescriptionBuilder {
         }
     }
 
+    pub fn with(
+        existing: SubstanceSourceMaterial_FractionDescription,
+    ) -> SubstanceSourceMaterial_FractionDescriptionBuilder {
+        SubstanceSourceMaterial_FractionDescriptionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceSourceMaterial_FractionDescriptionBuilder {
         let mut __value: Value = json!({});
         return SubstanceSourceMaterial_FractionDescriptionBuilder { value: __value };
+    }
+
+    pub fn _fraction<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["_fraction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fraction<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["fraction"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn material_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["materialType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceSourceMaterial_FractionDescriptionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

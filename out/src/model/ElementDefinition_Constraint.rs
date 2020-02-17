@@ -14,6 +14,16 @@ pub struct ElementDefinition_Constraint<'a> {
 }
 
 impl ElementDefinition_Constraint<'_> {
+    pub fn new(value: &Value) -> ElementDefinition_Constraint {
+        ElementDefinition_Constraint {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for expression
     pub fn _expression(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_expression") {
@@ -242,7 +252,7 @@ impl ElementDefinition_Constraint<'_> {
 
 #[derive(Debug)]
 pub struct ElementDefinition_ConstraintBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ElementDefinition_ConstraintBuilder {
@@ -252,9 +262,117 @@ impl ElementDefinition_ConstraintBuilder {
         }
     }
 
+    pub fn with(existing: ElementDefinition_Constraint) -> ElementDefinition_ConstraintBuilder {
+        ElementDefinition_ConstraintBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ElementDefinition_ConstraintBuilder {
         let mut __value: Value = json!({});
         return ElementDefinition_ConstraintBuilder { value: __value };
+    }
+
+    pub fn _expression<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_expression"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _human<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_human"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _key<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_key"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _requirements<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_requirements"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _severity<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _xpath<'a>(&'a mut self, val: Element) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["_xpath"] = json!(val.value);
+        return self;
+    }
+
+    pub fn expression<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["expression"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn human<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["human"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn key<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["key"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn requirements<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["requirements"] = json!(val);
+        return self;
+    }
+
+    pub fn severity<'a>(
+        &'a mut self,
+        val: ElementDefinition_ConstraintSeverity,
+    ) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["severity"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn source<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["source"] = json!(val);
+        return self;
+    }
+
+    pub fn xpath<'a>(&'a mut self, val: &str) -> &'a mut ElementDefinition_ConstraintBuilder {
+        self.value["xpath"] = json!(val);
+        return self;
     }
 }
 

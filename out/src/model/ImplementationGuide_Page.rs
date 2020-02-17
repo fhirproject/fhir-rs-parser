@@ -18,6 +18,16 @@ pub struct ImplementationGuide_Page<'a> {
 }
 
 impl ImplementationGuide_Page<'_> {
+    pub fn new(value: &Value) -> ImplementationGuide_Page {
+        ImplementationGuide_Page {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for generation
     pub fn _generation(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_generation") {
@@ -194,7 +204,7 @@ impl ImplementationGuide_Page<'_> {
 
 #[derive(Debug)]
 pub struct ImplementationGuide_PageBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ImplementationGuide_PageBuilder {
@@ -204,9 +214,86 @@ impl ImplementationGuide_PageBuilder {
         }
     }
 
+    pub fn with(existing: ImplementationGuide_Page) -> ImplementationGuide_PageBuilder {
+        ImplementationGuide_PageBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> ImplementationGuide_PageBuilder {
         let mut __value: Value = json!({});
         return ImplementationGuide_PageBuilder { value: __value };
+    }
+
+    pub fn _generation<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["_generation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name_url<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["_nameUrl"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _title<'a>(&'a mut self, val: Element) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["_title"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn generation<'a>(
+        &'a mut self,
+        val: ImplementationGuide_PageGeneration,
+    ) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["generation"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["nameReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn name_url<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["nameUrl"] = json!(val);
+        return self;
+    }
+
+    pub fn page<'a>(
+        &'a mut self,
+        val: Vec<ImplementationGuide_Page>,
+    ) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["page"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn title<'a>(&'a mut self, val: &str) -> &'a mut ImplementationGuide_PageBuilder {
+        self.value["title"] = json!(val);
+        return self;
     }
 }
 

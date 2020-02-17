@@ -16,6 +16,16 @@ pub struct Contract_Subject<'a> {
 }
 
 impl Contract_Subject<'_> {
+    pub fn new(value: &Value) -> Contract_Subject {
+        Contract_Subject {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -122,7 +132,7 @@ impl Contract_Subject<'_> {
 
 #[derive(Debug)]
 pub struct Contract_SubjectBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Contract_SubjectBuilder {
@@ -132,9 +142,39 @@ impl Contract_SubjectBuilder {
         }
     }
 
+    pub fn with(existing: Contract_Subject) -> Contract_SubjectBuilder {
+        Contract_SubjectBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(reference: Vec<Reference>) -> Contract_SubjectBuilder {
         let mut __value: Value = json!({});
         __value["reference"] = json!(reference.into_iter().map(|e| e.value).collect::<Vec<_>>());
         return Contract_SubjectBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Contract_SubjectBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Contract_SubjectBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Contract_SubjectBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Contract_SubjectBuilder {
+        self.value["role"] = json!(val.value);
+        return self;
     }
 }

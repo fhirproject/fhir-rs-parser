@@ -26,6 +26,16 @@ pub struct Consent<'a> {
 }
 
 impl Consent<'_> {
+    pub fn new(value: &Value) -> Consent {
+        Consent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for dateTime
     pub fn _date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_dateTime") {
@@ -470,7 +480,7 @@ impl Consent<'_> {
 
 #[derive(Debug)]
 pub struct ConsentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ConsentBuilder {
@@ -480,11 +490,141 @@ impl ConsentBuilder {
         }
     }
 
+    pub fn with(existing: Consent) -> ConsentBuilder {
+        ConsentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(category: Vec<CodeableConcept>, scope: CodeableConcept) -> ConsentBuilder {
         let mut __value: Value = json!({});
         __value["category"] = json!(category.into_iter().map(|e| e.value).collect::<Vec<_>>());
         __value["scope"] = json!(scope.value);
         return ConsentBuilder { value: __value };
+    }
+
+    pub fn _date_time<'a>(&'a mut self, val: Element) -> &'a mut ConsentBuilder {
+        self.value["_dateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ConsentBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ConsentBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ConsentBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut ConsentBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date_time<'a>(&'a mut self, val: &str) -> &'a mut ConsentBuilder {
+        self.value["dateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConsentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ConsentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut ConsentBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ConsentBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ConsentBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ConsentBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ConsentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn organization<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ConsentBuilder {
+        self.value["organization"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient<'a>(&'a mut self, val: Reference) -> &'a mut ConsentBuilder {
+        self.value["patient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn performer<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut ConsentBuilder {
+        self.value["performer"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn policy<'a>(&'a mut self, val: Vec<Consent_Policy>) -> &'a mut ConsentBuilder {
+        self.value["policy"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn policy_rule<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ConsentBuilder {
+        self.value["policyRule"] = json!(val.value);
+        return self;
+    }
+
+    pub fn provision<'a>(&'a mut self, val: Consent_Provision) -> &'a mut ConsentBuilder {
+        self.value["provision"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source_attachment<'a>(&'a mut self, val: Attachment) -> &'a mut ConsentBuilder {
+        self.value["sourceAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn source_reference<'a>(&'a mut self, val: Reference) -> &'a mut ConsentBuilder {
+        self.value["sourceReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: ConsentStatus) -> &'a mut ConsentBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ConsentBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn verification<'a>(
+        &'a mut self,
+        val: Vec<Consent_Verification>,
+    ) -> &'a mut ConsentBuilder {
+        self.value["verification"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

@@ -17,6 +17,16 @@ pub struct Binary<'a> {
 }
 
 impl Binary<'_> {
+    pub fn new(value: &Value) -> Binary {
+        Binary {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for contentType
     pub fn _content_type(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentType") {
@@ -173,7 +183,7 @@ impl Binary<'_> {
 
 #[derive(Debug)]
 pub struct BinaryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl BinaryBuilder {
@@ -183,8 +193,69 @@ impl BinaryBuilder {
         }
     }
 
+    pub fn with(existing: Binary) -> BinaryBuilder {
+        BinaryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> BinaryBuilder {
         let mut __value: Value = json!({});
         return BinaryBuilder { value: __value };
+    }
+
+    pub fn _content_type<'a>(&'a mut self, val: Element) -> &'a mut BinaryBuilder {
+        self.value["_contentType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _data<'a>(&'a mut self, val: Element) -> &'a mut BinaryBuilder {
+        self.value["_data"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut BinaryBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut BinaryBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_type<'a>(&'a mut self, val: &str) -> &'a mut BinaryBuilder {
+        self.value["contentType"] = json!(val);
+        return self;
+    }
+
+    pub fn data<'a>(&'a mut self, val: &str) -> &'a mut BinaryBuilder {
+        self.value["data"] = json!(val);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut BinaryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut BinaryBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut BinaryBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut BinaryBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn security_context<'a>(&'a mut self, val: Reference) -> &'a mut BinaryBuilder {
+        self.value["securityContext"] = json!(val.value);
+        return self;
     }
 }

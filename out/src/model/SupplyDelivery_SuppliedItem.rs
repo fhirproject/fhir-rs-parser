@@ -16,6 +16,16 @@ pub struct SupplyDelivery_SuppliedItem<'a> {
 }
 
 impl SupplyDelivery_SuppliedItem<'_> {
+    pub fn new(value: &Value) -> SupplyDelivery_SuppliedItem {
+        SupplyDelivery_SuppliedItem {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -134,7 +144,7 @@ impl SupplyDelivery_SuppliedItem<'_> {
 
 #[derive(Debug)]
 pub struct SupplyDelivery_SuppliedItemBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SupplyDelivery_SuppliedItemBuilder {
@@ -144,8 +154,57 @@ impl SupplyDelivery_SuppliedItemBuilder {
         }
     }
 
+    pub fn with(existing: SupplyDelivery_SuppliedItem) -> SupplyDelivery_SuppliedItemBuilder {
+        SupplyDelivery_SuppliedItemBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SupplyDelivery_SuppliedItemBuilder {
         let mut __value: Value = json!({});
         return SupplyDelivery_SuppliedItemBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn item_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["itemCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn item_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["itemReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut SupplyDelivery_SuppliedItemBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
     }
 }

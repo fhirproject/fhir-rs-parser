@@ -18,6 +18,16 @@ pub struct Communication_Payload<'a> {
 }
 
 impl Communication_Payload<'_> {
+    pub fn new(value: &Value) -> Communication_Payload {
+        Communication_Payload {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for contentString
     pub fn _content_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_contentString") {
@@ -144,7 +154,7 @@ impl Communication_Payload<'_> {
 
 #[derive(Debug)]
 pub struct Communication_PayloadBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Communication_PayloadBuilder {
@@ -154,8 +164,62 @@ impl Communication_PayloadBuilder {
         }
     }
 
+    pub fn with(existing: Communication_Payload) -> Communication_PayloadBuilder {
+        Communication_PayloadBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Communication_PayloadBuilder {
         let mut __value: Value = json!({});
         return Communication_PayloadBuilder { value: __value };
+    }
+
+    pub fn _content_string<'a>(&'a mut self, val: Element) -> &'a mut Communication_PayloadBuilder {
+        self.value["_contentString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_attachment<'a>(
+        &'a mut self,
+        val: Attachment,
+    ) -> &'a mut Communication_PayloadBuilder {
+        self.value["contentAttachment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Communication_PayloadBuilder {
+        self.value["contentReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn content_string<'a>(&'a mut self, val: &str) -> &'a mut Communication_PayloadBuilder {
+        self.value["contentString"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Communication_PayloadBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Communication_PayloadBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Communication_PayloadBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

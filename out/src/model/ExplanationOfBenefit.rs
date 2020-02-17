@@ -39,6 +39,16 @@ pub struct ExplanationOfBenefit<'a> {
 }
 
 impl ExplanationOfBenefit<'_> {
+    pub fn new(value: &Value) -> ExplanationOfBenefit {
+        ExplanationOfBenefit {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for created
     pub fn _created(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_created") {
@@ -1000,13 +1010,19 @@ impl ExplanationOfBenefit<'_> {
 
 #[derive(Debug)]
 pub struct ExplanationOfBenefitBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl ExplanationOfBenefitBuilder {
     pub fn build(&self) -> ExplanationOfBenefit {
         ExplanationOfBenefit {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(existing: ExplanationOfBenefit) -> ExplanationOfBenefitBuilder {
+        ExplanationOfBenefitBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -1024,6 +1040,355 @@ impl ExplanationOfBenefitBuilder {
         __value["provider"] = json!(provider.value);
         __value["type"] = json!(fhir_type.value);
         return ExplanationOfBenefitBuilder { value: __value };
+    }
+
+    pub fn _created<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_created"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _disposition<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_disposition"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _outcome<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _pre_auth_ref<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_preAuthRef"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _precedence<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_precedence"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _use<'a>(&'a mut self, val: Element) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["_use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn accident<'a>(
+        &'a mut self,
+        val: ExplanationOfBenefit_Accident,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["accident"] = json!(val.value);
+        return self;
+    }
+
+    pub fn add_item<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_AddItem>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["addItem"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn adjudication<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Adjudication>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["adjudication"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn benefit_balance<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_BenefitBalance>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["benefitBalance"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn benefit_period<'a>(&'a mut self, val: Period) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["benefitPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn billable_period<'a>(&'a mut self, val: Period) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["billablePeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn care_team<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_CareTeam>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["careTeam"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn claim<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["claim"] = json!(val.value);
+        return self;
+    }
+
+    pub fn claim_response<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["claimResponse"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn created<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["created"] = json!(val);
+        return self;
+    }
+
+    pub fn diagnosis<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Diagnosis>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["diagnosis"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn disposition<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["disposition"] = json!(val);
+        return self;
+    }
+
+    pub fn enterer<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["enterer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn facility<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["facility"] = json!(val.value);
+        return self;
+    }
+
+    pub fn form<'a>(&'a mut self, val: Attachment) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["form"] = json!(val.value);
+        return self;
+    }
+
+    pub fn form_code<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["formCode"] = json!(val.value);
+        return self;
+    }
+
+    pub fn funds_reserve<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["fundsReserve"] = json!(val.value);
+        return self;
+    }
+
+    pub fn funds_reserve_requested<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["fundsReserveRequested"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn item<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Item>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["item"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn original_prescription<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["originalPrescription"] = json!(val.value);
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["outcome"] = json!(val);
+        return self;
+    }
+
+    pub fn payee<'a>(
+        &'a mut self,
+        val: ExplanationOfBenefit_Payee,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["payee"] = json!(val.value);
+        return self;
+    }
+
+    pub fn payment<'a>(
+        &'a mut self,
+        val: ExplanationOfBenefit_Payment,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["payment"] = json!(val.value);
+        return self;
+    }
+
+    pub fn pre_auth_ref<'a>(&'a mut self, val: Vec<&str>) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["preAuthRef"] = json!(val);
+        return self;
+    }
+
+    pub fn pre_auth_ref_period<'a>(
+        &'a mut self,
+        val: Vec<Period>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["preAuthRefPeriod"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn precedence<'a>(&'a mut self, val: i64) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["precedence"] = json!(val);
+        return self;
+    }
+
+    pub fn prescription<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["prescription"] = json!(val.value);
+        return self;
+    }
+
+    pub fn priority<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["priority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn procedure<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Procedure>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["procedure"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn process_note<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_ProcessNote>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["processNote"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn referral<'a>(&'a mut self, val: Reference) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["referral"] = json!(val.value);
+        return self;
+    }
+
+    pub fn related<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Related>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["related"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: ExplanationOfBenefitStatus,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn sub_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["subType"] = json!(val.value);
+        return self;
+    }
+
+    pub fn supporting_info<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_SupportingInfo>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["supportingInfo"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
+    }
+
+    pub fn total<'a>(
+        &'a mut self,
+        val: Vec<ExplanationOfBenefit_Total>,
+    ) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["total"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: &str) -> &'a mut ExplanationOfBenefitBuilder {
+        self.value["use"] = json!(val);
+        return self;
     }
 }
 

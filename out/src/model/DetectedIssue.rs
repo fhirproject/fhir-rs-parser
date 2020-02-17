@@ -25,6 +25,16 @@ pub struct DetectedIssue<'a> {
 }
 
 impl DetectedIssue<'_> {
+    pub fn new(value: &Value) -> DetectedIssue {
+        DetectedIssue {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for detail
     pub fn _detail(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_detail") {
@@ -468,7 +478,7 @@ impl DetectedIssue<'_> {
 
 #[derive(Debug)]
 pub struct DetectedIssueBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DetectedIssueBuilder {
@@ -478,9 +488,165 @@ impl DetectedIssueBuilder {
         }
     }
 
+    pub fn with(existing: DetectedIssue) -> DetectedIssueBuilder {
+        DetectedIssueBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DetectedIssueBuilder {
         let mut __value: Value = json!({});
         return DetectedIssueBuilder { value: __value };
+    }
+
+    pub fn _detail<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_detail"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _identified_date_time<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_identifiedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _reference<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_reference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _severity<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut DetectedIssueBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut DetectedIssueBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(&'a mut self, val: CodeableConcept) -> &'a mut DetectedIssueBuilder {
+        self.value["code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut DetectedIssueBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn detail<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["detail"] = json!(val);
+        return self;
+    }
+
+    pub fn evidence<'a>(
+        &'a mut self,
+        val: Vec<DetectedIssue_Evidence>,
+    ) -> &'a mut DetectedIssueBuilder {
+        self.value["evidence"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DetectedIssueBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identified_date_time<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["identifiedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn identified_period<'a>(&'a mut self, val: Period) -> &'a mut DetectedIssueBuilder {
+        self.value["identifiedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut DetectedIssueBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicated<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut DetectedIssueBuilder {
+        self.value["implicated"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut DetectedIssueBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn mitigation<'a>(
+        &'a mut self,
+        val: Vec<DetectedIssue_Mitigation>,
+    ) -> &'a mut DetectedIssueBuilder {
+        self.value["mitigation"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DetectedIssueBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn patient<'a>(&'a mut self, val: Reference) -> &'a mut DetectedIssueBuilder {
+        self.value["patient"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["reference"] = json!(val);
+        return self;
+    }
+
+    pub fn severity<'a>(&'a mut self, val: DetectedIssueSeverity) -> &'a mut DetectedIssueBuilder {
+        self.value["severity"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn status<'a>(&'a mut self, val: &str) -> &'a mut DetectedIssueBuilder {
+        self.value["status"] = json!(val);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut DetectedIssueBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

@@ -15,6 +15,16 @@ pub struct DataRequirement_Sort<'a> {
 }
 
 impl DataRequirement_Sort<'_> {
+    pub fn new(value: &Value) -> DataRequirement_Sort {
+        DataRequirement_Sort {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for direction
     pub fn _direction(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_direction") {
@@ -135,7 +145,7 @@ impl DataRequirement_Sort<'_> {
 
 #[derive(Debug)]
 pub struct DataRequirement_SortBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl DataRequirement_SortBuilder {
@@ -145,9 +155,57 @@ impl DataRequirement_SortBuilder {
         }
     }
 
+    pub fn with(existing: DataRequirement_Sort) -> DataRequirement_SortBuilder {
+        DataRequirement_SortBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> DataRequirement_SortBuilder {
         let mut __value: Value = json!({});
         return DataRequirement_SortBuilder { value: __value };
+    }
+
+    pub fn _direction<'a>(&'a mut self, val: Element) -> &'a mut DataRequirement_SortBuilder {
+        self.value["_direction"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _path<'a>(&'a mut self, val: Element) -> &'a mut DataRequirement_SortBuilder {
+        self.value["_path"] = json!(val.value);
+        return self;
+    }
+
+    pub fn direction<'a>(
+        &'a mut self,
+        val: DataRequirement_SortDirection,
+    ) -> &'a mut DataRequirement_SortBuilder {
+        self.value["direction"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut DataRequirement_SortBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_SortBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut DataRequirement_SortBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn path<'a>(&'a mut self, val: &str) -> &'a mut DataRequirement_SortBuilder {
+        self.value["path"] = json!(val);
+        return self;
     }
 }
 

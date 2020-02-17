@@ -22,6 +22,16 @@ pub struct Group_Characteristic<'a> {
 }
 
 impl Group_Characteristic<'_> {
+    pub fn new(value: &Value) -> Group_Characteristic {
+        Group_Characteristic {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for exclude
     pub fn _exclude(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_exclude") {
@@ -231,7 +241,7 @@ impl Group_Characteristic<'_> {
 
 #[derive(Debug)]
 pub struct Group_CharacteristicBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Group_CharacteristicBuilder {
@@ -241,9 +251,85 @@ impl Group_CharacteristicBuilder {
         }
     }
 
+    pub fn with(existing: Group_Characteristic) -> Group_CharacteristicBuilder {
+        Group_CharacteristicBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> Group_CharacteristicBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return Group_CharacteristicBuilder { value: __value };
+    }
+
+    pub fn _exclude<'a>(&'a mut self, val: Element) -> &'a mut Group_CharacteristicBuilder {
+        self.value["_exclude"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value_boolean<'a>(&'a mut self, val: Element) -> &'a mut Group_CharacteristicBuilder {
+        self.value["_valueBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn exclude<'a>(&'a mut self, val: bool) -> &'a mut Group_CharacteristicBuilder {
+        self.value["exclude"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Group_CharacteristicBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Group_CharacteristicBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Group_CharacteristicBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn period<'a>(&'a mut self, val: Period) -> &'a mut Group_CharacteristicBuilder {
+        self.value["period"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_boolean<'a>(&'a mut self, val: bool) -> &'a mut Group_CharacteristicBuilder {
+        self.value["valueBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn value_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Group_CharacteristicBuilder {
+        self.value["valueCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Group_CharacteristicBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_range<'a>(&'a mut self, val: Range) -> &'a mut Group_CharacteristicBuilder {
+        self.value["valueRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Group_CharacteristicBuilder {
+        self.value["valueReference"] = json!(val.value);
+        return self;
     }
 }

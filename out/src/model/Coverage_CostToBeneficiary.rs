@@ -18,6 +18,16 @@ pub struct Coverage_CostToBeneficiary<'a> {
 }
 
 impl Coverage_CostToBeneficiary<'_> {
+    pub fn new(value: &Value) -> Coverage_CostToBeneficiary {
+        Coverage_CostToBeneficiary {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A suite of codes indicating exceptions or reductions to patient costs and their
     /// effective periods.
     pub fn exception(&self) -> Option<Vec<Coverage_Exception>> {
@@ -152,7 +162,7 @@ impl Coverage_CostToBeneficiary<'_> {
 
 #[derive(Debug)]
 pub struct Coverage_CostToBeneficiaryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Coverage_CostToBeneficiaryBuilder {
@@ -162,8 +172,65 @@ impl Coverage_CostToBeneficiaryBuilder {
         }
     }
 
+    pub fn with(existing: Coverage_CostToBeneficiary) -> Coverage_CostToBeneficiaryBuilder {
+        Coverage_CostToBeneficiaryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Coverage_CostToBeneficiaryBuilder {
         let mut __value: Value = json!({});
         return Coverage_CostToBeneficiaryBuilder { value: __value };
+    }
+
+    pub fn exception<'a>(
+        &'a mut self,
+        val: Vec<Coverage_Exception>,
+    ) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["exception"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_money<'a>(&'a mut self, val: Money) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["valueMoney"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value_quantity<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut Coverage_CostToBeneficiaryBuilder {
+        self.value["valueQuantity"] = json!(val.value);
+        return self;
     }
 }

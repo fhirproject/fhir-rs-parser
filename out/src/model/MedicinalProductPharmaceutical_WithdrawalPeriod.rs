@@ -16,6 +16,16 @@ pub struct MedicinalProductPharmaceutical_WithdrawalPeriod<'a> {
 }
 
 impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPharmaceutical_WithdrawalPeriod {
+        MedicinalProductPharmaceutical_WithdrawalPeriod {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for supportingInformation
     pub fn _supporting_information(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_supportingInformation") {
@@ -130,13 +140,21 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriod<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
     pub fn build(&self) -> MedicinalProductPharmaceutical_WithdrawalPeriod {
         MedicinalProductPharmaceutical_WithdrawalPeriod {
             value: Cow::Owned(self.value.clone()),
+        }
+    }
+
+    pub fn with(
+        existing: MedicinalProductPharmaceutical_WithdrawalPeriod,
+    ) -> MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+            value: (*existing.value).clone(),
         }
     }
 
@@ -148,5 +166,46 @@ impl MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
         __value["tissue"] = json!(tissue.value);
         __value["value"] = json!(value.value);
         return MedicinalProductPharmaceutical_WithdrawalPeriodBuilder { value: __value };
+    }
+
+    pub fn _supporting_information<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        self.value["_supportingInformation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn supporting_information<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceutical_WithdrawalPeriodBuilder {
+        self.value["supportingInformation"] = json!(val);
+        return self;
     }
 }

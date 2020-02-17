@@ -17,6 +17,16 @@ pub struct CodeSystem_Designation<'a> {
 }
 
 impl CodeSystem_Designation<'_> {
+    pub fn new(value: &Value) -> CodeSystem_Designation {
+        CodeSystem_Designation {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for language
     pub fn _language(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_language") {
@@ -149,7 +159,7 @@ impl CodeSystem_Designation<'_> {
 
 #[derive(Debug)]
 pub struct CodeSystem_DesignationBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CodeSystem_DesignationBuilder {
@@ -159,8 +169,61 @@ impl CodeSystem_DesignationBuilder {
         }
     }
 
+    pub fn with(existing: CodeSystem_Designation) -> CodeSystem_DesignationBuilder {
+        CodeSystem_DesignationBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CodeSystem_DesignationBuilder {
         let mut __value: Value = json!({});
         return CodeSystem_DesignationBuilder { value: __value };
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_use<'a>(&'a mut self, val: Coding) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["use"] = json!(val.value);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut CodeSystem_DesignationBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

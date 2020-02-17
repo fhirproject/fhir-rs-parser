@@ -24,6 +24,16 @@ pub struct AdverseEvent<'a> {
 }
 
 impl AdverseEvent<'_> {
+    pub fn new(value: &Value) -> AdverseEvent {
+        AdverseEvent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for actuality
     pub fn _actuality(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_actuality") {
@@ -576,7 +586,7 @@ impl AdverseEvent<'_> {
 
 #[derive(Debug)]
 pub struct AdverseEventBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl AdverseEventBuilder {
@@ -586,10 +596,200 @@ impl AdverseEventBuilder {
         }
     }
 
+    pub fn with(existing: AdverseEvent) -> AdverseEventBuilder {
+        AdverseEventBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(subject: Reference) -> AdverseEventBuilder {
         let mut __value: Value = json!({});
         __value["subject"] = json!(subject.value);
         return AdverseEventBuilder { value: __value };
+    }
+
+    pub fn _actuality<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_actuality"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _detected<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_detected"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _recorded_date<'a>(&'a mut self, val: Element) -> &'a mut AdverseEventBuilder {
+        self.value["_recordedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn actuality<'a>(&'a mut self, val: AdverseEventActuality) -> &'a mut AdverseEventBuilder {
+        self.value["actuality"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn category<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut AdverseEventBuilder {
+        self.value["category"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut AdverseEventBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contributor<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut AdverseEventBuilder {
+        self.value["contributor"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn detected<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["detected"] = json!(val);
+        return self;
+    }
+
+    pub fn encounter<'a>(&'a mut self, val: Reference) -> &'a mut AdverseEventBuilder {
+        self.value["encounter"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AdverseEventBuilder {
+        self.value["event"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut AdverseEventBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Identifier) -> &'a mut AdverseEventBuilder {
+        self.value["identifier"] = json!(val.value);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn location<'a>(&'a mut self, val: Reference) -> &'a mut AdverseEventBuilder {
+        self.value["location"] = json!(val.value);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut AdverseEventBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut AdverseEventBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn outcome<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AdverseEventBuilder {
+        self.value["outcome"] = json!(val.value);
+        return self;
+    }
+
+    pub fn recorded_date<'a>(&'a mut self, val: &str) -> &'a mut AdverseEventBuilder {
+        self.value["recordedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn recorder<'a>(&'a mut self, val: Reference) -> &'a mut AdverseEventBuilder {
+        self.value["recorder"] = json!(val.value);
+        return self;
+    }
+
+    pub fn reference_document<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut AdverseEventBuilder {
+        self.value["referenceDocument"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn resulting_condition<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut AdverseEventBuilder {
+        self.value["resultingCondition"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn seriousness<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AdverseEventBuilder {
+        self.value["seriousness"] = json!(val.value);
+        return self;
+    }
+
+    pub fn severity<'a>(&'a mut self, val: CodeableConcept) -> &'a mut AdverseEventBuilder {
+        self.value["severity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn study<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut AdverseEventBuilder {
+        self.value["study"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn subject_medical_history<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut AdverseEventBuilder {
+        self.value["subjectMedicalHistory"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn suspect_entity<'a>(
+        &'a mut self,
+        val: Vec<AdverseEvent_SuspectEntity>,
+    ) -> &'a mut AdverseEventBuilder {
+        self.value["suspectEntity"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut AdverseEventBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 

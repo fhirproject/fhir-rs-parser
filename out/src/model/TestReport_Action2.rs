@@ -14,6 +14,16 @@ pub struct TestReport_Action2<'a> {
 }
 
 impl TestReport_Action2<'_> {
+    pub fn new(value: &Value) -> TestReport_Action2 {
+        TestReport_Action2 {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -93,7 +103,7 @@ impl TestReport_Action2<'_> {
 
 #[derive(Debug)]
 pub struct TestReport_Action2Builder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl TestReport_Action2Builder {
@@ -103,9 +113,34 @@ impl TestReport_Action2Builder {
         }
     }
 
+    pub fn with(existing: TestReport_Action2) -> TestReport_Action2Builder {
+        TestReport_Action2Builder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(operation: TestReport_Operation) -> TestReport_Action2Builder {
         let mut __value: Value = json!({});
         __value["operation"] = json!(operation.value);
         return TestReport_Action2Builder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut TestReport_Action2Builder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut TestReport_Action2Builder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut TestReport_Action2Builder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

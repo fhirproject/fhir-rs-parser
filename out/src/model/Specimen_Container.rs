@@ -18,6 +18,16 @@ pub struct Specimen_Container<'a> {
 }
 
 impl Specimen_Container<'_> {
+    pub fn new(value: &Value) -> Specimen_Container {
+        Specimen_Container {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for description
     pub fn _description(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_description") {
@@ -210,7 +220,7 @@ impl Specimen_Container<'_> {
 
 #[derive(Debug)]
 pub struct Specimen_ContainerBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Specimen_ContainerBuilder {
@@ -220,8 +230,79 @@ impl Specimen_ContainerBuilder {
         }
     }
 
+    pub fn with(existing: Specimen_Container) -> Specimen_ContainerBuilder {
+        Specimen_ContainerBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Specimen_ContainerBuilder {
         let mut __value: Value = json!({});
         return Specimen_ContainerBuilder { value: __value };
+    }
+
+    pub fn _description<'a>(&'a mut self, val: Element) -> &'a mut Specimen_ContainerBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Specimen_ContainerBuilder {
+        self.value["additiveCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn additive_reference<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Specimen_ContainerBuilder {
+        self.value["additiveReference"] = json!(val.value);
+        return self;
+    }
+
+    pub fn capacity<'a>(&'a mut self, val: Quantity) -> &'a mut Specimen_ContainerBuilder {
+        self.value["capacity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut Specimen_ContainerBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Specimen_ContainerBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Specimen_ContainerBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(&'a mut self, val: Vec<Identifier>) -> &'a mut Specimen_ContainerBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Specimen_ContainerBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn specimen_quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Specimen_ContainerBuilder {
+        self.value["specimenQuantity"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Specimen_ContainerBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

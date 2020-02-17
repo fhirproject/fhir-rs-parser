@@ -26,6 +26,16 @@ pub struct MessageHeader<'a> {
 }
 
 impl MessageHeader<'_> {
+    pub fn new(value: &Value) -> MessageHeader {
+        MessageHeader {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for eventUri
     pub fn _event_uri(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_eventUri") {
@@ -406,7 +416,7 @@ impl MessageHeader<'_> {
 
 #[derive(Debug)]
 pub struct MessageHeaderBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MessageHeaderBuilder {
@@ -416,9 +426,132 @@ impl MessageHeaderBuilder {
         }
     }
 
+    pub fn with(existing: MessageHeader) -> MessageHeaderBuilder {
+        MessageHeaderBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(source: MessageHeader_Source) -> MessageHeaderBuilder {
         let mut __value: Value = json!({});
         __value["source"] = json!(source.value);
         return MessageHeaderBuilder { value: __value };
+    }
+
+    pub fn _event_uri<'a>(&'a mut self, val: Element) -> &'a mut MessageHeaderBuilder {
+        self.value["_eventUri"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut MessageHeaderBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut MessageHeaderBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn author<'a>(&'a mut self, val: Reference) -> &'a mut MessageHeaderBuilder {
+        self.value["author"] = json!(val.value);
+        return self;
+    }
+
+    pub fn contained<'a>(&'a mut self, val: Vec<ResourceList>) -> &'a mut MessageHeaderBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn definition<'a>(&'a mut self, val: &str) -> &'a mut MessageHeaderBuilder {
+        self.value["definition"] = json!(val);
+        return self;
+    }
+
+    pub fn destination<'a>(
+        &'a mut self,
+        val: Vec<MessageHeader_Destination>,
+    ) -> &'a mut MessageHeaderBuilder {
+        self.value["destination"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn enterer<'a>(&'a mut self, val: Reference) -> &'a mut MessageHeaderBuilder {
+        self.value["enterer"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event_coding<'a>(&'a mut self, val: Coding) -> &'a mut MessageHeaderBuilder {
+        self.value["eventCoding"] = json!(val.value);
+        return self;
+    }
+
+    pub fn event_uri<'a>(&'a mut self, val: &str) -> &'a mut MessageHeaderBuilder {
+        self.value["eventUri"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut MessageHeaderBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn focus<'a>(&'a mut self, val: Vec<Reference>) -> &'a mut MessageHeaderBuilder {
+        self.value["focus"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut MessageHeaderBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut MessageHeaderBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut MessageHeaderBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut MessageHeaderBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MessageHeaderBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason<'a>(&'a mut self, val: CodeableConcept) -> &'a mut MessageHeaderBuilder {
+        self.value["reason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn response<'a>(&'a mut self, val: MessageHeader_Response) -> &'a mut MessageHeaderBuilder {
+        self.value["response"] = json!(val.value);
+        return self;
+    }
+
+    pub fn responsible<'a>(&'a mut self, val: Reference) -> &'a mut MessageHeaderBuilder {
+        self.value["responsible"] = json!(val.value);
+        return self;
+    }
+
+    pub fn sender<'a>(&'a mut self, val: Reference) -> &'a mut MessageHeaderBuilder {
+        self.value["sender"] = json!(val.value);
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut MessageHeaderBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }

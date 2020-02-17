@@ -23,6 +23,16 @@ pub struct Provenance_Agent<'a> {
 }
 
 impl Provenance_Agent<'_> {
+    pub fn new(value: &Value) -> Provenance_Agent {
+        Provenance_Agent {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -152,7 +162,7 @@ impl Provenance_Agent<'_> {
 
 #[derive(Debug)]
 pub struct Provenance_AgentBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Provenance_AgentBuilder {
@@ -162,9 +172,49 @@ impl Provenance_AgentBuilder {
         }
     }
 
+    pub fn with(existing: Provenance_Agent) -> Provenance_AgentBuilder {
+        Provenance_AgentBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(who: Reference) -> Provenance_AgentBuilder {
         let mut __value: Value = json!({});
         __value["who"] = json!(who.value);
         return Provenance_AgentBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Provenance_AgentBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Provenance_AgentBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Provenance_AgentBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn on_behalf_of<'a>(&'a mut self, val: Reference) -> &'a mut Provenance_AgentBuilder {
+        self.value["onBehalfOf"] = json!(val.value);
+        return self;
+    }
+
+    pub fn role<'a>(&'a mut self, val: Vec<CodeableConcept>) -> &'a mut Provenance_AgentBuilder {
+        self.value["role"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fhir_type<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Provenance_AgentBuilder {
+        self.value["type"] = json!(val.value);
+        return self;
     }
 }

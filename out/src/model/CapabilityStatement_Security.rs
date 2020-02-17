@@ -18,6 +18,16 @@ pub struct CapabilityStatement_Security<'a> {
 }
 
 impl CapabilityStatement_Security<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Security {
+        CapabilityStatement_Security {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for cors
     pub fn _cors(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_cors") {
@@ -155,7 +165,7 @@ impl CapabilityStatement_Security<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_SecurityBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_SecurityBuilder {
@@ -165,8 +175,67 @@ impl CapabilityStatement_SecurityBuilder {
         }
     }
 
+    pub fn with(existing: CapabilityStatement_Security) -> CapabilityStatement_SecurityBuilder {
+        CapabilityStatement_SecurityBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_SecurityBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_SecurityBuilder { value: __value };
+    }
+
+    pub fn _cors<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["_cors"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _description<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["_description"] = json!(val.value);
+        return self;
+    }
+
+    pub fn cors<'a>(&'a mut self, val: bool) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["cors"] = json!(val);
+        return self;
+    }
+
+    pub fn description<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["description"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn service<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut CapabilityStatement_SecurityBuilder {
+        self.value["service"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -19,6 +19,16 @@ pub struct Specimen_Collection<'a> {
 }
 
 impl Specimen_Collection<'_> {
+    pub fn new(value: &Value) -> Specimen_Collection {
+        Specimen_Collection {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for collectedDateTime
     pub fn _collected_date_time(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_collectedDateTime") {
@@ -239,7 +249,7 @@ impl Specimen_Collection<'_> {
 
 #[derive(Debug)]
 pub struct Specimen_CollectionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Specimen_CollectionBuilder {
@@ -249,8 +259,92 @@ impl Specimen_CollectionBuilder {
         }
     }
 
+    pub fn with(existing: Specimen_Collection) -> Specimen_CollectionBuilder {
+        Specimen_CollectionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Specimen_CollectionBuilder {
         let mut __value: Value = json!({});
         return Specimen_CollectionBuilder { value: __value };
+    }
+
+    pub fn _collected_date_time<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Specimen_CollectionBuilder {
+        self.value["_collectedDateTime"] = json!(val.value);
+        return self;
+    }
+
+    pub fn body_site<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Specimen_CollectionBuilder {
+        self.value["bodySite"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collected_date_time<'a>(&'a mut self, val: &str) -> &'a mut Specimen_CollectionBuilder {
+        self.value["collectedDateTime"] = json!(val);
+        return self;
+    }
+
+    pub fn collected_period<'a>(&'a mut self, val: Period) -> &'a mut Specimen_CollectionBuilder {
+        self.value["collectedPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn collector<'a>(&'a mut self, val: Reference) -> &'a mut Specimen_CollectionBuilder {
+        self.value["collector"] = json!(val.value);
+        return self;
+    }
+
+    pub fn duration<'a>(&'a mut self, val: Duration) -> &'a mut Specimen_CollectionBuilder {
+        self.value["duration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Specimen_CollectionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn fasting_status_codeable_concept<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut Specimen_CollectionBuilder {
+        self.value["fastingStatusCodeableConcept"] = json!(val.value);
+        return self;
+    }
+
+    pub fn fasting_status_duration<'a>(
+        &'a mut self,
+        val: Duration,
+    ) -> &'a mut Specimen_CollectionBuilder {
+        self.value["fastingStatusDuration"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Specimen_CollectionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn method<'a>(&'a mut self, val: CodeableConcept) -> &'a mut Specimen_CollectionBuilder {
+        self.value["method"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Specimen_CollectionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn quantity<'a>(&'a mut self, val: Quantity) -> &'a mut Specimen_CollectionBuilder {
+        self.value["quantity"] = json!(val.value);
+        return self;
     }
 }

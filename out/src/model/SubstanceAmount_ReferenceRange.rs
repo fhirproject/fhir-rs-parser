@@ -19,6 +19,16 @@ pub struct SubstanceAmount_ReferenceRange<'a> {
 }
 
 impl SubstanceAmount_ReferenceRange<'_> {
+    pub fn new(value: &Value) -> SubstanceAmount_ReferenceRange {
+        SubstanceAmount_ReferenceRange {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// May be used to represent additional information that is not part of the basic
     /// definition of the element. To make the use of extensions safe and manageable,
     /// there is a strict set of governance  applied to the definition and use of
@@ -118,7 +128,7 @@ impl SubstanceAmount_ReferenceRange<'_> {
 
 #[derive(Debug)]
 pub struct SubstanceAmount_ReferenceRangeBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl SubstanceAmount_ReferenceRangeBuilder {
@@ -128,8 +138,52 @@ impl SubstanceAmount_ReferenceRangeBuilder {
         }
     }
 
+    pub fn with(existing: SubstanceAmount_ReferenceRange) -> SubstanceAmount_ReferenceRangeBuilder {
+        SubstanceAmount_ReferenceRangeBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> SubstanceAmount_ReferenceRangeBuilder {
         let mut __value: Value = json!({});
         return SubstanceAmount_ReferenceRangeBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceAmount_ReferenceRangeBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn high_limit<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceAmount_ReferenceRangeBuilder {
+        self.value["highLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut SubstanceAmount_ReferenceRangeBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn low_limit<'a>(
+        &'a mut self,
+        val: Quantity,
+    ) -> &'a mut SubstanceAmount_ReferenceRangeBuilder {
+        self.value["lowLimit"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut SubstanceAmount_ReferenceRangeBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -16,6 +16,16 @@ pub struct Coverage_Class<'a> {
 }
 
 impl Coverage_Class<'_> {
+    pub fn new(value: &Value) -> Coverage_Class {
+        Coverage_Class {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for name
     pub fn _name(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_name") {
@@ -145,7 +155,7 @@ impl Coverage_Class<'_> {
 
 #[derive(Debug)]
 pub struct Coverage_ClassBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Coverage_ClassBuilder {
@@ -155,9 +165,54 @@ impl Coverage_ClassBuilder {
         }
     }
 
+    pub fn with(existing: Coverage_Class) -> Coverage_ClassBuilder {
+        Coverage_ClassBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(fhir_type: CodeableConcept) -> Coverage_ClassBuilder {
         let mut __value: Value = json!({});
         __value["type"] = json!(fhir_type.value);
         return Coverage_ClassBuilder { value: __value };
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut Coverage_ClassBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _value<'a>(&'a mut self, val: Element) -> &'a mut Coverage_ClassBuilder {
+        self.value["_value"] = json!(val.value);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut Coverage_ClassBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Coverage_ClassBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Coverage_ClassBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut Coverage_ClassBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn value<'a>(&'a mut self, val: &str) -> &'a mut Coverage_ClassBuilder {
+        self.value["value"] = json!(val);
+        return self;
     }
 }

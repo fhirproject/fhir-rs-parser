@@ -17,6 +17,16 @@ pub struct Immunization_ProtocolApplied<'a> {
 }
 
 impl Immunization_ProtocolApplied<'_> {
+    pub fn new(value: &Value) -> Immunization_ProtocolApplied {
+        Immunization_ProtocolApplied {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for doseNumberPositiveInt
     pub fn _dose_number_positive_int(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_doseNumberPositiveInt") {
@@ -242,7 +252,7 @@ impl Immunization_ProtocolApplied<'_> {
 
 #[derive(Debug)]
 pub struct Immunization_ProtocolAppliedBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl Immunization_ProtocolAppliedBuilder {
@@ -252,8 +262,126 @@ impl Immunization_ProtocolAppliedBuilder {
         }
     }
 
+    pub fn with(existing: Immunization_ProtocolApplied) -> Immunization_ProtocolAppliedBuilder {
+        Immunization_ProtocolAppliedBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> Immunization_ProtocolAppliedBuilder {
         let mut __value: Value = json!({});
         return Immunization_ProtocolAppliedBuilder { value: __value };
+    }
+
+    pub fn _dose_number_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["_doseNumberPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _dose_number_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["_doseNumberString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series<'a>(&'a mut self, val: Element) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["_series"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series_doses_positive_int<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["_seriesDosesPositiveInt"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _series_doses_string<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["_seriesDosesString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn authority<'a>(
+        &'a mut self,
+        val: Reference,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["authority"] = json!(val.value);
+        return self;
+    }
+
+    pub fn dose_number_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["doseNumberPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn dose_number_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["doseNumberString"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn series<'a>(&'a mut self, val: &str) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["series"] = json!(val);
+        return self;
+    }
+
+    pub fn series_doses_positive_int<'a>(
+        &'a mut self,
+        val: f64,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["seriesDosesPositiveInt"] = json!(val);
+        return self;
+    }
+
+    pub fn series_doses_string<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["seriesDosesString"] = json!(val);
+        return self;
+    }
+
+    pub fn target_disease<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut Immunization_ProtocolAppliedBuilder {
+        self.value["targetDisease"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }

@@ -17,6 +17,16 @@ pub struct CapabilityStatement_Interaction<'a> {
 }
 
 impl CapabilityStatement_Interaction<'_> {
+    pub fn new(value: &Value) -> CapabilityStatement_Interaction {
+        CapabilityStatement_Interaction {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for code
     pub fn _code(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_code") {
@@ -136,7 +146,7 @@ impl CapabilityStatement_Interaction<'_> {
 
 #[derive(Debug)]
 pub struct CapabilityStatement_InteractionBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl CapabilityStatement_InteractionBuilder {
@@ -146,9 +156,68 @@ impl CapabilityStatement_InteractionBuilder {
         }
     }
 
+    pub fn with(
+        existing: CapabilityStatement_Interaction,
+    ) -> CapabilityStatement_InteractionBuilder {
+        CapabilityStatement_InteractionBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new() -> CapabilityStatement_InteractionBuilder {
         let mut __value: Value = json!({});
         return CapabilityStatement_InteractionBuilder { value: __value };
+    }
+
+    pub fn _code<'a>(&'a mut self, val: Element) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["_code"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _documentation<'a>(
+        &'a mut self,
+        val: Element,
+    ) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["_documentation"] = json!(val.value);
+        return self;
+    }
+
+    pub fn code<'a>(
+        &'a mut self,
+        val: CapabilityStatement_InteractionCode,
+    ) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["code"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn documentation<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["documentation"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut CapabilityStatement_InteractionBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
     }
 }
 

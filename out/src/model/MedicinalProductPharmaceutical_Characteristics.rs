@@ -14,6 +14,16 @@ pub struct MedicinalProductPharmaceutical_Characteristics<'a> {
 }
 
 impl MedicinalProductPharmaceutical_Characteristics<'_> {
+    pub fn new(value: &Value) -> MedicinalProductPharmaceutical_Characteristics {
+        MedicinalProductPharmaceutical_Characteristics {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// A coded characteristic.
     pub fn code(&self) -> CodeableConcept {
         CodeableConcept {
@@ -108,7 +118,7 @@ impl MedicinalProductPharmaceutical_Characteristics<'_> {
 
 #[derive(Debug)]
 pub struct MedicinalProductPharmaceutical_CharacteristicsBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl MedicinalProductPharmaceutical_CharacteristicsBuilder {
@@ -118,9 +128,50 @@ impl MedicinalProductPharmaceutical_CharacteristicsBuilder {
         }
     }
 
+    pub fn with(
+        existing: MedicinalProductPharmaceutical_Characteristics,
+    ) -> MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        MedicinalProductPharmaceutical_CharacteristicsBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(code: CodeableConcept) -> MedicinalProductPharmaceutical_CharacteristicsBuilder {
         let mut __value: Value = json!({});
         __value["code"] = json!(code.value);
         return MedicinalProductPharmaceutical_CharacteristicsBuilder { value: __value };
+    }
+
+    pub fn extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(
+        &'a mut self,
+        val: &str,
+    ) -> &'a mut MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut MedicinalProductPharmaceutical_CharacteristicsBuilder {
+        self.value["status"] = json!(val.value);
+        return self;
     }
 }

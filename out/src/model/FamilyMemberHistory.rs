@@ -26,6 +26,16 @@ pub struct FamilyMemberHistory<'a> {
 }
 
 impl FamilyMemberHistory<'_> {
+    pub fn new(value: &Value) -> FamilyMemberHistory {
+        FamilyMemberHistory {
+            value: Cow::Borrowed(value),
+        }
+    }
+
+    pub fn to_json(&self) -> Value {
+        (*self.value).clone()
+    }
+
     /// Extensions for ageString
     pub fn _age_string(&self) -> Option<Element> {
         if let Some(val) = self.value.get("_ageString") {
@@ -734,7 +744,7 @@ impl FamilyMemberHistory<'_> {
 
 #[derive(Debug)]
 pub struct FamilyMemberHistoryBuilder {
-    pub value: Value,
+    pub(crate) value: Value,
 }
 
 impl FamilyMemberHistoryBuilder {
@@ -744,11 +754,277 @@ impl FamilyMemberHistoryBuilder {
         }
     }
 
+    pub fn with(existing: FamilyMemberHistory) -> FamilyMemberHistoryBuilder {
+        FamilyMemberHistoryBuilder {
+            value: (*existing.value).clone(),
+        }
+    }
+
     pub fn new(patient: Reference, relationship: CodeableConcept) -> FamilyMemberHistoryBuilder {
         let mut __value: Value = json!({});
         __value["patient"] = json!(patient.value);
         __value["relationship"] = json!(relationship.value);
         return FamilyMemberHistoryBuilder { value: __value };
+    }
+
+    pub fn _age_string<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_ageString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _born_date<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_bornDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _born_string<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_bornString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _date<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_date"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deceased_boolean<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_deceasedBoolean"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deceased_date<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_deceasedDate"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _deceased_string<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_deceasedString"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _estimated_age<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_estimatedAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _implicit_rules<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_implicitRules"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _instantiates_uri<'a>(
+        &'a mut self,
+        val: Vec<Element>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_instantiatesUri"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn _language<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_language"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _name<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_name"] = json!(val.value);
+        return self;
+    }
+
+    pub fn _status<'a>(&'a mut self, val: Element) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["_status"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age_age<'a>(&'a mut self, val: Age) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["ageAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age_range<'a>(&'a mut self, val: Range) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["ageRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn age_string<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["ageString"] = json!(val);
+        return self;
+    }
+
+    pub fn born_date<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["bornDate"] = json!(val);
+        return self;
+    }
+
+    pub fn born_period<'a>(&'a mut self, val: Period) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["bornPeriod"] = json!(val.value);
+        return self;
+    }
+
+    pub fn born_string<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["bornString"] = json!(val);
+        return self;
+    }
+
+    pub fn condition<'a>(
+        &'a mut self,
+        val: Vec<FamilyMemberHistory_Condition>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["condition"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn contained<'a>(
+        &'a mut self,
+        val: Vec<ResourceList>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["contained"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn data_absent_reason<'a>(
+        &'a mut self,
+        val: CodeableConcept,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["dataAbsentReason"] = json!(val.value);
+        return self;
+    }
+
+    pub fn date<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["date"] = json!(val);
+        return self;
+    }
+
+    pub fn deceased_age<'a>(&'a mut self, val: Age) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["deceasedAge"] = json!(val.value);
+        return self;
+    }
+
+    pub fn deceased_boolean<'a>(&'a mut self, val: bool) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["deceasedBoolean"] = json!(val);
+        return self;
+    }
+
+    pub fn deceased_date<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["deceasedDate"] = json!(val);
+        return self;
+    }
+
+    pub fn deceased_range<'a>(&'a mut self, val: Range) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["deceasedRange"] = json!(val.value);
+        return self;
+    }
+
+    pub fn deceased_string<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["deceasedString"] = json!(val);
+        return self;
+    }
+
+    pub fn estimated_age<'a>(&'a mut self, val: bool) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["estimatedAge"] = json!(val);
+        return self;
+    }
+
+    pub fn extension<'a>(&'a mut self, val: Vec<Extension>) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["extension"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn id<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["id"] = json!(val);
+        return self;
+    }
+
+    pub fn identifier<'a>(
+        &'a mut self,
+        val: Vec<Identifier>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["identifier"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn implicit_rules<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["implicitRules"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_canonical<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["instantiatesCanonical"] = json!(val);
+        return self;
+    }
+
+    pub fn instantiates_uri<'a>(
+        &'a mut self,
+        val: Vec<&str>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["instantiatesUri"] = json!(val);
+        return self;
+    }
+
+    pub fn language<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["language"] = json!(val);
+        return self;
+    }
+
+    pub fn meta<'a>(&'a mut self, val: Meta) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["meta"] = json!(val.value);
+        return self;
+    }
+
+    pub fn modifier_extension<'a>(
+        &'a mut self,
+        val: Vec<Extension>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["modifierExtension"] =
+            json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn name<'a>(&'a mut self, val: &str) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["name"] = json!(val);
+        return self;
+    }
+
+    pub fn note<'a>(&'a mut self, val: Vec<Annotation>) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["note"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_code<'a>(
+        &'a mut self,
+        val: Vec<CodeableConcept>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["reasonCode"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn reason_reference<'a>(
+        &'a mut self,
+        val: Vec<Reference>,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["reasonReference"] = json!(val.into_iter().map(|e| e.value).collect::<Vec<_>>());
+        return self;
+    }
+
+    pub fn sex<'a>(&'a mut self, val: CodeableConcept) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["sex"] = json!(val.value);
+        return self;
+    }
+
+    pub fn status<'a>(
+        &'a mut self,
+        val: FamilyMemberHistoryStatus,
+    ) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["status"] = json!(val.to_string());
+        return self;
+    }
+
+    pub fn text<'a>(&'a mut self, val: Narrative) -> &'a mut FamilyMemberHistoryBuilder {
+        self.value["text"] = json!(val.value);
+        return self;
     }
 }
 
