@@ -109,15 +109,15 @@ struct Definition {
 }
 
 fn main() {
-    fs::remove_dir_all("out/src/model").unwrap_or_else(|why| {
+    fs::remove_dir_all("generated/src/model").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
-    fs::create_dir("out/src/model").unwrap_or_else(|why| {
+    fs::create_dir("generated/src/model").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
 
-    let schema_contents =
-        fs::read_to_string("src/fhir.schema.json").expect("Something went wrong reading the file");
+    let schema_contents = fs::read_to_string("generator/src/fhir.schema.json")
+        .expect("Something went wrong reading the file");
     let fhir_schema: Schema = serde_json::from_str(&schema_contents).unwrap();
 
     let mut reference_to_class_name_map: HashMap<String, String> = HashMap::new();
@@ -196,7 +196,7 @@ fn main() {
             &property_replacement_map,
         );
 
-        let path_string = format!("out/src/model/{}.rs", definition_name);
+        let path_string = format!("generated/src/model/{}.rs", definition_name);
         let wrote_file = write_string_to_file(&contents, &path_string);
 
         if wrote_file {
@@ -206,7 +206,7 @@ fn main() {
         }
     }
 
-    write_string_to_file(&model_mod_contents, "out/src/model/mod.rs");
+    write_string_to_file(&model_mod_contents, "generated/src/model/mod.rs");
 }
 
 fn write_string_to_file(contents: &str, path_string: &str) -> bool {
