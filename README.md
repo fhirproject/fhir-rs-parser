@@ -4,6 +4,23 @@ This is a dead-simple schema generator for the FHIR spec. I created it after see
 
 This is a one-file schema generator that generates all types from the FHIR schema as simple deserializable structs and enums.
 
+## Exemple of usage
+For the moment the package is not published on cargo so you need to add it like this: `fhir-rs = { git = "https://github.com/mypl-io/fhir-rs-parser" }`
+
+```rs
+use fhir_rs::{fhir_parse, model};
+
+if let Some(resource_list) = fhir_parse(&res_string) {
+    match resource_list.resource() {
+        Some(model::ResourceList::ResourceListEnum::ResourcePractitioner(practitioner)) => {
+            println!("Practitioner: {:?}", practitioner);
+        }
+        _ => {}
+    }
+}
+
+```
+
 ## Our models are FAST!
 
 The codegenerated models are built around lazy access to the underlying json responses from a FHIR server. Our sparse memory layout combined with our lazy access and lack of copied data means that these models are **very fast** compared to other compiled language implementations of FHIR. 
